@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "entropy">
+      <FileRef
+         location = "group:../xcode/entropy.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "apps">
+      <Group
+         location = "container:"
+         name = "08 Matter Era">
+         <FileRef
+            location = "group:08 Matter Era/Bubble/xcode/Bubble.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
+</Workspace>
