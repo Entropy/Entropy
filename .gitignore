@@ -1,3 +1,7 @@
+# Data and edited files
+data/
+*~
+
 # Mac OS X cruft
 *.pbxuser
 *.mode1v3
