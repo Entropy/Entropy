@@ -30,11 +30,9 @@ namespace entropy
         ofEasyCam camera;
         ofLight light;
 
-        bool guiVisible;
-
-        int differentSurfaces;
-
         // Marching Cubes
+        void paramsMarchingCubesChanged(ofAbstractParameter& param);
+
         ofxMarchingCubes marchingCubes;
 
         ofxPanel panelMarchingCubes;
@@ -48,8 +46,6 @@ namespace entropy
         ofParameter<bool> mcFlipNormals;
         ofParameter<bool> mcSmooth;
 
-        void paramsMarchingCubesChanged(ofAbstractParameter& param);
-        
         // Noise Field
         NoiseField noiseField;
 
@@ -65,6 +61,8 @@ namespace entropy
         ofParameter<bool> drawGrid;
         ofParameter<bool> wireframe;
         ofParameter<bool> shadeNormals;
-        
+
+        // GUI
+        bool guiVisible;
     };
 }
