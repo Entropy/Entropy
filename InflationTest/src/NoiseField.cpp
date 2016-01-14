@@ -64,9 +64,10 @@ namespace entropy
         int iterations = powf(2, currScale);
         float val = 0;
         for (int i = 0; i < iterations; ++i) {
-            val += ofNoise(x * inputMultiplier + i * offset + noiseOffset,
-                           y * inputMultiplier + i * offset + noiseOffset,
-                           z * inputMultiplier + i * offset + noiseOffset);
+            val += ofNoise(x * inputMultiplier + i * offset,
+                           y * inputMultiplier + i * offset,
+                           z * inputMultiplier + i * offset,
+                           noiseOffset);
         }
         val /= iterations;
 
