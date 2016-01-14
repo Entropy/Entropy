@@ -58,16 +58,10 @@ namespace entropy
     void ofApp::update()
     {
         noiseField.update();
+        noiseField.apply(marchingCubes);
 
         if(!bPause) elapsedTime = ofGetElapsedTimef();
 
-        for (int i = 0; i < marchingCubes.resX; ++i) {
-            for (int j = 0; j < marchingCubes.resY; ++j) {
-                for (int k = 0; k < marchingCubes.resZ; ++k) {
-                    marchingCubes.setIsoValue(i, j, k, noiseField.getValue(i, j, k));
-                }
-            }
-        }
 
     /*
     if(differentSurfaces == 0){
