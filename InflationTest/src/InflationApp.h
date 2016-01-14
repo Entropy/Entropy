@@ -8,7 +8,7 @@
 
 namespace entropy
 {
-    class ofApp : public ofBaseApp
+    class InflationApp : public ofBaseApp
     {
     public:
         void setup();

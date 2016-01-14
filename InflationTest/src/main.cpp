@@ -1,5 +1,5 @@
 #include "ofMain.h"
-#include "ofApp.h"
+#include "InflationApp.h"
 
 //========================================================================
 int main()
@@ -10,5 +10,5 @@ int main()
     settings.height = 768;
     ofCreateWindow(settings);
 
-    ofRunApp(new entropy::ofApp());
+    ofRunApp(new entropy::InflationApp());
 }

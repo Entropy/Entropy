@@ -1,9 +1,9 @@
-#include "ofApp.h"
+#include "InflationApp.h"
 
 namespace entropy
 {
     //--------------------------------------------------------------
-    void ofApp::setup()
+    void InflationApp::setup()
     {
         // Marching Cubes
         paramsMarchingCubes.setName("MARCHING CUBES");
@@ -14,7 +14,7 @@ namespace entropy
         paramsMarchingCubes.add(mcThreshold.set("THRESHOLD", marchingCubes.threshold, 0.0, 1.0));
         paramsMarchingCubes.add(mcSmooth.set("SMOOTH", marchingCubes.getSmoothing()));
         paramsMarchingCubes.add(mcFlipNormals.set("FLIP NORMALS", false));
-        ofAddListener(paramsMarchingCubes.parameterChangedE(), this, &ofApp::paramsMarchingCubesChanged);
+        ofAddListener(paramsMarchingCubes.parameterChangedE(), this, &InflationApp::paramsMarchingCubesChanged);
 
         panelMarchingCubes.setup(paramsMarchingCubes, "marching-cubes.xml");
         panelMarchingCubes.loadFromFile("marching-cubes.xml");
@@ -50,7 +50,7 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void ofApp::update()
+    void InflationApp::update()
     {
         noiseField.update();
         noiseField.apply(marchingCubes);
@@ -59,7 +59,7 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void ofApp::draw()
+    void InflationApp::draw()
     {
         ofSetWindowTitle(ofToString(ofGetFrameRate(), 2) + " FPS");
 
@@ -127,7 +127,7 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void ofApp::keyPressed(int key){
+    void InflationApp::keyPressed(int key){
 
         switch (key) {
             case '`':
@@ -145,57 +145,57 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void ofApp::keyReleased(int key){
+    void InflationApp::keyReleased(int key){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mouseMoved(int x, int y ){
+    void InflationApp::mouseMoved(int x, int y ){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mouseDragged(int x, int y, int button){
+    void InflationApp::mouseDragged(int x, int y, int button){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mousePressed(int x, int y, int button){
+    void InflationApp::mousePressed(int x, int y, int button){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mouseReleased(int x, int y, int button){
+    void InflationApp::mouseReleased(int x, int y, int button){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mouseEntered(int x, int y){
+    void InflationApp::mouseEntered(int x, int y){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::mouseExited(int x, int y){
+    void InflationApp::mouseExited(int x, int y){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::windowResized(int w, int h){
+    void InflationApp::windowResized(int w, int h){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::gotMessage(ofMessage msg){
+    void InflationApp::gotMessage(ofMessage msg){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::dragEvent(ofDragInfo dragInfo){
+    void InflationApp::dragEvent(ofDragInfo dragInfo){
 
     }
 
     //--------------------------------------------------------------
-    void ofApp::paramsMarchingCubesChanged(ofAbstractParameter& param)
+    void InflationApp::paramsMarchingCubesChanged(ofAbstractParameter& param)
     {
         string paramName = param.getName();
 
