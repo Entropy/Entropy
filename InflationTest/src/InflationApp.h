@@ -35,16 +35,16 @@ namespace entropy
 
         ofxMarchingCubes marchingCubes;
 
-        ofxPanel panelMarchingCubes;
-
         ofParameterGroup paramsMarchingCubes;
-        ofParameter<int> mcResX;
-        ofParameter<int> mcResY;
-        ofParameter<int> mcResZ;
-        ofParameter<float> mcScale;
-        ofParameter<float> mcThreshold;
-        ofParameter<bool> mcFlipNormals;
-        ofParameter<bool> mcSmooth;
+        ofParameter<int> resolution;
+        ofParameter<float> scale;
+        ofParameter<float> threshold;
+        ofParameter<bool> radialClip;
+        ofParameter<bool> fillEdges;
+        ofParameter<bool> flipNormals;
+        ofParameter<bool> smooth;
+
+        ofxPanel panelMarchingCubes;
 
         // Noise Field
         NoiseField noiseField;
@@ -53,14 +53,14 @@ namespace entropy
 
         // Render
         ofShader normalShader;
-        
-        ofxPanel panelRender;
-        
+
         ofParameterGroup paramsRender;
         ofParameter<bool> debug;
         ofParameter<bool> drawGrid;
         ofParameter<bool> wireframe;
         ofParameter<bool> shadeNormals;
+
+        ofxPanel panelRender;
 
         // GUI
         bool guiVisible;

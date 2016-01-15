@@ -37,18 +37,6 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void NoiseField::apply(ofxMarchingCubes& marchingCubes)
-    {
-        for (int i = 0; i < marchingCubes.resX; ++i) {
-            for (int j = 0; j < marchingCubes.resY; ++j) {
-                for (int k = 0; k < marchingCubes.resZ; ++k) {
-                    marchingCubes.setIsoValue(i, j, k, getValue(i, j, k));
-                }
-            }
-        }
-    }
-
-    //--------------------------------------------------------------
     void NoiseField::numScalesChanged(int& numScales)
     {
         if (currScale >= numScales) {

@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxMarchingCubes.h"
 
 namespace entropy
 {
@@ -19,7 +18,6 @@ namespace entropy
         NoiseField();
 
         void update();
-        void apply(ofxMarchingCubes& marchingCubes);
 
         int getNumScales();
         void numScalesChanged(int& numScales);
