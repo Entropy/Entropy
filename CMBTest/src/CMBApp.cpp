@@ -5,22 +5,24 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::setup()
     {
-        bDropOnPress = false;
-        dropRate = 1;
-        damping = 0.995f;
-        radius = 10.0f;
+        paramGroup.setName("RIPPLES");
+        paramGroup.add(tintColor.set("TINT COLOR", ofColor::white, ofColor::black, ofColor::white));
+        paramGroup.add(dropColor.set("DROP COLOR", ofColor::white, ofColor::black, ofColor::white));
+        paramGroup.add(bDropOnPress.set("DROP ON PRESS", false));
+        paramGroup.add(bDropUnderMouse.set("DROP UNDER MOUSE", false));
+        paramGroup.add(dropRate.set("DROP RATE", 1, 1, 30));
+        paramGroup.add(damping.set("DAMPING", 0.995f, 0.0, 1.0));
+        paramGroup.add(radius.set("RADIUS", 10.0, 1.0, 50.0));
+        paramGroup.add(bRestart.set("RESTART", true));
 
-        minDropHue = 0;
-        maxDropHue = 0;
-        minDropSat = 0;
-        maxDropSat = 0;
-        minDropBri = 255;
-        maxDropBri = 255;
+        guiPanel.setup(paramGroup, "ripples.xml");
+        guiPanel.loadFromFile("ripples.xml");
+
+        bRestart = true;
+        bGuiVisible = true;
 
 //        shader.load("shaders/ripples");
         shader.load("", "shaders/ripples.frag");
-
-        bRestart = true;
     }
 
     //--------------------------------------------------------------
@@ -71,8 +73,8 @@ namespace entropy
             restart();
         }
 
-//        tintColor.setHsb(tintHue->getPos(), tintSat->getPos(), tintBri->getPos(), tintAlpha->getPos());
-        dropColor.setHsb(ofRandom(minDropHue, maxDropHue), ofRandom(minDropSat, maxDropSat), ofRandom(minDropBri, maxDropBri));
+        // Ignore presses over the GUI.
+        bool bMousePressed = ofGetMousePressed() && (!bGuiVisible || !guiPanel.getShape().inside(ofGetMouseX(), ofGetMouseY()));
 
         // Add new drops.
         ofPushStyle();
@@ -80,10 +82,15 @@ namespace entropy
 
         srcFbo.begin();
         {
-            if ((bDropOnPress && ofGetMousePressed()) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
+            if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
                 ofSetColor(dropColor);
                 ofNoFill();
-                ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
+                if (bDropUnderMouse) {
+                    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
+                }
+                else {
+                    ofDrawCircle(ofRandomWidth(), ofRandomHeight(), radius);
+                }
             }
         }
         srcFbo.end();
@@ -116,60 +123,77 @@ namespace entropy
         ofPopStyle();
 
         swap(srcFbo, dstFbo);
+
+        if (bGuiVisible) {
+            guiPanel.draw();
+        }
     }
 
-//--------------------------------------------------------------
-void CMBApp::keyPressed(int key){
+    //--------------------------------------------------------------
+    void CMBApp::keyPressed(int key)
+    {
+        switch (key) {
+            case '`':
+                bGuiVisible ^= 1;
+                break;
 
-}
+            case OF_KEY_TAB:
+                ofToggleFullscreen();
+                break;
 
-//--------------------------------------------------------------
-void CMBApp::keyReleased(int key){
+            default:
+                break;
+        }
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::keyReleased(int key){
 
-//--------------------------------------------------------------
-void CMBApp::mouseMoved(int x, int y ){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mouseMoved(int x, int y ){
 
-//--------------------------------------------------------------
-void CMBApp::mouseDragged(int x, int y, int button){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mouseDragged(int x, int y, int button){
 
-//--------------------------------------------------------------
-void CMBApp::mousePressed(int x, int y, int button){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mousePressed(int x, int y, int button){
 
-//--------------------------------------------------------------
-void CMBApp::mouseReleased(int x, int y, int button){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mouseReleased(int x, int y, int button){
 
-//--------------------------------------------------------------
-void CMBApp::mouseEntered(int x, int y){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mouseEntered(int x, int y){
 
-//--------------------------------------------------------------
-void CMBApp::mouseExited(int x, int y){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::mouseExited(int x, int y){
 
-//--------------------------------------------------------------
-void CMBApp::windowResized(int w, int h){
+    }
 
-}
+    //--------------------------------------------------------------
+    void CMBApp::windowResized(int w, int h)
+    {
+        bRestart = true;
+    }
 
-//--------------------------------------------------------------
-void CMBApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void CMBApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
+    //--------------------------------------------------------------
+    void CMBApp::gotMessage(ofMessage msg){
+        
+    }
+    
+    //--------------------------------------------------------------
+    void CMBApp::dragEvent(ofDragInfo dragInfo){ 
+        
+    }
 }

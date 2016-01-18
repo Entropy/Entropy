@@ -30,19 +30,21 @@ namespace entropy
         ofFbo srcFbo, dstFbo;
         ofVboMesh mesh;
 
-        float minDropHue, maxDropHue;
-        float minDropSat, maxDropSat;
-        float minDropBri, maxDropBri;
+        ofParameterGroup paramGroup;
 
-        ofColor tintColor;
-        ofColor dropColor;
+        ofParameter<ofColor> tintColor;
+        ofParameter<ofColor> dropColor;
 
-        bool bDropOnPress;
-        int dropRate;
+        ofParameter<bool> bDropOnPress;
+        ofParameter<bool> bDropUnderMouse;
+        ofParameter<int> dropRate;
 
-        float damping;
-        float radius;
-        
-        bool bRestart;
+        ofParameter<float> damping;
+        ofParameter<float> radius;
+
+        ofParameter<bool> bRestart;
+
+        ofxPanel guiPanel;
+        bool bGuiVisible;
     };
 }
