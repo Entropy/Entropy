@@ -1,31 +1,34 @@
-# Data and edited files
-data/
-*~
+libs/
+docs/
 
-# Mac OS X cruft
+*.depend
+*.layout
+*.mode*v3
 *.pbxuser
-*.mode1v3
-*.mode2v3
-*.user
-project.xcworkspace
-xcuserdata/
-*.xccheckout
-.DS_Store
+*.app*
+*.DS_*
+._*.*
 
-libs/entropy/macosx/*.a
+.svn/
+obj/
+bin/
 build/
+!data/
+xcuserdata/
 
-# Windows cruft
+ipch/
 *.suo
-*.ncb
-*.sdf
 *.opensdf
+*.vcxproj.user
+
+*.obj
+*.tlog
+*.sdf
+*.pdb
+*.idb
+*.pch
 Debug/
 Release/
-Debug_ANGLE/
-Release_ANGLE/
-ipch/
 
-# doxygen generated files
-docs/html
-docs/doxygen/cinder.tag
+
+*~.xml
