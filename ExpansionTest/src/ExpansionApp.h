@@ -13,10 +13,7 @@ namespace entropy
         enum Type
         {
             TypeCamera = 0,
-            TypeGalaxy0,
-            TypeGalaxy1,
-            TypeGalaxy2,
-            TypeGalaxy3,
+            TypeParticle
         };
 
         void setup(float size);
@@ -73,7 +70,7 @@ namespace entropy
 
         ofVboMesh vboMesh;
         ofShader shader;
-        vector<ofImage> textures;
+        ofTexture texture;
 
 //        ofParameter<ofColor> tintColor;
 //        ofParameter<ofColor> dropColor;

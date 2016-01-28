@@ -10,6 +10,7 @@
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
 		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
 		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
+		649D33D21C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */; };
 		64E4521A1C56ACDA008C1C81 /* HeadCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64E452181C56ACDA008C1C81 /* HeadCamera.cpp */; };
 		837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F2C6477A769C03A56D1401 /* ofxSlider.cpp */; };
 		856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9604B925D32EE39065747725 /* ofxBaseGui.cpp */; };
@@ -57,6 +58,8 @@
 		1C0DA2561397A7DE0246858B /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../../addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
 		2834D88A62CD23F3DE2C47D1 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = ../../../addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
+		649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxGaussianMapTexture.cpp; path = ../Shared/src/ofxGaussianMapTexture.cpp; sourceTree = "<group>"; };
+		649D33D11C5ADD1A00C21155 /* ofxGaussianMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGaussianMapTexture.h; path = ../Shared/src/ofxGaussianMapTexture.h; sourceTree = "<group>"; };
 		64E452181C56ACDA008C1C81 /* HeadCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeadCamera.cpp; sourceTree = "<group>"; };
 		64E452191C56ACDA008C1C81 /* HeadCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadCamera.h; sourceTree = "<group>"; };
 		64E4521C1C56C51B008C1C81 /* ofxHeadCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxHeadCamera.h; sourceTree = "<group>"; };
@@ -101,6 +104,15 @@
 				A763ED608B35AE3310251DEE /* src */,
 			);
 			name = ofxGui;
+			sourceTree = "<group>";
+		};
+		649D33CF1C5ADCF800C21155 /* shared_src */ = {
+			isa = PBXGroup;
+			children = (
+				649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */,
+				649D33D11C5ADD1A00C21155 /* ofxGaussianMapTexture.h */,
+			);
+			name = shared_src;
 			sourceTree = "<group>";
 		};
 		64BC94231C4838FE009AA2DF /* shaders */ = {
@@ -176,6 +188,7 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
+				649D33CF1C5ADCF800C21155 /* shared_src */,
 				64BC94231C4838FE009AA2DF /* shaders */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -314,6 +327,7 @@
 				64E4521A1C56ACDA008C1C81 /* HeadCamera.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
+				649D33D21C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
 			);

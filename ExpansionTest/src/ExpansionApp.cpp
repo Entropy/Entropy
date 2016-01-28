@@ -1,3 +1,5 @@
+#include "ofxGaussianMapTexture.h"
+
 #include "ExpansionApp.h"
 
 namespace entropy
@@ -8,7 +10,7 @@ namespace entropy
         float range = dim * 0.5;
         ini = ofVec3f(ofRandomf() * range, ofRandomf() * range, ofRandomf() * range);
 
-        type = ofRandom(4) + 1;
+        type = TypeParticle;
         size = ofRandom(16, 64);
     }
 
@@ -27,12 +29,7 @@ namespace entropy
 
         shader.load("shaders/billboard");
 
-        ofDirectory dir = ofDirectory("textures");
-        dir.listDir();
-        textures.resize(dir.size());
-        for (int i = 0; i < dir.size(); ++i) {
-            textures[i].load(dir.getFile(i));
-        }
+        ofxCreateGaussianMapTexture(texture, 32);
 
         easyCam.setNearClip(0.0);
         easyCam.setFarClip(FLT_MAX);
@@ -80,7 +77,6 @@ namespace entropy
         // Upload the normal data (x = size, y = type).
         for (int i = 0; i < particles.size(); ++i) {
             vboMesh.getNormals()[i].set(ofVec3f(particles[i].size, particles[i].type));
-            cout << i << ": Normal " << vboMesh.getNormals()[i] << endl;
         }
 
         bRestart = false;
@@ -136,9 +132,7 @@ namespace entropy
             ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 
             shader.begin();
-            for (int i = 0; i < textures.size(); ++i) {
-                shader.setUniformTexture("texture" + ofToString(i), textures[i], i + 1);
-            }
+            shader.setUniformTexture("tex", texture, 1);
 
 //            shader.printActiveUniforms();
 
