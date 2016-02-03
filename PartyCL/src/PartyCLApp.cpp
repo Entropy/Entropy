@@ -34,11 +34,11 @@ namespace entropy
         params.setName("PartyCL");
         params.add(bPaused.set("paused", false));
         params.add(bReset.set("reset", false));
-        params.add(timestep.set("timestep", 0.016, 0.01, 0.02));
-        params.add(clusterScale.set("cluster scale", 1.54, 0.1, 10.0));
-        params.add(velocityScale.set("velocity scale", 8.0, 0.0, 1000.0));
-        params.add(softening.set("softening", 0.1, 0.0, 1.0));
-        params.add(damping.set("damping", 1.0, 0.0, 1.0));
+        params.add(timestep.set("timestep", 0.016, 0.0, 1.0));
+        params.add(clusterScale.set("cluster scale", 1.54, 0.0, 10.0));
+        params.add(velocityScale.set("velocity scale", 8.0, 4.0, 1000.0));
+        params.add(softening.set("softening factor", 0.1, 0.001, 1.0));
+        params.add(damping.set("velocity damping", 1.0, 0.5, 1.0));
         params.add(pointSize.set("point size", 1.0f, 0.01f, 16.0f));
         ofAddListener(params.parameterChangedE(), this, &PartyCLApp::paramsChanged);
 
