@@ -8,8 +8,6 @@
 #include "ParticleRenderer.h"
 #include "Preset.h"
 
-#define USE_OPENCL 1
-
 namespace entropy
 {
     class PartyCLApp : public ofBaseApp
@@ -45,6 +43,7 @@ namespace entropy
 
         // Simulation
 
+        void randomizeBodies();
         void resetSimulation();
         void loadPreset();
 
@@ -58,12 +57,14 @@ namespace entropy
         int presetIndex;
         NBodyConfig activeConfig;
 
+        string filename;
+
         NBodySystem *system;
         int numBodies;
 
-        float* hPos;
-        float* hVel;
-        float* hColor;
+        vector<ofVec4f> hPos;
+        vector<ofVec4f> hVel;
+        vector<ofVec4f> hColor;
 
         // Rendering
 

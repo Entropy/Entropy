@@ -21,9 +21,6 @@ namespace entropy
         NBODY_NUM_CONFIGS
     };
 
-    // Utility function.
-    void randomizeBodies(NBodyConfig config, float* pos, float* vel, float* color, float clusterScale, float velocityScale, int numBodies);
-
     class NBodySystem
     {
     public:

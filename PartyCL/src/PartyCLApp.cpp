@@ -1,16 +1,9 @@
-/******
-
- This example updates 1M particles on the GPU using OpenCL
- The OpenCL kernel writes position data directly to a VBO stored in the OpenGL device memory
- so now data transfer between host and device during runtime
-
-
- Kernel based on Rui's ofxOpenCL particle example opencl particles 001b.zip
- at http://code.google.com/p/ruisource/
- *****/
-
+#include "ofxTipsyLoader.h"
 
 #include "PartyCLApp.h"
+
+#define USE_OPENCL 1
+//#define LOAD_TIPSY 1
 
 namespace entropy
 {
@@ -52,8 +45,33 @@ namespace entropy
         presetIndex = 0;
         loadPreset();
 
-        // Set the number of bodies and configure appropriately.
-        numBodies = 1024 * 12;
+#ifdef LOAD_TIPSY
+        filename = "galaxy_20K.bin";
+#else
+        filename = "";
+#endif
+
+        if (filename.length()) {
+            // Clear host memory.
+            hPos.clear();
+            hVel.clear();
+            hColor.clear();
+
+            // Load the data file.
+            int numDark;
+            int numStar;
+            vector<int> hIDs;
+            ofxLoadTipsyFile(filename, numBodies, numDark, numStar, hPos, hVel, hIDs);
+        }
+        else {
+            // Set the number of bodies and configure appropriately.
+            numBodies = 1024 * 12;
+
+            // Allocate host memory.
+            hPos.resize(numBodies);
+            hVel.resize(numBodies);
+            hColor.resize(numBodies);
+        }
 
         ofLogNotice("PartyCLApp", "Number of Bodies = %d", numBodies);
 
@@ -112,11 +130,6 @@ namespace entropy
         system = new NBodySystemCPU(numBodies);
 #endif
 
-        // Allocate host memory.
-        hPos = new float[numBodies*4];
-        hVel = new float[numBodies*4];
-        hColor = new float[numBodies*4];
-
         // Init renderer.
         renderer = new ParticleRenderer();
         displayMode = ParticleRenderer::PARTICLE_SPRITES;
@@ -127,14 +140,140 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
+    void PartyCLApp::randomizeBodies()
+    {
+        switch (activeConfig)
+        {
+            default:
+            case NBODY_CONFIG_RANDOM:
+            {
+                float scalePos = clusterScale * MAX(1.0f, numBodies / (1024.f));
+                float scaleVel = velocityScale * scalePos;
+
+                ofVec3f pos;
+                ofVec3f vel;
+                for (int i = 0; i < numBodies; ++i) {
+                    pos.x = ofRandomf();
+                    pos.y = ofRandomf();
+                    pos.z = ofRandomf();
+                    if (pos.lengthSquared() > 1)
+                        continue;
+
+                    vel.x = ofRandomf();
+                    vel.y = ofRandomf();
+                    vel.z = ofRandomf();
+                    if (vel.lengthSquared() > 1)
+                        continue;
+
+                    hPos[i].x = pos.x * scalePos;
+                    hPos[i].y = pos.y * scalePos;
+                    hPos[i].z = pos.z * scalePos;
+                    hPos[i].w = 1.0f;  // mass
+
+                    hVel[i].x = vel.x * scaleVel; // pos.x
+                    hVel[i].y = vel.y * scaleVel; // pos.x
+                    hVel[i].z = vel.z * scaleVel; // pos.x
+                    hVel[i].w = 1.0f;  // inverse mass
+                }
+            }
+                break;
+
+            case NBODY_CONFIG_SHELL:
+            {
+                float scalePos = clusterScale;
+                float scaleVel = scalePos * velocityScale;
+                float inner = 2.5f * scalePos;
+                float outer = 4.0f * scalePos;
+
+                ofVec3f pos;
+                ofVec3f vel;
+                ofVec3f axis;
+                for (int i = 0; i < numBodies; ++i) {
+                    pos.x = ofRandomf();
+                    pos.y = ofRandomf();
+                    pos.z = ofRandomf();
+                    if (pos.lengthSquared() > 1)
+                        continue;
+
+                    hPos[i].x = pos.x * ofRandom(inner, outer);
+                    hPos[i].y = pos.y * ofRandom(inner, outer);
+                    hPos[i].z = pos.z * ofRandom(inner, outer);
+                    hPos[i].w = 1.0f;  // mass
+
+                    axis.set(0.0f, 0.0f, 1.0f);
+                    if (1.0f - pos.dot(axis) < 1e-6) {
+                        axis.x = pos.y;
+                        axis.y = pos.x;
+                        axis.normalize();
+                    }
+                    vel.set(hPos[i].x, hPos[i].y, hPos[i].z);
+                    vel.cross(axis);
+
+                    hVel[i].x = vel.x * scaleVel;
+                    hVel[i].y = vel.y * scaleVel;
+                    hVel[i].z = vel.z * scaleVel;
+                    hVel[i].x = 1.0f;  // inverse mass
+                }
+            }
+                break;
+
+            case NBODY_CONFIG_EXPAND:
+            {
+                float scalePos = clusterScale * MAX(1.0f, numBodies / (1024.0f));
+                float scaleVel = scalePos * velocityScale;
+
+                ofVec3f point;
+                for (int i = 0; i < numBodies; ++i) {
+                    point.x = ofRandomf();
+                    point.y = ofRandomf();
+                    point.z = ofRandomf();
+                    if (point.lengthSquared() > 1)
+                        continue;
+
+                    hPos[i].x = point.x * scalePos;
+                    hPos[i].y = point.y * scalePos;
+                    hPos[i].z = point.z * scalePos;
+                    hPos[i].w = 1.0f;  // mass
+
+                    hVel[i].x = point.x * scaleVel;
+                    hVel[i].y = point.y * scaleVel;
+                    hVel[i].z = point.z * scaleVel;
+                    hVel[i].w = 1.0f;  // inverse mass
+                }
+            }
+                break;
+        }
+
+//        if (color) {
+//            int v = 0;
+//            for(int i=0; i < numBodies; i++) {
+//                //const int scale = 16;
+//                color[v++] = rand() / (float) RAND_MAX;
+//                color[v++] = rand() / (float) RAND_MAX;
+//                color[v++] = rand() / (float) RAND_MAX;
+//                color[v++] = 1.0f;
+//            }
+//        }
+    }
+
+    //--------------------------------------------------------------
     void PartyCLApp::resetSimulation()
     {
         ofLogNotice("PartyCLApp::resetSim", "Resetting Nbody system...");
 
-        randomizeBodies(activeConfig, hPos, hVel, hColor, clusterScale, velocityScale, numBodies);
+        if (filename.length() == 0) {
+            randomizeBodies();
+        }
+        else {
+            damping = 1.0;
+            softening = 0.1;
+            timestep = 0.016;
+            clusterScale = 1.56;
+            velocityScale = 2.64;
+        }
 
-        system->setArray(NBodySystem::ARRAY_POSITION, hPos);
-        system->setArray(NBodySystem::ARRAY_VELOCITY, hVel);
+        system->setArray(NBodySystem::ARRAY_POSITION, (float *)hPos.data());
+        system->setArray(NBodySystem::ARRAY_VELOCITY, (float *)hVel.data());
 
 //        renderer->setColors(hColor, numBodies);
     }
