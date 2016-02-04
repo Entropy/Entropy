@@ -13,6 +13,7 @@ namespace entropy
         ofBackground(ofColor::black);
         ofSetLogLevel(OF_LOG_VERBOSE);
         ofSetVerticalSync(false);
+        ofDisableArbTex();
 
         // Load presets.
         presets.push_back(Preset(0.016f, 1.54f, 8.0f, 0.1f, 1.0f));

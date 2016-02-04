@@ -33,7 +33,6 @@ namespace entropy
     void ParticleRenderer::display(ofVbo& vbo, int numParticles, DisplayMode mode /* = PARTICLE_POINTS */)
     {
         ofSetColor(ofColor::white);
-        glPointSize(_pointSize);
 
         if (mode == PARTICLE_POINTS) {
             glPointSize(_pointSize);
@@ -41,8 +40,6 @@ namespace entropy
             vbo.draw(OF_MESH_POINTS, 0, numParticles);
         }
         else {
-            glPointSize(_pointSize * 2.0f);
-
             if (mode == PARTICLE_SPRITES) {
                 vbo.disableColors();
             }
@@ -55,7 +52,8 @@ namespace entropy
             ofEnablePointSprites();
 
             _shader.begin();
-            _shader.setUniformTexture("splatTexture", _texture, 0);
+            _shader.setUniform1f("pointSize", _pointSize * 2.0f);
+            _shader.setUniformTexture("splatTexture", _texture, 1);
             {
                 ofSetColor(ofColor::white);
                 vbo.draw(OF_MESH_POINTS, 0, numParticles);
