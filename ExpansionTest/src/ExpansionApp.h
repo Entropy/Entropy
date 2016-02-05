@@ -1,31 +1,13 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui.h"
+#include "ofxHDF5.h"
+#include "ofxImGui.h"
 
 #include "ofxHeadCamera.h"
 
 namespace entropy
 {
-    class ExpansionParticle
-    {
-    public:
-        enum Type
-        {
-            TypeCamera = 0,
-            TypeParticle
-        };
-
-        void setup(float size);
-        void update(float scale);
-
-        int32_t type;
-        float size;
-
-        ofVec3f ini;
-        ofVec3f pos;
-    };
-
     class ExpansionApp : public ofBaseApp
     {
     public:
@@ -45,42 +27,35 @@ namespace entropy
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
 
-        void restart();
+        void imGui();
 
-        ofxPanel guiPanel;
+        ofxImGui gui;
         bool bGuiVisible;
 
-        ofParameterGroup paramGroup;
-
-        ofParameter<bool> bRestart;
-
-        ofEasyCam easyCam;
-        ofxHeadCamera camera;
-        ofParameter<bool> bDebugCamera;
 
         ofBoxPrimitive box;
-        float scale;
-        ofParameter<float> size;
-        ofParameter<int> resolution;
-        ofParameter<float> speed;
-        ofParameter<bool> bDrawGrid;
+        bool bRebuildBox;
+        bool bDrawGrid;
+        float size;
+        int resolution;
 
-        vector<ExpansionParticle> particles;
-        ofParameter<float> numParticles;
+        bool bReset;
+        bool bPaused;
+        int type;
+        float speed;
+
+        float dt;
+        float scale;
 
         ofVboMesh vboMesh;
         ofShader shader;
         ofTexture texture;
 
-//        ofParameter<ofColor> tintColor;
-//        ofParameter<ofColor> dropColor;
-//
-//        ofParameter<bool> bDropOnPress;
-//        ofParameter<bool> bDropUnderMouse;
-//        ofParameter<int> dropRate;
-//
-//        ofParameter<float> damping;
-//        ofParameter<float> radius;
+        ofEasyCam easyCam;
+        ofxHeadCamera headCam;
+        int camera;
 
+        float pointSize;
+        bool bUseSprites;
     };
 }

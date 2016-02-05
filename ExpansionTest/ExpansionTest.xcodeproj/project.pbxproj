@@ -7,19 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
-		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
-		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
-		649D33D21C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */; };
-		64E4521A1C56ACDA008C1C81 /* HeadCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64E452181C56ACDA008C1C81 /* HeadCamera.cpp */; };
-		837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F2C6477A769C03A56D1401 /* ofxSlider.cpp */; };
-		856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9604B925D32EE39065747725 /* ofxBaseGui.cpp */; };
-		B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */; };
-		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
+		000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */; };
+		0A69358829568EC4A9A91686 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */; };
+		1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88527E759F85F404444CFFE8 /* ofxHDF5Container.cpp */; };
+		27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */; };
+		2F2B8C463E75633350F01DE2 /* LICENSE in Sources */ = {isa = PBXBuildFile; fileRef = 9B250D3B3DC979D80D25C763 /* LICENSE */; };
+		41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306803EF452C9A3BD934238E /* ofxHDF5File.cpp */; };
+		462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */; };
+		4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */; };
+		601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D04044B3DCB8D183352B119 /* imgui.cpp */; };
+		6473AEBC1C63FF1E002ACEC6 /* ofxGaussianMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6473AEB61C63FF1E002ACEC6 /* ofxGaussianMapTexture.cpp */; };
+		6473AEBD1C63FF1E002ACEC6 /* ofxHeadCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6473AEB81C63FF1E002ACEC6 /* ofxHeadCamera.cpp */; };
+		6ED0949468D0839226A5F45A /* ExpansionApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 119EA9479F6E01CD82A85097 /* ExpansionApp.cpp */; };
+		992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */; };
+		D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E2F8C08588DCF287F63982 /* imgui_demo.cpp */; };
+		DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
-		E4B69E210A3A1BDC003C02F2 /* ExpansionApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ExpansionApp.cpp */; };
-		F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */; };
+		E5A8B10F278E540A1F9F39E6 /* ofxImGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,38 +57,128 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0A1DAC09F322AE313A40706D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
-		15F2C6477A769C03A56D1401 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = ../../../addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
-		17E65988300FBD9AAA2CD0CA /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = ../../../addons/ofxGui/src/ofxGui.h; sourceTree = SOURCE_ROOT; };
-		1C0DA2561397A7DE0246858B /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../../addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
-		2834D88A62CD23F3DE2C47D1 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = ../../../addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
-		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
-		649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxGaussianMapTexture.cpp; path = ../Shared/src/ofxGaussianMapTexture.cpp; sourceTree = "<group>"; };
-		649D33D11C5ADD1A00C21155 /* ofxGaussianMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGaussianMapTexture.h; path = ../Shared/src/ofxGaussianMapTexture.h; sourceTree = "<group>"; };
-		64E452181C56ACDA008C1C81 /* HeadCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeadCamera.cpp; sourceTree = "<group>"; };
-		64E452191C56ACDA008C1C81 /* HeadCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadCamera.h; sourceTree = "<group>"; };
-		64E4521C1C56C51B008C1C81 /* ofxHeadCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxHeadCamera.h; sourceTree = "<group>"; };
-		64E452241C56F49F008C1C81 /* billboard.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = billboard.frag; sourceTree = "<group>"; };
-		64E452251C56F49F008C1C81 /* billboard.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = billboard.vert; sourceTree = "<group>"; };
-		78D67A00EB899FAC09430597 /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = ../../../addons/ofxGui/src/ofxLabel.cpp; sourceTree = SOURCE_ROOT; };
-		802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSliderGroup.cpp; path = ../../../addons/ofxGui/src/ofxSliderGroup.cpp; sourceTree = SOURCE_ROOT; };
-		87F26B4B24CBD428AD9EEBAA /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = ../../../addons/ofxGui/src/ofxBaseGui.h; sourceTree = SOURCE_ROOT; };
-		89449E3044D456F7DE7BEA14 /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = ../../../addons/ofxGui/src/ofxPanel.h; sourceTree = SOURCE_ROOT; };
-		907C5B5E104864A2D3A25745 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = ../../../addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
-		9604B925D32EE39065747725 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = ../../../addons/ofxGui/src/ofxBaseGui.cpp; sourceTree = SOURCE_ROOT; };
-		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
-		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
-		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
-		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
+		011A73DD07D35B7E6A473509 /* H5FDmpio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmpio.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmpio.h; sourceTree = SOURCE_ROOT; };
+		011D4D4ABBEACF71A63867AA /* H5FDsec2.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDsec2.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDsec2.h; sourceTree = SOURCE_ROOT; };
+		0BB9F7D314FADD51BAB96878 /* ThemeTest.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ThemeTest.h; path = ../../../addons/ofxImGui/src/ThemeTest.h; sourceTree = SOURCE_ROOT; };
+		0D04044B3DCB8D183352B119 /* imgui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui.cpp; path = ../../../addons/ofxImGui/src/imgui.cpp; sourceTree = SOURCE_ROOT; };
+		0E97563AB646408F12C71182 /* H5FDcore.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDcore.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDcore.h; sourceTree = SOURCE_ROOT; };
+		0F889FA2478CE9C595460FFE /* H5FaccProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FaccProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FaccProp.h; sourceTree = SOURCE_ROOT; };
+		119EA9479F6E01CD82A85097 /* ExpansionApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ExpansionApp.cpp; path = src/ExpansionApp.cpp; sourceTree = SOURCE_ROOT; };
+		190DD19BCD4F93E51094E217 /* H5overflow.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5overflow.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5overflow.h; sourceTree = SOURCE_ROOT; };
+		19E2F8C08588DCF287F63982 /* imgui_demo.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_demo.cpp; path = ../../../addons/ofxImGui/src/imgui_demo.cpp; sourceTree = SOURCE_ROOT; };
+		1A4D47B1BDC1BABCC7DDB326 /* H5Ppublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Ppublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Ppublic.h; sourceTree = SOURCE_ROOT; };
+		1C1E517A6D82866FA9F3519F /* H5DataSet.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DataSet.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DataSet.h; sourceTree = SOURCE_ROOT; };
+		1C452A6340B8012A70891BD0 /* H5PacketTable.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PacketTable.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PacketTable.h; sourceTree = SOURCE_ROOT; };
+		1DD53794D2626F307A036311 /* H5Opublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Opublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Opublic.h; sourceTree = SOURCE_ROOT; };
+		22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5Group.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5Group.cpp; sourceTree = SOURCE_ROOT; };
+		2299DFFB357F7F51891A673B /* stb_truetype.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_truetype.h; path = ../../../addons/ofxImGui/src/stb_truetype.h; sourceTree = SOURCE_ROOT; };
+		236888A1C2774899875451BC /* H5Cpp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Cpp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Cpp.h; sourceTree = SOURCE_ROOT; };
+		2B8CAA4FB6DC72F648F33262 /* H5DSpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DSpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DSpublic.h; sourceTree = SOURCE_ROOT; };
+		2CF1F1FA40D7031631652994 /* ofxHDF5Container.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5Container.h; path = ../../../addons/ofxHDF5/src/ofxHDF5Container.h; sourceTree = SOURCE_ROOT; };
+		2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EngineGLFW.cpp; path = ../../../addons/ofxImGui/src/EngineGLFW.cpp; sourceTree = SOURCE_ROOT; };
+		2FBAFB78938913AA11A28766 /* H5PropList.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PropList.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PropList.h; sourceTree = SOURCE_ROOT; };
+		306803EF452C9A3BD934238E /* ofxHDF5File.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5File.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5File.cpp; sourceTree = SOURCE_ROOT; };
+		3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EngineOpenGLES.cpp; path = ../../../addons/ofxImGui/src/EngineOpenGLES.cpp; sourceTree = SOURCE_ROOT; };
+		36CFA3AED41BB0C398B588F2 /* H5FDpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDpublic.h; sourceTree = SOURCE_ROOT; };
+		387F689A83B2F9A175EF47CA /* H5pubconf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5pubconf.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5pubconf.h; sourceTree = SOURCE_ROOT; };
+		3992A4E3DAACB56AD4C545A2 /* ricehdf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ricehdf.h; path = ../../../addons/ofxHDF5/libs/szip/include/ricehdf.h; sourceTree = SOURCE_ROOT; };
+		3A9013A02246381F14572188 /* EngineGLFW.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EngineGLFW.h; path = ../../../addons/ofxImGui/src/EngineGLFW.h; sourceTree = SOURCE_ROOT; };
+		3AB24D308736280A07568671 /* imconfig.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imconfig.h; path = ../../../addons/ofxImGui/src/imconfig.h; sourceTree = SOURCE_ROOT; };
+		3D19030E0961634513042548 /* H5Lpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Lpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Lpublic.h; sourceTree = SOURCE_ROOT; };
+		3D271E1F451A97FA491E5673 /* H5ACpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5ACpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5ACpublic.h; sourceTree = SOURCE_ROOT; };
+		3EC7F1A5FA7C1BD139A8D793 /* H5Classes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Classes.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Classes.h; sourceTree = SOURCE_ROOT; };
+		4320A1C0A744D32A6894D604 /* H5FcreatProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FcreatProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FcreatProp.h; sourceTree = SOURCE_ROOT; };
+		436EF0CC5CC4DE103FB2C0C4 /* H5Cpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Cpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Cpublic.h; sourceTree = SOURCE_ROOT; };
+		4A4E9AEBA16B5C82F094F53D /* H5Zpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Zpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Zpublic.h; sourceTree = SOURCE_ROOT; };
+		4AB99ED2A4C7D746383761E2 /* H5Gpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Gpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Gpublic.h; sourceTree = SOURCE_ROOT; };
+		5089B7E4C5CFA3ED45CFFA62 /* H5FDstdio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDstdio.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDstdio.h; sourceTree = SOURCE_ROOT; };
+		53CA9DB40A4B560AADAD4381 /* H5Exception.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Exception.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Exception.h; sourceTree = SOURCE_ROOT; };
+		547F0D671A00BFF38A72F687 /* H5IMpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IMpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IMpublic.h; sourceTree = SOURCE_ROOT; };
+		57F7FE22159D4A6D2264A0A1 /* H5CommonFG.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5CommonFG.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5CommonFG.h; sourceTree = SOURCE_ROOT; };
+		5E33620A686121EEB6FB1E8B /* stb_textedit.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_textedit.h; path = ../../../addons/ofxImGui/src/stb_textedit.h; sourceTree = SOURCE_ROOT; };
+		6473AEB61C63FF1E002ACEC6 /* ofxGaussianMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxGaussianMapTexture.cpp; path = ../Shared/src/ofxGaussianMapTexture.cpp; sourceTree = "<group>"; };
+		6473AEB71C63FF1E002ACEC6 /* ofxGaussianMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGaussianMapTexture.h; path = ../Shared/src/ofxGaussianMapTexture.h; sourceTree = "<group>"; };
+		6473AEB81C63FF1E002ACEC6 /* ofxHeadCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxHeadCamera.cpp; path = ../Shared/src/ofxHeadCamera.cpp; sourceTree = "<group>"; };
+		6473AEB91C63FF1E002ACEC6 /* ofxHeadCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxHeadCamera.h; path = ../Shared/src/ofxHeadCamera.h; sourceTree = "<group>"; };
+		6473AEC21C641BE4002ACEC6 /* billboard.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = billboard.frag; sourceTree = "<group>"; };
+		6473AEC31C641BE4002ACEC6 /* billboard.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = billboard.vert; sourceTree = "<group>"; };
+		674AA20D61E496A5BF7DCAE3 /* H5Epublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Epublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Epublic.h; sourceTree = SOURCE_ROOT; };
+		67E4B9D99D29505E49BE45D8 /* ofxHDF5Group.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5Group.h; path = ../../../addons/ofxHDF5/src/ofxHDF5Group.h; sourceTree = SOURCE_ROOT; };
+		6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_draw.cpp; path = ../../../addons/ofxImGui/src/imgui_draw.cpp; sourceTree = SOURCE_ROOT; };
+		6CEF50BA46149804B9D71A4B /* H5ArrayType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5ArrayType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5ArrayType.h; sourceTree = SOURCE_ROOT; };
+		6ED7FBD04E8FE2220A48902E /* H5StrType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5StrType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5StrType.h; sourceTree = SOURCE_ROOT; };
+		6F3992BA2B87BCE333B60DB8 /* H5DOpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DOpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DOpublic.h; sourceTree = SOURCE_ROOT; };
+		7282CC55CE8AB483522F9C11 /* ofxHDF5File.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5File.h; path = ../../../addons/ofxHDF5/src/ofxHDF5File.h; sourceTree = SOURCE_ROOT; };
+		75B348B14C70AB1FB0CE2374 /* H5PTpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PTpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PTpublic.h; sourceTree = SOURCE_ROOT; };
+		7748114CA2D1E7B34820EDF2 /* H5DcreatProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DcreatProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DcreatProp.h; sourceTree = SOURCE_ROOT; };
+		783484DBD7BF388B1CC0B6EC /* H5LTpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5LTpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5LTpublic.h; sourceTree = SOURCE_ROOT; };
+		79107B9E1CD68E83E5C0D40D /* H5PLpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PLpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PLpublic.h; sourceTree = SOURCE_ROOT; };
+		7A689E3C66F8D23A2EFBF723 /* H5Attribute.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Attribute.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Attribute.h; sourceTree = SOURCE_ROOT; };
+		8038B24367C7783454BE84EE /* H5DataSpace.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DataSpace.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DataSpace.h; sourceTree = SOURCE_ROOT; };
+		80EAF0380C2E2FEE1AC87B84 /* H5PLextern.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PLextern.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PLextern.h; sourceTree = SOURCE_ROOT; };
+		81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5DataSet.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5DataSet.cpp; sourceTree = SOURCE_ROOT; };
+		81437B49244037C95919DA21 /* ofxHDF5.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5.h; path = ../../../addons/ofxHDF5/src/ofxHDF5.h; sourceTree = SOURCE_ROOT; };
+		8222B1FCC73B8D29CD360644 /* ExpansionApp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ExpansionApp.h; path = src/ExpansionApp.h; sourceTree = SOURCE_ROOT; };
+		84D62A1A317C390AE8A30842 /* H5FDfamily.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDfamily.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDfamily.h; sourceTree = SOURCE_ROOT; };
+		88150BB3E5D9D4DD12B2CD43 /* szip_adpt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = szip_adpt.h; path = ../../../addons/ofxHDF5/libs/szip/include/szip_adpt.h; sourceTree = SOURCE_ROOT; };
+		8843E91E64D3C9092619C5AB /* H5Location.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Location.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Location.h; sourceTree = SOURCE_ROOT; };
+		88527E759F85F404444CFFE8 /* ofxHDF5Container.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5Container.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5Container.cpp; sourceTree = SOURCE_ROOT; };
+		8BB40FFFF0CD9CC58F779753 /* H5Group.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Group.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Group.h; sourceTree = SOURCE_ROOT; };
+		8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseTheme.cpp; path = ../../../addons/ofxImGui/src/BaseTheme.cpp; sourceTree = SOURCE_ROOT; };
+		99CC6CE9A03E0AAFC0A890C6 /* H5IdComponent.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IdComponent.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IdComponent.h; sourceTree = SOURCE_ROOT; };
+		99CDC3EACA615CC25E0FF699 /* H5AtomType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5AtomType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5AtomType.h; sourceTree = SOURCE_ROOT; };
+		9B250D3B3DC979D80D25C763 /* LICENSE */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 30; name = LICENSE; path = ../../../addons/ofxImGui/src/LICENSE; sourceTree = SOURCE_ROOT; };
+		9BF8218EF4D17B046D1A5771 /* H5FDmpi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmpi.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmpi.h; sourceTree = SOURCE_ROOT; };
+		A9BA4E0D936389AA5E854CE0 /* H5VarLenType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5VarLenType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5VarLenType.h; sourceTree = SOURCE_ROOT; };
+		AAF23FD4168283E17D35885F /* H5Apublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Apublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Apublic.h; sourceTree = SOURCE_ROOT; };
+		AB77B654AEABB25A87145431 /* H5MMpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5MMpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5MMpublic.h; sourceTree = SOURCE_ROOT; };
+		AD6AB3DE2D75DCF9BDB1CBF9 /* H5Spublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Spublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Spublic.h; sourceTree = SOURCE_ROOT; };
+		ADE6DFE661F62A513AE0745A /* H5Library.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Library.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Library.h; sourceTree = SOURCE_ROOT; };
+		B103CAF901276E419947318B /* H5api_adpt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5api_adpt.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5api_adpt.h; sourceTree = SOURCE_ROOT; };
+		B11D9CAFB1DE8978FCB58EBA /* H5Include.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Include.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Include.h; sourceTree = SOURCE_ROOT; };
+		B462DABAC6A023A1D88702C7 /* BaseTheme.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseTheme.h; path = ../../../addons/ofxImGui/src/BaseTheme.h; sourceTree = SOURCE_ROOT; };
+		B55812F1B9B936CCA3A279B6 /* H5Object.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Object.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Object.h; sourceTree = SOURCE_ROOT; };
+		BD6D6210B7DDD2EC7319B45E /* H5public.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5public.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5public.h; sourceTree = SOURCE_ROOT; };
+		BD9AD0064704FD187C84302C /* H5FDmulti.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmulti.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmulti.h; sourceTree = SOURCE_ROOT; };
+		C01BDB066ABC688112595F7A /* H5CompType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5CompType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5CompType.h; sourceTree = SOURCE_ROOT; };
+		C2DC607FD51D909947122A4F /* H5FloatType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FloatType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FloatType.h; sourceTree = SOURCE_ROOT; };
+		C38DBDE22F7A01B9C2A6150D /* H5Dpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Dpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Dpublic.h; sourceTree = SOURCE_ROOT; };
+		C39ABF354482E4F38B15DCC8 /* hdf5_hl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = hdf5_hl.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/hdf5_hl.h; sourceTree = SOURCE_ROOT; };
+		C53B46EE6F532275FA869935 /* H5Ipublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Ipublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Ipublic.h; sourceTree = SOURCE_ROOT; };
+		C8045C87DA373A9FDA443CCB /* H5DxferProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DxferProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DxferProp.h; sourceTree = SOURCE_ROOT; };
+		CB5C15EA0881D35A88C22937 /* EngineOpenGLES.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EngineOpenGLES.h; path = ../../../addons/ofxImGui/src/EngineOpenGLES.h; sourceTree = SOURCE_ROOT; };
+		CB62DD4C67F55B82B7612A6C /* stb_rect_pack.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_rect_pack.h; path = ../../../addons/ofxImGui/src/stb_rect_pack.h; sourceTree = SOURCE_ROOT; };
+		CC904DD033A55F4ED1255E88 /* H5Tpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Tpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Tpublic.h; sourceTree = SOURCE_ROOT; };
+		CCBA27A814C7A66F3476BB93 /* H5Fpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Fpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Fpublic.h; sourceTree = SOURCE_ROOT; };
+		CDE2FDC08C290C44546AA529 /* H5EnumType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5EnumType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5EnumType.h; sourceTree = SOURCE_ROOT; };
+		CE2FDD8F5F6DD69B4CA72C2D /* H5AbstractDs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5AbstractDs.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5AbstractDs.h; sourceTree = SOURCE_ROOT; };
+		D0C43FAEA51D749B84D05DA5 /* imgui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgui.h; path = ../../../addons/ofxImGui/src/imgui.h; sourceTree = SOURCE_ROOT; };
+		D566F9FF3B8D59F10442D3F3 /* imgui_internal.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgui_internal.h; path = ../../../addons/ofxImGui/src/imgui_internal.h; sourceTree = SOURCE_ROOT; };
+		D6A569559FF08E0AE9625ADF /* H5version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5version.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5version.h; sourceTree = SOURCE_ROOT; };
+		D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseEngine.cpp; path = ../../../addons/ofxImGui/src/BaseEngine.cpp; sourceTree = SOURCE_ROOT; };
+		D9044D3F9A581C6113A8C34E /* H5File.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5File.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5File.h; sourceTree = SOURCE_ROOT; };
+		D91100C1FBA245AD6CB55BD3 /* ofxImGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxImGui.h; path = ../../../addons/ofxImGui/src/ofxImGui.h; sourceTree = SOURCE_ROOT; };
+		E15310BEFCC51F755E57CA6B /* H5Rpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Rpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Rpublic.h; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
-		E4B69B5B0A3A1756003C02F2 /* CMBTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = CMBTestDebug.app; path = ExpansionTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* ExpansionTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpansionTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
-		E4B69E1E0A3A1BDC003C02F2 /* ExpansionApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ExpansionApp.cpp; path = src/ExpansionApp.cpp; sourceTree = SOURCE_ROOT; };
-		E4B69E1F0A3A1BDC003C02F2 /* ExpansionApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ExpansionApp.h; path = src/ExpansionApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = ../../../addons/ofxGui/src/ofxGuiGroup.cpp; sourceTree = SOURCE_ROOT; };
+		E6F85C2717E25319F8500204 /* H5DataType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DataType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DataType.h; sourceTree = SOURCE_ROOT; };
+		EA0D9F8F6A6E72E37D57B43C /* ofxHDF5DataSet.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5DataSet.h; path = ../../../addons/ofxHDF5/src/ofxHDF5DataSet.h; sourceTree = SOURCE_ROOT; };
+		EA99433EBC7397E7B79A4A61 /* H5PredType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PredType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PredType.h; sourceTree = SOURCE_ROOT; };
+		EC7581A6CF07C1326CF74BB8 /* H5FDlog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDlog.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDlog.h; sourceTree = SOURCE_ROOT; };
+		ECF26564D4FF20E6E1DD6067 /* H5FDdirect.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDdirect.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDdirect.h; sourceTree = SOURCE_ROOT; };
+		EFCABA702A245949E3D3FD7A /* hdf5.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = hdf5.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/hdf5.h; sourceTree = SOURCE_ROOT; };
+		F5B2A43D92CDEF34233EF1BC /* H5CppDoc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5CppDoc.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5CppDoc.h; sourceTree = SOURCE_ROOT; };
+		F5B89A9AEC4E8A1F8BEBDD02 /* szlib.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = szlib.h; path = ../../../addons/ofxHDF5/libs/szip/include/szlib.h; sourceTree = SOURCE_ROOT; };
+		F649CFADAFC1A494162A1D0D /* H5Epubgen.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Epubgen.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Epubgen.h; sourceTree = SOURCE_ROOT; };
+		F9E93CCC5F39726505D4DA8B /* H5OcreatProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5OcreatProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5OcreatProp.h; sourceTree = SOURCE_ROOT; };
+		FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxImGui.cpp; path = ../../../addons/ofxImGui/src/ofxImGui.cpp; sourceTree = SOURCE_ROOT; };
+		FCE25504D67A7F3DBDCD4353 /* H5TBpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5TBpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5TBpublic.h; sourceTree = SOURCE_ROOT; };
+		FD24C7DBE373C3B79648C23F /* BaseEngine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseEngine.h; path = ../../../addons/ofxImGui/src/BaseEngine.h; sourceTree = SOURCE_ROOT; };
+		FF12690F820C0F0418861C3F /* H5IntType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IntType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IntType.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,41 +193,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		480A780D8D0308AE4A368801 /* ofxGui */ = {
+		2A0150D866B84A00818BE6A8 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				A763ED608B35AE3310251DEE /* src */,
+				74564896E7C0BC53F7D35CA8 /* hdf5 */,
+				973B79408504A728926932D1 /* szip */,
 			);
-			name = ofxGui;
+			name = libs;
 			sourceTree = "<group>";
 		};
-		649D33CF1C5ADCF800C21155 /* shared_src */ = {
+		6473AEB51C63FF0C002ACEC6 /* shared_src */ = {
 			isa = PBXGroup;
 			children = (
-				649D33D01C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp */,
-				649D33D11C5ADD1A00C21155 /* ofxGaussianMapTexture.h */,
+				6473AEB61C63FF1E002ACEC6 /* ofxGaussianMapTexture.cpp */,
+				6473AEB71C63FF1E002ACEC6 /* ofxGaussianMapTexture.h */,
+				6473AEB81C63FF1E002ACEC6 /* ofxHeadCamera.cpp */,
+				6473AEB91C63FF1E002ACEC6 /* ofxHeadCamera.h */,
 			);
 			name = shared_src;
 			sourceTree = "<group>";
 		};
-		64BC94231C4838FE009AA2DF /* shaders */ = {
+		6473AEC11C641BE4002ACEC6 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				64E452241C56F49F008C1C81 /* billboard.frag */,
-				64E452251C56F49F008C1C81 /* billboard.vert */,
+				6473AEC21C641BE4002ACEC6 /* billboard.frag */,
+				6473AEC31C641BE4002ACEC6 /* billboard.vert */,
 			);
 			name = shaders;
 			path = bin/data/shaders;
-			sourceTree = "<group>";
-		};
-		64E4521B1C56C506008C1C81 /* ofxHeadCamera */ = {
-			isa = PBXGroup;
-			children = (
-				64E4521C1C56C51B008C1C81 /* ofxHeadCamera.h */,
-				64E452181C56ACDA008C1C81 /* HeadCamera.cpp */,
-				64E452191C56ACDA008C1C81 /* HeadCamera.h */,
-			);
-			name = ofxHeadCamera;
 			sourceTree = "<group>";
 		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
@@ -142,36 +230,157 @@
 			name = local_addons;
 			sourceTree = "<group>";
 		};
-		A763ED608B35AE3310251DEE /* src */ = {
+		6FF8AA08E79CFA38503CDB0E /* src */ = {
 			isa = PBXGroup;
 			children = (
-				9604B925D32EE39065747725 /* ofxBaseGui.cpp */,
-				87F26B4B24CBD428AD9EEBAA /* ofxBaseGui.h */,
-				C88333E71C9457E441C33474 /* ofxButton.cpp */,
-				2834D88A62CD23F3DE2C47D1 /* ofxButton.h */,
-				17E65988300FBD9AAA2CD0CA /* ofxGui.h */,
-				ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */,
-				1C0DA2561397A7DE0246858B /* ofxGuiGroup.h */,
-				78D67A00EB899FAC09430597 /* ofxLabel.cpp */,
-				B87C60311EC1FE841C1ECD89 /* ofxLabel.h */,
-				E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */,
-				89449E3044D456F7DE7BEA14 /* ofxPanel.h */,
-				15F2C6477A769C03A56D1401 /* ofxSlider.cpp */,
-				52AFA1F08C420992CAAAE648 /* ofxSlider.h */,
-				802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */,
-				C70D8946940288799E82131E /* ofxSliderGroup.h */,
-				907C5B5E104864A2D3A25745 /* ofxToggle.cpp */,
-				0A1DAC09F322AE313A40706D /* ofxToggle.h */,
+				D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */,
+				FD24C7DBE373C3B79648C23F /* BaseEngine.h */,
+				8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */,
+				B462DABAC6A023A1D88702C7 /* BaseTheme.h */,
+				2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */,
+				3A9013A02246381F14572188 /* EngineGLFW.h */,
+				3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */,
+				CB5C15EA0881D35A88C22937 /* EngineOpenGLES.h */,
+				3AB24D308736280A07568671 /* imconfig.h */,
+				0D04044B3DCB8D183352B119 /* imgui.cpp */,
+				D0C43FAEA51D749B84D05DA5 /* imgui.h */,
+				19E2F8C08588DCF287F63982 /* imgui_demo.cpp */,
+				6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */,
+				D566F9FF3B8D59F10442D3F3 /* imgui_internal.h */,
+				9B250D3B3DC979D80D25C763 /* LICENSE */,
+				FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */,
+				D91100C1FBA245AD6CB55BD3 /* ofxImGui.h */,
+				CB62DD4C67F55B82B7612A6C /* stb_rect_pack.h */,
+				5E33620A686121EEB6FB1E8B /* stb_textedit.h */,
+				2299DFFB357F7F51891A673B /* stb_truetype.h */,
+				0BB9F7D314FADD51BAB96878 /* ThemeTest.h */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		74564896E7C0BC53F7D35CA8 /* hdf5 */ = {
+			isa = PBXGroup;
+			children = (
+				D471F91D0B6B90EB299C49B4 /* include */,
+			);
+			name = hdf5;
+			sourceTree = "<group>";
+		};
+		768C3255AF2F3E1A78DC4DF4 /* ofxImGui */ = {
+			isa = PBXGroup;
+			children = (
+				6FF8AA08E79CFA38503CDB0E /* src */,
+			);
+			name = ofxImGui;
+			sourceTree = "<group>";
+		};
+		973B79408504A728926932D1 /* szip */ = {
+			isa = PBXGroup;
+			children = (
+				D41B4853DB330E79CB01088A /* include */,
+			);
+			name = szip;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				480A780D8D0308AE4A368801 /* ofxGui */,
+				EC19417C78E21F06F3886D3F /* ofxHDF5 */,
+				768C3255AF2F3E1A78DC4DF4 /* ofxImGui */,
 			);
 			name = addons;
+			sourceTree = "<group>";
+		};
+		D41B4853DB330E79CB01088A /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3992A4E3DAACB56AD4C545A2 /* ricehdf.h */,
+				88150BB3E5D9D4DD12B2CD43 /* szip_adpt.h */,
+				F5B89A9AEC4E8A1F8BEBDD02 /* szlib.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		D471F91D0B6B90EB299C49B4 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				CE2FDD8F5F6DD69B4CA72C2D /* H5AbstractDs.h */,
+				3D271E1F451A97FA491E5673 /* H5ACpublic.h */,
+				B103CAF901276E419947318B /* H5api_adpt.h */,
+				AAF23FD4168283E17D35885F /* H5Apublic.h */,
+				6CEF50BA46149804B9D71A4B /* H5ArrayType.h */,
+				99CDC3EACA615CC25E0FF699 /* H5AtomType.h */,
+				7A689E3C66F8D23A2EFBF723 /* H5Attribute.h */,
+				3EC7F1A5FA7C1BD139A8D793 /* H5Classes.h */,
+				57F7FE22159D4A6D2264A0A1 /* H5CommonFG.h */,
+				C01BDB066ABC688112595F7A /* H5CompType.h */,
+				236888A1C2774899875451BC /* H5Cpp.h */,
+				F5B2A43D92CDEF34233EF1BC /* H5CppDoc.h */,
+				436EF0CC5CC4DE103FB2C0C4 /* H5Cpublic.h */,
+				1C1E517A6D82866FA9F3519F /* H5DataSet.h */,
+				8038B24367C7783454BE84EE /* H5DataSpace.h */,
+				E6F85C2717E25319F8500204 /* H5DataType.h */,
+				7748114CA2D1E7B34820EDF2 /* H5DcreatProp.h */,
+				6F3992BA2B87BCE333B60DB8 /* H5DOpublic.h */,
+				C38DBDE22F7A01B9C2A6150D /* H5Dpublic.h */,
+				2B8CAA4FB6DC72F648F33262 /* H5DSpublic.h */,
+				C8045C87DA373A9FDA443CCB /* H5DxferProp.h */,
+				CDE2FDC08C290C44546AA529 /* H5EnumType.h */,
+				F649CFADAFC1A494162A1D0D /* H5Epubgen.h */,
+				674AA20D61E496A5BF7DCAE3 /* H5Epublic.h */,
+				53CA9DB40A4B560AADAD4381 /* H5Exception.h */,
+				0F889FA2478CE9C595460FFE /* H5FaccProp.h */,
+				4320A1C0A744D32A6894D604 /* H5FcreatProp.h */,
+				0E97563AB646408F12C71182 /* H5FDcore.h */,
+				ECF26564D4FF20E6E1DD6067 /* H5FDdirect.h */,
+				84D62A1A317C390AE8A30842 /* H5FDfamily.h */,
+				EC7581A6CF07C1326CF74BB8 /* H5FDlog.h */,
+				9BF8218EF4D17B046D1A5771 /* H5FDmpi.h */,
+				011A73DD07D35B7E6A473509 /* H5FDmpio.h */,
+				BD9AD0064704FD187C84302C /* H5FDmulti.h */,
+				36CFA3AED41BB0C398B588F2 /* H5FDpublic.h */,
+				011D4D4ABBEACF71A63867AA /* H5FDsec2.h */,
+				5089B7E4C5CFA3ED45CFFA62 /* H5FDstdio.h */,
+				D9044D3F9A581C6113A8C34E /* H5File.h */,
+				C2DC607FD51D909947122A4F /* H5FloatType.h */,
+				CCBA27A814C7A66F3476BB93 /* H5Fpublic.h */,
+				4AB99ED2A4C7D746383761E2 /* H5Gpublic.h */,
+				8BB40FFFF0CD9CC58F779753 /* H5Group.h */,
+				99CC6CE9A03E0AAFC0A890C6 /* H5IdComponent.h */,
+				547F0D671A00BFF38A72F687 /* H5IMpublic.h */,
+				B11D9CAFB1DE8978FCB58EBA /* H5Include.h */,
+				FF12690F820C0F0418861C3F /* H5IntType.h */,
+				C53B46EE6F532275FA869935 /* H5Ipublic.h */,
+				ADE6DFE661F62A513AE0745A /* H5Library.h */,
+				8843E91E64D3C9092619C5AB /* H5Location.h */,
+				3D19030E0961634513042548 /* H5Lpublic.h */,
+				783484DBD7BF388B1CC0B6EC /* H5LTpublic.h */,
+				AB77B654AEABB25A87145431 /* H5MMpublic.h */,
+				B55812F1B9B936CCA3A279B6 /* H5Object.h */,
+				F9E93CCC5F39726505D4DA8B /* H5OcreatProp.h */,
+				1DD53794D2626F307A036311 /* H5Opublic.h */,
+				190DD19BCD4F93E51094E217 /* H5overflow.h */,
+				1C452A6340B8012A70891BD0 /* H5PacketTable.h */,
+				80EAF0380C2E2FEE1AC87B84 /* H5PLextern.h */,
+				79107B9E1CD68E83E5C0D40D /* H5PLpublic.h */,
+				1A4D47B1BDC1BABCC7DDB326 /* H5Ppublic.h */,
+				EA99433EBC7397E7B79A4A61 /* H5PredType.h */,
+				2FBAFB78938913AA11A28766 /* H5PropList.h */,
+				75B348B14C70AB1FB0CE2374 /* H5PTpublic.h */,
+				387F689A83B2F9A175EF47CA /* H5pubconf.h */,
+				BD6D6210B7DDD2EC7319B45E /* H5public.h */,
+				E15310BEFCC51F755E57CA6B /* H5Rpublic.h */,
+				AD6AB3DE2D75DCF9BDB1CBF9 /* H5Spublic.h */,
+				6ED7FBD04E8FE2220A48902E /* H5StrType.h */,
+				FCE25504D67A7F3DBDCD4353 /* H5TBpublic.h */,
+				CC904DD033A55F4ED1255E88 /* H5Tpublic.h */,
+				A9BA4E0D936389AA5E854CE0 /* H5VarLenType.h */,
+				D6A569559FF08E0AE9625ADF /* H5version.h */,
+				4A4E9AEBA16B5C82F094F53D /* H5Zpublic.h */,
+				EFCABA702A245949E3D3FD7A /* hdf5.h */,
+				C39ABF354482E4F38B15DCC8 /* hdf5_hl.h */,
+			);
+			name = include;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -188,22 +397,21 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
-				649D33CF1C5ADCF800C21155 /* shared_src */,
-				64BC94231C4838FE009AA2DF /* shaders */,
+				6473AEB51C63FF0C002ACEC6 /* shared_src */,
+				6473AEC11C641BE4002ACEC6 /* shaders */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				6948EE371B920CB800B5AC1A /* local_addons */,
-				E4B69B5B0A3A1756003C02F2 /* CMBTestDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* ExpansionTestDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				64E4521B1C56C506008C1C81 /* ofxHeadCamera */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
-				E4B69E1E0A3A1BDC003C02F2 /* ExpansionApp.cpp */,
-				E4B69E1F0A3A1BDC003C02F2 /* ExpansionApp.h */,
+				119EA9479F6E01CD82A85097 /* ExpansionApp.cpp */,
+				8222B1FCC73B8D29CD360644 /* ExpansionApp.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -215,6 +423,31 @@
 				E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		EC19417C78E21F06F3886D3F /* ofxHDF5 */ = {
+			isa = PBXGroup;
+			children = (
+				F49AA7985098CCA88D1E601A /* src */,
+				2A0150D866B84A00818BE6A8 /* libs */,
+			);
+			name = ofxHDF5;
+			sourceTree = "<group>";
+		};
+		F49AA7985098CCA88D1E601A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				81437B49244037C95919DA21 /* ofxHDF5.h */,
+				88527E759F85F404444CFFE8 /* ofxHDF5Container.cpp */,
+				2CF1F1FA40D7031631652994 /* ofxHDF5Container.h */,
+				81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */,
+				EA0D9F8F6A6E72E37D57B43C /* ofxHDF5DataSet.h */,
+				306803EF452C9A3BD934238E /* ofxHDF5File.cpp */,
+				7282CC55CE8AB483522F9C11 /* ofxHDF5File.h */,
+				22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */,
+				67E4B9D99D29505E49BE45D8 /* ofxHDF5Group.h */,
+			);
+			name = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,7 +470,7 @@
 			);
 			name = ExpansionTest;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* CMBTestDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* ExpansionTestDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -319,17 +552,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				E4B69E210A3A1BDC003C02F2 /* ExpansionApp.cpp in Sources */,
-				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
-				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
-				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
-				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
-				64E4521A1C56ACDA008C1C81 /* HeadCamera.cpp in Sources */,
-				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
-				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
-				649D33D21C5ADD1A00C21155 /* ofxGaussianMapTexture.cpp in Sources */,
-				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
-				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
+				6473AEBC1C63FF1E002ACEC6 /* ofxGaussianMapTexture.cpp in Sources */,
+				6ED0949468D0839226A5F45A /* ExpansionApp.cpp in Sources */,
+				1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */,
+				4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */,
+				6473AEBD1C63FF1E002ACEC6 /* ofxHeadCamera.cpp in Sources */,
+				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,
+				992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */,
+				DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */,
+				27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */,
+				462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */,
+				000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */,
+				601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */,
+				D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */,
+				0A69358829568EC4A9A91686 /* imgui_draw.cpp in Sources */,
+				2F2B8C463E75633350F01DE2 /* LICENSE in Sources */,
+				E5A8B10F278E540A1F9F39E6 /* ofxImGui.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,13 +603,31 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxGui/src,
+					src,
+					../../../addons/ofxHDF5/libs,
+					../../../addons/ofxHDF5/libs/hdf5,
+					../../../addons/ofxHDF5/libs/hdf5/include,
+					../../../addons/ofxHDF5/libs/hdf5/lib,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx,
+					../../../addons/ofxHDF5/libs/szip,
+					../../../addons/ofxHDF5/libs/szip/include,
+					../../../addons/ofxHDF5/libs/szip/lib,
+					../../../addons/ofxHDF5/libs/szip/lib/osx,
+					../../../addons/ofxHDF5/src,
+					../../../addons/ofxImGui/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
+				);
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_FRAMEWORKS)",
+					"$(OF_CORE_LIBS)",
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5.a,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5_cpp.a,
+					../../../addons/ofxHDF5/libs/szip/lib/osx/libsz.a,
 				);
 				SDKROOT = macosx;
 			};
@@ -399,12 +655,30 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxGui/src,
+					src,
+					../../../addons/ofxHDF5/libs,
+					../../../addons/ofxHDF5/libs/hdf5,
+					../../../addons/ofxHDF5/libs/hdf5/include,
+					../../../addons/ofxHDF5/libs/hdf5/lib,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx,
+					../../../addons/ofxHDF5/libs/szip,
+					../../../addons/ofxHDF5/libs/szip/include,
+					../../../addons/ofxHDF5/libs/szip/lib,
+					../../../addons/ofxHDF5/libs/szip/lib/osx,
+					../../../addons/ofxHDF5/src,
+					../../../addons/ofxImGui/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
+				);
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_FRAMEWORKS)",
+					"$(OF_CORE_LIBS)",
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5.a,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5_cpp.a,
+					../../../addons/ofxHDF5/libs/szip/lib/osx/libsz.a,
 				);
 				SDKROOT = macosx;
 			};
@@ -426,13 +700,31 @@
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxGui/src,
+					src,
+					../../../addons/ofxHDF5/libs,
+					../../../addons/ofxHDF5/libs/hdf5,
+					../../../addons/ofxHDF5/libs/hdf5/include,
+					../../../addons/ofxHDF5/libs/hdf5/lib,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx,
+					../../../addons/ofxHDF5/libs/szip,
+					../../../addons/ofxHDF5/libs/szip/include,
+					../../../addons/ofxHDF5/libs/szip/lib,
+					../../../addons/ofxHDF5/libs/szip/lib/osx,
+					../../../addons/ofxHDF5/src,
+					../../../addons/ofxImGui/src,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_FRAMEWORKS)",
+					"$(OF_CORE_LIBS)",
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5.a,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5_cpp.a,
+					../../../addons/ofxHDF5/libs/szip/lib/osx/libsz.a,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
 			};
@@ -453,13 +745,31 @@
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxGui/src,
+					src,
+					../../../addons/ofxHDF5/libs,
+					../../../addons/ofxHDF5/libs/hdf5,
+					../../../addons/ofxHDF5/libs/hdf5/include,
+					../../../addons/ofxHDF5/libs/hdf5/lib,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx,
+					../../../addons/ofxHDF5/libs/szip,
+					../../../addons/ofxHDF5/libs/szip/include,
+					../../../addons/ofxHDF5/libs/szip/lib,
+					../../../addons/ofxHDF5/libs/szip/lib/osx,
+					../../../addons/ofxHDF5/src,
+					../../../addons/ofxImGui/src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(OF_CORE_FRAMEWORKS)",
+					"$(OF_CORE_LIBS)",
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5.a,
+					../../../addons/ofxHDF5/libs/hdf5/lib/osx/libhdf5_cpp.a,
+					../../../addons/ofxHDF5/libs/szip/lib/osx/libsz.a,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 				baseConfigurationReference = E4EB6923138AFD0F00A09F29;
