@@ -111,7 +111,7 @@ namespace entropy
                     ImGui::SliderFloat("Speed", &speed, 0.0f, 10.0f);
 
                     ImGui::Text("Type");
-                    ImGui::RadioButton("Inflation", &type, 0);
+                    ImGui::RadioButton("Inflation / Dark Energy", &type, 0);
                     ImGui::RadioButton("Radiation Domination", &type, 1);
                     ImGui::RadioButton("Matter Domination", &type, 2);
                 }
