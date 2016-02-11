@@ -5,15 +5,17 @@ uniform mat4 modelViewProjectionMatrix;
 uniform float pointSize;
 
 in vec4 position;
-in vec4 color;
+in float cellSize;
+in float density;
 
-out vec4 vColor;
+out float vDensity;
 
 void main()
 {
 	gl_Position = modelViewProjectionMatrix * position;
+    gl_PointSize = pointSize * cellSize;
 	
-    vColor = color;
+    vDensity = density;
 }
 
 

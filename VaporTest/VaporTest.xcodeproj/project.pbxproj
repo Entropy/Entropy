@@ -16,6 +16,7 @@
 		462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */; };
 		4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */; };
 		601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D04044B3DCB8D183352B119 /* imgui.cpp */; };
+		6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6476845C1C6BF112004C1E60 /* ofxRange.cpp */; };
 		992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */; };
 		D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E2F8C08588DCF287F63982 /* imgui_demo.cpp */; };
 		DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */; };
@@ -95,6 +96,10 @@
 		5E33620A686121EEB6FB1E8B /* stb_textedit.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_textedit.h; path = ../../../addons/ofxImGui/src/stb_textedit.h; sourceTree = SOURCE_ROOT; };
 		64116D0D1C69364700A5A155 /* render.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.frag; sourceTree = "<group>"; };
 		64116D0E1C69364700A5A155 /* render.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.vert; sourceTree = "<group>"; };
+		647684511C6BC92A004C1E60 /* slice.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.frag; sourceTree = "<group>"; };
+		647684521C6BC92A004C1E60 /* slice.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.vert; sourceTree = "<group>"; };
+		6476845C1C6BF112004C1E60 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
+		6476845D1C6BF112004C1E60 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../Shared/src/ofxRange.h; sourceTree = "<group>"; };
 		674AA20D61E496A5BF7DCAE3 /* H5Epublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Epublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Epublic.h; sourceTree = SOURCE_ROOT; };
 		67E4B9D99D29505E49BE45D8 /* ofxHDF5Group.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5Group.h; path = ../../../addons/ofxHDF5/src/ofxHDF5Group.h; sourceTree = SOURCE_ROOT; };
 		6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_draw.cpp; path = ../../../addons/ofxImGui/src/imgui_draw.cpp; sourceTree = SOURCE_ROOT; };
@@ -199,11 +204,22 @@
 		64116D0C1C69364700A5A155 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				647684511C6BC92A004C1E60 /* slice.frag */,
+				647684521C6BC92A004C1E60 /* slice.vert */,
 				64116D0D1C69364700A5A155 /* render.frag */,
 				64116D0E1C69364700A5A155 /* render.vert */,
 			);
 			name = shaders;
 			path = bin/data/shaders;
+			sourceTree = "<group>";
+		};
+		6476845F1C6BF11C004C1E60 /* shared_src */ = {
+			isa = PBXGroup;
+			children = (
+				6476845C1C6BF112004C1E60 /* ofxRange.cpp */,
+				6476845D1C6BF112004C1E60 /* ofxRange.h */,
+			);
+			name = shared_src;
 			sourceTree = "<group>";
 		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
@@ -380,6 +396,7 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
+				6476845F1C6BF11C004C1E60 /* shared_src */,
 				64116D0C1C69364700A5A155 /* shaders */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -540,6 +557,7 @@
 				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,
 				992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */,
 				DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */,
+				6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */,
 				27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */,
 				462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */,
 				000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */,

@@ -3,6 +3,13 @@
 #include "ofMain.h"
 #include "ofxHDF5.h"
 #include "ofxImGui.h"
+#include "ofxRange.h"
+
+enum ExtraAttributes
+{
+    CELLSIZE_ATTRIBUTE = 5,
+    DENSITY_ATTRIBUTE = 6
+};
 
 class ofApp : public ofBaseApp
 {
@@ -23,19 +30,57 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
-
+    // GUI
     void imGui();
 
     ofxImGui gui;
     bool bGuiVisible;
+
+    // Data
+    void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
+
+    ofVboMesh vboMesh;
+    vector<float> cellSize;
+    vector<float> density;
+
+    ofxVec3fRange coordRange;
+    ofxFloatRange cellSizeRange;
+    ofxFloatRange densityRange;
+
+    int stride;
+
+    // 3D Render
+    void rebuildIndices();
+    bool bNeedsIndices;
+
+    bool bRender3D;
+
+    ofVec3f originShift;
+    float normalizeFactor;
+
+    ofShader renderShader;
+    ofEasyCam cam;
 
     float pointSize;
     float densityMin;
     float densityMax;
     float scale;
 
-    ofShader shader;
-    ofVboMesh vboMesh;
-    ofEasyCam cam;
+    // Texture Output
+    void rebuildBins();
+    bool bNeedsBins;
+
+    int binPower;
+    int binSizeX, binSizeY, binSizeZ;
+    float binSliceZ;
+
+    vector< vector<ofIndexType> > indexBins;
+
+    ofShader sliceShader;
+    ofFbo binFbo;
+    ofPixels binPixels;
+    int binIdx;
+
+    bool bSaving;
+
 };
