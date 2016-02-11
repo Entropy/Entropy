@@ -35,6 +35,7 @@ public:
 
     ofxImGui gui;
     bool bGuiVisible;
+    bool bMouseOverGui;
 
     // Data
     void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
@@ -70,17 +71,21 @@ public:
     void rebuildBins();
     bool bNeedsBins;
 
+    bool bCycleBins;
+    bool bExportFiles;
+
     int binPower;
     int binSizeX, binSizeY, binSizeZ;
     float binSliceZ;
 
     vector< vector<ofIndexType> > indexBins;
+    int binIndex;
+    int renderIndex;
+
+    bool bBinDebug2D;
+    bool bBinDebug3D;
 
     ofShader sliceShader;
     ofFbo binFbo;
     ofPixels binPixels;
-    int binIdx;
-
-    bool bSaving;
-
 };
