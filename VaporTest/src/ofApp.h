@@ -78,9 +78,10 @@ public:
     int binSizeX, binSizeY, binSizeZ;
     float binSliceZ;
 
-    vector< vector<ofIndexType> > indexBins;
     int binIndex;
     int renderIndex;
+
+    float pointAdjust;
 
     bool bBinDebug2D;
     bool bBinDebug3D;

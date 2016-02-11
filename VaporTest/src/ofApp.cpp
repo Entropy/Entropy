@@ -13,11 +13,11 @@ void ofApp::setup()
     bGuiVisible = true;
     bMouseOverGui = false;
 
-    stride = 10;
+    stride = 1;
 
     bNeedsIndices = true;
     bRender3D = true;
-    pointSize = 1.0f;
+    pointSize = 1.5f;
     densityMin = 0.0f;
     densityMax = 0.0015f;
     scale = 1024.0f;
@@ -26,8 +26,9 @@ void ofApp::setup()
     bCycleBins = false;
     bExportFiles = false;
     binPower = 8;
-    binIndex = 0;
+    binIndex = 125;
     renderIndex = -1;
+    pointAdjust = 2.55;
     bBinDebug2D = false;
     bBinDebug3D = true;
 
@@ -48,12 +49,16 @@ void ofApp::setup()
     coordRange.add(coordRange.getMin() - cellSizeRange.getMax());
     coordRange.add(coordRange.getMax() + cellSizeRange.getMax());
 
-    cout << "From: (" << coordRange.getMin() << ") => " << cellSizeRange.getMin() << " / " << densityRange.getMin() << endl
-         << "  To: (" << coordRange.getMax() << ") => " << cellSizeRange.getMax() << " / " << densityRange.getMax() << endl
-         << "Span: (" << coordRange.getSpan() << ") => " << cellSizeRange.getSpan() << " / " << densityRange.getSpan() << endl;
+    // Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
+    ofVec3f coordSpan = coordRange.getSpan();
+    float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
+    ofVec3f spanOffset(maxSpan * 0.5);
+    ofVec3f coordMid = coordRange.getMid();
+    coordRange.add(coordMid - spanOffset);
+    coordRange.add(coordMid + spanOffset);
 
     // Set normalization values to remap to [-0.5, 0.5]
-    ofVec3f coordSpan = coordRange.getSpan();
+    coordSpan = coordRange.getSpan();
     originShift = -0.5 * coordSpan - coordRange.getMin();
 
     normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
@@ -136,24 +141,11 @@ void ofApp::rebuildBins()
     binSizeX = binSizeY = binSizeZ = pow(2, binPower);
     binSliceZ = (coordRange.getSpan().z) / binSizeZ;
 
-    cout << "bin sizes is " << binSizeX << ", " << binSizeY << ", " << binSizeZ << endl;
-
-    indexBins.resize(binSizeZ);
-    for (int i = 0; i < indexBins.size(); ++i) {
-        float minZ = coordRange.getMin().z + i * binSliceZ;
-        float maxZ = minZ + binSliceZ;
-        for (int j = 0; j < vboMesh.getVertices().size(); j += stride) {
-            float posZ = vboMesh.getVertex(j).z;
-            if (minZ <= posZ - cellSize[j] && posZ + cellSize[j] < maxZ) {
-                indexBins[i].push_back(j);
-            }
-        }
-        ofLogVerbose() << "Building bin " << i << " for depth [" << minZ << ", " << maxZ << ") with " << indexBins[i].size() << " elements";
-    }
+    ofLogNotice() << "Bin size is [" << binSizeX << "x" << binSizeY << "x" << binSizeZ << "] with slice " << binSliceZ;
 
     // Allocate FBO.
-    binFbo.allocate(binSizeX, binSizeY, GL_RGBA32F_ARB);
-    binIndex = 0;
+    binFbo.allocate(binSizeX, binSizeY);
+//    binIndex = 0;
     renderIndex = -1;
 
     bNeedsBins = false;
@@ -176,13 +168,15 @@ void ofApp::imGui()
                 if (ImGui::SliderInt("Stride", &stride, 1, 128)) {
                     bNeedsIndices = true;
                 }
+                if (ImGui::DragFloatRange2("Density Range", &densityMin, &densityMax, 0.0001f, 0.0f, 1.0f, "Min: %.4f%%", "Max: %.4f%%")) {
+                    renderIndex = -1;
+                }
             }
 
             if (ImGui::CollapsingHeader("3D", nullptr, true, true)) {
                 ImGui::Checkbox("Render", &bRender3D);
                 ImGui::SliderFloat("Scale", &scale, 1.0f, 2048.0f);
                 ImGui::SliderFloat("Point Size", &pointSize, 0.1f, 64.0f);
-                ImGui::DragFloatRange2("Density Range", &densityMin, &densityMax, 0.0001f, 0.0f, 1.0f, "Min: %.4f%%", "Max: %.4f%%");
             }
 
             if (ImGui::CollapsingHeader("Export", nullptr, true, true)) {
@@ -193,6 +187,10 @@ void ofApp::imGui()
                 ImGui::Checkbox("Cycle Bins", &bCycleBins);
                 if (ImGui::Checkbox("Export Files", &bExportFiles)) {
                     binIndex = 0;
+                    renderIndex = -1;
+                    bCycleBins = true;
+                }
+                if (ImGui::SliderFloat("Point Adjust", &pointAdjust, 0.0f, 5.0f)) {
                     renderIndex = -1;
                 }
                 ImGui::Checkbox("Debug 3D", &bBinDebug3D);
@@ -219,61 +217,52 @@ void ofApp::imGui()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    if (bNeedsIndices) {
+        rebuildIndices();
+    }
     if (bNeedsBins) {
         rebuildBins();
     }
 
+    ofEnablePointSprites();
+
     if ((bBinDebug2D || bExportFiles) && binIndex != renderIndex) {
-        float minZ = coordRange.getMin().z + binIndex * binSliceZ;
-        float maxZ = minZ + binSliceZ;
-//
-//    ofEnablePointSprites();
-//
-//    cout << "Rendering bin " << currIdx << " to texture" << endl;
+        float minDepth = coordRange.getMin().z + binIndex * binSliceZ;
+        float maxDepth = minDepth + binSliceZ;
+
+        ofLogNotice() << "Rendering bin " << binIndex << " to texture.";
         binFbo.begin();
         {
-            ofClear(0, 255);
+            ofClear(0, 0);
+            ofSetColor(ofColor::white);
+            glPointSize(1.0);
 
-            if (indexBins[binIndex].size()) {
-                vboMesh.clearIndices();
-                vboMesh.addIndices(indexBins[binIndex]);
-
-                sliceShader.begin();
-                sliceShader.setUniform3f("minCoord", coordRange.getMin());
-                sliceShader.setUniform3f("maxCoord", coordRange.getMax());
-                sliceShader.setUniform1f("binSizeX", binSizeX);
-                sliceShader.setUniform1f("binSizeY", binSizeY);
-                sliceShader.setUniform1f("minZ", minZ);
-                sliceShader.setUniform1f("maxZ", maxZ);
-                sliceShader.setUniform1f("sliceZ", binSliceZ);
-                {
-                    vboMesh.draw(OF_MESH_POINTS);
-                }
-                sliceShader.end();
+            sliceShader.begin();
+            sliceShader.setUniform1f("pointAdjust", pointAdjust);
+            sliceShader.setUniform3f("minCoord", coordRange.getMin());
+            sliceShader.setUniform3f("maxCoord", coordRange.getMax());
+            sliceShader.setUniform1f("binSizeX", binSizeX);
+            sliceShader.setUniform1f("binSizeY", binSizeY);
+            sliceShader.setUniform1f("minDepth", minDepth);
+            sliceShader.setUniform1f("maxDepth", maxDepth);
+//                sliceShader.setUniform1f("minDensity", densityRange.getMin());
+//                sliceShader.setUniform1f("maxDensity", densityRange.getMax());
+            sliceShader.setUniform1f("minDensity", densityMin * densityRange.getSpan());
+            sliceShader.setUniform1f("maxDensity", densityMax * densityRange.getSpan());
+            {
+                vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
             }
+            sliceShader.end();
         }
         binFbo.end();
 
         renderIndex = binIndex;
-        bNeedsIndices = true;
 
         if (bExportFiles) {
-            ofLogVerbose() << "Saving texture " << binIndex << " to disk";
+            ofLogVerbose() << "Saving texture " << binIndex << " to disk.";
             binFbo.readToPixels(binPixels);
             ofSaveImage(binPixels, "vapor/texture_" + ofToString(binIndex, 4, '0') + ".png");
         }
-    }
-
-    if (bCycleBins) {
-        binIndex = (binIndex + 1) % indexBins.size();
-
-        if (binIndex == 0) {
-            bExportFiles = false;
-        }
-    }
-
-    if (bNeedsIndices) {
-        rebuildIndices();
     }
 
     if (bMouseOverGui) {
@@ -288,46 +277,51 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    ofSetColor(ofColor::white);
+    if (bRender3D) {
+        ofSetColor(ofColor::white);
+        glPointSize(1.0);
 
-//    glEnable(GL_POINT_SMOOTH);
-//    glPointSize(pointSize);
-    ofEnablePointSprites();
-
-    cam.setNearClip(0);
-    cam.setFarClip(FLT_MAX);
-
-    cam.begin();
-    {
-        ofPushMatrix();
-
-        ofScale(scale / normalizeFactor, scale / normalizeFactor, scale / normalizeFactor);
-        ofTranslate(originShift);
+        cam.setNearClip(0);
+        cam.setFarClip(FLT_MAX);
+        cam.begin();
         {
-            renderShader.begin();
-            renderShader.setUniform1f("pointSize", pointSize / cellSizeRange.getMin());
-            renderShader.setUniform1f("densityMin", densityMin * densityRange.getSpan());
-            renderShader.setUniform1f("densityMax", densityMax * densityRange.getSpan());
-            if (bBinDebug3D) {
-                renderShader.setUniform1f("debugMin", coordRange.getMin().z + binIndex * binSliceZ);
-                renderShader.setUniform1f("debugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
-            }
-            else {
-                renderShader.setUniform1f("debugMin", FLT_MAX);
-                renderShader.setUniform1f("debugMax", FLT_MIN);
-            }
+            ofPushMatrix();
+
+            ofScale(scale / normalizeFactor, scale / normalizeFactor, scale / normalizeFactor);
+            ofTranslate(originShift);
             {
-                vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
+                renderShader.begin();
+                renderShader.setUniform1f("pointSize", pointSize / cellSizeRange.getMin());
+                renderShader.setUniform1f("densityMin", densityMin * densityRange.getSpan());
+                renderShader.setUniform1f("densityMax", densityMax * densityRange.getSpan());
+                if (bBinDebug3D) {
+                    renderShader.setUniform1f("debugMin", coordRange.getMin().z + binIndex * binSliceZ);
+                    renderShader.setUniform1f("debugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
+                }
+                else {
+                    renderShader.setUniform1f("debugMin", FLT_MAX);
+                    renderShader.setUniform1f("debugMax", FLT_MIN);
+                }
+                {
+                    vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
+                }
+                renderShader.end();
             }
-            renderShader.end();
+            ofPopMatrix();
+
+            ofDrawAxis(20);
         }
-        ofPopMatrix();
-
-        ofDrawAxis(20);
+        cam.end();
     }
-    cam.end();
 
-    ofFill();
+    if (bCycleBins) {
+        binIndex = (binIndex + 1) % binSizeZ;
+
+        if (bExportFiles && binIndex == 0) {
+            bExportFiles = false;
+            bCycleBins = false;
+        }
+    }
 
     if (bGuiVisible) {
         imGui();

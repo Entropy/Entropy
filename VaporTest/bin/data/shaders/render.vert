@@ -1,6 +1,7 @@
 #version 150
 
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
 
 uniform float pointSize;
 
@@ -16,8 +17,12 @@ out float vDebug;
 
 void main()
 {
-	gl_Position = modelViewProjectionMatrix * position;
-    gl_PointSize = pointSize * cellSize;
+    vec4 eyeCoord = modelViewMatrix * position;
+    gl_Position = projectionMatrix * eyeCoord;
+
+    float dist = sqrt(eyeCoord.x * eyeCoord.x + eyeCoord.y * eyeCoord.y + eyeCoord.z * eyeCoord.z);
+    float attenuation = 600.0 / dist;
+    gl_PointSize = pointSize * cellSize * 2 * attenuation;
 
     if (debugMin <= position.z && position.z < debugMax) {
         vDebug = 1.0;

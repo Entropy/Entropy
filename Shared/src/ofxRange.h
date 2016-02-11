@@ -22,6 +22,7 @@ public:
 
     float getMin();
     float getMax();
+    float getMid();
     float getSpan();
 
 protected:
@@ -41,6 +42,7 @@ public:
 
     const ofVec3f& getMin();
     const ofVec3f& getMax();
+    ofVec3f getMid();
     ofVec3f getSpan();
 
 protected:

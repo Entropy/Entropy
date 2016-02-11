@@ -51,6 +51,12 @@ float ofxFloatRange::getMax()
 }
 
 //--------------------------------------------------------------
+float ofxFloatRange::getMid()
+{
+    return ofLerp(_min, _max, 0.5);
+}
+
+//--------------------------------------------------------------
 float ofxFloatRange::getSpan()
 {
     return (_max - _min);
@@ -103,6 +109,12 @@ const ofVec3f& ofxVec3fRange::getMin()
 const ofVec3f& ofxVec3fRange::getMax()
 {
     return _max;
+}
+
+//--------------------------------------------------------------
+ofVec3f ofxVec3fRange::getMid()
+{
+    return _min.getInterpolated(_max, 0.5);
 }
 
 //--------------------------------------------------------------
