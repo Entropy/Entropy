@@ -9,6 +9,7 @@
 #include "ofxHDF5.h"
 #include "ofxImGui.h"
 
+#include "Common.h"
 #include "CellRenderer.h"
 
 namespace ent
@@ -21,7 +22,6 @@ namespace ent
     , pointSize(1.5f)
     , densityMin(0.0f)
     , densityMax(0.0015f)
-    , scale(1024.0f)
     , bNeedsBins(true)
     , bCycleBins(false)
     , bExportFiles(false)
@@ -185,13 +185,40 @@ namespace ent
             if (bExportFiles) {
                 ofLogVerbose() << "Saving texture " << binIndex << " to disk.";
                 binFbo.readToPixels(binPixels);
-                ofSaveImage(binPixels, "vapor/texture_" + ofToString(binIndex, 4, '0') + ".tif");
+                ofSaveImage(binPixels, exportFolder + "/" + kSliceFilePrefix + ofToString(binIndex, kSliceFileNumPadding, '0') + kSliceFileExt);
             }
         }
     }
 
     //--------------------------------------------------------------
-    void CellRenderer::draw()
+    void CellRenderer::rebuildIndices()
+    {
+        vboMesh.clearIndices();
+        for (int i = 0; i < vboMesh.getNumVertices(); i += stride) {
+            vboMesh.addIndex(i);
+        }
+        bNeedsIndices = false;
+    }
+
+    //--------------------------------------------------------------
+    void CellRenderer::rebuildBins()
+    {
+        // Build bins by depth.
+        binSizeX = binSizeY = binSizeZ = pow(2, binPower);
+        binSliceZ = (coordRange.getSpan().z) / binSizeZ;
+
+        ofLogNotice() << "Bin size is [" << binSizeX << "x" << binSizeY << "x" << binSizeZ << "] with slice " << binSliceZ;
+
+        // Allocate FBO.
+        binFbo.allocate(binSizeX, binSizeY);
+//        binIndex = 0;
+        renderIndex = -1;
+
+        bNeedsBins = false;
+    }
+
+    //--------------------------------------------------------------
+    void CellRenderer::draw(float scale)
     {
         if (bRender3D) {
             ofSetColor(ofColor::white);
@@ -232,12 +259,11 @@ namespace ent
     }
 
     //--------------------------------------------------------------
-    bool CellRenderer::imGui(ofVec2f &windowPos, ofVec2f& windowSize)
+    bool CellRenderer::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
     {
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 380), ImGuiSetCond_Appearing);
+        ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
             ImGui::Text("%lu Indices / %lu Vertices", vboMesh.getNumIndices(), vboMesh.getNumVertices());
 
             if (ImGui::CollapsingHeader("Data", nullptr, true, true)) {
@@ -251,7 +277,6 @@ namespace ent
 
             if (ImGui::CollapsingHeader("3D", nullptr, true, true)) {
                 ImGui::Checkbox("Render", &bRender3D);
-                ImGui::SliderFloat("Scale", &scale, 1.0f, 2048.0f);
                 ImGui::SliderFloat("Point Size", &pointSize, 0.1f, 64.0f);
             }
 
@@ -262,9 +287,12 @@ namespace ent
                 ImGui::SliderInt("Bin Index", &binIndex, 0, binSizeZ - 1);
                 ImGui::Checkbox("Cycle Bins", &bCycleBins);
                 if (ImGui::Checkbox("Export Files", &bExportFiles)) {
-                    binIndex = 0;
-                    renderIndex = -1;
-                    bCycleBins = true;
+                    exportFolder = ofSystemTextBoxDialog("Type in a name for the output folder:");
+                    if (exportFolder.length()) {
+                        binIndex = 0;
+                        renderIndex = -1;
+                        bCycleBins = true;
+                    }
                 }
                 if (ImGui::SliderFloat("Point Adjust", &pointAdjust, 0.0f, 5.0f)) {
                     renderIndex = -1;
@@ -279,39 +307,14 @@ namespace ent
                     bBinDebug2D = false;
                 }
             }
+            windowSize.set(ImGui::GetWindowSize());
+            ImGui::End();
         }
-        ImGui::End();
+        else {
+            windowSize.set(0);
+        }
 
-        windowPos.set(ImGui::GetWindowPos());
-        windowSize.set(ImGui::GetWindowSize());
         ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
         return windowBounds.inside(ofGetMouseX(), ofGetMouseY());
-    }
-
-    //--------------------------------------------------------------
-    void CellRenderer::rebuildIndices()
-    {
-        vboMesh.clearIndices();
-        for (int i = 0; i < vboMesh.getNumVertices(); i += stride) {
-            vboMesh.addIndex(i);
-        }
-        bNeedsIndices = false;
-    }
-
-    //--------------------------------------------------------------
-    void CellRenderer::rebuildBins()
-    {
-        // Build bins by depth.
-        binSizeX = binSizeY = binSizeZ = pow(2, binPower);
-        binSliceZ = (coordRange.getSpan().z) / binSizeZ;
-
-        ofLogNotice() << "Bin size is [" << binSizeX << "x" << binSizeY << "x" << binSizeZ << "] with slice " << binSliceZ;
-        
-        // Allocate FBO.
-        binFbo.allocate(binSizeX, binSizeY);
-        //    binIndex = 0;
-        renderIndex = -1;
-        
-        bNeedsBins = false;
     }
 }

@@ -4,6 +4,7 @@
 #include "ofxImGui.h"
 
 #include "CellRenderer.h"
+#include "VolumeRenderer.h"
 
 class ofApp : public ofBaseApp
 {
@@ -25,8 +26,11 @@ public:
     void gotMessage(ofMessage msg);
 
     ent::CellRenderer cellRenderer;
+    ent::VolumeRenderer volumeRenderer;
 
     ofEasyCam cam;
+
+    float scale;
 
     // GUI
     void imGui();

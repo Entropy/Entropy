@@ -29,9 +29,9 @@ namespace ent
         void setup();
 
         void update();
-        void draw();
+        void draw(float scale);
 
-        bool imGui(ofVec2f &windowPos, ofVec2f& windowSize);
+        bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
 
     protected:
         // Data
@@ -60,7 +60,6 @@ namespace ent
         float pointSize;
         float densityMin;
         float densityMax;
-        float scale;
 
         // Texture Output
         void rebuildBins();
@@ -68,6 +67,7 @@ namespace ent
 
         bool bCycleBins;
         bool bExportFiles;
+        string exportFolder;
 
         int binPower;
         int binSizeX, binSizeY, binSizeZ;

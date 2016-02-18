@@ -17,6 +17,10 @@
 		4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */; };
 		601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D04044B3DCB8D183352B119 /* imgui.cpp */; };
 		6461D6F61C7523DB00117A81 /* CellRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6F41C7523DB00117A81 /* CellRenderer.cpp */; };
+		6461D7021C752DAE00117A81 /* ofxTexture2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FC1C752DAE00117A81 /* ofxTexture2d.cpp */; };
+		6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */; };
+		6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */; };
+		6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D70B1C75339700117A81 /* VolumeRenderer.cpp */; };
 		6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6476845C1C6BF112004C1E60 /* ofxRange.cpp */; };
 		992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */; };
 		D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E2F8C08588DCF287F63982 /* imgui_demo.cpp */; };
@@ -99,6 +103,18 @@
 		64116D0E1C69364700A5A155 /* render.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.vert; sourceTree = "<group>"; };
 		6461D6F41C7523DB00117A81 /* CellRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CellRenderer.cpp; sourceTree = "<group>"; };
 		6461D6F51C7523DB00117A81 /* CellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellRenderer.h; sourceTree = "<group>"; };
+		6461D6FB1C752DAE00117A81 /* ofxImageSequencePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxImageSequencePlayer.h; path = ../../../addons/ofxVolumetrics/src/ofxImageSequencePlayer.h; sourceTree = "<group>"; };
+		6461D6FC1C752DAE00117A81 /* ofxTexture2d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxTexture2d.cpp; path = ../../../addons/ofxVolumetrics/src/ofxTexture2d.cpp; sourceTree = "<group>"; };
+		6461D6FD1C752DAE00117A81 /* ofxTexture2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxTexture2d.h; path = ../../../addons/ofxVolumetrics/src/ofxTexture2d.h; sourceTree = "<group>"; };
+		6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxTexture3d.cpp; path = ../../../addons/ofxVolumetrics/src/ofxTexture3d.cpp; sourceTree = "<group>"; };
+		6461D6FF1C752DAE00117A81 /* ofxTexture3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxTexture3d.h; path = ../../../addons/ofxVolumetrics/src/ofxTexture3d.h; sourceTree = "<group>"; };
+		6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxVolumetrics.cpp; path = ../../../addons/ofxVolumetrics/src/ofxVolumetrics.cpp; sourceTree = "<group>"; };
+		6461D7011C752DAE00117A81 /* ofxVolumetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxVolumetrics.h; path = ../../../addons/ofxVolumetrics/src/ofxVolumetrics.h; sourceTree = "<group>"; };
+		6461D7061C752DC800117A81 /* frag.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = frag.glsl; path = ../../../addons/ofxVolumetrics/src/shaders/gl3/frag.glsl; sourceTree = "<group>"; };
+		6461D7071C752DC800117A81 /* vert.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = vert.glsl; path = ../../../addons/ofxVolumetrics/src/shaders/gl3/vert.glsl; sourceTree = "<group>"; };
+		6461D70B1C75339700117A81 /* VolumeRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VolumeRenderer.cpp; sourceTree = "<group>"; };
+		6461D70C1C75339700117A81 /* VolumeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeRenderer.h; sourceTree = "<group>"; };
+		6461D70E1C75383300117A81 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		647684511C6BC92A004C1E60 /* slice.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.frag; sourceTree = "<group>"; };
 		647684521C6BC92A004C1E60 /* slice.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.vert; sourceTree = "<group>"; };
 		6476845C1C6BF112004C1E60 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
@@ -216,6 +232,38 @@
 			path = bin/data/shaders;
 			sourceTree = "<group>";
 		};
+		6461D6F91C752D8D00117A81 /* ofxVolumetrics */ = {
+			isa = PBXGroup;
+			children = (
+				6461D6FA1C752DA200117A81 /* src */,
+				6461D7051C752DB500117A81 /* shaders */,
+			);
+			name = ofxVolumetrics;
+			sourceTree = "<group>";
+		};
+		6461D6FA1C752DA200117A81 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6461D6FB1C752DAE00117A81 /* ofxImageSequencePlayer.h */,
+				6461D6FC1C752DAE00117A81 /* ofxTexture2d.cpp */,
+				6461D6FD1C752DAE00117A81 /* ofxTexture2d.h */,
+				6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */,
+				6461D6FF1C752DAE00117A81 /* ofxTexture3d.h */,
+				6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */,
+				6461D7011C752DAE00117A81 /* ofxVolumetrics.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		6461D7051C752DB500117A81 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				6461D7061C752DC800117A81 /* frag.glsl */,
+				6461D7071C752DC800117A81 /* vert.glsl */,
+			);
+			name = shaders;
+			sourceTree = "<group>";
+		};
 		6476845F1C6BF11C004C1E60 /* shared_src */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,6 +337,7 @@
 			children = (
 				EC19417C78E21F06F3886D3F /* ofxHDF5 */,
 				768C3255AF2F3E1A78DC4DF4 /* ofxImGui */,
+				6461D6F91C752D8D00117A81 /* ofxVolumetrics */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -414,8 +463,11 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				6461D70E1C75383300117A81 /* Common.h */,
 				6461D6F41C7523DB00117A81 /* CellRenderer.cpp */,
 				6461D6F51C7523DB00117A81 /* CellRenderer.h */,
+				6461D70B1C75339700117A81 /* VolumeRenderer.cpp */,
+				6461D70C1C75339700117A81 /* VolumeRenderer.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -558,15 +610,19 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				6461D6F61C7523DB00117A81 /* CellRenderer.cpp in Sources */,
+				6461D7021C752DAE00117A81 /* ofxTexture2d.cpp in Sources */,
 				1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */,
 				4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */,
 				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,
 				992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */,
 				DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */,
+				6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */,
+				6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */,
 				6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */,
 				27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */,
 				462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */,
 				000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */,
+				6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */,
 				601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */,
 				D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */,
 				0A69358829568EC4A9A91686 /* imgui_draw.cpp in Sources */,
