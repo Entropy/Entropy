@@ -87,7 +87,11 @@ namespace ent
         vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
 
         // Load the shaders.
+//        renderShader.setGeometryInputType(GL_POINTS);
+//        renderShader.setGeometryOutputType(GL_TRIANGLE_STRIP);
+//        renderShader.setGeometryOutputCount(4);
         renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
+        renderShader.setupShaderFromFile(GL_GEOMETRY_SHADER, "shaders/render.geom");
         renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
         renderShader.bindAttribute(CELLSIZE_ATTRIBUTE, "cellSize");
         renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
@@ -229,7 +233,7 @@ namespace ent
             ofTranslate(originShift);
             {
                 renderShader.begin();
-                renderShader.setUniform1f("pointSize", pointSize / cellSizeRange.getMin());
+                renderShader.setUniform1f("pointSize", pointSize);
                 renderShader.setUniform1f("densityMin", densityMin * densityRange.getSpan());
                 renderShader.setUniform1f("densityMax", densityMax * densityRange.getSpan());
                 if (bBinDebug3D) {
