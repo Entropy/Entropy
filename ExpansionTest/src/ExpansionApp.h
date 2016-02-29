@@ -32,7 +32,6 @@ namespace entropy
         ofxImGui gui;
         bool bGuiVisible;
 
-
         ofBoxPrimitive box;
         bool bRebuildBox;
         bool bDrawGrid;
