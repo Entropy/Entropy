@@ -7,10 +7,10 @@ struct BlackHole
 {
     ofVec3f position;
     float radius;
-    float ringRadiusInner;
-    float ringRadiusOuter;
-    float ringThickness;
     float mass;
+    float lensing;
+    float speed;
+    float ringThickness;
 };
 
 class ofApp : public ofBaseApp
@@ -33,6 +33,11 @@ public:
     void gotMessage(ofMessage msg);
 
     BlackHole gargantua;
+
+    ofFloatColor foregroundColor;
+    ofFloatColor backgroundColor;
+    float colorMix;
+    float colorBlowOut;
 
     ofImage noiseTex;
     ofImage spaceTex;

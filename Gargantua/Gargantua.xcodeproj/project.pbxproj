@@ -62,6 +62,7 @@
 		5E33620A686121EEB6FB1E8B /* stb_textedit.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_textedit.h; path = ../../../addons/ofxImGui/src/stb_textedit.h; sourceTree = SOURCE_ROOT; };
 		649C00431C7CD74F000954E9 /* render.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.frag; sourceTree = "<group>"; };
 		649C00441C7CD762000954E9 /* render.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.vert; sourceTree = "<group>"; };
+		649C004D1C7E33A7000954E9 /* render2.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render2.frag; sourceTree = "<group>"; };
 		6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_draw.cpp; path = ../../../addons/ofxImGui/src/imgui_draw.cpp; sourceTree = SOURCE_ROOT; };
 		8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseTheme.cpp; path = ../../../addons/ofxImGui/src/BaseTheme.cpp; sourceTree = SOURCE_ROOT; };
 		9B250D3B3DC979D80D25C763 /* LICENSE */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 30; name = LICENSE; path = ../../../addons/ofxImGui/src/LICENSE; sourceTree = SOURCE_ROOT; };
@@ -101,6 +102,7 @@
 			children = (
 				649C00441C7CD762000954E9 /* render.vert */,
 				649C00431C7CD74F000954E9 /* render.frag */,
+				649C004D1C7E33A7000954E9 /* render2.frag */,
 			);
 			name = shaders;
 			path = bin/data/shaders;

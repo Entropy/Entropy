@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+    ofSetDataPathRoot("../Resources/data/");
+
     ofDisableArbTex();
     noiseTex.getTexture().enableMipmap();
     noiseTex.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
@@ -15,7 +17,7 @@ void ofApp::setup()
 //    spaceTex.getTexture().generateMipmap();
 //    spaceTex.getTexture().setTextureMinMagFilter(GL_MIPMAP, GL_MIPMAP);
 
-    renderShader.load("shaders/render");
+    renderShader.load("shaders/render.vert", "shaders/render2.frag");
 
     plane.set(ofGetWidth(), ofGetHeight(), 24, 16);
     plane.mapTexCoords(0, 0, ofGetWidth(), ofGetHeight());
@@ -34,16 +36,22 @@ void ofApp::setup()
     mesh.addVertex(ofVec3f(ofGetWidth(), ofGetHeight()));
     mesh.addTexCoord(ofVec2f(ofGetWidth(), ofGetHeight()));
 
-    gargantua.position = ofVec3f(0.0, 0.0, -8.0);
-    gargantua.radius = 0.1f;
-    gargantua.ringRadiusInner = 0.9f;
-    gargantua.ringRadiusOuter = 6.0f;
-    gargantua.ringThickness = 0.15f;
-    gargantua.mass = 1000.0f;
+    gargantua.position = ofVec3f(0.0, 1.0, -1.0);
+    gargantua.radius = 2.7f;
+    gargantua.mass = 1.2f;
+    gargantua.lensing = 4.0f;
+    gargantua.speed = 0.6f;
+    gargantua.ringThickness = 1.5f;
+
+    backgroundColor.set(0.0);
+    foregroundColor.set(0.7, 0.6, 0.8);
+    colorMix = -1.1;
+    colorBlowOut = 0.5;
+    ofBackground(backgroundColor);
 
     bGuiVisible = true;
 
-    camera.setDistance(8.0);
+    camera.setDistance(10.0);
     cameraFOV = 50;
     cameraSensitivity = 0.4;
 }
@@ -68,19 +76,24 @@ void ofApp::imGui()
                 ImGui::SliderFloat("Sensitivity", &cameraSensitivity, 0.0, 1.0);
             }
 
-            if (ImGui::CollapsingHeader("Black Hole", nullptr, true, true)) {
-                ImGui::SliderFloat3("Position", &gargantua.position[0], -1.0, 1.0);
-                ImGui::SliderFloat("Radius", &gargantua.radius, 0.0, 1.0);
-                ImGui::SliderFloat("Mass", &gargantua.mass, 0.0, 1000.0);
-
-                ImGui::SetNextTreeNodeOpened(true, ImGuiSetCond_Appearing);
-                if (ImGui::TreeNode("Ring")) {
-                    ImGui::SliderFloat("Inner Radius", &gargantua.ringRadiusInner, 0.0, gargantua.ringRadiusOuter);
-                    ImGui::SliderFloat("Outer Radius", &gargantua.ringRadiusOuter, 0.0, 10.0);
-                    ImGui::SliderFloat("Thickness", &gargantua.ringThickness, 0.0, 1.0);
-
-                    ImGui::TreePop();
+            if (ImGui::CollapsingHeader("Colors", nullptr, true, true)) {
+                if (ImGui::ColorEdit3("Background", &backgroundColor[0])) {
+                    ofBackground(backgroundColor);
                 }
+                if (ImGui::ColorEdit3("Foreground", &foregroundColor[0])) {
+                    ofSetColor(foregroundColor);
+                }
+                ImGui::SliderFloat("Mix", &colorMix, -5.0, 5.0);
+                ImGui::SliderFloat("Blow Out", &colorBlowOut, 0.0, 5.0);
+            }
+
+            if (ImGui::CollapsingHeader("Black Hole", nullptr, true, true)) {
+                ImGui::SliderFloat3("Position", &gargantua.position[0], -5.0, 5.0);
+                ImGui::SliderFloat("Radius", &gargantua.radius, 0.0, 10.0);
+                ImGui::SliderFloat("Mass", &gargantua.mass, 0.0, 10.0);
+                ImGui::SliderFloat("Lensing", &gargantua.lensing, 0.0, 10.0);
+                ImGui::SliderFloat("Speed", &gargantua.speed, 0.0, 10.0);
+                ImGui::SliderFloat("Ring Thickness", &gargantua.ringThickness, 1.0, 10.0);
             }
 
             windowSize.set(ImGui::GetWindowSize());
@@ -96,12 +109,12 @@ void ofApp::imGui()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-//    if (bMouseOverGui) {
-//        cam.disableMouseInput();
-//    }
-//    else {
-//        cam.enableMouseInput();
-//    }
+    if (bMouseOverGui) {
+        camera.disableMouseInput();
+    }
+    else {
+        camera.enableMouseInput();
+    }
     bMouseOverGui = false;
 
     camera.setTarget(gargantua.position);
@@ -119,16 +132,20 @@ void ofApp::draw()
 {
     static const int kNumChannels = 2;
     renderShader.begin();
-
     renderShader.setUniform3f("uCamera.position", camera.getPosition());
+    renderShader.setUniform3f("uCamera.upDir", camera.getUpDir());
+    renderShader.setUniformMatrix4f("uCamera.orientation", camera.getOrientationQuat());
     renderShader.setUniform1f("uCamera.fov", ofDegToRad(camera.getFov()));
 
-    renderShader.setUniform3f("uGargantua.position", gargantua.position);
-    renderShader.setUniform1f("uGargantua.radius", gargantua.radius);
-    renderShader.setUniform1f("uGargantua.ringRadiusInner", gargantua.ringRadiusInner);
-    renderShader.setUniform1f("uGargantua.ringRadiusOuter", gargantua.ringRadiusOuter);
-    renderShader.setUniform1f("uGargantua.ringThickness", gargantua.ringThickness);
-    renderShader.setUniform1f("uGargantua.mass", gargantua.mass);
+    renderShader.setUniform1f("uColorMix", colorMix);
+    renderShader.setUniform1f("uColorBlowOut", colorBlowOut);
+
+    renderShader.setUniform3f("uBlackHole.position", gargantua.position);
+    renderShader.setUniform1f("uBlackHole.radius", gargantua.radius);
+    renderShader.setUniform1f("uBlackHole.ringThickness", gargantua.ringThickness);
+    renderShader.setUniform1f("uBlackHole.mass", gargantua.mass);
+    renderShader.setUniform1f("uBlackHole.lensing", gargantua.lensing);
+    renderShader.setUniform1f("uBlackHole.speed", gargantua.speed);
 
     renderShader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(), 1.0);
     renderShader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
@@ -158,6 +175,10 @@ void ofApp::keyPressed(int key)
     switch (key) {
         case '`':
             bGuiVisible ^= 1;
+            break;
+
+        case 'R':
+            renderShader.load("shaders/render.vert", "shaders/render2.frag");
             break;
 
         case OF_KEY_TAB:
