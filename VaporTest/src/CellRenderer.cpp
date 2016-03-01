@@ -46,11 +46,11 @@ namespace ent
     {
         // Load the HDF5 data.
         vector<float> posX, posY, posZ;
-        loadDataSet("x.h5", posX, 1, true);
-        loadDataSet("y.h5", posY, 1, true);
-        loadDataSet("z.h5", posZ, 1, true);
-        loadDataSet("dx.h5", cellSize, 1, false);
-        loadDataSet("density.h5", density, 1, false);
+        loadDataSet("ramses_small/x.h5", posX, 1, true);
+        loadDataSet("ramses_small/y.h5", posY, 1, true);
+        loadDataSet("ramses_small/z.h5", posZ, 1, true);
+        loadDataSet("ramses_small/dx.h5", cellSize, 1, false);
+        loadDataSet("ramses_small/density.h5", density, 1, false);
 
         // Set the ranges for all data.
         for (int i = 0; i < posX.size(); ++i) {
