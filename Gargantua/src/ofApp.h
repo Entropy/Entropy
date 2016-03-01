@@ -33,6 +33,7 @@ public:
     void gotMessage(ofMessage msg);
 
     BlackHole gargantua;
+    int samplesPerPixel;
 
     ofFloatColor foregroundColor;
     ofFloatColor backgroundColor;
