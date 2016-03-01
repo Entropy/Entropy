@@ -3,7 +3,9 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+    ofSetDataPathRoot("../Resources/data/");
     ofDisableArbTex();
+
     noiseTex.getTexture().enableMipmap();
     noiseTex.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     noiseTex.load("textures/noise.png");
@@ -40,6 +42,8 @@ void ofApp::setup()
     gargantua.ringRadiusOuter = 6.0f;
     gargantua.ringThickness = 0.15f;
     gargantua.mass = 1000.0f;
+
+    samplesPerPixel = 2;
 
     bGuiVisible = true;
 
@@ -83,6 +87,10 @@ void ofApp::imGui()
                 }
             }
 
+            if (ImGui::CollapsingHeader("Render", nullptr, true, true)) {
+                ImGui::SliderInt("Samples Per Pixel", &samplesPerPixel, 1, 8);
+            }
+
             windowSize.set(ImGui::GetWindowSize());
             ImGui::End();
         }
@@ -120,18 +128,25 @@ void ofApp::draw()
     static const int kNumChannels = 2;
     renderShader.begin();
 
+    renderShader.setUniform1i("uSPP", samplesPerPixel);
+
     renderShader.setUniform3f("uCamera.position", camera.getPosition());
+    renderShader.setUniform3f("uCamera.upDir", camera.getUpDir());
+    renderShader.setUniformMatrix4f("uCamera.orientation", camera.getOrientationQuat());
     renderShader.setUniform1f("uCamera.fov", ofDegToRad(camera.getFov()));
 
-    renderShader.setUniform3f("uGargantua.position", gargantua.position);
-    renderShader.setUniform1f("uGargantua.radius", gargantua.radius);
-    renderShader.setUniform1f("uGargantua.ringRadiusInner", gargantua.ringRadiusInner);
-    renderShader.setUniform1f("uGargantua.ringRadiusOuter", gargantua.ringRadiusOuter);
-    renderShader.setUniform1f("uGargantua.ringThickness", gargantua.ringThickness);
-    renderShader.setUniform1f("uGargantua.mass", gargantua.mass);
+    renderShader.setUniform3f("uBlackHole.position", gargantua.position);
+    renderShader.setUniform1f("uBlackHole.radius", gargantua.radius);
+    renderShader.setUniform1f("uBlackHole.ringRadiusInner", gargantua.ringRadiusInner);
+    renderShader.setUniform1f("uBlackHole.ringRadiusOuter", gargantua.ringRadiusOuter);
+    renderShader.setUniform1f("uBlackHole.ringThickness", gargantua.ringThickness);
+    renderShader.setUniform1f("uBlackHole.mass", gargantua.mass);
 
     renderShader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(), 1.0);
     renderShader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
+    renderShader.setUniform1f("iTimeDelta", ofGetLastFrameTime());
+    renderShader.setUniform1i("iFrame", ofGetFrameNum());
+    renderShader.setUniform4f("iMouse", ofGetMousePressed()? ofGetMouseX():0.0, ofGetMousePressed()? ofGetMouseY():0.0, ofGetMousePressed(0), ofGetMousePressed(2));
     renderShader.setUniform3f("iChannelResolution[0]", ofVec3f(noiseTex.getWidth(), noiseTex.getHeight(), 1));
     renderShader.setUniform3f("iChannelResolution[1]", ofVec3f(spaceTex.getWidth(), spaceTex.getHeight(), 1));
     renderShader.setUniformTexture("iChannel0", noiseTex, 1);
