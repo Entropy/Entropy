@@ -2,7 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxImGui.h"
+#include "ofxVolumetrics.h"
 #include "MSAOpenCL.h"
+#include "OpenCLImage3D.h"
 
 namespace entropy
 {
@@ -28,8 +30,8 @@ namespace entropy
         void restart();
 
         ofShader shader;
-        ofVboMesh mesh;
-        ofFbo fbos[2];
+//        ofVboMesh mesh;
+//        ofFbo fbos[2];
 
         ofVec3f dimensions;
 

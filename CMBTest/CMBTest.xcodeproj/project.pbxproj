@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6424482D1C88D5A100CD7FB9 /* OpenCLImage3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6424482B1C88D5A100CD7FB9 /* OpenCLImage3D.cpp */; };
 		6433204C1C888A4400D33CA2 /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 643320301C888A4400D33CA2 /* BaseEngine.cpp */; };
 		6433204D1C888A4400D33CA2 /* BaseTheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 643320321C888A4400D33CA2 /* BaseTheme.cpp */; };
 		6433204E1C888A4400D33CA2 /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 643320341C888A4400D33CA2 /* EngineGLFW.cpp */; };
@@ -60,6 +61,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6424482B1C88D5A100CD7FB9 /* OpenCLImage3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenCLImage3D.cpp; sourceTree = "<group>"; };
+		6424482C1C88D5A100CD7FB9 /* OpenCLImage3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLImage3D.h; sourceTree = "<group>"; };
 		643320301C888A4400D33CA2 /* BaseEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseEngine.cpp; sourceTree = "<group>"; };
 		643320311C888A4400D33CA2 /* BaseEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseEngine.h; sourceTree = "<group>"; };
 		643320321C888A4400D33CA2 /* BaseTheme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseTheme.cpp; sourceTree = "<group>"; };
@@ -329,6 +332,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* CMBApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* CMBApp.h */,
+				6424482B1C88D5A100CD7FB9 /* OpenCLImage3D.cpp */,
+				6424482C1C88D5A100CD7FB9 /* OpenCLImage3D.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -460,6 +465,7 @@
 				643320511C888A4400D33CA2 /* imgui_demo.cpp in Sources */,
 				6433204E1C888A4400D33CA2 /* EngineGLFW.cpp in Sources */,
 				6433210F1C88C6BD00D33CA2 /* ofxTexture2d.cpp in Sources */,
+				6424482D1C88D5A100CD7FB9 /* OpenCLImage3D.cpp in Sources */,
 				6433204F1C888A4400D33CA2 /* EngineOpenGLES.cpp in Sources */,
 				643320731C88971A00D33CA2 /* MSAOpenCLProgram.cpp in Sources */,
 			);

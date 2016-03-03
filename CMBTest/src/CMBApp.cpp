@@ -46,14 +46,15 @@ namespace entropy
         fboSettings.internalformat = GL_RGBA32F;
 
         for (int i = 0; i < 2; ++i) {
-            fbos[i].allocate(fboSettings);
-            fbos[i].begin();
-            {
-                ofClear(0, 0);
-            }
-            fbos[i].end();
+//            fbos[i].allocate(fboSettings);
+//            fbos[i].begin();
+//            {
+//                ofClear(0, 0);
+//            }
+//            fbos[i].end();
 
-            clImages[i].initFromTexture(fbos[i].getTexture());
+//            clImages[i].initFromTexture(fbos[i].getTexture());
+            clImages[i].initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
         }
         clImageTmp.initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
 
@@ -75,7 +76,7 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::update()
     {
-        if (bRestart || fbos[0].getWidth() != ofGetWidth() || fbos[0].getHeight() != ofGetHeight()) {
+        if (bRestart || dimensions.x != ofGetWidth() || dimensions.y != ofGetHeight()) {
             restart();
         }
 
