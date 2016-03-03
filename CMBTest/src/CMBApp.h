@@ -27,7 +27,7 @@ namespace entropy
         void restart();
 
         ofShader shader;
-        ofFbo srcFbo, dstFbo;
+        ofFbo fbos[2];
         ofVboMesh mesh;
 
         ofFloatColor tintColor;
@@ -41,6 +41,8 @@ namespace entropy
         float radius;
 
         bool bRestart;
+
+        int activeIndex;
 
         // GUI
         void imGui();

@@ -33,19 +33,15 @@ namespace entropy
         fboSettings.height = height;
         fboSettings.internalformat = GL_RGBA32F;
 
-        srcFbo.allocate(fboSettings);
-        srcFbo.begin();
-        {
-            ofClear(0, 0);
-        }
-        srcFbo.end();
+        for (int i = 0; i < 2; ++i) {
+            fbos[i].allocate(fboSettings);
+            fbos[i].begin();
+            {
+                ofClear(0, 0);
+            }
+            fbos[i].end();
 
-        dstFbo.allocate(fboSettings);
-        dstFbo.begin();
-        {
-            ofClear(0, 0);
         }
-        dstFbo.end();
 
         // Build a mesh to render a quad.
         mesh.clear();
@@ -65,7 +61,7 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::update()
     {
-        if (bRestart || srcFbo.getWidth() != ofGetWidth() || srcFbo.getHeight() != ofGetHeight()) {
+        if (bRestart || fbos[0].getWidth() != ofGetWidth() || fbos[0].getHeight() != ofGetHeight()) {
             restart();
         }
 
@@ -73,7 +69,10 @@ namespace entropy
         ofPushStyle();
         ofPushMatrix();
 
-        srcFbo.begin();
+        int srcIdx = (activeIndex + 1) % 2;
+        int dstIdx = activeIndex;
+
+        fbos[srcIdx].begin();
         {
             bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
             if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
@@ -87,22 +86,22 @@ namespace entropy
                 }
             }
         }
-        srcFbo.end();
+        fbos[srcIdx].end();
 
         ofPopMatrix();
         ofPopStyle();
 
         // Layer the drops.
-        dstFbo.begin();
+        fbos[dstIdx].begin();
         shader.begin();
-        shader.setUniformTexture("uPrevBuffer", dstFbo, 1);
-        shader.setUniformTexture("uCurrBuffer", srcFbo, 2);
+        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
+        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
         shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
         {
             mesh.draw();
         }
         shader.end();
-        dstFbo.end();
+        fbos[dstIdx].end();
     }
 
     //--------------------------------------------------------------
@@ -150,10 +149,10 @@ namespace entropy
         ofPushStyle();
         ofSetColor(tintColor);
         ofEnableAlphaBlending();
-        dstFbo.draw(0, 0);
+        fbos[activeIndex].draw(0, 0);
         ofPopStyle();
 
-        swap(srcFbo, dstFbo);
+        activeIndex = 1 - activeIndex;
 
         if (bGuiVisible) {
             imGui();
