@@ -5,24 +5,20 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::setup()
     {
-        paramGroup.setName("RIPPLES");
-        paramGroup.add(tintColor.set("TINT COLOR", ofColor::white, ofColor::black, ofColor::white));
-        paramGroup.add(dropColor.set("DROP COLOR", ofColor::white, ofColor::black, ofColor::white));
-        paramGroup.add(bDropOnPress.set("DROP ON PRESS", false));
-        paramGroup.add(bDropUnderMouse.set("DROP UNDER MOUSE", false));
-        paramGroup.add(dropRate.set("DROP RATE", 1, 1, 30));
-        paramGroup.add(damping.set("DAMPING", 0.995f, 0.0, 1.0));
-        paramGroup.add(radius.set("RADIUS", 10.0, 1.0, 50.0));
-        paramGroup.add(bRestart.set("RESTART", true));
+        tintColor = ofColor::white;
+        dropColor = ofColor::white;
 
-        guiPanel.setup(paramGroup, "ripples.xml");
-        guiPanel.loadFromFile("ripples.xml");
+        bDropOnPress = false;
+        bDropUnderMouse = false;
+        dropRate = 1;
+
+        damping = 0.995f;
+        radius = 10.0f;
 
         bRestart = true;
         bGuiVisible = true;
 
-//        shader.load("shaders/ripples");
-        shader.load("", "shaders/ripples.frag");
+        shader.load("shaders/ripples");
     }
 
     //--------------------------------------------------------------
@@ -73,15 +69,13 @@ namespace entropy
             restart();
         }
 
-        // Ignore presses over the GUI.
-        bool bMousePressed = ofGetMousePressed() && (!bGuiVisible || !guiPanel.getShape().inside(ofGetMouseX(), ofGetMouseY()));
-
         // Add new drops.
         ofPushStyle();
         ofPushMatrix();
 
         srcFbo.begin();
         {
+            bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
             if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
                 ofSetColor(dropColor);
                 ofNoFill();
@@ -112,6 +106,43 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
+    void CMBApp::imGui()
+    {
+        static const int kGuiMargin = 10;
+
+        gui.begin();
+        {
+            ofVec2f windowPos(kGuiMargin, kGuiMargin);
+            ofVec2f windowSize = ofVec2f::zero();
+
+            ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
+            ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
+            if (ImGui::Begin("CMB", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+                ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
+
+                ImGui::Checkbox("Restart", &bRestart);
+
+                ImGui::ColorEdit3("Tint Color", &tintColor[0]);
+                ImGui::ColorEdit3("Drop Color", &tintColor[0]);
+
+                ImGui::Checkbox("Drop On Press", &bDropOnPress);
+                ImGui::Checkbox("Drop Under Mouse", &bDropUnderMouse);
+
+                ImGui::SliderInt("Drop Rate", &dropRate, 1, 60);
+                ImGui::SliderFloat("Damping", &damping, 0.0f, 1.0f);
+                ImGui::SliderFloat("Radius", &radius, 1.0f, 50.0f);
+
+                windowSize.set(ImGui::GetWindowSize());
+                ImGui::End();
+            }
+
+            ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
+            bMouseOverGui = windowBounds.inside(ofGetMouseX(), ofGetMouseY());
+        }
+        gui.end();
+    }
+
+    //--------------------------------------------------------------
     void CMBApp::draw()
     {
         ofSetColor(255);
@@ -125,7 +156,7 @@ namespace entropy
         swap(srcFbo, dstFbo);
 
         if (bGuiVisible) {
-            guiPanel.draw();
+            imGui();
         }
     }
 

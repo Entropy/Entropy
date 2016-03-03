@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui.h"
+#include "ofxImGui.h"
 
 namespace entropy
 {
@@ -30,21 +30,23 @@ namespace entropy
         ofFbo srcFbo, dstFbo;
         ofVboMesh mesh;
 
-        ofParameterGroup paramGroup;
+        ofFloatColor tintColor;
+        ofFloatColor dropColor;
 
-        ofParameter<ofColor> tintColor;
-        ofParameter<ofColor> dropColor;
+        bool bDropOnPress;
+        bool bDropUnderMouse;
+        int dropRate;
 
-        ofParameter<bool> bDropOnPress;
-        ofParameter<bool> bDropUnderMouse;
-        ofParameter<int> dropRate;
+        float damping;
+        float radius;
 
-        ofParameter<float> damping;
-        ofParameter<float> radius;
+        bool bRestart;
 
-        ofParameter<bool> bRestart;
+        // GUI
+        void imGui();
 
-        ofxPanel guiPanel;
+        ofxImGui gui;
         bool bGuiVisible;
+        bool bMouseOverGui;
     };
 }
