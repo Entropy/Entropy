@@ -31,7 +31,10 @@ namespace entropy
         ofVboMesh mesh;
         ofFbo fbos[2];
 
+        ofVec3f dimensions;
+
         msa::OpenCL openCL;
+        msa::OpenCLKernelPtr dropKernel;
         msa::OpenCLKernelPtr ripplesKernel;
         msa::OpenCLKernelPtr copyKernel;
         msa::OpenCLImage clImages[2];
@@ -46,6 +49,7 @@ namespace entropy
 
         float damping;
         float radius;
+        float ringSize;
 
         bool bRestart;
 
