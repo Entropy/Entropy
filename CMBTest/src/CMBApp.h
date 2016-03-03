@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxImGui.h"
+#include "MSAOpenCL.h"
 
 namespace entropy
 {
@@ -27,8 +28,14 @@ namespace entropy
         void restart();
 
         ofShader shader;
-        ofFbo fbos[2];
         ofVboMesh mesh;
+        ofFbo fbos[2];
+
+        msa::OpenCL openCL;
+        msa::OpenCLKernelPtr ripplesKernel;
+        msa::OpenCLKernelPtr copyKernel;
+        msa::OpenCLImage clImages[2];
+        msa::OpenCLImage clImageTmp;
 
         ofFloatColor tintColor;
         ofFloatColor dropColor;

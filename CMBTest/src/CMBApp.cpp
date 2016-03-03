@@ -5,6 +5,8 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::setup()
     {
+        ofSetLogLevel(OF_LOG_VERBOSE);
+
         tintColor = ofColor::white;
         dropColor = ofColor::white;
 
@@ -18,12 +20,20 @@ namespace entropy
         bRestart = true;
         bGuiVisible = true;
 
+        openCL.setupFromOpenGL();
+
+        openCL.loadProgramFromFile("cl/ripples.cl");
+        ripplesKernel = openCL.loadKernel("ripples2D");
+        copyKernel = openCL.loadKernel("copy2D");
+
         shader.load("shaders/ripples");
     }
 
     //--------------------------------------------------------------
     void CMBApp::restart()
     {
+        activeIndex = 0;
+
         float width = ofGetWidth();
         float height = ofGetHeight();
 
@@ -41,7 +51,9 @@ namespace entropy
             }
             fbos[i].end();
 
+            clImages[i].initFromTexture(fbos[i].getTexture());
         }
+        clImageTmp.initWithTexture(width, height, GL_RGBA32F);
 
         // Build a mesh to render a quad.
         mesh.clear();
@@ -92,16 +104,28 @@ namespace entropy
         ofPopStyle();
 
         // Layer the drops.
-        fbos[dstIdx].begin();
-        shader.begin();
-        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
-        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
-        shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-        {
-            mesh.draw();
-        }
-        shader.end();
-        fbos[dstIdx].end();
+//        fbos[dstIdx].begin();
+//        shader.begin();
+//        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
+//        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
+//        shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+//        {
+//            mesh.draw();
+//        }
+//        shader.end();
+//        fbos[dstIdx].end();
+
+        // Layer the drops.
+        ripplesKernel->setArg(0, clImages[srcIdx]);
+        ripplesKernel->setArg(1, clImages[dstIdx]);
+        ripplesKernel->setArg(2, clImageTmp);
+        ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+        ripplesKernel->run2D(fbos[0].getWidth(), fbos[0].getHeight());
+
+        // Copy temp image to dest (necessary since we can't read_write in OpenCL 1.2)
+        copyKernel->setArg(0, clImageTmp);
+        copyKernel->setArg(1, clImages[dstIdx]);
+        copyKernel->run2D(fbos[0].getWidth(), fbos[0].getHeight());
     }
 
     //--------------------------------------------------------------
@@ -146,10 +170,13 @@ namespace entropy
     {
         ofSetColor(255);
 
+        //openCL.finish();
+
         ofPushStyle();
         ofSetColor(tintColor);
         ofEnableAlphaBlending();
-        fbos[activeIndex].draw(0, 0);
+//        fbos[activeIndex].draw(0, 0);
+        clImages[activeIndex].getTexture().draw(0, 0);
         ofPopStyle();
 
         activeIndex = 1 - activeIndex;
