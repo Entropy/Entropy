@@ -8,7 +8,7 @@ namespace entropy
         ofSetLogLevel(OF_LOG_VERBOSE);
 
         tintColor = ofColor::white;
-        dropColor = ofColor::white;
+        dropColor = ofColor::red;
 
         bDropOnPress = false;
         bDropUnderMouse = false;
@@ -24,11 +24,11 @@ namespace entropy
         openCL.setupFromOpenGL();
 
         openCL.loadProgramFromFile("cl/ripples.cl");
-        dropKernel = openCL.loadKernel("drop2D");
-        ripplesKernel = openCL.loadKernel("ripples2D");
-        copyKernel = openCL.loadKernel("copy2D");
+        dropKernel = openCL.loadKernel("drop3D");
+        ripplesKernel = openCL.loadKernel("ripples3D");
+        copyKernel = openCL.loadKernel("copy3D");
 
-        shader.load("shaders/ripples");
+//        shader.load("shaders/ripples");
     }
 
     //--------------------------------------------------------------
@@ -36,14 +36,15 @@ namespace entropy
     {
         activeIndex = 0;
 
-        dimensions.x = ofGetWidth();
-        dimensions.y = ofGetHeight();
+        dimensions.x = 256;
+        dimensions.y = 256;
+        dimensions.z = 256;
 
         // Allocate the FBOs.
-        ofFbo::Settings fboSettings;
-        fboSettings.width = dimensions.x;
-        fboSettings.height = dimensions.y;
-        fboSettings.internalformat = GL_RGBA32F;
+//        ofFbo::Settings fboSettings;
+//        fboSettings.width = dimensions.x;
+//        fboSettings.height = dimensions.y;
+//        fboSettings.internalformat = GL_RGBA32F;
 
         for (int i = 0; i < 2; ++i) {
 //            fbos[i].allocate(fboSettings);
@@ -54,9 +55,9 @@ namespace entropy
 //            fbos[i].end();
 
 //            clImages[i].initFromTexture(fbos[i].getTexture());
-            clImages[i].initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
+            clImages[i].initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
         }
-        clImageTmp.initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
+        clImageTmp.initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
 
         // Build a mesh to render a quad.
 //        mesh.clear();
@@ -76,7 +77,7 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::update()
     {
-        if (bRestart || dimensions.x != ofGetWidth() || dimensions.y != ofGetHeight()) {
+        if (bRestart) {// || dimensions.x != ofGetWidth() || dimensions.y != ofGetHeight()) {
             restart();
         }
 
@@ -110,11 +111,11 @@ namespace entropy
         bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
         if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
             dropKernel->setArg(0, clImages[srcIdx]);
-            dropKernel->setArg(1, bDropUnderMouse? ofVec2f(ofGetMouseX(), ofGetMouseY()) : ofVec2f(ofRandomWidth(), ofRandomHeight()));
+            dropKernel->setArg(1, bDropUnderMouse? ofVec3f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY()) : ofVec3f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z)));
             dropKernel->setArg(2, radius);
             dropKernel->setArg(3, ringSize);
             dropKernel->setArg(4, dropColor);
-            dropKernel->run2D(dimensions.x, dimensions.y);
+            dropKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
         }
 
 
@@ -135,12 +136,17 @@ namespace entropy
         ripplesKernel->setArg(1, clImages[dstIdx]);
         ripplesKernel->setArg(2, clImageTmp);
         ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-        ripplesKernel->run2D(dimensions.x, dimensions.y);
-
+        ripplesKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+//
         // Copy temp image to dest (necessary since we can't read_write in OpenCL 1.2)
         copyKernel->setArg(0, clImageTmp);
         copyKernel->setArg(1, clImages[dstIdx]);
-        copyKernel->run2D(dimensions.x, dimensions.y);
+        copyKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+
+        volumetrics.setup(&clImages[dstIdx].getTexture3D(), ofVec3f(1, 1, 1));
+        volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
+
+        activeIndex = 1 - activeIndex;
     }
 
     //--------------------------------------------------------------
@@ -184,18 +190,22 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::draw()
     {
-        ofSetColor(255);
+        ofBackground(0);
 
         //openCL.finish();
 
         ofPushStyle();
         ofSetColor(tintColor);
-        ofEnableAlphaBlending();
-//        fbos[activeIndex].draw(0, 0);
-        clImages[activeIndex].getTexture().draw(0, 0);
-        ofPopStyle();
+//        ofEnableAlphaBlending();
+//        clImages[activeIndex].getTexture().draw(0, 0);
 
-        activeIndex = 1 - activeIndex;
+        cam.begin();
+        {
+            volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
+        }
+        cam.end();
+
+        ofPopStyle();
 
         if (bGuiVisible) {
             imGui();

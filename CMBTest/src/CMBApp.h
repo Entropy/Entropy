@@ -29,7 +29,7 @@ namespace entropy
 
         void restart();
 
-        ofShader shader;
+//        ofShader shader;
 //        ofVboMesh mesh;
 //        ofFbo fbos[2];
 
@@ -39,8 +39,8 @@ namespace entropy
         msa::OpenCLKernelPtr dropKernel;
         msa::OpenCLKernelPtr ripplesKernel;
         msa::OpenCLKernelPtr copyKernel;
-        msa::OpenCLImage clImages[2];
-        msa::OpenCLImage clImageTmp;
+        OpenCLImage3D clImages[2];
+        OpenCLImage3D clImageTmp;
 
         ofFloatColor tintColor;
         ofFloatColor dropColor;
@@ -56,6 +56,9 @@ namespace entropy
         bool bRestart;
 
         int activeIndex;
+
+        ofEasyCam cam;
+        ofxVolumetrics volumetrics;
 
         // GUI
         void imGui();

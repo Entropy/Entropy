@@ -81,16 +81,16 @@ __kernel void ripples3D(read_only image3d_t srcImage, read_only image3d_t intIma
     //
     //      [2]
     sampler_t smp = CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-    float3 sum = float3(0.0f);
+    float4 sum = float4(0.0f);
     for (int i = 0; i < 6 ; ++i) {
-        sum += read_imagef(srcImage, smp, coords + offset[i]).xyz;
+        sum += read_imagef(srcImage, smp, coords + offset[i]);
     }
 
     //  Make an average and substract the center value.
-    sum = (sum / 3.0f) - read_imagef(intImage, smp, coords).xyz;
+    sum = (sum / 3.0f) - read_imagef(intImage, smp, coords);
     sum *= damping;
 
-    float4 color = (float4)(sum, 1.0f);
+    float4 color = sum;
     write_imagef(dstImage, coords, color);
 };
 

@@ -73,8 +73,8 @@ namespace entropy
     {
         ofLog(OF_LOG_VERBOSE, "OpenCLImage3D::reset3D");
 
-        int numElements = width * height * depth * 4; // TODO, make real
-        if (ofGetGlTypeFromInternal(texture3d->getTextureData().glInternalFormat == GL_FLOAT)) {
+        size_t numElements = width * height * depth * 4; // TODO, make real
+        if (ofGetGlTypeFromInternal(texture3d->getTextureData().glInternalFormat) == GL_FLOAT) {
             numElements *= sizeof(cl_float);
         }
         char *data = new char[numElements];
