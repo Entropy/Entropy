@@ -111,7 +111,7 @@ namespace entropy
         bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
         if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
             dropKernel->setArg(0, clImages[srcIdx]);
-            dropKernel->setArg(1, bDropUnderMouse? ofVec3f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY()) : ofVec3f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z)));
+            dropKernel->setArg(1, bDropUnderMouse? ofVec4f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY(), 0) : ofVec4f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z), 0));
             dropKernel->setArg(2, radius);
             dropKernel->setArg(3, ringSize);
             dropKernel->setArg(4, dropColor);

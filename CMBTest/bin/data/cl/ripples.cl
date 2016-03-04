@@ -28,7 +28,7 @@ __kernel void ripples2D(read_only image2d_t srcImage, read_only image2d_t intIma
     //
     //      [2]
     sampler_t smp = CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-    float4 sum = float4(0.0f);
+    float4 sum = (float4)(0.0f);
     for (int i = 0; i < 4 ; ++i) {
         sum += read_imagef(srcImage, smp, coords + offset[i]);
     }
@@ -50,10 +50,10 @@ __kernel void copy2D(read_only image2d_t srcImage, write_only image2d_t dstImage
 }
 
 //--------------------------------------------------------------
-__kernel void drop3D(write_only image3d_t dstImage, const float3 pos, const float radius, const float ringSize, const float4 color)
+__kernel void drop3D(write_only image3d_t dstImage, const float4 pos, const float radius, const float ringSize, const float4 color)
 {
     int4 coords = (int4)(get_global_id(0), get_global_id(1), get_global_id(2), 0);
-    float3 pnt = (float3)((float)coords.x, (float)coords.y, (float)coords.z);
+    float4 pnt = (float4)((float)coords.x, (float)coords.y, (float)coords.z, 0.0f);
     float dist = distance(pnt, pos);
     if (fabs(dist - radius) < ringSize) {
         write_imagef(dstImage, coords, color);
@@ -81,7 +81,7 @@ __kernel void ripples3D(read_only image3d_t srcImage, read_only image3d_t intIma
     //
     //      [2]
     sampler_t smp = CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-    float4 sum = float4(0.0f);
+    float4 sum = (float4)(0.0f);
     for (int i = 0; i < 6 ; ++i) {
         sum += read_imagef(srcImage, smp, coords + offset[i]);
     }
