@@ -21,12 +21,20 @@ namespace entropy
         bRestart = true;
         bGuiVisible = true;
 
+#ifdef COMPUTE_OPENCL
         openCL.setupFromOpenGL();
 
         openCL.loadProgramFromFile("cl/ripples.cl");
+#ifdef THREE_D
         dropKernel = openCL.loadKernel("drop3D");
         ripplesKernel = openCL.loadKernel("ripples3D");
         copyKernel = openCL.loadKernel("copy3D");
+#else
+        dropKernel = openCL.loadKernel("drop2D");
+        ripplesKernel = openCL.loadKernel("ripples2D");
+        copyKernel = openCL.loadKernel("copy2D");
+#endif  // THREE_D
+#endif  // COMPUTE_OPENCL
 
 //        shader.load("shaders/ripples");
     }
@@ -36,28 +44,44 @@ namespace entropy
     {
         activeIndex = 0;
 
+#ifdef THREE_D
         dimensions.x = 256;
         dimensions.y = 256;
         dimensions.z = 256;
+#else
+        dimensions.x = ofGetWidth();
+        dimensions.y = ofGetHeight();
 
         // Allocate the FBOs.
-//        ofFbo::Settings fboSettings;
-//        fboSettings.width = dimensions.x;
-//        fboSettings.height = dimensions.y;
-//        fboSettings.internalformat = GL_RGBA32F;
+        ofFbo::Settings fboSettings;
+        fboSettings.width = dimensions.x;
+        fboSettings.height = dimensions.y;
+        fboSettings.internalformat = GL_RGBA32F;
+#endif  // THREE_D
 
         for (int i = 0; i < 2; ++i) {
-//            fbos[i].allocate(fboSettings);
-//            fbos[i].begin();
-//            {
-//                ofClear(0, 0);
-//            }
-//            fbos[i].end();
-
-//            clImages[i].initFromTexture(fbos[i].getTexture());
+#ifdef COMPUTE_OPENCL
+#ifdef THREE_D
             clImages[i].initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
+#else
+            clImages[i].initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
+#endif  // THREE_D
+#endif  // COMPUTE_OPENCL
+
+            //fbos[i].allocate(fboSettings);
+            //fbos[i].begin();
+            //{
+            //    ofClear(0, 0);
+            //}
+            //fbos[i].end();
         }
+#ifdef COMPUTE_OPENCL
+#ifdef THREE_D
         clImageTmp.initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
+#else
+        clImageTmp.initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
+#endif  // THREE_D
+#endif  // COMPUTE_OPENCL
 
         // Build a mesh to render a quad.
 //        mesh.clear();
@@ -81,16 +105,40 @@ namespace entropy
             restart();
         }
 
-        // Add new drops.
-//        ofPushStyle();
-//        ofPushMatrix();
-
         int srcIdx = (activeIndex + 1) % 2;
         int dstIdx = activeIndex;
 
+        // Add new drops.
+        bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
+        if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
+#ifdef COMPUTE_OPENCL
+            dropKernel->setArg(0, clImages[srcIdx]);
+#ifdef THREE_D
+            dropKernel->setArg(1, bDropUnderMouse ? ofVec4f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY(), 0) : ofVec4f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z), 0));
+#else
+            dropKernel->setArg(1, bDropUnderMouse ? ofVec2f(ofGetMouseX(), ofGetMouseY()) : ofVec2f(ofRandom(dimensions.x), ofRandom(dimensions.y)));
+#endif  // THREE_D
+
+            dropKernel->setArg(2, radius);
+            dropKernel->setArg(3, ringSize);
+            dropKernel->setArg(4, dropColor);
+#ifdef THREE_D
+            dropKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+#else
+            dropKernel->run2D(dimensions.x, dimensions.y);
+#endif  // THREE_D
+
+            openCL.finish();
+#endif  // COMPUTE_OPENCL
+
+        
+
+//        ofPushStyle();
+//        ofPushMatrix();
+
 //        fbos[srcIdx].begin();
 //        {
-//            bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
+//            
 //            if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
 //                ofSetColor(dropColor);
 //                ofNoFill();
@@ -107,17 +155,8 @@ namespace entropy
 //        ofPopMatrix();
 //        ofPopStyle();
 
-        // Add new drops.
-        bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
-        if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
-            dropKernel->setArg(0, clImages[srcIdx]);
-            dropKernel->setArg(1, bDropUnderMouse? ofVec4f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY(), 0) : ofVec4f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z), 0));
-            dropKernel->setArg(2, radius);
-            dropKernel->setArg(3, ringSize);
-            dropKernel->setArg(4, dropColor);
-            dropKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+            
         }
-
 
         // Layer the drops.
 //        fbos[dstIdx].begin();
@@ -132,19 +171,36 @@ namespace entropy
 //        fbos[dstIdx].end();
 
         // Layer the drops.
+#ifdef COMPUTE_OPENCL
         ripplesKernel->setArg(0, clImages[srcIdx]);
         ripplesKernel->setArg(1, clImages[dstIdx]);
         ripplesKernel->setArg(2, clImageTmp);
         ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+#ifdef THREE_D
         ripplesKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
-//
+#else
+        ripplesKernel->run2D(dimensions.x, dimensions.y);
+#endif  // THREE_D
+
+        openCL.finish();
+
         // Copy temp image to dest (necessary since we can't read_write in OpenCL 1.2)
         copyKernel->setArg(0, clImageTmp);
         copyKernel->setArg(1, clImages[dstIdx]);
+#ifdef THREE_D
         copyKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
 
+        openCL.finish();
+
         volumetrics.setup(&clImages[dstIdx].getTexture3D(), ofVec3f(1, 1, 1));
+#else
+        copyKernel->run2D(dimensions.x, dimensions.y);
+#endif  // THREE_D
+#endif  // COMPUTE_OPENCL
+
+#ifdef THREE_D
         volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
+#endif  // THREE_D
 
         activeIndex = 1 - activeIndex;
     }
@@ -192,18 +248,23 @@ namespace entropy
     {
         ofBackground(0);
 
-        //openCL.finish();
-
         ofPushStyle();
         ofSetColor(tintColor);
-//        ofEnableAlphaBlending();
-//        clImages[activeIndex].getTexture().draw(0, 0);
 
+#ifdef THREE_D
         cam.begin();
         {
             volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
         }
         cam.end();
+#else
+        int drawIdx = 1- activeIndex;
+        ofEnableAlphaBlending();
+#ifdef COMPUTE_OPENCL
+        clImages[drawIdx].getTexture().draw(0, 0);
+#endif  // COMPUTE_OPENCL
+//        fbos[drawIdx].draw(0, 0);
+#endif  // THREE_D
 
         ofPopStyle();
 
