@@ -99,6 +99,9 @@
     <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{f96df255-164c-46e7-9954-c47fe04c26ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{9dd25da0-c522-446d-8f98-8e992cc48b11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.h">
@@ -189,6 +192,12 @@
   <ItemGroup>
     <None Include="bin\data\cl\ripples.cl">
       <Filter>cl</Filter>
+    </None>
+    <None Include="bin\data\shaders\ripples.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\ripples.vert">
+      <Filter>shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

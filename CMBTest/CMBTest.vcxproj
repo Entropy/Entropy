@@ -239,6 +239,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\cl\ripples.cl" />
+    <None Include="bin\data\shaders\ripples.frag" />
+    <None Include="bin\data\shaders\ripples.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

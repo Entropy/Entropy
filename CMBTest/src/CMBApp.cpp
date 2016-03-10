@@ -6,6 +6,7 @@ namespace entropy
     void CMBApp::setup()
     {
         ofSetLogLevel(OF_LOG_VERBOSE);
+        ofSetVerticalSync(false);
 
         tintColor = ofColor::white;
         dropColor = ofColor::red;
@@ -36,7 +37,9 @@ namespace entropy
 #endif  // THREE_D
 #endif  // COMPUTE_OPENCL
 
-//        shader.load("shaders/ripples");
+#ifdef COMPUTE_GLSL
+        shader.load("shaders/ripples");
+#endif
     }
 
     //--------------------------------------------------------------
@@ -52,11 +55,14 @@ namespace entropy
         dimensions.x = ofGetWidth();
         dimensions.y = ofGetHeight();
 
+#ifdef COMPUTE_GLSL
         // Allocate the FBOs.
         ofFbo::Settings fboSettings;
         fboSettings.width = dimensions.x;
         fboSettings.height = dimensions.y;
         fboSettings.internalformat = GL_RGBA32F;
+#endif  // COMPUTE_GLSL
+
 #endif  // THREE_D
 
         for (int i = 0; i < 2; ++i) {
@@ -68,13 +74,16 @@ namespace entropy
 #endif  // THREE_D
 #endif  // COMPUTE_OPENCL
 
-            //fbos[i].allocate(fboSettings);
-            //fbos[i].begin();
-            //{
-            //    ofClear(0, 0);
-            //}
-            //fbos[i].end();
+#ifdef COMPUTE_GLSL
+            fbos[i].allocate(fboSettings);
+            fbos[i].begin();
+            {
+                ofClear(0, 0);
+            }
+            fbos[i].end();
+#endif  // COMPUTE_GLSL
         }
+
 #ifdef COMPUTE_OPENCL
 #ifdef THREE_D
         clImageTmp.initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
@@ -83,17 +92,21 @@ namespace entropy
 #endif  // THREE_D
 #endif  // COMPUTE_OPENCL
 
+#ifdef COMPUTE_GLSL
         // Build a mesh to render a quad.
-//        mesh.clear();
-//        mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
-//        mesh.addVertex(ofVec3f(0, 0));
-//        mesh.addVertex(ofVec3f(width, 0));
-//        mesh.addVertex(ofVec3f(width, height));
-//        mesh.addVertex(ofVec3f(0, height));
-//        mesh.addTexCoord(ofVec2f(0, 0));
-//        mesh.addTexCoord(ofVec2f(width, 0));
-//        mesh.addTexCoord(ofVec2f(width, height));
-//        mesh.addTexCoord(ofVec2f(0, height));
+        mesh.clear();
+        mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+
+        mesh.addVertex(ofVec3f(0, 0));
+        mesh.addVertex(ofVec3f(dimensions.x, 0));
+        mesh.addVertex(ofVec3f(dimensions.x, dimensions.y));
+        mesh.addVertex(ofVec3f(0, dimensions.y));
+
+        mesh.addTexCoord(ofVec2f(0, 0));
+        mesh.addTexCoord(ofVec2f(dimensions.x, 0));
+        mesh.addTexCoord(ofVec2f(dimensions.x, dimensions.y));
+        mesh.addTexCoord(ofVec2f(0, dimensions.y));
+#endif  // COMPUTE_GLSL
 
         bRestart = false;
     }
@@ -131,44 +144,30 @@ namespace entropy
             openCL.finish();
 #endif  // COMPUTE_OPENCL
 
-        
+#ifdef COMPUTE_GLSL
+            ofPushStyle();
+            ofPushMatrix();
 
-//        ofPushStyle();
-//        ofPushMatrix();
+            fbos[srcIdx].begin();
+            {
 
-//        fbos[srcIdx].begin();
-//        {
-//            
-//            if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
-//                ofSetColor(dropColor);
-//                ofNoFill();
-//                if (bDropUnderMouse) {
-//                    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
-//                }
-//                else {
-//                    ofDrawCircle(ofRandomWidth(), ofRandomHeight(), radius);
-//                }
-//            }
-//        }
-//        fbos[srcIdx].end();
+                if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
+                    ofSetColor(dropColor);
+                    ofNoFill();
+                    if (bDropUnderMouse) {
+                        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
+                    }
+                    else {
+                        ofDrawCircle(ofRandomWidth(), ofRandomHeight(), radius);
+                    }
+                }
+            }
+            fbos[srcIdx].end();
 
-//        ofPopMatrix();
-//        ofPopStyle();
-
-            
+            ofPopMatrix();
+            ofPopStyle();
+#endif  // COMPUTE_GLSL
         }
-
-        // Layer the drops.
-//        fbos[dstIdx].begin();
-//        shader.begin();
-//        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
-//        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
-//        shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-//        {
-//            mesh.draw();
-//        }
-//        shader.end();
-//        fbos[dstIdx].end();
 
         // Layer the drops.
 #ifdef COMPUTE_OPENCL
@@ -197,6 +196,20 @@ namespace entropy
         copyKernel->run2D(dimensions.x, dimensions.y);
 #endif  // THREE_D
 #endif  // COMPUTE_OPENCL
+
+#ifdef COMPUTE_GLSL
+        // Layer the drops.
+        fbos[dstIdx].begin();
+        shader.begin();
+        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
+        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
+        shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+        {
+            mesh.draw();
+        }
+        shader.end();
+        fbos[dstIdx].end();
+#endif  // COMPUTE_GLSL
 
 #ifdef THREE_D
         volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
@@ -260,10 +273,15 @@ namespace entropy
 #else
         int drawIdx = 1- activeIndex;
         ofEnableAlphaBlending();
+
 #ifdef COMPUTE_OPENCL
         clImages[drawIdx].getTexture().draw(0, 0);
 #endif  // COMPUTE_OPENCL
-//        fbos[drawIdx].draw(0, 0);
+
+#ifdef COMPUTE_GLSL
+        fbos[drawIdx].draw(0, 0);
+#endif  // COMPUTE_GLSL
+
 #endif  // THREE_D
 
         ofPopStyle();

@@ -2,7 +2,8 @@
 
 #define COMPUTE_OPENCL 1
 //#define COMPUTE_GLSL 1
-#define THREE_D 1
+
+//#define THREE_D 1
 
 #include "ofMain.h"
 #include "ofxImGui.h"
