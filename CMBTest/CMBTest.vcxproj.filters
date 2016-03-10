@@ -28,6 +28,15 @@
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenCLImage3D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMBApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
@@ -40,26 +49,17 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\imgui.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\imgui_demo.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\imgui_draw.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenCLImage3D.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\CMBApp.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,14 +81,23 @@
     <Filter Include="addons\ofxVolumetrics\src">
       <UniqueIdentifier>{5ed0eb7a-8faf-4cd2-a29d-eed10061b896}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui">
-      <UniqueIdentifier>{9a994733-6f06-4a37-964a-2d7fe37aa8e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\src">
-      <UniqueIdentifier>{ba14eab7-2e56-40ae-9fd4-dc739da0e4e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cl">
       <UniqueIdentifier>{f7e7935a-3051-40bd-9ea3-f43bd5c88aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui">
+      <UniqueIdentifier>{b16de296-95c4-4d6a-9972-893dfda05936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\src">
+      <UniqueIdentifier>{3fe5f682-9a7b-46cc-a1a5-9b1c54a38d0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs">
+      <UniqueIdentifier>{1a3e83ce-5a3c-4ad2-bdbb-5ff7083f52f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs\imgui">
+      <UniqueIdentifier>{8d1fbef3-530c-4947-a8d0-f6656d394cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs\imgui\src">
+      <UniqueIdentifier>{f96df255-164c-46e7-9954-c47fe04c26ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +140,12 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpenCLImage3D.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMBApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
@@ -146,32 +161,26 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\imgui.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\imgui_internal.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\stb_rect_pack.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\stb_textedit.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpenCLImage3D.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\CMBApp.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
