@@ -7,28 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */; };
-		0A69358829568EC4A9A91686 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */; };
 		1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88527E759F85F404444CFFE8 /* ofxHDF5Container.cpp */; };
-		27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */; };
-		2F2B8C463E75633350F01DE2 /* LICENSE in Sources */ = {isa = PBXBuildFile; fileRef = 9B250D3B3DC979D80D25C763 /* LICENSE */; };
 		41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306803EF452C9A3BD934238E /* ofxHDF5File.cpp */; };
-		462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */; };
 		4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81346CC16A493DF75801EF80 /* ofxHDF5DataSet.cpp */; };
-		601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D04044B3DCB8D183352B119 /* imgui.cpp */; };
 		6461D6F61C7523DB00117A81 /* CellRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6F41C7523DB00117A81 /* CellRenderer.cpp */; };
 		6461D7021C752DAE00117A81 /* ofxTexture2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FC1C752DAE00117A81 /* ofxTexture2d.cpp */; };
 		6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */; };
 		6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */; };
 		6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D70B1C75339700117A81 /* VolumeRenderer.cpp */; };
 		6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6476845C1C6BF112004C1E60 /* ofxRange.cpp */; };
+		64CCB83D1CA3302C0002DD92 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8261CA3302C0002DD92 /* imgui.cpp */; };
+		64CCB83E1CA3302C0002DD92 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */; };
+		64CCB83F1CA3302C0002DD92 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8291CA3302C0002DD92 /* imgui_draw.cpp */; };
+		64CCB8401CA3302C0002DD92 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB82C1CA3302C0002DD92 /* README.md */; };
+		64CCB8411CA3302C0002DD92 /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8311CA3302C0002DD92 /* BaseEngine.cpp */; };
+		64CCB8421CA3302C0002DD92 /* BaseTheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8331CA3302C0002DD92 /* BaseTheme.cpp */; };
+		64CCB8431CA3302C0002DD92 /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8351CA3302C0002DD92 /* EngineGLFW.cpp */; };
+		64CCB8441CA3302C0002DD92 /* EngineOpenGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8371CA3302C0002DD92 /* EngineOpenGLES.cpp */; };
+		64CCB8451CA3302C0002DD92 /* ofxImGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB83A1CA3302C0002DD92 /* ofxImGui.cpp */; };
 		992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */; };
-		D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E2F8C08588DCF287F63982 /* imgui_demo.cpp */; };
-		DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
-		E5A8B10F278E540A1F9F39E6 /* ofxImGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,30 +63,22 @@
 /* Begin PBXFileReference section */
 		011A73DD07D35B7E6A473509 /* H5FDmpio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmpio.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmpio.h; sourceTree = SOURCE_ROOT; };
 		011D4D4ABBEACF71A63867AA /* H5FDsec2.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDsec2.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDsec2.h; sourceTree = SOURCE_ROOT; };
-		0BB9F7D314FADD51BAB96878 /* ThemeTest.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ThemeTest.h; path = ../../../addons/ofxImGui/src/ThemeTest.h; sourceTree = SOURCE_ROOT; };
-		0D04044B3DCB8D183352B119 /* imgui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui.cpp; path = ../../../addons/ofxImGui/src/imgui.cpp; sourceTree = SOURCE_ROOT; };
 		0E97563AB646408F12C71182 /* H5FDcore.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDcore.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDcore.h; sourceTree = SOURCE_ROOT; };
 		0F889FA2478CE9C595460FFE /* H5FaccProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FaccProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FaccProp.h; sourceTree = SOURCE_ROOT; };
 		190DD19BCD4F93E51094E217 /* H5overflow.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5overflow.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5overflow.h; sourceTree = SOURCE_ROOT; };
-		19E2F8C08588DCF287F63982 /* imgui_demo.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_demo.cpp; path = ../../../addons/ofxImGui/src/imgui_demo.cpp; sourceTree = SOURCE_ROOT; };
 		1A4D47B1BDC1BABCC7DDB326 /* H5Ppublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Ppublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Ppublic.h; sourceTree = SOURCE_ROOT; };
 		1C1E517A6D82866FA9F3519F /* H5DataSet.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DataSet.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DataSet.h; sourceTree = SOURCE_ROOT; };
 		1C452A6340B8012A70891BD0 /* H5PacketTable.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PacketTable.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PacketTable.h; sourceTree = SOURCE_ROOT; };
 		1DD53794D2626F307A036311 /* H5Opublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Opublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Opublic.h; sourceTree = SOURCE_ROOT; };
 		22072E444BEB50845A264F63 /* ofxHDF5Group.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5Group.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5Group.cpp; sourceTree = SOURCE_ROOT; };
-		2299DFFB357F7F51891A673B /* stb_truetype.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_truetype.h; path = ../../../addons/ofxImGui/src/stb_truetype.h; sourceTree = SOURCE_ROOT; };
 		236888A1C2774899875451BC /* H5Cpp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Cpp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Cpp.h; sourceTree = SOURCE_ROOT; };
 		2B8CAA4FB6DC72F648F33262 /* H5DSpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DSpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DSpublic.h; sourceTree = SOURCE_ROOT; };
 		2CF1F1FA40D7031631652994 /* ofxHDF5Container.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5Container.h; path = ../../../addons/ofxHDF5/src/ofxHDF5Container.h; sourceTree = SOURCE_ROOT; };
-		2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EngineGLFW.cpp; path = ../../../addons/ofxImGui/src/EngineGLFW.cpp; sourceTree = SOURCE_ROOT; };
 		2FBAFB78938913AA11A28766 /* H5PropList.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5PropList.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5PropList.h; sourceTree = SOURCE_ROOT; };
 		306803EF452C9A3BD934238E /* ofxHDF5File.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5File.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5File.cpp; sourceTree = SOURCE_ROOT; };
-		3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EngineOpenGLES.cpp; path = ../../../addons/ofxImGui/src/EngineOpenGLES.cpp; sourceTree = SOURCE_ROOT; };
 		36CFA3AED41BB0C398B588F2 /* H5FDpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDpublic.h; sourceTree = SOURCE_ROOT; };
 		387F689A83B2F9A175EF47CA /* H5pubconf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5pubconf.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5pubconf.h; sourceTree = SOURCE_ROOT; };
 		3992A4E3DAACB56AD4C545A2 /* ricehdf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ricehdf.h; path = ../../../addons/ofxHDF5/libs/szip/include/ricehdf.h; sourceTree = SOURCE_ROOT; };
-		3A9013A02246381F14572188 /* EngineGLFW.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EngineGLFW.h; path = ../../../addons/ofxImGui/src/EngineGLFW.h; sourceTree = SOURCE_ROOT; };
-		3AB24D308736280A07568671 /* imconfig.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imconfig.h; path = ../../../addons/ofxImGui/src/imconfig.h; sourceTree = SOURCE_ROOT; };
 		3D19030E0961634513042548 /* H5Lpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Lpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Lpublic.h; sourceTree = SOURCE_ROOT; };
 		3D271E1F451A97FA491E5673 /* H5ACpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5ACpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5ACpublic.h; sourceTree = SOURCE_ROOT; };
 		3EC7F1A5FA7C1BD139A8D793 /* H5Classes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Classes.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Classes.h; sourceTree = SOURCE_ROOT; };
@@ -98,7 +90,6 @@
 		53CA9DB40A4B560AADAD4381 /* H5Exception.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Exception.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Exception.h; sourceTree = SOURCE_ROOT; };
 		547F0D671A00BFF38A72F687 /* H5IMpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IMpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IMpublic.h; sourceTree = SOURCE_ROOT; };
 		57F7FE22159D4A6D2264A0A1 /* H5CommonFG.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5CommonFG.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5CommonFG.h; sourceTree = SOURCE_ROOT; };
-		5E33620A686121EEB6FB1E8B /* stb_textedit.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_textedit.h; path = ../../../addons/ofxImGui/src/stb_textedit.h; sourceTree = SOURCE_ROOT; };
 		64116D0D1C69364700A5A155 /* render.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.frag; sourceTree = "<group>"; };
 		64116D0E1C69364700A5A155 /* render.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.vert; sourceTree = "<group>"; };
 		6461D6F41C7523DB00117A81 /* CellRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CellRenderer.cpp; sourceTree = "<group>"; };
@@ -120,9 +111,30 @@
 		6476845C1C6BF112004C1E60 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
 		6476845D1C6BF112004C1E60 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../Shared/src/ofxRange.h; sourceTree = "<group>"; };
 		649C003F1C7BACE0000954E9 /* render.geom */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.geom; sourceTree = "<group>"; };
+		64CCB8261CA3302C0002DD92 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
+		64CCB8271CA3302C0002DD92 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
+		64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
+		64CCB8291CA3302C0002DD92 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
+		64CCB82A1CA3302C0002DD92 /* imgui_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_internal.h; sourceTree = "<group>"; };
+		64CCB82B1CA3302C0002DD92 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		64CCB82C1CA3302C0002DD92 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		64CCB82D1CA3302C0002DD92 /* stb_rect_pack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_rect_pack.h; sourceTree = "<group>"; };
+		64CCB82E1CA3302C0002DD92 /* stb_textedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_textedit.h; sourceTree = "<group>"; };
+		64CCB82F1CA3302C0002DD92 /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		64CCB8311CA3302C0002DD92 /* BaseEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseEngine.cpp; sourceTree = "<group>"; };
+		64CCB8321CA3302C0002DD92 /* BaseEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseEngine.h; sourceTree = "<group>"; };
+		64CCB8331CA3302C0002DD92 /* BaseTheme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseTheme.cpp; sourceTree = "<group>"; };
+		64CCB8341CA3302C0002DD92 /* BaseTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTheme.h; sourceTree = "<group>"; };
+		64CCB8351CA3302C0002DD92 /* EngineGLFW.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineGLFW.cpp; sourceTree = "<group>"; };
+		64CCB8361CA3302C0002DD92 /* EngineGLFW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineGLFW.h; sourceTree = "<group>"; };
+		64CCB8371CA3302C0002DD92 /* EngineOpenGLES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineOpenGLES.cpp; sourceTree = "<group>"; };
+		64CCB8381CA3302C0002DD92 /* EngineOpenGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineOpenGLES.h; sourceTree = "<group>"; };
+		64CCB8391CA3302C0002DD92 /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
+		64CCB83A1CA3302C0002DD92 /* ofxImGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxImGui.cpp; sourceTree = "<group>"; };
+		64CCB83B1CA3302C0002DD92 /* ofxImGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxImGui.h; sourceTree = "<group>"; };
+		64CCB83C1CA3302C0002DD92 /* ThemeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeTest.h; sourceTree = "<group>"; };
 		674AA20D61E496A5BF7DCAE3 /* H5Epublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Epublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Epublic.h; sourceTree = SOURCE_ROOT; };
 		67E4B9D99D29505E49BE45D8 /* ofxHDF5Group.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxHDF5Group.h; path = ../../../addons/ofxHDF5/src/ofxHDF5Group.h; sourceTree = SOURCE_ROOT; };
-		6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = imgui_draw.cpp; path = ../../../addons/ofxImGui/src/imgui_draw.cpp; sourceTree = SOURCE_ROOT; };
 		6CEF50BA46149804B9D71A4B /* H5ArrayType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5ArrayType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5ArrayType.h; sourceTree = SOURCE_ROOT; };
 		6ED7FBD04E8FE2220A48902E /* H5StrType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5StrType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5StrType.h; sourceTree = SOURCE_ROOT; };
 		6F3992BA2B87BCE333B60DB8 /* H5DOpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DOpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DOpublic.h; sourceTree = SOURCE_ROOT; };
@@ -141,10 +153,8 @@
 		8843E91E64D3C9092619C5AB /* H5Location.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Location.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Location.h; sourceTree = SOURCE_ROOT; };
 		88527E759F85F404444CFFE8 /* ofxHDF5Container.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxHDF5Container.cpp; path = ../../../addons/ofxHDF5/src/ofxHDF5Container.cpp; sourceTree = SOURCE_ROOT; };
 		8BB40FFFF0CD9CC58F779753 /* H5Group.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Group.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Group.h; sourceTree = SOURCE_ROOT; };
-		8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseTheme.cpp; path = ../../../addons/ofxImGui/src/BaseTheme.cpp; sourceTree = SOURCE_ROOT; };
 		99CC6CE9A03E0AAFC0A890C6 /* H5IdComponent.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IdComponent.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IdComponent.h; sourceTree = SOURCE_ROOT; };
 		99CDC3EACA615CC25E0FF699 /* H5AtomType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5AtomType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5AtomType.h; sourceTree = SOURCE_ROOT; };
-		9B250D3B3DC979D80D25C763 /* LICENSE */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 30; name = LICENSE; path = ../../../addons/ofxImGui/src/LICENSE; sourceTree = SOURCE_ROOT; };
 		9BF8218EF4D17B046D1A5771 /* H5FDmpi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmpi.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmpi.h; sourceTree = SOURCE_ROOT; };
 		A9BA4E0D936389AA5E854CE0 /* H5VarLenType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5VarLenType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5VarLenType.h; sourceTree = SOURCE_ROOT; };
 		AAF23FD4168283E17D35885F /* H5Apublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Apublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Apublic.h; sourceTree = SOURCE_ROOT; };
@@ -153,7 +163,6 @@
 		ADE6DFE661F62A513AE0745A /* H5Library.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Library.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Library.h; sourceTree = SOURCE_ROOT; };
 		B103CAF901276E419947318B /* H5api_adpt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5api_adpt.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5api_adpt.h; sourceTree = SOURCE_ROOT; };
 		B11D9CAFB1DE8978FCB58EBA /* H5Include.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Include.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Include.h; sourceTree = SOURCE_ROOT; };
-		B462DABAC6A023A1D88702C7 /* BaseTheme.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseTheme.h; path = ../../../addons/ofxImGui/src/BaseTheme.h; sourceTree = SOURCE_ROOT; };
 		B55812F1B9B936CCA3A279B6 /* H5Object.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Object.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Object.h; sourceTree = SOURCE_ROOT; };
 		BD6D6210B7DDD2EC7319B45E /* H5public.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5public.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5public.h; sourceTree = SOURCE_ROOT; };
 		BD9AD0064704FD187C84302C /* H5FDmulti.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5FDmulti.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5FDmulti.h; sourceTree = SOURCE_ROOT; };
@@ -163,18 +172,12 @@
 		C39ABF354482E4F38B15DCC8 /* hdf5_hl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = hdf5_hl.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/hdf5_hl.h; sourceTree = SOURCE_ROOT; };
 		C53B46EE6F532275FA869935 /* H5Ipublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Ipublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Ipublic.h; sourceTree = SOURCE_ROOT; };
 		C8045C87DA373A9FDA443CCB /* H5DxferProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5DxferProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5DxferProp.h; sourceTree = SOURCE_ROOT; };
-		CB5C15EA0881D35A88C22937 /* EngineOpenGLES.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EngineOpenGLES.h; path = ../../../addons/ofxImGui/src/EngineOpenGLES.h; sourceTree = SOURCE_ROOT; };
-		CB62DD4C67F55B82B7612A6C /* stb_rect_pack.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = stb_rect_pack.h; path = ../../../addons/ofxImGui/src/stb_rect_pack.h; sourceTree = SOURCE_ROOT; };
 		CC904DD033A55F4ED1255E88 /* H5Tpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Tpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Tpublic.h; sourceTree = SOURCE_ROOT; };
 		CCBA27A814C7A66F3476BB93 /* H5Fpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Fpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Fpublic.h; sourceTree = SOURCE_ROOT; };
 		CDE2FDC08C290C44546AA529 /* H5EnumType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5EnumType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5EnumType.h; sourceTree = SOURCE_ROOT; };
 		CE2FDD8F5F6DD69B4CA72C2D /* H5AbstractDs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5AbstractDs.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5AbstractDs.h; sourceTree = SOURCE_ROOT; };
-		D0C43FAEA51D749B84D05DA5 /* imgui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgui.h; path = ../../../addons/ofxImGui/src/imgui.h; sourceTree = SOURCE_ROOT; };
-		D566F9FF3B8D59F10442D3F3 /* imgui_internal.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgui_internal.h; path = ../../../addons/ofxImGui/src/imgui_internal.h; sourceTree = SOURCE_ROOT; };
 		D6A569559FF08E0AE9625ADF /* H5version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5version.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5version.h; sourceTree = SOURCE_ROOT; };
-		D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseEngine.cpp; path = ../../../addons/ofxImGui/src/BaseEngine.cpp; sourceTree = SOURCE_ROOT; };
 		D9044D3F9A581C6113A8C34E /* H5File.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5File.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5File.h; sourceTree = SOURCE_ROOT; };
-		D91100C1FBA245AD6CB55BD3 /* ofxImGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxImGui.h; path = ../../../addons/ofxImGui/src/ofxImGui.h; sourceTree = SOURCE_ROOT; };
 		E15310BEFCC51F755E57CA6B /* H5Rpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Rpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Rpublic.h; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* VaporTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaporTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,9 +197,7 @@
 		F5B89A9AEC4E8A1F8BEBDD02 /* szlib.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = szlib.h; path = ../../../addons/ofxHDF5/libs/szip/include/szlib.h; sourceTree = SOURCE_ROOT; };
 		F649CFADAFC1A494162A1D0D /* H5Epubgen.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5Epubgen.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5Epubgen.h; sourceTree = SOURCE_ROOT; };
 		F9E93CCC5F39726505D4DA8B /* H5OcreatProp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5OcreatProp.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5OcreatProp.h; sourceTree = SOURCE_ROOT; };
-		FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxImGui.cpp; path = ../../../addons/ofxImGui/src/ofxImGui.cpp; sourceTree = SOURCE_ROOT; };
 		FCE25504D67A7F3DBDCD4353 /* H5TBpublic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5TBpublic.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5TBpublic.h; sourceTree = SOURCE_ROOT; };
-		FD24C7DBE373C3B79648C23F /* BaseEngine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseEngine.h; path = ../../../addons/ofxImGui/src/BaseEngine.h; sourceTree = SOURCE_ROOT; };
 		FF12690F820C0F0418861C3F /* H5IntType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5IntType.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5IntType.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -275,39 +276,65 @@
 			name = shared_src;
 			sourceTree = "<group>";
 		};
+		64CCB8231CA3302C0002DD92 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				64CCB8241CA3302C0002DD92 /* imgui */,
+			);
+			name = libs;
+			path = ../../../addons/ofxImGui/libs;
+			sourceTree = "<group>";
+		};
+		64CCB8241CA3302C0002DD92 /* imgui */ = {
+			isa = PBXGroup;
+			children = (
+				64CCB8251CA3302C0002DD92 /* src */,
+			);
+			path = imgui;
+			sourceTree = "<group>";
+		};
+		64CCB8251CA3302C0002DD92 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				64CCB8261CA3302C0002DD92 /* imgui.cpp */,
+				64CCB8271CA3302C0002DD92 /* imgui.h */,
+				64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */,
+				64CCB8291CA3302C0002DD92 /* imgui_draw.cpp */,
+				64CCB82A1CA3302C0002DD92 /* imgui_internal.h */,
+				64CCB82B1CA3302C0002DD92 /* LICENSE */,
+				64CCB82C1CA3302C0002DD92 /* README.md */,
+				64CCB82D1CA3302C0002DD92 /* stb_rect_pack.h */,
+				64CCB82E1CA3302C0002DD92 /* stb_textedit.h */,
+				64CCB82F1CA3302C0002DD92 /* stb_truetype.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		64CCB8301CA3302C0002DD92 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				64CCB8311CA3302C0002DD92 /* BaseEngine.cpp */,
+				64CCB8321CA3302C0002DD92 /* BaseEngine.h */,
+				64CCB8331CA3302C0002DD92 /* BaseTheme.cpp */,
+				64CCB8341CA3302C0002DD92 /* BaseTheme.h */,
+				64CCB8351CA3302C0002DD92 /* EngineGLFW.cpp */,
+				64CCB8361CA3302C0002DD92 /* EngineGLFW.h */,
+				64CCB8371CA3302C0002DD92 /* EngineOpenGLES.cpp */,
+				64CCB8381CA3302C0002DD92 /* EngineOpenGLES.h */,
+				64CCB8391CA3302C0002DD92 /* imconfig.h */,
+				64CCB83A1CA3302C0002DD92 /* ofxImGui.cpp */,
+				64CCB83B1CA3302C0002DD92 /* ofxImGui.h */,
+				64CCB83C1CA3302C0002DD92 /* ThemeTest.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxImGui/src;
+			sourceTree = "<group>";
+		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = local_addons;
-			sourceTree = "<group>";
-		};
-		6FF8AA08E79CFA38503CDB0E /* src */ = {
-			isa = PBXGroup;
-			children = (
-				D7C7BDAD29F580A47FF56B52 /* BaseEngine.cpp */,
-				FD24C7DBE373C3B79648C23F /* BaseEngine.h */,
-				8E362ECECD928E7B3EBA5C53 /* BaseTheme.cpp */,
-				B462DABAC6A023A1D88702C7 /* BaseTheme.h */,
-				2F1C686ADB50E8F79292BA80 /* EngineGLFW.cpp */,
-				3A9013A02246381F14572188 /* EngineGLFW.h */,
-				3174462C64E918D8DA23041B /* EngineOpenGLES.cpp */,
-				CB5C15EA0881D35A88C22937 /* EngineOpenGLES.h */,
-				3AB24D308736280A07568671 /* imconfig.h */,
-				0D04044B3DCB8D183352B119 /* imgui.cpp */,
-				D0C43FAEA51D749B84D05DA5 /* imgui.h */,
-				19E2F8C08588DCF287F63982 /* imgui_demo.cpp */,
-				6A4FA72EE9A6800A239F59EE /* imgui_draw.cpp */,
-				D566F9FF3B8D59F10442D3F3 /* imgui_internal.h */,
-				9B250D3B3DC979D80D25C763 /* LICENSE */,
-				FB3FB0F9768F55BDC2492FEE /* ofxImGui.cpp */,
-				D91100C1FBA245AD6CB55BD3 /* ofxImGui.h */,
-				CB62DD4C67F55B82B7612A6C /* stb_rect_pack.h */,
-				5E33620A686121EEB6FB1E8B /* stb_textedit.h */,
-				2299DFFB357F7F51891A673B /* stb_truetype.h */,
-				0BB9F7D314FADD51BAB96878 /* ThemeTest.h */,
-			);
-			name = src;
 			sourceTree = "<group>";
 		};
 		74564896E7C0BC53F7D35CA8 /* hdf5 */ = {
@@ -321,7 +348,8 @@
 		768C3255AF2F3E1A78DC4DF4 /* ofxImGui */ = {
 			isa = PBXGroup;
 			children = (
-				6FF8AA08E79CFA38503CDB0E /* src */,
+				64CCB8231CA3302C0002DD92 /* libs */,
+				64CCB8301CA3302C0002DD92 /* src */,
 			);
 			name = ofxImGui;
 			sourceTree = "<group>";
@@ -610,26 +638,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				64CCB83D1CA3302C0002DD92 /* imgui.cpp in Sources */,
+				64CCB8421CA3302C0002DD92 /* BaseTheme.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				64CCB83F1CA3302C0002DD92 /* imgui_draw.cpp in Sources */,
 				6461D6F61C7523DB00117A81 /* CellRenderer.cpp in Sources */,
+				64CCB8441CA3302C0002DD92 /* EngineOpenGLES.cpp in Sources */,
 				6461D7021C752DAE00117A81 /* ofxTexture2d.cpp in Sources */,
+				64CCB8401CA3302C0002DD92 /* README.md in Sources */,
 				1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */,
 				4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */,
+				64CCB8411CA3302C0002DD92 /* BaseEngine.cpp in Sources */,
+				64CCB8451CA3302C0002DD92 /* ofxImGui.cpp in Sources */,
 				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,
+				64CCB8431CA3302C0002DD92 /* EngineGLFW.cpp in Sources */,
 				992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */,
-				DBBE189ECD171A97DCF46C6A /* BaseEngine.cpp in Sources */,
 				6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */,
 				6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */,
 				6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */,
-				27CF6B6E279F8EE58C9D4B90 /* BaseTheme.cpp in Sources */,
-				462C212713EFFA5383B35DAB /* EngineGLFW.cpp in Sources */,
-				000315A9FA4E2F9A09533E05 /* EngineOpenGLES.cpp in Sources */,
+				64CCB83E1CA3302C0002DD92 /* imgui_demo.cpp in Sources */,
 				6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */,
-				601E1F8DC3A7AEC59BF9E606 /* imgui.cpp in Sources */,
-				D51D35526D4E8B32FF695DE1 /* imgui_demo.cpp in Sources */,
-				0A69358829568EC4A9A91686 /* imgui_draw.cpp in Sources */,
-				2F2B8C463E75633350F01DE2 /* LICENSE in Sources */,
-				E5A8B10F278E540A1F9F39E6 /* ofxImGui.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
