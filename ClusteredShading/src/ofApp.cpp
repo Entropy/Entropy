@@ -98,7 +98,7 @@ void ofApp::DrawAllPointLights()
             ofTranslate( light.position.x, light.position.y, light.position.z );
             ofScale( light.radius * 0.1f );
 
-           m_shader.setUniformMatrix3f( "normalMatrix", lb::GetNormalMatrix() );
+            m_shader.setUniformMatrix3f( "normalMatrix", lb::GetNormalMatrix() );
             m_sphere.draw();
         }
         ofPopMatrix();
