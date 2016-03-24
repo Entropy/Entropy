@@ -12,7 +12,7 @@
 
 #pragma include <of_default_uniforms.glsl>
 
-#pragma include <projection_info.glsl>
+#pragma include <view_info.glsl>
 #pragma include <clustered_shading.glsl>
 
 #define saturate(x) clamp(x, 0.0, 1.0)

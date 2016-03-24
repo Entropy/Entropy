@@ -7,10 +7,13 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ClusterGrid.cpp">
+    <ClCompile Include="src\lb\lighting\LightSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ClusterGridDebug.cpp">
+    <ClCompile Include="src\lb\lighting\ClusterGrid.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,9 +35,6 @@
     <ClInclude Include="src\lb\math\Plane.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\lb\math\PointLight.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\lb\math\Rect.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -47,13 +47,22 @@
     <ClInclude Include="src\lb\util\RadixSort.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ClusterGrid.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ClusterGridDebug.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\lb\math\MatrixTools.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\LightSystem.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\PointLight.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGrid.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PerViewUbo.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,6 +75,6 @@
     <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
     <None Include="bin\data\shaders\of_default_uniforms.glsl" />
     <None Include="bin\data\shaders\clustered_shading.glsl" />
-    <None Include="bin\data\shaders\projection_info.glsl" />
+    <None Include="bin\data\shaders\view_info.glsl" />
   </ItemGroup>
 </Project>

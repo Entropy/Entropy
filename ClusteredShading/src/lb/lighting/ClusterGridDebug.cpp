@@ -216,22 +216,7 @@ void lb::ClusterGridDebug::CreateClusterMesh( const lb::ClusterGrid& _clusterGri
     lineColors.push_back( frustumColor );
     lineColors.push_back( frustumColor );
 
-
     m_frustumVbo.setVertexData( lineVertices.data(), lineVertices.size(), GL_STATIC_DRAW );
-
-/*    gl::VboMesh::Layout frustumLayout = gl::VboMesh::Layout().usage( GL_STATIC_DRAW )
-        .attrib( geom::POSITION, 3 )
-        .attrib( geom::COLOR, 3 );
-
-    std::vector<gl::VboMesh::Layout> frustumLayoutList;
-    frustumLayoutList.push_back( frustumLayout );
-
-    gl::VboMeshRef lineVboMesh = gl::VboMesh::create( (uint32_t)lineVertices.size(), GL_LINES, frustumLayoutList );
-    lineVboMesh->bufferAttrib( geom::POSITION, lineVertices );
-    lineVboMesh->bufferAttrib( geom::COLOR, lineColors );
-
-    m_lineBatch = gl::Batch::create( lineVboMesh, gl::getStockShader( gl::ShaderDef().color() ) );
-    */
 }
 
 void lb::ClusterGridDebug::DrawFrustum( const ofCamera& _camera )

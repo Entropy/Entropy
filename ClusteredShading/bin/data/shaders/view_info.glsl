@@ -1,4 +1,4 @@
-struct ProjectionInfo
+struct ViewInfo
 {
     mat4  invViewMatrix;
     vec2  viewportDims;
@@ -7,8 +7,8 @@ struct ProjectionInfo
     float farClip;
 };
 
-layout (std140) uniform ProjectionInfoBlock
+layout (std140) uniform ViewInfoBlock
 {
-    ProjectionInfo projectionInfo;     
+    ViewInfo viewInfo;     
 };
 

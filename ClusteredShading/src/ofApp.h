@@ -2,39 +2,32 @@
 
 #include "ofMain.h"
 
-#include "lb/math/PointLight.h"
-
-#include "ClusterGrid.h"
-#include "ClusterGridDebug.h"
-
-struct PerFrameUboData
-{
-    ofMatrix4x4 invViewMatrix;
-    ofVec2f     viewportDims;
-    ofVec2f     rcpViewportDims;
-    float       nearClip;
-    float       farClip;
-    float       padding[ 2 ];
-};
-
+#include "PerViewUbo.h"
+#include "lb/lighting/LightSystem.h"
+#include "lb/lighting/PointLight.h"
 
 class ofApp : public ofBaseApp {
+
+enum class AppMode
+{
+    NORMAL_VIEW = 0,
+    DEBUG_VIEW  = 1
+};
+
 public:
     void setup();
     void update();
     void draw();
 
-    void SetupLights();
-    void UpdatePointLightUBO();
+    void SetupLighting();
 
-    void UpdatePerFrameUbo();
-    void BindPerFrameUbo( GLuint _bindingPoint );
-
+    void CreateRandomLights();
     void AnimateLights();
 
-    void DrawAllPointLights();
-    void DrawCulledPointLights();
-    void DrawClusteredPointLights();
+    void SetAppMode( const AppMode _mode );
+
+    void DrawScene();
+
 
     void keyPressed(int key);
     void keyReleased(int key);
@@ -49,17 +42,14 @@ public:
     void gotMessage(ofMessage msg);
 
 private:
-    std::vector<lb::PointLight> m_pointLights;
-    lb::ClusterGrid             m_clusterGrid;
-    lb::ClusterGridDebug        m_clusterGridDebug;
+    AppMode                     m_appMode;
 
-    ofBufferObject              m_pointLightUbo;
-    ofBufferObject              m_perFrameUbo;
-    PerFrameUboData             m_perFrameData;
+    lb::ViewUbo                 m_viewUbo;
+    lb::LightSystem             m_lightSystem;
 
     ofShader                    m_shader;
 
-    ofCamera                   m_camera;
+    ofEasyCam                   m_camera;
     ofEasyCam                   m_debugCamera;
 
     ofSpherePrimitive           m_sphere;

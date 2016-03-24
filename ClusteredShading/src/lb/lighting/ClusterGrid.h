@@ -2,7 +2,7 @@
 #include "ofMain.h"
 #include "glm/glm.hpp"
 
-#include "lb/math/PointLight.h"
+#include "lb/lighting/PointLight.h"
 #include "lb/math/Plane.h"
 #include "lb/ProjInfo.h"
 
@@ -18,7 +18,7 @@ struct ClusterLightPointer
 class ClusterGrid
 {
 public:
-    static const int NUM_PLANES_X = 21;
+    static const int NUM_PLANES_X = 20 * 2 + 1;
     static const int NUM_PLANES_Y = 12;
     static const int NUM_PLANES_Z = 17;
 
@@ -58,7 +58,9 @@ public:
     inline int GetNumClustersZ() const { return NUM_CLUSTERS_Z; };
     inline int GetNumClusters()  const { return NUM_CLUSTERS; };
 
-    uint32_t            GetNumPointLights() const;
+    uint16_t            GetNumVisibleLights() const;
+
+    uint32_t            GetNumPointLightIndices() const;
     const uint16_t *    GetPointLightIndices() const;
 
     uint32_t            GetNumCulledPointLights() const;

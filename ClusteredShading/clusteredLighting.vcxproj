@@ -171,24 +171,27 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\ClusterGrid.cpp" />
-    <ClCompile Include="src\ClusterGridDebug.cpp" />
+    <ClCompile Include="src\lb\lighting\ClusterGrid.cpp" />
+    <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp" />
+    <ClCompile Include="src\lb\lighting\LightSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ClusterGrid.h" />
-    <ClInclude Include="src\ClusterGridDebug.h" />
     <ClInclude Include="src\lb\gl\GLError.h" />
+    <ClInclude Include="src\lb\lighting\ClusterGrid.h" />
+    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h" />
+    <ClInclude Include="src\lb\lighting\LightSystem.h" />
+    <ClInclude Include="src\lb\lighting\PointLight.h" />
     <ClInclude Include="src\lb\math\Frustum.h" />
     <ClInclude Include="src\lb\math\MatrixTools.h" />
     <ClInclude Include="src\lb\math\Plane.h" />
-    <ClInclude Include="src\lb\math\PointLight.h" />
     <ClInclude Include="src\lb\math\Rect.h" />
     <ClInclude Include="src\lb\math\SphereScissor.h" />
     <ClInclude Include="src\lb\ProjInfo.h" />
     <ClInclude Include="src\lb\util\RadixSort.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\PerViewUbo.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -208,7 +211,7 @@
     <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
     <None Include="bin\data\shaders\of_default_uniforms.glsl" />
     <None Include="bin\data\shaders\passthrough.vert" />
-    <None Include="bin\data\shaders\projection_info.glsl" />
+    <None Include="bin\data\shaders\view_info.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

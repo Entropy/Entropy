@@ -3,10 +3,12 @@
 
 //========================================================================
 int main( ){
-	ofGLWindowSettings settings;
+	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4,5);
-    settings.width = 1920;
-    settings.height = 720;
+    settings.width = 1920 * 2;
+    settings.height = 1080;
+    settings.multiMonitorFullScreen = true;
+    settings.windowMode = OF_FULLSCREEN;
 	ofCreateWindow(settings);
 
 	// this kicks off the running of my app

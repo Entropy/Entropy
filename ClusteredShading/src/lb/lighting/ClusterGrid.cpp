@@ -372,7 +372,12 @@ void lb::ClusterGrid::SortLightIndexList()
     }
 }
 
-uint32_t lb::ClusterGrid::GetNumPointLights() const
+uint16_t lb::ClusterGrid::GetNumVisibleLights() const
+{
+    return m_numVisibleLights;
+}
+
+uint32_t lb::ClusterGrid::GetNumPointLightIndices() const
 {
     return m_numLightIndices;
 }
