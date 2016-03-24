@@ -2,10 +2,7 @@
 
 #include "ofMain.h"
 
-#include "lb/math/Plane.h"
-#include "lb/math/ProjectionMath.h"
 #include "lb/math/PointLight.h"
-#include "lb/gl/GLError.h"
 
 #include "ClusterGrid.h"
 #include "ClusterGridDebug.h"

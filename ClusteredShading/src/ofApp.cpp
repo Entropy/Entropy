@@ -1,16 +1,9 @@
 #include "ofApp.h"
 #include "lb/gl/GLError.h"
 #include "glm/glm.hpp"
+#include "lb/math/MatrixTools.h"
 
 using namespace glm;
-
-ofMatrix3x3 mat4ToMat3( const ofMatrix4x4& mat4 )
-{
-    return ofMatrix3x3(
-        mat4._mat[ 0 ][ 0 ], mat4._mat[ 0 ][ 1 ], mat4._mat[ 0 ][ 2 ],
-        mat4._mat[ 1 ][ 0 ], mat4._mat[ 1 ][ 1 ], mat4._mat[ 1 ][ 2 ],
-        mat4._mat[ 2 ][ 0 ], mat4._mat[ 2 ][ 1 ], mat4._mat[ 2 ][ 2 ] );
-}
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -24,6 +17,10 @@ void ofApp::setup()
     
     m_camera.setPosition( ofVec3f( 0.0, 0.0, 623.0 ) );
     m_camera.lookAt( ofVec3f( 0.0, 0.0, 0.0 ), ofVec3f( 0.0f, 1.0f, 0.0f ) );
+
+    // Create Per Frame uniform buffer
+    m_perFrameUbo.allocate( sizeof( PerFrameUboData ), nullptr, GL_DYNAMIC_DRAW );
+    assert( true == m_perFrameUbo.isAllocated() );    
 
     SetupLights();
 }
@@ -55,13 +52,10 @@ void ofApp::SetupLights()
     m_clusterGridDebug.CreateClusterMesh( m_clusterGrid, projInfo );
     m_sphere = ofSpherePrimitive( 1.0f, 8 );
 
+    // Create point light uniform buffer
     m_pointLightUbo.allocate( lb::ClusterGrid::MAX_POINT_LIGHTS * sizeof( lb::PointLight ), nullptr, GL_DYNAMIC_DRAW );
     assert( true == m_pointLightUbo.isAllocated() );
-    m_pointLightUbo.bind( GL_UNIFORM_BUFFER );
     
-    m_perFrameUbo.allocate( sizeof( PerFrameUboData ), nullptr, GL_DYNAMIC_DRAW );
-    assert( true == m_perFrameUbo.isAllocated() );    
-
     m_shader.load( "shaders/passthrough.vert", "shaders/clustered_lights.frag" );
     m_shader.bindUniformBlock( 0, "PointLightBlock" );
     m_shader.bindUniformBlock( 1, "ProjectionInfoBlock" );
@@ -104,10 +98,7 @@ void ofApp::DrawAllPointLights()
             ofTranslate( light.position.x, light.position.y, light.position.z );
             ofScale( light.radius * 0.1f );
 
-            ofMatrix3x3 normalMatrix = mat4ToMat3( ofGetCurrentMatrix( OF_MATRIX_MODELVIEW ) );
-            normalMatrix.invert();
-            normalMatrix.transpose();
-            m_shader.setUniformMatrix3f( "normalMatrix", normalMatrix );
+           m_shader.setUniformMatrix3f( "normalMatrix", lb::GetNormalMatrix() );
             m_sphere.draw();
         }
         ofPopMatrix();
@@ -116,10 +107,7 @@ void ofApp::DrawAllPointLights()
     // Draw big test sphere for something to shade
     ofPushMatrix();
         ofScale( 175.0f );
-        ofMatrix3x3 normalMatrix = mat4ToMat3( ofGetCurrentMatrix( OF_MATRIX_MODELVIEW ) );
-        normalMatrix.invert();
-        normalMatrix.transpose();
-        m_shader.setUniformMatrix3f( "normalMatrix", normalMatrix );
+        m_shader.setUniformMatrix3f( "normalMatrix", lb::GetNormalMatrix() );
         m_sphere.draw();
     ofPopMatrix();
  
@@ -176,6 +164,7 @@ void ofApp::update()
     m_clusterGrid.SortLightIndexList();
     m_clusterGrid.UpdateLightIndexTextures();
 
+    // per frame data shared across all shaders
     m_perFrameData.nearClip = m_camera.getNearClip();
     m_perFrameData.farClip = m_camera.getFarClip();
     m_perFrameData.viewportDims = ofVec2f( ofGetViewportWidth(), ofGetViewportHeight() );

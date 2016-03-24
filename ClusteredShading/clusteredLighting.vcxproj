@@ -114,7 +114,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -155,7 +155,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -181,15 +181,14 @@
     <ClInclude Include="src\ClusterGridDebug.h" />
     <ClInclude Include="src\lb\gl\GLError.h" />
     <ClInclude Include="src\lb\math\Frustum.h" />
+    <ClInclude Include="src\lb\math\MatrixTools.h" />
     <ClInclude Include="src\lb\math\Plane.h" />
     <ClInclude Include="src\lb\math\PointLight.h" />
-    <ClInclude Include="src\lb\math\ProjectionMath.h" />
     <ClInclude Include="src\lb\math\Rect.h" />
     <ClInclude Include="src\lb\math\SphereScissor.h" />
     <ClInclude Include="src\lb\ProjInfo.h" />
     <ClInclude Include="src\lb\util\RadixSort.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\UniformBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

@@ -2,7 +2,7 @@
 
 #include "lb/math/Plane.h"
 #include "lb/math/Frustum.h"
-#include "lb/math/ProjectionMath.h"
+#include "lb/math/MatrixTools.h"
 #include "lb/math/SphereScissor.h"
 #include "lb/util/RadixSort.h"
 #include "lb/gl/GLError.h"

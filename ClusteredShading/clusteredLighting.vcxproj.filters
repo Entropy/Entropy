@@ -35,9 +35,6 @@
     <ClInclude Include="src\lb\math\PointLight.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\lb\math\ProjectionMath.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\lb\math\Rect.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -56,7 +53,7 @@
     <ClInclude Include="src\ClusterGridDebug.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\UniformBuffer.h">
+    <ClInclude Include="src\lb\math\MatrixTools.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

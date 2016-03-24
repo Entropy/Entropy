@@ -1,5 +1,8 @@
 #pragma once
 
+#include "glm/glm.hpp"
+#include "ofMain.h"
+
 namespace lb {
 
 inline void GetNearFarFromProjectionMatrix( const glm::mat4& _matrix, float* _near, float* _far )
@@ -51,6 +54,18 @@ inline float GetFocalLength( float _fovRad )
 {
     return  1.0f / tanf( _fovRad * 0.5f );
 }
- 
+  
+inline ofMatrix3x3 Mat4ToMat3( const ofMatrix4x4& mat4 )
+{
+    return ofMatrix3x3(
+        mat4._mat[ 0 ][ 0 ], mat4._mat[ 0 ][ 1 ], mat4._mat[ 0 ][ 2 ],
+        mat4._mat[ 1 ][ 0 ], mat4._mat[ 1 ][ 1 ], mat4._mat[ 1 ][ 2 ],
+        mat4._mat[ 2 ][ 0 ], mat4._mat[ 2 ][ 1 ], mat4._mat[ 2 ][ 2 ] );
+}
+
+inline ofMatrix3x3 GetNormalMatrix()
+{
+    return Mat4ToMat3( ofGetCurrentNormalMatrix() );
+}
+
 } // lb namespace end
- 
