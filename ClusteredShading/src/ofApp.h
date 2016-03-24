@@ -10,6 +10,17 @@
 #include "ClusterGrid.h"
 #include "ClusterGridDebug.h"
 
+struct PerFrameUboData
+{
+    ofMatrix4x4 invViewMatrix;
+    ofVec2f     viewportDims;
+    ofVec2f     rcpViewportDims;
+    float       nearClip;
+    float       farClip;
+    float       padding[ 2 ];
+};
+
+
 class ofApp : public ofBaseApp {
 public:
     void setup();
@@ -19,12 +30,14 @@ public:
     void SetupLights();
     void UpdatePointLightUBO();
 
+    void UpdatePerFrameUbo();
+    void BindPerFrameUbo( GLuint _bindingPoint );
+
     void AnimateLights();
 
     void DrawAllPointLights();
     void DrawCulledPointLights();
     void DrawClusteredPointLights();
-    void DrawOccupiedClusters();
 
     void keyPressed(int key);
     void keyReleased(int key);
@@ -42,7 +55,10 @@ private:
     std::vector<lb::PointLight> m_pointLights;
     lb::ClusterGrid             m_clusterGrid;
     lb::ClusterGridDebug        m_clusterGridDebug;
+
     ofBufferObject              m_pointLightUbo;
+    ofBufferObject              m_perFrameUbo;
+    PerFrameUboData             m_perFrameData;
 
     ofShader                    m_shader;
 

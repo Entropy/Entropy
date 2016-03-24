@@ -205,9 +205,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\shaders\clustered_lights.frag" />
+    <None Include="bin\data\shaders\clustered_shading.glsl" />
     <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
     <None Include="bin\data\shaders\of_default_uniforms.glsl" />
     <None Include="bin\data\shaders\passthrough.vert" />
+    <None Include="bin\data\shaders\projection_info.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

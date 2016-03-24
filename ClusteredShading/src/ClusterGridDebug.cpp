@@ -244,6 +244,19 @@ void lb::ClusterGridDebug::DrawFrustum( const ofCamera& _camera )
     ofPopMatrix();
 }
 
+void lb::ClusterGridDebug::DrawCluster( uint16_t _idx )
+{
+    if ( _idx > m_numClusters )
+    {
+        std::cout << "DrawCluster: index is out of range: " << _idx << std::endl;
+        return;
+    }
+
+    const int numIndicesPerCluster = 24;
+    int startOffset = _idx * numIndicesPerCluster;
+    m_clusterVbo.drawElements( GL_LINES, numIndicesPerCluster, startOffset );
+}
+
 void lb::ClusterGridDebug::DrawCluster( const ofCamera& _camera, uint16_t _idx )
 {
     if ( _idx > m_numClusters )
@@ -255,19 +268,9 @@ void lb::ClusterGridDebug::DrawCluster( const ofCamera& _camera, uint16_t _idx )
     const int numIndicesPerCluster = 24;
     int startOffset = _idx * numIndicesPerCluster;
 
-    ofPushMatrix();
-        ofMultMatrix( _camera.getModelViewMatrix().getInverse() );
+
         m_clusterVbo.drawElements( GL_LINES, numIndicesPerCluster, startOffset );
     ofPopMatrix();
-
-    /*
-    gl::pushMatrices();
-        mat4 translate = glm::translate( _camera.getEyePoint() );
-        mat4 orientation = glm::mat4_cast( _camera.getOrientation() );
-        gl::setModelMatrix( translate * orientation );
-        gl::draw( m_clusterVboMesh, startOffset, numIndicesPerCluster );
-    gl::popMatrices();
-    */
 }
 
 void lb::ClusterGridDebug::DrawCluster( const ofCamera& _camera, uint16_t _x, uint16_t _y, uint16_t _z )
@@ -278,14 +281,24 @@ void lb::ClusterGridDebug::DrawCluster( const ofCamera& _camera, uint16_t _x, ui
 
     uint16_t idx = ( _z * m_numClustersX * m_numClustersY + _y * m_numClustersX + _x );
     DrawCluster( _camera, idx );
-
-    /*
-    gl::pushMatrices();
-        mat4 translate = glm::translate( _camera.getEyePoint() );
-        mat4 orientation = glm::mat4_cast( _camera.getOrientation() );
-        gl::setModelMatrix( translate * orientation );
-        gl::draw( m_clusterVboMesh, startOffset, numIndicesPerCluster );
-    gl::popMatrices();
-    */
 }
+
+void lb::ClusterGridDebug::DrawOccupiedClusters( const ofCamera& _camera, const lb::ClusterGrid& _clusterGrid )
+{
+    static uint16_t idx = 0;
+
+    ofSetColor( ofFloatColor( 1.0f, 1.0f, 1.0f, 0.3f ) );
+
+    ofPushMatrix();
+        ofMultMatrix( _camera.getModelViewMatrix().getInverse() );
+        for ( uint16_t idx = 0; idx < m_numClusters; ++idx )
+        {
+            if ( _clusterGrid.m_clusterLightPointerList[ idx ].pointLightCount > 0 )
+            {
+                DrawCluster( idx );
+            }
+        }
+    ofPopMatrix();
+}
+
 

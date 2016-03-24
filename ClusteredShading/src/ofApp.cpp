@@ -58,11 +58,25 @@ void ofApp::SetupLights()
     m_pointLightUbo.allocate( lb::ClusterGrid::MAX_POINT_LIGHTS * sizeof( lb::PointLight ), nullptr, GL_DYNAMIC_DRAW );
     assert( true == m_pointLightUbo.isAllocated() );
     m_pointLightUbo.bind( GL_UNIFORM_BUFFER );
+    
+    m_perFrameUbo.allocate( sizeof( PerFrameUboData ), nullptr, GL_DYNAMIC_DRAW );
+    assert( true == m_perFrameUbo.isAllocated() );    
 
     m_shader.load( "shaders/passthrough.vert", "shaders/clustered_lights.frag" );
     m_shader.bindUniformBlock( 0, "PointLightBlock" );
+    m_shader.bindUniformBlock( 1, "ProjectionInfoBlock" );
     m_shader.printActiveUniforms();
     m_shader.printActiveUniformBlocks();
+}
+
+void ofApp::UpdatePerFrameUbo()
+{
+    m_perFrameUbo.updateData( sizeof( PerFrameUboData ), &m_perFrameData );
+}
+
+void ofApp::BindPerFrameUbo( GLuint _bindingPoint )
+{
+    m_perFrameUbo.bindBase( GL_UNIFORM_BUFFER, _bindingPoint );
 }
 
 void ofApp::UpdatePointLightUBO()
@@ -151,68 +165,39 @@ void ofApp::DrawCulledPointLights()
     }
 }
 
-void ofApp::DrawOccupiedClusters()
-{
-    static uint16_t idx = 0;
-
-    ofSetColor( ofFloatColor( 1.0f, 1.0f, 1.0f, 0.3f ) );
-    for ( uint16_t idx = 0; idx < m_clusterGrid.GetNumClusters(); ++idx )
-    {
-        if ( m_clusterGrid.m_clusterLightPointerList[ idx ].pointLightCount > 0 )
-        {
-            m_clusterGridDebug.DrawCluster( m_camera, idx );
-        }
-    }
-}
-
 //--------------------------------------------------------------
 void ofApp::update()
 {
     m_camera.setOrientation( ofVec3f( 0.0f, sinf( ofGetElapsedTimeMillis() / 10000.0f ) * 65.0f, 0.0f ) );
 
-    LARGE_INTEGER frequency; // ticks per second
-    LARGE_INTEGER clusterBeginTime, clusterEndTime;
-    QueryPerformanceFrequency( &frequency );
+    AnimateLights();
 
-    QueryPerformanceCounter( &clusterBeginTime );
     m_clusterGrid.CullPointLights( m_camera.getModelViewMatrix(), m_pointLights );
-    QueryPerformanceCounter( &clusterEndTime ); // stop timer
-
-    // compute and print the elapsed time in millisec
-    double clusterTime = ( clusterEndTime.QuadPart - clusterBeginTime.QuadPart ) * 1000.0 / frequency.QuadPart;
-
-    LARGE_INTEGER sortBeginTime, sortEndTime;           // ticks
-    QueryPerformanceCounter( &sortBeginTime );
     m_clusterGrid.SortLightIndexList();
-    QueryPerformanceCounter( &sortEndTime );
-    double sortTime = ( sortEndTime.QuadPart - sortBeginTime.QuadPart ) * 1000.0 / frequency.QuadPart;
-
     m_clusterGrid.UpdateLightIndexTextures();
 
-    AnimateLights();
-    UpdatePointLightUBO();
+    m_perFrameData.nearClip = m_camera.getNearClip();
+    m_perFrameData.farClip = m_camera.getFarClip();
+    m_perFrameData.viewportDims = ofVec2f( ofGetViewportWidth(), ofGetViewportHeight() );
+    m_perFrameData.rcpViewportDims = 1.0f / m_perFrameData.viewportDims;
+    m_perFrameData.invViewMatrix = m_camera.getModelViewMatrix().getInverse();
 
-    if ( ofGetFrameNum() % 5 == 0 )
-    {
-        printf( "Clustering Time: %f ms, Sort Time: %f ms\n", clusterTime, sortTime );
-        printf( "    Num Lights in view: %u, Affected Clusters: %u\n\n", m_clusterGrid.m_numVisibleLights, m_clusterGrid.m_numAffectedClusters );
-    }
+    UpdatePointLightUBO();
+    UpdatePerFrameUbo();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-   // glEnable( GL_CULL_FACE );
-    //glCullFace( GL_BACK );
+    glEnable( GL_CULL_FACE );
+    glCullFace( GL_FRONT );
 
+    const GLint lightIndexTexUnit = 5;
+    const GLint lightPointerTexUnit = 6;
+
+    BindPerFrameUbo( 1 );
     m_pointLightUbo.bindBase( GL_UNIFORM_BUFFER, 0 );
-
-    glActiveTexture( GL_TEXTURE0 );
-    glBindTexture( GL_TEXTURE_BUFFER, m_clusterGrid.m_lightIndexTex ); // per cluster point light index TBO
-
-    glActiveTexture( GL_TEXTURE1 );
-    glBindTexture( GL_TEXTURE_3D, m_clusterGrid.m_lightPointerTableTex3d );
-
+    m_clusterGrid.BindLightIndexTextures( lightIndexTexUnit, lightPointerTexUnit );
 
     ofClear( ofFloatColor( 0.1f, 0.1f, 0.1f, 1.0f ) );
 
@@ -225,11 +210,8 @@ void ofApp::draw()
 
         m_shader.begin();
 
-            m_shader.setUniform1i( "uLightIndexTex", 0 );
-            m_shader.setUniform1i( "uLightPointerTex", 1 );
-            m_shader.setUniform1f( "uNumClusters", m_clusterGrid.m_numAffectedClusters );
-            m_shader.setUniform1f( "uNearClip", m_camera.getNearClip() );
-            m_shader.setUniform1f( "uFarClip", m_camera.getFarClip() );
+            m_shader.setUniform1i( "uLightPointerTex", lightPointerTexUnit );
+            m_shader.setUniform1i( "uLightIndexTex", lightIndexTexUnit );
 
             DrawAllPointLights();
 
@@ -246,7 +228,8 @@ void ofApp::draw()
         
         DrawCulledPointLights();
         DrawClusteredPointLights();
-        DrawOccupiedClusters();
+        
+        m_clusterGridDebug.DrawOccupiedClusters( m_camera, m_clusterGrid );
     }
     m_debugCamera.end();
 

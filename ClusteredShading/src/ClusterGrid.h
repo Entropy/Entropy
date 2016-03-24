@@ -27,7 +27,7 @@ public:
     static const int NUM_CLUSTERS_Z = NUM_PLANES_Z - 1;
 
     static const uint16_t NUM_CLUSTERS = NUM_CLUSTERS_X * NUM_CLUSTERS_Y * NUM_CLUSTERS_Z;
-    static const uint32_t MAX_CLUSTERED_LIGHTS = 0xffff;  // 65535 max clustered lights 
+    static const uint16_t MAX_CLUSTERED_LIGHTS = 0xffff;  // 65535 max clustered lights 
 
     static const uint16_t CLUSTER_INDEX_MASK     = 0x0fff; // (0111111111111111) 15 bit mask (0-4096 clusters) 
     static const uint16_t LIGHT_TYPE_MASK        = 0xf000; // (1000000000000000) 1 bit mask (point light or spot light) 
@@ -45,7 +45,9 @@ public:
     void CullPointLights( const ofMatrix4x4& _viewMatrix, const std::vector<lb::PointLight>& _pointLights );
 
     void SortLightIndexList();
+
     void UpdateLightIndexTextures();
+    void BindLightIndexTextures( GLuint _indexTexUnit, GLuint _pointerTableTexUnit );
 
     inline int GetNumPlanesX() const { return NUM_PLANES_X; };
     inline int GetNumPlanesY() const { return NUM_PLANES_Y; };
@@ -65,6 +67,7 @@ public:
 private:
     void CreatePlanes();
     void CreateLightIndexTextures();
+
     void AddPointLightToCluster( uint16_t light_idx, int x, int y, int z );
 
     lb::ProjInfo    m_projInfo;

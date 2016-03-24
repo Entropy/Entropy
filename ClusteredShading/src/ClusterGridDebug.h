@@ -11,8 +11,10 @@ public:
 
     void CreateClusterMesh( const lb::ClusterGrid& _clusterGrid, const lb::ProjInfo& _projInfo );
     void DrawFrustum( const ofCamera& _camera );
+    void DrawCluster( uint16_t _idx );
     void DrawCluster( const ofCamera& _camera, uint16_t _idx );
     void DrawCluster( const ofCamera& _camera, uint16_t _x, uint16_t _y, uint16_t _z );
+    void DrawOccupiedClusters( const ofCamera& _camera, const lb::ClusterGrid& _clusterGrid );
 
 private:
 
