@@ -110,7 +110,6 @@
 		647684521C6BC92A004C1E60 /* slice.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.vert; sourceTree = "<group>"; };
 		6476845C1C6BF112004C1E60 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
 		6476845D1C6BF112004C1E60 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../Shared/src/ofxRange.h; sourceTree = "<group>"; };
-		649C003F1C7BACE0000954E9 /* render.geom */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.geom; sourceTree = "<group>"; };
 		64CCB8261CA3302C0002DD92 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
 		64CCB8271CA3302C0002DD92 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
 		64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
@@ -228,7 +227,6 @@
 				647684511C6BC92A004C1E60 /* slice.frag */,
 				647684521C6BC92A004C1E60 /* slice.vert */,
 				64116D0D1C69364700A5A155 /* render.frag */,
-				649C003F1C7BACE0000954E9 /* render.geom */,
 				64116D0E1C69364700A5A155 /* render.vert */,
 			);
 			name = shaders;

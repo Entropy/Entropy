@@ -46,11 +46,14 @@ namespace ent
     {
         // Load the HDF5 data.
         vector<float> posX, posY, posZ;
-        loadDataSet("ramses_large/x.h5", posX, 1, true);
-        loadDataSet("ramses_large/y.h5", posY, 1, true);
-        loadDataSet("ramses_large/z.h5", posZ, 1, true);
-        loadDataSet("ramses_large/dx.h5", cellSize, 1, false);
-        loadDataSet("ramses_large/density.h5", density, 1, false);
+        vector<float> cellSize;
+//        string folder = "ramses_small/";
+        string folder = "ramses_large/";
+        loadDataSet(folder + "x.h5", posX, 1, false);
+        loadDataSet(folder + "y.h5", posY, 1, false);
+        loadDataSet(folder + "z.h5", posZ, 1, false);
+        loadDataSet(folder + "dx.h5", cellSize, 1, false);
+        loadDataSet(folder + "density.h5", density, 1, false);
 
         // Set the ranges for all data.
         for (int i = 0; i < posX.size(); ++i) {
@@ -97,22 +100,16 @@ namespace ent
         vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
         vboMesh.setUsage(GL_STATIC_DRAW);
 
-        // Upload all data to the VBO.
-//        vboMesh.getVertices().resize(posX.size());
-//        for (int i = 0; i < posX.size(); ++i) {
-//            ofVec3f v(posX[i], posY[i], posZ[i]);
-//            vboMesh.setVertex(i, v);
-//        }
-//        vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
-//        vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
+        // Upload per-instance data to the VBO.
+        vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
+        vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
         // Load the shaders.
-//        renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
-//        renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
-//        renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
-//        renderShader.bindDefaults();
-//        renderShader.linkProgram();
-        renderShader.load("shaders/render");
+        renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
+        renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
+        renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
+        renderShader.bindDefaults();
+        renderShader.linkProgram();
 
         renderShader.begin();
         {
@@ -265,7 +262,7 @@ namespace ent
                     renderShader.setUniform1f("uDebugMax", FLT_MIN);
                 }
                 {
-                    vboMesh.drawInstanced(OF_MESH_WIREFRAME, matrices.size());
+                    vboMesh.drawInstanced(OF_MESH_FILL, matrices.size());
                 }
                 renderShader.end();
             }
