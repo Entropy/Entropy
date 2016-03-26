@@ -36,7 +36,7 @@ namespace ent
         // Data
         void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
         ofVboMesh vboMesh;
-        vector<ofMatrix4x4> matrices;
+        vector<ofVec4f> transforms;
         vector<float> density;
 
         ofxVec3fRange coordRange;

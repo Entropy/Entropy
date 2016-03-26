@@ -5,7 +5,7 @@ uniform mat4 modelViewProjectionMatrix;
 in vec4 position;
 in float density;
 
-uniform samplerBuffer uTex;
+uniform samplerBuffer uTransform;
 
 uniform float uDebugMin;
 uniform float uDebugMax;
@@ -16,11 +16,11 @@ out float vDebug;
 void main()
 {
     // Get the transform from the sampler.
-    int coord = gl_InstanceID * 4;
-    mat4 transformMatrix = mat4(texelFetch(uTex, coord + 0),
-                                texelFetch(uTex, coord + 1),
-                                texelFetch(uTex, coord + 2),
-                                texelFetch(uTex, coord + 3));
+    vec4 transform = texelFetch(uTransform, gl_InstanceID);
+    mat4 transformMatrix = mat4(transform.w, 0.0,         0.0,         0.0,
+                                0.0,         transform.w, 0.0,         0.0,
+                                0.0,         0.0,         transform.w, 0.0,
+                                transform.x, transform.y, transform.z, 1.0);
 
     gl_Position = modelViewProjectionMatrix * transformMatrix * position;
 

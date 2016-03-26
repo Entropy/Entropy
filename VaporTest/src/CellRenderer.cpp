@@ -81,18 +81,14 @@ namespace ent
         normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
 
         // Upload all data to the TBO.
-        matrices.resize(posX.size());
-        for (size_t i = 0; i < matrices.size(); ++i) {
-            ofNode node;
-            node.setPosition(posX[i], posY[i], posZ[i]);
-            node.setScale(cellSize[i]);
-
-            matrices[i] = node.getLocalTransformMatrix();
+        transforms.resize(posX.size());
+        for (size_t i = 0; i < transforms.size(); ++i) {
+            transforms[i].set(posX[i], posY[i], posZ[i], cellSize[i]);
         }
 
         bufferObject.allocate();
         bufferObject.bind(GL_TEXTURE_BUFFER);
-        bufferObject.setData(matrices, GL_STREAM_DRAW);
+        bufferObject.setData(transforms, GL_STREAM_DRAW);
 
         bufferTexture.allocateAsBufferTexture(bufferObject, GL_RGBA32F);
 
@@ -113,7 +109,7 @@ namespace ent
 
         renderShader.begin();
         {
-            renderShader.setUniformTexture("uTex", bufferTexture, 0);
+            renderShader.setUniformTexture("uTransform", bufferTexture, 0);
         }
         renderShader.end();
 
@@ -262,7 +258,7 @@ namespace ent
                     renderShader.setUniform1f("uDebugMax", FLT_MIN);
                 }
                 {
-                    vboMesh.drawInstanced(OF_MESH_FILL, matrices.size());
+                    vboMesh.drawInstanced(OF_MESH_FILL, transforms.size());
                 }
                 renderShader.end();
             }
@@ -285,7 +281,7 @@ namespace ent
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
         ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("%lu Instances", matrices.size());
+            ImGui::Text("%lu Instances", transforms.size());
 
             if (ImGui::CollapsingHeader("Data", nullptr, true, true)) {
                 if (ImGui::SliderInt("Stride", &stride, 1, 128)) {
