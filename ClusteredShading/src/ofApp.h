@@ -2,29 +2,32 @@
 
 #include "ofMain.h"
 
-#include "lb/math/Plane.h"
-#include "lb/math/ProjectionMath.h"
-#include "lb/math/PointLight.h"
-#include "lb/gl/GLError.h"
-
-#include "ClusterGrid.h"
-#include "ClusterGridDebug.h"
+#include "PerViewUbo.h"
+#include "lb/lighting/LightSystem.h"
+#include "lb/lighting/PointLight.h"
 
 class ofApp : public ofBaseApp {
+
+enum class AppMode
+{
+    NORMAL_VIEW = 0,
+    DEBUG_VIEW  = 1
+};
+
 public:
     void setup();
     void update();
     void draw();
 
-    void SetupLights();
-    void UpdatePointLightUBO();
+    void SetupLighting();
 
+    void CreateRandomLights();
     void AnimateLights();
 
-    void DrawAllPointLights();
-    void DrawCulledPointLights();
-    void DrawClusteredPointLights();
-    void DrawOccupiedClusters();
+    void SetAppMode( const AppMode _mode );
+
+    void DrawScene();
+
 
     void keyPressed(int key);
     void keyReleased(int key);
@@ -39,14 +42,14 @@ public:
     void gotMessage(ofMessage msg);
 
 private:
-    std::vector<lb::PointLight> m_pointLights;
-    lb::ClusterGrid             m_clusterGrid;
-    lb::ClusterGridDebug        m_clusterGridDebug;
-    ofBufferObject              m_pointLightUbo;
+    AppMode                     m_appMode;
+
+    lb::ViewUbo                 m_viewUbo;
+    lb::LightSystem             m_lightSystem;
 
     ofShader                    m_shader;
 
-    ofCamera                   m_camera;
+    ofEasyCam                   m_camera;
     ofEasyCam                   m_debugCamera;
 
     ofSpherePrimitive           m_sphere;

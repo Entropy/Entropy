@@ -19,6 +19,7 @@ xcuserdata/
 ipch/
 *.suo
 *.opensdf
+*.opendb
 *.vcxproj.user
 
 *.obj
