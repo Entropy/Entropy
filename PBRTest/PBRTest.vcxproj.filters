@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\lb\gl\CubeMapTexture.cpp" />
+    <ClCompile Include="src\lb\lighting\ClusterGrid.cpp" />
+    <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp" />
+    <ClCompile Include="src\lb\lighting\LightSystem.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\lb\camera\CameraTools.h" />
+    <ClInclude Include="src\lb\gl\CubeMapTexture.h" />
+    <ClInclude Include="src\lb\gl\GLError.h" />
+    <ClInclude Include="src\lb\lighting\ClusterGrid.h" />
+    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h" />
+    <ClInclude Include="src\lb\lighting\LightSystem.h" />
+    <ClInclude Include="src\lb\lighting\PointLight.h" />
+    <ClInclude Include="src\lb\math\Frustum.h" />
+    <ClInclude Include="src\lb\math\MatrixTools.h" />
+    <ClInclude Include="src\lb\math\Plane.h" />
+    <ClInclude Include="src\lb\math\Rect.h" />
+    <ClInclude Include="src\lb\math\SphereScissor.h" />
+    <ClInclude Include="src\lb\ProjInfo.h" />
+    <ClInclude Include="src\lb\util\RadixSort.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\PerViewUbo.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PBRMaterial.h" />
+    <ClInclude Include="src\lb\lighting\DirectionalLight.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
+    <None Include="bin\data\shaders\of_default_uniforms.glsl" />
+    <None Include="bin\data\shaders\view_info.glsl" />
+    <None Include="bin\data\shaders\sky_box.frag" />
+    <None Include="bin\data\shaders\sky_box.vert" />
+    <None Include="bin\data\shaders\inc\pbr.glsl" />
+    <None Include="bin\data\shaders\main.frag" />
+    <None Include="bin\data\shaders\main.vert" />
+    <None Include="bin\data\shaders\inc\tone_mapping.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{4c4ead37-43e4-49a4-a36e-8db1de241e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui">
+      <UniqueIdentifier>{349c90d3-1617-4146-b216-d401383dc18c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\src">
+      <UniqueIdentifier>{58a9c3af-db7c-44a1-b662-9d08b922eb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs">
+      <UniqueIdentifier>{c64fc01b-b401-4f45-9ad9-43b673c4424a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
