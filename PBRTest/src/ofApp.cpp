@@ -143,16 +143,6 @@ void ofApp::SetAppMode( const AppMode _mode )
 
 void ofApp::imGui()
 {
-    /*
-       char info[256];
-    ofSetColor( 255, 255, 255, 255 );
-    sprintf( info, "Press '1' for normal view, '2' for debug view\n\nFramerate: %.0f\nVisible Lights: %u", ofGetFrameRate(), m_lightSystem.GetNumVisibleLights() );
-    ofDrawBitmapString( info, 50, 50 );
-    */
-
-//    if ( ofGetFrameRate() < 59.0f ) ofLogNotice() << "Low FPS " << ofGetFrameRate() << ", frame num: " << ofGetFrameNum() << endl;
- 
-
     m_gui.begin();
     {
         ImGui::Text( "Material Properties" );
@@ -219,8 +209,6 @@ void ofApp::imGui()
             ImGui::SliderFloat3( "Direction", (float *)&dirLights.at(0).direction, -1.0f, 1.0f );
             ImGui::SliderFloat( "Intensity", &dirLights.at(0).intensity, 0.0f, 15.0f );
         }
-
-
     }
     m_gui.end();
 }
