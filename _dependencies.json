@@ -15,7 +15,7 @@
 		{
 			"name": "ofxImGui",
 			"source": "https://github.com/Entropy/ofxImGui.git",
-			"commit": "master"
+			"branch": "master"
 		}
 	]
 }
