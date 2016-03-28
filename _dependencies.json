@@ -11,11 +11,11 @@
 			"name": "ofxHDF5",
 			"source": "https://github.com/Entropy/ofxHDF5.git",
 			"branch": "master"
-    	},
-    	{
-    		"name": "ofxImGui",
-    		"source": "https://github.com/Entropy/ofxImGui.git",
-			"commit": "e953a6eb5fb87bb6ed6d1e3f8b00a2c50d878300"
+		},
+		{
+			"name": "ofxImGui",
+			"source": "https://github.com/Entropy/ofxImGui.git",
+			"commit": "master"
 		}
 	]
 }

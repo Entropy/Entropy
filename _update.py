@@ -53,7 +53,7 @@ if __name__ == '__main__':
 	if len(argv) == 1:
 		# Default parameters, assume this script is in oF/apps/myApps/myProject/
 		script = argv
-		root_path = '../../../'
+		root_path = '../'
 		deps_path = '_dependencies.json'
 	elif len(argv) == 2:
 		script, root_path = argv
