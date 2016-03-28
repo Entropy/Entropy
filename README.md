@@ -1,16 +1,16 @@
-This repository contains the prototypes developed for the Entropy presentation. 
+This repository contains all the software developed for the Entropy presentation.
 
-Note that most of these applications are unfinished proofs-of-concept, so run at your own risk!
+Please note that at this point, these applications are unfinished proofs-of-concept, so run at your own risk!
 
 ## Setup
 
-Coming soon! 
+1. Clone [openFrameworks](https://github.com/Entropy/openFrameworks). Make sure to use the `Entropy` organisation fork to ensure all apps will run correctly.
+1. Clone [Entropy](https://github.com/Entropy/Entropy) (this project) into the `openFrameworks/` directory.
+1. Download all necessary addons.
+	1. The easy way: Make sure you have [Python](https://www.python.org/) installed and run the script `python _update.py` from the command line.
+	1. The hard way: Look through the `_dependencies.json` file and manually clone all addons in that list.
+1. Try running some projects!
 
-If you're eager to get your hands dirty:
+## Update
 
-1. Clone [openFrameworks](https://github.com/openframeworks/openFrameworks).
-2. Clone [EntropyPrototypes](https://github.com/Entropy/EntropyPrototypes) into the `openFrameworks/apps/` folder.
-3. Try running some projects.
-4. You'll probably need some addons like [ofxHDF5](https://github.com/Entropy/ofxHDF5), [ofxImGui](https://github.com/jvcleave/ofxImGui), [ofxMSAOpenCL](https://github.com/memo/ofxMSAOpenCL), etc.
-
-A more complete setup procedure will be up shortly. Thank you for your patience.
+1. Make sure you have [Python](https://www.python.org/) installed and run the script `python _update.py` from the command line.
