@@ -1,30 +1,30 @@
 #version 150
 
-uniform mat4 projectionMatrix;
-uniform mat4 modelViewMatrix;
-
-uniform float pointSize;
-
-uniform float debugMin;
-uniform float debugMax;
+uniform mat4 modelViewProjectionMatrix;
 
 in vec4 position;
-in float cellSize;
 in float density;
+
+uniform samplerBuffer uTransform;
+
+uniform float uDebugMin;
+uniform float uDebugMax;
 
 out float vDensity;
 out float vDebug;
 
 void main()
 {
-    vec4 eyeCoord = modelViewMatrix * position;
-    gl_Position = projectionMatrix * eyeCoord;
+    // Get the transform from the sampler.
+    vec4 transform = texelFetch(uTransform, gl_InstanceID);
+    mat4 transformMatrix = mat4(transform.w, 0.0,         0.0,         0.0,
+                                0.0,         transform.w, 0.0,         0.0,
+                                0.0,         0.0,         transform.w, 0.0,
+                                transform.x, transform.y, transform.z, 1.0);
 
-    float dist = sqrt(eyeCoord.x * eyeCoord.x + eyeCoord.y * eyeCoord.y + eyeCoord.z * eyeCoord.z);
-    float attenuation = 600.0 / dist;
-    gl_PointSize = pointSize * cellSize * 2 * attenuation;
+    gl_Position = modelViewProjectionMatrix * transformMatrix * position;
 
-    if (debugMin <= position.z && position.z < debugMax) {
+    if (uDebugMin <= position.z && position.z < uDebugMax) {
         vDebug = 1.0;
     }
     else {

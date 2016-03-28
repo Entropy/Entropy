@@ -46,11 +46,14 @@ namespace ent
     {
         // Load the HDF5 data.
         vector<float> posX, posY, posZ;
-        loadDataSet("ramses_small/x.h5", posX, 1, true);
-        loadDataSet("ramses_small/y.h5", posY, 1, true);
-        loadDataSet("ramses_small/z.h5", posZ, 1, true);
-        loadDataSet("ramses_small/dx.h5", cellSize, 1, false);
-        loadDataSet("ramses_small/density.h5", density, 1, false);
+        vector<float> cellSize;
+//        string folder = "ramses_small/";
+        string folder = "ramses_large/";
+        loadDataSet(folder + "x.h5", posX, 1, false);
+        loadDataSet(folder + "y.h5", posY, 1, false);
+        loadDataSet(folder + "z.h5", posZ, 1, false);
+        loadDataSet(folder + "dx.h5", cellSize, 1, false);
+        loadDataSet(folder + "density.h5", density, 1, false);
 
         // Set the ranges for all data.
         for (int i = 0; i < posX.size(); ++i) {
@@ -77,26 +80,41 @@ namespace ent
 
         normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
 
-        // Upload all data to the VBO.
-        vboMesh.getVertices().resize(posX.size());
-        for (int i = 0; i < posX.size(); ++i) {
-            ofVec3f v(posX[i], posY[i], posZ[i]);
-            vboMesh.setVertex(i, v);
+        // Upload all data to the TBO.
+        transforms.resize(posX.size());
+        for (size_t i = 0; i < transforms.size(); ++i) {
+            transforms[i].set(posX[i], posY[i], posZ[i], cellSize[i]);
         }
-        vboMesh.getVbo().setAttributeData(CELLSIZE_ATTRIBUTE, cellSize.data(), 1, cellSize.size(), GL_STATIC_DRAW, 0);
+
+        bufferObject.allocate();
+        bufferObject.bind(GL_TEXTURE_BUFFER);
+        bufferObject.setData(transforms, GL_STREAM_DRAW);
+
+        bufferTexture.allocateAsBufferTexture(bufferObject, GL_RGBA32F);
+
+        // Set up the VBO.
+        vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
+        vboMesh.setUsage(GL_STATIC_DRAW);
+
+        // Upload per-instance data to the VBO.
         vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
+        vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
         // Load the shaders.
         renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
         renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
-        renderShader.bindAttribute(CELLSIZE_ATTRIBUTE, "cellSize");
         renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
         renderShader.bindDefaults();
         renderShader.linkProgram();
 
+        renderShader.begin();
+        {
+            renderShader.setUniformTexture("uTransform", bufferTexture, 0);
+        }
+        renderShader.end();
+
         sliceShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/slice.vert");
         sliceShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/slice.frag");
-        sliceShader.bindAttribute(CELLSIZE_ATTRIBUTE, "cellSize");
         sliceShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
         sliceShader.bindDefaults();
         sliceShader.linkProgram();
@@ -148,56 +166,56 @@ namespace ent
             rebuildBins();
         }
 
-        ofEnablePointSprites();
+//        ofEnablePointSprites();
 
-        if ((bBinDebug2D || bExportFiles) && binIndex != renderIndex) {
-            float minDepth = coordRange.getMin().z + binIndex * binSliceZ;
-            float maxDepth = minDepth + binSliceZ;
-
-            ofLogNotice() << "Rendering bin " << binIndex << " to texture.";
-            binFbo.begin();
-            {
-                ofClear(0, 0);
-                ofSetColor(ofColor::white);
-                glPointSize(1.0);
-
-                sliceShader.begin();
-                sliceShader.setUniform1f("pointAdjust", pointAdjust);
-                sliceShader.setUniform3f("minCoord", coordRange.getMin());
-                sliceShader.setUniform3f("maxCoord", coordRange.getMax());
-                sliceShader.setUniform1f("binSizeX", binSizeX);
-                sliceShader.setUniform1f("binSizeY", binSizeY);
-                sliceShader.setUniform1f("minDepth", minDepth);
-                sliceShader.setUniform1f("maxDepth", maxDepth);
-//                sliceShader.setUniform1f("minDensity", densityRange.getMin());
-//                sliceShader.setUniform1f("maxDensity", densityRange.getMax());
-                sliceShader.setUniform1f("minDensity", densityMin * densityRange.getSpan());
-                sliceShader.setUniform1f("maxDensity", densityMax * densityRange.getSpan());
-                {
-                    vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
-                }
-                sliceShader.end();
-            }
-            binFbo.end();
-
-            renderIndex = binIndex;
-
-            if (bExportFiles) {
-                ofLogVerbose() << "Saving texture " << binIndex << " to disk.";
-                binFbo.readToPixels(binPixels);
-                ofSaveImage(binPixels, exportFolder + "/" + kSliceFilePrefix + ofToString(binIndex, kSliceFileNumPadding, '0') + kSliceFileExt);
-            }
-        }
+//        if ((bBinDebug2D || bExportFiles) && binIndex != renderIndex) {
+//            float minDepth = coordRange.getMin().z + binIndex * binSliceZ;
+//            float maxDepth = minDepth + binSliceZ;
+//
+//            ofLogNotice() << "Rendering bin " << binIndex << " to texture.";
+//            binFbo.begin();
+//            {
+//                ofClear(0, 0);
+//                ofSetColor(ofColor::white);
+//                glPointSize(1.0);
+//
+//                sliceShader.begin();
+//                sliceShader.setUniform1f("pointAdjust", pointAdjust);
+//                sliceShader.setUniform3f("minCoord", coordRange.getMin());
+//                sliceShader.setUniform3f("maxCoord", coordRange.getMax());
+//                sliceShader.setUniform1f("binSizeX", binSizeX);
+//                sliceShader.setUniform1f("binSizeY", binSizeY);
+//                sliceShader.setUniform1f("minDepth", minDepth);
+//                sliceShader.setUniform1f("maxDepth", maxDepth);
+////                sliceShader.setUniform1f("minDensity", densityRange.getMin());
+////                sliceShader.setUniform1f("maxDensity", densityRange.getMax());
+//                sliceShader.setUniform1f("minDensity", densityMin * densityRange.getSpan());
+//                sliceShader.setUniform1f("maxDensity", densityMax * densityRange.getSpan());
+//                {
+//                    vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
+//                }
+//                sliceShader.end();
+//            }
+//            binFbo.end();
+//
+//            renderIndex = binIndex;
+//
+//            if (bExportFiles) {
+//                ofLogVerbose() << "Saving texture " << binIndex << " to disk.";
+//                binFbo.readToPixels(binPixels);
+//                ofSaveImage(binPixels, exportFolder + "/" + kSliceFilePrefix + ofToString(binIndex, kSliceFileNumPadding, '0') + kSliceFileExt);
+//            }
+//        }
     }
 
     //--------------------------------------------------------------
     void CellRenderer::rebuildIndices()
     {
-        vboMesh.clearIndices();
-        for (int i = 0; i < vboMesh.getNumVertices(); i += stride) {
-            vboMesh.addIndex(i);
-        }
-        bNeedsIndices = false;
+//        vboMesh.clearIndices();
+//        for (int i = 0; i < vboMesh.getNumVertices(); i += stride) {
+//            vboMesh.addIndex(i);
+//        }
+//        bNeedsIndices = false;
     }
 
     //--------------------------------------------------------------
@@ -229,19 +247,18 @@ namespace ent
             ofTranslate(originShift);
             {
                 renderShader.begin();
-                renderShader.setUniform1f("pointSize", pointSize / cellSizeRange.getMin());
-                renderShader.setUniform1f("densityMin", densityMin * densityRange.getSpan());
-                renderShader.setUniform1f("densityMax", densityMax * densityRange.getSpan());
+                renderShader.setUniform1f("uDensityMin", densityMin * densityRange.getSpan());
+                renderShader.setUniform1f("uDensityMax", densityMax * densityRange.getSpan());
                 if (bBinDebug3D) {
-                    renderShader.setUniform1f("debugMin", coordRange.getMin().z + binIndex * binSliceZ);
-                    renderShader.setUniform1f("debugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
+                    renderShader.setUniform1f("uDebugMin", coordRange.getMin().z + binIndex * binSliceZ);
+                    renderShader.setUniform1f("uDebugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
                 }
                 else {
-                    renderShader.setUniform1f("debugMin", FLT_MAX);
-                    renderShader.setUniform1f("debugMax", FLT_MIN);
+                    renderShader.setUniform1f("uDebugMin", FLT_MAX);
+                    renderShader.setUniform1f("uDebugMax", FLT_MIN);
                 }
                 {
-                    vboMesh.getVbo().drawElements(GL_POINTS, vboMesh.getNumIndices());
+                    vboMesh.drawInstanced(OF_MESH_FILL, transforms.size());
                 }
                 renderShader.end();
             }
@@ -264,7 +281,7 @@ namespace ent
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
         ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("%lu Indices / %lu Vertices", vboMesh.getNumIndices(), vboMesh.getNumVertices());
+            ImGui::Text("%lu Instances", transforms.size());
 
             if (ImGui::CollapsingHeader("Data", nullptr, true, true)) {
                 if (ImGui::SliderInt("Stride", &stride, 1, 128)) {

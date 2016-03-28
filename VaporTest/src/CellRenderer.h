@@ -16,8 +16,7 @@ namespace ent
 {
     enum ExtraAttributes
     {
-        CELLSIZE_ATTRIBUTE = 5,
-        DENSITY_ATTRIBUTE = 6
+        DENSITY_ATTRIBUTE = 5
     };
 
     class CellRenderer
@@ -37,7 +36,7 @@ namespace ent
         // Data
         void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
         ofVboMesh vboMesh;
-        vector<float> cellSize;
+        vector<ofVec4f> transforms;
         vector<float> density;
 
         ofxVec3fRange coordRange;
@@ -55,6 +54,8 @@ namespace ent
         ofVec3f originShift;
         float normalizeFactor;
 
+        ofBufferObject bufferObject;
+        ofTexture bufferTexture;
         ofShader renderShader;
 
         float pointSize;

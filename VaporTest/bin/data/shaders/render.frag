@@ -2,13 +2,13 @@
 
 uniform vec4 globalColor;
 
-uniform float densityMin;
-uniform float densityMax;
+uniform float uDensityMin;
+uniform float uDensityMax;
 
 in float vDensity;
 in float vDebug;
 
-out vec4 fFragColor;
+out vec4 fragColor;
 
 float map(float value, float inMin, float inMax, float outMin, float outMax)
 {
@@ -18,9 +18,9 @@ float map(float value, float inMin, float inMax, float outMin, float outMax)
 void main (void)
 {
     if (vDebug > 0.0) {
-        fFragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        fragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
     else {
-        fFragColor = vec4(globalColor.rgb, map(vDensity, densityMin, densityMax, 0.0, 1.0));
+        fragColor = vec4(globalColor.rgb, map(vDensity, uDensityMin, uDensityMax, 0.0, 1.0));
     }
 }
