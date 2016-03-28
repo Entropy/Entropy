@@ -1,6 +1,6 @@
 struct ViewInfo
 {
-    mat4  invViewMatrix;
+    mat4  viewMatrixInverse;
     vec2  viewportDims;
     vec2  rcpViewportDims;    
     float nearClip;

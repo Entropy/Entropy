@@ -24,7 +24,7 @@ static void _check_gl_error( const char * _file, int _line )
         case GL_INVALID_FRAMEBUFFER_OPERATION:  error = "INVALID_FRAMEBUFFER_OPERATION";  break;
         }
 
-        std::cout << "GL_" << error.c_str() << " - " << _file << ":" << _line << std::endl;
+        std::cout << "GL_" << error.c_str() << " - " << err << ", " << _file << ":" << _line << std::endl;
       //  ofExit( 0 );
         err = glGetError();
     }

@@ -1,19 +1,24 @@
 #include "ofMain.h"
 #include "ofApp.h"
 
+//#define TWO_1080P_SCREENS
+
 //========================================================================
-int main( ){
+int main()
+{
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4,5);
+    settings.windowMode = OF_FULLSCREEN;
     settings.width = 1920;
     settings.height = 1080;
-   // settings.multiMonitorFullScreen = false;
-    settings.windowMode = OF_WINDOW;
-	ofCreateWindow(settings);
+    settings.depthBits = 16;
 
-	// this kicks off the running of my app
-	// can be OF_WINDOW or OF_FULLSCREEN
-	// pass in width and height too:
-	ofRunApp(new ofApp());
+#ifdef TWO_1080P_SCREENS
+    settings.width = 1920 * 2;
+    settings.multiMonitorFullScreen = true;
+#endif
 
+	ofCreateWindow( settings );
+
+	ofRunApp( new ofApp() );
 }

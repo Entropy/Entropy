@@ -1,17 +1,17 @@
-#include "lb/gl/DDSCubeMap.h"
+#include "lb/gl/CubeMapTexture.h"
 #include "lb/gl/GLError.h"
 
-lb::DDSCubeMap::DDSCubeMap()
+lb::CubeMapTexture::CubeMapTexture()
 {
 
 }
 
-lb::DDSCubeMap::~DDSCubeMap()
+lb::CubeMapTexture::~CubeMapTexture()
 {
 }
 
  /// Filename can be KTX or DDS files
- GLuint lb::DDSCubeMap::CreateTexture( const std::string& _path )
+ GLuint lb::CubeMapTexture::CreateTexture( const std::string& _path )
  {
      lb::CheckGLError(); // clear GLEW errors
 
@@ -39,6 +39,12 @@ lb::DDSCubeMap::~DDSCubeMap()
      glTexParameteri( Target, GL_TEXTURE_SWIZZLE_G, Format.Swizzles[ 1 ] );
      glTexParameteri( Target, GL_TEXTURE_SWIZZLE_B, Format.Swizzles[ 2 ] );
      glTexParameteri( Target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[ 3 ] );
+
+     GLuint magFilter = Texture.levels() == 0 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+     GLuint minFilter = Texture.levels() == 0 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+
+     glTexParameteri( Target, GL_TEXTURE_MAG_FILTER, magFilter );
+     glTexParameteri( Target, GL_TEXTURE_MIN_FILTER, minFilter );
 
      lb::CheckGLError(); // clear GLEW errors
 
@@ -87,43 +93,14 @@ lb::DDSCubeMap::~DDSCubeMap()
 }
 
 
-void lb::DDSCubeMap::LoadDDSTexture( const std::string& _path )
+void lb::CubeMapTexture::LoadDDSTexture( const std::string& _path )
 {
     m_texId = CreateTexture( ofToDataPath( _path ) );
     ofLogNotice() << m_texId << endl;
 }
 
-void lb::DDSCubeMap::BindTexture( GLuint _texUnit )
+void lb::CubeMapTexture::BindTexture( GLuint _texUnit )
 {
     glActiveTexture( GL_TEXTURE0 + _texUnit );
     glBindTexture( GL_TEXTURE_CUBE_MAP, m_texId );
 }
-
-/*GLuint loadCubemap( vector<const GLchar*> faces )
-{
-    GLuint textureID;
-    glGenTextures( 1, &textureID );
-    glActiveTexture( GL_TEXTURE0 );
-
-    int width, height;
-    unsigned char* image;
-
-    glBindTexture( GL_TEXTURE_CUBE_MAP, textureID );
-    for ( GLuint i = 0; i < faces.size(); i++ )
-    {
-        image = SOIL_load_image( faces[ i ], &width, &height, 0, SOIL_LOAD_RGB );
-        glTexImage2D(
-            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
-            GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image
-            );
-    }
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE );
-    glBindTexture( GL_TEXTURE_CUBE_MAP, 0 );
-
-    return textureID;
-}
-*/

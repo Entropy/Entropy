@@ -66,6 +66,8 @@ public:
     uint32_t            GetNumCulledPointLights() const;
     const uint16_t *    GetCulledPointLightIndices() const;
 
+    uint32_t            GetNumAffectedClusters() const;
+
 private:
     void CreatePlanes();
     void CreateLightIndexTextures();

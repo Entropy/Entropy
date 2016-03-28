@@ -7,6 +7,8 @@
 #include "lb/util/RadixSort.h"
 #include "lb/gl/GLError.h"
 
+#include "glm/gtc/type_ptr.hpp"
+
 lb::ClusterGrid::ClusterGrid()
 {
 }
@@ -178,6 +180,8 @@ void lb::ClusterGrid::CullPointLights( const ofMatrix4x4& _viewMatrix, const std
     // reset clusters
     m_numLightIndices = 0;
     m_numAffectedClusters = 0;
+    m_numCulledLightIndices = 0;
+    m_numVisibleLights = 0;
 
     memset( m_lightIndices, 0, sizeof( m_lightIndices[0] ) * MAX_CLUSTERED_LIGHTS );
     memset( m_lightSortKeys, 0, sizeof( m_lightSortKeys[0] ) * MAX_CLUSTERED_LIGHTS );
@@ -186,9 +190,7 @@ void lb::ClusterGrid::CullPointLights( const ofMatrix4x4& _viewMatrix, const std
     memset( m_clusterLightPointerList, 0, sizeof( m_clusterLightPointerList[0] ) * NUM_CLUSTERS );
 
     memset( m_culledPointLightIndices, 0, sizeof( m_culledPointLightIndices[0] ) * MAX_POINT_LIGHTS );
-    m_numCulledLightIndices = 0;
 
-    m_numVisibleLights = 0;
 
     float rcpNearFarLen = 1.0f / ( m_projInfo.farZ - m_projInfo.nearZ );
 
@@ -196,11 +198,12 @@ void lb::ClusterGrid::CullPointLights( const ofMatrix4x4& _viewMatrix, const std
     float focalLength = lb::GetFocalLength( horizFov );
     float aspectRatio = 1.0f / m_projInfo.aspectRatio; // height / width
 
+    glm::mat4 viewMat = glm::make_mat4( _viewMatrix.getPtr() );
+
     for ( uint16_t light_idx = 0; light_idx < _pointLights.size(); ++light_idx )
     {
         const lb::PointLight& light = _pointLights[ light_idx ];
-
-        ofVec4f posVS = ofVec4f( light.position.x, light.position.y, light.position.z, 1.0f ) * _viewMatrix;
+        glm::vec4 posVS = viewMat * light.position;
         glm::vec3 lightPosVS = glm::vec3( posVS.x, posVS.y, posVS.z );
 
         if ( false == lb::SphereInFrustum( m_frustumPlanes, lightPosVS, light.radius ) )
@@ -253,8 +256,22 @@ void lb::ClusterGrid::CullPointLights( const ofMatrix4x4& _viewMatrix, const std
         int y0 = std::min( (int)( ( rectMin.y * 0.5f + 0.5f ) * (float)NUM_CLUSTERS_Y ), NUM_CLUSTERS_Y - 1 );
         int y1 = std::min( (int)( ( rectMax.y * 0.5f + 0.5f ) * (float)NUM_CLUSTERS_Y ), NUM_CLUSTERS_Y - 1 );
 
+        // Note: There's a bug with the cluster refinement when the light size is small, use full AABB until that is fixed
+        for ( int z = z0; z <= z1; ++z )
+        {
+            for ( int y = y0; y <= y1; ++y )
+            {
+                for ( int x = x0; x <= x1; ++x )
+                {
+                    AddPointLightToCluster( light_idx, x, y, z );
+                }
+            }
+        }
+
+        continue;
+
         const int center_y = (int)( ( y0 + y1 ) * 0.5f );
-        const int center_z = (int)( ( ( linearMaxZ + linearMinZ ) * 0.5f ) * (float)NUM_CLUSTERS_Z );
+        const int center_z = (int)( ( ( linearMaxZ + linearMinZ ) * 0.5f ) * ((float)NUM_CLUSTERS_Z) );
 
         for ( int z = z0; z <= z1; ++z )
         {
@@ -395,5 +412,10 @@ uint32_t lb::ClusterGrid::GetNumCulledPointLights() const
 const uint16_t * lb::ClusterGrid::GetCulledPointLightIndices() const
 {
     return m_culledPointLightIndices;
+}
+
+uint32_t lb::ClusterGrid::GetNumAffectedClusters() const
+{
+    return m_numAffectedClusters;
 }
 

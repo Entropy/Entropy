@@ -23,13 +23,16 @@ void lb::LightSystem::Init( const ofCamera& _camera )
     projInfo.nearZ = _camera.getNearClip();
     projInfo.farZ = _camera.getFarClip();
 
-    m_pointLights.reserve( lb::ClusterGrid::MAX_POINT_LIGHTS );
+    m_directionalLights.reserve( skMaxDirectionalLights );
+    m_pointLights.reserve( skMaxPointLights );
 
     m_clusterGrid.Init( projInfo );
     m_clusterGridDebug.CreateClusterMesh( m_clusterGrid, projInfo );
 
     // Create point light uniform buffer
-    m_pointLightUbo.allocate( lb::ClusterGrid::MAX_POINT_LIGHTS * sizeof( lb::PointLight ), nullptr, GL_DYNAMIC_DRAW );
+    size_t numBytes = sizeof( LightUbo );
+    ofLogNotice() << numBytes << endl;
+    m_pointLightUbo.allocate( numBytes, nullptr, GL_DYNAMIC_DRAW );
     assert( true == m_pointLightUbo.isAllocated() );
 
     m_debugSphere = ofSpherePrimitive( 1.0f, 8 );
@@ -40,7 +43,7 @@ void lb::LightSystem::Init( const ofCamera& _camera )
 void lb::LightSystem::ConfigureShader( const ofShader& _shader ) const
 {
     _shader.begin();
-    _shader.bindUniformBlock( m_pointLightUboBinding, "PointLightBlock" );
+    _shader.bindUniformBlock( m_pointLightUboBinding, "LightBlock" );
     _shader.setUniform1i( "uLightPointerTex", m_lightPointerTexUnit );
     _shader.setUniform1i( "uLightIndexTex", m_lightIndexTexUnit );
     _shader.end();
@@ -61,14 +64,55 @@ void lb::LightSystem::SetLightPointerTexUnit( uint8_t _texUnit )
     m_lightPointerTexUnit = _texUnit;
 }
 
+void lb::LightSystem::SetAmbientIntensity( float _intensity )
+{
+    m_ambientIntensity = _intensity;
+}
+
+void lb::LightSystem::AddPointLight( const lb::PointLight& _light )
+{
+    assert( m_pointLights.size() < skMaxPointLights );
+
+    if ( m_pointLights.size() < skMaxPointLights )
+    {
+        m_pointLights.push_back( _light );
+    }
+}
+
+void lb::LightSystem::AddDirectionalLight( const lb::DirectionalLight& _light )
+{
+    assert( m_directionalLights.size() < skMaxDirectionalLights );
+
+    if ( m_directionalLights.size() < skMaxDirectionalLights )
+    {
+        m_directionalLights.push_back( _light );
+    }
+}
+
+
 void lb::LightSystem::Update( const ofCamera& _camera )
 {
-    // updateData() will use direct state access (DSA) on GL 4.5, faster than map?
-    m_pointLightUbo.updateData( m_pointLights.size() * sizeof( lb::PointLight ), m_pointLights.data() );
-
     m_clusterGrid.CullPointLights( _camera.getModelViewMatrix(), m_pointLights );
     m_clusterGrid.SortLightIndexList();
     m_clusterGrid.UpdateLightIndexTextures();
+
+    UpdateUbo();
+}
+
+void lb::LightSystem::UpdateUbo()
+{
+    // updateData() will use direct state access (DSA) on GL 4.5, faster than map?
+    m_pointLightUbo.unbind( GL_UNIFORM_BUFFER );
+
+    const int numDirectionalLights = m_directionalLights.size();;
+
+    uint8_t * ptr = m_pointLightUbo.map<uint8_t>( GL_WRITE_ONLY );
+    memcpy( ptr + offsetof( LightUbo, pointLights ), m_pointLights.data(), sizeof( LightUbo::pointLights ) );
+    memcpy( ptr + offsetof( LightUbo, directionalLights ), m_directionalLights.data(), sizeof( LightUbo::directionalLights ) );
+    memcpy( ptr + offsetof( LightUbo, directionalLightCount ), &numDirectionalLights, sizeof( numDirectionalLights ) );
+    memcpy( ptr + offsetof( LightUbo, ambientIntensity ), &m_ambientIntensity, sizeof( m_ambientIntensity ) );
+
+    m_pointLightUbo.unmap();
 }
 
 void lb::LightSystem::Bind()

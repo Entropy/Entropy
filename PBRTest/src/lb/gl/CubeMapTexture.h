@@ -5,11 +5,11 @@
 
 namespace lb
 {
-    class DDSCubeMap
+    class CubeMapTexture
     {
     public:
-        DDSCubeMap();
-        ~DDSCubeMap();
+        CubeMapTexture();
+        ~CubeMapTexture();
 
         void LoadDDSTexture( const std::string& _path );
         void BindTexture( GLuint _texUnit );

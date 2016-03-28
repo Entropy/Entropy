@@ -5,8 +5,10 @@
 #include "PerViewUbo.h"
 #include "lb/lighting/LightSystem.h"
 #include "lb/lighting/PointLight.h"
-#include "lb/camera/CameraTools.h"
-#include "lb/gl/DDSCubeMap.h"
+#include "lb/gl/CubeMapTexture.h"
+#include "PBRMaterial.h"
+
+#include "ofxImGui.h"
 
 class ofApp : public ofBaseApp {
 
@@ -23,12 +25,22 @@ public:
 
     void SetupLighting();
 
+
     void CreateRandomLights();
+
+    void ClearPointLights();
+    void ClearDirectionalLights();
+
     void AnimateLights();
 
     void SetAppMode( const AppMode _mode );
 
+    void DrawSkybox();
     void DrawScene();
+    void DrawSphereGrid();
+
+    void imGui();
+
 
 
     void keyPressed(int key);
@@ -48,14 +60,28 @@ private:
 
     lb::ViewUbo                 m_viewUbo;
     lb::LightSystem             m_lightSystem;
-    lb::CameraParams            m_cameraParams;
 
-    lb::DDSCubeMap              m_cubeMap;
+    lb::CubeMapTexture          m_radianceMap;
+    lb::CubeMapTexture          m_irradianceMap;
+    lb::CubeMapTexture          m_skyboxMap;
+
+    PBRMaterial                 m_material;
 
     ofShader                    m_shader;
+    ofShader                    m_skyboxShader;
+    GLuint                      m_defaultVao;
+
+    ofShader                    m_integrateDFGShader;
+    ofFbo                       m_dfgFbo;
+
+    float                       m_exposure;
+    float                       m_gamma;
 
     ofEasyCam                   m_camera;
     ofEasyCam                   m_debugCamera;
 
     ofSpherePrimitive           m_sphere;
+
+    ofxImGui                    m_gui;
+    bool                        m_bMouseOverGui;
 };
