@@ -1,7 +1,7 @@
 #pragma once
 
-#define COMPUTE_OPENCL 1
-//#define COMPUTE_GLSL 1
+//#define COMPUTE_OPENCL 1
+#define COMPUTE_GLSL 1
 
 //#define THREE_D 1
 
@@ -13,6 +13,9 @@
 #ifdef THREE_D
 #include "OpenCLImage3D.h"
 #endif
+#endif
+#ifdef COMPUTE_GLSL
+#include "ofxFbo3D.h"
 #endif
 
 namespace entropy
@@ -55,8 +58,12 @@ namespace entropy
 #ifdef COMPUTE_GLSL
         ofShader shader;
         ofVboMesh mesh;
-
-        ofFbo fbos[2];
+        ofxFbo3D fbos[2];
+#ifdef THREE_D
+        ofxTexture3d textures[2];
+#else
+        ofTexture textures[2];
+#endif
 #endif
 
 #ifdef THREE_D

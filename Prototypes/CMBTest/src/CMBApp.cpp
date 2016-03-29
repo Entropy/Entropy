@@ -6,7 +6,7 @@ namespace entropy
     void CMBApp::setup()
     {
         ofSetLogLevel(OF_LOG_VERBOSE);
-        ofSetVerticalSync(false);
+        //ofSetVerticalSync(false);
 
         tintColor = ofColor::white;
         dropColor = ofColor::red;
@@ -57,10 +57,10 @@ namespace entropy
 
 #ifdef COMPUTE_GLSL
         // Allocate the FBOs.
-        ofFbo::Settings fboSettings;
-        fboSettings.width = dimensions.x;
-        fboSettings.height = dimensions.y;
-        fboSettings.internalformat = GL_RGBA32F;
+        //ofFbo::Settings fboSettings;
+        //fboSettings.width = dimensions.x;
+        //fboSettings.height = dimensions.y;
+        //fboSettings.internalformat = GL_RGBA32F;
 #endif  // COMPUTE_GLSL
 
 #endif  // THREE_D
@@ -75,7 +75,13 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-            fbos[i].allocate(fboSettings);
+#ifdef THREE_D
+            textures[i].allocate(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
+#else
+            textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
+#endif
+            fbos[i].allocate();
+            fbos[i].attachTexture(textures[i], 0);
             fbos[i].begin();
             {
                 ofClear(0, 0);
@@ -150,7 +156,6 @@ namespace entropy
 
             fbos[srcIdx].begin();
             {
-
                 if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
                     ofSetColor(dropColor);
                     ofNoFill();
@@ -201,8 +206,12 @@ namespace entropy
         // Layer the drops.
         fbos[dstIdx].begin();
         shader.begin();
-        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
-        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
+#ifdef THREE_D
+
+#else
+        shader.setUniformTexture("uPrevBuffer", textures[dstIdx], 1);
+        shader.setUniformTexture("uCurrBuffer", textures[srcIdx], 2);
+#endif  // THREE_D
         shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
         {
             mesh.draw();
@@ -279,7 +288,7 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-        fbos[drawIdx].draw(0, 0);
+        textures[drawIdx].draw(0, 0);
 #endif  // COMPUTE_GLSL
 
 #endif  // THREE_D
