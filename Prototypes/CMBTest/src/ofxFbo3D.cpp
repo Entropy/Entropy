@@ -27,6 +27,7 @@ ofxFbo3D::~ofxFbo3D()
 void ofxFbo3D::allocate()
 {
     glGenFramebuffers(1, &_fboID);
+    cout << "Allocating fboID " << _fboID << endl;
 }
 
 //----------------------------------------------------------

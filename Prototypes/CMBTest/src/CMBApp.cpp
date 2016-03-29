@@ -19,7 +19,7 @@ namespace entropy
         radius = 10.0f;
         ringSize = 0.5f;
 
-        bRestart = true;
+        bRestart = false;
         bGuiVisible = true;
 
 #ifdef COMPUTE_OPENCL
@@ -54,6 +54,7 @@ namespace entropy
 #else
         dimensions.x = ofGetWidth();
         dimensions.y = ofGetHeight();
+        cout << "Restart with dimensions " << dimensions << endl;
 
 #ifdef COMPUTE_GLSL
         // Allocate the FBOs.
