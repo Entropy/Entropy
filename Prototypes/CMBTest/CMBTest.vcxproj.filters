@@ -61,7 +61,7 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\CMBTest\src\ofxFbo3D.cpp">
+    <ClCompile Include="src\ofxFbo3D.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,7 +188,7 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CMBTest\src\ofxFbo3D.h">
+    <ClInclude Include="src\ofxFbo3D.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

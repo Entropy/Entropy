@@ -192,9 +192,9 @@
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
-    <ClCompile Include="..\..\CMBTest\src\ofxFbo3D.cpp" />
     <ClCompile Include="src\CMBApp.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofxFbo3D.cpp" />
     <ClCompile Include="src\OpenCLImage3D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -223,8 +223,8 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
-    <ClInclude Include="..\..\CMBTest\src\ofxFbo3D.h" />
     <ClInclude Include="src\CMBApp.h" />
+    <ClInclude Include="src\ofxFbo3D.h" />
     <ClInclude Include="src\OpenCLImage3D.h" />
   </ItemGroup>
   <ItemGroup>
