@@ -1,0 +1,21 @@
+{
+	"oF":
+	{
+		"name": "openFrameworks",
+		"source": "https://github.com/Entropy/openFrameworks.git",
+		"branch": "master"
+	},
+	"addons": 
+	[
+		{
+			"name": "ofxHDF5",
+			"source": "https://github.com/Entropy/ofxHDF5.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxImGui",
+			"source": "https://github.com/Entropy/ofxImGui.git",
+			"branch": "master"
+		}
+	]
+}

@@ -15,7 +15,7 @@
 		6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */; };
 		6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */; };
 		6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D70B1C75339700117A81 /* VolumeRenderer.cpp */; };
-		6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6476845C1C6BF112004C1E60 /* ofxRange.cpp */; };
+		64770B301CA9B46400318A74 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64770B2E1CA9B46400318A74 /* ofxRange.cpp */; };
 		64CCB83D1CA3302C0002DD92 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8261CA3302C0002DD92 /* imgui.cpp */; };
 		64CCB83E1CA3302C0002DD92 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */; };
 		64CCB83F1CA3302C0002DD92 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8291CA3302C0002DD92 /* imgui_draw.cpp */; };
@@ -108,8 +108,8 @@
 		6461D70E1C75383300117A81 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		647684511C6BC92A004C1E60 /* slice.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.frag; sourceTree = "<group>"; };
 		647684521C6BC92A004C1E60 /* slice.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.vert; sourceTree = "<group>"; };
-		6476845C1C6BF112004C1E60 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
-		6476845D1C6BF112004C1E60 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../Shared/src/ofxRange.h; sourceTree = "<group>"; };
+		64770B2E1CA9B46400318A74 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
+		64770B2F1CA9B46400318A74 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../../Shared/src/ofxRange.h; sourceTree = "<group>"; };
 		64CCB8261CA3302C0002DD92 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
 		64CCB8271CA3302C0002DD92 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
 		64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
@@ -268,8 +268,8 @@
 		6476845F1C6BF11C004C1E60 /* shared_src */ = {
 			isa = PBXGroup;
 			children = (
-				6476845C1C6BF112004C1E60 /* ofxRange.cpp */,
-				6476845D1C6BF112004C1E60 /* ofxRange.h */,
+				64770B2E1CA9B46400318A74 /* ofxRange.cpp */,
+				64770B2F1CA9B46400318A74 /* ofxRange.h */,
 			);
 			name = shared_src;
 			sourceTree = "<group>";
@@ -646,6 +646,7 @@
 				64CCB8401CA3302C0002DD92 /* README.md in Sources */,
 				1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */,
 				4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */,
+				64770B301CA9B46400318A74 /* ofxRange.cpp in Sources */,
 				64CCB8411CA3302C0002DD92 /* BaseEngine.cpp in Sources */,
 				64CCB8451CA3302C0002DD92 /* ofxImGui.cpp in Sources */,
 				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,
@@ -653,7 +654,6 @@
 				992573592D6B43E391F41598 /* ofxHDF5Group.cpp in Sources */,
 				6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */,
 				6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */,
-				6476845E1C6BF112004C1E60 /* ofxRange.cpp in Sources */,
 				64CCB83E1CA3302C0002DD92 /* imgui_demo.cpp in Sources */,
 				6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */,
 			);
