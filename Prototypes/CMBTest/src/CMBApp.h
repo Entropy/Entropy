@@ -1,7 +1,19 @@
 #pragma once
 
+#define COMPUTE_OPENCL 1
+//#define COMPUTE_GLSL 1
+
+//#define THREE_D 1
+
 #include "ofMain.h"
-#include "ofxGui.h"
+#include "ofxImGui.h"
+#include "ofxVolumetrics.h"
+#ifdef COMPUTE_OPENCL
+#include "MSAOpenCL.h"
+#ifdef THREE_D
+#include "OpenCLImage3D.h"
+#endif
+#endif
 
 namespace entropy
 {
@@ -26,25 +38,56 @@ namespace entropy
 
         void restart();
 
+#ifdef COMPUTE_OPENCL
+        msa::OpenCL openCL;
+        msa::OpenCLKernelPtr dropKernel;
+        msa::OpenCLKernelPtr ripplesKernel;
+        msa::OpenCLKernelPtr copyKernel;
+#ifdef THREE_D
+        OpenCLImage3D clImages[2];
+        OpenCLImage3D clImageTmp;
+#else
+        msa::OpenCLImage clImages[2];
+        msa::OpenCLImage clImageTmp;
+#endif
+#endif
+
+#ifdef COMPUTE_GLSL
         ofShader shader;
-        ofFbo srcFbo, dstFbo;
         ofVboMesh mesh;
 
-        ofParameterGroup paramGroup;
+        ofFbo fbos[2];
+#endif
 
-        ofParameter<ofColor> tintColor;
-        ofParameter<ofColor> dropColor;
+#ifdef THREE_D
+        ofVec3f dimensions;
 
-        ofParameter<bool> bDropOnPress;
-        ofParameter<bool> bDropUnderMouse;
-        ofParameter<int> dropRate;
+        ofEasyCam cam;
+        ofxVolumetrics volumetrics;
+#else
+        ofVec2f dimensions;
+#endif
 
-        ofParameter<float> damping;
-        ofParameter<float> radius;
+        ofFloatColor tintColor;
+        ofFloatColor dropColor;
 
-        ofParameter<bool> bRestart;
+        bool bDropOnPress;
+        bool bDropUnderMouse;
+        int dropRate;
 
-        ofxPanel guiPanel;
+        float damping;
+        float radius;
+        float ringSize;
+
+        bool bRestart;
+
+        int activeIndex;
+
+        // GUI
+        void imGui();
+
+        ofxImGui gui;
         bool bGuiVisible;
+        bool bMouseOverGui;
     };
 }
