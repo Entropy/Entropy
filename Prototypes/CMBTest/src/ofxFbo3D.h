@@ -18,6 +18,7 @@ public:
     ~ofxFbo3D();
 
     void allocate();
+    void clear();
     bool checkStatus() const;
 
     void attachTexture(ofTexture& texture, GLenum attachmentPoint);

@@ -1,4 +1,5 @@
 #include "CMBApp.h"
+#include "GLError.h"
 
 namespace entropy
 {
@@ -19,7 +20,7 @@ namespace entropy
         radius = 10.0f;
         ringSize = 0.5f;
 
-        bRestart = false;
+        bRestart = true;
         bGuiVisible = true;
 
 #ifdef COMPUTE_OPENCL
@@ -54,14 +55,8 @@ namespace entropy
 #else
         dimensions.x = ofGetWidth();
         dimensions.y = ofGetHeight();
-        cout << "Restart with dimensions " << dimensions << endl;
 
 #ifdef COMPUTE_GLSL
-        // Allocate the FBOs.
-        //ofFbo::Settings fboSettings;
-        //fboSettings.width = dimensions.x;
-        //fboSettings.height = dimensions.y;
-        //fboSettings.internalformat = GL_RGBA32F;
 #endif  // COMPUTE_GLSL
 
 #endif  // THREE_D
@@ -76,11 +71,21 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
+#ifdef USE_CUSTOM_FBO
 #ifdef THREE_D
             textures[i].allocate(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
 #else
-            textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
+            ofTextureData texData;
+            texData.width = dimensions.x;
+            texData.height = dimensions.y;
+            texData.glInternalFormat = GL_RGBA32F;
+            texData.bFlipTexture = (i % 2 == 0);
+            //textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
+            textures[i].allocate(texData);
+            cout << "Texture " << i << " flipped? " << textures[i].texData.bFlipTexture << endl;
 #endif
+            lb::CheckGLError();
+
             fbos[i].allocate();
             fbos[i].attachTexture(textures[i], 0);
             fbos[i].begin();
@@ -88,6 +93,16 @@ namespace entropy
                 ofClear(0, 0);
             }
             fbos[i].end();
+            fbos[i].checkStatus();
+
+            lb::CheckGLError();
+#else
+            ofFbo::Settings fboSettings;
+            fboSettings.width = dimensions.x;
+            fboSettings.height = dimensions.y;
+            fboSettings.internalformat = GL_RGBA32F;
+            fbos[i].allocate(fboSettings);
+#endif  // USE_CUSTOM_FBO
 #endif  // COMPUTE_GLSL
         }
 
@@ -172,6 +187,7 @@ namespace entropy
 
             ofPopMatrix();
             ofPopStyle();
+
 #endif  // COMPUTE_GLSL
         }
 
@@ -210,8 +226,13 @@ namespace entropy
 #ifdef THREE_D
 
 #else
+#ifdef USE_CUSTOM_FBO
         shader.setUniformTexture("uPrevBuffer", textures[dstIdx], 1);
         shader.setUniformTexture("uCurrBuffer", textures[srcIdx], 2);
+#else
+        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
+        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
+#endif  // USE_CUSTOM_FBO
 #endif  // THREE_D
         shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
         {
@@ -219,6 +240,7 @@ namespace entropy
         }
         shader.end();
         fbos[dstIdx].end();
+
 #endif  // COMPUTE_GLSL
 
 #ifdef THREE_D
@@ -281,7 +303,7 @@ namespace entropy
         }
         cam.end();
 #else
-        int drawIdx = 1- activeIndex;
+        int drawIdx = 1 - activeIndex;
         ofEnableAlphaBlending();
 
 #ifdef COMPUTE_OPENCL
@@ -289,7 +311,11 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
+#ifdef USE_CUSTOM_FBO
         textures[drawIdx].draw(0, 0);
+#else
+        fbos[drawIdx].draw(0, 0);
+#endif
 #endif  // COMPUTE_GLSL
 
 #endif  // THREE_D

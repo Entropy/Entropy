@@ -7,6 +7,7 @@
 //
 
 #include "ofxFbo3D.h"
+#include "GLError.h"
 
 //----------------------------------------------------------
 ofxFbo3D::ofxFbo3D()
@@ -18,16 +19,28 @@ ofxFbo3D::ofxFbo3D()
 //----------------------------------------------------------
 ofxFbo3D::~ofxFbo3D()
 {
-    if (_fboID) {
-        glDeleteFramebuffers(1, &_fboID);
-    }
+    clear();
 }
 
 //----------------------------------------------------------
 void ofxFbo3D::allocate()
 {
+    clear();
+    
     glGenFramebuffers(1, &_fboID);
     cout << "Allocating fboID " << _fboID << endl;
+    lb::CheckGLError();
+}
+
+//----------------------------------------------------------
+void ofxFbo3D::clear()
+{
+    if (_fboID) {
+        cout << "Clearing fboID " << _fboID << endl;
+        glDeleteFramebuffers(1, &_fboID);
+        _fboID = 0;
+    }
+    _mrt.clear();
 }
 
 //----------------------------------------------------------
@@ -89,6 +102,7 @@ void ofxFbo3D::attachTexture(GLuint textureID, GLenum attachmentPoint)
     glBindFramebuffer(GL_FRAMEBUFFER, _fboID);
 
     cout << "Attaching textureID " << textureID << endl;
+    lb::CheckGLError();
 
     GLenum attachment = GL_COLOR_ATTACHMENT0 + attachmentPoint;
     glFramebufferTexture(GL_FRAMEBUFFER, attachment, textureID, 0);
@@ -96,6 +110,7 @@ void ofxFbo3D::attachTexture(GLuint textureID, GLenum attachmentPoint)
         _mrt.resize(attachmentPoint + 1);
     }
     _mrt[attachmentPoint] = attachment;
+    lb::CheckGLError();
 
     glBindFramebuffer(GL_FRAMEBUFFER, temp);
 }
@@ -127,14 +142,25 @@ void ofxFbo3D::activateDrawBuffers()
 //----------------------------------------------------------
 void ofxFbo3D::begin()
 {
+    ofPushView();
+    ofPushStyle();
+    ofViewport();
+    ofSetupScreenPerspective();
     bind();
+    lb::CheckGLError();
+
     activateDrawBuffers();
+    lb::CheckGLError();
 }
 
 //----------------------------------------------------------
 void ofxFbo3D::end()
 {
     unbind();
+    lb::CheckGLError();
+
+    ofPopStyle();
+    ofPopView();
 }
 
 //----------------------------------------------------------

@@ -224,6 +224,7 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
     <ClInclude Include="src\CMBApp.h" />
+    <ClInclude Include="src\GLError.h" />
     <ClInclude Include="src\ofxFbo3D.h" />
     <ClInclude Include="src\OpenCLImage3D.h" />
   </ItemGroup>
