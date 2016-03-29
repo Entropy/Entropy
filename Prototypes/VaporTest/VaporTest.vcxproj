@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>VaporTest</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>libhdf5_D.lib;libhdf5_cpp_D.lib;libszip_D.lib;libzlib_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxHDF5\libs\hdf5\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\szip\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\zlib\lib\vs\$(Platform_Actual);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>libhdf5_D.lib;libhdf5_cpp_D.lib;libszip_D.lib;libzlib_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxHDF5\libs\hdf5\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\szip\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\zlib\lib\vs\$(Platform_Actual);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>libhdf5.lib;libhdf5_cpp.lib;libszip.lib;libzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxHDF5\libs\hdf5\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\szip\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\zlib\lib\vs\$(Platform_Actual);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>libhdf5.lib;libhdf5_cpp.lib;libszip.lib;libzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxHDF5\libs\hdf5\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\szip\lib\vs\$(Platform_Actual);..\..\..\addons\ofxHDF5\libs\zlib\lib\vs\$(Platform_Actual);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
+    <ClCompile Include="..\..\Shared\src\ofxRange.cpp" />
+    <ClCompile Include="src\CellRenderer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\VolumeRenderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5api_adpt.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Apublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ArrayType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AtomType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Attribute.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Classes.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CommonFG.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CompType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CppDoc.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSet.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSpace.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DcreatProp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DOpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DSpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DxferProp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5EnumType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epubgen.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Exception.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FaccProp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FcreatProp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDcore.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDdirect.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDfamily.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDlog.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpi.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpio.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmulti.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDsec2.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDstdio.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5File.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FloatType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Group.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IdComponent.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IMpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Include.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IntType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Library.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Location.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5LTpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5MMpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Object.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5OcreatProp.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Opublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5overflow.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PacketTable.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLextern.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PredType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PropList.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PTpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5pubconf.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5public.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Spublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5StrType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5TBpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5VarLenType.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5version.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpublic.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5_hl.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\ricehdf.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szip_adpt.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szlib.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zlib.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.h" />
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
+    <ClInclude Include="..\..\Shared\src\ofxRange.h" />
+    <ClInclude Include="src\CellRenderer.h" />
+    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\VolumeRenderer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="icon.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

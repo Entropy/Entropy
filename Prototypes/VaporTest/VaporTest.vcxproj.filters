@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CellRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VolumeRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\src\ofxRange.cpp">
+      <Filter>shared_src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{b1818b53-3ec1-4bbc-a30d-7ccbe839132c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5">
+      <UniqueIdentifier>{9568108b-0953-4183-ba6c-0af045f1e0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\src">
+      <UniqueIdentifier>{5cd8677b-f048-446e-9341-c14662871e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs">
+      <UniqueIdentifier>{089817d9-2202-44c7-bb15-5ad97b3aaf78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\hdf5">
+      <UniqueIdentifier>{bc4e5055-1157-45b4-b158-27804652f14a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\hdf5\include">
+      <UniqueIdentifier>{7bd69093-589b-408d-8527-429b9435dc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\szip">
+      <UniqueIdentifier>{9e2c458f-1f62-42d4-8148-f6a6328e7599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\szip\include">
+      <UniqueIdentifier>{75debfd4-0b21-4bb1-bd27-89dcdb400f10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui">
+      <UniqueIdentifier>{8a1ff11b-101b-42ae-80f1-873e0c276af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\src">
+      <UniqueIdentifier>{6eebb8ea-a59c-4de7-b818-5b0e9cedb258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs">
+      <UniqueIdentifier>{c6786df1-4d93-4614-813f-49f81b818bc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs\imgui">
+      <UniqueIdentifier>{6e9e45fc-5655-4ff6-b26c-f0a21081d7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui\libs\imgui\src">
+      <UniqueIdentifier>{f30ed9c2-903a-4ecf-86c7-37baf263f71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxVolumetrics">
+      <UniqueIdentifier>{aa1d409d-dfb5-4001-9925-aa5560cc36cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxVolumetrics\src">
+      <UniqueIdentifier>{83312f2b-658d-456f-a657-bb1b53e6f7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shared_src">
+      <UniqueIdentifier>{8ee20013-0577-4f98-a5d0-a864da940f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\zlib">
+      <UniqueIdentifier>{6d713124-bd68-4305-a55f-340a59e49198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\libs\zlib\include">
+      <UniqueIdentifier>{9728f7ac-899b-4e5c-99fb-156f6ac82fe6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5api_adpt.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Apublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ArrayType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AtomType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Attribute.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Classes.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CommonFG.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CompType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CppDoc.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSet.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSpace.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DcreatProp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DOpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DSpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DxferProp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5EnumType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epubgen.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Exception.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FaccProp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FcreatProp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDcore.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDdirect.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDfamily.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDlog.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpi.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpio.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmulti.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDsec2.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDstdio.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5File.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FloatType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Group.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IdComponent.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IMpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Include.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IntType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Library.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Location.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5LTpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5MMpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Object.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5OcreatProp.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Opublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5overflow.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PacketTable.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLextern.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PredType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PropList.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PTpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5pubconf.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5public.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Spublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5StrType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5TBpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5VarLenType.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5version.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpublic.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5_hl.h">
+      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\ricehdf.h">
+      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szip_adpt.h">
+      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szlib.h">
+      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CellRenderer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VolumeRenderer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\src\ofxRange.h">
+      <Filter>shared_src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
+      <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zlib.h">
+      <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+</Project>
