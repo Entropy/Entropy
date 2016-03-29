@@ -47,13 +47,13 @@ namespace ent
         // Load the HDF5 data.
         vector<float> posX, posY, posZ;
         vector<float> cellSize;
-//        string folder = "ramses_small/";
-        string folder = "ramses_large/";
-        loadDataSet(folder + "x.h5", posX, 1, false);
-        loadDataSet(folder + "y.h5", posY, 1, false);
-        loadDataSet(folder + "z.h5", posZ, 1, false);
-        loadDataSet(folder + "dx.h5", cellSize, 1, false);
-        loadDataSet(folder + "density.h5", density, 1, false);
+        string folder = "RAMSES_HDF5_small/";
+        //string folder = "RAMSES_HDF5_data/";
+        loadDataSet(folder + "x_hdf5.h5", posX, 1, false);
+        loadDataSet(folder + "y_hdf5.h5", posY, 1, false);
+        loadDataSet(folder + "z_hdf5.h5", posZ, 1, false);
+        loadDataSet(folder + "dx_hdf5.h5", cellSize, 1, false);
+        loadDataSet(folder + "density_hdf5.h5", density, 1, false);
 
         // Set the ranges for all data.
         for (int i = 0; i < posX.size(); ++i) {
