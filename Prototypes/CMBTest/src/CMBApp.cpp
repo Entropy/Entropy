@@ -39,6 +39,9 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
+        orthoCamera.setupPerspective(false, 60.0f, 0.1f, 1000.0f);
+        orthoCamera.enableOrtho();
+
         shader.load("shaders/ripples");
 #endif
     }
@@ -170,7 +173,10 @@ namespace entropy
             ofPushStyle();
             ofPushMatrix();
 
+            //orthoCamera.begin();
             fbos[srcIdx].begin();
+            ofScale(1.0, -1.0, 1.0);
+            ofTranslate(0.0, -ofGetHeight(), 0.0);
             {
                 if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
                     ofSetColor(dropColor);
@@ -184,6 +190,7 @@ namespace entropy
                 }
             }
             fbos[srcIdx].end();
+            //orthoCamera.end();
 
             ofPopMatrix();
             ofPopStyle();
@@ -221,6 +228,7 @@ namespace entropy
 
 #ifdef COMPUTE_GLSL
         // Layer the drops.
+        //orthoCamera.begin();
         fbos[dstIdx].begin();
         shader.begin();
 #ifdef THREE_D
@@ -240,6 +248,7 @@ namespace entropy
         }
         shader.end();
         fbos[dstIdx].end();
+        //orthoCamera.end();
 
 #endif  // COMPUTE_GLSL
 

@@ -5,7 +5,7 @@
 
 //#define THREE_D 1
 
-#define USE_CUSTOM_FBO 1
+//#define USE_CUSTOM_FBO 1
 
 #include "ofMain.h"
 #include "ofxImGui.h"
@@ -60,8 +60,11 @@ namespace entropy
 #ifdef COMPUTE_GLSL
         ofShader shader;
         ofVboMesh mesh;
+        ofCamera orthoCamera;
+
 #ifdef USE_CUSTOM_FBO
         ofxFbo3D fbos[2];
+
 #ifdef THREE_D
         ofxTexture3d textures[2];
 #else
@@ -69,6 +72,7 @@ namespace entropy
 #endif  // THREE_D
 #else
         ofFbo fbos[2];
+        ofFbo tmp;
 #endif  // USE_CUSTOM_FBO
 #endif  // COMPUTE_GLSL
 
