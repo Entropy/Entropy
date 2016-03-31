@@ -58,9 +58,6 @@
     <ClCompile Include="src\VolumeRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Shared\src\ofxRange.cpp">
-      <Filter>shared_src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -111,14 +108,17 @@
     <Filter Include="addons\ofxVolumetrics\src">
       <UniqueIdentifier>{83312f2b-658d-456f-a657-bb1b53e6f7dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shared_src">
-      <UniqueIdentifier>{8ee20013-0577-4f98-a5d0-a864da940f96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxHDF5\libs\zlib">
       <UniqueIdentifier>{6d713124-bd68-4305-a55f-340a59e49198}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxHDF5\libs\zlib\include">
       <UniqueIdentifier>{9728f7ac-899b-4e5c-99fb-156f6ac82fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSet">
+      <UniqueIdentifier>{0a0818bb-a206-4284-95ee-9489f5eef0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSet\src">
+      <UniqueIdentifier>{fe0e6fe3-baf4-4ffa-9319-431c98f727d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -431,14 +431,14 @@
     <ClInclude Include="src\VolumeRenderer.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Shared\src\ofxRange.h">
-      <Filter>shared_src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
       <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zlib.h">
       <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h">
+      <Filter>addons\ofxSet\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
