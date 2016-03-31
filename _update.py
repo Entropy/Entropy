@@ -58,7 +58,7 @@ if __name__ == '__main__':
 	elif len(argv) == 2:
 		script, root_path = argv
 		deps_path = '_dependencies.json'
-   	elif len(argv) == 3:
+	elif len(argv) == 3:
 		script, root_path, deps_path = argv
 	else:
 		print 'Usage is [oF Root Path] [Dependencies]'
