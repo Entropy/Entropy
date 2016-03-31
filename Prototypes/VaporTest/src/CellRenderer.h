@@ -9,8 +9,7 @@
 #pragma once
 
 #include "ofMain.h"
-
-#include "ofxRange.h"
+#include "ofxSet.h"
 
 namespace ent
 {
@@ -30,18 +29,18 @@ namespace ent
         void update();
         void draw(float scale);
 
-        bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
+        bool imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize);
 
     protected:
         // Data
         void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
         ofVboMesh vboMesh;
-        vector<ofVec4f> transforms;
+        vector<ofDefaultVec4> transforms;
         vector<float> density;
 
-        ofxVec3fRange coordRange;
-        ofxFloatRange cellSizeRange;
-        ofxFloatRange densityRange;
+        ofxSet3f coordRange;
+        ofxSet1f cellSizeRange;
+        ofxSet1f densityRange;
 
         int stride;
 
