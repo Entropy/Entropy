@@ -68,8 +68,8 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    cam.setNearClip(0);
-    cam.setFarClip(FLT_MAX);
+//    cam.setNearClip(0);
+//    cam.setFarClip(FLT_MAX);
     cam.begin();
     {
         cellRenderer.draw(scale);
