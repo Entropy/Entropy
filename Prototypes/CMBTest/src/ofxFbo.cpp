@@ -28,15 +28,12 @@ void ofxFbo::allocate()
     clear();
     
     glGenFramebuffers(1, &_fboID);
-    cout << "Allocating fboID " << _fboID << endl;
-    lb::CheckGLError();
 }
 
 //----------------------------------------------------------
 void ofxFbo::clear()
 {
     if (_fboID) {
-        cout << "Clearing fboID " << _fboID << endl;
         glDeleteFramebuffers(1, &_fboID);
         _fboID = 0;
     }
@@ -101,16 +98,12 @@ void ofxFbo::attachTexture(GLuint textureID, GLenum attachmentPoint)
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &temp);
     glBindFramebuffer(GL_FRAMEBUFFER, _fboID);
 
-    cout << "Attaching textureID " << textureID << endl;
-    lb::CheckGLError();
-
     GLenum attachment = GL_COLOR_ATTACHMENT0 + attachmentPoint;
     glFramebufferTexture(GL_FRAMEBUFFER, attachment, textureID, 0);
     if (attachmentPoint >= _mrt.size()) {
         _mrt.resize(attachmentPoint + 1);
     }
     _mrt[attachmentPoint] = attachment;
-    lb::CheckGLError();
 
     glBindFramebuffer(GL_FRAMEBUFFER, temp);
 }
@@ -147,17 +140,14 @@ void ofxFbo::begin()
     ofViewport();
     ofSetupScreenPerspective();
     bind();
-    lb::CheckGLError();
 
     activateDrawBuffers();
-    lb::CheckGLError();
 }
 
 //----------------------------------------------------------
 void ofxFbo::end()
 {
     unbind();
-    lb::CheckGLError();
 
     ofPopStyle();
     ofPopView();

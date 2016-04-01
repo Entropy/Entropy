@@ -39,9 +39,6 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-        orthoCamera.setupPerspective(false, 60.0f, 0.1f, 1000.0f);
-        orthoCamera.enableOrtho();
-
         shader.load("shaders/ripples");
 #endif
     }
@@ -64,7 +61,7 @@ namespace entropy
 
 #endif  // THREE_D
 
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 3; ++i) {
 #ifdef COMPUTE_OPENCL
 #ifdef THREE_D
             clImages[i].initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
@@ -74,20 +71,11 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-#ifdef USE_CUSTOM_FBO
 #ifdef THREE_D
             textures[i].allocate(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
 #else
-   //         ofTextureData texData;
-   //         texData.width = dimensions.x;
-   //         texData.height = dimensions.y;
-   //         texData.glInternalFormat = GL_RGBA32F;
-   //         texData.bFlipTexture = (i % 2 == 0);
-			//textures[i].allocate(texData);
-			//cout << "Texture " << i << " flipped? " << textures[i].texData.bFlipTexture << endl;
 			textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
 #endif
-            lb::CheckGLError();
 
             fbos[i].allocate();
             fbos[i].attachTexture(textures[i], 0);
@@ -97,46 +85,8 @@ namespace entropy
             }
             fbos[i].end();
             fbos[i].checkStatus();
-
-            lb::CheckGLError();
-#else
-            ofFbo::Settings fboSettings;
-            fboSettings.width = dimensions.x;
-            fboSettings.height = dimensions.y;
-            fboSettings.internalformat = GL_RGBA32F;
-            fbos[i].allocate(fboSettings);
-#endif  // USE_CUSTOM_FBO
 #endif  // COMPUTE_GLSL
         }
-
-#ifdef COMPUTE_GLSL
-#ifdef USE_CUSTOM_FBO
-		textureTmp.allocate(dimensions.x, dimensions.y, GL_RGBA32F);
-
-		tmp.allocate();
-		tmp.attachTexture(textureTmp, 0);
-		tmp.begin();
-		{
-			ofClear(0, 0);
-		}
-		tmp.end();
-		tmp.checkStatus();
-#else
-		ofFbo::Settings fboSettings;
-		fboSettings.width = dimensions.x;
-		fboSettings.height = dimensions.y;
-		fboSettings.internalformat = GL_RGBA32F;
-		tmp.allocate(fboSettings);
-#endif  // USE_CUSTOM_FBO
-#endif  // COMPUTE_GLSL
-
-#ifdef COMPUTE_OPENCL
-#ifdef THREE_D
-        clImageTmp.initWithTexture3D(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
-#else
-        clImageTmp.initWithTexture(dimensions.x, dimensions.y, GL_RGBA32F);
-#endif  // THREE_D
-#endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
         // Build a mesh to render a quad.
@@ -194,7 +144,6 @@ namespace entropy
             ofPushStyle();
             ofPushMatrix();
 
-            //orthoCamera.begin();
             fbos[srcIdx].begin();
             ofScale(1.0, -1.0, 1.0);
             ofTranslate(0.0, -ofGetHeight(), 0.0);
@@ -211,7 +160,6 @@ namespace entropy
                 }
             }
             fbos[srcIdx].end();
-            //orthoCamera.end();
 
             ofPopMatrix();
             ofPopStyle();
@@ -223,7 +171,7 @@ namespace entropy
 #ifdef COMPUTE_OPENCL
         ripplesKernel->setArg(0, clImages[srcIdx]);
         ripplesKernel->setArg(1, clImages[dstIdx]);
-        ripplesKernel->setArg(2, clImageTmp);
+        ripplesKernel->setArg(2, clImages[2]);
         ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 #ifdef THREE_D
         ripplesKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
@@ -234,7 +182,7 @@ namespace entropy
         openCL.finish();
 
         // Copy temp image to dest (necessary since we can't read_write in OpenCL 1.2)
-        copyKernel->setArg(0, clImageTmp);
+        copyKernel->setArg(0, clImages[2]);
         copyKernel->setArg(1, clImages[dstIdx]);
 #ifdef THREE_D
         copyKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
@@ -249,42 +197,27 @@ namespace entropy
 
 #ifdef COMPUTE_GLSL
         // Layer the drops.
-        //orthoCamera.begin();
-        tmp.begin();
+        fbos[2].begin();
         shader.begin();
 #ifdef THREE_D
 
 #else
-#ifdef USE_CUSTOM_FBO
         shader.setUniformTexture("uPrevBuffer", textures[dstIdx], 1);
         shader.setUniformTexture("uCurrBuffer", textures[srcIdx], 2);
-#else
-        shader.setUniformTexture("uPrevBuffer", fbos[dstIdx], 1);
-        shader.setUniformTexture("uCurrBuffer", fbos[srcIdx], 2);
-#endif  // USE_CUSTOM_FBO
 #endif  // THREE_D
         shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
         {
             mesh.draw();
         }
         shader.end();
-        tmp.end();
-        //orthoCamera.end();
+        fbos[2].end();
 
 		// Copy temp image to dest
 		fbos[dstIdx].begin();
 		{
-#ifdef USE_CUSTOM_FBO
-			textureTmp.bind();
-#else
-			tmp.getTexture().bind();
-#endif
+			textures[2].bind();
 			mesh.draw();
-#ifdef USE_CUSTOM_FBO
-			textureTmp.unbind();
-#else
-			tmp.getTexture().unbind();
-#endif
+			textures[2].unbind();
 		}
 		fbos[dstIdx].end();
 
@@ -358,11 +291,7 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-#ifdef USE_CUSTOM_FBO
         textures[drawIdx].draw(0, 0);
-#else
-        fbos[drawIdx].draw(0, 0);
-#endif
 #endif  // COMPUTE_GLSL
 
 #endif  // THREE_D

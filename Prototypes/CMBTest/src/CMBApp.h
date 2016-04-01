@@ -5,8 +5,6 @@
 
 //#define THREE_D 1
 
-#define USE_CUSTOM_FBO 1
-
 #include "ofMain.h"
 #include "ofxImGui.h"
 #include "ofxVolumetrics.h"
@@ -17,9 +15,7 @@
 #endif
 #endif
 #ifdef COMPUTE_GLSL
-#ifdef USE_CUSTOM_FBO
 #include "ofxFbo.h"
-#endif
 #endif
 
 namespace entropy
@@ -51,33 +47,23 @@ namespace entropy
         msa::OpenCLKernelPtr ripplesKernel;
         msa::OpenCLKernelPtr copyKernel;
 #ifdef THREE_D
-        OpenCLImage3D clImages[2];
-        OpenCLImage3D clImageTmp;
+        OpenCLImage3D clImages[3];
 #else
-        msa::OpenCLImage clImages[2];
-        msa::OpenCLImage clImageTmp;
+        msa::OpenCLImage clImages[3];
 #endif
 #endif
 
 #ifdef COMPUTE_GLSL
         ofShader shader;
         ofVboMesh mesh;
-        ofCamera orthoCamera;
 
-#ifdef USE_CUSTOM_FBO
-        ofxFbo fbos[2];
-		ofxFbo tmp;
+        ofxFbo fbos[3];
 
 #ifdef THREE_D
-        ofxTexture3d textures[2];
+        ofxTexture3d textures[3];
 #else
-        ofTexture textures[2];
-		ofTexture textureTmp;
+        ofTexture textures[3];
 #endif  // THREE_D
-#else
-        ofFbo fbos[2];
-        ofFbo tmp;
-#endif  // USE_CUSTOM_FBO
 #endif  // COMPUTE_GLSL
 
 #ifdef THREE_D
