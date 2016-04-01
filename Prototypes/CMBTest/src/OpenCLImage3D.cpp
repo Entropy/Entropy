@@ -26,12 +26,12 @@ namespace entropy
     {
         ofLog(OF_LOG_VERBOSE, "OpenCLImage3D::initFromTexture3D");
 
-        init(tex3d.getTextureData().width, tex3d.getTextureData().height, tex3d.getTextureData().depth);
+        init(tex3d.texData.width, tex3d.texData.height, tex3d.texData.depth);
 
         cl_int err;
         if(clMemObject) clReleaseMemObject(clMemObject);
 
-        clMemObject = clCreateFromGLTexture3D(pOpenCL->getContext(), memFlags, tex3d.getTextureData().textureTarget, mipLevel, tex3d.getTextureData().textureID, &err);
+        clMemObject = clCreateFromGLTexture3D(pOpenCL->getContext(), memFlags, tex3d.texData.textureTarget, mipLevel, tex3d.texData.textureID, &err);
         assert(err != CL_INVALID_CONTEXT);
         assert(err != CL_INVALID_VALUE);
         //	assert(err != CL_INVALID_MIPLEVEL);
@@ -74,7 +74,7 @@ namespace entropy
         ofLog(OF_LOG_VERBOSE, "OpenCLImage3D::reset3D");
 
         size_t numElements = width * height * depth * 4; // TODO, make real
-        if (ofGetGlTypeFromInternal(texture3d->getTextureData().glInternalFormat) == GL_FLOAT) {
+        if (ofGetGlTypeFromInternal(texture3d->texData.glInternalFormat) == GL_FLOAT) {
             numElements *= sizeof(cl_float);
         }
         char *data = new char[numElements];

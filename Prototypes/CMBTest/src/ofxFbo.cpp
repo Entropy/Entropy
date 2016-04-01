@@ -1,29 +1,29 @@
 //
-//  ofxFbo3d.cpp
+//  ofxFbo.cpp
 //  ofxVolumetricsExample
 //
 //  Created by Elias Zananiri on 2016-03-09.
 //  https://devtalk.nvidia.com/default/topic/818946/opengl/render-to-3d-texture/
 //
 
-#include "ofxFbo3D.h"
+#include "ofxFbo.h"
 #include "GLError.h"
 
 //----------------------------------------------------------
-ofxFbo3D::ofxFbo3D()
+ofxFbo::ofxFbo()
     : _fboID(0)
 {
 
 }
 
 //----------------------------------------------------------
-ofxFbo3D::~ofxFbo3D()
+ofxFbo::~ofxFbo()
 {
     clear();
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::allocate()
+void ofxFbo::allocate()
 {
     clear();
     
@@ -33,7 +33,7 @@ void ofxFbo3D::allocate()
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::clear()
+void ofxFbo::clear()
 {
     if (_fboID) {
         cout << "Clearing fboID " << _fboID << endl;
@@ -44,7 +44,7 @@ void ofxFbo3D::clear()
 }
 
 //----------------------------------------------------------
-bool ofxFbo3D::checkStatus() const
+bool ofxFbo::checkStatus() const
 {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     switch (status) {
@@ -82,19 +82,19 @@ bool ofxFbo3D::checkStatus() const
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::attachTexture(ofTexture& texture, GLenum attachmentPoint)
+void ofxFbo::attachTexture(ofTexture& texture, GLenum attachmentPoint)
 {
     attachTexture(texture.texData.textureID, attachmentPoint);
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::attachTexture(ofxTexture3d& texture, GLenum attachmentPoint)
+void ofxFbo::attachTexture(ofxTexture& texture, GLenum attachmentPoint)
 {
-    attachTexture(texture.getTextureData().textureID, attachmentPoint);
+	attachTexture(texture.texData.textureID, attachmentPoint);
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::attachTexture(GLuint textureID, GLenum attachmentPoint)
+void ofxFbo::attachTexture(GLuint textureID, GLenum attachmentPoint)
 {
     // bind fbo for textures (if using MSAA this is the newly created fbo, otherwise its the same fbo as before)
     GLint temp;
@@ -116,31 +116,31 @@ void ofxFbo3D::attachTexture(GLuint textureID, GLenum attachmentPoint)
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::bind() const
+void ofxFbo::bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _fboID);
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::unbind() const
+void ofxFbo::unbind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::setLayer(GLenum attachment, GLuint textureID, GLuint layer)
+void ofxFbo::setLayer(GLenum attachment, GLuint textureID, GLuint layer)
 {
     glFramebufferTextureLayer(GL_FRAMEBUFFER, attachment, textureID, 0, layer);
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::activateDrawBuffers()
+void ofxFbo::activateDrawBuffers()
 {
     glDrawBuffers(_mrt.size(), _mrt.data());
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::begin()
+void ofxFbo::begin()
 {
     ofPushView();
     ofPushStyle();
@@ -154,7 +154,7 @@ void ofxFbo3D::begin()
 }
 
 //----------------------------------------------------------
-void ofxFbo3D::end()
+void ofxFbo::end()
 {
     unbind();
     lb::CheckGLError();
@@ -164,7 +164,7 @@ void ofxFbo3D::end()
 }
 
 //----------------------------------------------------------
-GLuint ofxFbo3D::getFboID() const
+GLuint ofxFbo::getFboID() const
 {
     return _fboID;
 }

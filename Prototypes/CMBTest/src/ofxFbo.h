@@ -1,5 +1,5 @@
 //
-//  ofxFbo3D.h
+//  ofxFbo.h
 //  ofxVolumetricsExample
 //
 //  Created by Elias Zananiri on 2016-03-09.
@@ -9,21 +9,21 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxTexture3d.h"
+#include "ofxTexture.h"
 
-class ofxFbo3D
+class ofxFbo
 {
 public:
-    ofxFbo3D();
-    ~ofxFbo3D();
+	ofxFbo();
+    ~ofxFbo();
 
     void allocate();
     void clear();
     bool checkStatus() const;
 
-    void attachTexture(ofTexture& texture, GLenum attachmentPoint);
-    void attachTexture(ofxTexture3d& texture, GLenum attachmentPoint);
-    void attachTexture(GLuint textureID, GLenum attachmentPoint);
+	void attachTexture(ofTexture& texture, GLenum attachmentPoint);
+	void attachTexture(ofxTexture& texture, GLenum attachmentPoint);
+	void attachTexture(GLuint textureID, GLenum attachmentPoint);
 
     void bind() const;
     void unbind() const;
