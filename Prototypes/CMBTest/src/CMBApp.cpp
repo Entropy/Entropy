@@ -78,14 +78,14 @@ namespace entropy
 #ifdef THREE_D
             textures[i].allocate(dimensions.x, dimensions.y, dimensions.z, GL_RGBA32F);
 #else
-            ofTextureData texData;
-            texData.width = dimensions.x;
-            texData.height = dimensions.y;
-            texData.glInternalFormat = GL_RGBA32F;
-            texData.bFlipTexture = (i % 2 == 0);
-            //textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
-            textures[i].allocate(texData);
-            cout << "Texture " << i << " flipped? " << textures[i].texData.bFlipTexture << endl;
+   //         ofTextureData texData;
+   //         texData.width = dimensions.x;
+   //         texData.height = dimensions.y;
+   //         texData.glInternalFormat = GL_RGBA32F;
+   //         texData.bFlipTexture = (i % 2 == 0);
+			//textures[i].allocate(texData);
+			//cout << "Texture " << i << " flipped? " << textures[i].texData.bFlipTexture << endl;
+			textures[i].allocate(dimensions.x, dimensions.y, GL_RGBA32F);
 #endif
             lb::CheckGLError();
 
@@ -108,6 +108,27 @@ namespace entropy
 #endif  // USE_CUSTOM_FBO
 #endif  // COMPUTE_GLSL
         }
+
+#ifdef COMPUTE_GLSL
+#ifdef USE_CUSTOM_FBO
+		textureTmp.allocate(dimensions.x, dimensions.y, GL_RGBA32F);
+
+		tmp.allocate();
+		tmp.attachTexture(textureTmp, 0);
+		tmp.begin();
+		{
+			ofClear(0, 0);
+		}
+		tmp.end();
+		tmp.checkStatus();
+#else
+		ofFbo::Settings fboSettings;
+		fboSettings.width = dimensions.x;
+		fboSettings.height = dimensions.y;
+		fboSettings.internalformat = GL_RGBA32F;
+		tmp.allocate(fboSettings);
+#endif  // USE_CUSTOM_FBO
+#endif  // COMPUTE_GLSL
 
 #ifdef COMPUTE_OPENCL
 #ifdef THREE_D
@@ -229,7 +250,7 @@ namespace entropy
 #ifdef COMPUTE_GLSL
         // Layer the drops.
         //orthoCamera.begin();
-        fbos[dstIdx].begin();
+        tmp.begin();
         shader.begin();
 #ifdef THREE_D
 
@@ -247,8 +268,25 @@ namespace entropy
             mesh.draw();
         }
         shader.end();
-        fbos[dstIdx].end();
+        tmp.end();
         //orthoCamera.end();
+
+		// Copy temp image to dest
+		fbos[dstIdx].begin();
+		{
+#ifdef USE_CUSTOM_FBO
+			textureTmp.bind();
+#else
+			tmp.getTexture().bind();
+#endif
+			mesh.draw();
+#ifdef USE_CUSTOM_FBO
+			textureTmp.unbind();
+#else
+			tmp.getTexture().unbind();
+#endif
+		}
+		fbos[dstIdx].end();
 
 #endif  // COMPUTE_GLSL
 
