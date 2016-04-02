@@ -27,16 +27,25 @@ void main()
     //  [0]  st  [1]
     //
     //      [2]
+	//vec3 texCoord = vec3(gTexCoord / uDims.xy, gl_Layer);
 	vec3 texCoord = vec3(gTexCoord / uDims.xy, gl_Layer);
     vec4 sum = vec4(0.0);
     for (int i = 0; i < 6; ++i) {
 		vec3 texOffset = offset[i] / vec3(uDims.xy, 1.0);
-        sum += texture(uCurrBuffer, texCoord + texOffset);
+        sum += texture(uPrevBuffer, texCoord + texOffset);
     }
     
     //  Make an average and substract the center value.
-    sum = (sum / 3.0) - texture(uPrevBuffer, texCoord);
+    sum = (sum / 3.0) - texture(uCurrBuffer, texCoord);
     sum *= uDamping;
 
-    fFragColor = sum;
+    fFragColor = vec4(sum.rgb, 1.0);
+	fFragColor = sum;
+
+	//int prevLayer = int(gl_Layer);
+	//int nextLayer = prevLayer + 1;
+	//float amt = fract(uLayer);
+	//vFragColor = mix(texture(uTexArray, vec3(vTexCoord, prevLayer)), 
+	//				 texture(uTexArray, vec3(vTexCoord, nextLayer)), 
+	//				 amt);
 }

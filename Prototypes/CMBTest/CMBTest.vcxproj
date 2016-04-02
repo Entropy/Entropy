@@ -195,7 +195,12 @@
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
-    <ClCompile Include="src\CMBApp.cpp" />
+    <ClCompile Include="src\CmbSceneCL2D.cpp" />
+    <ClCompile Include="src\CmbSceneCL3D.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\CmbScene.cpp" />
+    <ClCompile Include="src\CmbSceneGL2D.cpp" />
+    <ClCompile Include="src\CmbSceneGL3D.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofxFbo.cpp" />
     <ClCompile Include="src\OpenCLImage3D.cpp" />
@@ -229,8 +234,13 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
-    <ClInclude Include="src\CMBApp.h" />
+    <ClInclude Include="src\CmbSceneCL2D.h" />
+    <ClInclude Include="src\CmbSceneCL3D.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\CmbSceneGL2D.h" />
+    <ClInclude Include="src\CmbSceneGL3D.h" />
     <ClInclude Include="src\GLError.h" />
+    <ClInclude Include="src\CmbScene.h" />
     <ClInclude Include="src\ofxFbo.h" />
     <ClInclude Include="src\OpenCLImage3D.h" />
   </ItemGroup>
@@ -247,13 +257,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\data\cl\ripples.cl" />
+    <None Include="bin\data\cl\cmb.cl" />
     <None Include="bin\data\shaders\copy3D.frag" />
     <None Include="bin\data\shaders\drop3D.frag" />
     <None Include="bin\data\shaders\layer.geom" />
     <None Include="bin\data\shaders\passthru.vert" />
-    <None Include="bin\data\shaders\ripples.frag" />
-    <None Include="bin\data\shaders\ripples3D.frag" />
+    <None Include="bin\data\shaders\ripple.frag" />
+    <None Include="bin\data\shaders\ripple3D.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

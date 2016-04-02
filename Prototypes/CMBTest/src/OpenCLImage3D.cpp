@@ -8,7 +8,7 @@
 
 #include "OpenCLImage3D.h"
 
-namespace entropy
+namespace ent
 {
     OpenCLImage3D::OpenCLImage3D()
     : OpenCLImage()

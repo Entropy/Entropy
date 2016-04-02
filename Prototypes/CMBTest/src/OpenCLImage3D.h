@@ -11,7 +11,7 @@
 #include "MSAOpenCL.h"
 #include "ofxTexture3d.h"
 
-namespace entropy
+namespace ent
 {
     class OpenCLImage3D
     : public msa::OpenCLImage

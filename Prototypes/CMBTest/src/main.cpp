@@ -1,4 +1,4 @@
-#include "CMBApp.h"
+#include "ofApp.h"
 
 //========================================================================
 int main()
@@ -9,5 +9,5 @@ int main()
     settings.height = 768;
     ofCreateWindow(settings);
 
-    ofRunApp(new entropy::CMBApp());
+    ofRunApp(new ent::ofApp());
 }

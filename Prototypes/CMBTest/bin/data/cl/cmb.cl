@@ -10,7 +10,7 @@ __kernel void drop2D(write_only image2d_t dstImage, const float2 pos, const floa
 }
 
 //--------------------------------------------------------------
-__kernel void ripples2D(read_only image2d_t srcImage, read_only image2d_t intImage, write_only image2d_t dstImage, const float damping)
+__kernel void ripple2D(read_only image2d_t srcImage, read_only image2d_t intImage, write_only image2d_t dstImage, const float damping)
 {
     int2 coords = (int2)(get_global_id(0), get_global_id(1));
 
@@ -61,7 +61,7 @@ __kernel void drop3D(write_only image3d_t dstImage, const float4 pos, const floa
 }
 
 //--------------------------------------------------------------
-__kernel void ripples3D(read_only image3d_t srcImage, read_only image3d_t intImage, write_only image3d_t dstImage, const float damping)
+__kernel void ripple3D(read_only image3d_t srcImage, read_only image3d_t intImage, write_only image3d_t dstImage, const float damping)
 {
     int4 coords = (int4)(get_global_id(0), get_global_id(1), get_global_id(2), 0);
 

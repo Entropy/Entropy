@@ -27,11 +27,11 @@ void main()
     //      [2]
     vec3 sum = vec3(0.0);
     for (int i = 0; i < 4 ; ++i) {
-        sum += texture(uCurrBuffer, vTexCoord + offset[i]).rgb;
+        sum += texture(uPrevBuffer, vTexCoord + offset[i]).rgb;
     }
     
     //  Make an average and substract the center value.
-    sum = (sum / 2.0) - texture(uPrevBuffer, vTexCoord).rgb;
+    sum = (sum / 2.0) - texture(uCurrBuffer, vTexCoord).rgb;
     sum *= uDamping;
 
     vFragColor = vec4(sum, 1.0);

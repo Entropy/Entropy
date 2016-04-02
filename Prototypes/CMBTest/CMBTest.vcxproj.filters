@@ -25,9 +25,6 @@
     <ClCompile Include="src\OpenCLImage3D.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\CMBApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
@@ -72,6 +69,24 @@
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
       <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CmbScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CmbSceneGL2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CmbSceneGL3D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CmbSceneCL2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CmbSceneCL3D.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +161,6 @@
     <ClInclude Include="src\OpenCLImage3D.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\CMBApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
@@ -212,14 +224,29 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\CmbScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CmbSceneGL2D.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CmbSceneGL3D.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CmbSceneCL2D.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CmbSceneCL3D.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\data\cl\ripples.cl">
-      <Filter>cl</Filter>
-    </None>
     <None Include="bin\data\shaders\drop3D.frag">
       <Filter>shaders</Filter>
     </None>
@@ -229,14 +256,17 @@
     <None Include="bin\data\shaders\passthru.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="bin\data\shaders\ripples.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="bin\data\shaders\ripples3D.frag">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="bin\data\shaders\copy3D.frag">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\ripple3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\ripple.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\cl\cmb.cl">
+      <Filter>cl</Filter>
     </None>
   </ItemGroup>
 </Project>
