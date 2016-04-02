@@ -31,7 +31,7 @@ namespace ent
         cl_int err;
         if(clMemObject) clReleaseMemObject(clMemObject);
 
-        clMemObject = clCreateFromGLTexture3D(pOpenCL->getContext(), memFlags, tex3d.texData.textureTarget, mipLevel, tex3d.texData.textureID, &err);
+        clMemObject = clCreateFromGLTexture(pOpenCL->getContext(), memFlags, tex3d.texData.textureTarget, mipLevel, tex3d.texData.textureID, &err);
         assert(err != CL_INVALID_CONTEXT);
         assert(err != CL_INVALID_VALUE);
         //	assert(err != CL_INVALID_MIPLEVEL);
