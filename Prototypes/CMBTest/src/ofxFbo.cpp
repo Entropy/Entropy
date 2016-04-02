@@ -135,10 +135,10 @@ void ofxFbo::activateDrawBuffers()
 //----------------------------------------------------------
 void ofxFbo::begin()
 {
-    ofPushView();
-    ofPushStyle();
-    ofViewport();
-    ofSetupScreenPerspective();
+    //ofPushView();
+    //ofPushStyle();
+    //ofViewport();
+    //ofSetupScreenPerspective();
     bind();
 
     activateDrawBuffers();
@@ -149,8 +149,8 @@ void ofxFbo::end()
 {
     unbind();
 
-    ofPopStyle();
-    ofPopView();
+    //ofPopStyle();
+    //ofPopView();
 }
 
 //----------------------------------------------------------

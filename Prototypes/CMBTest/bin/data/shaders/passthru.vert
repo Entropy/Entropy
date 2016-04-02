@@ -12,5 +12,6 @@ out vec2 vTexCoord;
 void main()
 {
     vTexCoord = texcoord;
+
     gl_Position = modelViewProjectionMatrix * position;
 }

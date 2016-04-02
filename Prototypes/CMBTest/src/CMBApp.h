@@ -3,19 +3,24 @@
 //#define COMPUTE_OPENCL 1
 #define COMPUTE_GLSL 1
 
-//#define THREE_D 1
+#define THREE_D 1
 
 #include "ofMain.h"
 #include "ofxImGui.h"
-#include "ofxVolumetrics.h"
+
 #ifdef COMPUTE_OPENCL
 #include "MSAOpenCL.h"
 #ifdef THREE_D
+#include "ofxVolumetrics3D.h"
 #include "OpenCLImage3D.h"
 #endif
 #endif
+
 #ifdef COMPUTE_GLSL
 #include "ofxFbo.h"
+#ifdef THREE_D
+#include "ofxVolumetricsArray.h"
+#endif
 #endif
 
 namespace entropy
@@ -54,13 +59,17 @@ namespace entropy
 #endif
 
 #ifdef COMPUTE_GLSL
-        ofShader shader;
+#ifdef THREE_D
+		ofShader dropShader;
+		ofShader copyShader;
+#endif
+        ofShader ripplesShader;
         ofVboMesh mesh;
 
         ofxFbo fbos[3];
 
 #ifdef THREE_D
-        ofxTexture3d textures[3];
+        ofxTextureArray textures[3];
 #else
         ofTexture textures[3];
 #endif  // THREE_D
@@ -70,7 +79,12 @@ namespace entropy
         ofVec3f dimensions;
 
         ofEasyCam cam;
-        ofxVolumetrics volumetrics;
+#ifdef COMPUTE_OPENCL
+        ofxVolumetrics3D volumetrics;
+#endif
+#ifdef COMPUTE_GLSL
+		ofxVolumetricsArray volumetrics;
+#endif
 #else
         ofVec2f dimensions;
 #endif

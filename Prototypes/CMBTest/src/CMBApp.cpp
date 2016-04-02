@@ -39,7 +39,15 @@ namespace entropy
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-        shader.load("shaders/ripples");
+#ifdef THREE_D
+		dropShader.load("shaders/passthru.vert", "shaders/drop3D.frag", "shaders/layer.geom");
+		ripplesShader.load("shaders/passthru.vert", "shaders/ripples3D.frag", "shaders/layer.geom");
+		copyShader.load("shaders/passthru.vert", "shaders/copy3D.frag", "shaders/layer.geom");
+
+		cam.setDistance(1000);
+#else
+        ripplesShader.load("shaders/passthru.vert", "shaders/ripples.frag");
+#endif  // THREE_D
 #endif
     }
 
@@ -49,9 +57,9 @@ namespace entropy
         activeIndex = 0;
 
 #ifdef THREE_D
-        dimensions.x = 256;
-        dimensions.y = 256;
-        dimensions.z = 256;
+        dimensions.x = 128;
+		dimensions.y = 128;
+        dimensions.z = 128;
 #else
         dimensions.x = ofGetWidth();
         dimensions.y = ofGetHeight();
@@ -89,6 +97,34 @@ namespace entropy
         }
 
 #ifdef COMPUTE_GLSL
+#ifdef THREE_D
+		ofDefaultVec3 origin = ofDefaultVec3(0.0, ofGetHeight() - dimensions.y);
+
+		mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+		mesh.addVertex(origin + ofDefaultVec3(0.0, 0.0, 0.0));
+		mesh.addVertex(origin + ofDefaultVec3(dimensions.x, 0.0, 0.0));
+		mesh.addVertex(origin + ofDefaultVec3(0.0, dimensions.y, 0.0));
+
+		mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
+		mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
+		mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
+
+		mesh.addTexCoord(ofVec2f(0.0, 0.0));
+		mesh.addTexCoord(ofVec2f(dimensions.x, 0.0));
+		mesh.addTexCoord(ofVec2f(0.0, dimensions.y));
+
+		mesh.addVertex(origin + ofVec3f(dimensions.x, 0.0, 0.0));
+		mesh.addVertex(origin + ofVec3f(0.0, dimensions.y, 0.0));
+		mesh.addVertex(origin + ofVec3f(dimensions.x, dimensions.y, 0.0));
+
+		mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
+		mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
+		mesh.addColor(ofFloatColor(1.0, 1.0, 0.0));
+
+		mesh.addTexCoord(ofVec2f(dimensions.x, 0.0));
+		mesh.addTexCoord(ofVec2f(0.0, dimensions.y));
+		mesh.addTexCoord(ofVec2f(dimensions.x, dimensions.y));
+#else
         // Build a mesh to render a quad.
         mesh.clear();
         mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
@@ -102,125 +138,174 @@ namespace entropy
         mesh.addTexCoord(ofVec2f(dimensions.x, 0));
         mesh.addTexCoord(ofVec2f(dimensions.x, dimensions.y));
         mesh.addTexCoord(ofVec2f(0, dimensions.y));
+#endif
 #endif  // COMPUTE_GLSL
 
         bRestart = false;
     }
 
     //--------------------------------------------------------------
-    void CMBApp::update()
-    {
-        if (bRestart) {// || dimensions.x != ofGetWidth() || dimensions.y != ofGetHeight()) {
-            restart();
-        }
+	void CMBApp::update()
+	{
+		if (bRestart) {// || dimensions.x != ofGetWidth() || dimensions.y != ofGetHeight()) {
+			restart();
+		}
 
-        int srcIdx = (activeIndex + 1) % 2;
-        int dstIdx = activeIndex;
+		int srcIdx = (activeIndex + 1) % 2;
+		int dstIdx = activeIndex;
 
-        // Add new drops.
-        bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
-        if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
+		// Add new drops.
+		bool bMousePressed = ofGetMousePressed() && !bMouseOverGui;
+		if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
 #ifdef COMPUTE_OPENCL
-            dropKernel->setArg(0, clImages[srcIdx]);
+			dropKernel->setArg(0, clImages[srcIdx]);
 #ifdef THREE_D
-            dropKernel->setArg(1, bDropUnderMouse ? ofVec4f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY(), 0) : ofVec4f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z), 0));
+			dropKernel->setArg(1, bDropUnderMouse ? ofVec4f(ofGetMouseX(), ofGetMouseY(), ofGetMouseY(), 0) : ofVec4f(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z), 0));
 #else
-            dropKernel->setArg(1, bDropUnderMouse ? ofVec2f(ofGetMouseX(), ofGetMouseY()) : ofVec2f(ofRandom(dimensions.x), ofRandom(dimensions.y)));
+			dropKernel->setArg(1, bDropUnderMouse ? ofVec2f(ofGetMouseX(), ofGetMouseY()) : ofVec2f(ofRandom(dimensions.x), ofRandom(dimensions.y)));
 #endif  // THREE_D
 
-            dropKernel->setArg(2, radius);
-            dropKernel->setArg(3, ringSize);
-            dropKernel->setArg(4, dropColor);
+			dropKernel->setArg(2, radius);
+			dropKernel->setArg(3, ringSize);
+			dropKernel->setArg(4, dropColor);
 #ifdef THREE_D
-            dropKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+			dropKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
 #else
-            dropKernel->run2D(dimensions.x, dimensions.y);
+			dropKernel->run2D(dimensions.x, dimensions.y);
 #endif  // THREE_D
 
-            openCL.finish();
+			openCL.finish();
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-            ofPushStyle();
-            ofPushMatrix();
+#ifdef THREE_D
+			fbos[srcIdx].begin();
 
-            fbos[srcIdx].begin();
-            ofScale(1.0, -1.0, 1.0);
-            ofTranslate(0.0, -ofGetHeight(), 0.0);
-            {
-                if ((bDropOnPress && bMousePressed) || (!bDropOnPress && ofGetFrameNum() % dropRate == 0)) {
-                    ofSetColor(dropColor);
-                    ofNoFill();
-                    if (bDropUnderMouse) {
-                        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
-                    }
-                    else {
-                        ofDrawCircle(ofRandomWidth(), ofRandomHeight(), radius);
-                    }
-                }
-            }
-            fbos[srcIdx].end();
+			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(dimensions.x), ofRandom(dimensions.y), ofRandom(dimensions.z));
+			float burstThickness = 1.0f;
 
-            ofPopMatrix();
-            ofPopStyle();
+			dropShader.begin();
+			dropShader.setUniform3f("uBurst.pos", burstPos);
+			dropShader.setUniform1f("uBurst.radius", radius);
+			dropShader.setUniform1f("uBurst.thickness", burstThickness);
 
+			//dropShader.printActiveUniforms();
+
+			ofSetColor(255, 0, 0);
+
+			int minLayer = MAX(0, burstPos.z - radius - burstThickness);
+			int maxLayer = MIN(volumetrics.getVolumeDepth() - 1, burstPos.z + radius + burstThickness);
+			for (int i = minLayer; i <= maxLayer; ++i) {
+				//for (int i = 0; i < volumetrics.getVolumeDepth(); ++i) {
+				dropShader.setUniform1i("uLayer", i);
+				mesh.draw();
+			}
+
+			dropShader.end();
+			fbos[srcIdx].end();
+#else
+			ofPushStyle();
+			ofPushMatrix();
+
+			fbos[srcIdx].begin();
+			ofScale(1.0, -1.0, 1.0);
+			ofTranslate(0.0, -ofGetHeight(), 0.0);
+			{
+				ofSetColor(dropColor);
+				ofNoFill();
+				if (bDropUnderMouse) {
+					ofDrawCircle(ofGetMouseX(), ofGetMouseY(), radius);
+				}
+				else {
+					ofDrawCircle(ofRandomWidth(), ofRandomHeight(), radius);
+				}
+			}
+			fbos[srcIdx].end();
+
+			ofPopMatrix();
+			ofPopStyle();
+#endif  // THREE_D
 #endif  // COMPUTE_GLSL
-        }
+		}
 
-        // Layer the drops.
+		// Layer the drops.
 #ifdef COMPUTE_OPENCL
-        ripplesKernel->setArg(0, clImages[srcIdx]);
-        ripplesKernel->setArg(1, clImages[dstIdx]);
-        ripplesKernel->setArg(2, clImages[2]);
-        ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+		ripplesKernel->setArg(0, clImages[srcIdx]);
+		ripplesKernel->setArg(1, clImages[dstIdx]);
+		ripplesKernel->setArg(2, clImages[2]);
+		ripplesKernel->setArg(3, damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 #ifdef THREE_D
-        ripplesKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+		ripplesKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
 #else
-        ripplesKernel->run2D(dimensions.x, dimensions.y);
+		ripplesKernel->run2D(dimensions.x, dimensions.y);
 #endif  // THREE_D
 
-        openCL.finish();
+		openCL.finish();
 
-        // Copy temp image to dest (necessary since we can't read_write in OpenCL 1.2)
-        copyKernel->setArg(0, clImages[2]);
-        copyKernel->setArg(1, clImages[dstIdx]);
+		// Copy temp image to destination (necessary since we can't read_write in OpenCL 1.2)
+		copyKernel->setArg(0, clImages[2]);
+		copyKernel->setArg(1, clImages[dstIdx]);
 #ifdef THREE_D
-        copyKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
+		copyKernel->run3D(dimensions.x, dimensions.y, dimensions.z);
 
-        openCL.finish();
+		openCL.finish();
 
-        volumetrics.setup(&clImages[dstIdx].getTexture3D(), ofVec3f(1, 1, 1));
+		volumetrics.setup(&clImages[dstIdx].getTexture3D(), ofVec3f(1, 1, 1));
 #else
-        copyKernel->run2D(dimensions.x, dimensions.y);
+		copyKernel->run2D(dimensions.x, dimensions.y);
 #endif  // THREE_D
 #endif  // COMPUTE_OPENCL
 
 #ifdef COMPUTE_GLSL
-        // Layer the drops.
-        fbos[2].begin();
-        shader.begin();
+		// Layer the drops.
+		fbos[2].begin();
+		ripplesShader.begin();
+		ripplesShader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 #ifdef THREE_D
-
+		ripplesShader.setUniformTexture("uPrevBuffer", textures[dstIdx].texData.textureTarget, textures[dstIdx].texData.textureID, 1);
+		ripplesShader.setUniformTexture("uCurrBuffer", textures[srcIdx].texData.textureTarget, textures[srcIdx].texData.textureID, 2);
+		ripplesShader.setUniform3f("uDims", dimensions);
+		for (int i = 0; i < volumetrics.getVolumeDepth(); ++i)
+		{
+			ripplesShader.setUniform1i("uLayer", i);
+			mesh.draw();
+		}
 #else
-        shader.setUniformTexture("uPrevBuffer", textures[dstIdx], 1);
-        shader.setUniformTexture("uCurrBuffer", textures[srcIdx], 2);
+		ripplesShader.setUniformTexture("uPrevBuffer", textures[dstIdx], 1);
+		ripplesShader.setUniformTexture("uCurrBuffer", textures[srcIdx], 2);
+		{
+			mesh.draw();
+		}
 #endif  // THREE_D
-        shader.setUniform1f("uDamping", damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-        {
-            mesh.draw();
-        }
-        shader.end();
-        fbos[2].end();
+		ripplesShader.end();
+		fbos[2].end();
 
-		// Copy temp image to dest
+		// Copy temp image to destination.
 		fbos[dstIdx].begin();
 		{
+#ifdef THREE_D
+			copyShader.begin();
+			copyShader.setUniformTexture("uCopyBuffer", textures[2].texData.textureTarget, textures[2].texData.textureID, 1);
+			copyShader.setUniform3f("uDims", dimensions);
+			{
+				for (int i = 0; i < volumetrics.getVolumeDepth(); ++i)
+				{
+					copyShader.setUniform1i("uLayer", i);
+					mesh.draw();
+				}
+			}
+			copyShader.end();
+#else
 			textures[2].bind();
 			mesh.draw();
 			textures[2].unbind();
+#endif  // THREE_D
 		}
 		fbos[dstIdx].end();
 
+#ifdef THREE_D
+		volumetrics.setup(&textures[dstIdx], ofVec3f(1, 1, 1));
+#endif  // THREE_D
 #endif  // COMPUTE_GLSL
 
 #ifdef THREE_D
@@ -271,10 +356,13 @@ namespace entropy
     //--------------------------------------------------------------
     void CMBApp::draw()
     {
-        ofBackground(0);
+        ofBackground(255);
 
         ofPushStyle();
         ofSetColor(tintColor);
+
+		ofEnableAlphaBlending();
+		ofDisableDepthTest();
 
 #ifdef THREE_D
         cam.begin();
@@ -284,7 +372,6 @@ namespace entropy
         cam.end();
 #else
         int drawIdx = 1 - activeIndex;
-        ofEnableAlphaBlending();
 
 #ifdef COMPUTE_OPENCL
         clImages[drawIdx].getTexture().draw(0, 0);

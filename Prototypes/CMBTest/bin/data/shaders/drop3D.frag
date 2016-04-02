@@ -4,14 +4,15 @@
 uniform vec4 globalColor;
 
 // App uniforms and attributes
-uniform struct Burst {
+uniform struct Burst 
+{
     vec3 pos;
     float radius;
     float thickness;
 } uBurst;
 
 in vec2 gTexCoord;
-in vec2 vTexCoord;
+
 out vec4 fFragColor;
 
 void main()
@@ -24,6 +25,7 @@ void main()
         fFragColor = vec4(0.0);
     }
 
-    //fFragColor = globalColor;
-    //fFragColor = vec4(gTexCoord.x/256.0f, gTexCoord.y/256.0f, 0.0f, 1.0f); 
+    //fFragColor = vColor;
+	//const float dim = 256.0;
+    //fFragColor = vec4(gTexCoord.x/dim, gTexCoord.y/dim, gl_Layer/dim, 1.0f); 
 }

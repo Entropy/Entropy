@@ -248,8 +248,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\cl\ripples.cl" />
+    <None Include="bin\data\shaders\copy3D.frag" />
+    <None Include="bin\data\shaders\drop3D.frag" />
+    <None Include="bin\data\shaders\layer.geom" />
+    <None Include="bin\data\shaders\passthru.vert" />
     <None Include="bin\data\shaders\ripples.frag" />
-    <None Include="bin\data\shaders\ripples.vert" />
+    <None Include="bin\data\shaders\ripples3D.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

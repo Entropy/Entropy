@@ -220,10 +220,22 @@
     <None Include="bin\data\cl\ripples.cl">
       <Filter>cl</Filter>
     </None>
+    <None Include="bin\data\shaders\drop3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\layer.geom">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\passthru.vert">
+      <Filter>shaders</Filter>
+    </None>
     <None Include="bin\data\shaders\ripples.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="bin\data\shaders\ripples.vert">
+    <None Include="bin\data\shaders\ripples3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\copy3D.frag">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
