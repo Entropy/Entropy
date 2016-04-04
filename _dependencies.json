@@ -3,7 +3,7 @@
 	{
 		"name": "openFrameworks",
 		"source": "https://github.com/Entropy/openFrameworks.git",
-		"branch": "master"
+		"branch": "project/entropy"
 	},
 	"addons": 
 	[
@@ -15,6 +15,11 @@
 		{
 			"name": "ofxImGui",
 			"source": "https://github.com/Entropy/ofxImGui.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxSet",
+			"source": "https://github.com/Entropy/ofxSet.git",
 			"branch": "master"
 		}
 	]

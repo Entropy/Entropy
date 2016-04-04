@@ -57,7 +57,7 @@ namespace ent
 
         // Set the ranges for all data.
         for (int i = 0; i < posX.size(); ++i) {
-            coordRange.add(ofVec3f(posX[i], posY[i], posZ[i]));
+            coordRange.add(ofDefaultVec3(posX[i], posY[i], posZ[i]));
             cellSizeRange.add(cellSize[i]);
             densityRange.add(density[i]);
         }
@@ -67,10 +67,10 @@ namespace ent
         coordRange.add(coordRange.getMax() + cellSizeRange.getMax());
 
         // Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
-        ofVec3f coordSpan = coordRange.getSpan();
+        ofDefaultVec3 coordSpan = coordRange.getSpan();
         float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
-        ofVec3f spanOffset(maxSpan * 0.5);
-        ofVec3f coordMid = coordRange.getMid();
+        ofDefaultVec3 spanOffset(maxSpan * 0.5);
+        ofDefaultVec3 coordMid = coordRange.getCenter();
         coordRange.add(coordMid - spanOffset);
         coordRange.add(coordMid + spanOffset);
 
@@ -83,7 +83,7 @@ namespace ent
         // Upload all data to the TBO.
         transforms.resize(posX.size());
         for (size_t i = 0; i < transforms.size(); ++i) {
-            transforms[i].set(posX[i], posY[i], posZ[i], cellSize[i]);
+            transforms[i] = ofDefaultVec4(posX[i], posY[i], posZ[i], cellSize[i]);
         }
 
         bufferObject.allocate();
@@ -276,10 +276,10 @@ namespace ent
     }
 
     //--------------------------------------------------------------
-    bool CellRenderer::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
+    bool CellRenderer::imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize)
     {
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
+        ImGui::SetNextWindowSize(ofDefaultVec2(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("%lu Instances", transforms.size());
 
@@ -317,18 +317,18 @@ namespace ent
                 ImGui::Checkbox("Debug 3D", &bBinDebug3D);
                 if (ImGui::TreeNode("Debug 2D")) {
                     bBinDebug2D = true;
-                    ImGui::Image((ImTextureID)(uintptr_t)binFbo.getTexture().getTextureData().textureID, ofVec2f(binSizeX, binSizeY));
+                    ImGui::Image((ImTextureID)(uintptr_t)binFbo.getTexture().getTextureData().textureID, ofDefaultVec2(binSizeX, binSizeY));
                     ImGui::TreePop();
                 }
                 else {
                     bBinDebug2D = false;
                 }
             }
-            windowSize.set(ImGui::GetWindowSize());
+            windowSize = ImGui::GetWindowSize();
             ImGui::End();
         }
         else {
-            windowSize.set(0);
+            windowSize = ofDefaultVec2(0);
         }
 
         ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);

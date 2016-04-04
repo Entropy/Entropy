@@ -23,11 +23,11 @@ void ofApp::imGui()
 
     gui.begin();
     {
-        ofVec2f windowPos(kGuiMargin, kGuiMargin);
-        ofVec2f windowSize = ofVec2f::zero();
+        ofDefaultVec2 windowPos(kGuiMargin, kGuiMargin);
+        ofDefaultVec2 windowSize = ofDefaultVec2(0);
 
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
+        ImGui::SetNextWindowSize(ofDefaultVec2(380, 94), ImGuiSetCond_Appearing);
         if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
 
@@ -35,7 +35,7 @@ void ofApp::imGui()
                 ImGui::SliderFloat("Scale", &scale, 1.0f, 2048.0f);
             }
 
-            windowSize.set(ImGui::GetWindowSize());
+            windowSize = ImGui::GetWindowSize();
             ImGui::End();
         }
 
@@ -68,8 +68,8 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    cam.setNearClip(0);
-    cam.setFarClip(FLT_MAX);
+//    cam.setNearClip(0);
+//    cam.setFarClip(FLT_MAX);
     cam.begin();
     {
         cellRenderer.draw(scale);

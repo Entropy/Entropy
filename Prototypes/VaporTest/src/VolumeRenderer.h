@@ -21,7 +21,7 @@ namespace ent
 
         void draw(float scale);
 
-        bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
+        bool imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize);
 
     protected:
         // Data

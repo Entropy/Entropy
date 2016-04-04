@@ -65,7 +65,7 @@ if __name__ == '__main__':
 		exit()
 
 	# Open the dependencies file.
-	with open(deps_path) as deps_file:    
+	with open(deps_path) as deps_file:
 		deps_data = json.load(deps_file)
 
 	# Update openFrameworks.

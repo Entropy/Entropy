@@ -107,10 +107,10 @@ namespace ent
     }
 
     //--------------------------------------------------------------
-    bool VolumeRenderer::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
+    bool VolumeRenderer::imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize)
     {
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 380), ImGuiSetCond_Appearing);
+        ImGui::SetNextWindowSize(ofDefaultVec2(380, 380), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Volume Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 //            ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
 //            ImGui::Text("%lu Indices / %lu Vertices", vboMesh.getNumIndices(), vboMesh.getNumVertices());
@@ -148,11 +148,11 @@ namespace ent
                 }
             }
             
-            windowSize.set(ImGui::GetWindowSize());
+            windowSize = ImGui::GetWindowSize();
             ImGui::End();
         }
         else {
-            windowSize.set(0);
+            windowSize = ofDefaultVec2(0);
         }
 
         ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);

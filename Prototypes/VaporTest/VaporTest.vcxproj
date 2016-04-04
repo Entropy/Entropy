@@ -95,7 +95,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxSet\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxSet\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxSet\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -158,7 +158,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\Shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxHDF5\src;..\..\..\addons\ofxHDF5\libs\hdf5\include;..\..\..\addons\ofxHDF5\libs\szip\include;..\..\..\addons\ofxHDF5\libs\zlib\include;..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\addons\ofxSet\src;..\..\..\addons\ofxVolumetrics\src;..\..\..\addons\ofxVolumetrics\src\shaders;..\..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\..\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -190,7 +190,6 @@
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
     <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
-    <ClCompile Include="..\..\Shared\src\ofxRange.cpp" />
     <ClCompile Include="src\CellRenderer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -294,11 +293,11 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
+    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
-    <ClInclude Include="..\..\Shared\src\ofxRange.h" />
     <ClInclude Include="src\CellRenderer.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\ofApp.h" />
