@@ -44,9 +44,6 @@ void ofApp::imGui()
 
         windowPos.y += windowSize.y + kGuiMargin;
         bMouseOverGui |= cellRenderer.imGui(windowPos, windowSize);
-
-        windowPos.y += windowSize.y + kGuiMargin;
-        bMouseOverGui |= volumeRenderer.imGui(windowPos, windowSize);
     }
     gui.end();
 }
@@ -73,7 +70,6 @@ void ofApp::draw()
     cam.begin();
     {
         cellRenderer.draw(scale);
-        volumeRenderer.draw(scale);
 
         ofNoFill();
         ofDrawBox(0, 0, 0, scale, scale, scale);

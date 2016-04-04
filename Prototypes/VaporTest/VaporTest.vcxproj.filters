@@ -43,19 +43,7 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\CellRenderer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VolumeRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,12 +89,6 @@
     </Filter>
     <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{f30ed9c2-903a-4ecf-86c7-37baf263f71e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxVolumetrics">
-      <UniqueIdentifier>{aa1d409d-dfb5-4001-9925-aa5560cc36cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxVolumetrics\src">
-      <UniqueIdentifier>{83312f2b-658d-456f-a657-bb1b53e6f7dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxHDF5\libs\zlib">
       <UniqueIdentifier>{6d713124-bd68-4305-a55f-340a59e49198}</UniqueIdentifier>
@@ -410,25 +392,10 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\CellRenderer.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Common.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\VolumeRenderer.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
