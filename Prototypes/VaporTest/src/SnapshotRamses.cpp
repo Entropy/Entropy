@@ -15,7 +15,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder)
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex)
 	{
 		clear();
 		
@@ -26,11 +26,11 @@ namespace ent
 		std::vector<float> cellSize;
 		std::vector<float> density;
 
-		load(folder + "x_hdf5.h5", posX);
-		load(folder + "y_hdf5.h5", posY);
-		load(folder + "z_hdf5.h5", posZ);
-		load(folder + "dx_hdf5.h5", cellSize);
-		load(folder + "density_hdf5.h5", density);
+		load(folder + "x/seq_" + ofToString(frameIndex) + "_x.h5", posX);
+		load(folder + "y/seq_" + ofToString(frameIndex) + "_y.h5", posY);
+		load(folder + "z/seq_" + ofToString(frameIndex) + "_z.h5", posZ);
+		load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
+		load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
 
 		m_numCells = posX.size();
 
@@ -73,6 +73,8 @@ namespace ent
 		m_bufferObject.setData(transforms, GL_STREAM_DRAW);
 
 		m_bufferTexture.allocateAsBufferTexture(m_bufferObject, GL_RGBA32F);
+
+		m_bLoaded = true;
 	}
 	
 	//--------------------------------------------------------------
@@ -86,6 +88,8 @@ namespace ent
 		m_densityRange.clear();
 
 		m_numCells = 0;
+
+		m_bLoaded = false;
 	}
 
 	//--------------------------------------------------------------
@@ -143,5 +147,11 @@ namespace ent
 	std::size_t SnapshotRamses::getNumCells() const
 	{
 		return m_numCells;
+	}
+
+	//--------------------------------------------------------------
+	bool SnapshotRamses::isLoaded() const
+	{
+		return m_bLoaded;
 	}
 }

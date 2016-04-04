@@ -10,7 +10,8 @@ void ofApp::setup()
 
     scale = 1024.0;
 
-    cellRenderer.setup("RAMSES_HDF5_small/");
+    sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	sequenceRamses.loadFrame(0);
 
     bGuiVisible = true;
 }
@@ -43,7 +44,7 @@ void ofApp::imGui()
         bMouseOverGui = windowBounds.inside(ofGetMouseX(), ofGetMouseY());
 
         windowPos.y += windowSize.y + kGuiMargin;
-        bMouseOverGui |= cellRenderer.imGui(windowPos, windowSize);
+        bMouseOverGui |= sequenceRamses.imGui(windowPos, windowSize);
     }
     gui.end();
 }
@@ -51,7 +52,7 @@ void ofApp::imGui()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    cellRenderer.update();
+	sequenceRamses.update();
 
     if (bMouseOverGui) {
         cam.disableMouseInput();
@@ -69,7 +70,7 @@ void ofApp::draw()
 //    cam.setFarClip(FLT_MAX);
     cam.begin();
     {
-        cellRenderer.draw(scale);
+		sequenceRamses.draw(scale);
 
         ofNoFill();
         ofDrawBox(0, 0, 0, scale, scale, scale);

@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxImGui.h"
 
-#include "CellRenderer.h"
+#include "SequenceRamses.h"
 
 class ofApp : public ofBaseApp
 {
@@ -24,7 +24,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    ent::CellRenderer cellRenderer;
+    ent::SequenceRamses sequenceRamses;
 
     ofEasyCam cam;
 

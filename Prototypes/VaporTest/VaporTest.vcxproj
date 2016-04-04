@@ -187,7 +187,7 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
     <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
     <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp" />
-    <ClCompile Include="src\CellRenderer.cpp" />
+    <ClCompile Include="src\SequenceRamses.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\SnapshotRamses.cpp" />
@@ -292,8 +292,7 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
     <ClInclude Include="..\..\..\addons\ofxRange\src\ofxRange.h" />
     <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h" />
-    <ClInclude Include="src\CellRenderer.h" />
-    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\SequenceRamses.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\SnapshotRamses.h" />
   </ItemGroup>

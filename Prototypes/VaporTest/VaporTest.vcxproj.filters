@@ -43,10 +43,10 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\CellRenderer.cpp">
+    <ClCompile Include="src\SnapshotRamses.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SnapshotRamses.cpp">
+    <ClCompile Include="src\SequenceRamses.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,12 +404,6 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\CellRenderer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Common.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
       <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
     </ClInclude>
@@ -424,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRange\src\ofxRange.h">
       <Filter>addons\ofxRange\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SequenceRamses.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

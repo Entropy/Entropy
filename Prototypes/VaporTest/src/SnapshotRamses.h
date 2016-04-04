@@ -17,7 +17,7 @@ namespace ent
 		SnapshotRamses();
 		~SnapshotRamses();
 
-		void setup(const std::string& folder);
+		void setup(const std::string& folder, int frameIndex);
 		void clear();
 
 		void update(ofShader& shader);
@@ -28,6 +28,7 @@ namespace ent
 		ofxRange1f& getDensityRange();
 
 		std::size_t getNumCells() const;
+		bool isLoaded() const;
 
 	protected:
 		void load(const std::string& file, std::vector<float>& elements);
@@ -41,5 +42,6 @@ namespace ent
 		ofxRange1f m_densityRange;
 
 		std::size_t m_numCells;
+		bool m_bLoaded;
 	};
 }
