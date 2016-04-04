@@ -95,7 +95,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -158,7 +158,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -190,6 +190,7 @@
     <ClCompile Include="src\CellRenderer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\SnapshotRamses.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h" />
@@ -289,10 +290,12 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
+    <ClInclude Include="..\..\..\addons\ofxRange\src\ofxRange.h" />
     <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h" />
     <ClInclude Include="src\CellRenderer.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\SnapshotRamses.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -305,6 +308,10 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\addons\ofxRange\src\ofxRange.inl" />
+    <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

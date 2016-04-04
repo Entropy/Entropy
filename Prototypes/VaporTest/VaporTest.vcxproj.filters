@@ -46,6 +46,9 @@
     <ClCompile Include="src\CellRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\SnapshotRamses.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -101,6 +104,12 @@
     </Filter>
     <Filter Include="addons\ofxSet\src">
       <UniqueIdentifier>{fe0e6fe3-baf4-4ffa-9319-431c98f727d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRange">
+      <UniqueIdentifier>{711af32d-d3f2-41b5-896f-67e09792bf1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRange\src">
+      <UniqueIdentifier>{27e8cdc6-d920-443d-b2c7-cd6647d6799c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -407,8 +416,22 @@
     <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h">
       <Filter>addons\ofxSet\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\SnapshotRamses.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRange\src\ofxRange.h">
+      <Filter>addons\ofxRange\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl">
+      <Filter>addons\ofxSet\src</Filter>
+    </None>
+    <None Include="..\..\..\addons\ofxRange\src\ofxRange.inl">
+      <Filter>addons\ofxRange\src</Filter>
+    </None>
   </ItemGroup>
 </Project>

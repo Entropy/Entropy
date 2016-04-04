@@ -10,7 +10,7 @@ void ofApp::setup()
 
     scale = 1024.0;
 
-    cellRenderer.setup();
+    cellRenderer.setup("RAMSES_HDF5_small/");
 
     bGuiVisible = true;
 }

@@ -9,22 +9,20 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxSet.h"
+#include "ofxRange.h"
+
+#include "SnapshotRamses.h"
 
 namespace ent
 {
-    enum ExtraAttributes
-    {
-        DENSITY_ATTRIBUTE = 5
-    };
-
     class CellRenderer
     {
     public:
         CellRenderer();
         ~CellRenderer();
 
-        void setup();
+        void setup(const std::string& folder);
+		void clear();
 
         void update();
         void draw(float scale);
@@ -32,15 +30,13 @@ namespace ent
         bool imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize);
 
     protected:
-        // Data
-        void loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential);
-        ofVboMesh vboMesh;
-        vector<ofDefaultVec4> transforms;
-        vector<float> density;
-
-        ofxSet3f coordRange;
-        ofxSet1f cellSizeRange;
-        ofxSet1f densityRange;
+		// Data
+		std::vector<SnapshotRamses *> m_snapshots;
+		std::size_t m_currIndex;
+		
+		ofxRange3f m_coordRange;
+		ofxRange1f m_sizeRange;
+		ofxRange1f m_densityRange;
 
         int stride;
 

@@ -38,67 +38,36 @@ namespace ent
     //--------------------------------------------------------------
     CellRenderer::~CellRenderer()
     {
-
+		clear();
     }
 
     //--------------------------------------------------------------
-    void CellRenderer::setup()
+    void CellRenderer::setup(const std::string& folder)
     {
-        // Load the HDF5 data.
-        vector<float> posX, posY, posZ;
-        vector<float> cellSize;
-        string folder = "RAMSES_HDF5_small/";
-        //string folder = "RAMSES_HDF5_data/";
-        loadDataSet(folder + "x_hdf5.h5", posX, 1, false);
-        loadDataSet(folder + "y_hdf5.h5", posY, 1, false);
-        loadDataSet(folder + "z_hdf5.h5", posZ, 1, false);
-        loadDataSet(folder + "dx_hdf5.h5", cellSize, 1, false);
-        loadDataSet(folder + "density_hdf5.h5", density, 1, false);
+		clear();
 
-        // Set the ranges for all data.
-        for (int i = 0; i < posX.size(); ++i) {
-            coordRange.add(ofDefaultVec3(posX[i], posY[i], posZ[i]));
-            cellSizeRange.add(cellSize[i]);
-            densityRange.add(density[i]);
-        }
+		// Load all the snapshots.
+		// TODO: Read snapshot folders from incoming folder.
+		for (int i = 0; i < 1; ++i)
+		{
+			SnapshotRamses *snapshot = new SnapshotRamses();
+			snapshot->setup("RAMSES_HDF5_small/");
 
-        // Expand coord range taking cell size into account.
-        coordRange.add(coordRange.getMin() - cellSizeRange.getMax());
-        coordRange.add(coordRange.getMax() + cellSizeRange.getMax());
+			// Adjust the ranges.
+			m_coordRange.include(snapshot->getCoordRange());
+			m_sizeRange.include(snapshot->getSizeRange());
+			m_densityRange.include(snapshot->getDensityRange());
 
-        // Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
-        ofDefaultVec3 coordSpan = coordRange.getSpan();
-        float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
-        ofDefaultVec3 spanOffset(maxSpan * 0.5);
-        ofDefaultVec3 coordMid = coordRange.getCenter();
-        coordRange.add(coordMid - spanOffset);
-        coordRange.add(coordMid + spanOffset);
+			m_snapshots.push_back(snapshot);
+		}
+
+		m_currIndex = 0;
 
         // Set normalization values to remap to [-0.5, 0.5]
-        coordSpan = coordRange.getSpan();
-        originShift = -0.5 * coordSpan - coordRange.getMin();
+		ofDefaultVec3 coordSpan = m_coordRange.getSpan();
+        originShift = -0.5 * coordSpan - m_coordRange.getMin();
 
         normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
-
-        // Upload all data to the TBO.
-        transforms.resize(posX.size());
-        for (size_t i = 0; i < transforms.size(); ++i) {
-            transforms[i] = ofDefaultVec4(posX[i], posY[i], posZ[i], cellSize[i]);
-        }
-
-        bufferObject.allocate();
-        bufferObject.bind(GL_TEXTURE_BUFFER);
-        bufferObject.setData(transforms, GL_STREAM_DRAW);
-
-        bufferTexture.allocateAsBufferTexture(bufferObject, GL_RGBA32F);
-
-        // Set up the VBO.
-        vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
-        vboMesh.setUsage(GL_STATIC_DRAW);
-
-        // Upload per-instance data to the VBO.
-        vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
-        vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
         // Load the shaders.
         renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
@@ -107,11 +76,11 @@ namespace ent
         renderShader.bindDefaults();
         renderShader.linkProgram();
 
-        renderShader.begin();
-        {
-            renderShader.setUniformTexture("uTransform", bufferTexture, 0);
-        }
-        renderShader.end();
+        //renderShader.begin();
+        //{
+        //    renderShader.setUniformTexture("uTransform", bufferTexture, 0);
+        //}
+        //renderShader.end();
 
         sliceShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/slice.vert");
         sliceShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/slice.frag");
@@ -120,41 +89,19 @@ namespace ent
         sliceShader.linkProgram();
     }
 
-    //--------------------------------------------------------------
-    void CellRenderer::loadDataSet(const string& filename, vector<float>& data, int stride, bool bExponential)
-    {
-        ofxHDF5File h5File;
-        h5File.open(filename, true);
-        ofLogVerbose() << "File '" << filename << "' has " << h5File.getNumDataSets() << " datasets";
+	//--------------------------------------------------------------
+	void CellRenderer::clear()
+	{
+		for (int i = 0; i < m_snapshots.size(); ++i)
+		{
+			delete m_snapshots[i];
+		}
+		m_snapshots.clear();
 
-        for (int i = 0; i < h5File.getNumDataSets(); ++i) {
-            ofLogVerbose() << "  DataSet " << i << ": " << h5File.getDataSetName(i);
-        }
-        string dataSetName = h5File.getDataSetName(0);
-        ofxHDF5DataSetPtr dataSet = h5File.loadDataSet(dataSetName);
-
-        int count = dataSet->getDimensionSize(0) / stride;
-        dataSet->setHyperslab(0, count, stride);
-        data.resize(count);
-
-        // Data is 64-bit.
-        if (bExponential) {
-            // Load it in a temp double array.
-            double *rawData = new double[count];
-            dataSet->read(rawData);
-
-            // Set the return array from the transformed data.
-            for (int i = 0; i < count; ++i) {
-                data[i] = powf(10, rawData[i]);
-            }
-
-            delete [] rawData;
-        }
-        else {
-            // Read it directly, losing precision but it's OK.
-            dataSet->read(data.data(), H5_DATATYPE_FLOAT);
-        }
-    }
+		m_coordRange.clear();
+		m_sizeRange.clear();
+		m_densityRange.clear();
+	}
 
     //--------------------------------------------------------------
     void CellRenderer::update()
@@ -221,18 +168,18 @@ namespace ent
     //--------------------------------------------------------------
     void CellRenderer::rebuildBins()
     {
-        // Build bins by depth.
-        binSizeX = binSizeY = binSizeZ = pow(2, binPower);
-        binSliceZ = (coordRange.getSpan().z) / binSizeZ;
-
-        ofLogNotice() << "Bin size is [" << binSizeX << "x" << binSizeY << "x" << binSizeZ << "] with slice " << binSliceZ;
-
-        // Allocate FBO.
-        binFbo.allocate(binSizeX, binSizeY);
-//        binIndex = 0;
-        renderIndex = -1;
-
-        bNeedsBins = false;
+//        // Build bins by depth.
+//        binSizeX = binSizeY = binSizeZ = pow(2, binPower);
+//        binSliceZ = (coordRange.getSpan().z) / binSizeZ;
+//
+//        ofLogNotice() << "Bin size is [" << binSizeX << "x" << binSizeY << "x" << binSizeZ << "] with slice " << binSliceZ;
+//
+//        // Allocate FBO.
+//        binFbo.allocate(binSizeX, binSizeY);
+////        binIndex = 0;
+//        renderIndex = -1;
+//
+//        bNeedsBins = false;
     }
 
     //--------------------------------------------------------------
@@ -247,19 +194,20 @@ namespace ent
             ofTranslate(originShift);
             {
                 renderShader.begin();
-                renderShader.setUniform1f("uDensityMin", densityMin * densityRange.getSpan());
-                renderShader.setUniform1f("uDensityMax", densityMax * densityRange.getSpan());
-                if (bBinDebug3D) {
-                    renderShader.setUniform1f("uDebugMin", coordRange.getMin().z + binIndex * binSliceZ);
-                    renderShader.setUniform1f("uDebugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
-                }
-                else {
-                    renderShader.setUniform1f("uDebugMin", FLT_MAX);
-                    renderShader.setUniform1f("uDebugMax", FLT_MIN);
-                }
-                {
-                    vboMesh.drawInstanced(OF_MESH_FILL, transforms.size());
-                }
+                renderShader.setUniform1f("uDensityMin", densityMin * m_densityRange.getSpan());
+                renderShader.setUniform1f("uDensityMax", densityMax * m_densityRange.getSpan());
+                //if (bBinDebug3D) {
+                //    renderShader.setUniform1f("uDebugMin", coordRange.getMin().z + binIndex * binSliceZ);
+                //    renderShader.setUniform1f("uDebugMax", coordRange.getMin().z + (binIndex + 1) * binSliceZ);
+                //}
+                //else {
+                renderShader.setUniform1f("uDebugMin", FLT_MAX);
+                renderShader.setUniform1f("uDebugMax", FLT_MIN);
+                //}
+				{
+					m_snapshots[m_currIndex]->update(renderShader);
+					m_snapshots[m_currIndex]->draw();
+				}
                 renderShader.end();
             }
             ofPopMatrix();
@@ -281,7 +229,8 @@ namespace ent
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
         ImGui::SetNextWindowSize(ofDefaultVec2(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("%lu Instances", transforms.size());
+			ImGui::Text("Frame %lu / %lu", m_snapshots.size(), m_currIndex);
+			ImGui::Text("%lu Cells", m_snapshots[m_currIndex]->getNumCells());
 
             if (ImGui::CollapsingHeader("Data", nullptr, true, true)) {
                 if (ImGui::SliderInt("Stride", &stride, 1, 128)) {
