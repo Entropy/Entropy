@@ -38,47 +38,15 @@ namespace ent
 		ofxRange1f m_sizeRange;
 		ofxRange1f m_densityRange;
 
-        int stride;
-
         // 3D Render
-        void rebuildIndices();
-        bool bNeedsIndices;
+        bool m_bRender;
 
-        bool bRender3D;
+        ofDefaultVec3 m_originShift;
+        float m_normalizeFactor;
 
-        ofVec3f originShift;
-        float normalizeFactor;
+        ofShader m_renderShader;
 
-        ofBufferObject bufferObject;
-        ofTexture bufferTexture;
-        ofShader renderShader;
-
-        float pointSize;
-        float densityMin;
-        float densityMax;
-
-        // Texture Output
-        void rebuildBins();
-        bool bNeedsBins;
-
-        bool bCycleBins;
-        bool bExportFiles;
-        string exportFolder;
-
-        int binPower;
-        int binSizeX, binSizeY, binSizeZ;
-        float binSliceZ;
-        
-        int binIndex;
-        int renderIndex;
-        
-        float pointAdjust;
-        
-        bool bBinDebug2D;
-        bool bBinDebug3D;
-        
-        ofShader sliceShader;
-        ofFbo binFbo;
-        ofPixels binPixels;
+        float m_densityMin;
+        float m_densityMax;
     };
 }

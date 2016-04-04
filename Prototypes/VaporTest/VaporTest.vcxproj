@@ -312,6 +312,8 @@
   <ItemGroup>
     <None Include="..\..\..\addons\ofxRange\src\ofxRange.inl" />
     <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl" />
+    <None Include="bin\data\shaders\render.frag" />
+    <None Include="bin\data\shaders\render.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

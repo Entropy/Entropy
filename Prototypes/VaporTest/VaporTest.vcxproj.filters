@@ -111,6 +111,9 @@
     <Filter Include="addons\ofxRange\src">
       <UniqueIdentifier>{27e8cdc6-d920-443d-b2c7-cd6647d6799c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{6dc1f201-c870-4bbd-9a6d-23b84aef9728}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -432,6 +435,12 @@
     </None>
     <None Include="..\..\..\addons\ofxRange\src\ofxRange.inl">
       <Filter>addons\ofxRange\src</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.vert">
+      <Filter>shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
