@@ -37,8 +37,10 @@ namespace ent
 		m_cameraTrack = new ofxTLCameraTrack();
 		m_cameraTrack->setCamera(m_camera);
 		m_timeline.addTrack("Camera", m_cameraTrack);
+		m_timeline.addColors("Background Color");
+		m_timeline.addSwitches("Dropping");
 
-		m_cameraTrack->lockCameraToTrack = true;
+		m_cameraTrack->lockCameraToTrack = false;
 		//m_timeline.play();
 
 		m_bExportFrames = false;
@@ -49,13 +51,16 @@ namespace ent
     //--------------------------------------------------------------
 	void ofApp::update()
 	{
+		m_backgroundColor = m_timeline.getColor("Background Color");
+		
+		m_cmbScene.m_bDropping = m_timeline.isSwitchOn("Dropping");
 		m_cmbScene.update();
-    }
+	}
 
     //--------------------------------------------------------------
     void ofApp::draw()
     {
-        ofBackground(255);
+        ofBackground(m_backgroundColor);
 
         ofPushStyle();
 		{
@@ -64,11 +69,15 @@ namespace ent
 			
 			ofSetColor(m_tintColor);
 
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			m_camera.begin();
+#endif
 			{
 				m_cmbScene.draw();
 			}
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			m_camera.end();
+#endif
 		}
         ofPopStyle();
 
@@ -117,7 +126,6 @@ namespace ent
 				ImGui::ColorEdit3("Tint Color", &m_tintColor[0]);
 				ImGui::ColorEdit3("Drop Color", &m_cmbScene.m_dropColor[0]);
 
-				ImGui::Checkbox("Enable Dropping", &m_cmbScene.m_bDropping);
 				ImGui::SliderInt("Drop Rate", &m_cmbScene.m_dropRate, 1, 60);
 				ImGui::SliderFloat("Damping", &m_cmbScene.m_damping, 0.0f, 1.0f);
 				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 1.0f, 50.0f);

@@ -51,7 +51,8 @@ namespace ent
 		CmbSceneCL3D m_cmbScene;
 #endif
 
-        ofFloatColor m_tintColor;
+		ofFloatColor m_backgroundColor; 
+		ofFloatColor m_tintColor;
 
 		ofEasyCam m_camera;
 

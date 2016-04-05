@@ -46,7 +46,7 @@ namespace ent
     }
 
     // create both a 3D Image AND an ofxTexture3d at the same time (they share memory space on device)
-    // parameters with default values can be omited
+    // parameters with default values can be omitted
     void OpenCLImage3D::initWithTexture3D(int width,
                                           int height,
                                           int depth,
