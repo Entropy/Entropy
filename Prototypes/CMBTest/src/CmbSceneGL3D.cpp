@@ -9,7 +9,7 @@ namespace ent
 		
 		// Allocate the textures and buffers.
 		for (int i = 0; i < 3; ++i) {
-			m_textures[i].allocate(m_dimensions.x, m_dimensions.y, m_dimensions.z, GL_RGBA32F);
+			m_textures[i].allocate(m_dimensions.x, m_dimensions.y, m_dimensions.z, GL_RGBA16F);
 
 			m_fbos[i].allocate();
 			m_fbos[i].attachTexture(m_textures[i], 0);

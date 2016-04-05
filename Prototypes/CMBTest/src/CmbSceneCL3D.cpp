@@ -11,7 +11,7 @@ namespace ent
 
 		// Allocate the textures and buffers.
 		for (int i = 0; i < 3; ++i) {
-			m_clImages[i].initWithTexture3D(m_dimensions.x, m_dimensions.y, m_dimensions.z, GL_RGBA32F);
+			m_clImages[i].initWithTexture3D(m_dimensions.x, m_dimensions.y, m_dimensions.z, GL_RGBA16F);
 		}
 
 		// Load program and kernels.
