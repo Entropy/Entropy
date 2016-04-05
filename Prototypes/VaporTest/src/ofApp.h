@@ -2,10 +2,12 @@
 
 #include "ofMain.h"
 #include "ofxImGui.h"
+#include "ofxTimeline.h"
 
 #include "SequenceRamses.h"
 
-class ofApp : public ofBaseApp
+class ofApp 
+	: public ofBaseApp
 {
 public:
     void setup();
@@ -24,16 +26,23 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    ent::SequenceRamses sequenceRamses;
+    ent::SequenceRamses m_sequenceRamses;
 
-    ofEasyCam cam;
+    ofEasyCam m_camera;
 
-    float scale;
+    float m_scale;
+	bool m_bSyncPlayback;
+
+	bool m_bExportFrames;
+	std::string m_exportPath;
 
     // GUI
-    void imGui();
+    bool imGui();
 
-    ofxImGui gui;
-    bool bGuiVisible;
-    bool bMouseOverGui;
+	ofxTimeline m_timeline;
+	ofxTLCameraTrack *m_cameraTrack;
+
+    ofxImGui m_gui;
+    bool m_bGuiVisible;
+    bool m_bMouseOverGui;
 };

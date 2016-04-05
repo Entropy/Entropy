@@ -149,11 +149,23 @@ namespace ent
 			m_densityRange.include(m_snapshots[index].getDensityRange());
 
 			// Set normalization values to remap to [-0.5, 0.5]
-			ofDefaultVec3 coordSpan = m_coordRange.getSpan();
+			glm::vec3 coordSpan = m_coordRange.getSpan();
 			m_originShift = -0.5 * coordSpan - m_coordRange.getMin();
 
 			m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
 		}
+	}
+
+	//--------------------------------------------------------------
+	void SequenceRamses::setFrameRate(float frameRate)
+	{
+		m_frameRate = frameRate;
+	}
+
+	//--------------------------------------------------------------
+	float SequenceRamses::getFrameRate() const
+	{
+		return m_frameRate;
 	}
 
 	//--------------------------------------------------------------
@@ -204,12 +216,6 @@ namespace ent
 	float SequenceRamses::getPercentAtFrameIndex(int index)
 	{
 		return ofMap(index, 0, m_snapshots.size() - 1, 0.0f, 1.0f, true);
-	}
-
-	//--------------------------------------------------------------
-	void SequenceRamses::setFrameRate(float frameRate)
-	{
-		m_frameRate = frameRate;
 	}
 
 	//--------------------------------------------------------------

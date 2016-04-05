@@ -50,18 +50,22 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -95,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -115,7 +119,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -135,7 +139,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -158,7 +162,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxRange\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -290,7 +294,7 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
-    <ClInclude Include="..\..\..\addons\ofxRange\src\ofxRange.h" />
+    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxRange.h" />
     <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h" />
     <ClInclude Include="src\SequenceRamses.h" />
     <ClInclude Include="src\ofApp.h" />
@@ -299,6 +303,9 @@
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimelineLib.vcxproj">
+      <Project>{a72c4f16-cb16-4143-ba5c-5e4fa802d636}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -309,7 +316,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\addons\ofxRange\src\ofxRange.inl" />
+    <None Include="..\..\..\addons\ofxSet\src\ofxRange.inl" />
     <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl" />
     <None Include="bin\data\shaders\render.frag" />
     <None Include="bin\data\shaders\render.vert" />

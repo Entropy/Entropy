@@ -26,18 +26,19 @@ namespace ent
 		void preloadAllFrames();
 		void loadFrame(int index);
 
+		void setFrameRate(float frameRate);
+		float getFrameRate() const;
+
 		void setFrame(int index);
 		void setFrameForTime(float time);
 		void setFrameAtPercent(float percent);
-
-		int getFrameIndexAtPercent(float percent);
-		float getPercentAtFrameIndex(int index);
-
-		void setFrameRate(float frameRate);
-
+		
 		int getCurrentFrame() const;
 		int getTotalFrames() const;
 		float getTotalTime() const;
+
+		int getFrameIndexAtPercent(float percent);
+		float getPercentAtFrameIndex(int index);
 
 		SnapshotRamses& getSnapshot();
 		SnapshotRamses& getSnapshotForFrame(int index);
