@@ -44,6 +44,8 @@ namespace ent
 	{
 		m_fbos[m_prevIdx].begin();
 		{
+			ofDisableAlphaBlending();
+
 			ofPushMatrix();
 			{
 				ofScale(1.0, -1.0, 1.0);

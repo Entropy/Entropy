@@ -52,6 +52,8 @@ namespace ent
 	{
 		m_fbos[m_prevIdx].begin();
 		{
+			ofDisableAlphaBlending();
+			
 			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
 			float burstThickness = 1.0f;
 

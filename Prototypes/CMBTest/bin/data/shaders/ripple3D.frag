@@ -8,7 +8,7 @@ uniform float uDamping;
 
 in vec2 gTexCoord;
 
-out vec4 fFragColor;
+out vec4 vFragColor;
 
 void main()
 {
@@ -39,8 +39,7 @@ void main()
     sum = (sum / 3.0) - texture(uCurrBuffer, texCoord);
     sum *= uDamping;
 
-    fFragColor = vec4(sum.rgb, 1.0);
-	fFragColor = sum;
+	vFragColor = sum;
 
 	//int prevLayer = int(gl_Layer);
 	//int nextLayer = prevLayer + 1;
