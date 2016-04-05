@@ -1,12 +1,13 @@
 #pragma once
 
+#include "ofMain.h"
+#include "ofxImGui.h"
+#include "ofxTimeline.h"
+
 //#define COMPUTE_GL_2D 1
 //#define COMPUTE_GL_3D 1
 //#define COMPUTE_CL_2D 1
 #define COMPUTE_CL_3D 1
-
-#include "ofMain.h"
-#include "ofxImGui.h"
 
 #ifdef COMPUTE_GL_2D
 #include "CmbSceneGL2D.h"
@@ -52,12 +53,16 @@ namespace ent
 
         ofFloatColor m_tintColor;
 
-#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 		ofEasyCam m_camera;
-#endif
+
+		bool m_bExportFrames;
+		std::string m_exportPath;
 
         // GUI
-        void imGui();
+        bool imGui();
+
+		ofxTimeline m_timeline;
+		ofxTLCameraTrack *m_cameraTrack;
 
         ofxImGui m_gui;
         bool m_bGuiVisible;
