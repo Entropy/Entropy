@@ -1,7 +1,5 @@
 #pragma once
 
-#define COMPUTE_OPENCL 1
-
 //#define COMPUTE_GL_2D 1
 //#define COMPUTE_GL_3D 1
 //#define COMPUTE_CL_2D 1
@@ -53,6 +51,10 @@ namespace ent
 #endif
 
         ofFloatColor m_tintColor;
+
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+		ofEasyCam m_camera;
+#endif
 
         // GUI
         void imGui();

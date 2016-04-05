@@ -45,8 +45,6 @@ namespace ent
 		m_dropShader.load("shaders/passthru.vert", "shaders/drop3D.frag", "shaders/layer.geom");
 		m_rippleShader.load("shaders/passthru.vert", "shaders/ripple3D.frag", "shaders/layer.geom");
 		m_copyShader.load("shaders/passthru.vert", "shaders/copy3D.frag", "shaders/layer.geom");
-
-		m_camera.setDistance(1000);
 	}
 
 	//--------------------------------------------------------------
@@ -130,11 +128,6 @@ namespace ent
 	void CmbSceneGL3D::draw()
 	{
 		m_volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-
-		m_camera.begin();
-		{
-			m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
-		}
-		m_camera.end();
+		m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
 	}
 }

@@ -22,6 +22,10 @@ namespace ent
 #endif
 		m_cmbScene.setup();
 
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+		m_camera.setDistance(1000);
+#endif
+
         m_bGuiVisible = true;
     }
 
@@ -79,7 +83,13 @@ namespace ent
 			
 			ofSetColor(m_tintColor);
 
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+			m_camera.begin();
+#endif
 			m_cmbScene.draw();
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+			m_camera.end();
+#endif
 		}
         ofPopStyle();
 

@@ -65,11 +65,6 @@ namespace ent
 	void CmbSceneCL3D::draw()
 	{
 		m_volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-		
-		m_camera.begin();
-		{
-			m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
-		}
-		m_camera.end();
+		m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
 	}
 }

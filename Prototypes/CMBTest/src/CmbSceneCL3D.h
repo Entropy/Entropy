@@ -27,6 +27,5 @@ namespace ent
 
 		OpenCLImage3D m_clImages[3];
 		ofxVolumetrics3D m_volumetrics;
-		ofEasyCam m_camera;
 	};
 }

@@ -26,8 +26,6 @@ namespace ent
 
 		ofxTextureArray m_textures[3];
 		ofxFbo m_fbos[3];
-
 		ofxVolumetricsArray m_volumetrics;
-		ofEasyCam m_camera;
 	};
 }
