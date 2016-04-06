@@ -48,7 +48,7 @@ void ofApp::setup()
     // Set up lighting
     SetupLighting();
 
-    m_sphere = ofSpherePrimitive( 1.0f, 12 );
+    m_sphere = ofSpherePrimitive( 1.0f, 24 );
 
     m_material.SetBaseColor( ofFloatColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
     m_material.SetMetallic( 0.0f );
