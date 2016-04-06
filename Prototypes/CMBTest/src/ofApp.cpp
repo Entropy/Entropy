@@ -129,7 +129,7 @@ namespace ent
 
 				ImGui::SliderInt("Drop Rate", &m_cmbScene.m_dropRate, 1, 60);
 				ImGui::SliderFloat("Damping", &m_cmbScene.m_damping, 0.0f, 1.0f);
-				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 1.0f, 50.0f);
+				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 0.01f, 1.0f);
 				ImGui::SliderFloat("Ring Size", &m_cmbScene.m_ringSize, 0.0f, 5.0f);
 
 				if (ImGui::Checkbox("Export", &m_bExportFrames))
