@@ -52,7 +52,7 @@ namespace ent
 	{
 		m_fbos[m_prevIdx].begin();
 		{
-			ofDisableAlphaBlending();
+			ofEnableAlphaBlending();
 			
 			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
 			float burstThickness = 1.0f;
@@ -84,6 +84,8 @@ namespace ent
 	{
 		m_fbos[m_tempIdx].begin();
 		{
+			ofDisableAlphaBlending();
+			
 			m_rippleShader.begin();
 			{
 				m_rippleShader.setUniform1f("uDamping", m_damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
@@ -107,6 +109,8 @@ namespace ent
 	{
 		m_fbos[m_currIdx].begin();
 		{
+			ofDisableAlphaBlending();
+
 			m_copyShader.begin();
 			{
 				m_copyShader.setUniformTexture("uCopyBuffer", m_textures[m_tempIdx].texData.textureTarget, m_textures[m_tempIdx].texData.textureID, 1);
