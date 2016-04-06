@@ -12,14 +12,20 @@ namespace ent
         m_tintColor = ofColor::white;
 
 #ifdef COMPUTE_GL_2D
-		m_cmbScene.setDimensions(ofDefaultVec2(ofGetWidth(), ofGetHeight()));
+		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionExport = m_dimensionEditor;
 #elif defined(COMPUTE_GL_3D)
-		m_cmbScene.setDimensions(192);
+		m_dimensionEditor = glm::vec3(128.0f);
+		m_dimensionExport = glm::vec3(384.0f);
 #elif defined(COMPUTE_CL_2D)
-		m_cmbScene.setDimensions(ofDefaultVec2(ofGetWidth(), ofGetHeight()));
+		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionExport = m_dimensionEditor; 
 #elif defined(COMPUTE_CL_3D)
-		m_cmbScene.setDimensions(192);
+		m_dimensionEditor = glm::vec3(192.0f);
+		m_dimensionExport = glm::vec3(384.0f);
 #endif
+
+		m_cmbScene.setDimensions(m_dimensionEditor);
 		m_cmbScene.setup();
 
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
@@ -91,7 +97,7 @@ namespace ent
 			else
 			{
 				m_bExportFrames = false;
-				m_timeline.setFrameBased(false);
+				endExport();
 			}
 		}
 
@@ -104,6 +110,31 @@ namespace ent
 
 			m_bMouseOverGui != m_timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
         }
+	}
+
+	//--------------------------------------------------------------
+	void ofApp::beginExport()
+	{
+		m_cmbScene.setDimensions(m_dimensionExport);
+		m_cmbScene.setup();
+
+		m_timeline.setFrameBased(true);
+		m_cameraTrack->setTimelineInOutToTrack();
+		m_cameraTrack->lockCameraToTrack = true;
+		m_timeline.setCurrentTimeToInPoint();
+		m_timeline.play();
+	}
+	
+	//--------------------------------------------------------------
+	void ofApp::endExport()
+	{
+		m_timeline.stop();
+		m_timeline.setFrameBased(false);
+		m_timeline.setInOutRange(ofRange(0, 1));
+		m_cameraTrack->lockCameraToTrack = false;
+
+		m_cmbScene.setDimensions(m_dimensionEditor);
+		m_cmbScene.setup();
 	}
 
 	//--------------------------------------------------------------
@@ -140,18 +171,12 @@ namespace ent
 						if (folderName.length())
 						{
 							m_exportPath = ofToDataPath("exports/" + folderName + "/");
-
-							m_timeline.setFrameBased(true);
-							m_cameraTrack->setTimelineInOutToTrack();
-							m_timeline.setCurrentTimeToInPoint();
-							m_timeline.play();
+							beginExport();
 						}
 					}
 					else
 					{
-						m_timeline.stop();
-						m_timeline.setFrameBased(false);
-						m_timeline.setInOutRange(ofRange(0, 1));
+						endExport();
 					}
 				}
 

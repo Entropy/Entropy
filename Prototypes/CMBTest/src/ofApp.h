@@ -51,10 +51,17 @@ namespace ent
 		CmbSceneCL3D m_cmbScene;
 #endif
 
+		glm::vec3 m_dimensionEditor;
+		glm::vec3 m_dimensionExport;
+
 		ofFloatColor m_backgroundColor; 
 		ofFloatColor m_tintColor;
 
 		ofEasyCam m_camera;
+
+		// Export
+		void beginExport();
+		void endExport();
 
 		bool m_bExportFrames;
 		std::string m_exportPath;

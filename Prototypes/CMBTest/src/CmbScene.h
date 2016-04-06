@@ -14,8 +14,8 @@ namespace ent
 		virtual void draw() = 0;
 
 		void setDimensions(int size);
-		void setDimensions(const ofDefaultVec2& dimensions);
-		void setDimensions(const ofDefaultVec3& dimensions);
+		void setDimensions(const glm::vec2& dimensions);
+		void setDimensions(const glm::vec3& dimensions);
 
 		ofFloatColor m_dropColor;
 
@@ -33,7 +33,7 @@ namespace ent
 		virtual void stepRipple() = 0;
 		virtual void copyResult() = 0;
 
-		ofDefaultVec3 m_dimensions;
+		glm::vec3 m_dimensions;
 
 		int m_currIdx;
 		int m_prevIdx;

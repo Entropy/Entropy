@@ -9,7 +9,7 @@ namespace ent
 		, m_bDropping(true)
 		, m_dropRate(1)
 		, m_damping(0.995f)
-		, m_radius(10.0f)
+		, m_radius(30.0f)
 		, m_ringSize(0.5f)
 	{}
 
@@ -47,17 +47,17 @@ namespace ent
 	//--------------------------------------------------------------
 	void CmbScene::setDimensions(int size)
 	{
-		setDimensions(ofDefaultVec3(size));
+		setDimensions(glm::vec3(size));
 	}
 
 	//--------------------------------------------------------------
-	void CmbScene::setDimensions(const ofDefaultVec2& dimensions)
+	void CmbScene::setDimensions(const glm::vec2& dimensions)
 	{
-		setDimensions(ofDefaultVec3(dimensions));
+		setDimensions(glm::vec3(dimensions, 0.0f));
 	}
 
 	//--------------------------------------------------------------
-	void CmbScene::setDimensions(const ofDefaultVec3& dimensions)
+	void CmbScene::setDimensions(const glm::vec3& dimensions)
 	{
 		m_dimensions = dimensions;
 
