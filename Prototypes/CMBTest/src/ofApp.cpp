@@ -9,6 +9,7 @@ namespace ent
         ofSetLogLevel(OF_LOG_VERBOSE);
         //ofSetVerticalSync(false);
 
+		m_backgroundColor = ofColor::black;
         m_tintColor = ofColor::white;
 
 #ifdef COMPUTE_GL_2D
@@ -39,12 +40,11 @@ namespace ent
 		m_timeline.setup();
 		m_timeline.setLoopType(OF_LOOP_NONE);
 		m_timeline.setFrameRate(30.0f);
-		m_timeline.setDurationInSeconds(10);
+		m_timeline.setDurationInSeconds(20);
 
 		m_cameraTrack = new ofxTLCameraTrack();
 		m_cameraTrack->setCamera(m_camera);
 		m_timeline.addTrack("Camera", m_cameraTrack);
-		m_timeline.addColors("Background Color");
 		m_timeline.addSwitches("Dropping");
 
 		m_cameraTrack->lockCameraToTrack = false;
@@ -58,8 +58,6 @@ namespace ent
     //--------------------------------------------------------------
 	void ofApp::update()
 	{
-		m_backgroundColor = m_timeline.getColor("Background Color");
-		
 		m_cmbScene.m_bDropping = m_timeline.isSwitchOn("Dropping");
 		m_cmbScene.update();
 	}
@@ -108,8 +106,21 @@ namespace ent
 			m_timeline.setOffset(ofVec2f(0.0, ofGetHeight() - m_timeline.getHeight()));
 			m_timeline.draw();
 
-			m_bMouseOverGui != m_timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+			m_bMouseOverGui |= m_timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
         }
+		else
+		{
+			m_bMouseOverGui = false;
+		}
+
+		if (m_bMouseOverGui)
+		{
+			m_camera.disableMouseInput();
+		}
+		else
+		{
+			m_camera.enableMouseInput();
+		}
 	}
 
 	//--------------------------------------------------------------
@@ -155,6 +166,7 @@ namespace ent
 				
 				ImGui::Checkbox("Restart", &m_cmbScene.m_bRestart);
 
+				ImGui::ColorEdit3("Background Color", &m_backgroundColor[0]);
 				ImGui::ColorEdit3("Tint Color", &m_tintColor[0]);
 				ImGui::ColorEdit3("Drop Color", &m_cmbScene.m_dropColor[0]);
 

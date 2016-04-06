@@ -5,9 +5,9 @@
 #include "ofxTimeline.h"
 
 //#define COMPUTE_GL_2D 1
-//#define COMPUTE_GL_3D 1
+#define COMPUTE_GL_3D 1
 //#define COMPUTE_CL_2D 1
-#define COMPUTE_CL_3D 1
+//#define COMPUTE_CL_3D 1
 
 #ifdef COMPUTE_GL_2D
 #include "CmbSceneGL2D.h"
