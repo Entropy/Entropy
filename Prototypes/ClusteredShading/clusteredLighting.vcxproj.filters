@@ -7,74 +7,104 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\lb\lighting\LightSystem.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\lb\lighting\ClusterGrid.cpp">
-      <Filter>src</Filter>
+      <Filter>src\lb\lighting</Filter>
     </ClCompile>
     <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp">
-      <Filter>src</Filter>
+      <Filter>src\lb\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\lighting\LightSystem.cpp">
+      <Filter>src\lb\lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
       <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{9f95480f-bba2-4fe3-8faf-2549bc3a3dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb">
+      <UniqueIdentifier>{b08bf0e9-5d84-4741-bf91-9798d3b0b337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\gl">
+      <UniqueIdentifier>{2e8596fd-380e-4f28-8d4b-2eff017012ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\lighting">
+      <UniqueIdentifier>{e03d5811-812e-4b2f-83dc-73072b2b6d1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\math">
+      <UniqueIdentifier>{366ba14f-936e-4986-ab50-dc132d5a171a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\util">
+      <UniqueIdentifier>{abeee339-2b7c-47e1-a9cd-19d255ae8430}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\lb\gl\GLError.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\math\Frustum.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\math\Plane.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\math\Rect.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\math\SphereScissor.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\ProjInfo.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\util\RadixSort.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\math\MatrixTools.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\lighting\LightSystem.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\lighting\PointLight.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lb\lighting\ClusterGrid.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\PerViewUbo.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\gl\GLError.h">
+      <Filter>src\lb\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGrid.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\LightSystem.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\PointLight.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Frustum.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\MatrixTools.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Plane.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Rect.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\SphereScissor.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\util\RadixSort.h">
+      <Filter>src\lb\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\ProjInfo.h">
+      <Filter>src\lb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\data\shaders\clustered_lights.frag" />
-    <None Include="bin\data\shaders\passthrough.vert" />
-    <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
-    <None Include="bin\data\shaders\of_default_uniforms.glsl" />
-    <None Include="bin\data\shaders\clustered_shading.glsl" />
-    <None Include="bin\data\shaders\view_info.glsl" />
+    <None Include="bin\data\shaders\clustered_lights.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\clustered_shading.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\of_default_uniforms.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\passthrough.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\view_info.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
