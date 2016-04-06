@@ -15,7 +15,6 @@
 		6461D7031C752DAE00117A81 /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D6FE1C752DAE00117A81 /* ofxTexture3d.cpp */; };
 		6461D7041C752DAE00117A81 /* ofxVolumetrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D7001C752DAE00117A81 /* ofxVolumetrics.cpp */; };
 		6461D70D1C75339700117A81 /* VolumeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6461D70B1C75339700117A81 /* VolumeRenderer.cpp */; };
-		64770B301CA9B46400318A74 /* ofxRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64770B2E1CA9B46400318A74 /* ofxRange.cpp */; };
 		64CCB83D1CA3302C0002DD92 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8261CA3302C0002DD92 /* imgui.cpp */; };
 		64CCB83E1CA3302C0002DD92 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */; };
 		64CCB83F1CA3302C0002DD92 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64CCB8291CA3302C0002DD92 /* imgui_draw.cpp */; };
@@ -92,6 +91,8 @@
 		57F7FE22159D4A6D2264A0A1 /* H5CommonFG.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = H5CommonFG.h; path = ../../../addons/ofxHDF5/libs/hdf5/include/H5CommonFG.h; sourceTree = SOURCE_ROOT; };
 		64116D0D1C69364700A5A155 /* render.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.frag; sourceTree = "<group>"; };
 		64116D0E1C69364700A5A155 /* render.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = render.vert; sourceTree = "<group>"; };
+		6448E8181CAD7F88000877BC /* ofxSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSet.h; sourceTree = "<group>"; };
+		6448E8221CAD7FA3000877BC /* ofxSet.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = ofxSet.inl; sourceTree = "<group>"; };
 		6461D6F41C7523DB00117A81 /* CellRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CellRenderer.cpp; sourceTree = "<group>"; };
 		6461D6F51C7523DB00117A81 /* CellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellRenderer.h; sourceTree = "<group>"; };
 		6461D6FB1C752DAE00117A81 /* ofxImageSequencePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxImageSequencePlayer.h; path = ../../../addons/ofxVolumetrics/src/ofxImageSequencePlayer.h; sourceTree = "<group>"; };
@@ -108,8 +109,6 @@
 		6461D70E1C75383300117A81 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		647684511C6BC92A004C1E60 /* slice.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.frag; sourceTree = "<group>"; };
 		647684521C6BC92A004C1E60 /* slice.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = slice.vert; sourceTree = "<group>"; };
-		64770B2E1CA9B46400318A74 /* ofxRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxRange.cpp; path = ../../Shared/src/ofxRange.cpp; sourceTree = "<group>"; };
-		64770B2F1CA9B46400318A74 /* ofxRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxRange.h; path = ../../Shared/src/ofxRange.h; sourceTree = "<group>"; };
 		64CCB8261CA3302C0002DD92 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
 		64CCB8271CA3302C0002DD92 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
 		64CCB8281CA3302C0002DD92 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
@@ -233,6 +232,24 @@
 			path = bin/data/shaders;
 			sourceTree = "<group>";
 		};
+		6448E6FE1CAD7F87000877BC /* ofxSet */ = {
+			isa = PBXGroup;
+			children = (
+				6448E8171CAD7F88000877BC /* src */,
+			);
+			name = ofxSet;
+			path = ../../../addons/ofxSet;
+			sourceTree = "<group>";
+		};
+		6448E8171CAD7F88000877BC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6448E8181CAD7F88000877BC /* ofxSet.h */,
+				6448E8221CAD7FA3000877BC /* ofxSet.inl */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		6461D6F91C752D8D00117A81 /* ofxVolumetrics */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,15 +280,6 @@
 				6461D7071C752DC800117A81 /* vert.glsl */,
 			);
 			name = shaders;
-			sourceTree = "<group>";
-		};
-		6476845F1C6BF11C004C1E60 /* shared_src */ = {
-			isa = PBXGroup;
-			children = (
-				64770B2E1CA9B46400318A74 /* ofxRange.cpp */,
-				64770B2F1CA9B46400318A74 /* ofxRange.h */,
-			);
-			name = shared_src;
 			sourceTree = "<group>";
 		};
 		64CCB8231CA3302C0002DD92 /* libs */ = {
@@ -365,6 +373,7 @@
 			children = (
 				EC19417C78E21F06F3886D3F /* ofxHDF5 */,
 				768C3255AF2F3E1A78DC4DF4 /* ofxImGui */,
+				6448E6FE1CAD7F87000877BC /* ofxSet */,
 				6461D6F91C752D8D00117A81 /* ofxVolumetrics */,
 			);
 			name = addons;
@@ -476,7 +485,6 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
-				6476845F1C6BF11C004C1E60 /* shared_src */,
 				64116D0C1C69364700A5A155 /* shaders */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -646,7 +654,6 @@
 				64CCB8401CA3302C0002DD92 /* README.md in Sources */,
 				1A6E9098F84DA5EB5DABE910 /* ofxHDF5Container.cpp in Sources */,
 				4CE7EB7871B3030C8DA79DFF /* ofxHDF5DataSet.cpp in Sources */,
-				64770B301CA9B46400318A74 /* ofxRange.cpp in Sources */,
 				64CCB8411CA3302C0002DD92 /* BaseEngine.cpp in Sources */,
 				64CCB8451CA3302C0002DD92 /* ofxImGui.cpp in Sources */,
 				41911CD2000E094357A5C9F6 /* ofxHDF5File.cpp in Sources */,

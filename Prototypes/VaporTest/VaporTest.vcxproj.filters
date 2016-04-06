@@ -43,23 +43,11 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CellRenderer.cpp">
+    <ClCompile Include="src\SnapshotRamses.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\VolumeRenderer.cpp">
+    <ClCompile Include="src\SequenceRamses.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Shared\src\ofxRange.cpp">
-      <Filter>shared_src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,20 +93,20 @@
     <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{f30ed9c2-903a-4ecf-86c7-37baf263f71e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxVolumetrics">
-      <UniqueIdentifier>{aa1d409d-dfb5-4001-9925-aa5560cc36cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxVolumetrics\src">
-      <UniqueIdentifier>{83312f2b-658d-456f-a657-bb1b53e6f7dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shared_src">
-      <UniqueIdentifier>{8ee20013-0577-4f98-a5d0-a864da940f96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxHDF5\libs\zlib">
       <UniqueIdentifier>{6d713124-bd68-4305-a55f-340a59e49198}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxHDF5\libs\zlib\include">
       <UniqueIdentifier>{9728f7ac-899b-4e5c-99fb-156f6ac82fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSet">
+      <UniqueIdentifier>{0a0818bb-a206-4284-95ee-9489f5eef0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSet\src">
+      <UniqueIdentifier>{fe0e6fe3-baf4-4ffa-9319-431c98f727d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{6dc1f201-c870-4bbd-9a6d-23b84aef9728}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -410,38 +398,40 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CellRenderer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Common.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\VolumeRenderer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Shared\src\ofxRange.h">
-      <Filter>shared_src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
       <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zlib.h">
       <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h">
+      <Filter>addons\ofxSet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SnapshotRamses.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SequenceRamses.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxRange.h">
+      <Filter>addons\ofxSet\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl">
+      <Filter>addons\ofxSet\src</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\..\addons\ofxSet\src\ofxRange.inl">
+      <Filter>addons\ofxSet\src</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -8,97 +8,183 @@ void ofApp::setup()
 //    ofSetDataPathRoot("../Resources/data/");
     ofBackground(ofColor::black);
 
-    scale = 1024.0;
+    m_scale = 1024.0;
 
-    cellRenderer.setup();
+    m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	m_sequenceRamses.loadFrame(0);
 
-    bGuiVisible = true;
-}
+	// Setup timeline.
+	m_timeline.setup();
+	m_timeline.setLoopType(OF_LOOP_NONE);
+	m_timeline.setFrameRate(30.0f);
+	m_timeline.setDurationInSeconds(10);
 
+	m_cameraTrack = new ofxTLCameraTrack();
+	m_cameraTrack->setCamera(m_camera);
+	m_timeline.addTrack("Camera", m_cameraTrack);
 
-//--------------------------------------------------------------
-void ofApp::imGui()
-{
-    static const int kGuiMargin = 10;
+	m_cameraTrack->lockCameraToTrack = true;
+	//m_timeline.play();
 
-    gui.begin();
-    {
-        ofVec2f windowPos(kGuiMargin, kGuiMargin);
-        ofVec2f windowSize = ofVec2f::zero();
+	m_bSyncPlayback = false;
+	m_bExportFrames = false;
 
-        ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
-        if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-
-            if (ImGui::CollapsingHeader("World", nullptr, true, true)) {
-                ImGui::SliderFloat("Scale", &scale, 1.0f, 2048.0f);
-            }
-
-            windowSize.set(ImGui::GetWindowSize());
-            ImGui::End();
-        }
-
-        ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
-        bMouseOverGui = windowBounds.inside(ofGetMouseX(), ofGetMouseY());
-
-        windowPos.y += windowSize.y + kGuiMargin;
-        bMouseOverGui |= cellRenderer.imGui(windowPos, windowSize);
-
-        windowPos.y += windowSize.y + kGuiMargin;
-        bMouseOverGui |= volumeRenderer.imGui(windowPos, windowSize);
-    }
-    gui.end();
+    m_bGuiVisible = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    cellRenderer.update();
+	if (m_bSyncPlayback)
+	{
+		m_sequenceRamses.setFrame(m_timeline.getCurrentFrame());
+	}
+	m_sequenceRamses.update();
 
-    if (bMouseOverGui) {
-        cam.disableMouseInput();
+    if (m_bMouseOverGui) 
+	{
+		m_camera.disableMouseInput();
     }
-    else {
-        cam.enableMouseInput();
+    else 
+	{
+		m_camera.enableMouseInput();
     }
-    bMouseOverGui = false;
+	m_bMouseOverGui = false;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    cam.setNearClip(0);
-    cam.setFarClip(FLT_MAX);
-    cam.begin();
+//    cam.setNearClip(0);
+//    cam.setFarClip(FLT_MAX);
+	m_camera.begin();
     {
-        cellRenderer.draw(scale);
-        volumeRenderer.draw(scale);
+		m_sequenceRamses.draw(m_scale);
 
         ofNoFill();
-        ofDrawBox(0, 0, 0, scale, scale, scale);
+        ofDrawBox(0, 0, 0, m_scale, m_scale, m_scale);
         ofFill();
         
         ofDrawAxis(20);
     }
-    cam.end();
+	m_camera.end();
 
-    if (bGuiVisible) {
-        imGui();
+	if (m_bExportFrames)
+	{
+		if (m_timeline.getIsPlaying())
+		{
+			ofSaveScreen(m_exportPath + ofToString(m_timeline.getCurrentFrame(), 5, '0') + ".png");
+		}
+		else
+		{
+			m_bExportFrames = false;
+			m_timeline.setFrameBased(false);
+		}
+	}
+
+    if (m_bGuiVisible) 
+	{
+        m_bMouseOverGui = imGui();
+
+		m_timeline.setOffset(ofVec2f(0.0, ofGetHeight() - m_timeline.getHeight()));
+		m_timeline.draw();
+
+		m_bMouseOverGui != m_timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
     }
+}
+
+//--------------------------------------------------------------
+bool ofApp::imGui()
+{
+	static const int kGuiMargin = 10;
+
+	bool bMouseOverGui = false;
+	m_gui.begin();
+	{
+		ofDefaultVec2 windowPos(kGuiMargin, kGuiMargin);
+		ofDefaultVec2 windowSize = ofDefaultVec2(0);
+
+		ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
+		ImGui::SetNextWindowSize(ofDefaultVec2(380, 94), ImGuiSetCond_Appearing);
+		if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
+		{
+			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
+
+			if (ImGui::CollapsingHeader("World", nullptr, true, true))
+			{
+				ImGui::SliderFloat("Scale", &m_scale, 1.0f, 2048.0f);
+			}
+
+			if (ImGui::CollapsingHeader("Playback", nullptr, true, true))
+			{
+				if (ImGui::Checkbox("Sync Timeline", &m_bSyncPlayback))
+				{
+					if (m_bSyncPlayback)
+					{
+						m_timeline.stop();
+						m_timeline.setCurrentFrame(0);
+						m_timeline.setFrameRate(m_sequenceRamses.getFrameRate());
+						m_timeline.setDurationInFrames(m_sequenceRamses.getTotalFrames());
+					}
+				}
+
+				if (ImGui::Checkbox("Export", &m_bExportFrames))
+				{
+					if (m_bExportFrames)
+					{
+						std::string folderName = ofSystemTextBoxDialog("Save to folder", ofGetTimestampString("%Y%m%d-%H%M%S"));
+						if (folderName.length())
+						{
+							m_exportPath = ofToDataPath("exports/" + folderName + "/");
+
+							m_timeline.setCurrentFrame(0);
+							m_timeline.setFrameBased(true);
+							m_timeline.play();
+						}
+					}
+					else
+					{
+						m_timeline.stop();
+						m_timeline.setFrameBased(false);
+					}
+				}
+			}
+
+			windowSize = ImGui::GetWindowSize();
+			ImGui::End();
+		}
+
+		ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
+		bMouseOverGui = windowBounds.inside(ofGetMouseX(), ofGetMouseY());
+
+		windowPos.y += windowSize.y + kGuiMargin;
+		bMouseOverGui |= m_sequenceRamses.imGui(windowPos, windowSize);
+	}
+	m_gui.end();
+
+	return bMouseOverGui;
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-    switch (key) {
+    switch (key) 
+	{
         case '`':
-            bGuiVisible ^= 1;
+            m_bGuiVisible ^= 1;
             break;
 
         case OF_KEY_TAB:
             ofToggleFullscreen();
             break;
+
+		case 'L':
+			m_cameraTrack->lockCameraToTrack ^= 1;
+			break;
+
+		case 'T':
+			m_cameraTrack->addKeyframe();
+			break;
 
         default:
             break;
