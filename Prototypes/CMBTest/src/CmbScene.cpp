@@ -19,6 +19,8 @@ namespace ent
 		m_prevIdx = 0;
 		m_currIdx = 1;
 		m_tempIdx = 2;
+
+		m_bRestart = true;
 	}
 
 	//--------------------------------------------------------------

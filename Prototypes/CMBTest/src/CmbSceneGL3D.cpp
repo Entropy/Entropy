@@ -22,7 +22,7 @@ namespace ent
 		}
 
 		// Build a mesh to render a quad.
-		ofDefaultVec3 origin = ofDefaultVec3(0.0, ofGetHeight() - m_dimensions.y);
+		ofDefaultVec3 origin = ofDefaultVec3(0.0, ofGetHeight() - m_dimensions.y, 0.0);
 
 		m_mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 		m_mesh.addVertex(origin + ofDefaultVec3(0.0, 0.0, 0.0));

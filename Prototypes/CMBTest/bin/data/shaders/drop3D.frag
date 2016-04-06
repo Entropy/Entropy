@@ -24,8 +24,4 @@ void main()
     else {
         fFragColor = vec4(0.0);
     }
-
-    //fFragColor = vColor;
-	//const float dim = 256.0;
-    //fFragColor = vec4(gTexCoord.x/dim, gTexCoord.y/dim, gl_Layer/dim, 1.0f); 
 }

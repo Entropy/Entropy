@@ -27,7 +27,6 @@ void main()
     //  [0]  st  [1]
     //
     //      [2]
-	//vec3 texCoord = vec3(gTexCoord / uDims.xy, gl_Layer);
 	vec3 texCoord = vec3(gTexCoord / uDims.xy, gl_Layer);
     vec4 sum = vec4(0.0);
     for (int i = 0; i < 6; ++i) {

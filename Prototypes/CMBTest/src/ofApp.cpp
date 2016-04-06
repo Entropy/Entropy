@@ -14,16 +14,17 @@ namespace ent
 #ifdef COMPUTE_GL_2D
 		m_cmbScene.setDimensions(ofDefaultVec2(ofGetWidth(), ofGetHeight()));
 #elif defined(COMPUTE_GL_3D)
-		m_cmbScene.setDimensions(128);
+		m_cmbScene.setDimensions(192);
 #elif defined(COMPUTE_CL_2D)
 		m_cmbScene.setDimensions(ofDefaultVec2(ofGetWidth(), ofGetHeight()));
 #elif defined(COMPUTE_CL_3D)
-		m_cmbScene.setDimensions(128);
+		m_cmbScene.setDimensions(192);
 #endif
 		m_cmbScene.setup();
 
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
-		m_camera.setDistance(1000);
+		m_camera.setNearClip(0.0f);
+		m_camera.setDistance(1000.0f);
 #else
 		// TODO: Ortho cam
 #endif
