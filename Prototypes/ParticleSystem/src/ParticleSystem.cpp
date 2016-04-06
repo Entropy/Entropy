@@ -151,8 +151,8 @@ void ParticleSystem::update()
 
         ParticleTboData& data = m_positions[ idx ];
         data.transform = glm::translate( p.position )
-            * glm::scale( glm::vec3( p.radius, p.radius, p.radius ) );
-       //     * glm::lookAt( glm::vec3( 0.0f, 0.0f, 0.0f ), p.velocity, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+            * glm::scale( glm::vec3( p.radius, p.radius, p.radius ) )
+            * glm::lookAt( glm::vec3( 0.0f, 0.0f, 0.0f ), p.velocity, glm::vec3( 0.0f, 1.0f, 0.0f ) );
     }
 
     m_positionTbo.updateData( 0, sizeof( m_positions[ 0 ] ) * m_numParticles, m_positions );
