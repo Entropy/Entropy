@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\lb\gl\CubeMapTexture.cpp" />
-    <ClCompile Include="src\lb\lighting\ClusterGrid.cpp" />
-    <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp" />
-    <ClCompile Include="src\lb\lighting\LightSystem.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
@@ -28,24 +22,26 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
       <Filter>addons\ofxImGui\libs</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\lighting\ClusterGrid.cpp">
+      <Filter>src\lb\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\lighting\ClusterGridDebug.cpp">
+      <Filter>src\lb\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\lighting\LightSystem.cpp">
+      <Filter>src\lb\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lb\gl\CubeMapTexture.cpp">
+      <Filter>src\lb\gl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\lb\camera\CameraTools.h" />
-    <ClInclude Include="src\lb\gl\CubeMapTexture.h" />
-    <ClInclude Include="src\lb\gl\GLError.h" />
-    <ClInclude Include="src\lb\lighting\ClusterGrid.h" />
-    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h" />
-    <ClInclude Include="src\lb\lighting\LightSystem.h" />
-    <ClInclude Include="src\lb\lighting\PointLight.h" />
-    <ClInclude Include="src\lb\math\Frustum.h" />
-    <ClInclude Include="src\lb\math\MatrixTools.h" />
-    <ClInclude Include="src\lb\math\Plane.h" />
-    <ClInclude Include="src\lb\math\Rect.h" />
-    <ClInclude Include="src\lb\math\SphereScissor.h" />
-    <ClInclude Include="src\lb\ProjInfo.h" />
-    <ClInclude Include="src\lb\util\RadixSort.h" />
-    <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\PerViewUbo.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
       <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
@@ -82,22 +78,95 @@
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs</Filter>
     </ClInclude>
-    <ClInclude Include="src\PBRMaterial.h" />
-    <ClInclude Include="src\lb\lighting\DirectionalLight.h" />
+    <ClInclude Include="src\PBRMaterial.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PerViewUbo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UniformBuffer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\util\RadixSort.h">
+      <Filter>src\lb\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Frustum.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\MatrixTools.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Plane.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\Rect.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\math\SphereScissor.h">
+      <Filter>src\lb\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGrid.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\ClusterGridDebug.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\DirectionalLight.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\LightSystem.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\lighting\PointLight.h">
+      <Filter>src\lb\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\gl\CubeMapTexture.h">
+      <Filter>src\lb\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\gl\GLError.h">
+      <Filter>src\lb\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\camera\CameraTools.h">
+      <Filter>src\lb\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lb\ProjInfo.h">
+      <Filter>src\lb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl" />
-    <None Include="bin\data\shaders\of_default_uniforms.glsl" />
-    <None Include="bin\data\shaders\view_info.glsl" />
-    <None Include="bin\data\shaders\sky_box.frag" />
-    <None Include="bin\data\shaders\sky_box.vert" />
-    <None Include="bin\data\shaders\inc\pbr.glsl" />
-    <None Include="bin\data\shaders\main.frag" />
-    <None Include="bin\data\shaders\main.vert" />
-    <None Include="bin\data\shaders\inc\tone_mapping.glsl" />
+    <None Include="bin\data\shaders\sky_box.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\sky_box.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\main.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\main.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\of_default_uniforms.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\of_default_vertex_in_attributes.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\pbr.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\tone_mapping.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\view_info.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -111,6 +180,33 @@
     </Filter>
     <Filter Include="addons\ofxImGui\libs">
       <UniqueIdentifier>{c64fc01b-b401-4f45-9ad9-43b673c4424a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b814f058-45e6-46aa-958a-679ccdd6c89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb">
+      <UniqueIdentifier>{e7d276fc-2ce4-433f-af21-8ddd6695c4a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\camera">
+      <UniqueIdentifier>{f488b999-71b3-4996-aae5-9d01baf879b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\gl">
+      <UniqueIdentifier>{685b1bac-90b0-4aef-8bb4-1b1900d695c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\lighting">
+      <UniqueIdentifier>{9e46ac2e-f805-4f68-90d1-ba30d4eeab2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\math">
+      <UniqueIdentifier>{8a003cd2-e396-46f3-ae08-0a3b617fd904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lb\util">
+      <UniqueIdentifier>{03cfca7d-0bf6-4dec-82fe-156e94af7e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{a92d0d5e-3d8f-4a75-80d6-f5db76f8b7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\inc">
+      <UniqueIdentifier>{ce517920-d754-4367-b173-ebe0dc8dffe3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

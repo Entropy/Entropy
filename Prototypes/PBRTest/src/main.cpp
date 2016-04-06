@@ -8,7 +8,7 @@ int main()
 {
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4,5);
-    settings.windowMode = OF_FULLSCREEN;
+    //ssettings.windowMode = OF_FULLSCREEN;
     settings.width = 1920;
     settings.height = 1080;
     settings.depthBits = 16;
