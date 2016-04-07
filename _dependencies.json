@@ -18,9 +18,24 @@
 			"branch": "master"
 		},
 		{
+			"name": "ofxMSAOpenCL",
+			"source": "https://github.com/Entropy/ofxMSAOpenCL.git",
+			"branch": "master"
+		},
+		{
 			"name": "ofxSet",
 			"source": "https://github.com/Entropy/ofxSet.git",
 			"branch": "master"
+		},
+		{
+			"name": "ofxTimeline",
+			"source": "https://github.com/Entropy/ofxTimeline.git",
+			"branch": "fix-deprecated"
+		},
+		{
+			"name": "ofxVolumetrics",
+			"source": "https://github.com/Entropy/ofxVolumetrics.git",
+			"branch": "feature-refactor"
 		}
 	]
 }
