@@ -9,15 +9,15 @@ Project files are included for Xcode (OS X) or Visual Studio 2015 (Windows). Mos
 1. Clone [openFrameworks](https://github.com/Entropy/openFrameworks). Make sure to use the `Entropy` organisation fork to ensure all apps will run correctly.
 1. Clone [Entropy](https://github.com/Entropy/Entropy) (this project) into the `openFrameworks/` directory.
 1. Download all necessary addons.
-	1. The easy way: Make sure you have [Python](https://www.python.org/) installed and run the script `python _update.py` from the command line.
-	1. The hard way: Look through the `_dependencies.json` file and manually clone all addons in that list.
+	1. Make sure you have [Python](https://www.python.org/) installed and run the script `python _update.py` from the command line.
+	1. Alternatively, look through the `_dependencies.json` file and manually clone all addons in that list.
 1. Try running some projects!
 
 ## Update
 
 1. Make sure you have [Python](https://www.python.org/) installed and run the script `python _update.py` from the command line.
 
-## Contribute
+## Collaborate
 
 We'll be using the gitflow model in order to collaborate while keeping things stable. For more info, check out these links:
 
@@ -25,3 +25,7 @@ We'll be using the gitflow model in order to collaborate while keeping things st
 * https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
 Make sure any addons you are using are forked in the Entropy organization, and properly referenced in the `_dependencies.json` file. This will ensure everyone works off the same codebase.
+
+## Contribute
+
+Please [submit an issue](https://github.com/Entropy/Entropy/issues) if you find any bugs or have any problems setting up. PRs are even better!
