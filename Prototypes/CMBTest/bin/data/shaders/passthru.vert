@@ -1,4 +1,4 @@
-#version 430
+#version 150
 
 // OF default uniforms and attributes
 uniform mat4 modelViewProjectionMatrix;
