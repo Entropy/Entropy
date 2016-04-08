@@ -52,8 +52,8 @@ namespace entropy
             ofEnablePointSprites();
 
             _shader.begin();
-            _shader.setUniform1f("pointSize", _pointSize * 2.0f);
-            _shader.setUniformTexture("splatTexture", _texture, 1);
+            _shader.setUniform1f("uPointSize", _pointSize * 2.0f);
+            _shader.setUniformTexture("uPointTexture", _texture, 1);
             {
                 ofSetColor(ofColor::white);
                 vbo.draw(OF_MESH_POINTS, 0, numParticles);
