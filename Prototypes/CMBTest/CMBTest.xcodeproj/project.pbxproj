@@ -844,6 +844,7 @@
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
+				64A2DA9E1CB7F90F00B6B48F /* ShellScript */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
 				8466F1851C04CA0E00918B1C /* ShellScript */,
@@ -903,6 +904,19 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		64A2DA9E1CB7F90F00B6B48F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copy ofxTimeline data to bin/data\nrsync -avz --exclude='.DS_Store' \"${OF_PATH}/addons/ofxTimeline/copy_to_data_GUI/\" \"${SRCROOT}/bin/data/GUI/\"\n";
+		};
 		8466F1851C04CA0E00918B1C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
