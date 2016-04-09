@@ -32,6 +32,10 @@ namespace entropy
         // Render
         light.setup();
         light.setPosition(200, -200, 400);
+        light.setDiffuseColor(ofColor::blueSteel);
+        light.setSpecularColor(ofColor(255.f, 255.f, 255.f));
+
+        material.setShininess(64);
 
         paramsRender.setName("RENDER");
         paramsRender.add(debug.set("DEBUG", false));
@@ -84,13 +88,14 @@ namespace entropy
     {
         ofSetWindowTitle(ofToString(ofGetFrameRate(), 2) + " FPS");
 
+        ofEnableLighting();
         ofEnableDepthTest();
         camera.begin();
 
+        light.enable();
+
         if (debug) {
             ofSetColor(255, 64);
-
-            light.enable();
 
             // TODO: Optimize this with a VBO or something.
 
@@ -109,8 +114,6 @@ namespace entropy
                 }
             }
             ofPopMatrix();
-
-            light.disable();
         }
         else {
             ofSetColor(255);
@@ -119,6 +122,9 @@ namespace entropy
                 normalShader.begin();
                 ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf((ofGetCurrentMatrix(OF_MATRIX_MODELVIEW)).getInverse());
                 normalShader.setUniformMatrix4f("uNormalMatrix", normalMatrix);
+            }
+            else {
+                material.begin();
             }
 
             if (wireframe) {
@@ -131,15 +137,21 @@ namespace entropy
             if (shadeNormals) {
                 normalShader.end();
             }
+            else {
+                material.end();
+            }
         }
         
         if (drawGrid) {
             marchingCubes.drawGrid();
         }
-        
+
+        light.disable();
+
         camera.end();
         ofDisableDepthTest();
-        
+        ofDisableLighting();
+
         if (guiVisible) {
             panelMarchingCubes.draw();
             panelNoiseField.draw();

@@ -40,6 +40,7 @@ void main()
 
 	vFragColor = sum;
 
+    // TODO: Interpolate between layers
 	//int prevLayer = int(gl_Layer);
 	//int nextLayer = prevLayer + 1;
 	//float amt = fract(uLayer);

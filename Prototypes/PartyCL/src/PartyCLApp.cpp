@@ -33,8 +33,11 @@ namespace entropy
         params.add(velocityScale.set("velocity scale", 8.0, 4.0, 1000.0));
         params.add(softening.set("softening factor", 0.1, 0.001, 1.0));
         params.add(damping.set("velocity damping", 1.0, 0.5, 1.0));
-        params.add(pointSize.set("point size", 1.0f, 0.01f, 16.0f));
+        params.add(pointSize.set("point size", 16.0f, 1.0f, 64.0f));
+        params.add(bExportFrames.set("export frames", false));
         ofAddListener(params.parameterChangedE(), this, &PartyCLApp::paramsChanged);
+
+        camera.setDistance(32.0f);
 
         // Set Gui.
         guiPanel.setup(params, "partycl.xml");
