@@ -36,7 +36,7 @@ namespace ent
 
 		// Set the ranges for all data.
 		for (int i = 0; i < posX.size(); ++i) {
-			m_coordRange.add(ofDefaultVec3(posX[i], posY[i], posZ[i]));
+            m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
 			m_sizeRange.add(cellSize[i]);
 			m_densityRange.add(density[i]);
 		}
@@ -46,10 +46,10 @@ namespace ent
 		m_coordRange.add(m_coordRange.getMax() + m_sizeRange.getMax());
 
 		// Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
-		ofDefaultVec3 coordSpan = m_coordRange.getSpan();
+		glm::vec3 coordSpan = m_coordRange.getSpan();
 		float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
-		ofDefaultVec3 spanOffset(maxSpan * 0.5);
-		ofDefaultVec3 coordMid = m_coordRange.getCenter();
+		glm::vec3 spanOffset(maxSpan * 0.5);
+		glm::vec3 coordMid = m_coordRange.getCenter();
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
 
@@ -62,10 +62,10 @@ namespace ent
 		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
 		// Upload per-instance transform data to the TBO.
-		std::vector<ofDefaultVec4> transforms;
+		std::vector<ofVec4f> transforms;
 		transforms.resize(posX.size());
 		for (size_t i = 0; i < transforms.size(); ++i) {
-			transforms[i] = ofDefaultVec4(posX[i], posY[i], posZ[i], cellSize[i]);
+			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
 		}
 
 		m_bufferObject.allocate();

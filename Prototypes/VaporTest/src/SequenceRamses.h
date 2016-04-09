@@ -21,7 +21,7 @@ namespace ent
         void update();
         void draw(float scale);
 
-		bool imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize);
+		bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
 
 		void preloadAllFrames();
 		void loadFrame(int index);
@@ -66,7 +66,7 @@ namespace ent
         // 3D Render
         bool m_bRender;
 
-        ofDefaultVec3 m_originShift;
+        glm::vec3 m_originShift;
         float m_normalizeFactor;
 
         ofShader m_renderShader;
