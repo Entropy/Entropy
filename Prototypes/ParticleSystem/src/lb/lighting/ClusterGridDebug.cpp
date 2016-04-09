@@ -224,7 +224,7 @@ void lb::ClusterGridDebug::DrawFrustum( const ofCamera& _camera )
     ofSetColor( ofFloatColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
 
     ofPushMatrix();
-        ofMultMatrix( glm::inverse( _camera.getModelViewMatrix() ) );
+        ofMultMatrix( _camera.getModelViewMatrix().getInverse() );
         m_frustumVbo.draw( GL_LINES, 0, 24 );
     ofPopMatrix();
 }
@@ -275,7 +275,7 @@ void lb::ClusterGridDebug::DrawOccupiedClusters( const ofCamera& _camera, const 
     ofSetColor( ofFloatColor( 1.0f, 1.0f, 1.0f, 0.3f ) );
 
     ofPushMatrix();
-        ofMultMatrix( glm::inverse( _camera.getModelViewMatrix() ) );
+        ofMultMatrix( _camera.getModelViewMatrix().getInverse() );
         for ( uint16_t idx = 0; idx < m_numClusters; ++idx )
         {
             if ( _clusterGrid.m_clusterLightPointerList[ idx ].pointLightCount > 0 )

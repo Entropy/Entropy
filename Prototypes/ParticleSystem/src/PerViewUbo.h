@@ -57,7 +57,7 @@ namespace lb
 
             data.nearClip = _camera.getNearClip();
             data.farClip = _camera.getFarClip();
-            data.invViewMatrix = glm::inverse( _camera.getModelViewMatrix() );
+            data.invViewMatrix = _camera.getModelViewMatrix().getInverse();
 
             ubo.updateData( sizeof( ViewUboData ), &data );
             lb::CheckGLError();
