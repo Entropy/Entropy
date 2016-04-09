@@ -53,7 +53,8 @@ namespace ent
 		m_fbos[m_prevIdx].begin();
 		{
 			ofEnableAlphaBlending();
-			
+			ofSetColor(m_dropColor);
+
 			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
 			float burstThickness = 1.0f;
 
@@ -63,8 +64,6 @@ namespace ent
 				m_dropShader.setUniform1f("uBurst.radius", m_radius);
 				m_dropShader.setUniform1f("uBurst.thickness", burstThickness);
 				//m_dropShader.printActiveUniforms();
-
-				ofSetColor(255, 0, 0);
 
 				int minLayer = MAX(0, burstPos.z - m_radius - burstThickness);
 				int maxLayer = MIN(m_dimensions.z - 1, burstPos.z + m_radius + burstThickness);
