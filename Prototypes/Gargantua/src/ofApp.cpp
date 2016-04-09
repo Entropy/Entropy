@@ -9,13 +9,9 @@ void ofApp::setup()
     noiseTex.getTexture().enableMipmap();
     noiseTex.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     noiseTex.load("textures/noise.png");
-//    noiseTex.getTexture().generateMipmap();
-//    noiseTex.getTexture().setTextureMinMagFilter(GL_MIPMAP, GL_MIPMAP);
     spaceTex.getTexture().enableMipmap();
     spaceTex.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     spaceTex.load("textures/space.jpg");
-//    spaceTex.getTexture().generateMipmap();
-//    spaceTex.getTexture().setTextureMinMagFilter(GL_MIPMAP, GL_MIPMAP);
 
     renderShader.load("shaders/render");
 
@@ -38,8 +34,6 @@ void ofApp::setup()
 
     gargantua.position = ofVec3f(0.0, 0.0, -8.0);
     gargantua.radius = 0.1f;
-    gargantua.ringRadiusInner = 0.9f;
-    gargantua.ringRadiusOuter = 6.0f;
     gargantua.ringThickness = 0.15f;
     gargantua.mass = 1000.0f;
 
@@ -79,8 +73,6 @@ void ofApp::imGui()
 
                 ImGui::SetNextTreeNodeOpened(true, ImGuiSetCond_Appearing);
                 if (ImGui::TreeNode("Ring")) {
-                    ImGui::SliderFloat("Inner Radius", &gargantua.ringRadiusInner, 0.0, gargantua.ringRadiusOuter);
-                    ImGui::SliderFloat("Outer Radius", &gargantua.ringRadiusOuter, 0.0, 10.0);
                     ImGui::SliderFloat("Thickness", &gargantua.ringThickness, 0.0, 1.0);
 
                     ImGui::TreePop();
@@ -137,8 +129,6 @@ void ofApp::draw()
 
     renderShader.setUniform3f("uBlackHole.position", gargantua.position);
     renderShader.setUniform1f("uBlackHole.radius", gargantua.radius);
-    renderShader.setUniform1f("uBlackHole.ringRadiusInner", gargantua.ringRadiusInner);
-    renderShader.setUniform1f("uBlackHole.ringRadiusOuter", gargantua.ringRadiusOuter);
     renderShader.setUniform1f("uBlackHole.ringThickness", gargantua.ringThickness);
     renderShader.setUniform1f("uBlackHole.mass", gargantua.mass);
 
