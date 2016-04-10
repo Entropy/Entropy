@@ -47,17 +47,17 @@ namespace ent
 	//--------------------------------------------------------------
 	void CmbScene::setDimensions(int size)
 	{
-		setDimensions(glm::vec3(size));
+		setDimensions(ofVec3f(size));
 	}
 
 	//--------------------------------------------------------------
-	void CmbScene::setDimensions(const glm::vec2& dimensions)
+	void CmbScene::setDimensions(const ofVec2f& dimensions)
 	{
-		setDimensions(glm::vec3(dimensions, 0.0f));
+		setDimensions(ofVec3f(dimensions.x, dimensions.y, 0.0f));
 	}
 
 	//--------------------------------------------------------------
-	void CmbScene::setDimensions(const glm::vec3& dimensions)
+	void CmbScene::setDimensions(const ofVec3f& dimensions)
 	{
 		m_dimensions = dimensions;
 

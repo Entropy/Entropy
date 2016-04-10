@@ -26,7 +26,7 @@ namespace ent
 	void CmbSceneCL3D::addDrop()
 	{
 		m_dropKernel->setArg(0, m_clImages[m_prevIdx]);
-		m_dropKernel->setArg(1, ofDefaultVec4(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z), 0));
+		m_dropKernel->setArg(1, ofVec4f(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z), 0));
 		m_dropKernel->setArg(2, m_radius);
 		m_dropKernel->setArg(3, m_ringSize);
 		m_dropKernel->setArg(4, m_dropColor);

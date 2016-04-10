@@ -22,12 +22,12 @@ namespace ent
 		}
 
 		// Build a mesh to render a quad.
-		ofDefaultVec3 origin = ofDefaultVec3(0.0, ofGetHeight() - m_dimensions.y, 0.0);
+		ofVec3f origin = ofVec3f(0.0, ofGetHeight() - m_dimensions.y, 0.0);
 
 		m_mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-		m_mesh.addVertex(origin + ofDefaultVec3(0.0, 0.0, 0.0));
-		m_mesh.addVertex(origin + ofDefaultVec3(m_dimensions.x, 0.0, 0.0));
-		m_mesh.addVertex(origin + ofDefaultVec3(0.0, m_dimensions.y, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(0.0, 0.0, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(m_dimensions.x, 0.0, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(0.0, m_dimensions.y, 0.0));
 
 		m_mesh.addTexCoord(ofVec2f(0.0, 0.0));
 		m_mesh.addTexCoord(ofVec2f(m_dimensions.x, 0.0));
@@ -55,7 +55,7 @@ namespace ent
 			ofEnableAlphaBlending();
 			ofSetColor(m_dropColor);
 
-			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
+			ofVec3f burstPos = ofVec3f(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
 			float burstThickness = 1.0f;
 
 			m_dropShader.begin();
@@ -126,7 +126,7 @@ namespace ent
 		}
 		m_fbos[m_currIdx].end();
 
-		m_volumetrics.setup(&m_textures[m_currIdx], ofDefaultVec3(1, 1, 1));
+		m_volumetrics.setup(&m_textures[m_currIdx], ofVec3f(1, 1, 1));
 	}
 
 	//--------------------------------------------------------------

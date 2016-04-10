@@ -13,17 +13,17 @@ namespace ent
         m_tintColor = ofColor::white;
 
 #ifdef COMPUTE_GL_2D
-		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionEditor = ofVec3f(ofGetWidth(), ofGetHeight(), 1.0f);
 		m_dimensionExport = m_dimensionEditor;
 #elif defined(COMPUTE_GL_3D)
-		m_dimensionEditor = glm::vec3(128.0f);
-		m_dimensionExport = glm::vec3(384.0f);
+		m_dimensionEditor = ofVec3f(128.0f);
+		m_dimensionExport = ofVec3f(384.0f);
 #elif defined(COMPUTE_CL_2D)
-		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionEditor = ofVec3f(ofGetWidth(), ofGetHeight(), 1.0f);
 		m_dimensionExport = m_dimensionEditor; 
 #elif defined(COMPUTE_CL_3D)
-		m_dimensionEditor = glm::vec3(192.0f);
-		m_dimensionExport = glm::vec3(384.0f);
+		m_dimensionEditor = ofVec3f(192.0f);
+		m_dimensionExport = ofVec3f(384.0f);
 #endif
 
 		m_cmbScene.setDimensions(m_dimensionEditor);

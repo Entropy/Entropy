@@ -53,8 +53,8 @@ namespace ent
 		CmbSceneCL3D m_cmbScene;
 #endif
 
-		glm::vec3 m_dimensionEditor;
-		glm::vec3 m_dimensionExport;
+		ofVec3f m_dimensionEditor;
+		ofVec3f m_dimensionExport;
 
 		ofFloatColor m_backgroundColor; 
 		ofFloatColor m_tintColor;
