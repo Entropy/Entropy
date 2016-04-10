@@ -175,6 +175,14 @@ namespace ent
 				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 1.0f, 60.0f);
 				ImGui::SliderFloat("Ring Size", &m_cmbScene.m_ringSize, 0.0f, 5.0f);
 
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+				ImGui::Text("Texture Filter Mode");
+				ImGui::RadioButton("Linear", &m_cmbScene.m_filterMode, GL_LINEAR);
+				ImGui::SameLine();
+				ImGui::RadioButton("Nearest", &m_cmbScene.m_filterMode, GL_NEAREST);
+				ImGui::SliderFloat("Volume Size", &m_cmbScene.m_volumeSize, 512.0f, 1920.0f);
+#endif
+
 				if (ImGui::Checkbox("Export", &m_bExportFrames))
 				{
 					if (m_bExportFrames)

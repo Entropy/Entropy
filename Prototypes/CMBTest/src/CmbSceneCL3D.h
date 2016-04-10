@@ -12,8 +12,13 @@ namespace ent
 		: public CmbScene
 	{
 	public:
+		CmbSceneCL3D();
+
 		void setup() override;
 		void draw() override;
+
+		GLint m_filterMode;
+		float m_volumeSize;
 
 	protected:
 		void addDrop() override;

@@ -3,6 +3,13 @@
 namespace ent
 {
 	//--------------------------------------------------------------
+	CmbSceneGL3D::CmbSceneGL3D()
+		: CmbScene()
+		, m_volumeSize(800.0f)
+		, m_filterMode(GL_LINEAR)
+	{}
+	
+	//--------------------------------------------------------------
 	void CmbSceneGL3D::setup()
 	{
 		CmbScene::setup();
@@ -133,6 +140,7 @@ namespace ent
 	void CmbSceneGL3D::draw()
 	{
 		m_volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-		m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
+		m_volumetrics.setVolumeTextureFilterMode(m_filterMode);
+		m_volumetrics.drawVolume(0, 0, 0, m_volumeSize, 0);
 	}
 }
