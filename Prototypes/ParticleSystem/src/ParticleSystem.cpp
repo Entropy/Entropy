@@ -111,34 +111,34 @@ void ParticleSystem::update()
         if ( p.position.x > m_halfWidth )
         {
             //p.position.x = -m_halfWidth + 10.0f;
-            p.position.x = m_halfWidth;
+            p.position.x -= m_halfWidth * 2;
         }
         else if ( p.position.x < -m_halfWidth )
         {
             //p.position.x = m_halfWidth - 10.0f;
-            p.position.x = -m_halfWidth;
+            p.position.x += m_halfWidth * 2;
         }
 
         if ( p.position.y > m_halfHeight)
         {
             //p.position.y = -m_halfHeight + 10.0f;
-            p.position.y = m_halfHeight;
+            p.position.y -= m_halfHeight * 2;
         }
         else if ( p.position.y < -m_halfHeight )
         {
 //            p.position.y = m_halfHeight - 10.0f;
-            p.position.y = -m_halfHeight;
+            p.position.y += m_halfHeight * 2;
         }
 
         if ( p.position.z > m_halfDepth )
         {
             //p.position.z = -m_halfDepth + 10.0f;
-            p.position.z = m_halfDepth;
+            p.position.z -= m_halfDepth * 2;
         }
         else if ( p.position.z < -m_halfDepth )
         {
             //p.position.z = m_halfDepth - 10.0f;
-            p.position.z = -m_halfDepth;
+            p.position.z += m_halfDepth * 2;
         }
 
         const uint16_t px = (uint16_t)floorf( ( p.position.x + m_halfWidth ) * m_binScale.x );
