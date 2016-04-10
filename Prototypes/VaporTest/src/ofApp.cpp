@@ -101,11 +101,11 @@ bool ofApp::imGui()
 	bool bMouseOverGui = false;
 	m_gui.begin();
 	{
-		ofDefaultVec2 windowPos(kGuiMargin, kGuiMargin);
-		ofDefaultVec2 windowSize = ofDefaultVec2(0);
+		ofVec2f windowPos(kGuiMargin, kGuiMargin);
+		ofVec2f windowSize = ofVec2f(0);
 
 		ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-		ImGui::SetNextWindowSize(ofDefaultVec2(380, 94), ImGuiSetCond_Appearing);
+		ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
 		if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
 		{
 			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
