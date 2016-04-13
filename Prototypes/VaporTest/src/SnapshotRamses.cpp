@@ -35,7 +35,8 @@ namespace ent
 		m_numCells = posX.size();
 
 		// Set the ranges for all data.
-		for (int i = 0; i < posX.size(); ++i) {
+		for (int i = 0; i < posX.size(); ++i) 
+		{
             m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
 			m_sizeRange.add(cellSize[i]);
 			m_densityRange.add(density[i]);
@@ -64,7 +65,8 @@ namespace ent
 		// Upload per-instance transform data to the TBO.
 		std::vector<ofVec4f> transforms;
 		transforms.resize(posX.size());
-		for (size_t i = 0; i < transforms.size(); ++i) {
+		for (size_t i = 0; i < transforms.size(); ++i) 
+		{
 			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
 		}
 
@@ -99,7 +101,8 @@ namespace ent
 		h5File.open(file, true);
 		ofLogVerbose() << "File '" << file << "' has " << h5File.getNumDataSets() << " datasets";
 
-		for (int i = 0; i < h5File.getNumDataSets(); ++i) {
+		for (int i = 0; i < h5File.getNumDataSets(); ++i) 
+		{
 			ofLogVerbose("SnapshotRamses::load") << "  DataSet " << i << ": " << h5File.getDataSetName(i);
 		}
 		string dataSetName = h5File.getDataSetName(0);

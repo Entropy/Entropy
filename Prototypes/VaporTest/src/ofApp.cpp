@@ -11,6 +11,7 @@ void ofApp::setup()
     m_scale = 1024.0;
 
     m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -23,7 +24,7 @@ void ofApp::setup()
 	m_cameraTrack->setCamera(m_camera);
 	m_timeline.addTrack("Camera", m_cameraTrack);
 
-	m_cameraTrack->lockCameraToTrack = true;
+	m_cameraTrack->lockCameraToTrack = false;
 	//m_timeline.play();
 
 	m_bSyncPlayback = false;
