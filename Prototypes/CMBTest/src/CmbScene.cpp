@@ -5,12 +5,12 @@ namespace ent
 	//--------------------------------------------------------------
 	CmbScene::CmbScene()
 		: m_bRestart(true)
-		, m_dropColor(ofColor::red)
+		, m_dropColor(ofColor(73, 142, 255))
 		, m_bDropping(true)
 		, m_dropRate(1)
 		, m_damping(0.995f)
 		, m_radius(30.0f)
-		, m_ringSize(0.5f)
+		, m_ringSize(1.25f)
 	{}
 
 	//--------------------------------------------------------------

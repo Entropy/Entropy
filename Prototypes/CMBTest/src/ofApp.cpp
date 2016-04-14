@@ -75,6 +75,7 @@ namespace ent
 			ofSetColor(m_tintColor);
 
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+            glDisable(GL_CULL_FACE);
 			m_camera.begin();
 #endif
 			{
@@ -82,6 +83,7 @@ namespace ent
 			}
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			m_camera.end();
+            glEnable(GL_CULL_FACE);
 #endif
 		}
         ofPopStyle();
