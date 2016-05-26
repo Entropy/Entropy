@@ -26,15 +26,15 @@ namespace ent
 		m_mesh.clear();
 		m_mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
 
-		m_mesh.addVertex(ofDefaultVec3(0, 0));
-		m_mesh.addVertex(ofDefaultVec3(m_dimensions.x, 0));
-		m_mesh.addVertex(ofDefaultVec3(m_dimensions.x, m_dimensions.y));
-		m_mesh.addVertex(ofDefaultVec3(0, m_dimensions.y));
+		m_mesh.addVertex(ofVec3f(0, 0));
+		m_mesh.addVertex(ofVec3f(m_dimensions.x, 0));
+		m_mesh.addVertex(ofVec3f(m_dimensions.x, m_dimensions.y));
+		m_mesh.addVertex(ofVec3f(0, m_dimensions.y));
 
-		m_mesh.addTexCoord(ofDefaultVec2(0, 0));
-		m_mesh.addTexCoord(ofDefaultVec2(m_dimensions.x, 0));
-		m_mesh.addTexCoord(ofDefaultVec2(m_dimensions.x, m_dimensions.y));
-		m_mesh.addTexCoord(ofDefaultVec2(0, m_dimensions.y));
+		m_mesh.addTexCoord(ofVec2f(0, 0));
+		m_mesh.addTexCoord(ofVec2f(m_dimensions.x, 0));
+		m_mesh.addTexCoord(ofVec2f(m_dimensions.x, m_dimensions.y));
+		m_mesh.addTexCoord(ofVec2f(0, m_dimensions.y));
 
 		// Load the shader.
 		m_shader.load("shaders/passthru.vert", "shaders/ripple.frag");

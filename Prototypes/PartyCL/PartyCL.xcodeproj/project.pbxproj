@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		33B32C35C83434BBEA521BB6 /* MSAOpenCLImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5FD533AC868ACEC76D7CBBC /* MSAOpenCLImage.cpp */; };
-		649D33CC1C5ADC8000C21155 /* ofxGaussianMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 649D33CA1C5ADC8000C21155 /* ofxGaussianMapTexture.cpp */; };
-		649D33D61C5B01E700C21155 /* ofxTipsyLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 649D33D41C5B01E700C21155 /* ofxTipsyLoader.cpp */; };
+		64A2D7001CB7200C00B6B48F /* ofxGaussianMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64A2D6FC1CB7200C00B6B48F /* ofxGaussianMapTexture.cpp */; };
+		64A2D7011CB7200C00B6B48F /* ofxTipsyLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64A2D6FE1CB7200C00B6B48F /* ofxTipsyLoader.cpp */; };
 		64D2BBC31C512A4900177FCD /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D2BBC21C512A4900177FCD /* OpenCL.framework */; };
 		64E452371C57F313008C1C81 /* NBodySystemCPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64E452351C57F313008C1C81 /* NBodySystemCPU.cpp */; };
 		64E4523A1C57F757008C1C81 /* ParticleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64E452381C57F757008C1C81 /* ParticleRenderer.cpp */; };
@@ -69,10 +69,10 @@
 		4BBF4226B00F398C272061B0 /* MSAOpenCLBuffer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = MSAOpenCLBuffer.cpp; path = ../../../addons/ofxMSAOpenCL/src/MSAOpenCLBuffer.cpp; sourceTree = SOURCE_ROOT; };
 		4CAFA529D1BECBBBE99CF8D4 /* MSAOpenCLKernel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MSAOpenCLKernel.h; path = ../../../addons/ofxMSAOpenCL/src/MSAOpenCLKernel.h; sourceTree = SOURCE_ROOT; };
 		5B23844AA39EB4297013DB5C /* MSAOpenCLBuffer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MSAOpenCLBuffer.h; path = ../../../addons/ofxMSAOpenCL/src/MSAOpenCLBuffer.h; sourceTree = SOURCE_ROOT; };
-		649D33CA1C5ADC8000C21155 /* ofxGaussianMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxGaussianMapTexture.cpp; path = ../Shared/src/ofxGaussianMapTexture.cpp; sourceTree = "<group>"; };
-		649D33CB1C5ADC8000C21155 /* ofxGaussianMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGaussianMapTexture.h; path = ../Shared/src/ofxGaussianMapTexture.h; sourceTree = "<group>"; };
-		649D33D41C5B01E700C21155 /* ofxTipsyLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxTipsyLoader.cpp; path = ../Shared/src/ofxTipsyLoader.cpp; sourceTree = "<group>"; };
-		649D33D51C5B01E700C21155 /* ofxTipsyLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxTipsyLoader.h; path = ../Shared/src/ofxTipsyLoader.h; sourceTree = "<group>"; };
+		64A2D6FC1CB7200C00B6B48F /* ofxGaussianMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxGaussianMapTexture.cpp; path = ../../Shared/src/ofxGaussianMapTexture.cpp; sourceTree = "<group>"; };
+		64A2D6FD1CB7200C00B6B48F /* ofxGaussianMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGaussianMapTexture.h; path = ../../Shared/src/ofxGaussianMapTexture.h; sourceTree = "<group>"; };
+		64A2D6FE1CB7200C00B6B48F /* ofxTipsyLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxTipsyLoader.cpp; path = ../../Shared/src/ofxTipsyLoader.cpp; sourceTree = "<group>"; };
+		64A2D6FF1CB7200C00B6B48F /* ofxTipsyLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxTipsyLoader.h; path = ../../Shared/src/ofxTipsyLoader.h; sourceTree = "<group>"; };
 		64D2BBC21C512A4900177FCD /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		64E452321C57F0A7008C1C81 /* NBodySystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBodySystem.h; sourceTree = "<group>"; };
 		64E452351C57F313008C1C81 /* NBodySystemCPU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NBodySystemCPU.cpp; sourceTree = "<group>"; };
@@ -143,10 +143,10 @@
 		649D33CD1C5ADC8600C21155 /* shared_src */ = {
 			isa = PBXGroup;
 			children = (
-				649D33CA1C5ADC8000C21155 /* ofxGaussianMapTexture.cpp */,
-				649D33CB1C5ADC8000C21155 /* ofxGaussianMapTexture.h */,
-				649D33D41C5B01E700C21155 /* ofxTipsyLoader.cpp */,
-				649D33D51C5B01E700C21155 /* ofxTipsyLoader.h */,
+				64A2D6FC1CB7200C00B6B48F /* ofxGaussianMapTexture.cpp */,
+				64A2D6FD1CB7200C00B6B48F /* ofxGaussianMapTexture.h */,
+				64A2D6FE1CB7200C00B6B48F /* ofxTipsyLoader.cpp */,
+				64A2D6FF1CB7200C00B6B48F /* ofxTipsyLoader.h */,
 			);
 			name = shared_src;
 			sourceTree = "<group>";
@@ -403,13 +403,13 @@
 				64E452571C58390E008C1C81 /* ofxButton.cpp in Sources */,
 				FC691B037B4B74A36E0DB176 /* MSAOpenCLKernel.cpp in Sources */,
 				64E452641C5956A6008C1C81 /* NBodySystemOpenCL.cpp in Sources */,
-				649D33D61C5B01E700C21155 /* ofxTipsyLoader.cpp in Sources */,
+				64A2D7011CB7200C00B6B48F /* ofxTipsyLoader.cpp in Sources */,
 				64E4525D1C58390E008C1C81 /* ofxToggle.cpp in Sources */,
+				64A2D7001CB7200C00B6B48F /* ofxGaussianMapTexture.cpp in Sources */,
 				64E452581C58390E008C1C81 /* ofxGuiGroup.cpp in Sources */,
 				64E4525C1C58390E008C1C81 /* ofxSliderGroup.cpp in Sources */,
 				E13B7A12948FD5C8674D8855 /* MSAOpenCLMemoryObject.cpp in Sources */,
 				64E452561C58390E008C1C81 /* ofxBaseGui.cpp in Sources */,
-				649D33CC1C5ADC8000C21155 /* ofxGaussianMapTexture.cpp in Sources */,
 				64E4525B1C58390E008C1C81 /* ofxSlider.cpp in Sources */,
 				7748F9F07C993F15F2868E78 /* MSAOpenCLProgram.cpp in Sources */,
 			);

@@ -11,6 +11,7 @@ void ofApp::setup()
     m_scale = 1024.0;
 
     m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -23,7 +24,7 @@ void ofApp::setup()
 	m_cameraTrack->setCamera(m_camera);
 	m_timeline.addTrack("Camera", m_cameraTrack);
 
-	m_cameraTrack->lockCameraToTrack = true;
+	m_cameraTrack->lockCameraToTrack = false;
 	//m_timeline.play();
 
 	m_bSyncPlayback = false;
@@ -101,11 +102,11 @@ bool ofApp::imGui()
 	bool bMouseOverGui = false;
 	m_gui.begin();
 	{
-		ofDefaultVec2 windowPos(kGuiMargin, kGuiMargin);
-		ofDefaultVec2 windowSize = ofDefaultVec2(0);
+		ofVec2f windowPos(kGuiMargin, kGuiMargin);
+		ofVec2f windowSize = ofVec2f(0);
 
 		ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-		ImGui::SetNextWindowSize(ofDefaultVec2(380, 94), ImGuiSetCond_Appearing);
+		ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
 		if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
 		{
 			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);

@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -162,7 +162,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxHDF5\src;$(OF_ROOT)\addons\ofxHDF5\libs\hdf5\include;$(OF_ROOT)\addons\ofxHDF5\libs\szip\include;$(OF_ROOT)\addons\ofxHDF5\libs\zlib\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxSet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>

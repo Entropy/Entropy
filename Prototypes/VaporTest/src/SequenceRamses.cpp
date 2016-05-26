@@ -77,7 +77,7 @@ namespace ent
 
             ofPushMatrix();
             ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
-            ofTranslate(m_originShift);
+            ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
             {
                 m_renderShader.begin();
 				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
@@ -93,10 +93,10 @@ namespace ent
     }
 
     //--------------------------------------------------------------
-    bool SequenceRamses::imGui(ofDefaultVec2& windowPos, ofDefaultVec2& windowSize)
+    bool SequenceRamses::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
     {
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofDefaultVec2(380, 364), ImGuiSetCond_Appearing);
+        ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
 		{
 			ImGui::Text("Frame %lu / %lu", m_currFrame, m_snapshots.size());
@@ -114,7 +114,7 @@ namespace ent
         }
         else 
 		{
-            windowSize = ofDefaultVec2(0);
+            windowSize = ofVec2f(0);
         }
 
         ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
@@ -150,7 +150,7 @@ namespace ent
 
 			// Set normalization values to remap to [-0.5, 0.5]
 			glm::vec3 coordSpan = m_coordRange.getSpan();
-			m_originShift = -0.5 * coordSpan - m_coordRange.getMin();
+			m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
 
 			m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
 		}

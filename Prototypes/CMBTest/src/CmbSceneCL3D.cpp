@@ -3,6 +3,13 @@
 namespace ent
 {
 	//--------------------------------------------------------------
+	CmbSceneCL3D::CmbSceneCL3D()
+		: CmbScene() 
+		, m_volumeSize(800.0f)
+		, m_filterMode(GL_LINEAR)
+	{}
+	
+	//--------------------------------------------------------------
 	void CmbSceneCL3D::setup()
 	{
 		CmbScene::setup();
@@ -26,7 +33,7 @@ namespace ent
 	void CmbSceneCL3D::addDrop()
 	{
 		m_dropKernel->setArg(0, m_clImages[m_prevIdx]);
-		m_dropKernel->setArg(1, ofDefaultVec4(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z), 0));
+		m_dropKernel->setArg(1, ofVec4f(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z), 0));
 		m_dropKernel->setArg(2, m_radius);
 		m_dropKernel->setArg(3, m_ringSize);
 		m_dropKernel->setArg(4, m_dropColor);
@@ -65,6 +72,7 @@ namespace ent
 	void CmbSceneCL3D::draw()
 	{
 		m_volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-		m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
+		m_volumetrics.setVolumeTextureFilterMode(m_filterMode);
+		m_volumetrics.drawVolume(0, 0, 0, m_volumeSize, 0);
 	}
 }

@@ -3,6 +3,13 @@
 namespace ent
 {
 	//--------------------------------------------------------------
+	CmbSceneGL3D::CmbSceneGL3D()
+		: CmbScene()
+		, m_volumeSize(800.0f)
+		, m_filterMode(GL_LINEAR)
+	{}
+	
+	//--------------------------------------------------------------
 	void CmbSceneGL3D::setup()
 	{
 		CmbScene::setup();
@@ -22,12 +29,12 @@ namespace ent
 		}
 
 		// Build a mesh to render a quad.
-		ofDefaultVec3 origin = ofDefaultVec3(0.0, ofGetHeight() - m_dimensions.y, 0.0);
+		ofVec3f origin = ofVec3f(0.0, ofGetHeight() - m_dimensions.y, 0.0);
 
 		m_mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-		m_mesh.addVertex(origin + ofDefaultVec3(0.0, 0.0, 0.0));
-		m_mesh.addVertex(origin + ofDefaultVec3(m_dimensions.x, 0.0, 0.0));
-		m_mesh.addVertex(origin + ofDefaultVec3(0.0, m_dimensions.y, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(0.0, 0.0, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(m_dimensions.x, 0.0, 0.0));
+		m_mesh.addVertex(origin + ofVec3f(0.0, m_dimensions.y, 0.0));
 
 		m_mesh.addTexCoord(ofVec2f(0.0, 0.0));
 		m_mesh.addTexCoord(ofVec2f(m_dimensions.x, 0.0));
@@ -53,8 +60,9 @@ namespace ent
 		m_fbos[m_prevIdx].begin();
 		{
 			ofEnableAlphaBlending();
-			
-			ofDefaultVec3 burstPos = ofDefaultVec3(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
+			ofSetColor(m_dropColor);
+
+			ofVec3f burstPos = ofVec3f(ofRandom(m_dimensions.x), ofRandom(m_dimensions.y), ofRandom(m_dimensions.z));
 			float burstThickness = 1.0f;
 
 			m_dropShader.begin();
@@ -63,8 +71,6 @@ namespace ent
 				m_dropShader.setUniform1f("uBurst.radius", m_radius);
 				m_dropShader.setUniform1f("uBurst.thickness", burstThickness);
 				//m_dropShader.printActiveUniforms();
-
-				ofSetColor(255, 0, 0);
 
 				int minLayer = MAX(0, burstPos.z - m_radius - burstThickness);
 				int maxLayer = MIN(m_dimensions.z - 1, burstPos.z + m_radius + burstThickness);
@@ -127,13 +133,14 @@ namespace ent
 		}
 		m_fbos[m_currIdx].end();
 
-		m_volumetrics.setup(&m_textures[m_currIdx], ofDefaultVec3(1, 1, 1));
+		m_volumetrics.setup(&m_textures[m_currIdx], ofVec3f(1, 1, 1));
 	}
 
 	//--------------------------------------------------------------
 	void CmbSceneGL3D::draw()
 	{
 		m_volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-		m_volumetrics.drawVolume(0, 0, 0, ofGetHeight(), 0);
+		m_volumetrics.setVolumeTextureFilterMode(m_filterMode);
+		m_volumetrics.drawVolume(0, 0, 0, m_volumeSize, 0);
 	}
 }

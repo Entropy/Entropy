@@ -97,9 +97,12 @@ void ParticleSystem::update()
     memset( m_tempParticleIndices, 0, sizeof( m_tempParticleIndices[ 0 ] ) * MAX_PARTICLES );
     memset( m_particleBins, 0, sizeof( m_particleBins[ 0 ] ) * MAX_PARTICLES );
 
+#ifdef TARGET_OSX
+    dispatch_apply(m_numParticles, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
+#else
 #pragma omp parallel for
-    for ( int idx = 0; idx < m_numParticles; ++idx )
-    {
+    for ( int idx = 0; idx < m_numParticles; ++idx ) {
+#endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
         p.velocity *= 0.9f;
@@ -108,34 +111,34 @@ void ParticleSystem::update()
         if ( p.position.x > m_halfWidth )
         {
             //p.position.x = -m_halfWidth + 10.0f;
-            p.position.x = m_halfWidth;
+            p.position.x -= m_halfWidth * 2;
         }
         else if ( p.position.x < -m_halfWidth )
         {
             //p.position.x = m_halfWidth - 10.0f;
-            p.position.x = -m_halfWidth;
+            p.position.x += m_halfWidth * 2;
         }
 
         if ( p.position.y > m_halfHeight)
         {
             //p.position.y = -m_halfHeight + 10.0f;
-            p.position.y = m_halfHeight;
+            p.position.y -= m_halfHeight * 2;
         }
         else if ( p.position.y < -m_halfHeight )
         {
 //            p.position.y = m_halfHeight - 10.0f;
-            p.position.y = -m_halfHeight;
+            p.position.y += m_halfHeight * 2;
         }
 
         if ( p.position.z > m_halfDepth )
         {
             //p.position.z = -m_halfDepth + 10.0f;
-            p.position.z = m_halfDepth;
+            p.position.z -= m_halfDepth * 2;
         }
         else if ( p.position.z < -m_halfDepth )
         {
             //p.position.z = m_halfDepth - 10.0f;
-            p.position.z = -m_halfDepth;
+            p.position.z += m_halfDepth * 2;
         }
 
         const uint16_t px = (uint16_t)floorf( ( p.position.x + m_halfWidth ) * m_binScale.x );
@@ -153,7 +156,11 @@ void ParticleSystem::update()
         data.transform = glm::translate( p.position )
             * glm::scale( glm::vec3( p.radius, p.radius, p.radius ) )
             * glm::lookAt( glm::vec3( 0.0f, 0.0f, 0.0f ), p.velocity, glm::vec3( 0.0f, 1.0f, 0.0f ) );
+#ifdef TARGET_OSX
+    });
+#else
     }
+#endif
 
     m_positionTbo.updateData( 0, sizeof( m_positions[ 0 ] ) * m_numParticles, m_positions );
 }
@@ -235,9 +242,12 @@ void ParticleSystem::step( float _dt )
                 const ParticleBin& bin = m_particleBins[ binIdx ];
 
                 // loop through all particles in bin
+#ifdef TARGET_OSX
+                dispatch_apply(bin.particleCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
+#else
 #pragma omp parallel for
-                for ( int idx = 0; idx < bin.particleCount; ++idx )
-                {
+                for ( int idx = 0; idx < bin.particleCount; ++idx ) {
+#endif
                     uint16_t particleIdx = m_particleIndices[ bin.offset + idx ];
                     Particle& p = m_particlePool[ particleIdx ];
 
@@ -268,7 +278,11 @@ void ParticleSystem::step( float _dt )
                             }
 
                     p.velocity += _dt * acc / p.mass;
+#ifdef TARGET_OSX
+                });
+#else
                 }
+#endif
             }
         }
     }

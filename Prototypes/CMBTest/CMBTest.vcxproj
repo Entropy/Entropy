@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -162,7 +162,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>

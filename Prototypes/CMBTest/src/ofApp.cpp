@@ -13,17 +13,17 @@ namespace ent
         m_tintColor = ofColor::white;
 
 #ifdef COMPUTE_GL_2D
-		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionEditor = ofVec3f(ofGetWidth(), ofGetHeight(), 1.0f);
 		m_dimensionExport = m_dimensionEditor;
 #elif defined(COMPUTE_GL_3D)
-		m_dimensionEditor = glm::vec3(128.0f);
-		m_dimensionExport = glm::vec3(384.0f);
+		m_dimensionEditor = ofVec3f(128.0f);
+		m_dimensionExport = ofVec3f(384.0f);
 #elif defined(COMPUTE_CL_2D)
-		m_dimensionEditor = glm::vec3(ofGetWidth(), ofGetHeight(), 1.0f);
+		m_dimensionEditor = ofVec3f(ofGetWidth(), ofGetHeight(), 1.0f);
 		m_dimensionExport = m_dimensionEditor; 
 #elif defined(COMPUTE_CL_3D)
-		m_dimensionEditor = glm::vec3(192.0f);
-		m_dimensionExport = glm::vec3(384.0f);
+		m_dimensionEditor = ofVec3f(192.0f);
+		m_dimensionExport = ofVec3f(384.0f);
 #endif
 
 		m_cmbScene.setDimensions(m_dimensionEditor);
@@ -75,6 +75,7 @@ namespace ent
 			ofSetColor(m_tintColor);
 
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+            glDisable(GL_CULL_FACE);
 			m_camera.begin();
 #endif
 			{
@@ -82,6 +83,7 @@ namespace ent
 			}
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			m_camera.end();
+            glEnable(GL_CULL_FACE);
 #endif
 		}
         ofPopStyle();
@@ -172,8 +174,16 @@ namespace ent
 
 				ImGui::SliderInt("Drop Rate", &m_cmbScene.m_dropRate, 1, 60);
 				ImGui::SliderFloat("Damping", &m_cmbScene.m_damping, 0.0f, 1.0f);
-				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 0.01f, 1.0f);
+				ImGui::SliderFloat("Radius", &m_cmbScene.m_radius, 1.0f, 60.0f);
 				ImGui::SliderFloat("Ring Size", &m_cmbScene.m_ringSize, 0.0f, 5.0f);
+
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+				ImGui::Text("Texture Filter Mode");
+				ImGui::RadioButton("Linear", &m_cmbScene.m_filterMode, GL_LINEAR);
+				ImGui::SameLine();
+				ImGui::RadioButton("Nearest", &m_cmbScene.m_filterMode, GL_NEAREST);
+				ImGui::SliderFloat("Volume Size", &m_cmbScene.m_volumeSize, 512.0f, 1920.0f);
+#endif
 
 				if (ImGui::Checkbox("Export", &m_bExportFrames))
 				{

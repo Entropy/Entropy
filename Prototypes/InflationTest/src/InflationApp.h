@@ -29,6 +29,7 @@ namespace entropy
 
         ofEasyCam camera;
         ofLight light;
+        ofMaterial material;
 
         // Marching Cubes
         void paramsMarchingCubesChanged(ofAbstractParameter& param);

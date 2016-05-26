@@ -1,0 +1,6 @@
+[submodule "Shared/libs/glm"]
+	path = Shared/libs/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "Shared/libs/gli"]
+	path = Shared/libs/gli
+	url = https://github.com/g-truc/gli.git
