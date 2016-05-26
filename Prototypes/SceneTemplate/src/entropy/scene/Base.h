@@ -56,6 +56,13 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			// Resources
+			string getDataPath(const string & file = "");
+			string getPresetPath(const string & preset = "");
+
+			bool loadPreset(const string & presetName);
+			bool savePreset(const string & presetName);
+
 		protected:
 			// Events
 			ofxLiquidEvent<void> onSetup;
@@ -68,6 +75,13 @@ namespace entropy
 
 			ofxLiquidEvent<nlohmann::json> onSerialize;
 			ofxLiquidEvent<const nlohmann::json> onDeserialize;
+
+			// Resources
+			void refreshPresetsList();
+
+			string dataPath;
+			string currPreset;
+			vector<string> presets;
 
 			// Parameters
 			struct BaseParameters

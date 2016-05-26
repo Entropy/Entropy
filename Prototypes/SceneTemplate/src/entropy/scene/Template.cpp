@@ -77,6 +77,8 @@ namespace entropy
 		void Template::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
+
+			ofSetCircleResolution(this->parameters.circle.resolution);
 		}
 	}
 }

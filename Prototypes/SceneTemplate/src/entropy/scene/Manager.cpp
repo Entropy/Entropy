@@ -26,6 +26,10 @@ namespace entropy
 			ofRemoveListener(ofEvents().keyPressed, this, &Manager::keyPressed);
 
 			// Clear scenes.
+			if (this->currentScene)
+			{
+				this->currentScene->exit();
+			}
 			this->currentScene.reset();
 			this->scenes.clear();
 		}
