@@ -195,6 +195,8 @@ namespace entropy
 			auto presetsPath = this->getPresetPath();
 			auto presetsDir = ofDirectory(presetsPath);
 			presetsDir.listDir();
+			presetsDir.sort();
+
 			this->presets.clear();
 			for (auto i = 0; i < presetsDir.size(); ++i)
 			{

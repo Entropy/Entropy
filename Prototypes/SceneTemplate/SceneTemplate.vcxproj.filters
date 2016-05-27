@@ -78,17 +78,11 @@
     <Filter Include="addons\ofxPreset\src">
       <UniqueIdentifier>{ee138238-c978-4d7d-8288-408ef969dc5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxPreset\libs">
-      <UniqueIdentifier>{48640925-c228-4fe4-9ecd-dff0d7582e99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxPreset\libs\ofxPreset">
-      <UniqueIdentifier>{6c6e4665-2a6a-4fe1-8633-2018d93a0080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxPreset\libs\ofxPreset\include">
-      <UniqueIdentifier>{735f6f23-e9de-4df5-bd40-3d60072323ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPreset\src\ofxPreset">
+      <UniqueIdentifier>{ba9d0806-0b3b-4e05-ab6b-4e9bb3a01287}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,15 +131,6 @@
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset.h">
       <Filter>addons\ofxPreset\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Gui.h">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Parameter.h">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Serializer.h">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\scene\Base.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
@@ -155,19 +140,28 @@
     <ClInclude Include="src\entropy\scene\Template.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Gui.inl">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Parameter.inl">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Serializer.inl">
-      <Filter>addons\ofxPreset\libs\ofxPreset\include</Filter>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
   </ItemGroup>
 </Project>

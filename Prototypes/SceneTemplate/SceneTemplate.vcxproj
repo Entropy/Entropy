@@ -95,9 +95,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxLiquidEvent\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxLiquidEvent\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -116,9 +114,7 @@ C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxLiquidEvent\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxLiquidEvent\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -137,9 +133,7 @@ C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxLiquidEvent\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxLiquidEvent\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -161,9 +155,7 @@ C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxImGui\src;..\..\..\addons\ofxImGui\libs\imgui\src;C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxLiquidEvent\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\src;
-C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxLiquidEvent\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -207,10 +199,10 @@ C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
     <ClInclude Include="..\..\..\addons\ofxLiquidEvent\src\ofxLiquidEvent.h" />
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Gui.h" />
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Parameter.h" />
-    <ClInclude Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Serializer.h" />
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset.h" />
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h" />
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />
     <ClInclude Include="src\entropy\scene\Template.h" />
@@ -229,9 +221,9 @@ C:\Users\priso\Workspace\Entropy\openFrameworks\addons\ofxPreset\libs\ofxPreset\
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Gui.inl" />
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Parameter.inl" />
-    <None Include="..\..\..\addons\ofxPreset\libs\ofxPreset\include\Serializer.inl" />
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl" />
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
