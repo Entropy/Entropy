@@ -1,3 +1,0 @@
-ofxImGui
-ofxLiquidEvent
-ofxPreset
