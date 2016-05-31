@@ -70,7 +70,22 @@ namespace entropy
 		{
 			if (this->track)
 			{
-				this->parameter->set(this->track->getValue());
+				const auto & trackInfo = typeid(TrackType); 
+				if (trackInfo == typeid(ofxTLSwitches))
+				{
+					auto trackSwitches = dynamic_cast<ofxTLSwitches *>(this->track);
+					this->parameter->set(trackSwitches->isOn());
+				}
+				else if (trackInfo == typeid(ofxTLColorTrack))
+				{
+					auto trackColor = dynamic_cast<ofxTLColorTrack *>(this->track);
+					auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(this->parameter);
+					parameterColor->set(trackColor->getColor());
+				}
+				else 
+				{
+					this->parameter->set(this->track->getValue());
+				}
 			}
 		}
 
@@ -94,14 +109,31 @@ namespace entropy
 
 			timeline.setCurrentPage(this->pageName);
 
-			const auto & info = typeid(TrackType);
-			if (info == typeid(ofxTLCurves))
+			const auto & trackInfo = typeid(TrackType);
+			if (trackInfo == typeid(ofxTLCurves))
 			{
-				this->track = timeline.addCurves(pageTrackName, ofRange(this->parameter->getMin(), this->parameter->getMax()));
+				this->track = timeline.addCurves(pageTrackName);
+				
+				// Set Range separately by casting or else the compiler freaks out over combined ParameterTypes.
+				const auto & paramInfo = typeid(ParameterType);
+				if (paramInfo == typeid(float))
+				{
+					auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(this->parameter);
+					this->track->setValueRange(ofRange(parameterFloat->getMin(), parameterFloat->getMax()));
+				}
+				else if (paramInfo == typeid(int))
+				{
+					auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(this->parameter);
+					this->track->setValueRange(ofRange(parameterInt->getMin(), parameterInt->getMax()));
+				}
 			}
-			else if (info == typeid(ofxTLSwitches))
+			else if (trackInfo == typeid(ofxTLSwitches))
 			{
 				this->track = timeline.addSwitches(pageTrackName);
+			}
+			else if (trackInfo == typeid(ofxTLColorTrack))
+			{
+				this->track = timeline.addColors(pageTrackName);
 			}
 			this->track->setDisplayName(this->trackName);
 		}

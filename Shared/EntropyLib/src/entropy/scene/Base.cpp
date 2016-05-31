@@ -314,6 +314,14 @@ namespace entropy
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
 				}
+				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(parameter);
+				if (parameterColor)
+				{
+					auto mapping = make_shared<Mapping<ofFloatColor, ofxTLColorTrack>>();
+					mapping->setup(parameterColor);
+					this->mappings.emplace(mapping->getName(), mapping);
+					continue;
+				}
 			}
 		}
 
