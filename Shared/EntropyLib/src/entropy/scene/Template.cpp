@@ -36,7 +36,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Template::update()
 		{
-
+			ofSetCircleResolution(this->parameters.circle.resolution);
 		}
 		
 		//--------------------------------------------------------------
@@ -56,12 +56,7 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.circle.color);
 					ofxPreset::Gui::AddParameter(this->parameters.circle.radius);
-					if (ofxPreset::Gui::AddParameter(this->parameters.circle.resolution))
-					{
-						// Call update to make sure the change is synched.
-						this->parameters.circle.resolution.update();
-						ofSetCircleResolution(this->parameters.circle.resolution);
-					}
+					ofxPreset::Gui::AddParameter(this->parameters.circle.resolution);
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
