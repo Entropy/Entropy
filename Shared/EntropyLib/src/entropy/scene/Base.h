@@ -4,6 +4,9 @@
 #include "ofxImGui.h"
 #include "ofxLiquidEvent.h"
 #include "ofxPreset.h"
+#include "ofxTimeline.h"
+
+#include "Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
 	this->onSetup += [this]() { \
@@ -63,6 +66,9 @@ namespace entropy
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
+			// Timeline
+			ofxTimeline & getTimeline();
+
 		protected:
 			// Events
 			ofxLiquidEvent<void> onSetup;
@@ -77,7 +83,7 @@ namespace entropy
 			ofxLiquidEvent<const nlohmann::json> onDeserialize;
 
 			// Resources
-			void refreshPresetsList();
+			void populatePresets();
 
 			string dataPath;
 			string currPreset;
@@ -98,6 +104,13 @@ namespace entropy
 			};
 
 			virtual BaseParameters & getParameters() = 0;
+
+			// Timeline
+			void populateMappings(const ofParameterGroup & group, string name = "");
+			void refreshMappings();
+
+			ofxTimeline timeline;
+			map<string, shared_ptr<AbstractMapping>> mappings;
 		};
 	}
 }

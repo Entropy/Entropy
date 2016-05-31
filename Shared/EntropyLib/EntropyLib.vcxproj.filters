@@ -2,29 +2,29 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClCompile>
-      <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClCompile>
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClCompile>
     <ClCompile Include="src\entropy\scene\Base.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
@@ -34,7 +34,7 @@
     <ClCompile Include="src\entropy\scene\Template.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
-</ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
       <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
@@ -81,75 +81,81 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
-        <Filter>addons\ofxImGui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
-        <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxLiquidEvent\src\ofxLiquidEvent.h">
-        <Filter>addons\ofxLiquidEvent\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset.h">
-        <Filter>addons\ofxPreset\src</Filter>
-      </ClInclude>
-      <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
-  <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-</ClInclude>
-<ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h">
-  <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-</ClInclude>
-<ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h">
-  <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-</ClInclude>
-<ClInclude Include="src\entropy\scene\Base.h">
-  <Filter>src\entropy\scene</Filter>
-</ClInclude>
-<ClInclude Include="src\entropy\scene\Manager.h">
-  <Filter>src\entropy\scene</Filter>
-</ClInclude>
-<ClInclude Include="src\entropy\scene\Template.h">
-  <Filter>src\entropy\scene</Filter>
-</ClInclude>
-</ItemGroup>
-<ItemGroup>
-  <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
-    <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-  </None>
-  <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl">
-    <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-  </None>
-  <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl">
-    <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-  </None>
-</ItemGroup>
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxLiquidEvent\src\ofxLiquidEvent.h">
+      <Filter>addons\ofxLiquidEvent\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset.h">
+      <Filter>addons\ofxPreset\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Base.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Manager.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Template.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Mapping.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </None>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </None>
+    <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </None>
+    <None Include="src\entropy\scene\Mapping.inl">
+      <Filter>src\entropy\scene</Filter>
+    </None>
+  </ItemGroup>
 </Project>

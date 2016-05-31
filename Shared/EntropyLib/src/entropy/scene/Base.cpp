@@ -25,8 +25,18 @@ namespace entropy
 
 			// Load presets.
 			this->currPreset.clear();
-			this->refreshPresetsList();
+			this->populatePresets();
 			this->loadPreset(kPresetDefaultName);
+
+			// Setup timeline.
+			this->timeline.setup();
+			this->timeline.setLoopType(OF_LOOP_NONE);
+			this->timeline.setFrameRate(30.0f);
+			this->timeline.setDurationInSeconds(30);
+			this->timeline.setAutosave(false);
+
+			// Populate
+			this->populateMappings(this->getParameters());
 		}
 
 		//--------------------------------------------------------------
@@ -50,6 +60,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update()
 		{
+			for (auto mapping : this->mappings)
+			{
+				mapping.second->update();
+			}
+			
 			this->onUpdate.notifyListeners();
 		}
 
@@ -91,6 +106,28 @@ namespace entropy
 			ofxPreset::Gui::EndWindow(settings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow("Mappings", settings))
+			{
+				for (auto it : this->mappings)
+				{
+					auto mapping = it.second;
+					if (ofxPreset::Gui::AddParameter(mapping->animated))
+					{
+						mapping->animated.update();
+						if (mapping->animated)
+						{
+							mapping->addTrack(this->timeline);
+						}
+						else
+						{
+							mapping->removeTrack(this->timeline);
+						}
+					}
+				}
+			}
+			ofxPreset::Gui::EndWindow(settings);
+
+			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(parameters.base.background);
@@ -104,12 +141,34 @@ namespace entropy
 		void Base::serialize(nlohmann::json & json)
 		{
 			this->onSerialize.notifyListeners(json);
+
+			auto & jsonGroup = json["Presets"];
+			for (auto it : this->mappings)
+			{
+				ofxPreset::Serializer::Serialize(jsonGroup, it.second->animated);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Base::deserialize(const nlohmann::json & json)
 		{
 			this->onDeserialize.notifyListeners(json);
+
+			for (auto it : this->mappings)
+			{
+				it.second->animated.set(false);
+			}
+
+			if (json.count("Presets"))
+			{
+				auto & jsonGroup = json["Presets"];
+				for (auto it : this->mappings)
+				{
+					ofxPreset::Serializer::Deserialize(jsonGroup, it.second->animated);
+				}
+			}
+
+			this->refreshMappings();
 		}
 
 		//--------------------------------------------------------------
@@ -149,48 +208,51 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::loadPreset(const string & presetName)
 		{
-			auto filePath = this->getPresetPath(presetName);
-			filePath = ofFilePath::addTrailingSlash(filePath);
-			filePath.append("parameters.json");
-
-			auto file = ofFile(filePath);
-			if (file.exists())
+			const auto presetPath = this->getPresetPath(presetName);
+			auto presetFile = ofFile(presetPath);
+			if (!presetFile.exists())
 			{
-				nlohmann::json json;
-				file >> json;
-
-				this->deserialize(json);
-
-				this->currPreset = presetName;
-
-				return true;
+				ofLogWarning("Base::loadPreset") << "File not found at path " << presetPath;
+				return false;
 			}
 
-			ofLogWarning("Base::loadPreset") << "File not found at path " << filePath;
-			return false;
+			auto paramsPath = presetPath;
+			paramsPath.append("parameters.json");
+			auto paramsFile = ofFile(paramsPath);
+			if (paramsFile.exists())
+			{
+				nlohmann::json json;
+				paramsFile >> json;
+
+				this->deserialize(json);
+			}
+
+			this->timeline.loadTracksFromFolder(presetPath);
+
+			this->currPreset = presetName;
 		}
 
 		//--------------------------------------------------------------
 		bool Base::savePreset(const string & presetName)
 		{
+			const auto presetPath = this->getPresetPath(presetName);
+
+			auto paramsPath = presetPath;
+			paramsPath.append("parameters.json");
+			auto paramsFile = ofFile(paramsPath, ofFile::WriteOnly);
 			nlohmann::json json;
-
 			this->serialize(json);
+			paramsFile << json;
 
-			auto filePath = this->getPresetPath(presetName);
-			filePath = ofFilePath::addTrailingSlash(filePath);
-			filePath.append("parameters.json");
+			this->timeline.saveTracksToFolder(presetPath);
 
-			auto file = ofFile(filePath, ofFile::WriteOnly);
-			file << json;
-
-			this->refreshPresetsList();
+			this->populatePresets();
 
 			return true;
 		}
 
 		//--------------------------------------------------------------
-		void Base::refreshPresetsList()
+		void Base::populatePresets()
 		{
 			auto presetsPath = this->getPresetPath();
 			auto presetsDir = ofDirectory(presetsPath);
@@ -203,6 +265,71 @@ namespace entropy
 				if (presetsDir.getFile(i).isDirectory())
 				{
 					this->presets.push_back(presetsDir.getName(i));
+				}
+			}
+		}
+
+		//--------------------------------------------------------------
+		ofxTimeline & Base::getTimeline()
+		{
+			return this->timeline;
+		}
+
+		//--------------------------------------------------------------
+		void Base::populateMappings(const ofParameterGroup & group, string name)
+		{
+			for (const auto & parameter : group)
+			{
+				// Group.
+				auto parameterGroup = dynamic_pointer_cast<ofParameterGroup>(parameter);
+				if (parameterGroup)
+				{
+					// Recurse through contents.
+					this->populateMappings(*parameterGroup, name);
+					continue;
+				}
+
+				// Parameters.
+				auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(parameter);
+				if (parameterFloat)
+				{
+					auto mapping = make_shared<Mapping<float, ofxTLCurves>>();
+					mapping->setup(parameterFloat);
+					this->mappings.emplace(mapping->getName(), mapping);
+					continue;
+				}
+				auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(parameter);
+				if (parameterInt)
+				{
+					auto mapping = make_shared<Mapping<int, ofxTLCurves>>();
+					mapping->setup(parameterInt);
+					this->mappings.emplace(mapping->getName(), mapping);
+					continue;
+				}
+				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(parameter);
+				if (parameterBool)
+				{
+					auto mapping = make_shared<Mapping<bool, ofxTLSwitches>>();
+					mapping->setup(parameterBool);
+					this->mappings.emplace(mapping->getName(), mapping);
+					continue;
+				}
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::refreshMappings()
+		{
+			for (auto & it : this->mappings)
+			{
+				auto mapping = it.second;
+				if (mapping->animated) 
+				{
+					mapping->addTrack(this->timeline);
+				}
+				else
+				{
+					mapping->removeTrack(this->timeline);
 				}
 			}
 		}

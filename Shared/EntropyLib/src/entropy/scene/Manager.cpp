@@ -199,6 +199,12 @@ namespace entropy
 				}
 			}
 			this->imgui.end();
+
+			auto & timeline = this->currentScene->getTimeline();
+			timeline.setOffset(ofVec2f(0.0, ofGetHeight() - timeline.getHeight()));
+			timeline.draw();
+
+			this->guiSettings.mouseOverGui |= timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 	}
 }
