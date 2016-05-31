@@ -200,7 +200,7 @@ namespace entropy
 			auto presetPath = ofFilePath::addTrailingSlash(this->getDataPath("presets"));
 			if (!preset.empty())
 			{
-				presetPath.append(preset);
+				presetPath.append(ofFilePath::addTrailingSlash(preset));
 			}
 			return presetPath;
 		}
