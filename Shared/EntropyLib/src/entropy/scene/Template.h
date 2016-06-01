@@ -31,6 +31,8 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
+			ofSpherePrimitive sphere;
+
 			virtual BaseParameters & getParameters() override
 			{
 				return this->parameters;
@@ -41,13 +43,14 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+					ofxPreset::Parameter<bool> filled{ "Filled", false, true };
 					ofxPreset::Parameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
 					ofxPreset::Parameter<int> resolution{ "Resolution", 16, 3, 64 };
 
-					PARAM_DECLARE("Circle", color, radius, resolution);
-				} circle;
+					PARAM_DECLARE("Sphere", color, filled, radius, resolution);
+				} sphere;
 
-				PARAM_DECLARE("Template", circle);
+				PARAM_DECLARE("Template", sphere);
 			} parameters;
 		};
 	}

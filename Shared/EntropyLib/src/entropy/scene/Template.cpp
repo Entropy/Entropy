@@ -36,14 +36,28 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Template::update()
 		{
-			ofSetCircleResolution(this->parameters.circle.resolution);
+			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
+			{
+				this->sphere.set(this->parameters.sphere.radius, this->parameters.sphere.resolution);
+			}
 		}
 		
 		//--------------------------------------------------------------
 		void Template::drawWorld()
 		{
-			ofSetColor(this->parameters.circle.color.get());
-			ofDrawCircle(ofGetWidth() * 0.5f, ofGetHeight() * 0.5f, this->parameters.circle.radius);
+			ofPushStyle();
+			{
+				ofSetColor(this->parameters.sphere.color.get());
+				if (this->parameters.sphere.filled)
+				{
+					this->sphere.draw(OF_MESH_FILL);
+				}
+				else
+				{
+					this->sphere.draw(OF_MESH_WIREFRAME);
+				}
+			}
+			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------
@@ -52,11 +66,12 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				if (ImGui::CollapsingHeader(this->parameters.circle.getName().c_str(), nullptr, true, true))
+				if (ImGui::CollapsingHeader(this->parameters.sphere.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.circle.color);
-					ofxPreset::Gui::AddParameter(this->parameters.circle.radius);
-					ofxPreset::Gui::AddParameter(this->parameters.circle.resolution);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.color);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.filled);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.radius);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.resolution);
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
