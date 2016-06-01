@@ -22,7 +22,8 @@ namespace entropy
 			void exit();
 
 			void update();
-			void draw();
+
+			void drawWorld();
 
 			void gui(ofxPreset::GuiSettings & settings);
 

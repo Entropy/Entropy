@@ -5,11 +5,26 @@ namespace entropy
 	namespace scene
 	{
 		static const string kPresetDefaultName = "_default";
+
+		//--------------------------------------------------------------
+		ofCamera & Base::getCamera()
+		{
+			return this->camera;
+		}
+
+		//--------------------------------------------------------------
+		ofxImGui Base::imgui;
 			
 		//--------------------------------------------------------------
 		Base::Base()
 		{
-
+			static bool once = [this]()
+			{
+				this->imgui.setup();
+				return true;
+			} (); 
+			
+			this->overlayVisible = true;
 		}
 
 		//--------------------------------------------------------------
@@ -34,6 +49,7 @@ namespace entropy
 			this->timeline.setFrameRate(30.0f);
 			this->timeline.setDurationInSeconds(30);
 			this->timeline.setAutosave(false);
+			this->timeline.setPageName(this->getParameters().base.getName());
 
 			// Populate
 			this->populateMappings(this->getParameters());
@@ -51,7 +67,9 @@ namespace entropy
 			this->onSetup.removeListeners(nullptr);
 			this->onExit.removeListeners(nullptr);
 			this->onUpdate.removeListeners(nullptr);
-			this->onDraw.removeListeners(nullptr);
+			this->onDrawBack.removeListeners(nullptr);
+			this->onDrawWorld.removeListeners(nullptr);
+			this->onDrawFront.removeListeners(nullptr);
 			this->onGui.removeListeners(nullptr);
 			this->onSerialize.removeListeners(nullptr);
 			this->onDeserialize.removeListeners(nullptr);
@@ -71,15 +89,79 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::draw()
 		{
+			this->drawBack();
+			this->drawWorld();
+			this->drawFront();
+
+			this->guiSettings.mouseOverGui = false;
+			if (this->overlayVisible)
+			{
+				this->drawOverlay();
+			}
+
+
+
+			if (this->guiSettings.mouseOverGui)
+			{
+				this->camera.disableMouseInput();
+			}
+			else /*if (this->parameters.camera.mouseEnabled)*/
+			{
+				this->camera.enableMouseInput();
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawBack()
+		{
 			ofBackground(this->getParameters().base.background.get());
-			
-			this->onDraw.notifyListeners();
+
+			this->onDrawBack.notifyListeners();
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawWorld()
+		{
+			this->getCamera().begin();
+			{
+				this->onDrawWorld.notifyListeners();
+			}
+			this->getCamera().end();
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawFront()
+		{
+			this->onDrawFront.notifyListeners();
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawOverlay()
+		{
+			this->imgui.begin(); 
+			{
+				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
+				this->guiSettings.windowSize = ofVec2f::zero(); 
+				
+				this->gui(this->guiSettings);
+			}
+			this->imgui.end();
+
+			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
+			this->timeline.draw();
+			this->guiSettings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 
 		//--------------------------------------------------------------
 		void Base::gui(ofxPreset::GuiSettings & settings)
 		{
 			auto & parameters = this->getParameters();
+
+			if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
+			{
+				ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
+			}
+			ofxPreset::Gui::EndWindow(this->guiSettings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Presets", settings))
@@ -270,12 +352,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		ofxTimeline & Base::getTimeline()
-		{
-			return this->timeline;
-		}
-
-		//--------------------------------------------------------------
 		void Base::populateMappings(const ofParameterGroup & group, string name)
 		{
 			for (const auto & parameter : group)
@@ -340,6 +416,24 @@ namespace entropy
 					mapping->removeTrack(this->timeline);
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::setOverlayVisible(bool overlayVisible)
+		{
+			this->overlayVisible = overlayVisible;
+		}
+
+		//--------------------------------------------------------------
+		void Base::toggleOverlayVisible()
+		{
+			this->overlayVisible ^= 1;
+		}
+
+		//--------------------------------------------------------------
+		bool Base::isOverlayVisible() const
+		{
+			return this->overlayVisible;
 		}
 	}
 }

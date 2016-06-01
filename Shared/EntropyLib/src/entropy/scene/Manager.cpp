@@ -11,10 +11,6 @@ namespace entropy
 			ofAddListener(ofEvents().update, this, &Manager::update);
 			ofAddListener(ofEvents().draw, this, &Manager::draw);
 			ofAddListener(ofEvents().keyPressed, this, &Manager::keyPressed);
-
-			// GUI
-			this->imgui.setup();
-			this->guiVisible = true;
 		}
 
 		//--------------------------------------------------------------
@@ -143,6 +139,15 @@ namespace entropy
 			if (this->currentScene)
 			{
 				this->currentScene->update();
+
+				if (this->currentScene->isOverlayVisible() /*|| this->parameters.camera.mouseEnabled*/)
+				{
+					ofShowCursor();
+				}
+				else
+				{
+					ofHideCursor();
+				}
 			}
 		}
 
@@ -153,12 +158,6 @@ namespace entropy
 			{
 				this->currentScene->draw();
 			}
-
-			this->guiSettings.mouseOverGui = false;
-			if (this->guiVisible)
-			{
-				this->gui();
-			}
 		}
 
 		//--------------------------------------------------------------
@@ -167,7 +166,10 @@ namespace entropy
 			switch (args.key)
 			{
 			case '`':
-				this->guiVisible ^= 1;
+				if (this->currentScene)
+				{
+					this->currentScene->toggleOverlayVisible();
+				}
 				break;
 
 			case OF_KEY_TAB:
@@ -177,34 +179,6 @@ namespace entropy
 			default:
 				break;
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Manager::gui()
-		{
-			this->imgui.begin();
-			{
-				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
-				this->guiSettings.windowSize = ofVec2f::zero();
-
-				if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
-				{
-					ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-				}
-				ofxPreset::Gui::EndWindow(this->guiSettings);
-
-				if (this->currentScene)
-				{
-					this->currentScene->gui(this->guiSettings);
-				}
-			}
-			this->imgui.end();
-
-			auto & timeline = this->currentScene->getTimeline();
-			timeline.setOffset(ofVec2f(0.0, ofGetHeight() - timeline.getHeight()));
-			timeline.draw();
-
-			this->guiSettings.mouseOverGui |= timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 	}
 }

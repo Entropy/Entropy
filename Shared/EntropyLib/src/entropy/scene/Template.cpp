@@ -22,7 +22,7 @@ namespace entropy
 		{
 			ENTROPY_SCENE_EXIT_LISTENER;
 			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_LISTENER;
+			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 		}
@@ -40,7 +40,7 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void Template::draw()
+		void Template::drawWorld()
 		{
 			ofSetColor(this->parameters.circle.color.get());
 			ofDrawCircle(ofGetWidth() * 0.5f, ofGetHeight() * 0.5f, this->parameters.circle.radius);

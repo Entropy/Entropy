@@ -34,13 +34,6 @@ namespace entropy
 			void draw(ofEventArgs & args);
 			void keyPressed(ofKeyEventArgs & args);
 
-			// GUI
-			void gui();
-
-			ofxImGui imgui;
-			bool guiVisible;
-			ofxPreset::GuiSettings guiSettings;
-
 			// Scenes
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;

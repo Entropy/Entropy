@@ -20,9 +20,17 @@
 	this->onUpdate += [this]() { \
 		this->update(); \
 	}
-#define ENTROPY_SCENE_DRAW_LISTENER \
-	this->onDraw += [this]() { \
-		this->draw(); \
+#define ENTROPY_SCENE_DRAW_BACK_LISTENER \
+	this->onDrawBack += [this]() { \
+		this->drawBack(); \
+	}
+#define ENTROPY_SCENE_DRAW_WORLD_LISTENER \
+	this->onDrawWorld += [this]() { \
+		this->drawWorld(); \
+	}
+#define ENTROPY_SCENE_DRAW_FRONT_LISTENER \
+	this->onDrawFront += [this]() { \
+		this->drawFront(); \
 	}
 #define ENTROPY_SCENE_GUI_LISTENER \
 	this->onGui += [this](ofxPreset::GuiSettings & settings) { \
@@ -44,6 +52,7 @@ namespace entropy
 		{
 		public:
 			virtual string getName() const = 0;
+			virtual ofCamera & getCamera();
 
 			Base();
 			virtual ~Base();
@@ -54,6 +63,7 @@ namespace entropy
 			void update();
 			void draw();
 
+			// Parameters
 			void gui(ofxPreset::GuiSettings & settings);
 
 			void serialize(nlohmann::json & json);
@@ -66,16 +76,25 @@ namespace entropy
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
-			// Timeline
-			ofxTimeline & getTimeline();
+			// Overlays
+			void setOverlayVisible(bool overlayVisible);
+			void toggleOverlayVisible();
+			bool isOverlayVisible() const;
 
 		protected:
+			void drawBack();
+			void drawWorld();
+			void drawFront();
+
 			// Events
 			ofxLiquidEvent<void> onSetup;
 			ofxLiquidEvent<void> onExit;
 
 			ofxLiquidEvent<void> onUpdate;
-			ofxLiquidEvent<void> onDraw;
+
+			ofxLiquidEvent<void> onDrawBack;
+			ofxLiquidEvent<void> onDrawWorld;
+			ofxLiquidEvent<void> onDrawFront;
 
 			ofxLiquidEvent<ofxPreset::GuiSettings> onGui;
 
@@ -105,12 +124,24 @@ namespace entropy
 
 			virtual BaseParameters & getParameters() = 0;
 
-			// Timeline
-			void populateMappings(const ofParameterGroup & group, string name = "");
-			void refreshMappings();
+			// Overlays
+			ofxPreset::GuiSettings guiSettings;
 
 			ofxTimeline timeline;
 			map<string, shared_ptr<AbstractMapping>> mappings;
+
+		private:
+			// Overlays
+			void drawOverlay();
+
+			void populateMappings(const ofParameterGroup & group, string name = "");
+			void refreshMappings();
+
+			static ofxImGui imgui;
+			bool overlayVisible;
+
+			// Camera
+			ofEasyCam camera;
 		};
 	}
 }
