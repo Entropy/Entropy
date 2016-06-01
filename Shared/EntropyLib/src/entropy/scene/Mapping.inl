@@ -93,6 +93,7 @@ namespace entropy
 		template<typename ParameterType, typename TrackType>
 		void Mapping<ParameterType, TrackType>::addTrack(ofxTimeline & timeline)
 		{
+			// Add Page if it doesn't already exist.
 			if (!timeline.hasPage(this->pageName))
 			{
 				timeline.addPage(this->pageName);
@@ -109,32 +110,43 @@ namespace entropy
 
 			timeline.setCurrentPage(this->pageName);
 
+			// Add Track and set default value and range where necessary.
 			const auto & trackInfo = typeid(TrackType);
 			if (trackInfo == typeid(ofxTLCurves))
 			{
 				this->track = timeline.addCurves(pageTrackName);
-				
-				// Set Range separately by casting or else the compiler freaks out over combined ParameterTypes.
+
 				const auto & paramInfo = typeid(ParameterType);
 				if (paramInfo == typeid(float))
 				{
 					auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(this->parameter);
 					this->track->setValueRange(ofRange(parameterFloat->getMin(), parameterFloat->getMax()));
+					this->track->setDefaultValue(parameterFloat->get());
 				}
 				else if (paramInfo == typeid(int))
 				{
 					auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(this->parameter);
 					this->track->setValueRange(ofRange(parameterInt->getMin(), parameterInt->getMax()));
+					this->track->setDefaultValue(parameterInt->get());
 				}
 			}
 			else if (trackInfo == typeid(ofxTLSwitches))
 			{
 				this->track = timeline.addSwitches(pageTrackName);
+
+				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(this->parameter);
+				this->track->setDefaultValue(parameterBool->get());
 			}
 			else if (trackInfo == typeid(ofxTLColorTrack))
 			{
-				this->track = timeline.addColors(pageTrackName);
+				auto trackColor = timeline.addColors(pageTrackName);
+
+				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(this->parameter);
+				trackColor->setDefaultColor(parameterColor->get());
+
+				this->track = trackColor;
 			}
+
 			this->track->setDisplayName(this->trackName);
 		}
 
