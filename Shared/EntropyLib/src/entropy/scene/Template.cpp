@@ -107,7 +107,7 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		// Do something aftre the parameters are loaded.
+		// Do something after the parameters are loaded.
 		// You can load your other stuff here from that json object.
 		// You can also set any refresh flags if necessary.
 		void Template::deserialize(const nlohmann::json & json)
