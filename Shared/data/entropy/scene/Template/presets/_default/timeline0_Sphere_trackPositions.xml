@@ -1,0 +1,20 @@
+<positions>
+    <element name="Sphere_Color">
+        <x>0.000000000</x>
+        <y>708.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Sphere_Radius">
+        <x>0.000000000</x>
+        <y>790.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Sphere_Resolution">
+        <x>0.000000000</x>
+        <y>854.000000000</y>
+        <width>1024.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>
