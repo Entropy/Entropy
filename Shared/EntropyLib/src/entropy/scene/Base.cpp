@@ -212,6 +212,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::serialize(nlohmann::json & json)
 		{
+			ofxPreset::Serializer::Serialize(json, this->getParameters()); 
+			
 			this->onSerialize.notifyListeners(json);
 
 			auto & jsonGroup = json["Presets"];
@@ -224,6 +226,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize(const nlohmann::json & json)
 		{
+			ofxPreset::Serializer::Deserialize(json, this->getParameters()); 
+			
 			this->onDeserialize.notifyListeners(json);
 
 			for (auto it : this->mappings)

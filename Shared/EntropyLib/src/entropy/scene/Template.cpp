@@ -80,15 +80,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Template::serialize(nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Serialize(json, this->parameters);
+
 		}
 		
 		//--------------------------------------------------------------
 		void Template::deserialize(const nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Deserialize(json, this->parameters);
 
-			ofSetCircleResolution(this->parameters.circle.resolution);
 		}
 	}
 }
