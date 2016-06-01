@@ -11,19 +11,11 @@ namespace entropy
 		{
 			return this->camera;
 		}
-
-		//--------------------------------------------------------------
-		ofxImGui Base::imgui;
 			
 		//--------------------------------------------------------------
 		Base::Base()
 		{
-			static bool once = [this]()
-			{
-				this->imgui.setup();
-				return true;
-			} (); 
-			
+			this->imgui.setup();
 			this->overlayVisible = true;
 		}
 
@@ -98,8 +90,6 @@ namespace entropy
 			{
 				this->drawOverlay();
 			}
-
-
 
 			if (this->guiSettings.mouseOverGui)
 			{

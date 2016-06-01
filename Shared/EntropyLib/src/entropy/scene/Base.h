@@ -137,7 +137,7 @@ namespace entropy
 			void populateMappings(const ofParameterGroup & group, string name = "");
 			void refreshMappings();
 
-			static ofxImGui imgui;
+			ofxImGui imgui;
 			bool overlayVisible;
 
 			// Camera
