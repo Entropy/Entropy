@@ -1,1 +1,1 @@
-{"Template":{"Base":{"Background":"0.666667, 0.666667, 0.666667, 1"},"Circle":{"Color":"0.862745, 0.0784314, 0.235294, 1","Radius":"20","Resolution":"16"}}}
+{"Presets":{"Base::Background":"0","Sphere::Color":"0","Sphere::Radius":"0","Sphere::Resolution":"0"},"Template":{"Base":{"Background":"0.666667, 0.666667, 0.666667, 1"},"Sphere":{"Color":"0.862745, 0.0778162, 0.853511, 1","Radius":"132.673","Resolution":"3"}}}

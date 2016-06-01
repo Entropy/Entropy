@@ -216,7 +216,7 @@ namespace entropy
 			
 			this->onSerialize.notifyListeners(json);
 
-			auto & jsonGroup = json["Presets"];
+			auto & jsonGroup = json["Mappings"];
 			for (auto it : this->mappings)
 			{
 				ofxPreset::Serializer::Serialize(jsonGroup, it.second->animated);
@@ -234,16 +234,14 @@ namespace entropy
 			{
 				it.second->animated.set(false);
 			}
-
-			if (json.count("Presets"))
+			if (json.count("Mappings"))
 			{
-				auto & jsonGroup = json["Presets"];
+				auto & jsonGroup = json["Mappings"];
 				for (auto it : this->mappings)
 				{
 					ofxPreset::Serializer::Deserialize(jsonGroup, it.second->animated);
 				}
 			}
-
 			this->refreshMappings();
 		}
 
@@ -306,6 +304,8 @@ namespace entropy
 			this->timeline.loadTracksFromFolder(presetPath);
 
 			this->currPreset = presetName;
+
+			return true;
 		}
 
 		//--------------------------------------------------------------
