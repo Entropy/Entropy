@@ -21,7 +21,7 @@ namespace entropy
 			void setup();
 			void exit();
 
-			void update();
+			void update(double & dt);
 
 			void drawBack();
 			void drawWorld();

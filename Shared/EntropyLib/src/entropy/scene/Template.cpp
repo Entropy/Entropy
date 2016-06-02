@@ -39,7 +39,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void Template::update()
+		void Template::update(double & dt)
 		{
 			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
 			{

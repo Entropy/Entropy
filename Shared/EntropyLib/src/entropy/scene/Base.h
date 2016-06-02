@@ -2,47 +2,46 @@
 
 #include "ofMain.h"
 #include "ofxImGui.h"
-#include "ofxLiquidEvent.h"
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
 #include "Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
-	this->onSetup += [this]() { \
+	onSetupListeners.push_back(this->onSetup.newListener([this]() { \
 		this->setup(); \
-	}
+	}));
 #define ENTROPY_SCENE_EXIT_LISTENER \
-	this->onExit += [this]() { \
+	onExitListeners.push_back(this->onExit.newListener([this]() { \
 		this->exit(); \
-	}
+	}));
 #define ENTROPY_SCENE_UPDATE_LISTENER \
-	this->onUpdate += [this]() { \
-		this->update(); \
-	}
+	onUpdateListeners.push_back(this->onUpdate.newListener([this](double & dt) { \
+		this->update(dt); \
+	}));
 #define ENTROPY_SCENE_DRAW_BACK_LISTENER \
-	this->onDrawBack += [this]() { \
+	onDrawBackListeners.push_back(this->onDrawBack.newListener([this]() { \
 		this->drawBack(); \
-	}
+	}));
 #define ENTROPY_SCENE_DRAW_WORLD_LISTENER \
-	this->onDrawWorld += [this]() { \
+	onDrawWorldListeners.push_back(this->onDrawWorld.newListener([this]() { \
 		this->drawWorld(); \
-	}
+	}));
 #define ENTROPY_SCENE_DRAW_FRONT_LISTENER \
-	this->onDrawFront += [this]() { \
+	onDrawFrontListeners.push_back(this->onDrawFront.newListener([this]() { \
 		this->drawFront(); \
-	}
+	}));
 #define ENTROPY_SCENE_GUI_LISTENER \
-	this->onGui += [this](ofxPreset::GuiSettings & settings) { \
+	onGuiListeners.push_back(this->onGui.newListener([this](ofxPreset::GuiSettings & settings) { \
 		this->gui(settings); \
-	}
+	}));
 #define ENTROPY_SCENE_SERIALIZATION_LISTENERS \
-	this->onSerialize += [this](nlohmann::json & json) { \
+	onSerializeListeners.push_back(this->onSerialize.newListener([this](nlohmann::json & json) { \
 		this->serialize(json); \
-	}; \
-	this->onDeserialize += [this](const nlohmann::json & json) { \
+	})); \
+	onDeserializeListeners.push_back(this->onDeserialize.newListener([this](const nlohmann::json & json) { \
 		this->deserialize(json); \
-	}
+	}));
 
 namespace entropy
 {
@@ -87,19 +86,33 @@ namespace entropy
 			void drawFront();
 
 			// Events
-			ofxLiquidEvent<void> onSetup;
-			ofxLiquidEvent<void> onExit;
+			ofEvent<void> onSetup;
+			ofEvent<void> onExit;
 
-			ofxLiquidEvent<void> onUpdate;
+			ofEvent<double> onUpdate;
 
-			ofxLiquidEvent<void> onDrawBack;
-			ofxLiquidEvent<void> onDrawWorld;
-			ofxLiquidEvent<void> onDrawFront;
+			ofEvent<void> onDrawBack;
+			ofEvent<void> onDrawWorld;
+			ofEvent<void> onDrawFront;
 
-			ofxLiquidEvent<ofxPreset::GuiSettings> onGui;
+			ofEvent<ofxPreset::GuiSettings> onGui;
 
-			ofxLiquidEvent<nlohmann::json> onSerialize;
-			ofxLiquidEvent<const nlohmann::json> onDeserialize;
+			ofEvent<nlohmann::json> onSerialize;
+			ofEvent<const nlohmann::json> onDeserialize;
+
+			vector<ofEventListener> onSetupListeners;
+			vector<ofEventListener> onExitListeners;
+
+			vector<ofEventListener> onUpdateListeners;
+
+			vector<ofEventListener> onDrawBackListeners;
+			vector<ofEventListener> onDrawWorldListeners;
+			vector<ofEventListener> onDrawFrontListeners;
+
+			vector<ofEventListener> onGuiListeners;
+
+			vector<ofEventListener> onSerializeListeners;
+			vector<ofEventListener> onDeserializeListeners;
 
 			// Resources
 			void populatePresets();

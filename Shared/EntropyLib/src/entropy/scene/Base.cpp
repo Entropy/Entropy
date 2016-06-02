@@ -28,7 +28,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setup()
 		{
-			this->onSetup.notifyListeners();
+			this->onSetup.notify();
 
 			// Load presets.
 			this->currPreset.clear();
@@ -50,21 +50,10 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::exit()
 		{
-			this->onExit.notifyListeners();
+			this->onExit.notify();
 
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
-			
-			// Remove all listeners.
-			this->onSetup.removeListeners(nullptr);
-			this->onExit.removeListeners(nullptr);
-			this->onUpdate.removeListeners(nullptr);
-			this->onDrawBack.removeListeners(nullptr);
-			this->onDrawWorld.removeListeners(nullptr);
-			this->onDrawFront.removeListeners(nullptr);
-			this->onGui.removeListeners(nullptr);
-			this->onSerialize.removeListeners(nullptr);
-			this->onDeserialize.removeListeners(nullptr);
 		}
 
 		//--------------------------------------------------------------
@@ -75,7 +64,8 @@ namespace entropy
 				mapping.second->update();
 			}
 			
-			this->onUpdate.notifyListeners();
+			auto dt = ofGetLastFrameTime();
+			this->onUpdate.notify(dt);
 		}
 
 		//--------------------------------------------------------------
@@ -106,7 +96,7 @@ namespace entropy
 		{
 			ofBackground(this->getParameters().base.background.get());
 
-			this->onDrawBack.notifyListeners();
+			this->onDrawBack.notify();
 		}
 
 		//--------------------------------------------------------------
@@ -114,7 +104,7 @@ namespace entropy
 		{
 			this->getCamera().begin();
 			{
-				this->onDrawWorld.notifyListeners();
+				this->onDrawWorld.notify();
 			}
 			this->getCamera().end();
 		}
@@ -122,7 +112,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::drawFront()
 		{
-			this->onDrawFront.notifyListeners();
+			this->onDrawFront.notify();
 		}
 
 		//--------------------------------------------------------------
@@ -206,7 +196,7 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
-			this->onGui.notifyListeners(settings);
+			this->onGui.notify(settings);
 		}
 
 		//--------------------------------------------------------------
@@ -214,7 +204,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters()); 
 			
-			this->onSerialize.notifyListeners(json);
+			this->onSerialize.notify(json);
 
 			auto & jsonGroup = json["Mappings"];
 			for (auto it : this->mappings)
@@ -228,7 +218,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters()); 
 			
-			this->onDeserialize.notifyListeners(json);
+			this->onDeserialize.notify(json);
 
 			for (auto it : this->mappings)
 			{
