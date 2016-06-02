@@ -148,7 +148,12 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Presets", settings))
 			{
-				if (ImGui::Button("Save..."))
+				if (ImGui::Button("Save"))
+				{
+					this->savePreset(this->currPreset);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Save As..."))
 				{
 					auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
 					if (!name.empty())
