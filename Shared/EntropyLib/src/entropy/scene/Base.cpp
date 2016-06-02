@@ -210,6 +210,7 @@ namespace entropy
 		void Base::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters()); 
+			ofxPreset::Serializer::Serialize(json, this->getCamera(), "camera");
 			
 			this->onSerialize.notify(json);
 
@@ -224,7 +225,8 @@ namespace entropy
 		void Base::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters()); 
-			
+			ofxPreset::Serializer::Deserialize(json, this->getCamera(), "camera");
+
 			this->onDeserialize.notify(json);
 
 			for (auto & it : this->mappings)
@@ -286,6 +288,10 @@ namespace entropy
 				ofLogWarning("Base::loadPreset") << "File not found at path " << presetPath;
 				return false;
 			}
+
+			// Disable auto distance so that it doesn't interfere with the camera matrix.
+			// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.
+			this->camera.setAutoDistance(false);
 
 			auto paramsPath = presetPath;
 			paramsPath.append("parameters.json");
