@@ -104,7 +104,7 @@ namespace entropy
 
 			if (page->getTrack(pageTrackName))
 			{
-				ofLogWarning("Mapping::addTrack") << "Track for ofParameter " << this->trackName << " already exists!";
+				//ofLogWarning("Mapping::addTrack") << "Track for ofParameter " << this->trackName << " already exists!";
 				return;
 			}
 
@@ -156,7 +156,7 @@ namespace entropy
 		{
 			if (!this->track)
 			{
-				ofLogWarning("Mapping::removeTrack") << "Track for ofParameter " << this->trackName << " does not exist!";
+				//ofLogWarning("Mapping::removeTrack") << "Track for ofParameter " << this->trackName << " does not exist!";
 				return;
 			}
 			

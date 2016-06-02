@@ -29,11 +29,9 @@ namespace entropy
 		void Base::setup()
 		{
 			this->onSetup.notify();
-
-			// Load presets.
-			this->currPreset.clear();
+			
+			// List presets.
 			this->populatePresets();
-			this->loadPreset(kPresetDefaultName);
 
 			// Setup timeline.
 			this->timeline.setup();
@@ -43,8 +41,12 @@ namespace entropy
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(this->getParameters().base.getName());
 
-			// Populate
+			// List mappings.
 			this->populateMappings(this->getParameters());
+
+			// Load default preset.
+			this->currPreset.clear();
+			this->loadPreset(kPresetDefaultName);
 		}
 
 		//--------------------------------------------------------------
@@ -59,9 +61,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update()
 		{
-			for (auto mapping : this->mappings)
+			for (auto & it : this->mappings)
 			{
-				mapping.second->update();
+				it.second->update();
 			}
 			
 			auto dt = ofGetLastFrameTime();
@@ -170,7 +172,7 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Mappings", settings))
 			{
-				for (auto it : this->mappings)
+				for (auto & it : this->mappings)
 				{
 					auto mapping = it.second;
 					if (ofxPreset::Gui::AddParameter(mapping->animated))
@@ -207,7 +209,7 @@ namespace entropy
 			this->onSerialize.notify(json);
 
 			auto & jsonGroup = json["Mappings"];
-			for (auto it : this->mappings)
+			for (auto & it : this->mappings)
 			{
 				ofxPreset::Serializer::Serialize(jsonGroup, it.second->animated);
 			}
@@ -220,14 +222,14 @@ namespace entropy
 			
 			this->onDeserialize.notify(json);
 
-			for (auto it : this->mappings)
+			for (auto & it : this->mappings)
 			{
 				it.second->animated.set(false);
 			}
 			if (json.count("Mappings"))
 			{
 				auto & jsonGroup = json["Mappings"];
-				for (auto it : this->mappings)
+				for (auto & it : this->mappings)
 				{
 					ofxPreset::Serializer::Deserialize(jsonGroup, it.second->animated);
 				}

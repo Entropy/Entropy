@@ -68,7 +68,7 @@ namespace entropy
 			{
 				return this->scenes.at(name);
 			}
-			catch (const std::out_of_range & oor)
+			catch (const out_of_range &)
 			{
 				ofLogError("Manager::getScene") << "Scene with name " << name << " does not exist!";
 				return nullptr;
