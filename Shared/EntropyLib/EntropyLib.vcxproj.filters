@@ -54,12 +54,6 @@
     <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{edb91414-bf8c-4939-973b-8b9d9c4ead0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxLiquidEvent">
-      <UniqueIdentifier>{aa492637-93ca-4f5d-894b-29057da0a83b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxLiquidEvent\src">
-      <UniqueIdentifier>{a46def9f-4b6b-407d-a6e9-52f62beff6fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxPreset">
       <UniqueIdentifier>{2f841b8f-565b-4686-b38f-04c619dbbc78}</UniqueIdentifier>
     </Filter>
@@ -115,9 +109,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxLiquidEvent\src\ofxLiquidEvent.h">
-      <Filter>addons\ofxLiquidEvent\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset.h">
       <Filter>addons\ofxPreset\src</Filter>
