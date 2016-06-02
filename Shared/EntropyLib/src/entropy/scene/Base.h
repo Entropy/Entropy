@@ -80,6 +80,13 @@ namespace entropy
 			void toggleOverlayVisible();
 			bool isOverlayVisible() const;
 
+			// Timeline
+			void setCameraLocked(bool cameraLocked);
+			void toggleCameraLocked();
+			bool isCameraLocked() const;
+
+			void addCameraKeyframe();
+
 		protected:
 			void drawBack();
 			void drawWorld();
@@ -141,6 +148,7 @@ namespace entropy
 			ofxPreset::GuiSettings guiSettings;
 
 			ofxTimeline timeline;
+			ofxTLCameraTrack * cameraTrack;
 			map<string, shared_ptr<AbstractMapping>> mappings;
 
 		private:

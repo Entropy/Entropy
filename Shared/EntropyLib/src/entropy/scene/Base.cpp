@@ -41,6 +41,15 @@ namespace entropy
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(this->getParameters().base.getName());
 
+			const auto trackName = "Camera";
+			const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
+			this->cameraTrack = new ofxTLCameraTrack();
+			this->cameraTrack->setCamera(this->getCamera());
+			this->cameraTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
+			this->timeline.addTrack(trackIdentifier, this->cameraTrack);
+			this->cameraTrack->setDisplayName(trackName);
+			this->cameraTrack->lockCameraToTrack = false;
+
 			// List mappings.
 			this->populateMappings(this->getParameters());
 
@@ -431,6 +440,30 @@ namespace entropy
 		bool Base::isOverlayVisible() const
 		{
 			return this->overlayVisible;
+		}
+
+		//--------------------------------------------------------------
+		void Base::setCameraLocked(bool cameraLocked)
+		{
+			this->cameraTrack->lockCameraToTrack = cameraLocked;
+		}
+
+		//--------------------------------------------------------------
+		void Base::toggleCameraLocked()
+		{
+			this->cameraTrack->lockCameraToTrack ^= 1;
+		}
+
+		//--------------------------------------------------------------
+		bool Base::isCameraLocked() const
+		{
+			return this->cameraTrack->lockCameraToTrack;
+		}
+
+		//--------------------------------------------------------------
+		void Base::addCameraKeyframe()
+		{
+			this->cameraTrack->addKeyframe();
 		}
 	}
 }

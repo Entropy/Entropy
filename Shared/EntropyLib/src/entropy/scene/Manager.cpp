@@ -163,21 +163,29 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Manager::keyPressed(ofKeyEventArgs & args)
 		{
-			switch (args.key)
+			if (args.key == OF_KEY_TAB)
 			{
-			case '`':
-				if (this->currentScene)
-				{
-					this->currentScene->toggleOverlayVisible();
-				}
-				break;
-
-			case OF_KEY_TAB:
 				ofToggleFullscreen();
-				break;
+			}
+			else if (this->currentScene)
+			{
+				switch (args.key)
+				{
+				case '`':
+					this->currentScene->toggleOverlayVisible();
+					break;
 
-			default:
-				break;
+				case 'L':
+					this->currentScene->toggleCameraLocked();
+					break;
+
+				case 'T':
+					this->currentScene->addCameraKeyframe();
+					break;
+
+				default:
+					break;
+				}
 			}
 		}
 	}
