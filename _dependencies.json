@@ -5,7 +5,7 @@
 		"source": "https://github.com/Entropy/openFrameworks.git",
 		"branch": "project/entropy"
 	},
-	"addons": 
+	"addons":
 	[
 		{
 			"name": "ofxHDF5",
@@ -23,8 +23,33 @@
 			"branch": "master"
 		},
 		{
+			"name": "ofxMSATimer",
+			"source": "https://github.com/Entropy/ofxMSATimer.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxPreset",
+			"source": "https://github.com/Entropy/ofxPreset.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxRange",
+			"source": "https://github.com/Entropy/ofxRange.git",
+			"branch": "master"
+		},
+		{
 			"name": "ofxSet",
 			"source": "https://github.com/Entropy/ofxSet.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxTextInputField",
+			"source": "https://github.com/Entropy/ofxTextInputField.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxTimecode",
+			"source": "https://github.com/Entropy/ofxTimecode.git",
 			"branch": "master"
 		},
 		{
@@ -33,9 +58,19 @@
 			"branch": "fix-deprecated"
 		},
 		{
+			"name": "ofxTween",
+			"source": "https://github.com/Entropy/ofxTween.git",
+			"branch": "fix-deprecated"
+		},
+		{
 			"name": "ofxVolumetrics",
 			"source": "https://github.com/Entropy/ofxVolumetrics.git",
 			"branch": "feature-refactor"
+		},
+		{
+			"name": "ofxWarp",
+			"source": "https://github.com/Entropy/ofxWarp.git",
+			"branch": "master"
 		}
 	]
 }
