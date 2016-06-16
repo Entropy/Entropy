@@ -34,6 +34,9 @@
     <ClCompile Include="src\entropy\scene\Template.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\util\App.cpp">
+      <Filter>src\entropy\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -138,6 +141,9 @@
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\util\Singleton.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\App.h">
       <Filter>src\entropy\util</Filter>
     </ClInclude>
   </ItemGroup>

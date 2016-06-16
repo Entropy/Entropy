@@ -1,5 +1,7 @@
 #include "Base.h"
 
+#include "entropy/util/App.h"
+
 namespace entropy
 {
 	namespace scene
@@ -14,16 +16,11 @@ namespace entropy
 			
 		//--------------------------------------------------------------
 		Base::Base()
-		{
-			this->imgui.setup();
-			this->overlayVisible = true;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Base::~Base()
-		{
-			
-		}
+		{}
 
 		//--------------------------------------------------------------
 		void Base::setup()
@@ -68,14 +65,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::update()
 		{
+		void Base::update(double dt)
+		{
+			if (GetApp()->isMouseOverGui())
+			{
+				this->camera.disableMouseInput();
+			}
+			else
+			{
+				this->camera.enableMouseInput();
+			}
+			
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
 			}
 			
-			auto dt = ofGetLastFrameTime();
 			this->onUpdate.notify(dt);
 		}
 
@@ -85,21 +91,6 @@ namespace entropy
 			this->drawBack();
 			this->drawWorld();
 			this->drawFront();
-
-			this->guiSettings.mouseOverGui = false;
-			if (this->overlayVisible)
-			{
-				this->drawOverlay();
-			}
-
-			if (this->guiSettings.mouseOverGui)
-			{
-				this->camera.disableMouseInput();
-			}
-			else /*if (this->parameters.camera.mouseEnabled)*/
-			{
-				this->camera.enableMouseInput();
-			}
 		}
 
 		//--------------------------------------------------------------
@@ -127,32 +118,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawOverlay()
+		void Base::drawTimeline(ofxPreset::GuiSettings & settings)
 		{
-			this->imgui.begin(); 
-			{
-				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
-				this->guiSettings.windowSize = ofVec2f::zero(); 
-				
-				this->gui(this->guiSettings);
-			}
-			this->imgui.end();
-
 			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
 			this->timeline.draw();
-			this->guiSettings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 
 		//--------------------------------------------------------------
 		void Base::gui(ofxPreset::GuiSettings & settings)
 		{
 			auto & parameters = this->getParameters();
-
-			if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
-			{
-				ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-			}
-			ofxPreset::Gui::EndWindow(this->guiSettings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Presets", settings))
@@ -425,24 +401,6 @@ namespace entropy
 					mapping->removeTrack(this->timeline);
 				}
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::setOverlayVisible(bool overlayVisible)
-		{
-			this->overlayVisible = overlayVisible;
-		}
-
-		//--------------------------------------------------------------
-		void Base::toggleOverlayVisible()
-		{
-			this->overlayVisible ^= 1;
-		}
-
-		//--------------------------------------------------------------
-		bool Base::isOverlayVisible() const
-		{
-			return this->overlayVisible;
 		}
 
 		//--------------------------------------------------------------

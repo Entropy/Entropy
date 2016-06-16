@@ -59,7 +59,7 @@ namespace entropy
 			void setup();
 			void exit();
 
-			void update();
+			void update(double dt);
 			void draw();
 
 			// Parameters
@@ -75,12 +75,9 @@ namespace entropy
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
-			// Overlays
-			void setOverlayVisible(bool overlayVisible);
-			void toggleOverlayVisible();
-			bool isOverlayVisible() const;
-
 			// Timeline
+			void drawTimeline(ofxPreset::GuiSettings & settings);
+
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
 			bool isCameraLocked() const;
@@ -144,22 +141,15 @@ namespace entropy
 
 			virtual BaseParameters & getParameters() = 0;
 
-			// Overlays
-			ofxPreset::GuiSettings guiSettings;
-
+			// Timeline
 			ofxTimeline timeline;
 			ofxTLCameraTrack * cameraTrack;
 			map<string, shared_ptr<AbstractMapping>> mappings;
 
 		private:
-			// Overlays
-			void drawOverlay();
-
+			// Timeline
 			void populateMappings(const ofParameterGroup & group, string name = "");
 			void refreshMappings();
-
-			ofxImGui imgui;
-			bool overlayVisible;
 
 			// Camera
 			ofEasyCam camera;

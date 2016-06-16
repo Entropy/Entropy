@@ -2,19 +2,17 @@
 
 #include "ofMain.h"
 
-#include "../util/Singleton.h"
-
 #include "Base.h"
 
 namespace entropy
 {
 	namespace scene
 	{
-		class Manager_
+		class Manager
 		{
 		public:
-			Manager_();
-			~Manager_();
+			Manager();
+			~Manager();
 
 			bool addScene(shared_ptr<Base> scene);
 			bool removeScene(shared_ptr<Base> scene);
@@ -30,17 +28,17 @@ namespace entropy
 
 			bool setCurrentScene(const string & name);
 
-		protected:
-			// OF
-			void update(ofEventArgs & args);
-			void draw(ofEventArgs & args);
-			void keyPressed(ofKeyEventArgs & args);
+			void update(double dt);
 
-			// Scenes
+			void drawScene();
+			void drawGui(ofxPreset::GuiSettings & settings);
+			void drawOverlay(ofxPreset::GuiSettings & settings);
+
+			bool keyPressed(ofKeyEventArgs & args);
+
+		protected:
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;
 		};
-
-		typedef entropy::util::Singleton<Manager_> Manager;
 	}
 }

@@ -1,20 +1,23 @@
 #include "ofApp.h"
 
-#include "entropy/scene/Manager.h"
+#include "entropy/util/App.h"
 #include "entropy/scene/Template.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	// Add Scenes to Manager.
+	auto sceneManager = entropy::GetSceneManager();
 	auto sceneTemplate = make_shared<entropy::scene::Template>();
-	entropy::scene::Manager::X()->addScene(sceneTemplate);
-	entropy::scene::Manager::X()->setCurrentScene(sceneTemplate->getName());
+	sceneManager->addScene(sceneTemplate);
+	sceneManager->setCurrentScene(sceneTemplate->getName());
 }
 
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	entropy::scene::Manager::Destroy();
+	// TODO: Figure out why just letting the destructor do its thing crashes the app.
+	entropy::util::App::Destroy();
 }
 
 //--------------------------------------------------------------
