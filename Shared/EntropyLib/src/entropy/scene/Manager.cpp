@@ -5,21 +5,21 @@ namespace entropy
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		Manager::Manager()
+		Manager_::Manager_()
 		{
 			// Register OF events.
-			ofAddListener(ofEvents().update, this, &Manager::update);
-			ofAddListener(ofEvents().draw, this, &Manager::draw);
-			ofAddListener(ofEvents().keyPressed, this, &Manager::keyPressed);
+			ofAddListener(ofEvents().update, this, &Manager_::update);
+			ofAddListener(ofEvents().draw, this, &Manager_::draw);
+			ofAddListener(ofEvents().keyPressed, this, &Manager_::keyPressed);
 		}
 
 		//--------------------------------------------------------------
-		Manager::~Manager()
+		Manager_::~Manager_()
 		{
 			// Unregister OF events.
-			ofRemoveListener(ofEvents().update, this, &Manager::update);
-			ofRemoveListener(ofEvents().draw, this, &Manager::draw);
-			ofRemoveListener(ofEvents().keyPressed, this, &Manager::keyPressed);
+			ofRemoveListener(ofEvents().update, this, &Manager_::update);
+			ofRemoveListener(ofEvents().draw, this, &Manager_::draw);
+			ofRemoveListener(ofEvents().keyPressed, this, &Manager_::keyPressed);
 
 			// Clear scenes.
 			if (this->currentScene)
@@ -31,7 +31,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::addScene(shared_ptr<Base> scene)
+		bool Manager_::addScene(shared_ptr<Base> scene)
 		{
 			if (this->scenes.find(scene->getName()) == this->scenes.end())
 			{
@@ -44,13 +44,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::removeScene(shared_ptr<Base> scene)
+		bool Manager_::removeScene(shared_ptr<Base> scene)
 		{
 			return this->removeScene(scene->getName());
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::removeScene(const string & name)
+		bool Manager_::removeScene(const string & name)
 		{
 			if (this->scenes.erase(name))
 			{
@@ -62,7 +62,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<Base> Manager::getScene(const string & name)
+		shared_ptr<Base> Manager_::getScene(const string & name)
 		{
 			try
 			{
@@ -77,7 +77,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		template<typename SceneType>
-		shared_ptr<SceneType> Manager::getScene(const string & name)
+		shared_ptr<SceneType> Manager_::getScene(const string & name)
 		{
 			auto scene = this->getScene(name);
 			if (scene)
@@ -93,7 +93,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<Base> Manager::getCurrentScene()
+		shared_ptr<Base> Manager_::getCurrentScene()
 		{
 			return this->currentScene;
 		}
@@ -115,7 +115,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::setCurrentScene(const string & name)
+		bool Manager_::setCurrentScene(const string & name)
 		{
 			if (this->currentScene)
 			{
@@ -134,7 +134,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::update(ofEventArgs & args)
+		void Manager_::update(ofEventArgs & args)
 		{
 			if (this->currentScene)
 			{
@@ -152,7 +152,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::draw(ofEventArgs & args)
+		void Manager_::draw(ofEventArgs & args)
 		{
 			if (this->currentScene)
 			{
@@ -161,7 +161,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::keyPressed(ofKeyEventArgs & args)
+		void Manager_::keyPressed(ofKeyEventArgs & args)
 		{
 			if (args.key == OF_KEY_TAB)
 			{

@@ -204,6 +204,7 @@
     <ClInclude Include="src\entropy\scene\Manager.h" />
     <ClInclude Include="src\entropy\scene\Mapping.h" />
     <ClInclude Include="src\entropy\scene\Template.h" />
+    <ClInclude Include="src\entropy\util\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />

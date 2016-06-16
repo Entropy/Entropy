@@ -2,17 +2,19 @@
 
 #include "ofMain.h"
 
+#include "../util/Singleton.h"
+
 #include "Base.h"
 
 namespace entropy
 {
 	namespace scene
 	{
-		class Manager
+		class Manager_
 		{
 		public:
-			Manager();
-			~Manager();
+			Manager_();
+			~Manager_();
 
 			bool addScene(shared_ptr<Base> scene);
 			bool removeScene(shared_ptr<Base> scene);
@@ -38,5 +40,7 @@ namespace entropy
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;
 		};
+
+		typedef entropy::util::Singleton<Manager_> Manager;
 	}
 }

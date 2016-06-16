@@ -72,6 +72,9 @@
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy\util">
+      <UniqueIdentifier>{68525d5f-fa32-44f4-aabe-d53e252fd0c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\scene\Mapping.h">
       <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\Singleton.h">
+      <Filter>src\entropy\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
