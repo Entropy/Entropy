@@ -1,6 +1,6 @@
 #include "Base.h"
 
-#include "entropy/util/App.h"
+#include "entropy/Helpers.h"
 
 namespace entropy
 {

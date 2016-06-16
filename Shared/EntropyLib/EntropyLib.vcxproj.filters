@@ -155,6 +155,9 @@
     <ClInclude Include="src\entropy\util\App.h">
       <Filter>src\entropy\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\Helpers.h">
+      <Filter>src\entropy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">

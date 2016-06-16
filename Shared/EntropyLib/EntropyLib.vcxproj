@@ -202,6 +202,7 @@
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h" />
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
+    <ClInclude Include="src\entropy\Helpers.h" />
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />

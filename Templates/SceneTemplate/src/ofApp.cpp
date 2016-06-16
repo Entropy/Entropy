@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-#include "entropy/util/App.h"
+#include "entropy/Helpers.h"
 #include "entropy/scene/Template.h"
 
 //--------------------------------------------------------------
