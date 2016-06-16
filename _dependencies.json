@@ -60,7 +60,7 @@
 		{
 			"name": "ofxTween",
 			"source": "https://github.com/Entropy/ofxTween.git",
-			"branch": "fix-deprecated"
+			"branch": "master"
 		},
 		{
 			"name": "ofxVolumetrics",
