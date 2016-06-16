@@ -7,6 +7,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		App_::App_()
 		{
+			this->canvas = make_shared<entropy::render::Canvas>();
 			this->sceneManager = make_shared<entropy::scene::Manager>();
 
 			this->imGui.setup();
@@ -26,8 +27,17 @@ namespace entropy
 			ofRemoveListener(ofEvents().draw, this, &App_::draw);
 			ofRemoveListener(ofEvents().keyPressed, this, &App_::keyPressed);
 
+			this->imGui.close();
+
 			// Reset pointers.
+			this->canvas.reset();
 			this->sceneManager.reset();
+		}
+
+		//--------------------------------------------------------------
+		shared_ptr<entropy::render::Canvas> App_::getCanvas()
+		{
+			return this->canvas;
 		}
 
 		//--------------------------------------------------------------
@@ -68,7 +78,13 @@ namespace entropy
 		void App_::draw(ofEventArgs & args)
 		{
 			// Draw the content.
-			this->sceneManager->drawScene();
+			this->canvas->begin();
+			{
+				this->sceneManager->drawScene();
+			}
+			this->canvas->end();
+
+			this->canvas->draw();
 
 			if (!this->overlayVisible) return;
 

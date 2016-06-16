@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 
+#include "entropy/render/Canvas.h"
 #include "entropy/scene/Manager.h"
 #include "entropy/util/Singleton.h"
 
@@ -15,6 +16,7 @@ namespace entropy
 			App_();
 			~App_();
 
+			shared_ptr<entropy::render::Canvas> getCanvas();
 			shared_ptr<entropy::scene::Manager> getSceneManager();
 
 			bool isMouseOverGui() const;
@@ -26,6 +28,7 @@ namespace entropy
 			void keyPressed(ofKeyEventArgs & args);
 
 		protected:
+			shared_ptr<entropy::render::Canvas> canvas;
 			shared_ptr<entropy::scene::Manager> sceneManager;
 
 			ofxImGui imGui;
