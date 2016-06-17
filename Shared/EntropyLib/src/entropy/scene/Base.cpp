@@ -247,7 +247,7 @@ namespace entropy
 			if (this->dataPath.empty())
 			{
 				auto tokens = ofSplitString(this->getName(), "::", true, true);
-				auto dataPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data"));
+				auto dataPath = GetSharedDataPath();
 				for (auto & component : tokens)
 				{
 					dataPath = ofFilePath::addTrailingSlash(dataPath.append(component));

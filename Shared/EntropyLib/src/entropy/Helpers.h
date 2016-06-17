@@ -33,4 +33,15 @@ namespace entropy
 	{
 		return GetCanvas()->getHeight();
 	}
+
+	//--------------------------------------------------------------
+	inline string GetSharedDataPath()
+	{
+		static string dataPath;
+		if (dataPath.empty())
+		{
+			dataPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data"));
+		}
+		return dataPath;
+	}
 }
