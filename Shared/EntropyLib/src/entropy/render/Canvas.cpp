@@ -135,7 +135,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::addWarp(ofxWarp::WarpBase::Type type)
+		shared_ptr<ofxWarp::WarpBase> Canvas::addWarp(ofxWarp::WarpBase::Type type)
 		{
 			shared_ptr<ofxWarp::WarpBase> warp;
 			string typeName;
@@ -157,7 +157,7 @@ namespace entropy
 			else
 			{
 				ofLogError("Canvas::addWarp") << "Unrecognized warp type " << type;
-				return;
+				return nullptr;
 			}
 
 			warp->setSize(this->getWidth(), this->getHeight());
@@ -173,6 +173,8 @@ namespace entropy
 			this->openGuis[idx] = false;
 
 			this->updateStitches();
+
+			return warp;
 		}
 		
 		//--------------------------------------------------------------
@@ -467,34 +469,27 @@ namespace entropy
 		{
 			// Deserialize the warps.
 			this->warps.clear();
+			this->warpParameters.clear();
 			for (auto & jsonWarp : json["warps"])
 			{
-				shared_ptr<ofxWarp::WarpBase> warp;
-
 				int typeAsInt = jsonWarp["type"];
 				ofxWarp::WarpBase::Type type = (ofxWarp::WarpBase::Type)typeAsInt;
-				switch (type)
-				{
-				case ofxWarp::WarpBase::TYPE_BILINEAR:
-					warp = make_shared<ofxWarp::WarpBilinear>();
-					break;
-
-				case ofxWarp::WarpBase::TYPE_PERSPECTIVE:
-					warp = make_shared<ofxWarp::WarpPerspective>();
-					break;
-
-				case ofxWarp::WarpBase::TYPE_PERSPECTIVE_BILINEAR:
-					warp = make_shared<ofxWarp::WarpPerspectiveBilinear>();
-					break;
-
-				default:
-					ofLogWarning("Canvas::deserialize") << "Unrecognized Warp type " << type;
-				}
-
+				
+				auto warp = this->addWarp(type);
 				if (warp)
 				{
 					warp->deserialize(jsonWarp);
-					this->warps.push_back(warp);
+
+					// Sync warp with corresponding parameter group.
+					auto & warpParams = warpParameters.back();
+					warpParams.brightness = warp->getBrightness();
+
+					if (warp->getType() != ofxWarp::WarpBase::TYPE_PERSPECTIVE)
+					{
+						auto warpBilinear = dynamic_pointer_cast<ofxWarp::WarpBilinear>(warp);
+						warpParams.adaptive.set(warpBilinear->getAdaptive());
+						warpParams.linear.set(warpBilinear->getLinear());
+					}
 				}
 			}
 

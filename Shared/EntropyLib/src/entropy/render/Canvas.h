@@ -29,7 +29,7 @@ namespace entropy
 			bool getFillWindow() const;
 			void setFillWindow(bool fillWindow);
 
-			void addWarp(ofxWarp::WarpBase::Type type);
+			shared_ptr<ofxWarp::WarpBase> addWarp(ofxWarp::WarpBase::Type type);
 			void removeWarp();
 
 			bool isEditing() const;
