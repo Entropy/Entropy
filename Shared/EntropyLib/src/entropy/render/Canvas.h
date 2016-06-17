@@ -32,8 +32,6 @@ namespace entropy
 			void addWarp(ofxWarp::WarpBase::Type type);
 			void removeWarp();
 
-			void updateStitches();
-
 			bool isEditing() const;
 
 			void drawGui(ofxPreset::GuiSettings & settings);
@@ -48,9 +46,9 @@ namespace entropy
 
 			bool selectClosestControlPoint(const ofVec2f & pos);
 
-			bool cursorMoved(ofVec2f & pos);
-			bool cursorDown(ofVec2f & pos);
-			bool cursorDragged(ofVec2f & pos);
+			bool cursorMoved(const ofVec2f & pos);
+			bool cursorDown(const ofVec2f & pos);
+			bool cursorDragged(const ofVec2f & pos);
 
 			bool keyPressed(ofKeyEventArgs & args);
 
@@ -59,6 +57,11 @@ namespace entropy
 			ofEvent<ofResizeEventArgs> resizeEvent;
 
 			static const int MAX_NUM_WARPS = 8;
+
+		protected:
+			void updateSize();
+
+			void updateStitches();
 
 		protected:
 			struct WarpParameters

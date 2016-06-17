@@ -92,12 +92,7 @@ namespace entropy
 			if (this->fbo.getWidth() == width) return;
 
 			this->fboSettings.width = width;
-			this->fbo.allocate(this->fboSettings);
-
-			ofResizeEventArgs args;
-			args.width = this->fbo.getWidth();
-			args.height = this->fbo.getHeight();
-			this->resizeEvent.notify(args);
+			this->updateSize();
 		}
 
 		//--------------------------------------------------------------
@@ -106,8 +101,21 @@ namespace entropy
 			if (this->fbo.getHeight() == height) return;
 
 			this->fboSettings.height = height;
+			this->updateSize();
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::updateSize()
+		{
 			this->fbo.allocate(this->fboSettings);
 
+			// Update all existing warps.
+			for (auto warp : this->warps)
+			{
+				warp->setSize(this->getWidth(), this->getHeight());
+			}
+
+			// Notify any listeners.
 			ofResizeEventArgs args;
 			args.width = this->fbo.getWidth();
 			args.height = this->fbo.getHeight();
@@ -152,6 +160,8 @@ namespace entropy
 				return;
 			}
 
+			warp->setSize(this->getWidth(), this->getHeight());
+
 			this->warps.push_back(warp);
 
 			auto idx = this->warps.size() - 1;
@@ -195,7 +205,6 @@ namespace entropy
 			{
 				// Take up all the entire area.
 				const auto areaSize = ofVec2f(this->getWidth(), this->getHeight());
-				this->warps[0]->setSize(areaSize);
 				this->srcAreas[0] = ofRectangle(0.0f, 0.0f, areaSize.x, areaSize.y);
 			}
 			else
@@ -205,7 +214,6 @@ namespace entropy
 				auto currX = 0.0f;
 				for (auto i = 0; i < numWarps; ++i)
 				{
-					this->warps[i]->setSize(areaSize);
 					this->srcAreas[i] = ofRectangle(currX, 0.0f, areaSize.x, areaSize.y);
 					currX = currX + areaSize.x - this->overlaps[i];
 				}
@@ -557,7 +565,7 @@ namespace entropy
 		{
 			size_t warpIdx = -1;
 			size_t pointIdx = -1;
-			static const auto maxDistance = 25.0f;
+			static const auto maxDistance = numeric_limits<float>::max();
 			auto distance = maxDistance;
 
 			// Find warp and distance to closest control point.
@@ -597,13 +605,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorMoved(ofVec2f & pos)
+		bool Canvas::cursorMoved(const ofVec2f & pos)
 		{
 			return this->selectClosestControlPoint(pos);
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorDown(ofVec2f & pos)
+		bool Canvas::cursorDown(const ofVec2f & pos)
 		{
 			this->selectClosestControlPoint(pos);
 
@@ -616,7 +624,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorDragged(ofVec2f & pos)
+		bool Canvas::cursorDragged(const ofVec2f & pos)
 		{
 			if (this->focusedIndex < this->warps.size())
 			{
@@ -698,9 +706,7 @@ namespace entropy
 
 				this->fboSettings.width = args.width;
 				this->fboSettings.height = args.height;
-				this->fbo.allocate(this->fboSettings);
-
-				this->resizeEvent.notify(args);
+				this->updateSize();
 			}
 			else
 			{
