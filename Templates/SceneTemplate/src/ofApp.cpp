@@ -6,6 +6,8 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofBackground(ofColor::black);
+
 	// Add Scenes to Manager.
 	auto sceneManager = entropy::GetSceneManager();
 	auto sceneTemplate = make_shared<entropy::scene::Template>();
