@@ -191,7 +191,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onWindowResized(ofResizeEventArgs & args)
 		{
-
+			this->canvas->windowResized(args);
 		}
 	}
 }
