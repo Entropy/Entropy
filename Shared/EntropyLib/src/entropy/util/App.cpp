@@ -111,7 +111,7 @@ namespace entropy
 			// Draw the gui.
 			this->imGui.begin();
 			{
-				this->guiSettings.mouseOverGui = false;
+				this->guiSettings.mouseOverGui = this->canvas->isEditing();
 				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
 				this->guiSettings.windowSize = ofVec2f::zero();
 
@@ -141,6 +141,10 @@ namespace entropy
 			if (args.key == '`')
 			{
 				this->overlayVisible ^= 1;
+			}
+			if (this->canvas->keyPressed(args))
+			{
+				return;
 			}
 			if (this->sceneManager->keyPressed(args))
 			{
