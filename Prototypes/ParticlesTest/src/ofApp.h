@@ -26,5 +26,6 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+private:
 	unique_ptr<entropy::scene::Manager> sceneManager;
 };

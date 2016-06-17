@@ -28,6 +28,21 @@ namespace entropy
 			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
+
+			particleSystem.init(1600, 1600, 1600);
+
+			for (int i = 0; i < 20000; ++i)
+			{
+				float mass = ofRandom(0.01f, 0.1f);
+				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);
+
+				particleSystem.addParticle(
+					ofVec3f(ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f)),
+					ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f)),
+					mass, 
+					radius
+				);
+			}
 		}
 		
 		//--------------------------------------------------------------
@@ -41,10 +56,17 @@ namespace entropy
 		// Update your data here, once per frame.
 		void ParticlesTestScene::update(double & dt)
 		{
-			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
+			/*if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
 			{
 				this->sphere.set(this->parameters.sphere.radius, this->parameters.sphere.resolution);
+			}*/
+
+			if (ofGetFrameNum() % 2 == 0)
+			{
+				particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
 			}
+
+			particleSystem.update();
 		}
 
 		//--------------------------------------------------------------
@@ -58,6 +80,12 @@ namespace entropy
 		// Draw 3D elements here.
 		void ParticlesTestScene::drawWorld()
 		{
+			cam.begin();
+			particleSystem.debugDrawWorldBounds();
+			particleSystem.debugDrawParticles();
+			cam.end();
+
+			/*
 			ofPushStyle();
 			{
 				ofSetColor(this->parameters.sphere.color.get());
@@ -71,6 +99,7 @@ namespace entropy
 				}
 			}
 			ofPopStyle();
+			*/
 		}
 
 		//--------------------------------------------------------------

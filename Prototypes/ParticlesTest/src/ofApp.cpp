@@ -19,8 +19,9 @@ void ofApp::exit()
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
+void ofApp::update()
+{
+	ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
 }
 
 //--------------------------------------------------------------

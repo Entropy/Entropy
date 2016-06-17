@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entropy/scene/Base.h"
+#include "ParticleSystem.h"
 
 namespace entropy
 {
@@ -12,7 +13,7 @@ namespace entropy
 		public:
 			virtual string getName() const override 
 			{
-				return "entropy::scene::Template";
+				return "entropy::scene::ParticlesTestScene";
 			}
 
 			ParticlesTestScene();
@@ -33,7 +34,10 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			ofSpherePrimitive sphere;
+			ParticleSystem particleSystem;
+			ofEasyCam cam;
+
+			//ofSpherePrimitive sphere;
 
 			virtual BaseParameters & getParameters() override
 			{
