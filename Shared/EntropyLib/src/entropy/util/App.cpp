@@ -121,6 +121,7 @@ namespace entropy
 				}
 				ofxPreset::Gui::EndWindow(this->guiSettings);
 
+				this->canvas->drawGui(this->guiSettings);
 				this->sceneManager->drawGui(this->guiSettings);
 			}
 			this->imGui.end();
@@ -156,16 +157,19 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onMouseMoved(ofMouseEventArgs & args)
 		{
+			this->canvas->cursorMoved(args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMousePressed(ofMouseEventArgs & args)
 		{
+			this->canvas->cursorDown(args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMouseDragged(ofMouseEventArgs & args)
 		{
+			this->canvas->cursorDragged(args);
 		}
 
 		//--------------------------------------------------------------
