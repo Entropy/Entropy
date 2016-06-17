@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofxImGui.h"
+#include "ofMain.h"
 
 namespace entropy
 {
@@ -23,15 +23,19 @@ namespace entropy
 			void setWidth(float width);
 			void setHeight(float height);
 
-			ofxImGui & getImGui();
+			bool getFillWindow() const;
+			void setFillWindow(bool fillWindow);
 
 			ofEvent<ofResizeEventArgs> resizeEvent;
+
+		protected:
+			void windowResized(ofResizeEventArgs & args);
 
 		private:
 			ofFbo fbo;
 			ofFbo::Settings fboSettings;
 
-			ofxImGui imGui;
+			bool fillWindow;
 		};
 	}
 }

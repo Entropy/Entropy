@@ -11,6 +11,10 @@ void ofApp::setup()
 	auto sceneTemplate = make_shared<entropy::scene::Template>();
 	sceneManager->addScene(sceneTemplate);
 	sceneManager->setCurrentScene(sceneTemplate->getName());
+
+	// Make the Canvas fill the window when it's resized.
+	auto canvas = entropy::GetCanvas();
+	canvas->setFillWindow(true);
 }
 
 //--------------------------------------------------------------

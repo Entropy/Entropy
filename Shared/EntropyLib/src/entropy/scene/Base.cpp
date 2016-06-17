@@ -65,7 +65,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::resize(ofResizeEventArgs & args)
 		{
+			this->onResize.notify(args);
+		}
+
+		//--------------------------------------------------------------
 		void Base::update(double dt)
 		{
 			if (GetApp()->isMouseOverGui())

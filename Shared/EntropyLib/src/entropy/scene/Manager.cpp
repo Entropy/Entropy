@@ -177,5 +177,14 @@ namespace entropy
 			}
 			return false;
 		}
+
+		//--------------------------------------------------------------
+		void Manager::canvasResized(ofResizeEventArgs & args)
+		{
+			if (this->currentScene)
+			{
+				this->currentScene->resize(args);
+			}
+		}
 	}
 }

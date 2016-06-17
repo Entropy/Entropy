@@ -12,12 +12,14 @@ namespace entropy
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 			this->fbo.allocate(this->fboSettings);
 
-			this->imGui.setup();
+			this->fillWindow = false;
 		}
 
 		//--------------------------------------------------------------
 		Canvas::~Canvas()
-		{}
+		{
+			this->setFillWindow(false);
+		}
 
 		//--------------------------------------------------------------
 		void Canvas::begin()
@@ -79,9 +81,43 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		ofxImGui & Canvas::getImGui()
+		bool Canvas::getFillWindow() const
 		{
-			return this->imGui;
+			return this->fillWindow;
+		}
+		
+		//--------------------------------------------------------------
+		void Canvas::setFillWindow(bool fillWindow)
+		{
+			if (this->fillWindow == fillWindow) return;
+
+			this->fillWindow = fillWindow;
+			if (this->fillWindow)
+			{
+				ofAddListener(ofEvents().windowResized, this, &Canvas::windowResized);
+
+				// Force the first call to get in sync.
+				ofResizeEventArgs args;
+				args.width = ofGetWidth();
+				args.height = ofGetHeight();
+				this->windowResized(args);
+			}
+			else
+			{
+				ofRemoveListener(ofEvents().windowResized, this, &Canvas::windowResized);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::windowResized(ofResizeEventArgs & args)
+		{
+			if (this->fbo.getWidth() == args.width && this->fbo.getHeight() == args.height) return;
+
+			this->fboSettings.width = args.width;
+			this->fboSettings.height = args.height;
+			this->fbo.allocate(this->fboSettings);
+
+			this->resizeEvent.notify(args);
 		}
 	}
 }

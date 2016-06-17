@@ -26,6 +26,7 @@ namespace entropy
 			void update(ofEventArgs & args);
 			void draw(ofEventArgs & args);
 			void keyPressed(ofKeyEventArgs & args);
+			void canvasResized(ofResizeEventArgs & args);
 
 		protected:
 			shared_ptr<entropy::render::Canvas> canvas;

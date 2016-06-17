@@ -36,6 +36,8 @@ namespace entropy
 
 			bool keyPressed(ofKeyEventArgs & args);
 
+			void canvasResized(ofResizeEventArgs & args);
+
 		protected:
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;

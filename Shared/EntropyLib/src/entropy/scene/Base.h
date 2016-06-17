@@ -15,6 +15,10 @@
 	onExitListeners.push_back(this->onExit.newListener([this]() { \
 		this->exit(); \
 	}));
+#define ENTROPY_SCENE_RESIZE_LISTENER \
+	onResizeListeners.push_back(this->onResize.newListener([this](ofResizeEventArgs & args) { \
+		this->resize(args); \
+	}));
 #define ENTROPY_SCENE_UPDATE_LISTENER \
 	onUpdateListeners.push_back(this->onUpdate.newListener([this](double & dt) { \
 		this->update(dt); \
@@ -58,6 +62,7 @@ namespace entropy
 
 			void setup();
 			void exit();
+			void resize(ofResizeEventArgs & args);
 
 			void update(double dt);
 			void draw();
@@ -92,6 +97,7 @@ namespace entropy
 			// Events
 			ofEvent<void> onSetup;
 			ofEvent<void> onExit;
+			ofEvent<ofResizeEventArgs> onResize;
 
 			ofEvent<double> onUpdate;
 
@@ -106,6 +112,7 @@ namespace entropy
 
 			vector<ofEventListener> onSetupListeners;
 			vector<ofEventListener> onExitListeners;
+			vector<ofEventListener> onResizeListeners;
 
 			vector<ofEventListener> onUpdateListeners;
 

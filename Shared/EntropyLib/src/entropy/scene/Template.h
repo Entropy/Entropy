@@ -20,6 +20,7 @@ namespace entropy
 
 			void setup();
 			void exit();
+			void resize(ofResizeEventArgs & args);
 
 			void update(double & dt);
 

@@ -17,11 +17,17 @@ namespace entropy
 			ofAddListener(ofEvents().update, this, &App_::update);
 			ofAddListener(ofEvents().draw, this, &App_::draw);
 			ofAddListener(ofEvents().keyPressed, this, &App_::keyPressed);
+
+			// Register custom events.
+			ofAddListener(this->canvas->resizeEvent, this, &App_::canvasResized);
 		}
 
 		//--------------------------------------------------------------
 		App_::~App_()
 		{
+			// Unregister custom events.
+			ofRemoveListener(this->canvas->resizeEvent, this, &App_::canvasResized);
+			
 			// Unregister OF events.
 			ofRemoveListener(ofEvents().update, this, &App_::update);
 			ofRemoveListener(ofEvents().draw, this, &App_::draw);
@@ -125,6 +131,12 @@ namespace entropy
 			{
 				return;
 			}
+		}
+
+		//--------------------------------------------------------------
+		void App_::canvasResized(ofResizeEventArgs & args)
+		{
+			this->sceneManager->canvasResized(args);
 		}
 	}
 }
