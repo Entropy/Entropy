@@ -23,10 +23,19 @@ namespace entropy
 			bool isOverlayVisible() const;
 
 		protected:
-			void update(ofEventArgs & args);
-			void draw(ofEventArgs & args);
-			void keyPressed(ofKeyEventArgs & args);
-			void canvasResized(ofResizeEventArgs & args);
+			void onUpdate(ofEventArgs & args);
+			void onDraw(ofEventArgs & args);
+
+			void onMouseMoved(ofMouseEventArgs & args);
+			void onMousePressed(ofMouseEventArgs & args);
+			void onMouseDragged(ofMouseEventArgs & args);
+			void onMouseReleased(ofMouseEventArgs & args);
+
+			void onKeyPressed(ofKeyEventArgs & args);
+			void onKeyReleased(ofKeyEventArgs & args);
+
+			void onCanvasResized(ofResizeEventArgs & args);
+			void onWindowResized(ofResizeEventArgs & args);
 
 		protected:
 			shared_ptr<entropy::render::Canvas> canvas;

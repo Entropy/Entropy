@@ -13,25 +13,39 @@ namespace entropy
 			this->imGui.setup();
 			this->overlayVisible = true;
 			
-			// Register OF events.
-			ofAddListener(ofEvents().update, this, &App_::update);
-			ofAddListener(ofEvents().draw, this, &App_::draw);
-			ofAddListener(ofEvents().keyPressed, this, &App_::keyPressed);
+			// Register events listeners.
+			ofAddListener(ofEvents().update, this, &App_::onUpdate);
+			ofAddListener(ofEvents().draw, this, &App_::onDraw);
+			
+			ofAddListener(ofEvents().keyPressed, this, &App_::onKeyPressed);
+			ofAddListener(ofEvents().keyReleased, this, &App_::onKeyReleased);
 
-			// Register custom events.
-			ofAddListener(this->canvas->resizeEvent, this, &App_::canvasResized);
+			ofAddListener(ofEvents().mouseMoved, this, &App_::onMouseMoved);
+			ofAddListener(ofEvents().mousePressed, this, &App_::onMousePressed);
+			ofAddListener(ofEvents().mouseDragged, this, &App_::onMouseDragged);
+			ofAddListener(ofEvents().mouseReleased, this, &App_::onMouseReleased);
+
+			ofAddListener(this->canvas->resizeEvent, this, &App_::onCanvasResized);
+			ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
 		}
 
 		//--------------------------------------------------------------
 		App_::~App_()
 		{
-			// Unregister custom events.
-			ofRemoveListener(this->canvas->resizeEvent, this, &App_::canvasResized);
-			
-			// Unregister OF events.
-			ofRemoveListener(ofEvents().update, this, &App_::update);
-			ofRemoveListener(ofEvents().draw, this, &App_::draw);
-			ofRemoveListener(ofEvents().keyPressed, this, &App_::keyPressed);
+			// Unregister event listeners.
+			ofRemoveListener(ofEvents().update, this, &App_::onUpdate);
+			ofRemoveListener(ofEvents().draw, this, &App_::onDraw);
+
+			ofRemoveListener(ofEvents().keyPressed, this, &App_::onKeyPressed);
+			ofRemoveListener(ofEvents().keyReleased, this, &App_::onKeyReleased);
+
+			ofRemoveListener(ofEvents().mouseMoved, this, &App_::onMouseMoved);
+			ofRemoveListener(ofEvents().mousePressed, this, &App_::onMousePressed);
+			ofRemoveListener(ofEvents().mouseDragged, this, &App_::onMouseDragged);
+			ofRemoveListener(ofEvents().mouseReleased, this, &App_::onMouseReleased);
+
+			ofRemoveListener(this->canvas->resizeEvent, this, &App_::onCanvasResized);
+			ofRemoveListener(ofEvents().windowResized, this, &App_::onWindowResized);
 
 			this->imGui.close();
 
@@ -65,7 +79,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void App_::update(ofEventArgs & args)
+		void App_::onUpdate(ofEventArgs & args)
 		{
 			if (this->overlayVisible || ofGetWindowMode() == OF_WINDOW)
 			{
@@ -81,7 +95,7 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void App_::draw(ofEventArgs & args)
+		void App_::onDraw(ofEventArgs & args)
 		{
 			// Draw the content.
 			this->canvas->begin();
@@ -116,7 +130,7 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void App_::keyPressed(ofKeyEventArgs & args)
+		void App_::onKeyPressed(ofKeyEventArgs & args)
 		{
 			if (args.keycode == GLFW_KEY_F && (ofGetKeyPressed(OF_KEY_CONTROL) || ofGetKeyPressed(OF_KEY_COMMAND)))
 			{
@@ -134,9 +148,42 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void App_::canvasResized(ofResizeEventArgs & args)
+		void App_::onKeyReleased(ofKeyEventArgs & args)
+		{
+
+		}
+
+		//--------------------------------------------------------------
+		void App_::onMouseMoved(ofMouseEventArgs & args)
+		{
+		}
+
+		//--------------------------------------------------------------
+		void App_::onMousePressed(ofMouseEventArgs & args)
+		{
+		}
+
+		//--------------------------------------------------------------
+		void App_::onMouseDragged(ofMouseEventArgs & args)
+		{
+		}
+
+		//--------------------------------------------------------------
+		void App_::onMouseReleased(ofMouseEventArgs & args)
+		{
+
+		}
+
+		//--------------------------------------------------------------
+		void App_::onCanvasResized(ofResizeEventArgs & args)
 		{
 			this->sceneManager->canvasResized(args);
+		}
+
+		//--------------------------------------------------------------
+		void App_::onWindowResized(ofResizeEventArgs & args)
+		{
+
 		}
 	}
 }
