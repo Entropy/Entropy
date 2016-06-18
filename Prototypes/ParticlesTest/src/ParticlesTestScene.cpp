@@ -43,6 +43,8 @@ namespace entropy
 					radius
 				);
 			}
+
+			particleShader.load("particle");
 		}
 		
 		//--------------------------------------------------------------

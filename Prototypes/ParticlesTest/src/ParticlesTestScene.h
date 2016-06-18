@@ -36,6 +36,7 @@ namespace entropy
 		protected:
 			ParticleSystem particleSystem;
 			ofEasyCam cam;
+			ofShader particleShader;
 
 			//ofSpherePrimitive sphere;
 
