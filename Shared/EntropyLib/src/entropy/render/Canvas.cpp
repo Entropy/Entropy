@@ -127,8 +127,8 @@ namespace entropy
 
 			// Notify any listeners.
 			ofResizeEventArgs args;
-			args.width = this->fbo.getWidth();
-			args.height = this->fbo.getHeight();
+			args.width = this->getWidth();
+			args.height = this->getHeight();
 			this->resizeEvent.notify(args);
 
 			this->dirtyStitches = true;
@@ -210,13 +210,13 @@ namespace entropy
 				// Take up the full size.
 				this->srcAreas[0] = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 			}
-			else
+			else if (numWarps > 1)
 			{
 				vector<float> overlaps;
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = this->getWidth() / (float)numWarps;
+				const auto areaWidth = ofGetWidth() / (float)numWarps;
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
@@ -226,7 +226,7 @@ namespace entropy
 					totalOverlap += overlaps[i];
 				}
 
-				// Adjust the fbo width. (Note that this will set dirtyStitches again if the width changes, but that's OK)
+				// Adjust the fbo width.
 				this->setWidth(ofGetWidth() - totalOverlap);
 
 				// Update the areas for each warp.
