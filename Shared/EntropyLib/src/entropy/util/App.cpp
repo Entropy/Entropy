@@ -90,6 +90,8 @@ namespace entropy
 				ofHideCursor();
 			}
 
+			this->canvas->update();
+
 			auto dt = ofGetLastFrameTime();
 			this->sceneManager->update(dt);
 		}

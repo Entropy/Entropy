@@ -32,6 +32,8 @@ namespace entropy
 				// Add a default warp to start with.
 				this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE_BILINEAR);
 			}
+
+			this->dirtyStitches = true;
 		}
 
 		//--------------------------------------------------------------
@@ -41,7 +43,15 @@ namespace entropy
 
 			this->warps.clear();
 			this->srcAreas.clear();
-			this->overlaps.clear();
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::update()
+		{
+			if (this->dirtyStitches)
+			{
+				this->updateStitches();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -120,6 +130,8 @@ namespace entropy
 			args.width = this->fbo.getWidth();
 			args.height = this->fbo.getHeight();
 			this->resizeEvent.notify(args);
+
+			this->dirtyStitches = true;
 		}
 
 		//--------------------------------------------------------------
@@ -172,7 +184,7 @@ namespace entropy
 
 			this->openGuis[idx] = false;
 
-			this->updateStitches();
+			this->dirtyStitches = true;
 
 			return warp;
 		}
@@ -183,7 +195,7 @@ namespace entropy
 			this->warps.pop_back();
 			this->warpParameters.pop_back();
 
-			this->updateStitches();
+			this->dirtyStitches = true;
 		}
 
 		//--------------------------------------------------------------
@@ -191,35 +203,43 @@ namespace entropy
 		{
 			const auto numWarps = this->warps.size();
 
-			this->overlaps.resize(numWarps, 0.0f);
-			
-			// Calculate the total overlap to set the fbo width.
-			auto totalOverlap = 0.0f;
-			for (auto overlap : this->overlaps)
-			{
-				totalOverlap += overlap;
-			}
-			this->setWidth(ofGetWidth() - totalOverlap);
-
-			// Update the areas.
 			this->srcAreas.resize(numWarps);
+
 			if (numWarps == 1)
 			{
-				// Take up all the entire area.
-				const auto areaSize = ofVec2f(this->getWidth(), this->getHeight());
-				this->srcAreas[0] = ofRectangle(0.0f, 0.0f, areaSize.x, areaSize.y);
+				// Take up the full size.
+				this->srcAreas[0] = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 			}
 			else
 			{
-				// Overlap stitches.
+				vector<float> overlaps;
+				overlaps.resize(numWarps, 0.0f);
+
+				// Calculate the overlap for each stitch and the total overlap.
+				const auto areaWidth = this->getWidth() / (float)numWarps;
+				auto totalOverlap = 0.0f;
+				for (auto i = 0; i < numWarps - 1; ++i)
+				{
+					auto warp = this->warps[i];
+					auto rightEdge = warp->getEdges().z;
+					overlaps[i] = areaWidth * rightEdge * 0.5f;
+					totalOverlap += overlaps[i];
+				}
+
+				// Adjust the fbo width. (Note that this will set dirtyStitches again if the width changes, but that's OK)
+				this->setWidth(ofGetWidth() - totalOverlap);
+
+				// Update the areas for each warp.
 				const auto areaSize = ofVec2f(this->getWidth() / (float)numWarps, this->getHeight());
 				auto currX = 0.0f;
 				for (auto i = 0; i < numWarps; ++i)
 				{
 					this->srcAreas[i] = ofRectangle(currX, 0.0f, areaSize.x, areaSize.y);
-					currX = currX + areaSize.x - this->overlaps[i];
+					currX = currX + areaSize.x - overlaps[i];
 				}
 			}
+
+			this->dirtyStitches = false;
 		}
 
 		//--------------------------------------------------------------
@@ -364,9 +384,9 @@ namespace entropy
 							// The rest of the controls only apply to Bilinear warps.
 							auto warpBilinear = dynamic_pointer_cast<ofxWarp::WarpBilinear>(warp);
 
-							if (ofxPreset::Gui::AddParameter(paramGroup.linear))
+							if (ofxPreset::Gui::AddParameter(paramGroup.mesh.linear))
 							{
-								warpBilinear->setLinear(paramGroup.linear);
+								warpBilinear->setLinear(paramGroup.mesh.linear);
 							}
 
 							ImGui::Text("Resolution: %i", warpBilinear->getResolution());
@@ -380,9 +400,9 @@ namespace entropy
 								warpBilinear->increaseResolution();
 							}
 
-							if (ofxPreset::Gui::AddParameter(paramGroup.adaptive))
+							if (ofxPreset::Gui::AddParameter(paramGroup.mesh.adaptive))
 							{
-								warpBilinear->setAdaptive(paramGroup.adaptive);
+								warpBilinear->setAdaptive(paramGroup.mesh.adaptive);
 							}
 
 							auto numControlsX = warpBilinear->getNumControlsX();
@@ -427,6 +447,63 @@ namespace entropy
 							if (ImGui::Button("y++"))
 							{
 								warpBilinear->setNumControlsY((numControlsY * 2) - 1);
+							}
+						}
+
+						if (this->warps.size() > 1)
+						{
+							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
+							{
+								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), paramGroup.blend.luminance.getRef()->getPtr()))
+								{
+									paramGroup.blend.luminance.update();
+									warp->setLuminance(paramGroup.blend.luminance);
+								}
+								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), paramGroup.blend.gamma.getRef()->getPtr()))
+								{
+									paramGroup.blend.gamma.update();
+									warp->setGamma(paramGroup.blend.gamma);
+								}
+								if (ofxPreset::Gui::AddParameter(paramGroup.blend.exponent))
+								{
+									warp->setExponent(paramGroup.blend.exponent);
+								}
+								if (i > 0)
+								{
+									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeLeft))
+									{
+										// Set current left edge.
+										auto & edgesSelf = warp->getEdges();
+										edgesSelf.x = paramGroup.blend.edgeLeft;
+										warp->setEdges(edgesSelf);
+
+										// Set previous right edge.
+										auto warpPrev = this->warps[i - 1];
+										auto & edgesPrev = warpPrev->getEdges();
+										edgesPrev.z = paramGroup.blend.edgeLeft;
+										warpPrev->setEdges(edgesPrev);
+
+										this->dirtyStitches = true;
+									}
+								}
+								if (i < this->warps.size() - 1)
+								{
+									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeRight))
+									{
+										// Set current right edge.
+										auto & edges = warp->getEdges();
+										edges.z = paramGroup.blend.edgeRight;
+										warp->setEdges(edges);
+
+										// Set next left edge.
+										auto warpNext = this->warps[i + 1];
+										auto & edgeNext = warpNext->getEdges();
+										edgeNext.x = paramGroup.blend.edgeRight;
+										warpNext->setEdges(edgeNext);
+
+										this->dirtyStitches = true;
+									}
+								}
 							}
 						}
 					}
@@ -487,8 +564,8 @@ namespace entropy
 					if (warp->getType() != ofxWarp::WarpBase::TYPE_PERSPECTIVE)
 					{
 						auto warpBilinear = dynamic_pointer_cast<ofxWarp::WarpBilinear>(warp);
-						warpParams.adaptive.set(warpBilinear->getAdaptive());
-						warpParams.linear.set(warpBilinear->getLinear());
+						warpParams.mesh.adaptive.set(warpBilinear->getAdaptive());
+						warpParams.mesh.linear.set(warpBilinear->getLinear());
 					}
 				}
 			}

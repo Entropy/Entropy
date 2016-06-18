@@ -15,6 +15,8 @@ namespace entropy
 			Canvas();
 			~Canvas();
 
+			void update();
+
 			void begin();
 			void end();
 
@@ -69,10 +71,27 @@ namespace entropy
 			{
 				ofxPreset::Parameter<bool> editing{ "Edit Shape", false, true };
 				ofxPreset::Parameter<float> brightness{ "Brightness", 1.0f, 0.0f, 1.0f };
-				ofxPreset::Parameter<bool> adaptive{ "Adaptive", true, true };
-				ofxPreset::Parameter<bool> linear{ "Linear", false, true };
 
-				PARAM_DECLARE("Parameters", editing, brightness, adaptive, linear);
+				struct : ofParameterGroup
+				{
+					ofxPreset::Parameter<bool> adaptive{ "Adaptive", true, true };
+					ofxPreset::Parameter<bool> linear{ "Linear", false, true };
+
+					PARAM_DECLARE("Mesh", adaptive, linear);
+				} mesh;
+
+				struct : ofParameterGroup
+				{
+					ofxPreset::Parameter<ofVec3f> luminance{ "Luminance", ofVec3f(0.5f), ofVec3f(0.0f), ofVec3f(1.0f) };
+					ofxPreset::Parameter<ofVec3f> gamma{ "Gamma", ofVec3f(1.0f), ofVec3f(0.0f), ofVec3f(1.0f) };
+					ofxPreset::Parameter<float> exponent{ "Exponent", 2.0f, 0.1f, 20.0f };
+					ofxPreset::Parameter<float> edgeLeft{ "Edge Left", 0.0f, 0.0f, 1.0f };
+					ofxPreset::Parameter<float> edgeRight{ "Edge Right", 0.0f, 0.0f, 1.0f };
+
+					PARAM_DECLARE("Blend", luminance, gamma, exponent, edgeLeft, edgeRight);
+				} blend;
+
+				PARAM_DECLARE("Parameters", editing, brightness, mesh, blend);
 			};
 
 			struct : ofParameterGroup
@@ -89,9 +108,10 @@ namespace entropy
 			size_t focusedIndex;
 
 			vector<ofRectangle> srcAreas;
-			vector<float> overlaps;
 			vector<WarpParameters> warpParameters;
 			bool openGuis[MAX_NUM_WARPS];  // Don't use vector<bool> because they're weird: http://en.cppreference.com/w/cpp/container/vector_bool
+			
+			bool dirtyStitches;
 		};
 	}
 }
