@@ -43,8 +43,9 @@ void ParticleSystem::init( int _width, int _height, int _depth )
     //m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
     //m_sphereMesh = m_sphere.getMesh();
     //m_sphereMesh.setUsage( GL_STATIC_DRAW );
+
 	ofxObjLoader::load("models/cube_fillet_1.obj", cubeFilletMesh);
-	for (auto& v : cubeFilletMesh.getVertices()) v *= 10.f; // scale up by 10 to test with
+	for (auto& v : cubeFilletMesh.getVertices()) v *= .4f; // scale mesh
 	cubeFilletMesh.setUsage(GL_STATIC_DRAW);
 
     m_positionTbo.allocate();
@@ -162,9 +163,13 @@ void ParticleSystem::update()
         //     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
 
         ParticleTboData& data = m_positions[ idx ];
-		data.transform = ofMatrix4x4::newTranslationMatrix(p.position)
-			* ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius))
-			* ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f));
+		data.transform = 
+			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
+			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
+			ofMatrix4x4::newTranslationMatrix(p.position);
+			//* ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius));
+			//* ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f));
+
         /*
 		data.transform = glm::translate( p.position )
             * glm::scale( ofVec3f( p.radius, p.radius, p.radius ) )

@@ -88,6 +88,7 @@ namespace entropy
 		// Draw 3D elements here.
 		void ParticlesTestScene::drawWorld()
 		{
+			//ofBackgroundGradient()
 			cam.begin();
 			{
 				// draw bounds
