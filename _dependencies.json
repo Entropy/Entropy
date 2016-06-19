@@ -71,6 +71,11 @@
 			"name": "ofxWarp",
 			"source": "https://github.com/Entropy/ofxWarp.git",
 			"branch": "master"
+		},
+		{
+			"name": "ofxObjLoader",
+			"source": "https://github.com/Entropy/ofxObjLoader.git",
+			"branch": "master"
 		}
 	]
 }

@@ -30,6 +30,7 @@ ipch/
 *.idb
 *.pch
 *.aps
+*.swp
 Debug/
 Release/
 

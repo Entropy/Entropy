@@ -85,12 +85,13 @@ public:
     ofVec3f       m_binScale;
 
     ofBoxPrimitive  m_debugBoundsBox;
-    ofVboMesh       m_sphereMesh;
-    ofBoxPrimitive  m_sphere;
+    //ofVboMesh       m_sphereMesh;
+	ofVboMesh cubeFilletMesh;
+   //ofBoxPrimitive  m_sphere;
 
     ofTexture       m_positionTboTex;
     ofBufferObject  m_positionTbo;
-    ParticleTboData * m_positions;
+    ParticleTboData* m_positions;
 
     ParticleBin                m_particleBins[ NUM_BINS ];
     uint16_t                   m_particleIndices[ MAX_PARTICLES ]; // unsorted list of particle indices (just particle pool index)

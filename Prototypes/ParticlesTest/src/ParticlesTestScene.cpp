@@ -48,7 +48,8 @@ namespace entropy
 			for (int i = 0; i < ParticleSystem::MAX_PARTICLES; ++i)
 			{
 				float mass = ofRandom(0.01f, 0.1f);
-				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);
+				//float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);
+				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 60.0f);
 
 				particleSystem.addParticle(
 					ofVec3f(ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f)),

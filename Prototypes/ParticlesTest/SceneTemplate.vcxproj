@@ -130,6 +130,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OpenMPSupport>true</OpenMPSupport>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxObjLoader\src;$(OF_ROOT)\addons\ofxObjLoader\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -181,10 +182,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;
-$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;
-$(OF_ROOT)\addons\ofxLiquidEvent\src;
-$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxObjLoader\src;$(OF_ROOT)\addons\ofxObjLoader\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
@@ -206,6 +204,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm.c" />
+    <ClCompile Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\ofxPersistent\Persistent.cpp" />
@@ -213,6 +213,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="src\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm.h" />
+    <ClInclude Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\ofxPersistent\ofxPersistent.h" />
     <ClInclude Include="src\ofxPersistent\Persistent.h" />

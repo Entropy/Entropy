@@ -1,5 +1,6 @@
 #include "ParticleSystem.h"
 #include "lb/util/RadixSort.h"
+#include "ofxObjLoader.h"
 
 ParticleSystem::ParticleSystem() : 
 	m_particlePool(nullptr),
@@ -39,9 +40,12 @@ void ParticleSystem::init( int _width, int _height, int _depth )
     m_debugBoundsBox.setDepth( size.z ); 
 
     //m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
-    m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
-    m_sphereMesh = m_sphere.getMesh();
-    m_sphereMesh.setUsage( GL_STATIC_DRAW );
+    //m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
+    //m_sphereMesh = m_sphere.getMesh();
+    //m_sphereMesh.setUsage( GL_STATIC_DRAW );
+	ofxObjLoader::load("models/cube_fillet_1.obj", cubeFilletMesh);
+	for (auto& v : cubeFilletMesh.getVertices()) v *= 10.f; // scale up by 10 to test with
+	cubeFilletMesh.setUsage(GL_STATIC_DRAW);
 
     m_positionTbo.allocate();
     m_positionTbo.bind( GL_TEXTURE_BUFFER );
@@ -177,7 +181,6 @@ void ParticleSystem::update()
 
 void ParticleSystem::step( float _dt )
 {
-	cout << "step start " << ofGetFrameNum() << endl;
     for ( uint32_t idx = 0; idx < m_numParticles; ++idx )
     {
         Particle& p = m_particlePool[ idx ];
@@ -297,7 +300,6 @@ void ParticleSystem::step( float _dt )
             }
         }
     }
-	cout << "step end " << ofGetFrameNum() << endl;
 }
 
 void ParticleSystem::debugDrawWorldBounds()
@@ -313,5 +315,5 @@ void ParticleSystem::debugDrawParticles()
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
-    m_sphereMesh.drawInstanced( OF_MESH_FILL, m_numParticles );
+    cubeFilletMesh.drawInstanced( OF_MESH_FILL, m_numParticles );
 }
