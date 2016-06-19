@@ -2,6 +2,7 @@
 
 #include "entropy/scene/Base.h"
 #include "ParticleSystem.h"
+#include "ofxPersistent/ofxPersistent.h"
 
 namespace entropy
 {
@@ -11,6 +12,8 @@ namespace entropy
 			: public Base
 		{
 		public:
+			static const unsigned NUM_LIGHTS = 2;
+
 			virtual string getName() const override 
 			{
 				return "entropy::scene::ParticlesTestScene";
@@ -34,11 +37,20 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
+			// particles
 			ParticleSystem particleSystem;
-			ofEasyCam cam;
 			ofShader particleShader;
 
-			//ofSpherePrimitive sphere;
+			ofEasyCam cam;
+
+			// lighting
+			ofVec3f lightPosns[NUM_LIGHTS];
+			ofFloatColor lightCols[NUM_LIGHTS];
+			float lightIntensities[NUM_LIGHTS];
+			float lightRadiuses[NUM_LIGHTS];
+			float roughness;
+
+			ofxPersistent persistent;
 
 			virtual BaseParameters & getParameters() override
 			{
@@ -58,6 +70,7 @@ namespace entropy
 				} sphere;
 
 				PARAM_DECLARE("Template", sphere);
+				
 			} parameters;
 		};
 	}

@@ -13,6 +13,9 @@
     <ClCompile Include="src\ParticleSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxPersistent\Persistent.cpp">
+      <Filter>src\ofxPersistent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -20,6 +23,15 @@
     </Filter>
     <Filter Include="addons">
       <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{be9e173e-7606-4ad3-8fcf-04e1e4c171f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\inc">
+      <UniqueIdentifier>{cb88a2e2-2f8a-4ad2-8f9f-d5ebc06561b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ofxPersistent">
+      <UniqueIdentifier>{52c40a3c-8d4f-453c-a9c1-8e8e996c8078}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,8 +44,76 @@
     <ClInclude Include="src\ParticleSystem.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\ofxPersistent\Persistent.h">
+      <Filter>src\ofxPersistent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxPersistent\PersistentType.h">
+      <Filter>src\ofxPersistent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxPersistent\ofxPersistent.h">
+      <Filter>src\ofxPersistent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\main.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\sky_box.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\sky_box.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\main.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\computeBrdfLut.frag">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\math.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\of_default_uniforms.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\of_default_vertex_in_attributes.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\pbr.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\tone_mapping.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\view_info.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\inc\clustered_shading.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="bin\data\shaders\blur.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\blur.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\render.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle_old.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

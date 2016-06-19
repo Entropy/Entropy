@@ -5,10 +5,24 @@ namespace entropy
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		ParticlesTestScene::ParticlesTestScene()
-			: Base()
+		ParticlesTestScene::ParticlesTestScene() : 
+			Base(),
+			roughness(0.05f)
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
+			for (unsigned i = 0; i < NUM_LIGHTS; ++i)
+			{
+				lightIntensities[i] = 1.f;
+				lightRadiuses[i] = 1.f;
+				lightCols[i].set(1.f, 1.f, 1.f, 1.f);
+
+				string iStr = ofToString(i);
+				persistent.add("lightPosns" + iStr, lightPosns[i], ofVec3f(-400.f), ofVec3f(400.f));
+				persistent.add("lightIntensities" + iStr, lightIntensities[i], 0.f, 5.f);
+				persistent.add("lightRadiuses" + iStr, lightRadiuses[i], 1.f, 100.f);
+				persistent.add("lightCols" + iStr, lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
+			}
+			persistent.add("roughness", roughness, 0.f, 1.f);
 		}
 		
 		//--------------------------------------------------------------
@@ -44,7 +58,7 @@ namespace entropy
 				);
 			}
 
-			particleShader.load("particle");
+			particleShader.load("shaders/particle");
 		}
 		
 		//--------------------------------------------------------------
@@ -58,11 +72,6 @@ namespace entropy
 		// Update your data here, once per frame.
 		void ParticlesTestScene::update(double & dt)
 		{
-			/*if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
-			{
-				this->sphere.set(this->parameters.sphere.radius, this->parameters.sphere.resolution);
-			}*/
-
 			if (ofGetFrameNum() % 2 == 0)
 			{
 				particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
@@ -83,25 +92,30 @@ namespace entropy
 		void ParticlesTestScene::drawWorld()
 		{
 			cam.begin();
-			particleSystem.debugDrawWorldBounds();
-			particleSystem.debugDrawParticles();
-			cam.end();
-
-			/*
-			ofPushStyle();
 			{
-				ofSetColor(this->parameters.sphere.color.get());
-				if (this->parameters.sphere.filled)
+				// draw bounds
+				particleSystem.debugDrawWorldBounds();
+
+				// draw particles
+				particleShader.begin();
 				{
-					this->sphere.draw(OF_MESH_FILL);
-				}
-				else
-				{
-					this->sphere.draw(OF_MESH_WIREFRAME);
+					particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture(), 0);
+					particleShader.setUniform1i("numLights", NUM_LIGHTS);
+					particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+					particleShader.setUniform1f("roughness", roughness);
+					for (int i = 0; i < NUM_LIGHTS; i++)
+					{
+						string index = ofToString(i);
+						particleShader.setUniform3f("lights[" + index + "].position", lightPosns[i] * ofGetCurrentViewMatrix());
+						particleShader.setUniform4f("lights[" + index + "].color", lightCols[i]);
+						particleShader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
+						particleShader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
+					}
+					particleSystem.debugDrawParticles();
+					particleShader.end();
 				}
 			}
-			ofPopStyle();
-			*/
+			cam.end();
 		}
 
 		//--------------------------------------------------------------
@@ -118,12 +132,25 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				if (ImGui::CollapsingHeader(this->parameters.sphere.getName().c_str(), nullptr, true, true))
+				for (auto& pair : persistent.getFloats())
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.color);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.filled);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.radius);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.resolution);
+					ImGui::SliderFloat(pair.first.c_str(), pair.second.getValue(), pair.second.getMin(), pair.second.getMax());
+				}
+				for (auto& pair : persistent.getVec2fs())
+				{
+					ImGui::SliderFloat2(pair.first.c_str(), &pair.second.getValue()->x, pair.second.getMin().x, pair.second.getMax().x);
+				}
+				for (auto& pair : persistent.getVec3fs())
+				{
+					ImGui::SliderFloat3(pair.first.c_str(), &pair.second.getValue()->x, pair.second.getMin().x, pair.second.getMax().x);
+				}
+				for (auto& pair : persistent.getBools())
+				{
+					ImGui::Checkbox(pair.first.c_str(), pair.second.getValue());
+				}
+				for (auto& pair : persistent.getFloatColors())
+				{
+					ImGui::ColorEdit4(pair.first.c_str(), &pair.second.getValue()->r);
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
@@ -134,7 +161,7 @@ namespace entropy
 		// You can save other stuff to the same json object here too.
 		void ParticlesTestScene::serialize(nlohmann::json & json)
 		{
-
+			persistent.save("settings/particles.xml");
 		}
 		
 		//--------------------------------------------------------------
@@ -143,7 +170,7 @@ namespace entropy
 		// You can also set any refresh flags if necessary.
 		void ParticlesTestScene::deserialize(const nlohmann::json & json)
 		{
-
+			persistent.load("settings/particles.xml");
 		}
 	}
 }
