@@ -17,9 +17,9 @@ namespace entropy
 				lightCols[i].set(1.f, 1.f, 1.f, 1.f);
 
 				string iStr = ofToString(i);
-				persistent.add("lightPosns" + iStr, lightPosns[i], ofVec3f(-400.f), ofVec3f(400.f));
+				persistent.add("lightPosns" + iStr, lightPosns[i], ofVec3f(-2000.f), ofVec3f(2000.f));
 				persistent.add("lightIntensities" + iStr, lightIntensities[i], 0.f, 5.f);
-				persistent.add("lightRadiuses" + iStr, lightRadiuses[i], 1.f, 100.f);
+				persistent.add("lightRadiuses" + iStr, lightRadiuses[i], 0.f, 4000.f);
 				persistent.add("lightCols" + iStr, lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
 			}
 			persistent.add("roughness", roughness, 0.f, 1.f);
@@ -72,11 +72,7 @@ namespace entropy
 		// Update your data here, once per frame.
 		void ParticlesTestScene::update(double & dt)
 		{
-			if (ofGetFrameNum() % 2 == 0)
-			{
-				particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
-			}
-
+			if (ofGetFrameNum() % 2 == 0) particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
 			particleSystem.update();
 		}
 
