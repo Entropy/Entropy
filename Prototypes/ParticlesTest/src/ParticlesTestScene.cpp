@@ -45,7 +45,7 @@ namespace entropy
 
 			particleSystem.init(1600, 1600, 1600);
 
-			for (int i = 0; i < 20000; ++i)
+			for (int i = 0; i < ParticleSystem::MAX_PARTICLES; ++i)
 			{
 				float mass = ofRandom(0.01f, 0.1f);
 				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);

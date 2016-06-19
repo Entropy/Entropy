@@ -29,6 +29,7 @@ ipch/
 *.pdb
 *.idb
 *.pch
+*.aps
 Debug/
 Release/
 

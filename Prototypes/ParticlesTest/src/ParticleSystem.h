@@ -35,16 +35,15 @@ struct Repeller
 
 class ParticleSystem
 {
+public:
     static const uint16_t BIN_DIMS_X = 20;
     static const uint16_t BIN_DIMS_Y = 20;
     static const uint16_t BIN_DIMS_Z = 20;
     static const uint16_t NUM_BINS = BIN_DIMS_X * BIN_DIMS_Y * BIN_DIMS_Z;
-
-    static const uint16_t MAX_PARTICLES = 40000;
+    static const uint16_t MAX_PARTICLES = 2000;
     static const uint16_t MAX_ATTRACTORS = 10;
     static const uint16_t MAX_REPELLERS = 10;
 
-public:
     ParticleSystem();
     ~ParticleSystem();
 

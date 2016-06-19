@@ -22,7 +22,7 @@ void ParticleSystem::init( int _width, int _height, int _depth )
     
     memset( m_particlePool, 0, sizeof( m_particlePool[0] ) * MAX_PARTICLES );
     memset( m_positions, 0, sizeof( m_positions[0] ) * MAX_PARTICLES );
-    memset( m_particleBins, 0, sizeof( m_particleBins[0] ) * MAX_PARTICLES );
+    memset( m_particleBins, 0, sizeof( m_particleBins[0] ) * NUM_BINS);
 
     ofVec3f minBounds( -m_halfWidth, -m_halfHeight, -m_halfDepth );
     ofVec3f maxBounds( m_halfWidth, m_halfHeight, m_halfDepth );
@@ -38,7 +38,8 @@ void ParticleSystem::init( int _width, int _height, int _depth )
     m_debugBoundsBox.setHeight( size.y );
     m_debugBoundsBox.setDepth( size.z ); 
 
-    m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
+    //m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
+    m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
     m_sphereMesh = m_sphere.getMesh();
     m_sphereMesh.setUsage( GL_STATIC_DRAW );
 
@@ -56,15 +57,19 @@ void ParticleSystem::shutdown()
     delete[] m_positions;
 }
 
-void ParticleSystem::addParticle( const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius )
+void ParticleSystem::addParticle(const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
 {
-    Particle& p = m_particlePool[ m_numParticles ];
-    p.position = _pos;
-    p.velocity = _vel;
-    p.mass = _mass;
-    p.radius = _radius;
+	if (m_numParticles < MAX_PARTICLES)
+	{
+		Particle& p = m_particlePool[m_numParticles];
+		p.position = _pos;
+		p.velocity = _vel;
+		p.mass = _mass;
+		p.radius = _radius;
 
-    ++m_numParticles;
+		++m_numParticles;
+	}
+	else ofLogError() << "Cannot add particle, MAX_PARTICLES already reached.";
 }
 
 void ParticleSystem::addAttractor( const ofVec3f& _pos, float _strength )
@@ -95,7 +100,7 @@ void ParticleSystem::update()
     memset( m_particleSortKeys, 0, sizeof( m_particleSortKeys[ 0 ] ) * MAX_PARTICLES );
     memset( m_tempParticleSortKeys, 0, sizeof( m_tempParticleSortKeys[ 0 ] ) * MAX_PARTICLES );
     memset( m_tempParticleIndices, 0, sizeof( m_tempParticleIndices[ 0 ] ) * MAX_PARTICLES );
-    memset( m_particleBins, 0, sizeof( m_particleBins[ 0 ] ) * MAX_PARTICLES );
+    memset( m_particleBins, 0, sizeof( m_particleBins[ 0 ] ) * NUM_BINS);
 
 #ifdef TARGET_OSX
     dispatch_apply(m_numParticles, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
@@ -172,6 +177,7 @@ void ParticleSystem::update()
 
 void ParticleSystem::step( float _dt )
 {
+	cout << "step start " << ofGetFrameNum() << endl;
     for ( uint32_t idx = 0; idx < m_numParticles; ++idx )
     {
         Particle& p = m_particlePool[ idx ];
@@ -291,6 +297,7 @@ void ParticleSystem::step( float _dt )
             }
         }
     }
+	cout << "step end " << ofGetFrameNum() << endl;
 }
 
 void ParticleSystem::debugDrawWorldBounds()

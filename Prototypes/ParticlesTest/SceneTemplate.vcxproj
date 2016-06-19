@@ -236,25 +236,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\data\shaders\blur.frag" />
-    <None Include="bin\data\shaders\blur.vert" />
-    <None Include="bin\data\shaders\inc\clustered_shading.glsl" />
-    <None Include="bin\data\shaders\inc\computeBrdfLut.frag" />
-    <None Include="bin\data\shaders\inc\math.glsl" />
-    <None Include="bin\data\shaders\inc\of_default_uniforms.glsl" />
-    <None Include="bin\data\shaders\inc\of_default_vertex_in_attributes.glsl" />
-    <None Include="bin\data\shaders\inc\pbr.glsl" />
-    <None Include="bin\data\shaders\inc\tone_mapping.glsl" />
-    <None Include="bin\data\shaders\inc\view_info.glsl" />
-    <None Include="bin\data\shaders\main.frag" />
-    <None Include="bin\data\shaders\main.vert" />
     <None Include="bin\data\shaders\particle.frag" />
     <None Include="bin\data\shaders\particle.vert" />
-    <None Include="bin\data\shaders\particle_old.vert" />
-    <None Include="bin\data\shaders\render.frag" />
-    <None Include="bin\data\shaders\render.vert" />
-    <None Include="bin\data\shaders\sky_box.frag" />
-    <None Include="bin\data\shaders\sky_box.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
