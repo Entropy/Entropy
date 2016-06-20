@@ -15,6 +15,10 @@
 	onExitListeners.push_back(this->onExit.newListener([this]() { \
 		this->exit(); \
 	}));
+#define ENTROPY_SCENE_RESIZE_LISTENER \
+	onResizeListeners.push_back(this->onResize.newListener([this](ofResizeEventArgs & args) { \
+		this->resize(args); \
+	}));
 #define ENTROPY_SCENE_UPDATE_LISTENER \
 	onUpdateListeners.push_back(this->onUpdate.newListener([this](double & dt) { \
 		this->update(dt); \
@@ -58,8 +62,9 @@ namespace entropy
 
 			void setup();
 			void exit();
+			void resize(ofResizeEventArgs & args);
 
-			void update();
+			void update(double dt);
 			void draw();
 
 			// Parameters
@@ -75,12 +80,9 @@ namespace entropy
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
-			// Overlays
-			void setOverlayVisible(bool overlayVisible);
-			void toggleOverlayVisible();
-			bool isOverlayVisible() const;
-
 			// Timeline
+			void drawTimeline(ofxPreset::GuiSettings & settings);
+
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
 			bool isCameraLocked() const;
@@ -95,6 +97,7 @@ namespace entropy
 			// Events
 			ofEvent<void> onSetup;
 			ofEvent<void> onExit;
+			ofEvent<ofResizeEventArgs> onResize;
 
 			ofEvent<double> onUpdate;
 
@@ -109,6 +112,7 @@ namespace entropy
 
 			vector<ofEventListener> onSetupListeners;
 			vector<ofEventListener> onExitListeners;
+			vector<ofEventListener> onResizeListeners;
 
 			vector<ofEventListener> onUpdateListeners;
 
@@ -144,22 +148,15 @@ namespace entropy
 
 			virtual BaseParameters & getParameters() = 0;
 
-			// Overlays
-			ofxPreset::GuiSettings guiSettings;
-
+			// Timeline
 			ofxTimeline timeline;
 			ofxTLCameraTrack * cameraTrack;
 			map<string, shared_ptr<AbstractMapping>> mappings;
 
 		private:
-			// Overlays
-			void drawOverlay();
-
+			// Timeline
 			void populateMappings(const ofParameterGroup & group, string name = "");
 			void refreshMappings();
-
-			ofxImGui imgui;
-			bool overlayVisible;
 
 			// Camera
 			ofEasyCam camera;

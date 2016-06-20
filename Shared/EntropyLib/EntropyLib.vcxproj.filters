@@ -34,6 +34,27 @@
     <ClCompile Include="src\entropy\scene\Template.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\render\Canvas.cpp">
+      <Filter>src\entropy\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\util\App.cpp">
+      <Filter>src\entropy\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -71,6 +92,21 @@
     </Filter>
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\render">
+      <UniqueIdentifier>{c5aa1753-3347-4494-8404-7180924e0b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\util">
+      <UniqueIdentifier>{68525d5f-fa32-44f4-aabe-d53e252fd0c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp">
+      <UniqueIdentifier>{6e1c5308-09ba-4873-9e9a-48bece1c072b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp\src">
+      <UniqueIdentifier>{cc65c139-e71f-4be3-b18d-2040706b3c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp\src\ofxWarp">
+      <UniqueIdentifier>{7a5a0808-d166-4f50-a372-c1b371b0ee5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +169,36 @@
     </ClInclude>
     <ClInclude Include="src\entropy\scene\Mapping.h">
       <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\render\Canvas.h">
+      <Filter>src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\Singleton.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\App.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\Helpers.h">
+      <Filter>src\entropy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp.h">
+      <Filter>addons\ofxWarp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
