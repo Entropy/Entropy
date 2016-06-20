@@ -69,13 +69,13 @@ namespace entropy
 			struct WarpParameters
 				: ofParameterGroup
 			{
-				ofxPreset::Parameter<bool> editing{ "Edit Shape", false, true };
+				ofxPreset::Parameter<bool> editing{ "Edit Shape", false, false };
 				ofxPreset::Parameter<float> brightness{ "Brightness", 1.0f, 0.0f, 1.0f };
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<bool> adaptive{ "Adaptive", true, true };
-					ofxPreset::Parameter<bool> linear{ "Linear", false, true };
+					ofxPreset::Parameter<bool> adaptive{ "Adaptive", true, false };
+					ofxPreset::Parameter<bool> linear{ "Linear", false, false };
 
 					PARAM_DECLARE("Mesh", adaptive, linear);
 				} mesh;

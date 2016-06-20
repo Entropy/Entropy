@@ -46,7 +46,7 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofxPreset::Parameter<bool> filled{ "Filled", false, true };
+					ofxPreset::Parameter<bool> filled{ "Filled", false, false };
 					ofxPreset::Parameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
 					ofxPreset::Parameter<int> resolution{ "Resolution", 16, 3, 64 };
 
