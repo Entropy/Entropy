@@ -36,6 +36,16 @@ struct Repeller
 class ParticleSystem
 {
 public:
+	enum ParticleType
+	{
+		UP_QUARK,
+		DOWN_QUARK,
+		NEUTRON,
+		PHOTON,
+	
+		NUM_PARTICLE_TYPES
+	};
+
     static const uint16_t BIN_DIMS_X = 20;
     static const uint16_t BIN_DIMS_Y = 20;
     static const uint16_t BIN_DIMS_Z = 20;
