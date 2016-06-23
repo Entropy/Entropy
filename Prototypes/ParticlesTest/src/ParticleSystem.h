@@ -4,10 +4,22 @@
 
 struct Particle
 {
+	enum Type
+	{
+		NEUTRON,
+
+		NUM_TYPES
+	};
+
+	Type type;
     ofVec3f position;
-    float     mass;
     ofVec3f velocity;
-    float     radius;
+	// save these members rather than using
+	// type to eliminate array lookups in
+	// step() function
+    float radius;
+    float mass;
+	float charge;
 };
 
 struct ParticleTboData
@@ -36,16 +48,6 @@ struct Repeller
 class ParticleSystem
 {
 public:
-	enum ParticleType
-	{
-		UP_QUARK,
-		DOWN_QUARK,
-		NEUTRON,
-		PHOTON,
-	
-		NUM_PARTICLE_TYPES
-	};
-
     static const uint16_t BIN_DIMS_X = 20;
     static const uint16_t BIN_DIMS_Y = 20;
     static const uint16_t BIN_DIMS_Z = 20;
@@ -65,19 +67,30 @@ public:
     void step( float _dt );
     void update();
 
-    void addParticle( const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius );
+    void addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius );
     void addAttractor( const ofVec3f& _pos, float _strength );
     void addRepeller( const ofVec3f& _pos, float _strength );
 
-    inline const ofTexture& getPositionTexture() const { return m_positionTboTex; };
+    //inline const ofTexture& getPositionTexture() const { return m_positionTboTex; };
+    inline const ofTexture& getPositionTexture(Particle::Type type) const { return m_positionTboTex[type]; };
 
     inline uint16_t binIdFromXYZ( uint16_t _x, uint16_t _y, uint16_t _z )
     {
         return _z * BIN_DIMS_X * BIN_DIMS_Y + _y * BIN_DIMS_X + _x;
     }
 
+    unsigned totalNumParticles() const
+    {
+		unsigned total = 0;
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			total += numParticles[i];
+		}
+		return total;
+    }
+
     void debugDrawWorldBounds();
-    void debugDrawParticles();
+    void debugDrawParticles(Particle::Type type);
 
     float           m_halfWidth;
     float           m_halfHeight;
@@ -87,7 +100,8 @@ public:
     Attractor       m_attractors[ MAX_ATTRACTORS ];
     Repeller        m_repellers[ MAX_REPELLERS ];
 
-    uint32_t        m_numParticles;
+	//uint32_t        numParticlesTotal;// [Particle::NUM_TYPES];
+	uint32_t        numParticles[Particle::NUM_TYPES];
     uint32_t        m_numAttractors;
     uint32_t        m_numRepellers;
 
@@ -95,13 +109,12 @@ public:
     ofVec3f       m_binScale;
 
     ofBoxPrimitive  m_debugBoundsBox;
-    //ofVboMesh       m_sphereMesh;
-	ofVboMesh cubeFilletMesh;
-   //ofBoxPrimitive  m_sphere;
 
-    ofTexture       m_positionTboTex;
-    ofBufferObject  m_positionTbo;
-    ParticleTboData* m_positions;
+	ofVboMesh particleMeshes[Particle::NUM_TYPES];
+
+    ofTexture       m_positionTboTex[Particle::NUM_TYPES];
+    ofBufferObject  m_positionTbo[Particle::NUM_TYPES];
+    ParticleTboData* m_positions[Particle::NUM_TYPES];
 
     ParticleBin                m_particleBins[ NUM_BINS ];
     uint16_t                   m_particleIndices[ MAX_PARTICLES ]; // unsorted list of particle indices (just particle pool index)
@@ -109,6 +122,4 @@ public:
 
     uint16_t                   m_tempParticleIndices[ MAX_PARTICLES ]; // temp list for radix sort
     uint16_t                   m_tempParticleSortKeys[ MAX_PARTICLES ]; // temp list for radix sort
-
-
 };

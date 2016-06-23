@@ -4,75 +4,86 @@
 
 ParticleSystem::ParticleSystem() : 
 	m_particlePool(nullptr),
-	m_numParticles(0),
 	m_numAttractors(0),
 	m_numRepellers(0)
-{}
+{
+}
 
 ParticleSystem::~ParticleSystem()
 {}
 
-void ParticleSystem::init( int _width, int _height, int _depth )
+void ParticleSystem::init(int _width, int _height, int _depth)
 {
-    m_halfWidth = _width / 2.0f;
-    m_halfHeight = _height / 2.0f;
-    m_halfDepth = _depth / 2.0f;
+	m_halfWidth = _width / 2.0f;
+	m_halfHeight = _height / 2.0f;
+	m_halfDepth = _depth / 2.0f;
 
-    m_particlePool = new Particle[ MAX_PARTICLES ];
-    m_positions = new ParticleTboData[ MAX_PARTICLES ]();
-    
-    memset( m_particlePool, 0, sizeof( m_particlePool[0] ) * MAX_PARTICLES );
-    memset( m_positions, 0, sizeof( m_positions[0] ) * MAX_PARTICLES );
-    memset( m_particleBins, 0, sizeof( m_particleBins[0] ) * NUM_BINS);
+	m_particlePool = new Particle[MAX_PARTICLES];
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		m_positions[i] = new ParticleTboData[MAX_PARTICLES]();
+	}
 
-    ofVec3f minBounds( -m_halfWidth, -m_halfHeight, -m_halfDepth );
-    ofVec3f maxBounds( m_halfWidth, m_halfHeight, m_halfDepth );
-    ofVec3f size = maxBounds - minBounds;
+	memset(m_particlePool, 0, sizeof(m_particlePool[0]) * MAX_PARTICLES);
+	//memset(m_positions, 0, sizeof(m_positions[0]) * MAX_PARTICLES);
+	memset(m_particleBins, 0, sizeof(m_particleBins[0]) * NUM_BINS);
+	memset(numParticles, 0, sizeof(numParticles[0]) * Particle::NUM_TYPES);
 
-    m_invBoundsScale = 1.0f / ( maxBounds - minBounds );
-    m_binScale = ofVec3f( (float)BIN_DIMS_X, (float)BIN_DIMS_Y, (float)BIN_DIMS_Z ) * m_invBoundsScale;
+	ofVec3f minBounds(-m_halfWidth, -m_halfHeight, -m_halfDepth);
+	ofVec3f maxBounds(m_halfWidth, m_halfHeight, m_halfDepth);
+	ofVec3f size = maxBounds - minBounds;
 
-    m_debugBoundsBox.disableNormals();
-    m_debugBoundsBox.disableTextures();
-    m_debugBoundsBox.setResolution( 1 );
-    m_debugBoundsBox.setWidth( size.x );
-    m_debugBoundsBox.setHeight( size.y );
-    m_debugBoundsBox.setDepth( size.z ); 
+	m_invBoundsScale = 1.0f / (maxBounds - minBounds);
+	m_binScale = ofVec3f((float)BIN_DIMS_X, (float)BIN_DIMS_Y, (float)BIN_DIMS_Z) * m_invBoundsScale;
 
-    //m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
-    //m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
-    //m_sphereMesh = m_sphere.getMesh();
-    //m_sphereMesh.setUsage( GL_STATIC_DRAW );
+	m_debugBoundsBox.disableNormals();
+	m_debugBoundsBox.disableTextures();
+	m_debugBoundsBox.setResolution(1);
+	m_debugBoundsBox.setWidth(size.x);
+	m_debugBoundsBox.setHeight(size.y);
+	m_debugBoundsBox.setDepth(size.z);
 
-	ofxObjLoader::load("models/cube_fillet_1.obj", cubeFilletMesh);
-	for (auto& v : cubeFilletMesh.getVertices()) v *= .4f; // scale mesh
-	cubeFilletMesh.setUsage(GL_STATIC_DRAW);
+	//m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
+	//m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
+	//m_sphereMesh = m_sphere.getMesh();
+	//m_sphereMesh.setUsage( GL_STATIC_DRAW );
 
-    m_positionTbo.allocate();
-    m_positionTbo.bind( GL_TEXTURE_BUFFER );
-    m_positionTbo.unbind( GL_TEXTURE_BUFFER );
+	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::NEUTRON]);
+	for (auto& v : particleMeshes[Particle::NEUTRON].getVertices()) v *= .4f; // scale mesh
+	particleMeshes[Particle::NEUTRON].setUsage(GL_STATIC_DRAW);
 
-    m_positionTbo.setData( sizeof( m_positions[ 0 ] ) * MAX_PARTICLES, m_positions, GL_DYNAMIC_DRAW );
-    m_positionTboTex.allocateAsBufferTexture( m_positionTbo, GL_RGBA32F );
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		m_positionTbo[i].allocate();
+		m_positionTbo[i].bind(GL_TEXTURE_BUFFER);
+		m_positionTbo[i].unbind(GL_TEXTURE_BUFFER);
+
+		m_positionTbo[i].setData(sizeof(m_positions[0][0]) * MAX_PARTICLES, m_positions[i], GL_DYNAMIC_DRAW);
+		m_positionTboTex[i].allocateAsBufferTexture(m_positionTbo[i], GL_RGBA32F);
+	}
 }
 
 void ParticleSystem::shutdown()
 {
     delete[] m_particlePool;
-    delete[] m_positions;
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		delete[] m_positions[i];
+	}
 }
 
-void ParticleSystem::addParticle(const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
+void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
 {
-	if (m_numParticles < MAX_PARTICLES)
+	if (totalNumParticles() < MAX_PARTICLES)
 	{
-		Particle& p = m_particlePool[m_numParticles];
+		Particle& p = m_particlePool[totalNumParticles()];
 		p.position = _pos;
 		p.velocity = _vel;
 		p.mass = _mass;
 		p.radius = _radius;
+		p.type = type;
 
-		++m_numParticles;
+		++(numParticles[type]);
 	}
 	else ofLogError() << "Cannot add particle, MAX_PARTICLES already reached.";
 }
@@ -96,7 +107,7 @@ void ParticleSystem::addRepeller( const ofVec3f& _pos, float _strength )
 void ParticleSystem::sortParticlesByBin()
 {
     // sort the keys and values - this will give us the particle indices sorted by bin id 
-    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, m_numParticles );
+    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, totalNumParticles());
 }
 
 void ParticleSystem::update()
@@ -107,11 +118,13 @@ void ParticleSystem::update()
     memset( m_tempParticleIndices, 0, sizeof( m_tempParticleIndices[ 0 ] ) * MAX_PARTICLES );
     memset( m_particleBins, 0, sizeof( m_particleBins[ 0 ] ) * NUM_BINS);
 
+	unsigned idxByType[Particle::NUM_TYPES];
+	memset(idxByType, 0, sizeof(idxByType[0]) * Particle::NUM_TYPES);
 #ifdef TARGET_OSX
     dispatch_apply(m_numParticles, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
 #else
 #pragma omp parallel for
-    for ( int idx = 0; idx < m_numParticles; ++idx ) {
+    for ( int idx = 0; idx < totalNumParticles(); ++idx ) {
 #endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
@@ -162,13 +175,11 @@ void ParticleSystem::update()
 
         //     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
 
-        ParticleTboData& data = m_positions[ idx ];
+        ParticleTboData& data = m_positions[p.type][idxByType[p.type]++];
 		data.transform = 
 			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
 			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
 			ofMatrix4x4::newTranslationMatrix(p.position);
-			//* ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius));
-			//* ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f));
 
         /*
 		data.transform = glm::translate( p.position )
@@ -181,12 +192,17 @@ void ParticleSystem::update()
     }
 #endif
 
-    m_positionTbo.updateData( 0, sizeof( m_positions[ 0 ] ) * m_numParticles, m_positions );
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		m_positionTbo[i].updateData(0, sizeof(ParticleTboData) * numParticles[i], m_positions[i]);
+	}
+
+    //m_positionTbo.updateData( 0, sizeof( m_positions[ 0 ] ) * m_numParticles, m_positions );
 }
 
 void ParticleSystem::step( float _dt )
 {
-    for ( uint32_t idx = 0; idx < m_numParticles; ++idx )
+    for ( uint32_t idx = 0; idx < totalNumParticles(); ++idx )
     {
         Particle& p = m_particlePool[ idx ];
 
@@ -315,10 +331,11 @@ void ParticleSystem::debugDrawWorldBounds()
     ofEnableDepthTest();
 }
 
-void ParticleSystem::debugDrawParticles()
+void ParticleSystem::debugDrawParticles(Particle::Type type)
 {
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
-    cubeFilletMesh.drawInstanced( OF_MESH_FILL, m_numParticles );
+
+    particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
 }

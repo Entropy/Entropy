@@ -10,19 +10,7 @@ namespace entropy
 			roughness(0.05f)
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
-			for (unsigned i = 0; i < NUM_LIGHTS; ++i)
-			{
-				lightIntensities[i] = 1.f;
-				lightRadiuses[i] = 1.f;
-				lightCols[i].set(1.f, 1.f, 1.f, 1.f);
 
-				string iStr = ofToString(i);
-				persistent.add("lightPosns" + iStr, lightPosns[i], ofVec3f(-2000.f), ofVec3f(2000.f));
-				persistent.add("lightIntensities" + iStr, lightIntensities[i], 0.f, 5.f);
-				persistent.add("lightRadiuses" + iStr, lightRadiuses[i], 0.f, 4000.f);
-				persistent.add("lightCols" + iStr, lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
-			}
-			persistent.add("roughness", roughness, 0.f, 1.f);
 		}
 		
 		//--------------------------------------------------------------
@@ -52,6 +40,7 @@ namespace entropy
 				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 60.0f);
 
 				particleSystem.addParticle(
+					Particle::NEUTRON,
 					ofVec3f(ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f)),
 					ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f)),
 					mass, 
@@ -59,7 +48,22 @@ namespace entropy
 				);
 			}
 
+			// lighting
 			particleShader.load("shaders/particle");
+
+			for (unsigned i = 0; i < NUM_LIGHTS; ++i)
+			{
+				lightIntensities[i] = 1.f;
+				lightRadiuses[i] = 1.f;
+				lightCols[i].set(1.f, 1.f, 1.f, 1.f);
+
+				string iStr = ofToString(i);
+				persistent.add("lightPosns" + iStr, lightPosns[i], ofVec3f(-2000.f), ofVec3f(2000.f));
+				persistent.add("lightIntensities" + iStr, lightIntensities[i], 0.f, 5.f);
+				persistent.add("lightRadiuses" + iStr, lightRadiuses[i], 0.f, 4000.f);
+				persistent.add("lightCols" + iStr, lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
+			}
+			persistent.add("roughness", roughness, 0.f, 1.f);
 		}
 		
 		//--------------------------------------------------------------
@@ -97,7 +101,7 @@ namespace entropy
 				// draw particles
 				particleShader.begin();
 				{
-					particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture(), 0);
+					particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture(Particle::NEUTRON), 0);
 					particleShader.setUniform1i("numLights", NUM_LIGHTS);
 					particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
 					particleShader.setUniform1f("roughness", roughness);
@@ -109,7 +113,7 @@ namespace entropy
 						particleShader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
 						particleShader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
 					}
-					particleSystem.debugDrawParticles();
+					particleSystem.debugDrawParticles(Particle::NEUTRON);
 					particleShader.end();
 				}
 			}
