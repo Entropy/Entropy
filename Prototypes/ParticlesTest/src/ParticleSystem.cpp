@@ -176,6 +176,7 @@ void ParticleSystem::update()
 
         //     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
 
+		/*
         ParticleTboData& data = m_positions[p.type][idxByType[p.type]];
 		data.transform = 
 			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
@@ -183,12 +184,13 @@ void ParticleSystem::update()
 			ofMatrix4x4::newTranslationMatrix(p.position);
 
 		++idxByType[p.type];
-
-        /*
-		data.transform = glm::translate( p.position )
-            * glm::scale( ofVec3f( p.radius, p.radius, p.radius ) )
-            * glm::lookAt( ofVec3f( 0.0f, 0.0f, 0.0f ), p.velocity, ofVec3f( 0.0f, 1.0f, 0.0f ) );
 		*/
+
+		m_positions[p.type][idxByType[p.type]++].transform =
+			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
+			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
+			ofMatrix4x4::newTranslationMatrix(p.position);
+
 #ifdef TARGET_OSX
     });
 #else
