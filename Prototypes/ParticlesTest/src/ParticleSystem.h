@@ -7,6 +7,7 @@ struct Particle
 	enum Type
 	{
 		NEUTRON,
+		UP_QUARK,
 
 		NUM_TYPES
 	};

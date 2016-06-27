@@ -40,7 +40,7 @@ namespace entropy
 				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 60.0f);
 
 				particleSystem.addParticle(
-					Particle::NEUTRON,
+					(i % 2)?Particle::NEUTRON:Particle::UP_QUARK,
 					ofVec3f(ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f)),
 					ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f)),
 					mass, 
@@ -101,7 +101,6 @@ namespace entropy
 				// draw particles
 				particleShader.begin();
 				{
-					particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture(Particle::NEUTRON), 0);
 					particleShader.setUniform1i("numLights", NUM_LIGHTS);
 					particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
 					particleShader.setUniform1f("roughness", roughness);
@@ -113,7 +112,11 @@ namespace entropy
 						particleShader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
 						particleShader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
 					}
-					particleSystem.debugDrawParticles(Particle::NEUTRON);
+					for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+					{
+						particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture((Particle::Type)i), 0);
+						particleSystem.debugDrawParticles((Particle::Type)i);
+					}
 					particleShader.end();
 				}
 			}

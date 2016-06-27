@@ -49,8 +49,12 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	//m_sphereMesh.setUsage( GL_STATIC_DRAW );
 
 	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::NEUTRON]);
-	for (auto& v : particleMeshes[Particle::NEUTRON].getVertices()) v *= .4f; // scale mesh
-	particleMeshes[Particle::NEUTRON].setUsage(GL_STATIC_DRAW);
+	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::UP_QUARK]);
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		for (auto& v : particleMeshes[i].getVertices()) v *= .4f; // scale mesh
+		particleMeshes[i].setUsage(GL_STATIC_DRAW);
+	}
 
 	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 	{
