@@ -85,7 +85,8 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void ParticlesTestScene::drawBack()
 		{
-
+			ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+			//ofBackgroundGradient(ofColor::lightBlue, ofColor::darkBlue);
 		}
 		
 		//--------------------------------------------------------------
