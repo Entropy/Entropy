@@ -2,6 +2,9 @@
 #include "lb/util/RadixSort.h"
 #include "ofxObjLoader.h"
 
+const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
+const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
+
 const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
 
 ParticleSystem::ParticleSystem() : 
@@ -49,13 +52,10 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	m_debugBoundsBox.setHeight(size.y);
 	m_debugBoundsBox.setDepth(size.z);
 
-	//m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
-	//m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
-	//m_sphereMesh = m_sphere.getMesh();
-	//m_sphereMesh.setUsage( GL_STATIC_DRAW );
-
-	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::NEUTRON]);
+	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::POSITRON]);
+	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::ELECTRON]);
 	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::UP_QUARK]);
+	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::ANTI_UP_QUARK]);
 	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 	{
 		for (auto& v : particleMeshes[i].getVertices()) v *= .4f; // scale mesh
@@ -82,7 +82,7 @@ void ParticleSystem::shutdown()
 	}
 }
 
-void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
+void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius, float charge)
 {
 	if (numParticlesTotal < MAX_PARTICLES)
 	{
@@ -92,6 +92,7 @@ void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const
 		p.mass = _mass;
 		p.radius = _radius;
 		p.type = type;
+		p.charge = charge;
 
 		++(numParticles[type]);
 		++numParticlesTotal;
@@ -117,7 +118,11 @@ void ParticleSystem::addRepeller( const ofVec3f& _pos, float _strength )
 
 void ParticleSystem::removeParticle(unsigned idx)
 {
-	if (idx < numParticlesTotal) deadParticles[numDeadParticles++] = idx;
+	if (idx < numParticlesTotal)
+	{
+		m_particlePool[idx].alive = false;
+		deadParticles[numDeadParticles++] = idx;
+	}
 	else ofLogError() << "Attempt to remove particle that wasn't alive";
 }
 
@@ -145,7 +150,7 @@ void ParticleSystem::update()
 #endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
-        if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.9f;
+        //if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.9f;
 
         // check walls
         if ( p.position.x > m_halfWidth )
@@ -190,17 +195,7 @@ void ParticleSystem::update()
 			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
 			ofMatrix4x4::newTranslationMatrix(p.position);
 
-		//     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
-
-		/*
-		ParticleTboData& data = m_positions[p.type][idxByType[p.type]];
-		data.transform =
-		ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
-		ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
-		ofMatrix4x4::newTranslationMatrix(p.position);
-
-		++idxByType[p.type];
-		*/
+		//  ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
 
 #ifdef TARGET_OSX
     });
@@ -297,38 +292,49 @@ void ParticleSystem::step( float _dt )
                 dispatch_apply(bin.particleCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
 #else
 #pragma omp parallel for
-                for ( int idx = 0; idx < bin.particleCount; ++idx ) {
+                for ( int idx = 0; idx < bin.particleCount; ++idx )
+				{
 #endif
                     uint16_t particleIdx = m_particleIndices[ bin.offset + idx ];
-                    Particle& p = m_particlePool[ particleIdx ];
+					Particle& p = m_particlePool[particleIdx];
 
-                    ofVec3f acc( 0.0f, 0.0f, 0.0f );
+					if (p.alive)
+					{
+						uint16_t neighbourParticleIdx = 0;                    
+						ofVec3f acc( 0.0f, 0.0f, 0.0f );
 
-                    // loop through neighbor bins
-                    for ( int nz = z0; nz < z1; ++nz )
-                        for ( int ny = y0; ny < y1; ++ny )
-                            for ( int nx = x0; nx < x1; ++nx )
-                            {
-                                const ParticleBin& nbin = m_particleBins[ binIdFromXYZ( nx, ny, nz ) ];
-                                for ( uint16_t neighborIdx = 0; neighborIdx < nbin.particleCount; ++neighborIdx )
-                                {
-                                    // n-body euler integration
-                                    particleIdx = m_particleIndices[ nbin.offset + neighborIdx ];
-                                    Particle& neighborP = m_particlePool[ particleIdx ];
+						// loop through neighbor bins
+						for (int nz = z0; nz < z1; ++nz)
+						{
+							for (int ny = y0; ny < y1; ++ny)
+							{
+								for (int nx = x0; nx < x1; ++nx)
+								{
+									const ParticleBin& nbin = m_particleBins[binIdFromXYZ(nx, ny, nz)];
+									for (uint16_t neighborIdx = 0; neighborIdx < nbin.particleCount; ++neighborIdx)
+									{
+										// n-body euler integration
+										neighbourParticleIdx = m_particleIndices[nbin.offset + neighborIdx];
+										if (particleIdx != neighbourParticleIdx)
+										{
+											Particle& neighborP = m_particlePool[neighbourParticleIdx];
 
-                                    const float eps = 0.1f; // minimum dist for nbody interaction
+											const float eps = 0.1f; // minimum dist for nbody interaction
 
-                                    ofVec3f delta = neighborP.position - p.position;
-                                    float distSqr = delta.x*delta.x + delta.y*delta.y + delta.z*delta.z + eps;
-                                    float invDist = 1.0f / sqrtf( distSqr );
-                                    float invDist3 = invDist * invDist * invDist;
-                                    float f = neighborP.mass * invDist3;
+											ofVec3f delta = neighborP.position - p.position;
+											float distSqr = delta.x*delta.x + delta.y*delta.y + delta.z*delta.z + eps;
+											float invDist = 1.0f / sqrtf(distSqr);
+											float invDist3 = invDist * invDist * invDist;
+											float f = neighborP.mass * invDist3;
 
-                                    acc += f * delta;
-                                }
-                            }
-
-                    p.velocity += _dt * acc / p.mass;
+											acc += f * delta;
+										}
+									}
+								}
+							}
+						}
+						p.velocity += _dt * acc / p.mass;
+					}
 #ifdef TARGET_OSX
                 });
 #else

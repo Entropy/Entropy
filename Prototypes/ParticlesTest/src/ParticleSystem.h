@@ -6,15 +6,17 @@ struct Particle
 {
 	enum Type
 	{
-		NEUTRON,
+		ELECTRON,
 		POSITRON,
-		UP_QUARK,
+
 		ANTI_UP_QUARK,
+		UP_QUARK,
 
 		NUM_TYPES
 	};
 
 	static const float MASSES[NUM_TYPES];
+	static const float CHARGES[NUM_TYPES];
 
 	Type type;
     ofVec3f position;
@@ -74,7 +76,7 @@ public:
     void step( float _dt );
     void update();
 
-    void addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius );
+    void addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius, float charge);
     void addAttractor( const ofVec3f& _pos, float _strength );
     void addRepeller( const ofVec3f& _pos, float _strength );
 	void removeParticle(unsigned idx);

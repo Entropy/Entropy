@@ -33,18 +33,20 @@ namespace entropy
 
 			particleSystem.init(1600, 1600, 1600);
 
-			for (int i = 0; i < 4; ++i)
+			for (int i = 0; i < 10000; ++i)
 			{
-				float mass = ofRandom(0.01f, 0.1f);
+				Particle::Type type = (Particle::Type)(i % Particle::NUM_TYPES);
+				float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);// ofRandom(0.01f, 0.1f);
 				//float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);
-				float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 60.0f);
+				float radius = ofMap(mass, 0.01f, 0.1f, 10.0f, 60.0f);
 
 				particleSystem.addParticle(
-					(i % 2)?Particle::NEUTRON:Particle::UP_QUARK,
+					(Particle::Type)(i % Particle::NUM_TYPES),
 					ofVec3f(ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f), ofRandom(-500.0f, 500.0f)),
-					ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f)),
+					ofVec3f(ofRandom(-4.0f, 4.0f), ofRandom(-4.0f, 4.0f), ofRandom(-4.0f, 4.0f)),
 					mass, 
-					radius
+					radius,
+					Particle::CHARGES[type]
 				);
 			}
 
