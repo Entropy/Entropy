@@ -2,10 +2,13 @@
 #include "lb/util/RadixSort.h"
 #include "ofxObjLoader.h"
 
+const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
+
 ParticleSystem::ParticleSystem() : 
 	m_particlePool(nullptr),
 	m_numAttractors(0),
-	m_numRepellers(0)
+	m_numRepellers(0),
+	numParticlesTotal(0)
 {
 }
 
@@ -28,6 +31,9 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	//memset(m_positions, 0, sizeof(m_positions[0]) * MAX_PARTICLES);
 	memset(m_particleBins, 0, sizeof(m_particleBins[0]) * NUM_BINS);
 	memset(numParticles, 0, sizeof(numParticles[0]) * Particle::NUM_TYPES);
+
+	numDeadParticles = 0;
+	memset(deadParticles, 0, sizeof(deadParticles[0]) * MAX_PARTICLES);
 
 	ofVec3f minBounds(-m_halfWidth, -m_halfHeight, -m_halfDepth);
 	ofVec3f maxBounds(m_halfWidth, m_halfHeight, m_halfDepth);
@@ -78,9 +84,9 @@ void ParticleSystem::shutdown()
 
 void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
 {
-	if (totalNumParticles() < MAX_PARTICLES)
+	if (numParticlesTotal < MAX_PARTICLES)
 	{
-		Particle& p = m_particlePool[totalNumParticles()];
+		Particle& p = m_particlePool[numParticlesTotal];
 		p.position = _pos;
 		p.velocity = _vel;
 		p.mass = _mass;
@@ -88,6 +94,7 @@ void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const
 		p.type = type;
 
 		++(numParticles[type]);
+		++numParticlesTotal;
 	}
 	else ofLogError() << "Cannot add particle, MAX_PARTICLES already reached.";
 }
@@ -108,10 +115,16 @@ void ParticleSystem::addRepeller( const ofVec3f& _pos, float _strength )
     ++m_numRepellers;
 }
 
+void ParticleSystem::removeParticle(unsigned idx)
+{
+	if (idx < numParticlesTotal) deadParticles[numDeadParticles++] = idx;
+	else ofLogError() << "Attempt to remove particle that wasn't alive";
+}
+
 void ParticleSystem::sortParticlesByBin()
 {
     // sort the keys and values - this will give us the particle indices sorted by bin id 
-    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, totalNumParticles());
+    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, numParticlesTotal);
 }
 
 void ParticleSystem::update()
@@ -128,43 +141,37 @@ void ParticleSystem::update()
     dispatch_apply(m_numParticles, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
 #else
 #pragma omp parallel for
-    for ( int idx = 0; idx < totalNumParticles(); ++idx ) {
+    for ( int idx = 0; idx < numParticlesTotal; ++idx ) {
 #endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
-        p.velocity *= 0.9f;
+        if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.9f;
 
         // check walls
         if ( p.position.x > m_halfWidth )
         {
-            //p.position.x = -m_halfWidth + 10.0f;
             p.position.x -= m_halfWidth * 2;
         }
         else if ( p.position.x < -m_halfWidth )
         {
-            //p.position.x = m_halfWidth - 10.0f;
             p.position.x += m_halfWidth * 2;
         }
 
         if ( p.position.y > m_halfHeight)
         {
-            //p.position.y = -m_halfHeight + 10.0f;
             p.position.y -= m_halfHeight * 2;
         }
         else if ( p.position.y < -m_halfHeight )
         {
-//            p.position.y = m_halfHeight - 10.0f;
             p.position.y += m_halfHeight * 2;
         }
 
         if ( p.position.z > m_halfDepth )
         {
-            //p.position.z = -m_halfDepth + 10.0f;
             p.position.z -= m_halfDepth * 2;
         }
         else if ( p.position.z < -m_halfDepth )
         {
-            //p.position.z = m_halfDepth - 10.0f;
             p.position.z += m_halfDepth * 2;
         }
 
@@ -178,22 +185,22 @@ void ParticleSystem::update()
 #pragma omp atomic
         ++m_particleBins[ binId ].particleCount;
 
-        //     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
-
-		/*
-        ParticleTboData& data = m_positions[p.type][idxByType[p.type]];
-		data.transform = 
-			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
-			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
-			ofMatrix4x4::newTranslationMatrix(p.position);
-
-		++idxByType[p.type];
-		*/
-
 		m_positions[p.type][idxByType[p.type]++].transform =
 			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
 			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
 			ofMatrix4x4::newTranslationMatrix(p.position);
+
+		//     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
+
+		/*
+		ParticleTboData& data = m_positions[p.type][idxByType[p.type]];
+		data.transform =
+		ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
+		ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
+		ofMatrix4x4::newTranslationMatrix(p.position);
+
+		++idxByType[p.type];
+		*/
 
 #ifdef TARGET_OSX
     });
@@ -211,7 +218,7 @@ void ParticleSystem::update()
 
 void ParticleSystem::step( float _dt )
 {
-    for ( uint32_t idx = 0; idx < totalNumParticles(); ++idx )
+    for ( uint32_t idx = 0; idx < numParticlesTotal; ++idx )
     {
         Particle& p = m_particlePool[ idx ];
 
@@ -326,10 +333,19 @@ void ParticleSystem::step( float _dt )
                 });
 #else
                 }
-#endif
+#endif			
             }
         }
     }
+
+	// remove dead particles by swapping them to the end of the array
+	for (unsigned i = 0; i < numDeadParticles; ++i)
+	{
+		numParticlesTotal--;
+		numParticles[(unsigned)m_particlePool[deadParticles[i]].type]--;
+		m_particlePool[deadParticles[i]] = m_particlePool[numParticlesTotal];
+	}
+	numDeadParticles = 0;
 }
 
 void ParticleSystem::debugDrawWorldBounds()
@@ -346,5 +362,7 @@ void ParticleSystem::debugDrawParticles(Particle::Type type)
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
 
-    particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
+	// check we have particles of this type as OF draws at least one primitive even if 
+	// primCount is set to zero!!
+	if (numParticles[type]) particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
 }

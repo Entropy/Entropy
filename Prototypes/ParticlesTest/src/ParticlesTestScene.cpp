@@ -33,7 +33,7 @@ namespace entropy
 
 			particleSystem.init(1600, 1600, 1600);
 
-			for (int i = 0; i < ParticleSystem::MAX_PARTICLES; ++i)
+			for (int i = 0; i < 4; ++i)
 			{
 				float mass = ofRandom(0.01f, 0.1f);
 				//float radius = ofMap(mass, 0.01f, 0.1f, 1.0f, 6.0f);
@@ -64,6 +64,14 @@ namespace entropy
 				persistent.add("lightCols" + iStr, lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
 			}
 			persistent.add("roughness", roughness, 0.f, 1.f);
+		}
+
+		void ParticlesTestScene::deleteRandomParticle()
+		{
+			if (particleSystem.getNumParticlesTotal())
+			{
+				particleSystem.removeParticle(rand() % particleSystem.getNumParticlesTotal());
+			}
 		}
 		
 		//--------------------------------------------------------------

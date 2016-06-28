@@ -36,6 +36,8 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			void deleteRandomParticle();
+
 		protected:
 			// particles
 			ParticleSystem particleSystem;

@@ -7,14 +7,19 @@ struct Particle
 	enum Type
 	{
 		NEUTRON,
+		POSITRON,
 		UP_QUARK,
+		ANTI_UP_QUARK,
 
 		NUM_TYPES
 	};
 
+	static const float MASSES[NUM_TYPES];
+
 	Type type;
     ofVec3f position;
     ofVec3f velocity;
+	bool alive;
 	// save these members rather than using
 	// type to eliminate array lookups in
 	// step() function
@@ -56,6 +61,7 @@ public:
     static const uint16_t MAX_PARTICLES = 10000;
     static const uint16_t MAX_ATTRACTORS = 10;
     static const uint16_t MAX_REPELLERS = 10;
+	static const float MIN_SPEED_SQUARED;
 
     ParticleSystem();
     ~ParticleSystem();
@@ -71,6 +77,7 @@ public:
     void addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius );
     void addAttractor( const ofVec3f& _pos, float _strength );
     void addRepeller( const ofVec3f& _pos, float _strength );
+	void removeParticle(unsigned idx);
 
     //inline const ofTexture& getPositionTexture() const { return m_positionTboTex; };
     inline const ofTexture& getPositionTexture(Particle::Type type) const { return m_positionTboTex[type]; };
@@ -80,19 +87,12 @@ public:
         return _z * BIN_DIMS_X * BIN_DIMS_Y + _y * BIN_DIMS_X + _x;
     }
 
-    unsigned totalNumParticles() const
-    {
-		unsigned total = 0;
-		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
-		{
-			total += numParticles[i];
-		}
-		return total;
-    }
+	uint32_t getNumParticlesTotal() const { return numParticlesTotal; }
 
     void debugDrawWorldBounds();
     void debugDrawParticles(Particle::Type type);
 
+private:
     float           m_halfWidth;
     float           m_halfHeight;
     float           m_halfDepth;
@@ -101,7 +101,7 @@ public:
     Attractor       m_attractors[ MAX_ATTRACTORS ];
     Repeller        m_repellers[ MAX_REPELLERS ];
 
-	//uint32_t        numParticlesTotal;// [Particle::NUM_TYPES];
+	uint32_t        numParticlesTotal;
 	uint32_t        numParticles[Particle::NUM_TYPES];
     uint32_t        m_numAttractors;
     uint32_t        m_numRepellers;
@@ -116,6 +116,9 @@ public:
     ofTexture       m_positionTboTex[Particle::NUM_TYPES];
     ofBufferObject  m_positionTbo[Particle::NUM_TYPES];
     ParticleTboData* m_positions[Particle::NUM_TYPES];
+
+	uint32_t deadParticles[MAX_PARTICLES]; // particles to remove
+	uint32_t numDeadParticles;
 
     ParticleBin                m_particleBins[ NUM_BINS ];
     uint16_t                   m_particleIndices[ MAX_PARTICLES ]; // unsorted list of particle indices (just particle pool index)
