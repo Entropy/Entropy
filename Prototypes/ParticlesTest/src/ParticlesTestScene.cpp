@@ -33,7 +33,7 @@ namespace entropy
 
 			particleSystem.init(1600, 1600, 1600);
 
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < 4000; ++i)
 			{
 				Particle::Type type = (Particle::Type)(i % Particle::NUM_TYPES);
 				float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);// ofRandom(0.01f, 0.1f);
@@ -89,6 +89,7 @@ namespace entropy
 		{
 			if (ofGetFrameNum() % 2 == 0) particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
 			particleSystem.update();
+			particleSystem.hackyUpdatePhotons();
 		}
 
 		//--------------------------------------------------------------
@@ -115,6 +116,7 @@ namespace entropy
 					particleShader.setUniform1i("numLights", NUM_LIGHTS);
 					particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
 					particleShader.setUniform1f("roughness", roughness);
+					
 					for (int i = 0; i < NUM_LIGHTS; i++)
 					{
 						string index = ofToString(i);
@@ -123,13 +125,19 @@ namespace entropy
 						particleShader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
 						particleShader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
 					}
+
 					for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 					{
-						particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture((Particle::Type)i), 0);
+						particleShader.setUniform3f("particleColor", Particle::COLORS[i].r, Particle::COLORS[i].g, Particle::COLORS[i].b);
+						particleShader.setUniformTexture("uOffsetTex", particleSystem.getPositionTexture((Particle::Type)i), 1);
 						particleSystem.debugDrawParticles((Particle::Type)i);
 					}
-					particleShader.end();
 				}
+				particleShader.end();
+
+				// draw photons
+				particleSystem.drawPhotons();
+
 			}
 			cam.end();
 		}

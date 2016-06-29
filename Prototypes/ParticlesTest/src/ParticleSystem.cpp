@@ -4,6 +4,7 @@
 
 const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
 const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
+const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
 
 const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
 
@@ -52,6 +53,7 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	m_debugBoundsBox.setHeight(size.y);
 	m_debugBoundsBox.setDepth(size.z);
 
+	photonTex.loadImage("images/flare.png");
 	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::POSITRON]);
 	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::ELECTRON]);
 	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::UP_QUARK]);
@@ -93,6 +95,8 @@ void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const
 		p.radius = _radius;
 		p.type = type;
 		p.charge = charge;
+		p.alive = true;
+		p.createPhoton = false;
 
 		++(numParticles[type]);
 		++numParticlesTotal;
@@ -318,16 +322,32 @@ void ParticleSystem::step( float _dt )
 										if (particleIdx != neighbourParticleIdx)
 										{
 											Particle& neighborP = m_particlePool[neighbourParticleIdx];
+											ofVec3f dir = neighborP.position - p.position;
+											float distSqr = dir.lengthSquared();
+											float dist = sqrtf(distSqr);
+											if (dist < 4.f)
+											{
+												p.alive = false;
+												neighborP.alive = false;
+												p.createPhoton = true;
 
-											const float eps = 0.1f; // minimum dist for nbody interaction
+												// fix me: should be critical section
+												deadParticles[numDeadParticles] = particleIdx;
+#pragma omp atomic
+												numDeadParticles++;
 
-											ofVec3f delta = neighborP.position - p.position;
-											float distSqr = delta.x*delta.x + delta.y*delta.y + delta.z*delta.z + eps;
-											float invDist = 1.0f / sqrtf(distSqr);
-											float invDist3 = invDist * invDist * invDist;
-											float f = neighborP.mass * invDist3;
+												deadParticles[numDeadParticles] = particleIdx;
+#pragma omp atomic
+												numDeadParticles++;
 
-											acc += f * delta;
+											}
+											else
+											{
+												ofVec3f dirNormalised = dir / dist;
+												// same charge force goes towards other particle
+												//if (-p.charge * neighborP.charge > 0.f) cout << "attracting" << endl;
+												acc += -80.f * dirNormalised * p.charge * neighborP.charge * p.mass * neighborP.mass / distSqr;
+											}
 										}
 									}
 								}
@@ -347,6 +367,13 @@ void ParticleSystem::step( float _dt )
 	// remove dead particles by swapping them to the end of the array
 	for (unsigned i = 0; i < numDeadParticles; ++i)
 	{
+		if (m_particlePool[deadParticles[i]].createPhoton)
+		{
+			Photon photon;
+			photon.vel = ofVec3f(ofRandomf(), ofRandomf(), ofRandomf()).normalize().scale(50.f);
+			photon.pos = m_particlePool[deadParticles[i]].position;
+			photons.push_back(photon);
+		}
 		numParticlesTotal--;
 		numParticles[(unsigned)m_particlePool[deadParticles[i]].type]--;
 		m_particlePool[deadParticles[i]] = m_particlePool[numParticlesTotal];
@@ -364,6 +391,7 @@ void ParticleSystem::debugDrawWorldBounds()
 
 void ParticleSystem::debugDrawParticles(Particle::Type type)
 {
+	glPushAttrib(GL_ENABLE_BIT);
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
@@ -371,4 +399,37 @@ void ParticleSystem::debugDrawParticles(Particle::Type type)
 	// check we have particles of this type as OF draws at least one primitive even if 
 	// primCount is set to zero!!
 	if (numParticles[type]) particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
+	glPopAttrib();
+}
+
+void ParticleSystem::hackyUpdatePhotons()
+{
+	const float killDist = 2000.f * 2000.f;
+	const float dt = ofGetLastFrameTime();
+	for (auto& it = photons.begin(); it != photons.end();)
+	{
+		if (it->pos.lengthSquared() > killDist) it = photons.erase(it);
+		else
+		{
+			it->pos += it->vel;
+			++it;
+		}
+	}
+}
+
+void ParticleSystem::drawPhotons()
+{
+	ofPushStyle();
+	glPushAttrib(GL_ENABLE_BIT);
+	ofSetRectMode(OF_RECTMODE_CENTER);
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
+	for (auto& photon : photons)
+	{
+		photonTex.draw(photon.pos, 40.f, 40.f);
+	}
+	glDepthMask(GL_TRUE);
+	glPopAttrib();
+	ofPopStyle();
 }

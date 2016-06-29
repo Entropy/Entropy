@@ -17,11 +17,13 @@ struct Particle
 
 	static const float MASSES[NUM_TYPES];
 	static const float CHARGES[NUM_TYPES];
+	static const ofFloatColor COLORS[NUM_TYPES];
 
 	Type type;
     ofVec3f position;
     ofVec3f velocity;
 	bool alive;
+	bool createPhoton;
 	// save these members rather than using
 	// type to eliminate array lookups in
 	// step() function
@@ -51,6 +53,12 @@ struct Repeller
 {
     ofVec3f position;
     float     strength;
+};
+
+struct Photon
+{
+	ofVec3f pos;
+	ofVec3f vel;
 };
 
 class ParticleSystem
@@ -91,8 +99,10 @@ public:
 
 	uint32_t getNumParticlesTotal() const { return numParticlesTotal; }
 
+	void hackyUpdatePhotons();
     void debugDrawWorldBounds();
     void debugDrawParticles(Particle::Type type);
+	void drawPhotons();
 
 private:
     float           m_halfWidth;
@@ -128,4 +138,7 @@ private:
 
     uint16_t                   m_tempParticleIndices[ MAX_PARTICLES ]; // temp list for radix sort
     uint16_t                   m_tempParticleSortKeys[ MAX_PARTICLES ]; // temp list for radix sort
+
+	list<Photon> photons;
+	ofImage photonTex;
 };
