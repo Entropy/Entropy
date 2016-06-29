@@ -17,13 +17,21 @@ def update_dep(local_path, data_node):
 		print 'Updating ' + data_node['name'] + '...'
 
 		os.chdir(data_node['name'])
-		
+
 		if 'branch' in data_node:
 			# Make sure we're on the right branch.
-			proc = subprocess.Popen(['git', 'branch'], stdout=subprocess.PIPE)
-			output = proc.stdout.read()
-			if data_node['branch'] not in output:
-				subprocess.call(['git', 'checkout', data_node['branch']])
+			proc = subprocess.Popen(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], stdout=subprocess.PIPE)
+			curr_branch = proc.stdout.read()
+			if data_node['branch'] != curr_branch:
+				# Make sure the branch is available
+				proc = subprocess.Popen(['git', 'branch'], stdout=subprocess.PIPE)
+				avail_branches = proc.stdout.read()
+				if data_node['branch'] not in avail_branches:
+					# Check out branch from remote.
+					subprocess.call(['git', 'checkout', '-b', data_node['branch'], 'origin/' + data_node['branch']])
+				else:
+					# Switch to local branch.
+					subprocess.call(['git', 'checkout', data_node['branch']])
 
 		if 'commit' in data_node:
 			# Check out the specified commit.
@@ -76,3 +84,5 @@ if __name__ == '__main__':
 	if 'addons' in deps_data:
 		for node in deps_data['addons']:
 			update_dep(os.path.join(root_path, 'addons'), node)
+
+	raw_input('Done! Press ENTER to continue...')
