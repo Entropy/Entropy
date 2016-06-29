@@ -74,6 +74,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 			// Resources
+            string getAssetsPath(const string & file = "");
 			string getDataPath(const string & file = "");
 			string getPresetPath(const string & preset = "");
 
@@ -128,6 +129,7 @@ namespace entropy
 			// Resources
 			void populatePresets();
 
+            string assetsPath;
 			string dataPath;
 			string currPreset;
 			vector<string> presets;

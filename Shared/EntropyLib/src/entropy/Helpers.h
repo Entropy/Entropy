@@ -44,4 +44,15 @@ namespace entropy
 		}
 		return dataPath;
 	}
+
+    //--------------------------------------------------------------
+    inline string GetSharedAssetsPath()
+    {
+        static string assetsPath;
+        if (assetsPath.empty())
+        {
+            assetsPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets"));
+        }
+        return assetsPath;
+    }
 }
