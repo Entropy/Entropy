@@ -12,6 +12,15 @@ namespace entropy
 			: public Base
 		{
 		public:
+            typedef enum
+            {
+                CONTENT_MODE_CENTER,
+                CONTENT_MODE_TOP_LEFT,
+                CONTENT_MODE_SCALE_TO_FILL,
+                CONTENT_MODE_SCALE_ASPECT_FILL,
+                CONTENT_MODE_SCALE_ASPECT_FIT
+            } ContentMode;
+
 			virtual string getName() const override
 			{
 				return "entropy::scene::Video";
@@ -39,7 +48,7 @@ namespace entropy
 			ofxWMFVideoPlayer videoPlayer;
 			string fileName;
 
-			ofRectangle videoBounds;
+			ofRectangle drawBounds;
 			bool dirtyBounds;
 
 			virtual BaseParameters & getParameters() override
@@ -50,11 +59,17 @@ namespace entropy
 			struct : BaseParameters
 			{
 				ofParameter<string> videoPath;
-				ofxPreset::Parameter<bool> play{ "Play", true, false };
-				ofxPreset::Parameter<bool> loop{ "Loop", false, false };
-				ofxPreset::Parameter<bool> centered{ "Centered", true, false };
+				ofxPreset::Parameter<int> contentMode{ "Content Mode", (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_SCALE_ASPECT_FIT };
 		
-				PARAM_DECLARE("Video", videoPath, loop, centered);
+                struct : ofParameterGroup
+                {
+                    ofxPreset::Parameter<bool> play{ "Play", true, false };
+                    ofxPreset::Parameter<bool> loop{ "Loop", false, false };
+
+                    PARAM_DECLARE("Playback", play, loop);
+                } playback;
+
+				PARAM_DECLARE("Video", videoPath, contentMode, playback);
 			} parameters;
 		};
 	}

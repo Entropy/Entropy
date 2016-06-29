@@ -48,14 +48,38 @@ namespace entropy
 		{
 			if (this->dirtyBounds)
 			{
-				if (this->parameters.centered)
+                if (this->parameters.contentMode == CONTENT_MODE_CENTER)
 				{
-					this->videoBounds.setFromCenter(GetCanvasWidth() * 0.5f, GetCanvasHeight() * 0.5f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
+					this->drawBounds.setFromCenter(GetCanvasWidth() * 0.5f, GetCanvasHeight() * 0.5f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
 				}
-				else
+				else if (this->parameters.contentMode == CONTENT_MODE_TOP_LEFT)
 				{
-					this->videoBounds.set(0.0f, 0.0f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
+					this->drawBounds.set(0.0f, 0.0f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
 				}
+                else if (this->parameters.contentMode == CONTENT_MODE_SCALE_TO_FILL)
+                {
+                    this->drawBounds.set(0.0f, 0.0f, GetCanvasWidth(), GetCanvasHeight());
+                }
+                else 
+                {
+                    const auto canvasRatio = GetCanvasWidth() / GetCanvasHeight();
+                    const auto videoRatio = this->videoPlayer.getWidth() / this->videoPlayer.getHeight();
+
+                    if (!(canvasRatio > videoRatio) ^ !(this->parameters.contentMode == CONTENT_MODE_SCALE_ASPECT_FIT))
+                    {
+                        this->drawBounds.width = GetCanvasWidth();
+                        this->drawBounds.height = this->drawBounds.width / videoRatio;
+                        this->drawBounds.x = 0.0f;
+                        this->drawBounds.y = (GetCanvasHeight() - this->drawBounds.height) * 0.5f;
+                    }
+                    else
+                    {
+                        this->drawBounds.height = GetCanvasHeight();
+                        this->drawBounds.width = this->drawBounds.height * videoRatio;
+                        this->drawBounds.y = 0.0f;
+                        this->drawBounds.x = (GetCanvasWidth() - this->drawBounds.width) * 0.5f;
+                    }
+                }
 
 				this->dirtyBounds = false;
 			}
@@ -68,7 +92,7 @@ namespace entropy
 		{
 			if (this->videoPlayer.isLoaded())
 			{
-				this->videoPlayer.draw(this->videoBounds.x, this->videoBounds.y, this->videoBounds.width, this->videoBounds.height);
+				this->videoPlayer.draw(this->drawBounds.x, this->drawBounds.y, this->drawBounds.width, this->drawBounds.height);
 			}
 		}
 
@@ -91,34 +115,59 @@ namespace entropy
 					ImGui::Text("File: %s", this->fileName);
 				}
 
-				if (ofxPreset::Gui::AddParameter(this->parameters.play))
-				{
-					if (this->parameters.play)
-					{
-						this->videoPlayer.play();
-					}
-					else
-					{
-						this->videoPlayer.stop();
-					}
-				}
+                if (ImGui::Button("Content Mode..."))
+                {
+                    ImGui::OpenPopup("Content Modes");
+                    ImGui::SameLine();
+                }
+                if (ImGui::BeginPopup("Content Modes"))
+                {
+                    static vector<string> contentModes;
+                    if (contentModes.empty())
+                    {
+                        contentModes.push_back("Center");
+                        contentModes.push_back("Top Left");
+                        contentModes.push_back("Scale To Fill");
+                        contentModes.push_back("Scale Aspect Fill");
+                        contentModes.push_back("Scale Aspect Fit");
+                    }
+                    for (auto i = 0; i < contentModes.size(); ++i)
+                    {
+                        if (ImGui::Selectable(contentModes[i].c_str()))
+                        {
+                            this->parameters.contentMode = i;
+                            this->dirtyBounds = true;
+                        }
+                    }
+                    ImGui::EndPopup();
+                }
 
-				if (ofxPreset::Gui::AddParameter(this->parameters.loop))
-				{
-					if (this->parameters.loop)
-					{
-						this->videoPlayer.setLoopState(OF_LOOP_NORMAL);
-					}
-					else
-					{
-						this->videoPlayer.setLoopState(OF_LOOP_NONE);
-					}
-				}
+                if (ImGui::CollapsingHeader(this->parameters.playback.getName().c_str(), nullptr, true, true))
+                {
+                    if (ofxPreset::Gui::AddParameter(this->parameters.playback.play))
+                    {
+                        if (this->parameters.playback.play)
+                        {
+                            this->videoPlayer.play();
+                        }
+                        else
+                        {
+                            this->videoPlayer.stop();
+                        }
+                    }
 
-				if (ofxPreset::Gui::AddParameter(this->parameters.centered))
-				{
-					this->dirtyBounds = true;
-				}
+                    if (ofxPreset::Gui::AddParameter(this->parameters.playback.loop))
+                    {
+                        if (this->parameters.playback.loop)
+                        {
+                            this->videoPlayer.setLoopState(OF_LOOP_NORMAL);
+                        }
+                        else
+                        {
+                            this->videoPlayer.setLoopState(OF_LOOP_NONE);
+                        }
+                    }
+                }
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}
@@ -146,12 +195,12 @@ namespace entropy
 				return false;
 			}
 
-			if (this->parameters.play)
+			if (this->parameters.playback.play)
 			{
 				this->videoPlayer.play();
 			}
 
-			if (this->parameters.loop)
+			if (this->parameters.playback.loop)
 			{
 				this->videoPlayer.setLoopState(OF_LOOP_NORMAL);
 			}
