@@ -2,7 +2,7 @@
 
 namespace entropy
 {
-	namespace scene
+	namespace util
 	{
 		//--------------------------------------------------------------
 		const string & AbstractMapping::getName() const

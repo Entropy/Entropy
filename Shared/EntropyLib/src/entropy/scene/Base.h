@@ -5,7 +5,7 @@
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
-#include "Mapping.h"
+#include "entropy/util/Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
 	onSetupListeners.push_back(this->onSetup.newListener([this]() { \
@@ -153,7 +153,7 @@ namespace entropy
 			// Timeline
 			ofxTimeline timeline;
 			ofxTLCameraTrack * cameraTrack;
-			map<string, shared_ptr<AbstractMapping>> mappings;
+			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 		private:
 			// Timeline

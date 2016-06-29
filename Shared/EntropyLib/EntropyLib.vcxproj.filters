@@ -200,9 +200,6 @@
     <ClInclude Include="src\entropy\scene\Template.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\scene\Mapping.h">
-      <Filter>src\entropy\scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\render\Canvas.h">
       <Filter>src\entropy\render</Filter>
     </ClInclude>
@@ -305,6 +302,9 @@
     <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.h">
       <Filter>addons\ofxWMFVideoPlayer\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\util\Mapping.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
@@ -316,8 +316,8 @@
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
-    <None Include="src\entropy\scene\Mapping.inl">
-      <Filter>src\entropy\scene</Filter>
+    <None Include="src\entropy\util\Mapping.inl">
+      <Filter>src\entropy\util</Filter>
     </None>
   </ItemGroup>
 </Project>

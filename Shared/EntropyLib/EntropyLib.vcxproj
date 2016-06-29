@@ -248,17 +248,17 @@
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />
-    <ClInclude Include="src\entropy\scene\Mapping.h" />
     <ClInclude Include="src\entropy\scene\Template.h" />
     <ClInclude Include="src\entropy\scene\Video.h" />
     <ClInclude Include="src\entropy\util\App.h" />
+    <ClInclude Include="src\entropy\util\Mapping.h" />
     <ClInclude Include="src\entropy\util\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl" />
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
-    <None Include="src\entropy\scene\Mapping.inl" />
+    <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimelineLib.vcxproj">

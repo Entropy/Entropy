@@ -392,7 +392,7 @@ namespace entropy
 				auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(parameter);
 				if (parameterFloat)
 				{
-					auto mapping = make_shared<Mapping<float, ofxTLCurves>>();
+					auto mapping = make_shared<util::Mapping<float, ofxTLCurves>>();
 					mapping->setup(parameterFloat);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -400,7 +400,7 @@ namespace entropy
 				auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(parameter);
 				if (parameterInt)
 				{
-					auto mapping = make_shared<Mapping<int, ofxTLCurves>>();
+					auto mapping = make_shared<util::Mapping<int, ofxTLCurves>>();
 					mapping->setup(parameterInt);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -408,7 +408,7 @@ namespace entropy
 				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(parameter);
 				if (parameterBool)
 				{
-					auto mapping = make_shared<Mapping<bool, ofxTLSwitches>>();
+					auto mapping = make_shared<util::Mapping<bool, ofxTLSwitches>>();
 					mapping->setup(parameterBool);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -416,7 +416,7 @@ namespace entropy
 				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(parameter);
 				if (parameterColor)
 				{
-					auto mapping = make_shared<Mapping<ofFloatColor, ofxTLColorTrack>>();
+					auto mapping = make_shared<util::Mapping<ofFloatColor, ofxTLColorTrack>>();
 					mapping->setup(parameterColor);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
