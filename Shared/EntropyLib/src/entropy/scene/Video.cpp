@@ -108,7 +108,7 @@ namespace entropy
 			{
 				if (ImGui::Button("Load File..."))
 				{
-					auto dialogResult = ofSystemLoadDialog("Load File", false, this->getDataPath("videos"));
+					auto dialogResult = ofSystemLoadDialog("Load File", false, this->getAssetsPath("videos"));
 					if (dialogResult.bSuccess)
 					{
 						this->loadVideo(dialogResult.filePath);
@@ -116,7 +116,7 @@ namespace entropy
 				}
 				if (!this->parameters.videoPath.get().empty())
 				{
-					ImGui::Text("File: %s", this->fileName);
+					ImGui::Text("File: %s", this->fileName.c_str());
 				}
 
                 static vector<string> contentModes;
