@@ -7,7 +7,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
