@@ -1,4 +1,10 @@
-ofxHDF5
-ofxImGui
-ofxRange
-ofxSet
+../../addons/ofxHDF5
+../../addons/ofxImGui
+../../addons/ofxRange
+../../addons/ofxSet
+../../addons/ofxTimeline
+../../addons/ofxMSATimer
+../../addons/ofxTextInputField
+../../addons/ofxTween
+../../addons/ofxTimecode
+ofxXmlSettings
