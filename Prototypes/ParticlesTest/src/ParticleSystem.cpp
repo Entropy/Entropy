@@ -154,7 +154,7 @@ void ParticleSystem::update()
 #endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
-        //if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.9f;
+        if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.99f;
 
         // check walls
         if ( p.position.x > m_halfWidth )
@@ -325,7 +325,7 @@ void ParticleSystem::step( float _dt )
 											ofVec3f dir = neighborP.position - p.position;
 											float distSqr = dir.lengthSquared();
 											float dist = sqrtf(distSqr);
-											if (dist < 4.f)
+											if (dist < 2.f)
 											{
 												p.alive = false;
 												neighborP.alive = false;
