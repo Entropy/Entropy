@@ -74,6 +74,8 @@ xcuserdata
 *.pdb
 *.ilk
 *.aps
+*.opendb
+*.db
 ipch/
 
 # Eclipse
@@ -113,4 +115,3 @@ Desktop.ini
 #########################
 
 .mailmap
-*.opendb
