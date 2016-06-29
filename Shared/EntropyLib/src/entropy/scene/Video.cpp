@@ -85,6 +85,10 @@ namespace entropy
 			}
 
 			this->videoPlayer.update();
+            if (this->videoPlayer.isStopped() && this->parameters.playback.play)
+            {
+                this->parameters.playback.play.set(false);
+            }
 		}
 
 		//--------------------------------------------------------------
@@ -115,6 +119,15 @@ namespace entropy
 					ImGui::Text("File: %s", this->fileName);
 				}
 
+                static vector<string> contentModes;
+                if (contentModes.empty())
+                {
+                    contentModes.push_back("Center");
+                    contentModes.push_back("Top Left");
+                    contentModes.push_back("Scale To Fill");
+                    contentModes.push_back("Scale Aspect Fill");
+                    contentModes.push_back("Scale Aspect Fit");
+                }
                 if (ImGui::Button("Content Mode..."))
                 {
                     ImGui::OpenPopup("Content Modes");
@@ -122,15 +135,6 @@ namespace entropy
                 }
                 if (ImGui::BeginPopup("Content Modes"))
                 {
-                    static vector<string> contentModes;
-                    if (contentModes.empty())
-                    {
-                        contentModes.push_back("Center");
-                        contentModes.push_back("Top Left");
-                        contentModes.push_back("Scale To Fill");
-                        contentModes.push_back("Scale Aspect Fill");
-                        contentModes.push_back("Scale Aspect Fit");
-                    }
                     for (auto i = 0; i < contentModes.size(); ++i)
                     {
                         if (ImGui::Selectable(contentModes[i].c_str()))
@@ -141,6 +145,8 @@ namespace entropy
                     }
                     ImGui::EndPopup();
                 }
+                ImGui::SameLine();
+                ImGui::Text(contentModes[this->parameters.contentMode].c_str());
 
                 if (ImGui::CollapsingHeader(this->parameters.playback.getName().c_str(), nullptr, true, true))
                 {
