@@ -38,9 +38,9 @@ namespace ent
         // Load the shaders.
         m_renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
 		m_renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
+		m_renderShader.bindDefaults();
 		m_renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
 		m_renderShader.bindAttribute(POSITION_SIZE_ATTRIBUTE, "position_size");
-		m_renderShader.bindDefaults();
 		m_renderShader.linkProgram();
 
 		m_bReady = true;
@@ -110,6 +110,21 @@ namespace ent
             ofPopMatrix();
         }
     }
+
+	//--------------------------------------------------------------
+	void SequenceRamses::drawOctree(float scale)
+	{
+		if (m_bRender)
+		{
+			ofSetColor(ofColor::white);
+
+			ofPushMatrix();
+			ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
+			ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
+			getSnapshot().drawOctree(m_densityMin * m_densityRange.getSpan(), m_densityMax * m_densityRange.getSpan());
+			ofPopMatrix();
+		}
+	}
 
     //--------------------------------------------------------------
     bool SequenceRamses::imGui(ofVec2f& windowPos, ofVec2f& windowSize)

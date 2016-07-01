@@ -20,6 +20,7 @@ namespace ent
 
         void update();
         void draw(float scale);
+		void drawOctree(float scale);
 
 		bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
 

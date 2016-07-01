@@ -32,15 +32,28 @@ namespace ent
 		load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
 		load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
 
+		std::vector<Particle> particles(posX.size());
+		for(size_t i=0;i<posX.size();++i){
+			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
+		}
+
 		m_numCells = posX.size();
 
 		// Set the ranges for all data.
 		for (size_t i = 0; i < posX.size(); ++i)
 		{
-            m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
+			m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
 			m_sizeRange.add(cellSize[i]);
 			m_densityRange.add(density[i]);
 		}
+
+		auto then = ofGetElapsedTimeMicros();
+		this->octree.setup(particles);
+		this->octree.compute(10, m_densityRange.getMin(), m_densityRange.getMax());
+		auto now = ofGetElapsedTimeMicros();
+		cout << "time to compute octree " << float(now - then)/1000 << "ms" << endl;
+		cout << "octree max level " << this->octree.getMaxLevel() << endl;
+		cout << "octree num particles " << this->octree.size() << endl;
 		auto min = m_coordRange.getMin();
 		auto max = m_coordRange.getMax();
 		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
@@ -64,7 +77,7 @@ namespace ent
 		m_vboMesh.setUsage(GL_STATIC_DRAW);
 
 		// Upload per-instance data to the VBO.
-		m_vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
+		/*m_vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
 		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
 		std::vector<ofVec4f> transforms;
@@ -74,14 +87,16 @@ namespace ent
 			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
 		}
 		m_vboMesh.getVbo().setAttributeData(POSITION_SIZE_ATTRIBUTE, (float*)transforms.data(), 4, transforms.size(), GL_STATIC_DRAW, 0);
+		m_vboMesh.getVbo().setAttributeDivisor(POSITION_SIZE_ATTRIBUTE, 1);*/
+
+		auto octree_particles = octree.toVector();
+		ofBufferObject particlesBuffer;
+		particlesBuffer.allocate();
+		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);
+		m_vboMesh.getVbo().setAttributeBuffer(POSITION_SIZE_ATTRIBUTE, particlesBuffer, 4, sizeof(Particle), 0);
 		m_vboMesh.getVbo().setAttributeDivisor(POSITION_SIZE_ATTRIBUTE, 1);
-
-		// Upload per-instance transform data to the TBO.
-		/*m_bufferObject.allocate();
-		m_bufferObject.bind(GL_TEXTURE_BUFFER);
-		m_bufferObject.setData(transforms, GL_STREAM_DRAW);
-
-		m_bufferTexture.allocateAsBufferTexture(m_bufferObject, GL_RGBA32F);*/
+		m_vboMesh.getVbo().setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
+		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
 		m_bLoaded = true;
 	}
@@ -132,6 +147,11 @@ namespace ent
 	void SnapshotRamses::draw()
 	{
 		m_vboMesh.drawInstanced(OF_MESH_FILL, m_numCells);
+	}
+
+	//--------------------------------------------------------------
+	void SnapshotRamses::drawOctree(float minDensity, float maxDensity){
+		octree.drawLeafs(minDensity, maxDensity);
 	}
 
 	//--------------------------------------------------------------

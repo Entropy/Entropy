@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxHDF5.h"
 #include "ofxRange.h"
+#include "Octree.h"
 
 namespace ent
 {
@@ -23,6 +24,7 @@ namespace ent
 
 		void update(ofShader& shader);
 		void draw();
+		void drawOctree(float minDensity, float maxDensity);
 
 		ofxRange3f& getCoordRange();
 		ofxRange1f& getSizeRange();
@@ -44,5 +46,6 @@ namespace ent
 		std::size_t m_numCells;
 		bool m_bLoaded;
 		ofTexture m_particlesTex;
+		Octree octree;
 	};
 }

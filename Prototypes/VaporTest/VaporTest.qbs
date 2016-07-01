@@ -12,6 +12,10 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "bin/data/shaders/render.frag",
+            "bin/data/shaders/render.vert",
+            "src/Octree.cpp",
+            "src/Octree.h",
             'src/SequenceRamses.cpp',
             'src/SequenceRamses.h',
             'src/SnapshotRamses.cpp',
