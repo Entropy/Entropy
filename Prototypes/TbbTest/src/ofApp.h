@@ -24,4 +24,7 @@ public:
 
 private:
     nm::Octree<ofVec3f> octree;
+    ofEasyCam cam;
+    ofVboMesh mesh;
+    //vector<ofVec3f> points;
 };

@@ -32,22 +32,62 @@
 
 namespace nm
 {
-    static unsigned maxDepth;
+    template<class T>
+    unsigned Octree<T>::maxDepth = 8;
     
     template<class T>
-    Octree<T>::Octree(unsigned depth) :
-        numPoints(0),
-        depth(depth),
-        children(NULL)
+    Octree<T>::Octree() :
+        children(NULL),
+        points(POINTS_START_SIZE), // means that this vector won't be fragmented for the first pointsStartSize elements
+        numPoints(0)
     {
     }
     
     template<class T>
-    void Octree<T>::addPoint(shared_ptr<T> point)
+    void Octree<T>::init(const ofVec3f& min, const ofVec3f& max, unsigned depth)
+    {
+        this->min = min;
+        this->max = max;
+        this->mid = .5f * (min + max);
+        this->depth = depth;
+    }
+    
+    template<class T>
+    void Octree<T>::addPoint(T& point)
     {
         if (depth == Octree::maxDepth)
         {
-            
+            unsigned idx = numPoints.fetch_and_increment();
+            points.grow_to_at_least(idx + 1);
+            points[idx] = &point;
+        }
+        else
+        {
+            if (children == NULL)
+            {
+                children = new Octree[8]();
+                for (unsigned i = 0; i < 8; ++i)
+                {
+                    ofVec3f childMin(mid);
+                    ofVec3f childMax(mid);
+                    
+                    if (i & X_SIDE) childMax.x = childMax.x;
+                    else childMin.x = min.x;
+                    
+                    if (i & Y_SIDE) childMax.y = childMax.y;
+                    else childMin.y = min.y;
+                    
+                    if (i & Z_SIDE) childMax.z = childMax.z;
+                    else childMin.z = min.z;
+                    
+                    children[i].init(childMin, childMax, depth + 1);
+                }
+            }
+            unsigned char octant = 0x00;
+            if (point.x > mid.x) octant |= X_SIDE;
+            if (point.y > mid.y) octant |= Y_SIDE;
+            if (point.z > mid.z) octant |= Z_SIDE;
+            children[octant].addPoint(point);
         }
     }
 }

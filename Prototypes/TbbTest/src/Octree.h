@@ -48,18 +48,22 @@ namespace nm
     public:
         typedef shared_ptr<Octree> Ptr;
         
+        static const unsigned POINTS_START_SIZE = 20;
+        
         enum Location
         {
             X_SIDE = 0x01,
             Y_SIDE = 0x02,
-            Z_SIZE = 0x04
+            Z_SIDE = 0x04
         };
         
-        static void setMaxDepth(unsigned maxDepth) { Octree::maxDepth = maxDepth; }
+        static void setMaxDepth(unsigned maxDepth) { Octree<T>::maxDepth = maxDepth; }
         
-        Octree(unsigned depth = 0);
+        Octree();
         
-        void addPoint(shared_ptr<T> point);
+        void init(const ofVec3f& min, const ofVec3f& max, unsigned depth = 0);
+        
+        void addPoint(T& point);
         
         //void buildEmpty(unsigned depth, unsigned numPoints);
     
@@ -67,10 +71,10 @@ namespace nm
         static unsigned maxDepth;
         
         // hopefully after the first few iterations this shouldn't be resized too often
-        tbb::concurrent_vector<shared_ptr<T> > points;
+        tbb::concurrent_vector<T*> points;
         // save the number of points so that we don't have to keep reallocating the vector
-        unsigned numPoints;
-        ofVec3f min, max;
+        tbb::atomic<unsigned> numPoints;
+        ofVec3f min, max, mid;
         Octree* children;
         unsigned depth;
     };

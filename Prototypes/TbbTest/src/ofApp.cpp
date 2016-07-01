@@ -1,8 +1,18 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
-
+void ofApp::setup()
+{
+    ofSetFrameRate(60);
+    ofBackground(0);
+    
+    for (unsigned i = 0; i < 10000; ++i)
+    {
+        mesh.addVertex(ofVec3f(ofRandom(-200.f, 200.f),
+                               ofRandom(-200.f, 200.f),
+                               ofRandom(-200.f, 200.f)));
+        octree.addPoint(mesh.getVertices().back());
+    }
 }
 
 //--------------------------------------------------------------
@@ -11,8 +21,12 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::draw()
+{
+    ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
+    cam.begin();
+    mesh.drawVertices();
+    cam.end();
 }
 
 //--------------------------------------------------------------
