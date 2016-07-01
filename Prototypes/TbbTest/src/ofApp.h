@@ -26,5 +26,6 @@ private:
     nm::Octree<ofVec3f> octree;
     ofEasyCam cam;
     ofVboMesh mesh;
+    ofVboMesh wireFrame;
     //vector<ofVec3f> points;
 };

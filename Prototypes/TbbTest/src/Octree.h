@@ -38,7 +38,7 @@
 
 #include "ofMain.h"
 
-#include "tbb/concurrent_vector.h"
+#include "tbb/tbb.h"
 
 namespace nm
 {
@@ -65,10 +65,18 @@ namespace nm
         
         void addPoint(T& point);
         
+        void addPointsSerial(vector<T>& points);
+        
+        void addPointsParallel(vector<T>& points);
+        
+        void clear();
+        
+        void debugDraw();
         //void buildEmpty(unsigned depth, unsigned numPoints);
     
     private:
         static unsigned maxDepth;
+        static ofVboMesh boxMesh;
         
         // hopefully after the first few iterations this shouldn't be resized too often
         tbb::concurrent_vector<T*> points;
@@ -77,6 +85,7 @@ namespace nm
         ofVec3f min, max, mid;
         Octree* children;
         unsigned depth;
+        bool hasPoints;
     };
 }
 

@@ -36,10 +36,14 @@ namespace nm
     unsigned Octree<T>::maxDepth = 8;
     
     template<class T>
+    ofVboMesh Octree<T>::boxMesh;
+    
+    template<class T>
     Octree<T>::Octree() :
         children(NULL),
         points(POINTS_START_SIZE), // means that this vector won't be fragmented for the first pointsStartSize elements
-        numPoints(0)
+        numPoints(0),
+        hasPoints(false)
     {
     }
     
@@ -53,8 +57,54 @@ namespace nm
     }
     
     template<class T>
+    void Octree<T>::clear()
+    {
+        hasPoints = false;
+        numPoints = 0;
+        if (children)
+        {
+            for (unsigned i = 0; i < 8; ++i) children[i].clear();
+        }
+    }
+    
+    template<class T>
+    void Octree<T>::addPointsSerial(vector<T>& points)
+    {
+        for (auto& p : points) addPoint(p);
+    }
+    
+    template<class T>
+    void Octree<T>::addPointsParallel(vector<T>& points)
+    {
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, points.size()),
+                          [&](const tbb::blocked_range<size_t>& r) {
+                              for(size_t i = r.begin(); i != r.end(); ++i) addPoint(points[i]);
+                          }
+        );
+    }
+    
+    template<class T>
+    void Octree<T>::debugDraw()
+    {
+        if (boxMesh.getNumVertices() == 0) boxMesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
+        if (hasPoints)
+        {
+            ofPushMatrix();
+            ofTranslate(mid);
+            ofScale(max.x - min.x, max.y - min.y, max.z - min.z);
+            boxMesh.drawWireframe();
+            ofPopMatrix();
+            if (children)
+            {
+                for (unsigned i = 0; i < 8; ++i) children[i].debugDraw();
+            }
+        }
+    }
+    
+    template<class T>
     void Octree<T>::addPoint(T& point)
     {
+        hasPoints = true;
         if (depth == Octree::maxDepth)
         {
             unsigned idx = numPoints.fetch_and_increment();
