@@ -75,5 +75,8 @@ namespace ent
         float m_densityMax;
 
 		bool m_bReady;
+
+		std::time_t m_lastVertTime;
+		std::time_t m_lastFragTime;
     };
 }

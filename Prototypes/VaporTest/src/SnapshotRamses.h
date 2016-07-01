@@ -8,7 +8,8 @@ namespace ent
 {
 	enum SnapshotAttributes
 	{
-		DENSITY_ATTRIBUTE = 5
+		DENSITY_ATTRIBUTE = 5,
+		POSITION_SIZE_ATTRIBUTE = 6,
 	};
 	
 	class SnapshotRamses
@@ -33,7 +34,6 @@ namespace ent
 	protected:
 		void load(const std::string& file, std::vector<float>& elements);
 
-		ofBufferObject m_bufferObject;
 		ofTexture m_bufferTexture;
 		ofVboMesh m_vboMesh;
 
@@ -43,5 +43,6 @@ namespace ent
 
 		std::size_t m_numCells;
 		bool m_bLoaded;
+		ofTexture m_particlesTex;
 	};
 }

@@ -35,12 +35,15 @@ namespace ent
 		m_numCells = posX.size();
 
 		// Set the ranges for all data.
-		for (int i = 0; i < posX.size(); ++i) 
+		for (size_t i = 0; i < posX.size(); ++i)
 		{
             m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
 			m_sizeRange.add(cellSize[i]);
 			m_densityRange.add(density[i]);
 		}
+		auto min = m_coordRange.getMin();
+		auto max = m_coordRange.getMax();
+		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
 
 		// Expand coord range taking cell size into account.
 		m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
@@ -55,26 +58,30 @@ namespace ent
 		m_coordRange.add(coordMid + spanOffset);
 
 		// Set up the VBO.
-		m_vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
+		//m_vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
+		m_vboMesh.addVertex({0,0,0});
+		m_vboMesh.setMode(OF_PRIMITIVE_POINTS);
 		m_vboMesh.setUsage(GL_STATIC_DRAW);
 
 		// Upload per-instance data to the VBO.
 		m_vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
 		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
 
-		// Upload per-instance transform data to the TBO.
 		std::vector<ofVec4f> transforms;
 		transforms.resize(posX.size());
 		for (size_t i = 0; i < transforms.size(); ++i) 
 		{
 			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
 		}
+		m_vboMesh.getVbo().setAttributeData(POSITION_SIZE_ATTRIBUTE, (float*)transforms.data(), 4, transforms.size(), GL_STATIC_DRAW, 0);
+		m_vboMesh.getVbo().setAttributeDivisor(POSITION_SIZE_ATTRIBUTE, 1);
 
-		m_bufferObject.allocate();
+		// Upload per-instance transform data to the TBO.
+		/*m_bufferObject.allocate();
 		m_bufferObject.bind(GL_TEXTURE_BUFFER);
 		m_bufferObject.setData(transforms, GL_STREAM_DRAW);
 
-		m_bufferTexture.allocateAsBufferTexture(m_bufferObject, GL_RGBA32F);
+		m_bufferTexture.allocateAsBufferTexture(m_bufferObject, GL_RGBA32F);*/
 
 		m_bLoaded = true;
 	}
@@ -83,7 +90,6 @@ namespace ent
 	void SnapshotRamses::clear()
 	{
 		m_bufferTexture.clear();
-		m_bufferObject.allocate();
 
 		m_coordRange.clear();
 		m_sizeRange.clear();
@@ -119,7 +125,7 @@ namespace ent
 	//--------------------------------------------------------------
 	void SnapshotRamses::update(ofShader& shader)
 	{
-		shader.setUniformTexture("uTransform", m_bufferTexture, 0);
+		//shader.setUniformTexture("uTransform", m_bufferTexture, 0);
 	}
 
 	//--------------------------------------------------------------

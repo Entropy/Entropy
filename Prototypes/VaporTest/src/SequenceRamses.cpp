@@ -39,6 +39,7 @@ namespace ent
         m_renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
 		m_renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
 		m_renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
+		m_renderShader.bindAttribute(POSITION_SIZE_ATTRIBUTE, "position_size");
 		m_renderShader.bindDefaults();
 		m_renderShader.linkProgram();
 
@@ -64,7 +65,24 @@ namespace ent
     //--------------------------------------------------------------
     void SequenceRamses::update()
     {
+		namespace fs = std::filesystem;
+		auto vertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
+		auto fragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 
+		if(vertTime > m_lastVertTime || fragTime > m_lastFragTime){
+			ofShader newShader;
+			// Load the shaders.
+			auto loaded = newShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert") &&
+			    newShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
+			if(loaded){
+				newShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
+				newShader.bindAttribute(POSITION_SIZE_ATTRIBUTE, "position_size");
+				loaded &= newShader.bindDefaults() && newShader.linkProgram();
+			}
+			if(loaded){
+				m_renderShader = newShader;
+			}
+		}
     }
 
     //--------------------------------------------------------------
@@ -73,7 +91,8 @@ namespace ent
         if (m_bRender) 
 		{
             ofSetColor(ofColor::white);
-            glPointSize(1.0);
+			//glPointSize(10.0);
+			ofEnablePointSprites();
 
             ofPushMatrix();
             ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
@@ -96,7 +115,7 @@ namespace ent
     bool SequenceRamses::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
     {
         ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-        ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
+		ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
         if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
 		{
 			ImGui::Text("Frame %lu / %lu", m_currFrame, m_snapshots.size());
