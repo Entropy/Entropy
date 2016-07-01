@@ -3,6 +3,7 @@
 #include "ofMain.h"
 
 #include "entropy/scene/Manager.h"
+#include "ParticlesTestScene.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -28,4 +29,5 @@ public:
 
 private:
 	unique_ptr<entropy::scene::Manager> sceneManager;
+	shared_ptr<entropy::scene::ParticlesTestScene> sceneTemplate;
 };

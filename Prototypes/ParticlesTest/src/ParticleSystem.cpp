@@ -2,10 +2,17 @@
 #include "lb/util/RadixSort.h"
 #include "ofxObjLoader.h"
 
+const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
+const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
+const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
+
+const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
+
 ParticleSystem::ParticleSystem() : 
 	m_particlePool(nullptr),
 	m_numAttractors(0),
-	m_numRepellers(0)
+	m_numRepellers(0),
+	numParticlesTotal(0)
 {
 }
 
@@ -29,6 +36,9 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	memset(m_particleBins, 0, sizeof(m_particleBins[0]) * NUM_BINS);
 	memset(numParticles, 0, sizeof(numParticles[0]) * Particle::NUM_TYPES);
 
+	numDeadParticles = 0;
+	memset(deadParticles, 0, sizeof(deadParticles[0]) * MAX_PARTICLES);
+
 	ofVec3f minBounds(-m_halfWidth, -m_halfHeight, -m_halfDepth);
 	ofVec3f maxBounds(m_halfWidth, m_halfHeight, m_halfDepth);
 	ofVec3f size = maxBounds - minBounds;
@@ -43,14 +53,16 @@ void ParticleSystem::init(int _width, int _height, int _depth)
 	m_debugBoundsBox.setHeight(size.y);
 	m_debugBoundsBox.setDepth(size.z);
 
-	//m_sphere = ofBoxPrimitive( 1.0f, 1.0f, 1.0f );
-	//m_sphere = ofBoxPrimitive( 20.0f, 20.0f, 20.0f );
-	//m_sphereMesh = m_sphere.getMesh();
-	//m_sphereMesh.setUsage( GL_STATIC_DRAW );
-
-	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::NEUTRON]);
-	for (auto& v : particleMeshes[Particle::NEUTRON].getVertices()) v *= .4f; // scale mesh
-	particleMeshes[Particle::NEUTRON].setUsage(GL_STATIC_DRAW);
+	photonTex.loadImage("images/flare.png");
+	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::POSITRON]);
+	ofxObjLoader::load("models/cube_fillet_1.obj", particleMeshes[Particle::ELECTRON]);
+	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::UP_QUARK]);
+	ofxObjLoader::load("models/pyramid_fillet_1.obj", particleMeshes[Particle::ANTI_UP_QUARK]);
+	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+	{
+		for (auto& v : particleMeshes[i].getVertices()) v *= .4f; // scale mesh
+		particleMeshes[i].setUsage(GL_STATIC_DRAW);
+	}
 
 	for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 	{
@@ -72,18 +84,22 @@ void ParticleSystem::shutdown()
 	}
 }
 
-void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius)
+void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& _pos, const ofVec3f& _vel, float _mass, float _radius, float charge)
 {
-	if (totalNumParticles() < MAX_PARTICLES)
+	if (numParticlesTotal < MAX_PARTICLES)
 	{
-		Particle& p = m_particlePool[totalNumParticles()];
+		Particle& p = m_particlePool[numParticlesTotal];
 		p.position = _pos;
 		p.velocity = _vel;
 		p.mass = _mass;
 		p.radius = _radius;
 		p.type = type;
+		p.charge = charge;
+		p.alive = true;
+		p.createPhoton = false;
 
 		++(numParticles[type]);
+		++numParticlesTotal;
 	}
 	else ofLogError() << "Cannot add particle, MAX_PARTICLES already reached.";
 }
@@ -104,10 +120,20 @@ void ParticleSystem::addRepeller( const ofVec3f& _pos, float _strength )
     ++m_numRepellers;
 }
 
+void ParticleSystem::removeParticle(unsigned idx)
+{
+	if (idx < numParticlesTotal)
+	{
+		m_particlePool[idx].alive = false;
+		deadParticles[numDeadParticles++] = idx;
+	}
+	else ofLogError() << "Attempt to remove particle that wasn't alive";
+}
+
 void ParticleSystem::sortParticlesByBin()
 {
     // sort the keys and values - this will give us the particle indices sorted by bin id 
-    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, totalNumParticles());
+    lb::RadixSort16<uint16_t>( m_particleSortKeys, m_tempParticleSortKeys, m_particleIndices, m_tempParticleIndices, numParticlesTotal);
 }
 
 void ParticleSystem::update()
@@ -124,43 +150,37 @@ void ParticleSystem::update()
     dispatch_apply(m_numParticles, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
 #else
 #pragma omp parallel for
-    for ( int idx = 0; idx < totalNumParticles(); ++idx ) {
+    for ( int idx = 0; idx < numParticlesTotal; ++idx ) {
 #endif
         Particle& p = m_particlePool[ idx ];
         p.position += p.velocity;
-        p.velocity *= 0.9f;
+        if (p.velocity.lengthSquared() > MIN_SPEED_SQUARED) p.velocity *= 0.99f;
 
         // check walls
         if ( p.position.x > m_halfWidth )
         {
-            //p.position.x = -m_halfWidth + 10.0f;
             p.position.x -= m_halfWidth * 2;
         }
         else if ( p.position.x < -m_halfWidth )
         {
-            //p.position.x = m_halfWidth - 10.0f;
             p.position.x += m_halfWidth * 2;
         }
 
         if ( p.position.y > m_halfHeight)
         {
-            //p.position.y = -m_halfHeight + 10.0f;
             p.position.y -= m_halfHeight * 2;
         }
         else if ( p.position.y < -m_halfHeight )
         {
-//            p.position.y = m_halfHeight - 10.0f;
             p.position.y += m_halfHeight * 2;
         }
 
         if ( p.position.z > m_halfDepth )
         {
-            //p.position.z = -m_halfDepth + 10.0f;
             p.position.z -= m_halfDepth * 2;
         }
         else if ( p.position.z < -m_halfDepth )
         {
-            //p.position.z = m_halfDepth - 10.0f;
             p.position.z += m_halfDepth * 2;
         }
 
@@ -174,22 +194,12 @@ void ParticleSystem::update()
 #pragma omp atomic
         ++m_particleBins[ binId ].particleCount;
 
-        //     ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
-
-		/*
-        ParticleTboData& data = m_positions[p.type][idxByType[p.type]];
-		data.transform = 
-			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
-			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
-			ofMatrix4x4::newTranslationMatrix(p.position);
-
-		++idxByType[p.type];
-		*/
-
 		m_positions[p.type][idxByType[p.type]++].transform =
 			ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), p.velocity, ofVec3f(0.0f, 1.0f, 0.0f)) *
 			ofMatrix4x4::newScaleMatrix(ofVec3f(p.radius, p.radius, p.radius)) *
 			ofMatrix4x4::newTranslationMatrix(p.position);
+
+		//  ofLogNotice() << "bin " << (uint16_t)binId << " ... " << px << ", " << py << ", " << pz << endl;
 
 #ifdef TARGET_OSX
     });
@@ -207,7 +217,7 @@ void ParticleSystem::update()
 
 void ParticleSystem::step( float _dt )
 {
-    for ( uint32_t idx = 0; idx < totalNumParticles(); ++idx )
+    for ( uint32_t idx = 0; idx < numParticlesTotal; ++idx )
     {
         Particle& p = m_particlePool[ idx ];
 
@@ -286,46 +296,89 @@ void ParticleSystem::step( float _dt )
                 dispatch_apply(bin.particleCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t idx) {
 #else
 #pragma omp parallel for
-                for ( int idx = 0; idx < bin.particleCount; ++idx ) {
+                for ( int idx = 0; idx < bin.particleCount; ++idx )
+				{
 #endif
                     uint16_t particleIdx = m_particleIndices[ bin.offset + idx ];
-                    Particle& p = m_particlePool[ particleIdx ];
+					Particle& p = m_particlePool[particleIdx];
 
-                    ofVec3f acc( 0.0f, 0.0f, 0.0f );
+					if (p.alive)
+					{
+						uint16_t neighbourParticleIdx = 0;                    
+						ofVec3f acc( 0.0f, 0.0f, 0.0f );
 
-                    // loop through neighbor bins
-                    for ( int nz = z0; nz < z1; ++nz )
-                        for ( int ny = y0; ny < y1; ++ny )
-                            for ( int nx = x0; nx < x1; ++nx )
-                            {
-                                const ParticleBin& nbin = m_particleBins[ binIdFromXYZ( nx, ny, nz ) ];
-                                for ( uint16_t neighborIdx = 0; neighborIdx < nbin.particleCount; ++neighborIdx )
-                                {
-                                    // n-body euler integration
-                                    particleIdx = m_particleIndices[ nbin.offset + neighborIdx ];
-                                    Particle& neighborP = m_particlePool[ particleIdx ];
+						// loop through neighbor bins
+						for (int nz = z0; nz < z1; ++nz)
+						{
+							for (int ny = y0; ny < y1; ++ny)
+							{
+								for (int nx = x0; nx < x1; ++nx)
+								{
+									const ParticleBin& nbin = m_particleBins[binIdFromXYZ(nx, ny, nz)];
+									for (uint16_t neighborIdx = 0; neighborIdx < nbin.particleCount; ++neighborIdx)
+									{
+										// n-body euler integration
+										neighbourParticleIdx = m_particleIndices[nbin.offset + neighborIdx];
+										if (particleIdx != neighbourParticleIdx)
+										{
+											Particle& neighborP = m_particlePool[neighbourParticleIdx];
+											ofVec3f dir = neighborP.position - p.position;
+											float distSqr = dir.lengthSquared();
+											float dist = sqrtf(distSqr);
+											if (dist < 2.f)
+											{
+												p.alive = false;
+												neighborP.alive = false;
+												p.createPhoton = true;
 
-                                    const float eps = 0.1f; // minimum dist for nbody interaction
+												// fix me: should be critical section
+												deadParticles[numDeadParticles] = particleIdx;
+#pragma omp atomic
+												numDeadParticles++;
 
-                                    ofVec3f delta = neighborP.position - p.position;
-                                    float distSqr = delta.x*delta.x + delta.y*delta.y + delta.z*delta.z + eps;
-                                    float invDist = 1.0f / sqrtf( distSqr );
-                                    float invDist3 = invDist * invDist * invDist;
-                                    float f = neighborP.mass * invDist3;
+												deadParticles[numDeadParticles] = particleIdx;
+#pragma omp atomic
+												numDeadParticles++;
 
-                                    acc += f * delta;
-                                }
-                            }
-
-                    p.velocity += _dt * acc / p.mass;
+											}
+											else
+											{
+												ofVec3f dirNormalised = dir / dist;
+												// same charge force goes towards other particle
+												//if (-p.charge * neighborP.charge > 0.f) cout << "attracting" << endl;
+												acc += -80.f * dirNormalised * p.charge * neighborP.charge * p.mass * neighborP.mass / distSqr;
+											}
+										}
+									}
+								}
+							}
+						}
+						p.velocity += _dt * acc / p.mass;
+					}
 #ifdef TARGET_OSX
                 });
 #else
                 }
-#endif
+#endif			
             }
         }
     }
+
+	// remove dead particles by swapping them to the end of the array
+	for (unsigned i = 0; i < numDeadParticles; ++i)
+	{
+		if (m_particlePool[deadParticles[i]].createPhoton)
+		{
+			Photon photon;
+			photon.vel = ofVec3f(ofRandomf(), ofRandomf(), ofRandomf()).normalize().scale(50.f);
+			photon.pos = m_particlePool[deadParticles[i]].position;
+			photons.push_back(photon);
+		}
+		numParticlesTotal--;
+		numParticles[(unsigned)m_particlePool[deadParticles[i]].type]--;
+		m_particlePool[deadParticles[i]] = m_particlePool[numParticlesTotal];
+	}
+	numDeadParticles = 0;
 }
 
 void ParticleSystem::debugDrawWorldBounds()
@@ -338,9 +391,45 @@ void ParticleSystem::debugDrawWorldBounds()
 
 void ParticleSystem::debugDrawParticles(Particle::Type type)
 {
+	glPushAttrib(GL_ENABLE_BIT);
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
 
-    particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
+	// check we have particles of this type as OF draws at least one primitive even if 
+	// primCount is set to zero!!
+	if (numParticles[type]) particleMeshes[type].drawInstanced( OF_MESH_FILL, numParticles[type]);
+	glPopAttrib();
+}
+
+void ParticleSystem::hackyUpdatePhotons()
+{
+	const float killDist = 2000.f * 2000.f;
+	const float dt = ofGetLastFrameTime();
+	for (auto& it = photons.begin(); it != photons.end();)
+	{
+		if (it->pos.lengthSquared() > killDist) it = photons.erase(it);
+		else
+		{
+			it->pos += it->vel;
+			++it;
+		}
+	}
+}
+
+void ParticleSystem::drawPhotons()
+{
+	ofPushStyle();
+	glPushAttrib(GL_ENABLE_BIT);
+	ofSetRectMode(OF_RECTMODE_CENTER);
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
+	for (auto& photon : photons)
+	{
+		photonTex.draw(photon.pos, 40.f, 40.f);
+	}
+	glDepthMask(GL_TRUE);
+	glPopAttrib();
+	ofPopStyle();
 }

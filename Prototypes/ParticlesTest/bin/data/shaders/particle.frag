@@ -14,6 +14,7 @@ struct Light{
 uniform Light lights[MAX_LIGHTS];
 uniform int numLights;
 uniform float roughness;
+uniform vec3 particleColor;
 
 in vec4 colorVarying;
 in vec2 texCoordVarying;
@@ -77,5 +78,5 @@ void main (void)
 		//color += CalcPointLight(v_positionVarying, v_normalVarying, colorVarying.xyz, lights[i]);
 		color += CalcPointLight(v_positionVarying, v_normalVarying, vec3(1.0), lights[i]);
     }
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(particleColor, 1.0) * vec4(color, 1.0);
 }

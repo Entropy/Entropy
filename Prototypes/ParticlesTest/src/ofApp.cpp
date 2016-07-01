@@ -1,13 +1,12 @@
 #include "ofApp.h"
 
-#include "ParticlesTestScene.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
 	this->sceneManager = make_unique<entropy::scene::Manager>();
 
-	auto sceneTemplate = make_shared<entropy::scene::ParticlesTestScene>();
+	sceneTemplate = make_shared<entropy::scene::ParticlesTestScene>();
 	this->sceneManager->addScene(sceneTemplate);
 	this->sceneManager->setCurrentScene(sceneTemplate->getName());
 }
@@ -25,13 +24,20 @@ void ofApp::update()
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw()
+{
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
+void ofApp::keyPressed(int key)
+{
+	switch (key)
+	{
+		case 'd':
+			sceneTemplate->deleteRandomParticle();
+			break;
+	}
 }
 
 //--------------------------------------------------------------
