@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  Particle.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -31,18 +31,19 @@
  */
 #pragma once
 
-#include "Octree.h"
+#include "ofMain.h"
 
 namespace nm
 {
-    class ParticleSystem
+    class Particle : public ofVec3f
     {
     public:
-        void init();
+        Particle();
         
-        void update();
+        inline void setMass(float mass) { this->mass = mass; }
+        inline float getMass() const { return mass; }
         
     private:
-        Octree<ofVec3f> octree;
+        float mass;
     };
 }

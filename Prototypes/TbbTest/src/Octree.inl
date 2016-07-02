@@ -43,7 +43,8 @@ namespace nm
         children(NULL),
         points(POINTS_START_SIZE), // means that this vector won't be fragmented for the first pointsStartSize elements
         numPoints(0),
-        hasPoints(false)
+        hasPoints(false),
+        mass(0.f)
     {
     }
     
@@ -61,6 +62,8 @@ namespace nm
     {
         hasPoints = false;
         numPoints = 0;
+        mass = 0.f;
+        massCenterMassProduct.set(0.f);
         if (children)
         {
             for (unsigned i = 0; i < 8; ++i) children[i].clear();
@@ -70,17 +73,31 @@ namespace nm
     template<class T>
     void Octree<T>::addPointsSerial(vector<T>& points)
     {
-        for (auto& p : points) addPoint(p);
+        addPointsSerial(points.getPtr(), points.size());
+    }
+    
+    template<class T>
+    void Octree<T>::addPointsSerial(T* points, unsigned numPoints)
+    {
+        for (unsigned i = 0; i < numPoints; ++i)
+        {
+            addPoint(points[i]);
+        }
     }
     
     template<class T>
     void Octree<T>::addPointsParallel(vector<T>& points)
     {
-        tbb::parallel_for(tbb::blocked_range<size_t>(0, points.size()),
+        addPointsParallel(points.getPtr(), points.size());
+    }
+    
+    template<class T>
+    void Octree<T>::addPointsParallel(T* points, unsigned numPoints)
+    {
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, numPoints),
                           [&](const tbb::blocked_range<size_t>& r) {
                               for(size_t i = r.begin(); i != r.end(); ++i) addPoint(points[i]);
-                          }
-        );
+                          });
     }
     
     template<class T>
@@ -105,6 +122,8 @@ namespace nm
     void Octree<T>::addPoint(T& point)
     {
         hasPoints = true;
+        mass += point.getMass();
+        massCenterMassProduct += point.getMass() * point;
         if (depth == Octree::maxDepth)
         {
             unsigned idx = numPoints.fetch_and_increment();

@@ -22,7 +22,9 @@ void ofApp::setup()
         octree.addPoint(v);
     }
 #else
-    for (unsigned i = 0; i < 100000; ++i)
+    numParticles = 50000;
+    particles = new nm::Particle[numParticles]();
+    for (unsigned i = 0; i < numParticles; ++i)
     {
         //mesh.addVertex(ofVec3f(ofRandom(-200.f, 200.f),
         //                       ofRandom(-200.f, 200.f),
@@ -30,7 +32,8 @@ void ofApp::setup()
         mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
                                400.f * ofSignedNoise(i / 2000.f, 1e-6),
                                400.f * ofSignedNoise(i / 2000.f, 1e6)));
-        octree.addPoint(mesh.getVertices().back());
+        particles[i].set(mesh.getVertices().back());
+        octree.addPoint(particles[i]);
     }
 #endif
     
@@ -41,8 +44,8 @@ void ofApp::setup()
 void ofApp::update()
 {
     octree.clear();
-    //octree.addPointsSerial(mesh.getVertices());
-    octree.addPointsParallel(mesh.getVertices());
+    octree.addPoints(particles, numParticles);
+    //octree.addPointsSerial(particles, numParticles);
 }
 
 //--------------------------------------------------------------

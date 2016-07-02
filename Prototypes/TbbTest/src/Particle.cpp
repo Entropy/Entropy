@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  Particle.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,20 +29,13 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#pragma once
-
-#include "Octree.h"
+#include "Particle.h"
 
 namespace nm
 {
-    class ParticleSystem
+    Particle::Particle() :
+        mass(1.f),
+        ofVec3f()
     {
-    public:
-        void init();
-        
-        void update();
-        
-    private:
-        Octree<ofVec3f> octree;
-    };
+    }
 }

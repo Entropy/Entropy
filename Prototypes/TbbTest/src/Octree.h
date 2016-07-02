@@ -66,10 +66,13 @@ namespace nm
         void addPoint(T& point);
         
         void addPoints(vector<T>& points) { addPointsParallel(points); }
+        void addPoints(T* points, unsigned numPoints) { addPointsParallel(points, numPoints); }
         
         void addPointsSerial(vector<T>& points);
+        void addPointsSerial(T* points, unsigned numPoints);
         
         void addPointsParallel(vector<T>& points);
+        void addPointsParallel(T* points, unsigned numPoints);
         
         void clear();
         
@@ -89,6 +92,8 @@ namespace nm
         Octree* children;
         unsigned depth;
         bool hasPoints;
+        float mass;
+        ofVec3f massCenterMassProduct;
     };
 }
 
