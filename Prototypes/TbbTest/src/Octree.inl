@@ -63,7 +63,7 @@ namespace nm
         hasPoints = false;
         numPoints = 0;
         mass = 0.f;
-        massCenterMassProduct.set(0.f);
+        massCenterOfMassProduct.set(0.f);
         if (children)
         {
             for (unsigned i = 0; i < 8; ++i) children[i].clear();
@@ -123,7 +123,7 @@ namespace nm
     {
         hasPoints = true;
         mass += point.getMass();
-        massCenterMassProduct += point.getMass() * point;
+        massCenterOfMassProduct += point.getMass() * point;
         if (depth == Octree::maxDepth)
         {
             unsigned idx = numPoints.fetch_and_increment();

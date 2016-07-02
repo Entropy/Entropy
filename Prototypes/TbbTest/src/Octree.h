@@ -93,7 +93,7 @@ namespace nm
         unsigned depth;
         bool hasPoints;
         float mass;
-        ofVec3f massCenterMassProduct;
+        ofVec3f massCenterOfMassProduct;
     };
 }
 

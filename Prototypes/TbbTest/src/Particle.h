@@ -43,7 +43,11 @@ namespace nm
         inline void setMass(float mass) { this->mass = mass; }
         inline float getMass() const { return mass; }
         
+        inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
+        inline ofVec3f getVelocity() const { return velocity; }
+        
     private:
         float mass;
+        ofVec3f velocity;
     };
 }
