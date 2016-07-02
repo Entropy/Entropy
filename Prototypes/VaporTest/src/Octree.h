@@ -85,7 +85,8 @@ class Octree
 		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);
 		bool divide(size_t resolution, float minDensity, float maxDensity);
 		size_t getMaxLevel(size_t current) const;
-		std::vector<Particle> particles;
+		std::shared_ptr<std::vector<Particle>> particles;
+		std::vector<size_t> particlesIndex;
 		BoundingBox bb;
 		float density;
 		std::vector<Octree> children;

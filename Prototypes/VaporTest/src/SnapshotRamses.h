@@ -20,7 +20,7 @@ namespace ent
 		SnapshotRamses();
 		~SnapshotRamses();
 
-		void setup(const std::string& folder, int frameIndex);
+		void setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity);
 		void clear();
 
 		void update(ofShader& shader);

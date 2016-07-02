@@ -18,13 +18,16 @@ struct BoundingBoxSearch{
 };
 
 Octree::Octree()
-:density(0.f)
+:particles(new std::vector<Particle>())
+,density(0.f)
 {
 
 }
 
 void Octree::setup(const std::vector<Particle> & particles){
-	this->particles = particles;
+	*this->particles = particles;
+	this->particlesIndex.resize(this->particles->size());
+	std::iota(this->particlesIndex.begin(), this->particlesIndex.end(), 0);
 	auto bb = std::accumulate(particles.begin(), particles.end(), BoundingBoxSearch(), [](const BoundingBoxSearch & box, const Particle & p) -> BoundingBoxSearch{
 		auto maxpos = p.getMaxPos();
 		auto minpos = p.getMinPos();
@@ -45,12 +48,12 @@ void Octree::setup(const std::vector<Particle> & particles){
 
 bool Octree::divide(size_t resolution, float minDensity, float maxDensity){
 	float span = maxDensity - minDensity;
-	float thresDensity = minDensity + span*0.0005;
+	float thresDensity = minDensity + span * 0.002f;
 	if(density<thresDensity){
-		particles.clear();
+		particlesIndex.clear();
 		density=0;
 	}
-	if(resolution==0 || particles.size() == 0){
+	if(resolution==0 || particlesIndex.size() == 0){
 		return false;
 	}
 	auto bbmin = this->bb.min;
@@ -68,17 +71,26 @@ bool Octree::divide(size_t resolution, float minDensity, float maxDensity){
 
 	children.resize(8);
 	children[0].bb = BoundingBox::fromTwoPoints(p1, center);
+	children[0].particles = this->particles;
 	children[1].bb = BoundingBox::fromTwoPoints(p2, center);
+	children[1].particles = this->particles;
 	children[2].bb = BoundingBox::fromTwoPoints(p3, center);
+	children[2].particles = this->particles;
 	children[3].bb = BoundingBox::fromTwoPoints(p4, center);
+	children[3].particles = this->particles;
 	children[4].bb = BoundingBox::fromTwoPoints(p5, center);
+	children[4].particles = this->particles;
 	children[5].bb = BoundingBox::fromTwoPoints(p6, center);
+	children[5].particles = this->particles;
 	children[6].bb = BoundingBox::fromTwoPoints(p7, center);
+	children[6].particles = this->particles;
 	children[7].bb = BoundingBox::fromTwoPoints(p8, center);
+	children[7].particles = this->particles;
 
 	std::array<float,8> distances{{0.f}};
 
-	for(auto & p: particles){
+	for(auto i: particlesIndex){
+		auto & p = (*particles)[i];
 		distances[0] = children[0].bb.center.squareDistance(p.pos);
 		distances[1] = children[1].bb.center.squareDistance(p.pos);
 		distances[2] = children[2].bb.center.squareDistance(p.pos);
@@ -88,11 +100,10 @@ bool Octree::divide(size_t resolution, float minDensity, float maxDensity){
 		distances[6] = children[6].bb.center.squareDistance(p.pos);
 		distances[7] = children[7].bb.center.squareDistance(p.pos);
 		auto min = std::min_element(distances.begin(), distances.end()) - distances.begin();
-		children[min].particles.push_back(p);
+		children[min].particlesIndex.push_back(i);
 		children[min].density += p.density;
 	}
 
-	//this->particles.clear();
 	return true;
 }
 
@@ -132,8 +143,8 @@ bool Octree::isLeaf() const{
 
 void Octree::drawLeafs(float minDensity, float maxDensity) const{
 	if(this->isLeaf()){
-		if(this->particles.empty()){
-			return; //ofSetColor(255,20);
+		if(this->particlesIndex.empty()){
+			return; //ofSetColor(255,10);
 		}else{
 			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
 			//cout << gray << endl;
@@ -165,7 +176,7 @@ size_t Octree::getMaxLevel(size_t current) const{
 
 size_t Octree::size() const{
 	if(isLeaf()){
-		return particles.size();
+		return particlesIndex.size();
 	}else{
 		return std::accumulate(children.begin(), children.end(), size_t(0), [](size_t acc, const Octree & octree) -> size_t{
 			return acc + octree.size();
@@ -174,7 +185,7 @@ size_t Octree::size() const{
 }
 
 std::vector<Particle> Octree::toVector() const{
-	if(isLeaf()){
+	if(isLeaf() && !particlesIndex.empty()){
 		return {Particle{bb.center, std::max(bb.size.x, std::max(bb.size.y, bb.size.z)), density}};
 	}else{
 		return std::accumulate(children.begin(), children.end(), std::vector<Particle>(), [&](std::vector<Particle> & vec, const Octree & octree){

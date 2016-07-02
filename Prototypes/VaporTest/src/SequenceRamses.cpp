@@ -42,6 +42,15 @@ namespace ent
 		m_renderShader.bindAttribute(SIZE_ATTRIBUTE, "size");
 		m_renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
 		m_renderShader.linkProgram();
+		m_renderShader.begin();
+		m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+		m_renderShader.end();
+
+		namespace fs = std::filesystem;
+		m_lastVertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
+		m_lastFragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
+		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
 		m_bReady = true;
     }
@@ -68,8 +77,9 @@ namespace ent
 		namespace fs = std::filesystem;
 		auto vertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
 		auto fragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
+		auto includesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
-		if(vertTime > m_lastVertTime || fragTime > m_lastFragTime){
+		if(vertTime > m_lastVertTime || fragTime > m_lastFragTime || includesTime > m_lastIncludesTime){
 			ofShader newShader;
 			// Load the shaders.
 			auto loaded = newShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert") &&
@@ -82,7 +92,15 @@ namespace ent
 			}
 			if(loaded){
 				m_renderShader = newShader;
+				m_renderShader.begin();
+				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+				m_renderShader.end();
 			}
+
+			m_lastVertTime = vertTime;
+			m_lastFragTime = fragTime;
+			m_lastIncludesTime = includesTime;
 		}
     }
 
@@ -99,8 +117,6 @@ namespace ent
             ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
             {
 				m_renderShader.begin();
-				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
-				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 				{
 					getSnapshot().update(m_renderShader);
 					getSnapshot().draw();
@@ -137,7 +153,12 @@ namespace ent
 			ImGui::Text("%lu Cells", m_snapshots[m_currFrame].getNumCells());
 
 			ImGui::Checkbox("Render", &m_bRender);
-            ImGui::DragFloatRange2("Density Range", &m_densityMin, &m_densityMax, 0.0001f, 0.0f, 1.0f, "Min: %.4f%%", "Max: %.4f%%");
+			if(ImGui::DragFloatRange2("Density Range", &m_densityMin, &m_densityMax, 0.0001f, 0.0f, 1.0f, "Min: %.4f%%", "Max: %.4f%%")){
+				m_renderShader.begin();
+				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+				m_renderShader.end();
+			}
 			if (ImGui::Button("Next Frame"))
 			{
 				setFrame(getCurrentFrame() + 1);
@@ -175,7 +196,7 @@ namespace ent
 
 		if (!m_snapshots[index].isLoaded()) 
 		{
-			m_snapshots[index].setup(m_folder, m_startIndex + index);
+			m_snapshots[index].setup(m_folder, m_startIndex + index, m_densityMin, m_densityMax);
 
 			// Adjust the ranges.
 			m_coordRange.include(m_snapshots[index].getCoordRange());
@@ -187,6 +208,10 @@ namespace ent
 			m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
 
 			m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
+			m_renderShader.begin();
+			m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+			m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+			m_renderShader.end();
 		}
 	}
 

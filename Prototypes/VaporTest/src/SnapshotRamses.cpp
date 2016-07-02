@@ -16,7 +16,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex)
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity)
 	{
 		clear();
 		
@@ -51,11 +51,10 @@ namespace ent
 		//ThreadPool::pool().addTask([]{cout << "starting pool" << endl;});
 		auto then = ofGetElapsedTimeMicros();
 		this->octree.setup(particles);
-		this->octree.compute(10, m_densityRange.getMin(), m_densityRange.getMax());
+		this->octree.compute(10, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to compute octree " << float(now - then)/1000 << "ms" << endl;
 		cout << "octree max level " << this->octree.getMaxLevel() << endl;
-		cout << "octree num particles " << this->octree.size() << endl;
 		auto min = m_coordRange.getMin();
 		auto max = m_coordRange.getMax();
 		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
@@ -74,6 +73,7 @@ namespace ent
 
 		auto octree_particles = octree.toVector();
 		m_numCells = octree_particles.size();
+		cout << "octree num particles " << m_numCells << endl;
 		ofBufferObject particlesBuffer;
 		particlesBuffer.allocate();
 		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);

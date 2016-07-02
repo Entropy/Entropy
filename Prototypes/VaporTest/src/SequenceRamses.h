@@ -79,5 +79,6 @@ namespace ent
 
 		std::time_t m_lastVertTime;
 		std::time_t m_lastFragTime;
+		std::time_t m_lastIncludesTime;
     };
 }
