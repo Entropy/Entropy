@@ -6,8 +6,8 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    //ofSetFrameRate(480);
-    ofSetVerticalSync(false);
+    ofSetFrameRate(60);
+    //ofSetVerticalSync(false);
     
     ofBackground(0);
     nm::Octree<ofVec3f>::setMaxDepth(5);
@@ -61,7 +61,7 @@ void ofApp::draw()
     cam.begin();
     ofPushStyle();
     ofSetColor(255);
-    mesh.drawVertices();
+    //mesh.drawVertices();
     //mesh.draw();
     ofSetColor(255, 0, 0);
     //octree.debugDraw();

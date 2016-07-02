@@ -39,7 +39,7 @@ namespace nm
     class ParticleSystem
     {
     public:
-        static const unsigned MAX_PARTICLES = 50000;
+        static const unsigned MAX_PARTICLES = 10000;
         
         ParticleSystem();
         
@@ -50,6 +50,8 @@ namespace nm
         void update();
         
     private:
+        void sumForces(Particle* particle);
+        
         Octree<Particle> octree;
         nm::Particle* particles;
         unsigned numParticles;

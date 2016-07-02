@@ -41,14 +41,22 @@ namespace nm
         Particle();
         Particle(const ofVec3f& v);
         
+        inline void zeroForce() { force.set(0.f); }
+        inline void addForce(const ofVec3f& force) { this->force += force; }
+        
         inline void setMass(float mass) { this->mass = mass; }
         inline float getMass() const { return mass; }
+        
+        inline void setCharge(float charge) { this->charge = charge; }
+        inline float getCharge() const { return charge; }
         
         inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
         inline ofVec3f getVelocity() const { return velocity; }
         
     private:
         float mass;
+        float charge;
         ofVec3f velocity;
+        ofVec3f force;
     };
 }

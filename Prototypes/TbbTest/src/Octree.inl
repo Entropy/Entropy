@@ -33,6 +33,9 @@
 namespace nm
 {
     template<class T>
+    const float Octree<T>::THETA = .5f;
+    
+    template<class T>
     unsigned Octree<T>::maxDepth = 8;
     
     template<class T>
@@ -53,6 +56,7 @@ namespace nm
     {
         this->min = min;
         this->max = max;
+        this->size = ((max.x - min.x) + (max.y - min.y) + (max.z - min.z)) / 3.f;
         this->mid = .5f * (min + max);
         this->depth = depth;
     }
@@ -74,12 +78,67 @@ namespace nm
     }
     
     template<class T>
+    void Octree<T>::updateCenterOfCharge()
+    {
+        centerOfCharge = centerOfCharge / charge;
+        if (children)
+        {
+            tbb::task_group taskGroup;
+            for (unsigned i = 0; i < 8; ++i)
+            {
+                const unsigned idx = i;
+                taskGroup.run([&]{ children[idx].updateCenterOfCharge(); });
+            }
+            taskGroup.wait();
+        }
+    }
+    
+    template<class T>
+    void Octree<T>::sumForces(T* point)
+    {
+        point->zeroForce();
+        if (depth < Octree::maxDepth)
+        {
+            ofVec3f direction = centerOfMass - *point;
+            float distSq = direction.lengthSquared();
+            float dist = sqrt(distSq);
+            if (size / dist < THETA)
+            {
+                // far enough away to use this node
+                point->addForce(-80.f * direction * point->getCharge() * charge / (distSq * dist));
+            }
+            else if (children)
+            {
+                for (unsigned i = 0; i < 8; ++i)
+                {
+                    children[i].sumForces(point);
+                }
+            }
+        }
+        else
+        {
+            for (unsigned i = 0; i < numPoints; ++i)
+            {
+                if (point != points[i])
+                {
+                    ofVec3f direction = centerOfMass - *point;
+                    float distSq = direction.lengthSquared();
+                    float dist = sqrt(distSq);
+                    point->addForce(-80.f * direction * point->getCharge() * charge / (distSq * dist));
+                }
+            }
+        }
+    }
+    
+    template<class T>
     void Octree<T>::clear()
     {
         hasPoints = false;
         numPoints = 0;
         mass = 0.f;
+        charge = 0.f;
         centerOfMass.set(0.f);
+        centerOfCharge.set(0.f);
         if (children)
         {
             tbb::task_group taskGroup;
@@ -145,7 +204,9 @@ namespace nm
     {
         hasPoints = true;
         mass += point.getMass();
+        charge += point.getCharge();
         centerOfMass += point.getMass() * point;
+        centerOfCharge += point.getCharge() * point;
         if (depth == Octree::maxDepth)
         {
             unsigned idx = numPoints.fetch_and_increment();

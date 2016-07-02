@@ -56,5 +56,9 @@ namespace nm
         octree.clear();
         octree.addPoints(particles, numParticles);
         octree.updateCenterOfMass();
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, numParticles),
+                          [&](const tbb::blocked_range<size_t>& r) {
+                              for(size_t i = r.begin(); i != r.end(); ++i) octree.sumForces(&particles[i]);
+                          });
     }
 }

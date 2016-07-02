@@ -35,13 +35,15 @@ namespace nm
 {
     Particle::Particle() :
         mass(1.f),
-        ofVec3f()
+        ofVec3f(),
+        charge(1.f)
     {
     }
     
     Particle::Particle(const ofVec3f& v) :
         mass(1.f),
-        ofVec3f(v)
+        ofVec3f(v),
+        charge(1.f)
     {
         
     }

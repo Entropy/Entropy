@@ -49,6 +49,7 @@ namespace nm
         typedef shared_ptr<Octree> Ptr;
         
         static const unsigned POINTS_START_SIZE = 20;
+        static const float THETA;
         
         enum Location
         {
@@ -64,6 +65,10 @@ namespace nm
         void init(const ofVec3f& min, const ofVec3f& max, unsigned depth = 0);
         
         void updateCenterOfMass();
+        
+        void updateCenterOfCharge();
+        
+        void sumForces(T* point);
         
         void addPoint(T& point);
         
@@ -91,11 +96,14 @@ namespace nm
         // save the number of points so that we don't have to keep reallocating the vector
         tbb::atomic<unsigned> numPoints;
         ofVec3f min, max, mid;
+        float size;
         Octree* children;
         unsigned depth;
         bool hasPoints;
         float mass;
+        float charge;
         ofVec3f centerOfMass;
+        ofVec3f centerOfCharge;
     };
 }
 
