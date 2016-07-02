@@ -121,13 +121,13 @@ namespace nm
                     ofVec3f childMin(mid);
                     ofVec3f childMax(mid);
                     
-                    if (i & X_SIDE) childMax.x = childMax.x;
+                    if (i & X_SIDE) childMax.x = max.x;
                     else childMin.x = min.x;
                     
-                    if (i & Y_SIDE) childMax.y = childMax.y;
+                    if (i & Y_SIDE) childMax.y = max.y;
                     else childMin.y = min.y;
                     
-                    if (i & Z_SIDE) childMax.z = childMax.z;
+                    if (i & Z_SIDE) childMax.z = max.z;
                     else childMin.z = min.z;
                     
                     children[i].init(childMin, childMax, depth + 1);
