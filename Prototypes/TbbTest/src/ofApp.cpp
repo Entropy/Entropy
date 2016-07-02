@@ -22,7 +22,7 @@ void ofApp::setup()
         octree.addPoint(v);
     }
 #else
-    numParticles = 50000;
+    numParticles = 100000;
     particles = new nm::Particle[numParticles]();
     for (unsigned i = 0; i < numParticles; ++i)
     {
@@ -46,7 +46,10 @@ void ofApp::update()
     octree.clear();
     octree.addPoints(particles, numParticles);
     octree.updateCenterOfMass();
-    //octree.addPointsSerial(particles, numParticles);
+    for (unsigned i = 0; i < numParticles; ++i)
+    {
+        
+    }
 }
 
 //--------------------------------------------------------------
