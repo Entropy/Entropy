@@ -39,6 +39,7 @@ namespace nm
     {
     public:
         Particle();
+        Particle(const ofVec3f& v);
         
         inline void setMass(float mass) { this->mass = mass; }
         inline float getMass() const { return mass; }

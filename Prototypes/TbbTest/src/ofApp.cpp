@@ -11,7 +11,8 @@ void ofApp::setup()
     
     ofBackground(0);
     nm::Octree<ofVec3f>::setMaxDepth(5);
-    octree.init(ofVec3f(-400.f), ofVec3f(400.f));
+    //octree.init(ofVec3f(-400.f), ofVec3f(400.f));
+    particleSystem.init(ofVec3f(-400.f), ofVec3f(400.f));
     
 #ifdef _TEAPOT
     ofxObjLoader::load("teapot.obj", mesh);
@@ -22,6 +23,15 @@ void ofApp::setup()
         octree.addPoint(v);
     }
 #else
+    for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
+    {
+        mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
+                               400.f * ofSignedNoise(i / 2000.f, 1e-6),
+                               400.f * ofSignedNoise(i / 2000.f, 1e6)));
+        particleSystem.addParticle(mesh.getVertices().back());
+    }
+    
+    /*
     numParticles = 100000;
     particles = new nm::Particle[numParticles]();
     for (unsigned i = 0; i < numParticles; ++i)
@@ -34,22 +44,14 @@ void ofApp::setup()
                                400.f * ofSignedNoise(i / 2000.f, 1e6)));
         particles[i].set(mesh.getVertices().back());
         octree.addPoint(particles[i]);
-    }
+    }*/
 #endif
-    
-    wireFrame = ofMesh::box(10.f, 10.f, 10.f, 1.f, 1.f, 1.f);
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    octree.clear();
-    octree.addPoints(particles, numParticles);
-    octree.updateCenterOfMass();
-    for (unsigned i = 0; i < numParticles; ++i)
-    {
-        
-    }
+    particleSystem.update();
 }
 
 //--------------------------------------------------------------

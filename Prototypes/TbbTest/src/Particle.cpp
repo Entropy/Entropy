@@ -38,4 +38,11 @@ namespace nm
         ofVec3f()
     {
     }
+    
+    Particle::Particle(const ofVec3f& v) :
+        mass(1.f),
+        ofVec3f(v)
+    {
+        
+    }
 }

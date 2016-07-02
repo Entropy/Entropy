@@ -33,4 +33,28 @@
 
 namespace nm
 {
+    ParticleSystem::ParticleSystem() :
+        numParticles(0)
+    {
+    }
+    
+    void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
+    {
+        octree.init(min, max);
+        particles = new nm::Particle[MAX_PARTICLES]();
+    }
+    
+    void ParticleSystem::addParticle(const ofVec3f& position)
+    {
+        particles[numParticles] = position;
+        octree.addPoint(particles[numParticles]);
+        numParticles++;
+    }
+    
+    void ParticleSystem::update()
+    {
+        octree.clear();
+        octree.addPoints(particles, numParticles);
+        octree.updateCenterOfMass();
+    }
 }

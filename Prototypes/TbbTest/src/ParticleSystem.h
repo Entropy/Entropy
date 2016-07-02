@@ -32,17 +32,26 @@
 #pragma once
 
 #include "Octree.h"
+#include "Particle.h"
 
 namespace nm
 {
     class ParticleSystem
     {
     public:
-        void init();
+        static const unsigned MAX_PARTICLES = 50000;
+        
+        ParticleSystem();
+        
+        void init(const ofVec3f& min, const ofVec3f& max);
+        
+        void addParticle(const ofVec3f& position);
         
         void update();
         
     private:
-        Octree<ofVec3f> octree;
+        Octree<Particle> octree;
+        nm::Particle* particles;
+        unsigned numParticles;
     };
 }

@@ -61,7 +61,7 @@ namespace nm
     void Octree<T>::updateCenterOfMass()
     {
         centerOfMass = centerOfMass / mass;
-        if (children != NULL)
+        if (children)
         {
             tbb::task_group taskGroup;
             for (unsigned i = 0; i < 8; ++i)
@@ -82,7 +82,13 @@ namespace nm
         centerOfMass.set(0.f);
         if (children)
         {
-            for (unsigned i = 0; i < 8; ++i) children[i].clear();
+            tbb::task_group taskGroup;
+            for (unsigned i = 0; i < 8; ++i)
+            {
+                const unsigned idx = i;
+                taskGroup.run([&]{ children[idx].clear(); });
+            }
+            taskGroup.wait();
         }
     }
     

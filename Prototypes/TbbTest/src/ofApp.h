@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "Octree.h"
-#include "Particle.h"
+#include "ParticleSystem.h"
 
 class ofApp : public ofBaseApp
 {
@@ -24,11 +24,13 @@ public:
     void gotMessage(ofMessage msg);
 
 private:
-    nm::Octree<nm::Particle> octree;
     ofEasyCam cam;
     ofVboMesh mesh;
-    ofVboMesh wireFrame;
+    nm::ParticleSystem particleSystem;
+    
+    /*
+    nm::Octree<nm::Particle> octree;
     nm::Particle* particles;
     unsigned numParticles;
-    //vector<ofVec3f> points;
+     */
 };
