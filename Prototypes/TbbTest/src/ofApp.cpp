@@ -41,6 +41,7 @@ void ofApp::setup()
 void ofApp::update()
 {
     octree.clear();
+    //octree.addPointsSerial(mesh.getVertices());
     octree.addPointsParallel(mesh.getVertices());
 }
 

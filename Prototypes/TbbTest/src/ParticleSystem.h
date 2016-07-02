@@ -1,5 +1,5 @@
 /*
- *  Octree.h
+ *  ParticleSystem.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,67 +29,18 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-
-/* Currently this octree just builds to a maximum depth rather than a number of particles
- * per subdivision that way memory allocation has to only happen once and particles don't have
- * to be moved around if a subdivision becomes too full */
-
 #pragma once
 
-#include "ofMain.h"
-
-#include "tbb/tbb.h"
+#include "Octree.h"
 
 namespace nm
 {
-    template<class T>
-    class Octree
+    class ParticleSystem
     {
     public:
-        typedef shared_ptr<Octree> Ptr;
+        void init();
         
-        static const unsigned POINTS_START_SIZE = 20;
-        
-        enum Location
-        {
-            X_SIDE = 0x01,
-            Y_SIDE = 0x02,
-            Z_SIDE = 0x04
-        };
-        
-        static void setMaxDepth(unsigned maxDepth) { Octree<T>::maxDepth = maxDepth; }
-        
-        Octree();
-        
-        void init(const ofVec3f& min, const ofVec3f& max, unsigned depth = 0);
-        
-        void addPoint(T& point);
-        
-        void addPoints(vector<T>& points) { addPointsParallel(points); }
-        
-        void addPointsSerial(vector<T>& points);
-        
-        void addPointsParallel(vector<T>& points);
-        
-        void clear();
-        
-        void debugDraw();
-        
-        //void buildEmpty(unsigned depth, unsigned numPoints);
-    
     private:
-        static unsigned maxDepth;
-        static ofVboMesh boxMesh;
-        
-        // hopefully after the first few iterations this shouldn't be resized too often
-        tbb::concurrent_vector<T*> points;
-        // save the number of points so that we don't have to keep reallocating the vector
-        tbb::atomic<unsigned> numPoints;
-        ofVec3f min, max, mid;
-        Octree* children;
-        unsigned depth;
-        bool hasPoints;
+        Octree<ofVec3f> octree;
     };
 }
-
-#include "Octree.inl"
