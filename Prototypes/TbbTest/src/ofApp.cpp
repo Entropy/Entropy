@@ -45,6 +45,7 @@ void ofApp::update()
 {
     octree.clear();
     octree.addPoints(particles, numParticles);
+    octree.updateCenterOfMass();
     //octree.addPointsSerial(particles, numParticles);
 }
 

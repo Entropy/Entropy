@@ -63,6 +63,8 @@ namespace nm
         
         void init(const ofVec3f& min, const ofVec3f& max, unsigned depth = 0);
         
+        void updateCenterOfMass();
+        
         void addPoint(T& point);
         
         void addPoints(vector<T>& points) { addPointsParallel(points); }
@@ -93,7 +95,7 @@ namespace nm
         unsigned depth;
         bool hasPoints;
         float mass;
-        ofVec3f massCenterOfMassProduct;
+        ofVec3f centerOfMass;
     };
 }
 
