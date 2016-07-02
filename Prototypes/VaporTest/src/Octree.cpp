@@ -3,6 +3,8 @@
 #include "of3dGraphics.h"
 #include "ofGraphics.h"
 #include "ofUtils.h"
+#include "ThreadPool.h"
+#include <future>
 
 struct BoundingBoxSearch{
 	inline BoundingBoxSearch(const ofVec3f & min, const ofVec3f & max, float density)
@@ -19,26 +21,6 @@ Octree::Octree()
 :density(0.f)
 {
 
-}
-
-Octree::Octree(std::vector<Particle> & particles, const BoundingBox & bb)
-:density(0.f){
-	auto original_size = particles.size();
-	auto begin_particles = std::remove_if(particles.begin(), particles.end(), [&](const Particle & p){
-		if(bb.inside(p.pos)){
-			this->density += p.density;
-			return true;
-		}else{
-			return false;
-		}
-	});
-	this->particles.assign(begin_particles, particles.end());
-	//this->density /= this->particles.size();
-	this->bb = bb;
-
-	particles.erase(begin_particles, particles.end());
-	cout << "created octree with " << this->particles.size() << " remaining " << particles.size() << " for bb " << bb.min << " <-> " << bb.max << endl;
-	assert(original_size == this->particles.size() + particles.size());
 }
 
 void Octree::setup(const std::vector<Particle> & particles){
@@ -60,7 +42,8 @@ void Octree::setup(const std::vector<Particle> & particles){
 	//cout << "octree setup bb: " << bb.min << " <-> " << bb.max << endl;
 }
 
-void Octree::compute(size_t resolution, float minDensity, float maxDensity){
+
+bool Octree::divide(size_t resolution, float minDensity, float maxDensity){
 	float span = maxDensity - minDensity;
 	float thresDensity = minDensity + span*0.0005;
 	if(density<thresDensity){
@@ -68,7 +51,7 @@ void Octree::compute(size_t resolution, float minDensity, float maxDensity){
 		density=0;
 	}
 	if(resolution==0 || particles.size() == 0){
-		return;
+		return false;
 	}
 	auto bbmin = this->bb.min;
 	auto bbmax = this->bb.max;
@@ -109,10 +92,36 @@ void Octree::compute(size_t resolution, float minDensity, float maxDensity){
 		children[min].density += p.density;
 	}
 
-	this->particles.clear();
+	//this->particles.clear();
+	return true;
+}
 
-	for(auto & child: children){
-		child.compute(resolution - 1, minDensity, maxDensity);
+void Octree::compute(size_t resolution, float minDensity, float maxDensity){
+	if(this->divide(resolution, minDensity, maxDensity)){
+		std::array<std::future<bool>, 8> futures;
+		for(size_t i = 0; i<children.size(); ++i){
+			auto & child = children[i];
+			/*ThreadPool::pool().addTask([&child, &promise, i, resolution, minDensity, maxDensity]{
+				child.compute(resolution - 1, minDensity, maxDensity, 0);
+				promise.set_value(true);
+			});*/
+			futures[i] = std::async(std::launch::async, [&child, resolution, minDensity, maxDensity]{
+				child.compute(resolution - 1, minDensity, maxDensity, 0);
+				return true;
+			});
+		}
+
+		for(auto & future: futures){
+			future.wait();
+		}
+	}
+}
+
+void Octree::compute(size_t resolution, float minDensity, float maxDensity, size_t level){
+	if(this->divide(resolution, minDensity, maxDensity)){
+		for(auto & child: children){
+			child.compute(resolution - 1, minDensity, maxDensity, level+1);
+		}
 	}
 }
 

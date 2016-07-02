@@ -16,13 +16,14 @@ Project{
             "bin/data/shaders/render.vert",
             "src/Octree.cpp",
             "src/Octree.h",
-            'src/SequenceRamses.cpp',
-            'src/SequenceRamses.h',
-            'src/SnapshotRamses.cpp',
-            'src/SnapshotRamses.h',
-            'src/main.cpp',
-            'src/ofApp.cpp',
-            'src/ofApp.h',
+            "src/SequenceRamses.cpp",
+            "src/SequenceRamses.h",
+            "src/SnapshotRamses.cpp",
+            "src/SnapshotRamses.h",
+            "src/ThreadPool.h",
+            "src/main.cpp",
+            "src/ofApp.cpp",
+            "src/ofApp.h",
         ]
 
         of.addons: [

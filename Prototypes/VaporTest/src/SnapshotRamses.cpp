@@ -1,4 +1,5 @@
 #include "SnapshotRamses.h"
+#include "ThreadPool.h"
 
 namespace ent
 {
@@ -47,6 +48,7 @@ namespace ent
 			m_densityRange.add(density[i]);
 		}
 
+		//ThreadPool::pool().addTask([]{cout << "starting pool" << endl;});
 		auto then = ofGetElapsedTimeMicros();
 		this->octree.setup(particles);
 		this->octree.compute(10, m_densityRange.getMin(), m_densityRange.getMax());
@@ -70,33 +72,14 @@ namespace ent
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
 
-		// Set up the VBO.
-		//m_vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
-		m_vboMesh.addVertex({0,0,0});
-		m_vboMesh.setMode(OF_PRIMITIVE_POINTS);
-		m_vboMesh.setUsage(GL_STATIC_DRAW);
-
-		// Upload per-instance data to the VBO.
-		/*m_vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
-		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
-
-		std::vector<ofVec4f> transforms;
-		transforms.resize(posX.size());
-		for (size_t i = 0; i < transforms.size(); ++i) 
-		{
-			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
-		}
-		m_vboMesh.getVbo().setAttributeData(POSITION_SIZE_ATTRIBUTE, (float*)transforms.data(), 4, transforms.size(), GL_STATIC_DRAW, 0);
-		m_vboMesh.getVbo().setAttributeDivisor(POSITION_SIZE_ATTRIBUTE, 1);*/
-
 		auto octree_particles = octree.toVector();
+		m_numCells = octree_particles.size();
 		ofBufferObject particlesBuffer;
 		particlesBuffer.allocate();
 		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);
-		m_vboMesh.getVbo().setAttributeBuffer(POSITION_SIZE_ATTRIBUTE, particlesBuffer, 4, sizeof(Particle), 0);
-		m_vboMesh.getVbo().setAttributeDivisor(POSITION_SIZE_ATTRIBUTE, 1);
-		m_vboMesh.getVbo().setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
-		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
+		m_vboMesh.setVertexBuffer(particlesBuffer, 3, sizeof(Particle), 0);
+		m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*3);
+		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
 
 		m_bLoaded = true;
 	}
@@ -140,13 +123,13 @@ namespace ent
 	//--------------------------------------------------------------
 	void SnapshotRamses::update(ofShader& shader)
 	{
-		//shader.setUniformTexture("uTransform", m_bufferTexture, 0);
+
 	}
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::draw()
 	{
-		m_vboMesh.drawInstanced(OF_MESH_FILL, m_numCells);
+		m_vboMesh.draw(GL_POINTS, 0, m_numCells);
 	}
 
 	//--------------------------------------------------------------

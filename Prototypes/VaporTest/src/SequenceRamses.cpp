@@ -38,9 +38,9 @@ namespace ent
         // Load the shaders.
         m_renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
 		m_renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
-		m_renderShader.bindDefaults();
+		m_renderShader.bindAttribute(POSITION_ATTRIBUTE, "position");
+		m_renderShader.bindAttribute(SIZE_ATTRIBUTE, "size");
 		m_renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
-		m_renderShader.bindAttribute(POSITION_SIZE_ATTRIBUTE, "position_size");
 		m_renderShader.linkProgram();
 
 		m_bReady = true;
@@ -75,8 +75,9 @@ namespace ent
 			auto loaded = newShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert") &&
 			    newShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
 			if(loaded){
-				newShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
-				newShader.bindAttribute(POSITION_SIZE_ATTRIBUTE, "position_size");
+				m_renderShader.bindAttribute(POSITION_ATTRIBUTE, "position");
+				m_renderShader.bindAttribute(SIZE_ATTRIBUTE, "size");
+				m_renderShader.bindAttribute(DENSITY_ATTRIBUTE, "density");
 				loaded &= newShader.bindDefaults() && newShader.linkProgram();
 			}
 			if(loaded){
@@ -92,13 +93,12 @@ namespace ent
 		{
             ofSetColor(ofColor::white);
 			//glPointSize(10.0);
-			ofEnablePointSprites();
 
             ofPushMatrix();
             ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
             ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
             {
-                m_renderShader.begin();
+				m_renderShader.begin();
 				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
 				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 				{

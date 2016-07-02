@@ -72,11 +72,6 @@ class Octree
 {
 	public:
 		Octree();
-		/// Creates an octree from a vector of particles
-		/// only taking those that are inside the bounding box
-		/// the passed vector will only contain the remaining
-		/// particles afterwards
-		Octree(std::vector<Particle> & particles, const BoundingBox & bb);
 		void setup(const std::vector<Particle> & particles);
 		void compute(size_t resolution, float minDensity, float maxDensity);
 		float getDensity() const;
@@ -87,6 +82,8 @@ class Octree
 		std::vector<Particle> toVector() const;
 
 	private:
+		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);
+		bool divide(size_t resolution, float minDensity, float maxDensity);
 		size_t getMaxLevel(size_t current) const;
 		std::vector<Particle> particles;
 		BoundingBox bb;
