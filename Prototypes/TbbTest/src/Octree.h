@@ -85,6 +85,10 @@ namespace nm
         
         void debugDraw();
         
+        ofVec3f getCenterOfMass() const { return centerOfMass; }
+        
+        Octree* getChildren() const { return children; }
+        
         //void buildEmpty(unsigned depth, unsigned numPoints);
     
     private:

@@ -95,8 +95,6 @@
 		28E1D31A1D289E5200EC0134 /* Persistent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Persistent.cpp; sourceTree = "<group>"; };
 		28E1D31B1D289E5200EC0134 /* Persistent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Persistent.h; sourceTree = "<group>"; };
 		28E1D31C1D289E5200EC0134 /* PersistentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentType.h; sourceTree = "<group>"; };
-		28E1D3211D28A99300EC0134 /* test.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = test.frag; path = bin/data/shaders/test.frag; sourceTree = SOURCE_ROOT; };
-		28E1D3221D28A99300EC0134 /* test.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = test.vert; path = bin/data/shaders/test.vert; sourceTree = SOURCE_ROOT; };
 		28E1D3231D28A9F200EC0134 /* particle.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = particle.frag; path = bin/data/shaders/particle.frag; sourceTree = SOURCE_ROOT; };
 		28E1D3241D28A9F200EC0134 /* particle.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = particle.vert; path = bin/data/shaders/particle.vert; sourceTree = SOURCE_ROOT; };
 		CA46A17B90CA1B4C654986A6 /* Octree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Octree.h; path = src/Octree.h; sourceTree = SOURCE_ROOT; };
@@ -240,8 +238,6 @@
 			children = (
 				28E1D3231D28A9F200EC0134 /* particle.frag */,
 				28E1D3241D28A9F200EC0134 /* particle.vert */,
-				28E1D3211D28A99300EC0134 /* test.frag */,
-				28E1D3221D28A99300EC0134 /* test.vert */,
 			);
 			name = shaders;
 			path = ../../../ParticlesTest/bin/data/shaders;

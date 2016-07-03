@@ -25,9 +25,6 @@ void ofApp::setup()
 #else
     for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
     {
-        //mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
-        //                       400.f * ofSignedNoise(i / 2000.f, 1e-6),
-        //                       400.f * ofSignedNoise(i / 2000.f, 1e6)));
         ofVec3f v(400.f * ofSignedNoise(i / 2000.f, 10),
                    400.f * ofSignedNoise(i / 2000.f, 1e-6),
                    400.f * ofSignedNoise(i / 2000.f, 1e6));
@@ -65,7 +62,6 @@ void ofApp::draw()
     
     cam.begin();
     particleSystem.draw();
-    //octree.debugDraw();
     cam.end();
     
     drawGui();

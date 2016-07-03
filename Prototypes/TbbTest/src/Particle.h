@@ -51,6 +51,7 @@ namespace nm
         
         inline void zeroForce() { force.set(0.f); }
         inline void addForce(const ofVec3f& force) { this->force += force; }
+        inline ofVec3f getForce() const { return force; }
         
         inline void setMass(float mass) { this->mass = mass; }
         inline float getMass() const { return mass; }
@@ -60,6 +61,7 @@ namespace nm
         
         inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
         inline ofVec3f getVelocity() const { return velocity; }
+        inline void addVelocity(const ofVec3f& velocity) { this->velocity += velocity; }
         
     private:
         Type type;

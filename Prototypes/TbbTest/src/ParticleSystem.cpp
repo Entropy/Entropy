@@ -69,13 +69,24 @@ namespace nm
     void ParticleSystem::update()
     {
         octree.clear();
+        /*if (octree.getChildren() != NULL)
+        {
+            for (unsigned i = 0; i < 8; ++i)
+            {
+                cout << i << ": " << octree.getChildren()[i].getCenterOfMass() << endl;
+            }
+        }*/
         octree.addPoints(particles, numParticles);
         octree.updateCenterOfMass();
+        
+        float dt = ofGetLastFrameTime();
         tbb::parallel_for(tbb::blocked_range<size_t>(0, numParticles),
                           [&](const tbb::blocked_range<size_t>& r) {
                               for(size_t i = r.begin(); i != r.end(); ++i)
                               {
                                   octree.sumForces(&particles[i]);
+                                  particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
+                                  particles[i] += particles[i].getVelocity() * dt;
                                   positions[i].transform =
                                       ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
                                       //ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].radius, particles[i].radius, particles[i].radius)) *

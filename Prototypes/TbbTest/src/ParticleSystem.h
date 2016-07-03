@@ -44,7 +44,7 @@ namespace nm
     class ParticleSystem
     {
     public:
-        static const unsigned MAX_PARTICLES = 50000;
+        static const unsigned MAX_PARTICLES = 20000;
         static const unsigned NUM_LIGHTS = 2;
         
         ParticleSystem();

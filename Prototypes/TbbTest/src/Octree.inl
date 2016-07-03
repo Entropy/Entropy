@@ -67,6 +67,11 @@ namespace nm
         centerOfMass = centerOfMass / mass;
         if (children)
         {
+            tbb::parallel_for(tbb::blocked_range<size_t>(0, 8),
+                              [&](const tbb::blocked_range<size_t>& r) {
+                                  for(size_t i = r.begin(); i != r.end(); ++i) children[i].updateCenterOfMass();
+                              });
+            /*
             tbb::task_group taskGroup;
             for (unsigned i = 0; i < 8; ++i)
             {
@@ -74,6 +79,7 @@ namespace nm
                 taskGroup.run([&]{ children[idx].updateCenterOfMass(); });
             }
             taskGroup.wait();
+             */
         }
     }
     
@@ -83,6 +89,11 @@ namespace nm
         centerOfCharge = centerOfCharge / charge;
         if (children)
         {
+            tbb::parallel_for(tbb::blocked_range<size_t>(0, 8),
+                              [&](const tbb::blocked_range<size_t>& r) {
+                                  for(size_t i = r.begin(); i != r.end(); ++i) children[i].updateCenterOfCharge();
+                              });
+            /*
             tbb::task_group taskGroup;
             for (unsigned i = 0; i < 8; ++i)
             {
@@ -90,6 +101,7 @@ namespace nm
                 taskGroup.run([&]{ children[idx].updateCenterOfCharge(); });
             }
             taskGroup.wait();
+             */
         }
     }
     
@@ -105,7 +117,7 @@ namespace nm
             if (size / dist < THETA)
             {
                 // far enough away to use this node
-                point->addForce(-80.f * direction * point->getCharge() * charge / (distSq * dist));
+                point->addForce(-10000.f * direction * point->getCharge() * charge / (distSq * dist));
             }
             else if (children)
             {
@@ -124,7 +136,7 @@ namespace nm
                     ofVec3f direction = centerOfMass - *point;
                     float distSq = direction.lengthSquared();
                     float dist = sqrt(distSq);
-                    point->addForce(-80.f * direction * point->getCharge() * charge / (distSq * dist));
+                    point->addForce(-10000.f * direction * point->getCharge() * charge / (distSq * dist));
                 }
             }
         }
@@ -141,13 +153,18 @@ namespace nm
         centerOfCharge.set(0.f);
         if (children)
         {
+            tbb::parallel_for(tbb::blocked_range<size_t>(0, 8),
+                              [&](const tbb::blocked_range<size_t>& r) {
+                                  for(size_t i = r.begin(); i != r.end(); ++i) children[i].clear();
+                              });
+            /*
             tbb::task_group taskGroup;
             for (unsigned i = 0; i < 8; ++i)
             {
                 const unsigned idx = i;
                 taskGroup.run([&]{ children[idx].clear(); });
             }
-            taskGroup.wait();
+            taskGroup.wait();*/
         }
     }
     
