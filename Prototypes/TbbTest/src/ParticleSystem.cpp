@@ -71,8 +71,16 @@ namespace nm
         octree.updateCenterOfMass();
         tbb::parallel_for(tbb::blocked_range<size_t>(0, numParticles),
                           [&](const tbb::blocked_range<size_t>& r) {
-                              for(size_t i = r.begin(); i != r.end(); ++i) octree.sumForces(&particles[i]);
+                              for(size_t i = r.begin(); i != r.end(); ++i)
+                              {
+                                  octree.sumForces(&particles[i]);
+                                  positions[i].transform =
+                                      ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
+                                      //ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].radius, particles[i].radius, particles[i].radius)) *
+                                      ofMatrix4x4::newTranslationMatrix(particles[i]);
+                              }
                           });
+        tbo.updateData(0, sizeof(ParticleGpuData) * numParticles, positions);
     }
     
     void ParticleSystem::draw()

@@ -78,5 +78,5 @@ void main (void)
 		//color += CalcPointLight(v_positionVarying, v_normalVarying, colorVarying.xyz, lights[i]);
 		color += CalcPointLight(v_positionVarying, v_normalVarying, vec3(1.0), lights[i]);
     }
-    fragColor = vec4(particleColor, 1.0) * vec4(color, 1.0);
+    fragColor = vec4(1.0, 0.0, 1.0, 1.0);//vec4(particleColor, 1.0) * vec4(color, 1.0);
 }

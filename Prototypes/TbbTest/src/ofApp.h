@@ -12,6 +12,7 @@ public:
     void setup();
     void update();
     void draw();
+    void exit();
 
     void keyPressed(int key);
     void keyReleased(int key);
@@ -32,12 +33,5 @@ private:
     ofxPersistent persistent;
     
     ofEasyCam cam;
-    //ofVboMesh mesh;
     nm::ParticleSystem particleSystem;
-    
-    /*
-    nm::Octree<nm::Particle> octree;
-    nm::Particle* particles;
-    unsigned numParticles;
-     */
 };

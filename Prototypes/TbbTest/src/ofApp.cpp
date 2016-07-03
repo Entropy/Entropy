@@ -13,8 +13,29 @@ void ofApp::setup()
     nm::Octree<ofVec3f>::setMaxDepth(5);
     particleSystem.init(ofVec3f(-400.f), ofVec3f(400.f));
     
-    gui.setup();
+#ifdef _TEAPOT
+    ofVboMesh mesh;
+    ofxObjLoader::load("teapot.obj", mesh);
+    for (auto& v : mesh.getVertices())
+    {
+        v *= 80.f;
+        v.y -= 80.f;
+        particleSystem.addParticle(v);
+    }
+#else
+    for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
+    {
+        //mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
+        //                       400.f * ofSignedNoise(i / 2000.f, 1e-6),
+        //                       400.f * ofSignedNoise(i / 2000.f, 1e6)));
+        ofVec3f v(400.f * ofSignedNoise(i / 2000.f, 10),
+                   400.f * ofSignedNoise(i / 2000.f, 1e-6),
+                   400.f * ofSignedNoise(i / 2000.f, 1e6));
+        particleSystem.addParticle(v);
+    }
+#endif
     
+    gui.setup();
     for (unsigned i = 0; i < nm::ParticleSystem::NUM_LIGHTS; ++i)
     {
         particleSystem.lightIntensities[i] = 1.f;
@@ -28,42 +49,7 @@ void ofApp::setup()
         persistent.add("lightCols" + iStr, particleSystem.lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
     }
     persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
-    
-#ifdef _TEAPOT
-    ofxObjLoader::load("teapot.obj", mesh);
-    for (auto& v : mesh.getVertices())
-    {
-        v *= 80.f;
-        v.y -= 80.f;
-        octree.addPoint(v);
-    }
-#else
-    for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
-    {
-        //mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
-        //                       400.f * ofSignedNoise(i / 2000.f, 1e-6),
-        //                       400.f * ofSignedNoise(i / 2000.f, 1e6)));
-        ofVec3f v(400.f * ofSignedNoise(i / 2000.f, 10),
-                   400.f * ofSignedNoise(i / 2000.f, 1e-6),
-                   400.f * ofSignedNoise(i / 2000.f, 1e6));
-        particleSystem.addParticle(v);
-    }
-    
-    /*
-    numParticles = 100000;
-    particles = new nm::Particle[numParticles]();
-    for (unsigned i = 0; i < numParticles; ++i)
-    {
-        //mesh.addVertex(ofVec3f(ofRandom(-200.f, 200.f),
-        //                       ofRandom(-200.f, 200.f),
-        //                       ofRandom(-200.f, 200.f)));
-        mesh.addVertex(ofVec3f(400.f * ofSignedNoise(i / 2000.f, 10),
-                               400.f * ofSignedNoise(i / 2000.f, 1e-6),
-                               400.f * ofSignedNoise(i / 2000.f, 1e6)));
-        particles[i].set(mesh.getVertices().back());
-        octree.addPoint(particles[i]);
-    }*/
-#endif
+    persistent.load("settings/settings.xml");
 }
 
 //--------------------------------------------------------------
@@ -76,18 +62,18 @@ void ofApp::update()
 void ofApp::draw()
 {
     ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
+    
     cam.begin();
-    ofPushStyle();
-    ofSetColor(255);
-    //mesh.drawVertices();
     particleSystem.draw();
-    //mesh.draw();
-    ofSetColor(255, 0, 0);
     //octree.debugDraw();
-    ofPopStyle();
     cam.end();
     
     drawGui();
+}
+
+void ofApp::exit()
+{
+    persistent.save("settings/settings.xml");
 }
 
 void ofApp::drawGui()

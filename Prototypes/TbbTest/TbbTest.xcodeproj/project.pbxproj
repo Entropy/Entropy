@@ -95,6 +95,8 @@
 		28E1D31A1D289E5200EC0134 /* Persistent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Persistent.cpp; sourceTree = "<group>"; };
 		28E1D31B1D289E5200EC0134 /* Persistent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Persistent.h; sourceTree = "<group>"; };
 		28E1D31C1D289E5200EC0134 /* PersistentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentType.h; sourceTree = "<group>"; };
+		28E1D31F1D28A50F00EC0134 /* particle.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = particle.frag; sourceTree = "<group>"; };
+		28E1D3201D28A50F00EC0134 /* particle.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = particle.vert; sourceTree = "<group>"; };
 		CA46A17B90CA1B4C654986A6 /* Octree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Octree.h; path = src/Octree.h; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* TbbTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TbbTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,6 +216,7 @@
 		28E1D3171D289E5200EC0134 /* ofxPersistent */ = {
 			isa = PBXGroup;
 			children = (
+				28E1D31E1D28A50F00EC0134 /* shaders */,
 				28E1D3181D289E5200EC0134 /* src */,
 			);
 			path = ofxPersistent;
@@ -228,6 +231,16 @@
 				28E1D31C1D289E5200EC0134 /* PersistentType.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		28E1D31E1D28A50F00EC0134 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D31F1D28A50F00EC0134 /* particle.frag */,
+				28E1D3201D28A50F00EC0134 /* particle.vert */,
+			);
+			name = shaders;
+			path = ../../../ParticlesTest/bin/data/shaders;
 			sourceTree = "<group>";
 		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
