@@ -38,6 +38,14 @@ namespace nm
     class Particle : public ofVec3f
     {
     public:
+        enum Type
+        {
+            NEUTRON,
+            POSITRON,
+            
+            NUM_TYPES
+        };
+        
         Particle();
         Particle(const ofVec3f& v);
         
@@ -54,6 +62,7 @@ namespace nm
         inline ofVec3f getVelocity() const { return velocity; }
         
     private:
+        Type type;
         float mass;
         float charge;
         ofVec3f velocity;

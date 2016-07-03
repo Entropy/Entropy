@@ -30,6 +30,7 @@
  *
  */
 #include "ParticleSystem.h"
+#include "ofxObjLoader.h"
 
 namespace nm
 {
@@ -41,7 +42,14 @@ namespace nm
     void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
     {
         octree.init(min, max);
+        //ofxObjLoader::load("models/cube_fillet_1.obj", mesh);
+        mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
         particles = new nm::Particle[MAX_PARTICLES]();
+        
+        positions = new ParticleGpuData[MAX_PARTICLES]();
+        tbo.allocate();
+        tbo.setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
+        positionsTex.allocateAsBufferTexture(tbo, GL_RGBA32F);
     }
     
     void ParticleSystem::addParticle(const ofVec3f& position)
@@ -60,5 +68,15 @@ namespace nm
                           [&](const tbb::blocked_range<size_t>& r) {
                               for(size_t i = r.begin(); i != r.end(); ++i) octree.sumForces(&particles[i]);
                           });
+    }
+    
+    void ParticleSystem::draw()
+    {
+        glPushAttrib(GL_ENABLE_BIT);
+        glEnable( GL_DEPTH_TEST );
+        glEnable( GL_CULL_FACE );
+        glCullFace( GL_BACK );
+        mesh.drawInstanced(OF_MESH_FILL, numParticles);
+        glPopAttrib();
     }
 }

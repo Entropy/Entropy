@@ -36,10 +36,15 @@
 
 namespace nm
 {
+    struct ParticleGpuData
+    {
+        ofMatrix4x4 transform;
+    };
+    
     class ParticleSystem
     {
     public:
-        static const unsigned MAX_PARTICLES = 10000;
+        static const unsigned MAX_PARTICLES = 50000;
         
         ParticleSystem();
         
@@ -49,11 +54,17 @@ namespace nm
         
         void update();
         
+        void draw();
+        
     private:
         void sumForces(Particle* particle);
         
         Octree<Particle> octree;
         nm::Particle* particles;
         unsigned numParticles;
+        ofVboMesh mesh;
+        ofBufferObject tbo;
+        ParticleGpuData* positions;
+        ofTexture positionsTex;
     };
 }
