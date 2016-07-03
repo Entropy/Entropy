@@ -3,6 +3,7 @@
 
 #include "ofConstants.h"
 #include "ofVectorMath.h"
+#include "ofPixels.h"
 
 struct Particle{
 	ofVec3f pos;
@@ -68,10 +69,10 @@ struct BoundingBox{
 	}
 };
 
-class Octree
+class VaporOctree
 {
 	public:
-		Octree();
+		VaporOctree();
 		void setup(const std::vector<Particle> & particles);
 		void compute(size_t resolution, float minDensity, float maxDensity);
 		float getDensity() const;
@@ -80,6 +81,8 @@ class Octree
 		size_t getMaxLevel() const;
 		size_t size() const;
 		std::vector<Particle> toVector() const;
+		ofFloatPixels getPixels(size_t z, float minDensity, float maxDensity) const;
+		float getDensity(size_t x, size_t y, size_t z) const;
 
 	private:
 		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);
@@ -89,7 +92,9 @@ class Octree
 		std::vector<size_t> particlesIndex;
 		BoundingBox bb;
 		float density;
-		std::vector<Octree> children;
+		std::vector<VaporOctree> children;
+		size_t resolution;
+		size_t x,y,z;
 };
 
 #endif // OCTREE_H
