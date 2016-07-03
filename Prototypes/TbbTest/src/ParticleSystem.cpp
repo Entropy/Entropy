@@ -53,6 +53,8 @@ namespace nm
         // position stuff
         positions = new ParticleGpuData[MAX_PARTICLES]();
         tbo.allocate();
+        tbo.bind(GL_TEXTURE_BUFFER);
+        tbo.unbind(GL_TEXTURE_BUFFER);
         tbo.setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
         positionsTex.allocateAsBufferTexture(tbo, GL_RGBA32F);
     }
