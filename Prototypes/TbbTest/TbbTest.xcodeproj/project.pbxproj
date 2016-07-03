@@ -13,6 +13,15 @@
 		28330D061D273BAD00A096E3 /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = 28330D031D273BAD00A096E3 /* glm.c */; };
 		28330D091D27420400A096E3 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28330D071D27420400A096E3 /* ParticleSystem.cpp */; };
 		289062A71D281B5F00DADAB7 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289062A51D281B5F00DADAB7 /* Particle.cpp */; };
+		28E1D30E1D289D8400EC0134 /* BaseEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D2F51D289D8400EC0134 /* BaseEngine.cpp */; };
+		28E1D30F1D289D8400EC0134 /* BaseTheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D2F71D289D8400EC0134 /* BaseTheme.cpp */; };
+		28E1D3101D289D8400EC0134 /* EngineGLFW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D2F91D289D8400EC0134 /* EngineGLFW.cpp */; };
+		28E1D3111D289D8400EC0134 /* EngineOpenGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D2FB1D289D8400EC0134 /* EngineOpenGLES.cpp */; };
+		28E1D3121D289D8400EC0134 /* ofxImGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D2FE1D289D8400EC0134 /* ofxImGui.cpp */; };
+		28E1D3131D289D8400EC0134 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D3041D289D8400EC0134 /* imgui.cpp */; };
+		28E1D3141D289D8400EC0134 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D3061D289D8400EC0134 /* imgui_demo.cpp */; };
+		28E1D3151D289D8400EC0134 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D3071D289D8400EC0134 /* imgui_draw.cpp */; };
+		28E1D31D1D289E5200EC0134 /* Persistent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E1D31A1D289E5200EC0134 /* Persistent.cpp */; };
 		D618FE9DF3F03BB4F11B8AA4 /* Octree.inl in Sources */ = {isa = PBXBuildFile; fileRef = 03DB4FA6B2D05510E25F3242 /* Octree.inl */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
@@ -60,6 +69,32 @@
 		28330D081D27420400A096E3 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
 		289062A51D281B5F00DADAB7 /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
 		289062A61D281B5F00DADAB7 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
+		28E1D2F51D289D8400EC0134 /* BaseEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseEngine.cpp; sourceTree = "<group>"; };
+		28E1D2F61D289D8400EC0134 /* BaseEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseEngine.h; sourceTree = "<group>"; };
+		28E1D2F71D289D8400EC0134 /* BaseTheme.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseTheme.cpp; sourceTree = "<group>"; };
+		28E1D2F81D289D8400EC0134 /* BaseTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTheme.h; sourceTree = "<group>"; };
+		28E1D2F91D289D8400EC0134 /* EngineGLFW.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EngineGLFW.cpp; sourceTree = "<group>"; };
+		28E1D2FA1D289D8400EC0134 /* EngineGLFW.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngineGLFW.h; sourceTree = "<group>"; };
+		28E1D2FB1D289D8400EC0134 /* EngineOpenGLES.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EngineOpenGLES.cpp; sourceTree = "<group>"; };
+		28E1D2FC1D289D8400EC0134 /* EngineOpenGLES.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngineOpenGLES.h; sourceTree = "<group>"; };
+		28E1D2FD1D289D8400EC0134 /* imconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
+		28E1D2FE1D289D8400EC0134 /* ofxImGui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxImGui.cpp; sourceTree = "<group>"; };
+		28E1D2FF1D289D8400EC0134 /* ofxImGui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImGui.h; sourceTree = "<group>"; };
+		28E1D3001D289D8400EC0134 /* ThemeTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeTest.h; sourceTree = "<group>"; };
+		28E1D3041D289D8400EC0134 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
+		28E1D3051D289D8400EC0134 /* imgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
+		28E1D3061D289D8400EC0134 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
+		28E1D3071D289D8400EC0134 /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
+		28E1D3081D289D8400EC0134 /* imgui_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = imgui_internal.h; sourceTree = "<group>"; };
+		28E1D3091D289D8400EC0134 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		28E1D30A1D289D8400EC0134 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		28E1D30B1D289D8400EC0134 /* stb_rect_pack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_rect_pack.h; sourceTree = "<group>"; };
+		28E1D30C1D289D8400EC0134 /* stb_textedit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_textedit.h; sourceTree = "<group>"; };
+		28E1D30D1D289D8400EC0134 /* stb_truetype.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		28E1D3191D289E5200EC0134 /* ofxPersistent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPersistent.h; sourceTree = "<group>"; };
+		28E1D31A1D289E5200EC0134 /* Persistent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Persistent.cpp; sourceTree = "<group>"; };
+		28E1D31B1D289E5200EC0134 /* Persistent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Persistent.h; sourceTree = "<group>"; };
+		28E1D31C1D289E5200EC0134 /* PersistentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentType.h; sourceTree = "<group>"; };
 		CA46A17B90CA1B4C654986A6 /* Octree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Octree.h; path = src/Octree.h; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* TbbTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TbbTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +148,88 @@
 			path = ../../../addons/ofxObjLoader/libs;
 			sourceTree = "<group>";
 		};
+		28E1D2F31D289D8400EC0134 /* ofxImGui */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D2F41D289D8400EC0134 /* src */,
+				28E1D3011D289D8400EC0134 /* libs */,
+			);
+			name = ofxImGui;
+			sourceTree = "<group>";
+		};
+		28E1D2F41D289D8400EC0134 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D2F51D289D8400EC0134 /* BaseEngine.cpp */,
+				28E1D2F61D289D8400EC0134 /* BaseEngine.h */,
+				28E1D2F71D289D8400EC0134 /* BaseTheme.cpp */,
+				28E1D2F81D289D8400EC0134 /* BaseTheme.h */,
+				28E1D2F91D289D8400EC0134 /* EngineGLFW.cpp */,
+				28E1D2FA1D289D8400EC0134 /* EngineGLFW.h */,
+				28E1D2FB1D289D8400EC0134 /* EngineOpenGLES.cpp */,
+				28E1D2FC1D289D8400EC0134 /* EngineOpenGLES.h */,
+				28E1D2FD1D289D8400EC0134 /* imconfig.h */,
+				28E1D2FE1D289D8400EC0134 /* ofxImGui.cpp */,
+				28E1D2FF1D289D8400EC0134 /* ofxImGui.h */,
+				28E1D3001D289D8400EC0134 /* ThemeTest.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxImGui/src;
+			sourceTree = "<group>";
+		};
+		28E1D3011D289D8400EC0134 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D3021D289D8400EC0134 /* imgui */,
+			);
+			name = libs;
+			path = ../../../addons/ofxImGui/libs;
+			sourceTree = "<group>";
+		};
+		28E1D3021D289D8400EC0134 /* imgui */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D3031D289D8400EC0134 /* src */,
+			);
+			path = imgui;
+			sourceTree = "<group>";
+		};
+		28E1D3031D289D8400EC0134 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D3041D289D8400EC0134 /* imgui.cpp */,
+				28E1D3051D289D8400EC0134 /* imgui.h */,
+				28E1D3061D289D8400EC0134 /* imgui_demo.cpp */,
+				28E1D3071D289D8400EC0134 /* imgui_draw.cpp */,
+				28E1D3081D289D8400EC0134 /* imgui_internal.h */,
+				28E1D3091D289D8400EC0134 /* LICENSE */,
+				28E1D30A1D289D8400EC0134 /* README.md */,
+				28E1D30B1D289D8400EC0134 /* stb_rect_pack.h */,
+				28E1D30C1D289D8400EC0134 /* stb_textedit.h */,
+				28E1D30D1D289D8400EC0134 /* stb_truetype.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		28E1D3171D289E5200EC0134 /* ofxPersistent */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D3181D289E5200EC0134 /* src */,
+			);
+			path = ofxPersistent;
+			sourceTree = "<group>";
+		};
+		28E1D3181D289E5200EC0134 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				28E1D3191D289E5200EC0134 /* ofxPersistent.h */,
+				28E1D31A1D289E5200EC0134 /* Persistent.cpp */,
+				28E1D31B1D289E5200EC0134 /* Persistent.h */,
+				28E1D31C1D289E5200EC0134 /* PersistentType.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +240,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				28E1D2F31D289D8400EC0134 /* ofxImGui */,
 				28330CFE1D273BAD00A096E3 /* ofxObjLoader */,
 			);
 			name = addons;
@@ -152,6 +270,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				28E1D3171D289E5200EC0134 /* ofxPersistent */,
 				28330CF91D26FFFB00A096E3 /* libtbb.dylib */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
@@ -262,12 +381,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28E1D31D1D289E5200EC0134 /* Persistent.cpp in Sources */,
+				28E1D30E1D289D8400EC0134 /* BaseEngine.cpp in Sources */,
+				28E1D3131D289D8400EC0134 /* imgui.cpp in Sources */,
 				289062A71D281B5F00DADAB7 /* Particle.cpp in Sources */,
+				28E1D3151D289D8400EC0134 /* imgui_draw.cpp in Sources */,
+				28E1D30F1D289D8400EC0134 /* BaseTheme.cpp in Sources */,
 				28330D051D273BAD00A096E3 /* ofxObjLoader.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				28330D091D27420400A096E3 /* ParticleSystem.cpp in Sources */,
 				28330D061D273BAD00A096E3 /* glm.c in Sources */,
+				28E1D3101D289D8400EC0134 /* EngineGLFW.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				28E1D3121D289D8400EC0134 /* ofxImGui.cpp in Sources */,
+				28E1D3111D289D8400EC0134 /* EngineOpenGLES.cpp in Sources */,
+				28E1D3141D289D8400EC0134 /* imgui_demo.cpp in Sources */,
 				D618FE9DF3F03BB4F11B8AA4 /* Octree.inl in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

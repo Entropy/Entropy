@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  ofxPersistent.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -31,54 +31,6 @@
  */
 #pragma once
 
-#include "Octree.h"
-#include "Particle.h"
+#include "Persistent.h"
 
-namespace nm
-{
-    struct ParticleGpuData
-    {
-        ofMatrix4x4 transform;
-    };
-    
-    class ParticleSystem
-    {
-    public:
-        static const unsigned MAX_PARTICLES = 50000;
-        static const unsigned NUM_LIGHTS = 2;
-        
-        ParticleSystem();
-        
-        void init(const ofVec3f& min, const ofVec3f& max);
-        
-        void addParticle(const ofVec3f& position);
-        
-        void update();
-        
-        void draw();
-        
-        // lighting, should be private but for
-        // GUI adding simplicity they're public
-        ofVec3f lightPosns[NUM_LIGHTS];
-        ofFloatColor lightCols[NUM_LIGHTS];
-        float lightIntensities[NUM_LIGHTS];
-        float lightRadiuses[NUM_LIGHTS];
-        float roughness;
-        
-    private:
-        void sumForces(Particle* particle);
-        
-        Octree<Particle> octree;
-        nm::Particle* particles;
-        unsigned numParticles;
-        ofVboMesh mesh;
-        ofShader shader;
-        
-
-        
-        // position stuff
-        ofBufferObject tbo;
-        ParticleGpuData* positions;
-        ofTexture positionsTex;
-    };
-}
+typedef Persistent ofxPersistent;

@@ -12,6 +12,8 @@
 	<dict>
 		<key>2DE9C8846D9375EAACFABA8963120E8E7719BAF5</key>
 		<string>github.com:Entropy/openFrameworks.git</string>
+		<key>55505DE6675E1AEB4CF72AD63A972936EC984D97</key>
+		<string>https://github.com/Entropy/ofxImGui.git</string>
 		<key>8B732DA6471F61653FC2B35F66CE49E00BD50686</key>
 		<string>github.com:Entropy/ofxObjLoader.git</string>
 		<key>B05FA00C81F7587E6DE7CE517224FD836B00CC0D</key>
@@ -23,6 +25,8 @@
 	<dict>
 		<key>2DE9C8846D9375EAACFABA8963120E8E7719BAF5</key>
 		<string>../../../../..</string>
+		<key>55505DE6675E1AEB4CF72AD63A972936EC984D97</key>
+		<string>../../../../../addons/ofxImGui</string>
 		<key>8B732DA6471F61653FC2B35F66CE49E00BD50686</key>
 		<string>../../../../../addons/ofxObjLoader</string>
 		<key>B05FA00C81F7587E6DE7CE517224FD836B00CC0D</key>
@@ -51,6 +55,14 @@
 			<string>B05FA00C81F7587E6DE7CE517224FD836B00CC0D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Entropy</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>55505DE6675E1AEB4CF72AD63A972936EC984D97</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxImGui</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

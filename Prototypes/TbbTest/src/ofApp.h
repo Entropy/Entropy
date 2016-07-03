@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "Octree.h"
 #include "ParticleSystem.h"
+#include "ofxImGui.h"
+#include "ofxPersistent.h"
 
 class ofApp : public ofBaseApp
 {
@@ -24,8 +26,13 @@ public:
     void gotMessage(ofMessage msg);
 
 private:
+    void drawGui();
+    void guiFromPersistent(ofxPersistent& persistent);
+    ofxImGui gui;
+    ofxPersistent persistent;
+    
     ofEasyCam cam;
-    ofVboMesh mesh;
+    //ofVboMesh mesh;
     nm::ParticleSystem particleSystem;
     
     /*

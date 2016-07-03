@@ -35,17 +35,22 @@
 namespace nm
 {
     ParticleSystem::ParticleSystem() :
-        numParticles(0)
+        numParticles(0),
+        roughness(.1f)
     {
     }
     
     void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
     {
         octree.init(min, max);
-        //ofxObjLoader::load("models/cube_fillet_1.obj", mesh);
-        mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
+        
         particles = new nm::Particle[MAX_PARTICLES]();
         
+        mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
+        
+        shader.load("shaders/particle");
+        
+        // position stuff
         positions = new ParticleGpuData[MAX_PARTICLES]();
         tbo.allocate();
         tbo.setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
@@ -76,7 +81,26 @@ namespace nm
         glEnable( GL_DEPTH_TEST );
         glEnable( GL_CULL_FACE );
         glCullFace( GL_BACK );
-        mesh.drawInstanced(OF_MESH_FILL, numParticles);
+        shader.begin();
+        {
+            shader.setUniform1i("numLights", NUM_LIGHTS);
+            shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+            shader.setUniform1f("roughness", roughness);
+            shader.setUniform3f("particleColor", 1.f, 1.f, 1.f);
+            shader.setUniformTexture("uOffsetTex", positionsTex, 0);
+            
+            for (int i = 0; i < NUM_LIGHTS; i++)
+            {
+                string index = ofToString(i);
+                shader.setUniform3f("lights[" + index + "].position", lightPosns[i] * ofGetCurrentViewMatrix());
+                shader.setUniform4f("lights[" + index + "].color", lightCols[i]);
+                shader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
+                shader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
+            }
+            
+            mesh.drawInstanced(OF_MESH_FILL, numParticles);
+        }
+        shader.end();
         glPopAttrib();
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  PersistentType.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -31,54 +31,35 @@
  */
 #pragma once
 
-#include "Octree.h"
-#include "Particle.h"
+#include "ofMain.h"
 
-namespace nm
+template<typename T>
+class PersistentType
 {
-    struct ParticleGpuData
-    {
-        ofMatrix4x4 transform;
-    };
+public:
+    PersistentType() {}
+    PersistentType(T* value, T min = T(), T max = T()) : value(value), min(min), max(max) {}
     
-    class ParticleSystem
+    void set(T* value, T min = T(), T max = T())
     {
-    public:
-        static const unsigned MAX_PARTICLES = 50000;
-        static const unsigned NUM_LIGHTS = 2;
-        
-        ParticleSystem();
-        
-        void init(const ofVec3f& min, const ofVec3f& max);
-        
-        void addParticle(const ofVec3f& position);
-        
-        void update();
-        
-        void draw();
-        
-        // lighting, should be private but for
-        // GUI adding simplicity they're public
-        ofVec3f lightPosns[NUM_LIGHTS];
-        ofFloatColor lightCols[NUM_LIGHTS];
-        float lightIntensities[NUM_LIGHTS];
-        float lightRadiuses[NUM_LIGHTS];
-        float roughness;
-        
-    private:
-        void sumForces(Particle* particle);
-        
-        Octree<Particle> octree;
-        nm::Particle* particles;
-        unsigned numParticles;
-        ofVboMesh mesh;
-        ofShader shader;
-        
+        this->value = value;
+        this->min = min;
+        this->max = max;
+    }
+    
+    T* getValue() const { return value; }
+    T getMin() const { return min; }
+    T getMax() const { return max; }
+    
+private:
+    T min, max;
+    T* value;
+};
 
-        
-        // position stuff
-        ofBufferObject tbo;
-        ParticleGpuData* positions;
-        ofTexture positionsTex;
-    };
-}
+typedef PersistentType<bool> PersistentBool;
+typedef PersistentType<int> PersistentInt;
+typedef PersistentType<unsigned> PersistentUnsigned;
+typedef PersistentType<float> PersistentFloat;
+typedef PersistentType<ofVec2f> PersistentVec2f;
+typedef PersistentType<ofVec3f> PersistentVec3f;
+typedef PersistentType<ofFloatColor> PersistentFloatColor;
