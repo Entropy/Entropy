@@ -52,7 +52,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    if (ofGetFrameNum() % 2) particleSystem.update();
+    particleSystem.update();
 }
 
 //--------------------------------------------------------------

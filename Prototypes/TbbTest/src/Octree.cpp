@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  Octree.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,56 +29,11 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#pragma once
-
 #include "Octree.h"
 #include "Particle.h"
 
 namespace nm
 {
-    struct ParticleGpuData
-    {
-        ofMatrix4x4 transform;
-    };
-    
-    class ParticleSystem
-    {
-    public:
-        static const unsigned MAX_PARTICLES = 5000;
-        static const unsigned NUM_LIGHTS = 2;
-        
-        ParticleSystem();
-        ~ParticleSystem();
-        
-        void init(const ofVec3f& min, const ofVec3f& max);
-        
-        void addParticle(const ofVec3f& position, const ofVec3f& velocity);
-        
-        void update();
-        
-        void draw();
-        
-        // lighting, should be private but for
-        // GUI adding simplicity they're public
-        ofVec3f lightPosns[NUM_LIGHTS];
-        ofFloatColor lightCols[NUM_LIGHTS];
-        float lightIntensities[NUM_LIGHTS];
-        float lightRadiuses[NUM_LIGHTS];
-        float roughness;
-        
-    private:
-        void sumForces(Particle& particle);
-        
-        Octree<Particle> octree;
-        nm::Particle* particles;
-        unsigned numParticles;
-        ofVboMesh mesh;
-        ofShader shader;
-        ofVec3f min, max;
-        
-        // position stuff
-        ofBufferObject tbo;
-        ParticleGpuData* positions;
-        ofTexture positionsTex;
-    };
+	unsigned Octree<Particle>::numOctrees = 0;
+	ofVboMesh Octree<Particle>::boxMesh;
 }
