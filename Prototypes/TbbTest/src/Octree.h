@@ -48,8 +48,10 @@ namespace nm
     public:
         typedef shared_ptr<Octree> Ptr;
         
-        static const unsigned POINTS_START_SIZE = 20;
+        static const unsigned POINTS_START_SIZE = 40;
+        static const unsigned MAX_DEPTH = 5;
         static const float THETA;
+        static const float FORCE_MULTIPLIER;
         
         enum Location
         {
@@ -58,17 +60,18 @@ namespace nm
             Z_SIDE = 0x04
         };
         
-        static void setMaxDepth(unsigned maxDepth) { Octree<T>::maxDepth = maxDepth; }
+        //static void setMaxDepth(unsigned maxDepth) { Octree<T>::maxDepth = maxDepth; }
         
         Octree();
+        ~Octree();
         
         void init(const ofVec3f& min, const ofVec3f& max, unsigned depth = 0);
         
-        void updateCenterOfMass();
+        //void updateCenterOfMass();
         
         void updateCenterOfCharge();
         
-        void sumForces(T* point);
+        void sumForces(T& point);
         
         void addPoint(T& point);
         
@@ -83,30 +86,37 @@ namespace nm
         
         void clear();
         
-        void debugDraw();
+        void debugDraw(unsigned depth);
         
-        ofVec3f getCenterOfMass() const { return centerOfMass; }
+        void addChildren(bool recursive);
+        
+        //ofVec3f getCenterOfMass() const { return centerOfMass; }
+        inline float getCharge() const { return charge; }
+        
+        inline float getAbsCharge() const { return absCharge; }
+        
+        inline ofVec3f getCenterOfCharge() const { return centerOfCharge; }
         
         Octree* getChildren() const { return children; }
         
-        //void buildEmpty(unsigned depth, unsigned numPoints);
-    
+        inline ofVec3f getMax() const { return max; }
+        inline ofVec3f getMin() const { return min; }
+        
     private:
-        static unsigned maxDepth;
         static ofVboMesh boxMesh;
+        static unsigned numOctrees;
         
         // hopefully after the first few iterations this shouldn't be resized too often
         tbb::concurrent_vector<T*> points;
         // save the number of points so that we don't have to keep reallocating the vector
-        tbb::atomic<unsigned> numPoints;
+        //tbb::atomic<unsigned> numPoints;
         ofVec3f min, max, mid;
         float size;
         Octree* children;
         unsigned depth;
         bool hasPoints;
-        float mass;
-        float charge;
-        ofVec3f centerOfMass;
+        float charge; // mass for gravity, charge for electromagnetic systems
+        float absCharge;
         ofVec3f centerOfCharge;
     };
 }

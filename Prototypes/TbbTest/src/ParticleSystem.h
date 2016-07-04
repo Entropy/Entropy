@@ -44,14 +44,15 @@ namespace nm
     class ParticleSystem
     {
     public:
-        static const unsigned MAX_PARTICLES = 20000;
+        static const unsigned MAX_PARTICLES = 10000;
         static const unsigned NUM_LIGHTS = 2;
         
         ParticleSystem();
+        ~ParticleSystem();
         
         void init(const ofVec3f& min, const ofVec3f& max);
         
-        void addParticle(const ofVec3f& position);
+        void addParticle(const ofVec3f& position, const ofVec3f& velocity);
         
         void update();
         
@@ -66,15 +67,14 @@ namespace nm
         float roughness;
         
     private:
-        void sumForces(Particle* particle);
+        void sumForces(Particle& particle);
         
         Octree<Particle> octree;
         nm::Particle* particles;
         unsigned numParticles;
         ofVboMesh mesh;
         ofShader shader;
-        
-
+        ofVec3f min, max;
         
         // position stuff
         ofBufferObject tbo;

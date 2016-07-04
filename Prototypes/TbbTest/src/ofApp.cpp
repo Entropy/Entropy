@@ -10,7 +10,6 @@ void ofApp::setup()
     ofSetVerticalSync(false);
     
     ofBackground(0);
-    nm::Octree<ofVec3f>::setMaxDepth(5);
     particleSystem.init(ofVec3f(-400.f), ofVec3f(400.f));
     
 #ifdef _TEAPOT
@@ -28,7 +27,8 @@ void ofApp::setup()
         ofVec3f v(400.f * ofSignedNoise(i / 2000.f, 10),
                    400.f * ofSignedNoise(i / 2000.f, 1e-6),
                    400.f * ofSignedNoise(i / 2000.f, 1e6));
-        particleSystem.addParticle(v);
+        //particleSystem.addParticle(v, ofVec3f(1.f, 0.f, 0.f));
+        particleSystem.addParticle(v, ofVec3f(0.f, 0.f, 0.f));
     }
 #endif
     
@@ -52,7 +52,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    particleSystem.update();
+    if (ofGetFrameNum() % 2) particleSystem.update();
 }
 
 //--------------------------------------------------------------

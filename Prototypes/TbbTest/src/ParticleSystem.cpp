@@ -36,13 +36,25 @@ namespace nm
 {
     ParticleSystem::ParticleSystem() :
         numParticles(0),
-        roughness(.1f)
+        roughness(.1f),
+        particles(NULL),
+        positions(NULL)
     {
+    }
+    
+    ParticleSystem::~ParticleSystem()
+    {
+        if (particles) delete[] particles;
+        if (positions) delete[] positions;
     }
     
     void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
     {
+        this->min = min;
+        this->max = max;
+        
         octree.init(min, max);
+        octree.addChildren(true);
         
         particles = new nm::Particle[MAX_PARTICLES]();
         
@@ -59,11 +71,16 @@ namespace nm
         positionsTex.allocateAsBufferTexture(tbo, GL_RGBA32F);
     }
     
-    void ParticleSystem::addParticle(const ofVec3f& position)
+    void ParticleSystem::addParticle(const ofVec3f& position, const ofVec3f& velocity)
     {
-        particles[numParticles] = position;
-        octree.addPoint(particles[numParticles]);
-        numParticles++;
+        if (numParticles < MAX_PARTICLES)
+        {
+            particles[numParticles] = position;
+            particles[numParticles].setVelocity(velocity);
+            octree.addPoint(particles[numParticles]);
+            numParticles++;
+        }
+        else ofLogError() << "Cannot add more particles";
     }
     
     void ParticleSystem::update()
@@ -77,16 +94,23 @@ namespace nm
             }
         }*/
         octree.addPoints(particles, numParticles);
-        octree.updateCenterOfMass();
+        octree.updateCenterOfCharge();
         
         float dt = ofGetLastFrameTime();
         tbb::parallel_for(tbb::blocked_range<size_t>(0, numParticles),
                           [&](const tbb::blocked_range<size_t>& r) {
                               for(size_t i = r.begin(); i != r.end(); ++i)
                               {
-                                  octree.sumForces(&particles[i]);
+                                  particles[i].zeroForce();
+                                  octree.sumForces(particles[i]);
                                   particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
+                                  //particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
                                   particles[i] += particles[i].getVelocity() * dt;
+                                  for (unsigned j = 0; j < 3; ++j)
+                                  {
+                                      if (particles[i][j] > max[j]) particles[i][j] = min[j];
+                                      if (particles[i][j] < min[j]) particles[i][j] = max[j];
+                                  }
                                   positions[i].transform =
                                       ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
                                       //ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].radius, particles[i].radius, particles[i].radius)) *

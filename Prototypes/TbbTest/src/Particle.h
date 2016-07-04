@@ -69,5 +69,6 @@ namespace nm
         float charge;
         ofVec3f velocity;
         ofVec3f force;
+        
     };
 }
