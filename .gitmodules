@@ -4,3 +4,60 @@
 [submodule "Shared/libs/gli"]
 	path = Shared/libs/gli
 	url = https://github.com/g-truc/gli.git
+[submodule "addons/ofxHDF5"]
+	path = addons/ofxHDF5
+	url = https://github.com/Entropy/ofxHDF5
+	branch = master
+[submodule "addons/ofxMSATimer"]   
+        path = addons/ofxMSATimer   
+        url = https://github.com/Entropy/ofxMSATimer   
+        branch = master
+[submodule "addons/ofxPreset"]   
+        path = addons/ofxPreset   
+        url = https://github.com/Entropy/ofxPreset   
+        branch = master
+[submodule "addons/ofxSet"]   
+        path = addons/ofxSet   
+        url = https://github.com/Entropy/ofxSet
+	branch = refactor-glm
+[submodule "addons/ofxTimecode"]   
+        path = addons/ofxTimecode   
+        url = https://github.com/Entropy/ofxTimecode
+        branch = master
+[submodule "addons/ofxTween"]   
+        path = addons/ofxTween   
+        url = https://github.com/Entropy/ofxTween
+        branch = master
+[submodule "addons/ofxWarp"]   
+        path = addons/ofxWarp   
+        url = https://github.com/Entropy/ofxWarp
+        branch = master
+[submodule "addons/ofxImGui"]   
+        path = addons/ofxImGui   
+        url = https://github.com/Entropy/ofxImGui
+        branch = master
+[submodule "addons/ofxObjLoader"]   
+        path = addons/ofxObjLoader   
+        url = https://github.com/Entropy/ofxObjLoader
+        branch = master
+[submodule "addons/ofxRange"]   
+        path = addons/ofxRange   
+        url = https://github.com/Entropy/ofxRange
+        branch = master
+[submodule "addons/ofxTextInputField"]   
+        path = addons/ofxTextInputField   
+        url = https://github.com/Entropy/ofxTextInputField
+        branch = master
+[submodule "addons/ofxTimeline"]   
+        path = addons/ofxTimeline   
+        url = https://github.com/Entropy/ofxTimeline
+	branch = refactor-glm
+[submodule "addons/ofxVolumetrics"]   
+        path = addons/ofxVolumetrics   
+        url = https://github.com/Entropy/ofxVolumetrics
+        branch = master
+[submodule "addons/ofxWMFVideoPlayer"]   
+        path = addons/ofxWMFVideoPlayer   
+        url = https://github.com/Entropy/ofxWMFVideoPlayer
+        branch = master
+
