@@ -36,7 +36,7 @@ namespace entropy
 
 			bool isEditing() const;
 
-			void drawGui(ofxPreset::GuiSettings & settings);
+			void drawGui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
@@ -46,11 +46,11 @@ namespace entropy
 			bool loadSettings();
 			bool saveSettings();
 
-			bool selectClosestControlPoint(const ofVec2f & pos);
+			bool selectClosestControlPoint(const glm::vec2 & pos);
 
-			bool cursorMoved(const ofVec2f & pos);
-			bool cursorDown(const ofVec2f & pos);
-			bool cursorDragged(const ofVec2f & pos);
+			bool cursorMoved(const glm::vec2 & pos);
+			bool cursorDown(const glm::vec2 & pos);
+			bool cursorDragged(const glm::vec2 & pos);
 
 			bool keyPressed(ofKeyEventArgs & args);
 
@@ -82,8 +82,8 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<ofVec3f> luminance{ "Luminance", ofVec3f(0.5f), ofVec3f(0.0f), ofVec3f(1.0f) };
-					ofxPreset::Parameter<ofVec3f> gamma{ "Gamma", ofVec3f(1.0f), ofVec3f(0.0f), ofVec3f(1.0f) };
+					ofxPreset::Parameter<glm::vec3> luminance{ "Luminance", glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(1.0f) };
+					ofxPreset::Parameter<glm::vec3> gamma{ "Gamma", glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f) };
 					ofxPreset::Parameter<float> exponent{ "Exponent", 2.0f, 0.1f, 20.0f };
 					ofxPreset::Parameter<float> edgeLeft{ "Edge Left", 0.0f, 0.0f, 1.0f };
 					ofxPreset::Parameter<float> edgeRight{ "Edge Right", 0.0f, 0.0f, 1.0f };

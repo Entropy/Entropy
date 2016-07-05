@@ -37,7 +37,7 @@ namespace entropy
 
 			void drawBack();
 
-			void gui(ofxPreset::GuiSettings & settings);
+			void gui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);

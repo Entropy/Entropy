@@ -31,8 +31,8 @@ namespace entropy
 			void update(double dt);
 
 			void drawScene();
-			void drawGui(ofxPreset::GuiSettings & settings);
-			void drawOverlay(ofxPreset::GuiSettings & settings);
+			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawOverlay(ofxPreset::Gui::Settings & settings);
 
 			bool keyPressed(ofKeyEventArgs & args);
 

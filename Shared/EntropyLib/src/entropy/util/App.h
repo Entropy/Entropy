@@ -42,7 +42,7 @@ namespace entropy
 			shared_ptr<entropy::scene::Manager> sceneManager;
 
 			ofxImGui imGui;
-			ofxPreset::GuiSettings guiSettings;
+			ofxPreset::Gui::Settings guiSettings;
 			bool overlayVisible;
 		};
 

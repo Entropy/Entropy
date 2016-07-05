@@ -91,7 +91,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void Template::gui(ofxPreset::GuiSettings & settings)
+		void Template::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))

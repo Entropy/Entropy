@@ -230,7 +230,7 @@ namespace entropy
 				this->setWidth(ofGetWidth() - totalOverlap);
 
 				// Update the areas for each warp.
-				const auto areaSize = ofVec2f(this->getWidth() / (float)numWarps, this->getHeight());
+				const auto areaSize = glm::vec2(this->getWidth() / (float)numWarps, this->getHeight());
 				auto currX = 0.0f;
 				for (auto i = 0; i < numWarps; ++i)
 				{
@@ -257,7 +257,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::drawGui(ofxPreset::GuiSettings & settings)
+		void Canvas::drawGui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Canvas", settings))
@@ -334,7 +334,7 @@ namespace entropy
 			ofxPreset::Gui::EndWindow(settings);
 
 			auto warpSettings = settings;
-			warpSettings.windowPos = ofVec2f(ofGetWidth() - warpSettings.windowSize.x - kGuiMargin * 3, kGuiMargin);
+			warpSettings.windowPos = glm::vec2(ofGetWidth() - warpSettings.windowSize.x - kGuiMargin * 3, kGuiMargin);
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
@@ -454,12 +454,12 @@ namespace entropy
 						{
 							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
 							{
-								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), paramGroup.blend.luminance.getRef()->getPtr()))
+								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(*paramGroup.blend.luminance.getRef())))
 								{
 									paramGroup.blend.luminance.update();
 									warp->setLuminance(paramGroup.blend.luminance);
 								}
-								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), paramGroup.blend.gamma.getRef()->getPtr()))
+								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(*paramGroup.blend.gamma.getRef())))
 								{
 									paramGroup.blend.gamma.update();
 									warp->setGamma(paramGroup.blend.gamma);
@@ -633,7 +633,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::selectClosestControlPoint(const ofVec2f & pos)
+		bool Canvas::selectClosestControlPoint(const glm::vec2 & pos)
 		{
 			size_t warpIdx = -1;
 			size_t pointIdx = -1;
@@ -677,13 +677,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorMoved(const ofVec2f & pos)
+		bool Canvas::cursorMoved(const glm::vec2 & pos)
 		{
 			return this->selectClosestControlPoint(pos);
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorDown(const ofVec2f & pos)
+		bool Canvas::cursorDown(const glm::vec2 & pos)
 		{
 			this->selectClosestControlPoint(pos);
 
@@ -696,7 +696,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Canvas::cursorDragged(const ofVec2f & pos)
+		bool Canvas::cursorDragged(const glm::vec2 & pos)
 		{
 			if (this->focusedIndex < this->warps.size())
 			{
@@ -744,7 +744,7 @@ namespace entropy
 			if (args.key == OF_KEY_UP || args.key == OF_KEY_DOWN || args.key == OF_KEY_LEFT || args.key == OF_KEY_RIGHT)
 			{
 				auto step = ofGetKeyPressed(OF_KEY_SHIFT) ? 10.0f : 0.5f;
-				auto shift = ofVec2f::zero();
+				auto shift = glm::vec2(0.0f);
 				if (args.key == OF_KEY_UP)
 				{
 					shift.y = -step / (float)ofGetHeight();

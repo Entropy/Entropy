@@ -101,7 +101,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::gui(ofxPreset::GuiSettings & settings)
+		void Video::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))

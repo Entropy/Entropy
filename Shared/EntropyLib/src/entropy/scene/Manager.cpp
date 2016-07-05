@@ -142,7 +142,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::drawGui(ofxPreset::GuiSettings & settings)
+		void Manager::drawGui(ofxPreset::Gui::Settings & settings)
 		{
 			if (this->currentScene)
 			{
@@ -151,7 +151,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::drawOverlay(ofxPreset::GuiSettings & settings)
+		void Manager::drawOverlay(ofxPreset::Gui::Settings & settings)
 		{
 			if (this->currentScene)
 			{

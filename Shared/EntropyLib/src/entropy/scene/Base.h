@@ -36,7 +36,7 @@
 		this->drawFront(); \
 	}));
 #define ENTROPY_SCENE_GUI_LISTENER \
-	onGuiListeners.push_back(this->onGui.newListener([this](ofxPreset::GuiSettings & settings) { \
+	onGuiListeners.push_back(this->onGui.newListener([this](ofxPreset::Gui::Settings & settings) { \
 		this->gui(settings); \
 	}));
 #define ENTROPY_SCENE_SERIALIZATION_LISTENERS \
@@ -68,7 +68,7 @@ namespace entropy
 			void draw();
 
 			// Parameters
-			void gui(ofxPreset::GuiSettings & settings);
+			void gui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
@@ -82,7 +82,7 @@ namespace entropy
 			bool savePreset(const string & presetName);
 
 			// Timeline
-			void drawTimeline(ofxPreset::GuiSettings & settings);
+			void drawTimeline(ofxPreset::Gui::Settings & settings);
 
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
@@ -106,7 +106,7 @@ namespace entropy
 			ofEvent<void> onDrawWorld;
 			ofEvent<void> onDrawFront;
 
-			ofEvent<ofxPreset::GuiSettings> onGui;
+			ofEvent<ofxPreset::Gui::Settings> onGui;
 
 			ofEvent<nlohmann::json> onSerialize;
 			ofEvent<const nlohmann::json> onDeserialize;

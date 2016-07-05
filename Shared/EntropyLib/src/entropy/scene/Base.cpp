@@ -123,7 +123,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawTimeline(ofxPreset::GuiSettings & settings)
+		void Base::drawTimeline(ofxPreset::Gui::Settings & settings)
 		{
 			// Disable mouse events if it's already been captured.
 			if (settings.mouseOverGui)
@@ -141,7 +141,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::gui(ofxPreset::GuiSettings & settings)
+		void Base::gui(ofxPreset::Gui::Settings & settings)
 		{
 			auto & parameters = this->getParameters();
 
