@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Template.h"
+#include "entropy/scene/Video.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -10,9 +10,9 @@ void ofApp::setup()
 
 	// Add Scenes to the Manager.
 	auto sceneManager = entropy::GetSceneManager();
-	auto sceneTemplate = make_shared<entropy::scene::Template>();
-	sceneManager->addScene(sceneTemplate);
-	sceneManager->setCurrentScene(sceneTemplate->getName());
+	auto sceneVideo = make_shared<entropy::scene::Video>();
+	sceneManager->addScene(sceneVideo);
+	sceneManager->setCurrentScene(sceneVideo->getName());
 }
 
 //--------------------------------------------------------------

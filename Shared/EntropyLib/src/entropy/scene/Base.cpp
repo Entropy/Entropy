@@ -1,5 +1,7 @@
 #include "Base.h"
 
+#include "entropy/Helpers.h"
+
 namespace entropy
 {
 	namespace scene
@@ -14,16 +16,11 @@ namespace entropy
 			
 		//--------------------------------------------------------------
 		Base::Base()
-		{
-			this->imgui.setup();
-			this->overlayVisible = true;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Base::~Base()
-		{
-			
-		}
+		{}
 
 		//--------------------------------------------------------------
 		void Base::setup()
@@ -68,14 +65,28 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::update()
+		void Base::resize(ofResizeEventArgs & args)
 		{
+			this->onResize.notify(args);
+		}
+
+		//--------------------------------------------------------------
+		void Base::update(double dt)
+		{
+			if (GetApp()->isMouseOverGui())
+			{
+				this->camera.disableMouseInput();
+			}
+			else
+			{
+				this->camera.enableMouseInput();
+			}
+			
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
 			}
 			
-			auto dt = ofGetLastFrameTime();
 			this->onUpdate.notify(dt);
 		}
 
@@ -85,21 +96,6 @@ namespace entropy
 			this->drawBack();
 			this->drawWorld();
 			this->drawFront();
-
-			this->guiSettings.mouseOverGui = false;
-			if (this->overlayVisible)
-			{
-				this->drawOverlay();
-			}
-
-			if (this->guiSettings.mouseOverGui)
-			{
-				this->camera.disableMouseInput();
-			}
-			else /*if (this->parameters.camera.mouseEnabled)*/
-			{
-				this->camera.enableMouseInput();
-			}
 		}
 
 		//--------------------------------------------------------------
@@ -127,32 +123,27 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawOverlay()
+		void Base::drawTimeline(ofxPreset::GuiSettings & settings)
 		{
-			this->imgui.begin(); 
+			// Disable mouse events if it's already been captured.
+			if (settings.mouseOverGui)
 			{
-				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
-				this->guiSettings.windowSize = ofVec2f::zero(); 
-				
-				this->gui(this->guiSettings);
+				this->timeline.disableEvents();
 			}
-			this->imgui.end();
+			else
+			{
+				this->timeline.enableEvents();
+			}
 
 			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
 			this->timeline.draw();
-			this->guiSettings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 
 		//--------------------------------------------------------------
 		void Base::gui(ofxPreset::GuiSettings & settings)
 		{
 			auto & parameters = this->getParameters();
-
-			if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
-			{
-				ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-			}
-			ofxPreset::Gui::EndWindow(this->guiSettings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Presets", settings))
@@ -260,13 +251,36 @@ namespace entropy
 			this->refreshMappings();
 		}
 
+        //--------------------------------------------------------------
+        string Base::getAssetsPath(const string & file)
+        {
+            if (this->assetsPath.empty())
+            {
+                auto tokens = ofSplitString(this->getName(), "::", true, true);
+                auto assetsPath = GetSharedAssetsPath();
+                for (auto & component : tokens)
+                {
+                    assetsPath = ofFilePath::addTrailingSlash(assetsPath.append(component));
+                }
+                this->assetsPath = assetsPath;
+            }
+            if (file.empty())
+            {
+                return this->assetsPath;
+            }
+
+            auto filePath = this->assetsPath;
+            filePath.append(file);
+            return filePath;
+        }
+
 		//--------------------------------------------------------------
 		string Base::getDataPath(const string & file)
 		{
 			if (this->dataPath.empty())
 			{
 				auto tokens = ofSplitString(this->getName(), "::", true, true);
-				auto dataPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data"));
+				auto dataPath = GetSharedDataPath();
 				for (auto & component : tokens)
 				{
 					dataPath = ofFilePath::addTrailingSlash(dataPath.append(component));
@@ -378,7 +392,7 @@ namespace entropy
 				auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(parameter);
 				if (parameterFloat)
 				{
-					auto mapping = make_shared<Mapping<float, ofxTLCurves>>();
+					auto mapping = make_shared<util::Mapping<float, ofxTLCurves>>();
 					mapping->setup(parameterFloat);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -386,7 +400,7 @@ namespace entropy
 				auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(parameter);
 				if (parameterInt)
 				{
-					auto mapping = make_shared<Mapping<int, ofxTLCurves>>();
+					auto mapping = make_shared<util::Mapping<int, ofxTLCurves>>();
 					mapping->setup(parameterInt);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -394,7 +408,7 @@ namespace entropy
 				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(parameter);
 				if (parameterBool)
 				{
-					auto mapping = make_shared<Mapping<bool, ofxTLSwitches>>();
+					auto mapping = make_shared<util::Mapping<bool, ofxTLSwitches>>();
 					mapping->setup(parameterBool);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -402,7 +416,7 @@ namespace entropy
 				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(parameter);
 				if (parameterColor)
 				{
-					auto mapping = make_shared<Mapping<ofFloatColor, ofxTLColorTrack>>();
+					auto mapping = make_shared<util::Mapping<ofFloatColor, ofxTLColorTrack>>();
 					mapping->setup(parameterColor);
 					this->mappings.emplace(mapping->getName(), mapping);
 					continue;
@@ -425,24 +439,6 @@ namespace entropy
 					mapping->removeTrack(this->timeline);
 				}
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::setOverlayVisible(bool overlayVisible)
-		{
-			this->overlayVisible = overlayVisible;
-		}
-
-		//--------------------------------------------------------------
-		void Base::toggleOverlayVisible()
-		{
-			this->overlayVisible ^= 1;
-		}
-
-		//--------------------------------------------------------------
-		bool Base::isOverlayVisible() const
-		{
-			return this->overlayVisible;
 		}
 
 		//--------------------------------------------------------------
