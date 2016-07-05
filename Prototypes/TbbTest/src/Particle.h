@@ -38,13 +38,20 @@ namespace nm
     class Particle : public ofVec3f
     {
     public:
-        enum Type
-        {
-            NEUTRON,
-            POSITRON,
-            
-            NUM_TYPES
-        };
+		enum Type
+		{
+			ELECTRON,
+			POSITRON,
+
+			ANTI_UP_QUARK,
+			UP_QUARK,
+
+			NUM_TYPES
+		};
+
+		static const float MASSES[NUM_TYPES];
+		static const float CHARGES[NUM_TYPES];
+		static const ofFloatColor COLORS[NUM_TYPES];
         
         Particle();
         Particle(const ofVec3f& v);

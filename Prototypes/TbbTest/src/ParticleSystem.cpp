@@ -87,13 +87,6 @@ namespace nm
     void ParticleSystem::update()
     {
         octree.clear();
-        /*if (octree.getChildren() != NULL)
-        {
-            for (unsigned i = 0; i < 8; ++i)
-            {
-                cout << i << ": " << octree.getChildren()[i].getCenterOfMass() << endl;
-            }
-        }*/
         octree.addPoints(particles, numParticles);
         octree.updateCenterOfCharge();
         

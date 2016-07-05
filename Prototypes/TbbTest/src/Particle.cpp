@@ -33,6 +33,10 @@
 
 namespace nm
 {
+	const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
+	const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
+	const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
+
     Particle::Particle() :
         mass(1.f),
         velocity(1.f, 0.f, 0.f),
