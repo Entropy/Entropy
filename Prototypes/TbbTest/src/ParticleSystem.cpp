@@ -58,8 +58,9 @@ namespace nm
         
         particles = new nm::Particle[MAX_PARTICLES]();
         
-        mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
-        
+        //mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
+		ofxObjLoader::load("models/cube_fillet_1.obj", mesh);
+
         shader.load("shaders/particle");
         
         // position stuff
@@ -113,7 +114,7 @@ namespace nm
                                   }
                                   positions[i].transform =
                                       ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
-                                      //ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].radius, particles[i].radius, particles[i].radius)) *
+									  ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
                                       ofMatrix4x4::newTranslationMatrix(particles[i]);
                               }
                           });

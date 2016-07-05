@@ -62,6 +62,9 @@ namespace nm
         inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
         inline ofVec3f getVelocity() const { return velocity; }
         inline void addVelocity(const ofVec3f& velocity) { this->velocity += velocity; }
+
+		inline void setRadius(float radius) { this->radius = radius; }
+		inline float getRadius() const { return radius; }
         
     private:
         Type type;
@@ -69,6 +72,6 @@ namespace nm
         float charge;
         ofVec3f velocity;
         ofVec3f force;
-        
+		float radius;
     };
 }

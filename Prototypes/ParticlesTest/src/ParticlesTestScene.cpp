@@ -33,7 +33,7 @@ namespace entropy
 
 			particleSystem.init(1600, 1600, 1600);
 
-			for (int i = 0; i < 4000; ++i)
+			for (int i = 0; i < ParticleSystem::MAX_PARTICLES; ++i)
 			{
 				Particle::Type type = (Particle::Type)(i % Particle::NUM_TYPES);
 				float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);// ofRandom(0.01f, 0.1f);
@@ -88,6 +88,7 @@ namespace entropy
 		void ParticlesTestScene::update(double & dt)
 		{
 			if (ofGetFrameNum() % 2 == 0) particleSystem.step((1.0f / 60.0f * 1000.0f) * 2.0f);
+			//particleSystem.step(1.0f / 60.0f * 1000.0f);
 			particleSystem.update();
 			particleSystem.hackyUpdatePhotons();
 		}
