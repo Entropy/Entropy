@@ -35,84 +35,97 @@
 namespace nm
 {
     ParticleSystem::ParticleSystem() :
-        numParticles(0),
+        totalNumParticles(0),
         roughness(.1f),
-        particles(NULL),
-        positions(NULL)
+        particles(NULL)
     {
+		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
+		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
     }
     
-    ParticleSystem::~ParticleSystem()
-    {
-        if (particles) delete[] particles;
-        if (positions) delete[] positions;
-    }
+	ParticleSystem::~ParticleSystem()
+	{
+		if (particles) delete[] particles;
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			if (positions[i]) delete[] positions[i];
+		}
+	}
     
-    void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
-    {
-        this->min = min;
-        this->max = max;
-        
-        octree.init(min, max);
-        octree.addChildren(true);
-        
-        particles = new nm::Particle[MAX_PARTICLES]();
-        
-        //mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
+	void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
+	{
+		this->min = min;
+		this->max = max;
+
+		octree.init(min, max);
+		octree.addChildren(true);
+
+		particles = new nm::Particle[MAX_PARTICLES]();
+
+		//mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
 		ofxObjLoader::load("models/cube_fillet_1.obj", mesh);
 
-        shader.load("shaders/particle");
-        
-        // position stuff
-        positions = new ParticleGpuData[MAX_PARTICLES]();
-        tbo.allocate();
-        tbo.bind(GL_TEXTURE_BUFFER);
-        tbo.unbind(GL_TEXTURE_BUFFER);
-        tbo.setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
-        positionsTex.allocateAsBufferTexture(tbo, GL_RGBA32F);
-    }
+		shader.load("shaders/particle");
+
+		// position stuff
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			positions[i] = new ParticleGpuData[MAX_PARTICLES]();
+			tbo[i].allocate();
+			tbo[i].setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
+			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
+		}
+	}
     
-    void ParticleSystem::addParticle(const ofVec3f& position, const ofVec3f& velocity)
+    void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity)
     {
-        if (numParticles < MAX_PARTICLES)
+        if (totalNumParticles < MAX_PARTICLES)
         {
-            particles[numParticles] = position;
-            particles[numParticles].setVelocity(velocity);
-            octree.addPoint(particles[numParticles]);
-            numParticles++;
+            particles[totalNumParticles] = position;
+            particles[totalNumParticles].setVelocity(velocity);
+			particles[totalNumParticles].setType(type);
+            octree.addPoint(particles[totalNumParticles]);
+            totalNumParticles++;
+			numParticles[type]++;
         }
         else ofLogError() << "Cannot add more particles";
     }
     
-    void ParticleSystem::update()
-    {
-        octree.clear();
-        octree.addPoints(particles, numParticles);
-        octree.updateCenterOfCharge();
-        
-        float dt = ofGetLastFrameTime();
-        tbb::parallel_for(tbb::blocked_range<size_t>(0, numParticles),
-                          [&](const tbb::blocked_range<size_t>& r) {
-                              for(size_t i = r.begin(); i != r.end(); ++i)
-                              {
-                                  particles[i].zeroForce();
-                                  octree.sumForces(particles[i]);
-                                  particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
-                                  //particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
-                                  particles[i] += particles[i].getVelocity() * dt;
-                                  for (unsigned j = 0; j < 3; ++j)
-                                  {
-                                      if (particles[i][j] > max[j]) particles[i][j] = min[j];
-                                      if (particles[i][j] < min[j]) particles[i][j] = max[j];
-                                  }
-                                  positions[i].transform =
-                                      ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
-									  ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
-                                      ofMatrix4x4::newTranslationMatrix(particles[i]);
-                              }
-                          });
-        tbo.updateData(0, sizeof(ParticleGpuData) * numParticles, positions);
-    }
+	void ParticleSystem::update()
+	{
+		octree.clear();
+		octree.addPoints(particles, totalNumParticles);
+		octree.updateCenterOfCharge();
+
+		float dt = ofGetLastFrameTime();
+		tbb::atomic<unsigned> typeIndices[Particle::NUM_TYPES];
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) typeIndices[i] = 0;
+		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
+			[&](const tbb::blocked_range<size_t>& r) {
+			for (size_t i = r.begin(); i != r.end(); ++i)
+			{
+				particles[i].zeroForce();
+				octree.sumForces(particles[i]);
+				particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
+				//particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
+				particles[i] += particles[i].getVelocity() * dt;
+				for (unsigned j = 0; j < 3; ++j)
+				{
+					if (particles[i][j] > max[j]) particles[i][j] = min[j];
+					if (particles[i][j] < min[j]) particles[i][j] = max[j];
+				}
+				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
+				positions[particles[i].getType()][idx].transform =
+					ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
+					ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
+					ofMatrix4x4::newTranslationMatrix(particles[i]);
+			}
+		});
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i]);
+		}
+	}
     
     void ParticleSystem::draw()
     {
@@ -121,24 +134,27 @@ namespace nm
         glEnable( GL_CULL_FACE );
         glCullFace( GL_BACK );
         shader.begin();
-        {
-            shader.setUniform1i("numLights", NUM_LIGHTS);
-            shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
-            shader.setUniform1f("roughness", roughness);
-            shader.setUniform3f("particleColor", 1.f, 1.f, 1.f);
-            shader.setUniformTexture("uOffsetTex", positionsTex, 0);
-            
-            for (int i = 0; i < NUM_LIGHTS; i++)
-            {
-                string index = ofToString(i);
-                shader.setUniform3f("lights[" + index + "].position", lightPosns[i] * ofGetCurrentViewMatrix());
-                shader.setUniform4f("lights[" + index + "].color", lightCols[i]);
-                shader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
-                shader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
-            }
-            
-            mesh.drawInstanced(OF_MESH_FILL, numParticles);
-        }
+		{
+			shader.setUniform1i("numLights", NUM_LIGHTS);
+			shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+			shader.setUniform1f("roughness", roughness);
+			shader.setUniform3f("particleColor", 1.f, 1.f, 1.f);
+
+			for (int i = 0; i < NUM_LIGHTS; i++)
+			{
+				string index = ofToString(i);
+				shader.setUniform3f("lights[" + index + "].position", lightPosns[i] * ofGetCurrentViewMatrix());
+				shader.setUniform4f("lights[" + index + "].color", lightCols[i]);
+				shader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
+				shader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
+			}
+
+			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+			{
+				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
+				mesh.drawInstanced(OF_MESH_FILL, numParticles[i]);
+			}
+		}
         shader.end();
         glPopAttrib();
     }

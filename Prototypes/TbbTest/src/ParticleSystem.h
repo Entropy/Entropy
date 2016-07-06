@@ -52,7 +52,7 @@ namespace nm
         
         void init(const ofVec3f& min, const ofVec3f& max);
         
-        void addParticle(const ofVec3f& position, const ofVec3f& velocity);
+        void addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity);
         
         void update();
         
@@ -71,14 +71,15 @@ namespace nm
         
         Octree<Particle> octree;
         nm::Particle* particles;
-        unsigned numParticles;
+        unsigned numParticles[Particle::NUM_TYPES];
+		unsigned totalNumParticles;
         ofVboMesh mesh;
         ofShader shader;
         ofVec3f min, max;
         
         // position stuff
-        ofBufferObject tbo;
-        ParticleGpuData* positions;
-        ofTexture positionsTex;
+        ofBufferObject tbo[Particle::NUM_TYPES];
+		ParticleGpuData* positions[Particle::NUM_TYPES];
+        ofTexture positionsTex[Particle::NUM_TYPES];
     };
 }

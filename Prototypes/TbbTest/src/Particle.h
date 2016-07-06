@@ -35,9 +35,9 @@
 
 namespace nm
 {
-    class Particle : public ofVec3f
-    {
-    public:
+	class Particle : public ofVec3f
+	{
+	public:
 		enum Type
 		{
 			ELECTRON,
@@ -52,26 +52,29 @@ namespace nm
 		static const float MASSES[NUM_TYPES];
 		static const float CHARGES[NUM_TYPES];
 		static const ofFloatColor COLORS[NUM_TYPES];
-        
-        Particle();
-        Particle(const ofVec3f& v);
-        
-        inline void zeroForce() { force.set(0.f); }
-        inline void addForce(const ofVec3f& force) { this->force += force; }
-        inline ofVec3f getForce() const { return force; }
-        
-        inline void setMass(float mass) { this->mass = mass; }
-        inline float getMass() const { return mass; }
-        
-        inline void setCharge(float charge) { this->charge = charge; }
-        inline float getCharge() const { return charge; }
-        
-        inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
-        inline ofVec3f getVelocity() const { return velocity; }
-        inline void addVelocity(const ofVec3f& velocity) { this->velocity += velocity; }
+
+		Particle();
+		Particle(const ofVec3f& v);
+
+		inline void zeroForce() { force.set(0.f); }
+		inline void addForce(const ofVec3f& force) { this->force += force; }
+		inline ofVec3f getForce() const { return force; }
+
+		inline void setMass(float mass) { this->mass = mass; }
+		inline float getMass() const { return mass; }
+
+		inline void setCharge(float charge) { this->charge = charge; }
+		inline float getCharge() const { return charge; }
+
+		inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
+		inline ofVec3f getVelocity() const { return velocity; }
+		inline void addVelocity(const ofVec3f& velocity) { this->velocity += velocity; }
 
 		inline void setRadius(float radius) { this->radius = radius; }
 		inline float getRadius() const { return radius; }
+
+		inline void setType(Particle::Type type) { this->type = type; }
+		inline Type getType() const { return type; }
         
     private:
         Type type;
