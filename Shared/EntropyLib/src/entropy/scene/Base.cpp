@@ -196,14 +196,25 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
+			if (this->onGuiListeners.size())
 			{
-				ofxPreset::Gui::AddParameter(parameters.base.background);
-			}
-			ofxPreset::Gui::EndWindow(settings);
+				// Add a GUI window for the Base parameters.
+				ofxPreset::Gui::SetNextWindow(settings);
+				if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
+				{
+					ofxPreset::Gui::AddParameter(parameters.base.background);
+				}
+				ofxPreset::Gui::EndWindow(settings);
 
-			this->onGui.notify(settings);
+				// Let the child class handle its child parameters.
+				this->onGui.notify(settings);
+			}
+			else
+			{
+				// Build a default GUI for all parameters.
+				ofxPreset::Gui::SetNextWindow(settings);
+				ofxPreset::Gui::AddGroup(parameters, settings);
+			}
 		}
 
 		//--------------------------------------------------------------
