@@ -52,6 +52,20 @@ namespace ent
 		m_lastFragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
+		octree_size = 512;
+		m_volumeDensity = 2.0;
+		m_volumeQuality = 1;
+		volumeTexture.allocate(octree_size, octree_size, octree_size, GL_R32F);
+		volumetrics.setup(&volumeTexture,ofVec3f(1,1,1));
+		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
+		glBindTexture(volumeTexture.texData.textureTarget,volumeTexture.texData.textureID);
+		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
+		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
+		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
+		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
+		glBindTexture(volumeTexture.texData.textureTarget,0);
+		volumetrics.setVolumeTextureFilterMode(GL_LINEAR);
+
 		m_bReady = true;
     }
 
@@ -142,6 +156,11 @@ namespace ent
 		}
 	}
 
+	//--------------------------------------------------------------
+	void SequenceRamses::drawTexture(float scale){
+		volumetrics.drawVolume(0, 0, 0, scale, 0);
+	}
+
     //--------------------------------------------------------------
     bool SequenceRamses::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
     {
@@ -162,6 +181,10 @@ namespace ent
 			if (ImGui::Button("Next Frame"))
 			{
 				setFrame(getCurrentFrame() + 1);
+			}
+
+			if(ImGui::SliderFloat("Volume Quality", &m_volumeQuality, 0, 2) | ImGui::SliderFloat("Volume Density", &m_volumeDensity, 0, 50)){
+				volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
 			}
 
             windowSize = ImGui::GetWindowSize();
@@ -196,7 +219,7 @@ namespace ent
 
 		if (!m_snapshots[index].isLoaded()) 
 		{
-			m_snapshots[index].setup(m_folder, m_startIndex + index, m_densityMin, m_densityMax);
+			m_snapshots[index].setup(m_folder, m_startIndex + index, m_densityMin, m_densityMax, volumeTexture, octree_size);
 
 			// Adjust the ranges.
 			m_coordRange.include(m_snapshots[index].getCoordRange());
