@@ -89,7 +89,7 @@ namespace nm
         if (totalNumParticles < MAX_PARTICLES)
         {
 			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
-			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 5.0f, 20.0f);
+			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 5.0f, 16.0f);
 
 			Particle& p = particles[totalNumParticles];
             p = position;
@@ -121,7 +121,7 @@ namespace nm
 			{
 				particles[i].zeroForce();
 				octree.sumForces(particles[i]);
-				particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
+				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
 				//particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
 				particles[i] += particles[i].getVelocity() * dt;
 				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());

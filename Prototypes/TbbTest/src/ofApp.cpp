@@ -3,6 +3,8 @@
 
 //#define _TEAPOT
 
+const float ofApp::HALF_DIM = 400.f;
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {
@@ -10,7 +12,7 @@ void ofApp::setup()
     ofSetVerticalSync(false);
     
     ofBackground(0);
-    particleSystem.init(ofVec3f(-400.f), ofVec3f(400.f));
+    particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
     
 #ifdef _TEAPOT
     ofVboMesh mesh;
@@ -24,17 +26,22 @@ void ofApp::setup()
 #else
     for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
     {
-        ofVec3f position(400.f * ofSignedNoise(i / 2000.f, 10),
+        /*ofVec3f position(400.f * ofSignedNoise(i / 2000.f, 10),
 			400.f * ofSignedNoise(i / 2000.f, 1e-6),
             400.f * ofSignedNoise(i / 2000.f, 1e6));
-		
-		ofVec3f velocity(ofRandom(-4.0f, 4.0f),
-			ofRandom(-4.0f, 4.0f),
-			ofRandom(-4.0f, 4.0f));
+		*/
 
-        //particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
-		nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
-        particleSystem.addParticle(type, position, velocity);
+		ofVec3f position(ofRandom(-HALF_DIM, HALF_DIM),
+			ofRandom(-HALF_DIM, HALF_DIM), 
+			ofRandom(-HALF_DIM, HALF_DIM));
+
+		ofVec3f velocity(ofRandom(-20.0f, 20.0f),
+			ofRandom(-20.0f, 20.0f),
+			ofRandom(-20.0f, 20.0f));
+
+        particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
+		//nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
+        //particleSystem.addParticle(type, position, velocity);
     }
 #endif
     

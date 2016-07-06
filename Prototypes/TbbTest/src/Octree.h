@@ -52,7 +52,7 @@ namespace nm
 		static constexpr unsigned POINTS_START_SIZE() { return 40; }
 		static constexpr unsigned MAX_DEPTH() { return 5; }
 		static constexpr float THETA() { return .5f; }
-		static constexpr float FORCE_MULTIPLIER() { return 10000.f; }
+		static constexpr float FORCE_MULTIPLIER() { return 1e7; }
         
 		/*
 		static const unsigned POINTS_START_SIZE = 40;
@@ -230,7 +230,8 @@ namespace nm
 				if (size / dist < THETA())
 				{
 					// far enough away to use this node
-					point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+					//point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+					point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
 				}
 				else if (children)
 				{
@@ -249,7 +250,8 @@ namespace nm
 						ofVec3f direction = centerOfCharge - point;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
-						point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+						//point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+						point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
 					}
 				}
 			}

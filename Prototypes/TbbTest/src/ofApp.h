@@ -9,6 +9,8 @@
 class ofApp : public ofBaseApp
 {
 public:
+	static const float HALF_DIM;
+
     void setup();
     void update();
     void draw();
