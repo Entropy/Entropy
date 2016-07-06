@@ -62,8 +62,11 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 
-		//mesh = ofMesh::box(1.f, 1.f, 1.f, 1, 1, 1);
-		ofxObjLoader::load("models/cube_fillet_1.obj", mesh);
+		ofxObjLoader::load("models/cube_fillet_1.obj", meshes[Particle::POSITRON]);
+		ofxObjLoader::load("models/cube_fillet_1.obj", meshes[Particle::ELECTRON]);
+		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::UP_QUARK]);
+		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::ANTI_UP_QUARK]);
+		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
 		shader.load("shaders/particle");
 
@@ -81,10 +84,18 @@ namespace nm
     {
         if (totalNumParticles < MAX_PARTICLES)
         {
-            particles[totalNumParticles] = position;
-            particles[totalNumParticles].setVelocity(velocity);
-			particles[totalNumParticles].setType(type);
-            octree.addPoint(particles[totalNumParticles]);
+			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
+			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 10.0f, 60.0f);
+
+			Particle& p = particles[totalNumParticles];
+            p = position;
+            p.setVelocity(velocity);
+			p.setType(type);
+			p.setCharge(Particle::CHARGES[type]);
+			p.setMass(Particle::MASSES[type]);
+			p.setRadius(radius);
+			//particles[totalNumParticles]
+
             totalNumParticles++;
 			numParticles[type]++;
         }
@@ -138,7 +149,6 @@ namespace nm
 			shader.setUniform1i("numLights", NUM_LIGHTS);
 			shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
 			shader.setUniform1f("roughness", roughness);
-			shader.setUniform3f("particleColor", 1.f, 1.f, 1.f);
 
 			for (int i = 0; i < NUM_LIGHTS; i++)
 			{
@@ -151,8 +161,9 @@ namespace nm
 
 			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 			{
+				shader.setUniform3f("particleColor", Particle::COLORS[i].r, Particle::COLORS[i].g, Particle::COLORS[i].b);
 				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
-				mesh.drawInstanced(OF_MESH_FILL, numParticles[i]);
+				meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
 			}
 		}
         shader.end();

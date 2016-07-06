@@ -24,11 +24,15 @@ void ofApp::setup()
 #else
     for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
     {
-        ofVec3f v(400.f * ofSignedNoise(i / 2000.f, 10),
-                   400.f * ofSignedNoise(i / 2000.f, 1e-6),
-                   400.f * ofSignedNoise(i / 2000.f, 1e6));
-        //particleSystem.addParticle(v, ofVec3f(1.f, 0.f, 0.f));
-        particleSystem.addParticle(nm::Particle::POSITRON, v, ofVec3f(0.f, 0.f, 0.f));
+        ofVec3f position(400.f * ofSignedNoise(i / 2000.f, 10),
+			400.f * ofSignedNoise(i / 2000.f, 1e-6),
+            400.f * ofSignedNoise(i / 2000.f, 1e6));
+		
+		ofVec3f velocity(ofRandom(-4.0f, 4.0f),
+			ofRandom(-4.0f, 4.0f),
+			ofRandom(-4.0f, 4.0f));
+
+        particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
     }
 #endif
     
@@ -52,14 +56,15 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
     particleSystem.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
-    
+	ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+
     cam.begin();
     particleSystem.draw();
     cam.end();

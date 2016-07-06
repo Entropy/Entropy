@@ -73,7 +73,7 @@ namespace nm
         nm::Particle* particles;
         unsigned numParticles[Particle::NUM_TYPES];
 		unsigned totalNumParticles;
-        ofVboMesh mesh;
+        ofVboMesh meshes[Particle::NUM_TYPES];
         ofShader shader;
         ofVec3f min, max;
         

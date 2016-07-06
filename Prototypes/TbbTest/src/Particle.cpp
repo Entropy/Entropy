@@ -53,6 +53,5 @@ namespace nm
         ofVec3f(v),
 		radius(10.f)
     {
-        
     }
 }
