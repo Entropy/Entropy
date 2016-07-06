@@ -89,7 +89,7 @@ namespace nm
         if (totalNumParticles < MAX_PARTICLES)
         {
 			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
-			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 10.0f, 60.0f);
+			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 5.0f, 20.0f);
 
 			Particle& p = particles[totalNumParticles];
             p = position;
@@ -124,11 +124,12 @@ namespace nm
 				particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
 				//particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
 				particles[i] += particles[i].getVelocity() * dt;
-				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.99f * particles[i].getVelocity());
+				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
 				for (unsigned j = 0; j < 3; ++j)
 				{
-					if (particles[i][j] > max[j]) particles[i][j] = min[j];
-					if (particles[i][j] < min[j]) particles[i][j] = max[j];
+					// add a little bit so things don't get stuck teleporting on the edges
+					if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f; 
+					if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
 				}
 				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
 				positions[particles[i].getType()][idx].transform =

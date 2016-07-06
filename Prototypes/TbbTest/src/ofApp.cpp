@@ -32,7 +32,9 @@ void ofApp::setup()
 			ofRandom(-4.0f, 4.0f),
 			ofRandom(-4.0f, 4.0f));
 
-        particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
+        //particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
+		nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
+        particleSystem.addParticle(type, position, velocity);
     }
 #endif
     

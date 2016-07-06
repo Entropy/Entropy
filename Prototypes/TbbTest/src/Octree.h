@@ -52,7 +52,7 @@ namespace nm
 		static constexpr unsigned POINTS_START_SIZE() { return 40; }
 		static constexpr unsigned MAX_DEPTH() { return 5; }
 		static constexpr float THETA() { return .5f; }
-		static constexpr float FORCE_MULTIPLIER() { return 1000.f; }
+		static constexpr float FORCE_MULTIPLIER() { return 10000.f; }
         
 		/*
 		static const unsigned POINTS_START_SIZE = 40;
