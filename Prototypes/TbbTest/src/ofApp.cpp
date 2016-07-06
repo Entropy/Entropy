@@ -28,7 +28,7 @@ void ofApp::setup()
                    400.f * ofSignedNoise(i / 2000.f, 1e-6),
                    400.f * ofSignedNoise(i / 2000.f, 1e6));
         //particleSystem.addParticle(v, ofVec3f(1.f, 0.f, 0.f));
-        particleSystem.addParticle(v, ofVec3f(0.f, 0.f, 0.f));
+        particleSystem.addParticle(nm::Particle::POSITRON, v, ofVec3f(0.f, 0.f, 0.f));
     }
 #endif
     
