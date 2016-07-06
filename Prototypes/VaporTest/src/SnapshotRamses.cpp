@@ -16,7 +16,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t octree_size)
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t worldsize)
 	{
 		clear();
 		
@@ -55,12 +55,15 @@ namespace ent
 			}
 		}
 
+		cout << "num particles after filter: " << particles.size() << endl;
+
 		//ThreadPool::pool().addTask([]{cout << "starting pool" << endl;});
 		auto then = ofGetElapsedTimeMicros();
-		this->octree.setup(particles);
-		this->octree.compute(octree_size, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
+		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
 		auto now = ofGetElapsedTimeMicros();
-		cout << "time to compute octree " << float(now - then)/1000 << "ms. size: " << octree.size() << endl;
+		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
+		auto minmax = vaporPixels.minmax();
+		cout << "min max: " << minmax.first << ", " << minmax.second << endl;
 		auto min = m_coordRange.getMin();
 		auto max = m_coordRange.getMax();
 		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
@@ -89,22 +92,7 @@ namespace ent
 		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);*/
 
 
-		/*for(size_t z=0;z<octree.size();++z){
-			cout << z << endl;
-			pixels.push_back(std::move(octree.getPixels(z, m_densityRange.getMin(), m_densityRange.getMax())));
-		}
-		tex.allocate(pixels[0]);
-		pixelsIdx = 0;*/
-
-
-		std::vector<float> data;
-		for(size_t z=0;z<octree_size;++z){
-			cout << z << endl;
-			auto pixels = octree.getPixels(z, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
-			data.insert(data.end(), pixels.begin(), pixels.end());
-		}
-
-		volumeTexture.loadData(data.data(), octree_size, octree_size, octree_size, 0, 0, 0, GL_RED);
+		volumeTexture.loadData(this->vaporPixels.data().data(), worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
 
 
 		m_bLoaded = true;
@@ -160,7 +148,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::drawOctree(float minDensity, float maxDensity){
-		octree.drawLeafs(minDensity, maxDensity);
+		//octree.drawLeafs(minDensity, maxDensity);
 	}
 
 	//--------------------------------------------------------------

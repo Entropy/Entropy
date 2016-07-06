@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxHDF5.h"
 #include "ofxRange.h"
-#include "VaporOctree.h"
+#include "Vapor3DTexture.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 
@@ -22,7 +22,7 @@ namespace ent
 		SnapshotRamses();
 		~SnapshotRamses();
 
-		void setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & tex, size_t octree_size);
+		void setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & tex, size_t worldsize);
 		void clear();
 
 		void update(ofShader& shader);
@@ -49,9 +49,6 @@ namespace ent
 		std::size_t m_numCells;
 		bool m_bLoaded;
 		ofTexture m_particlesTex;
-		VaporOctree octree;
-		std::vector<ofFloatPixels> pixels;
-		ofTexture tex;
-		size_t pixelsIdx;
+		Vapor3DTexture vaporPixels;
 	};
 }
