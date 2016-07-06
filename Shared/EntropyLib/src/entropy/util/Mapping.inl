@@ -33,9 +33,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
 		Mapping<ParameterType, TrackType>::~Mapping()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
