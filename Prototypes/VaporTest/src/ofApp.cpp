@@ -10,8 +10,8 @@ void ofApp::setup()
 
     m_scale = 1024.0;
 
-    m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
-	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	//m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -31,6 +31,20 @@ void ofApp::setup()
 	m_bExportFrames = false;
 
     m_bGuiVisible = true;
+	//m_camera.disableInertia();
+	m_camera.setDistance(2048);
+
+	fullQuadFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA32F);
+	fxaaShader.load("shaders/vert_full_quad.glsl", "shaders/frag_fxaa.glsl");
+	std::vector<glm::vec3> vertices = {{ -1, -1, 0 }, { 1, -1, 0 }, { 1, 1, 0 }, { -1, 1, 0 }};
+	std::vector<glm::vec2> texcoords = {{ 0, 1 }, { 1, 1 }, { 1, 0 }, { 0, 0 }};
+	fullQuad.addVertices(vertices);
+	fullQuad.addTexCoords(texcoords);
+	fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+
+	ofSetFrameRate(60);
+	ofEnablePointSprites();
+	z = 0;
 }
 
 //--------------------------------------------------------------
@@ -58,13 +72,38 @@ void ofApp::draw()
 {
 //    cam.setNearClip(0);
 //    cam.setFarClip(FLT_MAX);
-	m_camera.begin();
-    {
-		m_sequenceRamses.draw(m_scale);
 
-        ofNoFill();
+	if(m_doFXAA){
+		fullQuadFbo.begin();
+		ofClear(0,255);
+		m_camera.begin();
+		m_sequenceRamses.drawTexture(m_scale);
+		m_camera.end();
+		fullQuadFbo.end();
+
+		fxaaShader.begin();
+		fxaaShader.setUniformTexture("tex0", fullQuadFbo.getTexture(), 0);
+		fullQuad.draw();
+		fxaaShader.end();
+	}else{
+		m_camera.begin();
+		m_sequenceRamses.drawTexture(m_scale);
+		m_camera.end();
+	}
+
+	m_camera.begin();
+	{
+		/*if(m_showOctree){
+			ofNoFill();
+			m_sequenceRamses.drawOctree(m_scale);
+			ofFill();
+		}else{
+			m_sequenceRamses.draw(m_scale);
+		}*/
+		ofNoFill();
+		ofSetColor(255,255);
         ofDrawBox(0, 0, 0, m_scale, m_scale, m_scale);
-        ofFill();
+		ofFill();
         
         ofDrawAxis(20);
     }
@@ -149,6 +188,17 @@ bool ofApp::imGui()
 						m_timeline.setFrameBased(false);
 					}
 				}
+
+				/*if(ImGui::Checkbox("GL debug", &m_glDebug)){
+					if(m_glDebug){
+						ofEnableGLDebugLog();
+					}else{
+						ofDisableGLDebugLog();
+					}
+				}*/
+
+				ImGui::Checkbox("FXAA", &m_doFXAA);
+				ImGui::Checkbox("Show octree", &m_showOctree);
 			}
 
 			windowSize = ImGui::GetWindowSize();
@@ -187,9 +237,19 @@ void ofApp::keyPressed(int key)
 			m_cameraTrack->addKeyframe();
 			break;
 
+		case OF_KEY_UP:
+			z++;
+		break;
+
+		case OF_KEY_DOWN:
+			z--;
+		break;
+
         default:
             break;
     }
+	z = ofClamp(z, 0, 1023);
+	cout << z << endl;
 }
 
 //--------------------------------------------------------------

@@ -45,4 +45,12 @@ public:
     ofxImGui m_gui;
     bool m_bGuiVisible;
     bool m_bMouseOverGui;
+	bool m_glDebug;
+	bool m_showOctree;
+	bool m_doFXAA;
+
+	size_t z;
+	ofFbo fullQuadFbo;
+	ofShader fxaaShader;
+	ofVboMesh fullQuad;
 };
