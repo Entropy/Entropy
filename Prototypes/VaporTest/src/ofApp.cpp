@@ -44,6 +44,7 @@ void ofApp::setup()
 
 	ofSetFrameRate(60);
 	ofEnablePointSprites();
+	//ofEnableBlendMode(OF_BLENDMODE_ADD);
 	z = 0;
 }
 
@@ -73,33 +74,38 @@ void ofApp::draw()
 //    cam.setNearClip(0);
 //    cam.setFarClip(FLT_MAX);
 
-	if(m_doFXAA){
-		fullQuadFbo.begin();
-		ofClear(0,255);
+	if(m_vboTex){
 		m_camera.begin();
-		m_sequenceRamses.drawTexture(m_scale);
-		m_camera.end();
-		fullQuadFbo.end();
-
-		fxaaShader.begin();
-		fxaaShader.setUniformTexture("tex0", fullQuadFbo.getTexture(), 0);
-		fullQuad.draw();
-		fxaaShader.end();
-	}else{
-		m_camera.begin();
-		m_sequenceRamses.drawTexture(m_scale);
-		m_camera.end();
-	}
-
-	m_camera.begin();
-	{
-		/*if(m_showOctree){
+		if(m_showOctree){
 			ofNoFill();
 			m_sequenceRamses.drawOctree(m_scale);
 			ofFill();
 		}else{
 			m_sequenceRamses.draw(m_scale);
-		}*/
+		}
+		m_camera.end();
+	}else{
+		if(m_doFXAA){
+			fullQuadFbo.begin();
+			ofClear(0,255);
+			m_camera.begin();
+			m_sequenceRamses.drawTexture(m_scale);
+			m_camera.end();
+			fullQuadFbo.end();
+
+			fxaaShader.begin();
+			fxaaShader.setUniformTexture("tex0", fullQuadFbo.getTexture(), 0);
+			fullQuad.draw();
+			fxaaShader.end();
+		}else{
+			m_camera.begin();
+			m_sequenceRamses.drawTexture(m_scale);
+			m_camera.end();
+		}
+	}
+
+	m_camera.begin();
+	{
 		ofNoFill();
 		ofSetColor(255,255);
         ofDrawBox(0, 0, 0, m_scale, m_scale, m_scale);
@@ -199,6 +205,7 @@ bool ofApp::imGui()
 
 				ImGui::Checkbox("FXAA", &m_doFXAA);
 				ImGui::Checkbox("Show octree", &m_showOctree);
+				ImGui::Checkbox("Vbo/Tex3d", &m_vboTex);
 			}
 
 			windowSize = ImGui::GetWindowSize();

@@ -48,6 +48,7 @@ public:
 	bool m_glDebug;
 	bool m_showOctree;
 	bool m_doFXAA;
+	bool m_vboTex;
 
 	size_t z;
 	ofFbo fullQuadFbo;

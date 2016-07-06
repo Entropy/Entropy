@@ -48,7 +48,7 @@ namespace ent
 			m_sizeRange.add(cellSize[i]);
 		}
 
-		auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.0002f;
+		auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.001f;
 		for (size_t i=0; i < posX.size(); ++i){
 			if(density[i]>threshold){
 				particles.push_back({{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]});
@@ -56,14 +56,6 @@ namespace ent
 		}
 
 		cout << "num particles after filter: " << particles.size() << endl;
-
-		//ThreadPool::pool().addTask([]{cout << "starting pool" << endl;});
-		auto then = ofGetElapsedTimeMicros();
-		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
-		auto now = ofGetElapsedTimeMicros();
-		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
-		auto minmax = vaporPixels.minmax();
-		cout << "min max: " << minmax.first << ", " << minmax.second << endl;
 		auto min = m_coordRange.getMin();
 		auto max = m_coordRange.getMax();
 		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
@@ -81,7 +73,23 @@ namespace ent
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
 
-		/*auto octree_particles = octree.toVector();
+		auto then = ofGetElapsedTimeMicros();
+		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
+		auto now = ofGetElapsedTimeMicros();
+		cout << "time to compute 3D texture " << float(now - then)/1000 << "ms." << endl;
+
+		then = ofGetElapsedTimeMicros();
+		cout << "calculating octree with " << log2(worldsize*2) << " levels" << endl;
+		this->vaporOctree.setup(particles);
+		this->vaporOctree.compute(log2(worldsize*2), minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
+		now = ofGetElapsedTimeMicros();
+		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
+
+
+		auto minmax = vaporPixels.minmax();
+		cout << "min max: " << minmax.first << ", " << minmax.second << endl;
+
+		auto octree_particles = vaporOctree.toVector();
 		m_numCells = octree_particles.size();
 		cout << "octree num particles " << m_numCells << endl;
 		ofBufferObject particlesBuffer;
@@ -89,7 +97,7 @@ namespace ent
 		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);
 		m_vboMesh.setVertexBuffer(particlesBuffer, 3, sizeof(Particle), 0);
 		m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*3);
-		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);*/
+		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
 
 
 		volumeTexture.loadData(this->vaporPixels.data().data(), worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
@@ -148,7 +156,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::drawOctree(float minDensity, float maxDensity){
-		//octree.drawLeafs(minDensity, maxDensity);
+		vaporOctree.drawLeafs(minDensity, maxDensity);
 	}
 
 	//--------------------------------------------------------------

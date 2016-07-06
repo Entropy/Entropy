@@ -4,6 +4,7 @@
 #include "ofxHDF5.h"
 #include "ofxRange.h"
 #include "Vapor3DTexture.h"
+#include "VaporOctree.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 
@@ -50,5 +51,6 @@ namespace ent
 		bool m_bLoaded;
 		ofTexture m_particlesTex;
 		Vapor3DTexture vaporPixels;
+		VaporOctree vaporOctree;
 	};
 }

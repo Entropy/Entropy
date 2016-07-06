@@ -6,29 +6,7 @@
 #include "ofPixels.h"
 #include "octree/octree.h"
 #include "ofxRange.h"
-
-struct Particle{
-	glm::vec3 pos;
-	float size;
-	float density;
-
-	Particle(){}
-
-	Particle(const glm::vec3 & pos, float size, float density)
-	:pos(pos)
-	,size(size)
-	,density(density){
-
-	}
-
-	inline glm::vec3 getMaxPos() const{
-		return pos + glm::vec3{size, size, size};
-	}
-
-	inline glm::vec3 getMinPos() const{
-		return pos - glm::vec3{size, size, size};
-	}
-};
+#include "Particle.h"
 
 class Vapor3DTexture
 {
