@@ -34,6 +34,8 @@
 
 namespace nm
 {
+	const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
+
     ParticleSystem::ParticleSystem() :
         totalNumParticles(0),
         roughness(.1f),
@@ -62,10 +64,12 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 
-		ofxObjLoader::load("models/cube_fillet_1.obj", meshes[Particle::POSITRON]);
-		ofxObjLoader::load("models/cube_fillet_1.obj", meshes[Particle::ELECTRON]);
-		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::UP_QUARK]);
-		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::ANTI_UP_QUARK]);
+		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
+		
+		ofxObjLoader::load("models/cube.obj", meshes[Particle::POSITRON]);
+		ofxObjLoader::load("models/cube.obj", meshes[Particle::ELECTRON]);
+		ofxObjLoader::load("models/tetra.obj", meshes[Particle::UP_QUARK]);
+		ofxObjLoader::load("models/tetra.obj", meshes[Particle::ANTI_UP_QUARK]);
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
 		shader.load("shaders/particle");
@@ -120,6 +124,7 @@ namespace nm
 				particles[i].addVelocity(particles[i].getForce() * dt / particles[i].getMass());
 				//particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
 				particles[i] += particles[i].getVelocity() * dt;
+				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.99f * particles[i].getVelocity());
 				for (unsigned j = 0; j < 3; ++j)
 				{
 					if (particles[i][j] > max[j]) particles[i][j] = min[j];

@@ -117,7 +117,7 @@ namespace nm
         // hopefully after the first few iterations this shouldn't be resized too often
         tbb::concurrent_vector<T*> points;
         // save the number of points so that we don't have to keep reallocating the vector
-        //tbb::atomic<unsigned> numPoints;
+        tbb::atomic<unsigned> numPoints;
         ofVec3f min, max, mid;
         float size;
         Octree* children;
@@ -156,7 +156,7 @@ namespace nm
 		this->size = ((max.x - min.x) + (max.y - min.y) + (max.z - min.z)) / 3.f;
 		this->mid = .5f * (min + max);
 		this->depth = depth;
-		if (depth == MAX_DEPTH()) points.reserve(POINTS_START_SIZE());
+		if (depth == MAX_DEPTH()) points.resize(POINTS_START_SIZE());
 	}
 
 	template<class T>
@@ -166,7 +166,7 @@ namespace nm
 		{
 			if (depth == MAX_DEPTH())
 			{
-				for (unsigned i = 0; i < points.size(); ++i)
+				for (unsigned i = 0; i < numPoints; ++i)
 				{
 					charge += points[i]->getCharge();
 					absCharge += abs(points[i]->getCharge());
@@ -242,7 +242,7 @@ namespace nm
 			}
 			else
 			{
-				for (unsigned i = 0; i < points.size(); ++i)
+				for (unsigned i = 0; i < numPoints; ++i)
 				{
 					if (&point != points[i])
 					{
@@ -260,8 +260,8 @@ namespace nm
 	void Octree<T>::clear()
 	{
 		hasPoints = false;
-		//numPoints = 0;
-		points.clear();
+		numPoints = 0;
+		//points.clear();
 		//mass = 0.f;
 		charge = 0.f;
 		absCharge = 0.f;
@@ -287,7 +287,7 @@ namespace nm
 	template<class T>
 	void Octree<T>::addPointsSerial(vector<T>& points)
 	{
-		addPointsSerial(points.getPtr(), points.size());
+		addPointsSerial(points.getPtr(), numPoints);
 	}
 
 	template<class T>
@@ -302,7 +302,7 @@ namespace nm
 	template<class T>
 	void Octree<T>::addPointsParallel(vector<T>& points)
 	{
-		addPointsParallel(points.getPtr(), points.size());
+		addPointsParallel(points.getPtr(), numPoints);
 	}
 
 	template<class T>
@@ -354,10 +354,10 @@ namespace nm
 		//centerOfCharge += point.getCharge() * point;
 		if (depth == MAX_DEPTH())
 		{
-			points.push_back(&point);
-			//unsigned idx = numPoints.fetch_and_increment();
-			//points.grow_to_at_least(idx + 1);
-			//points[idx] = &point;
+			//points.push_back(&point);
+			unsigned idx = numPoints.fetch_and_increment();
+			points.grow_to_at_least(idx + 1);
+			points[idx] = &point;
 		}
 		else
 		{
