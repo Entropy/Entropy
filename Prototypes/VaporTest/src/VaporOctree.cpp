@@ -6,272 +6,105 @@
 #include "ThreadPool.h"
 #include <future>
 
-struct BoundingBoxSearch{
-	inline BoundingBoxSearch(const ofVec3f & min, const ofVec3f & max, float density)
-	    :min(min)
-	    ,max(max)
-	    ,density(density){}
-	BoundingBoxSearch(){}
-	ofVec3f min = {std::numeric_limits<float>::max(),std::numeric_limits<float>::max(),std::numeric_limits<float>::max()};
-	ofVec3f max = {std::numeric_limits<float>::lowest(),std::numeric_limits<float>::lowest(),std::numeric_limits<float>::lowest()};
-	float density = 0.0f;
-};
 
-VaporOctree::VaporOctree()
-:particles(new std::vector<Particle>())
-,density(0.f)
-,x(0),y(0),z(0)
-{
+namespace{
+	struct Box{
+		glm::vec3 min;
+		glm::vec3 max;
+	};
 
+	inline float boxVolume(float size) {
+		return size * size * size;
+	}
+
+	inline float boxesIntersectionVolume(const Box & b1, const Box & b2){
+		return max(min(b1.max.x, b2.max.x) - max(b1.min.x, b2.min.x),0.f)
+		* max(min(b1.max.y, b2.max.y) - max(b1.min.y, b2.min.y),0.f)
+		* max(min(b1.max.z, b2.max.z) - max(b1.min.z, b2.min.z),0.f);
+	}
 }
-
 void VaporOctree::setup(const std::vector<Particle> & particles){
-	*this->particles = particles;
-	this->particlesIndex.resize(this->particles->size());
-	std::iota(this->particlesIndex.begin(), this->particlesIndex.end(), 0);
-	auto bb = std::accumulate(particles.begin(), particles.end(), BoundingBoxSearch(), [](const BoundingBoxSearch & box, const Particle & p) -> BoundingBoxSearch{
-		auto maxpos = p.getMaxPos();
-		auto minpos = p.getMinPos();
-		auto max_x = std::max(maxpos.x, box.max.x);
-		auto max_y = std::max(maxpos.y, box.max.y);
-		auto max_z = std::max(maxpos.z, box.max.z);
-		auto min_x = std::min(minpos.x, box.min.x);
-		auto min_y = std::min(minpos.y, box.min.y);
-		auto min_z = std::min(minpos.z, box.min.z);
-		auto density = box.density + p.density;
-		return {{min_x, min_y, min_z}, {max_x, max_y, max_z}, density};
-	});
-	this->bb = BoundingBox::fromMinMax(bb.min,  bb.max);
-	this->density = bb.density;// / float(particles.size());
-	//cout << "VaporOctree setup bb: " << bb.min << " <-> " << bb.max << endl;
+	this->particles = particles;
 }
 
 
-bool VaporOctree::divide(size_t resolution, float minDensity, float maxDensity){
-	float span = maxDensity - minDensity;
-	float thresDensity = minDensity + span * 0.002f;
-	if(density<thresDensity){
-		particlesIndex.clear();
-		density=0;
-	}
-	if(resolution==0 || particlesIndex.size() == 0){
-		return false;
-	}
-	auto bbmin = this->bb.min;
-	auto bbmax = this->bb.max;
-	ofVec3f p1 = bbmin;
-	ofVec3f p2 = {bbmin.x, bbmin.y, bbmax.z};
-	ofVec3f p3 = {bbmin.x, bbmax.y, bbmin.z};
-	ofVec3f p4 = {bbmin.x, bbmax.y, bbmax.z};
-	ofVec3f p5 = {bbmax.x, bbmin.y, bbmin.z};
-	ofVec3f p6 = {bbmax.x, bbmin.y, bbmax.z};
-	ofVec3f p7 = {bbmax.x, bbmax.y, bbmin.z};
-	ofVec3f p8 = bbmax;
-
-	ofVec3f center = (p1 + p8) * 0.5;
-
-	size_t incr = pow(2, resolution)/4.;
-	children.resize(8);
-	children[0].bb = BoundingBox::fromTwoPoints(p1, center);
-	children[0].particles = this->particles;
-	children[0].x = this->x - incr;
-	children[0].y = this->y - incr;
-	children[0].z = this->z - incr;
-	children[1].bb = BoundingBox::fromTwoPoints(p2, center);
-	children[1].particles = this->particles;
-	children[1].x = this->x - incr;
-	children[1].y = this->y - incr;
-	children[1].z = this->z + incr;
-	children[2].bb = BoundingBox::fromTwoPoints(p3, center);
-	children[2].particles = this->particles;
-	children[2].x = this->x - incr;
-	children[2].y = this->y + incr;
-	children[2].z = this->z - incr;
-	children[3].bb = BoundingBox::fromTwoPoints(p4, center);
-	children[3].particles = this->particles;
-	children[3].x = this->x - incr;
-	children[3].y = this->y + incr;
-	children[3].z = this->z + incr;
-	children[4].bb = BoundingBox::fromTwoPoints(p5, center);
-	children[4].particles = this->particles;
-	children[4].x = this->x + incr;
-	children[4].y = this->y - incr;
-	children[4].z = this->z - incr;
-	children[5].bb = BoundingBox::fromTwoPoints(p6, center);
-	children[5].particles = this->particles;
-	children[5].x = this->x + incr;
-	children[5].y = this->y - incr;
-	children[5].z = this->z + incr;
-	children[6].bb = BoundingBox::fromTwoPoints(p7, center);
-	children[6].particles = this->particles;
-	children[6].x = this->x + incr;
-	children[6].y = this->y + incr;
-	children[6].z = this->z - incr;
-	children[7].bb = BoundingBox::fromTwoPoints(p8, center);
-	children[7].particles = this->particles;
-	children[7].x = this->x + incr;
-	children[7].y = this->y + incr;
-	children[7].z = this->z + incr;
-
-	std::array<float,8> distances{{0.f}};
-
-	for(auto i: particlesIndex){
-		auto & p = (*particles)[i];
-		distances[0] = children[0].bb.center.squareDistance(p.pos);
-		distances[1] = children[1].bb.center.squareDistance(p.pos);
-		distances[2] = children[2].bb.center.squareDistance(p.pos);
-		distances[3] = children[3].bb.center.squareDistance(p.pos);
-		distances[4] = children[4].bb.center.squareDistance(p.pos);
-		distances[5] = children[5].bb.center.squareDistance(p.pos);
-		distances[6] = children[6].bb.center.squareDistance(p.pos);
-		distances[7] = children[7].bb.center.squareDistance(p.pos);
-		auto min = std::min_element(distances.begin(), distances.end()) - distances.begin();
-		children[min].particlesIndex.push_back(i);
-		children[min].density += p.density;
-	}
-
-	return true;
-}
-
-void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity){
-	this->resolution = resolution;
-	size_t center = pow(2, resolution)/2.;
-	this->x = center;
-	this->y = center;
-	this->z = center;
-	if(this->divide(resolution, minDensity, maxDensity)){
-		std::array<std::future<bool>, 8> futures;
-		for(size_t i = 0; i<children.size(); ++i){
-			auto & child = children[i];
-			/*ThreadPool::pool().addTask([&child, &promise, i, resolution, minDensity, maxDensity]{
-				child.compute(resolution - 1, minDensity, maxDensity, 0);
-				promise.set_value(true);
-			});*/
-			futures[i] = std::async(std::launch::async, [&child, resolution, minDensity, maxDensity]{
-				child.compute(resolution - 1, minDensity, maxDensity, 0);
-				return true;
-			});
-		}
-
-		for(auto & future: futures){
-			future.wait();
-		}
-	}
-}
-
-void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity, size_t level){
-	this->resolution = resolution;
-	if(this->divide(resolution, minDensity, maxDensity)){
-		for(auto & child: children){
-			child.compute(resolution - 1, minDensity, maxDensity, level+1);
+void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity, ofxRange3f coordsRange){
+	this->octree = new Octree<float,2>(resolution);
+	glm::vec3 coordSpan = coordsRange.getSpan();
+	auto originShift = -0.5f * coordSpan - coordsRange.getMin();
+	auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
+	auto scale = resolution / normalizeFactor;
+	for(auto & particle: this->particles){
+		float octree_coords_x = ofMap(particle.pos.x, coordsRange.getMin().x, coordsRange.getMax().x, 0, resolution);
+		float octree_coords_y = ofMap(particle.pos.y, coordsRange.getMin().y, coordsRange.getMax().y, 0, resolution);
+		float octree_coords_z = ofMap(particle.pos.z, coordsRange.getMin().z, coordsRange.getMax().z, 0, resolution);
+		glm::vec3 particlepos = {octree_coords_x, octree_coords_y, octree_coords_z};
+		float size = particle.size * scale;
+		//auto density = this->octree->at(octree_coords_x, octree_coords_y, octree_coords_z);
+		//this->octree->set(octree_coords_x, octree_coords_y, octree_coords_z, density + particle.density);
+		Box particleBox = { particlepos - glm::vec3{size*0.5,size*0.5,size*0.5}, particlepos + glm::vec3{size*0.5,size*0.5,size*0.5}};
+		float particleVolume = boxVolume(size);
+		for(int z = -size; z<size; z++){
+			for(int y = -size; y<size; y++){
+				for(int x = -size; x<size; x++){
+					int off_x = octree_coords_x + x;
+					int off_y = octree_coords_y + y;
+					int off_z = octree_coords_z + z;
+					glm::vec3 voxelpos = {off_x, off_y, off_z};
+					Box voxel = {voxelpos, voxelpos + glm::vec3{1.0f, 1.0f, 1.0f}};
+					auto factor = boxesIntersectionVolume(voxel, particleBox) / particleVolume;
+					//cout << factor << endl;
+					auto density = this->octree->at(off_x, off_y, off_z);
+					this->octree->set(off_x, off_y, off_z, density + particle.density * factor);
+				}
+			}
 		}
 	}
 }
 
 
 bool VaporOctree::isLeaf() const{
-	return children.empty();
+	return false;
 }
 
 void VaporOctree::drawLeafs(float minDensity, float maxDensity) const{
-	if(this->isLeaf()){
-		if(this->particlesIndex.empty()){
-			ofSetColor(255,20);
-		}else{
-			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
-			ofSetColor(255, alpha);
-		}
-		ofDrawBox(bb.center, bb.size.x, bb.size.y, bb.size.z);
-	}else{
-		for(const auto & child: children){
-			child.drawLeafs(minDensity, maxDensity);
-		}
-	}
-}
 
-size_t VaporOctree::getMaxLevel() const{
-	size_t level = 0;
-	for(const auto & child: children){
-		level = std::max(level, child.getMaxLevel(1));
-	}
-	return level;
-}
-
-size_t VaporOctree::getMaxLevel(size_t current) const{
-	auto max = current;
-	for(const auto & child: children){
-		max = std::max(max, child.getMaxLevel(current+1));
-	}
-	return max;
 }
 
 size_t VaporOctree::size() const{
-	if(isLeaf()){
-		return particlesIndex.size();
-	}else{
-		return std::accumulate(children.begin(), children.end(), size_t(0), [](size_t acc, const VaporOctree & octree) -> size_t{
-			return acc + octree.size();
-		});
-	}
+	return octree->size();
 }
 
 std::vector<Particle> VaporOctree::toVector() const{
-	if(isLeaf() && !particlesIndex.empty()){
-		return {Particle{bb.center, std::max(bb.size.x, std::max(bb.size.y, bb.size.z)), density}};
-	}else{
-		return std::accumulate(children.begin(), children.end(), std::vector<Particle>(), [&](std::vector<Particle> & vec, const VaporOctree & octree){
-			auto child = octree.toVector();
-			vec.insert(vec.end(), child.begin(), child.end());
-			return vec;
-		});
+	/*std::vector<Particle> particles;
+	for(size_t z=0, i=0; z<octree->size();z++){
+		auto array2d = this->octree->zSlice(z);
+		for(size_t y=0; y<octree->size();++y){
+			for(size_t x=0; x<octree->size();++x,++i){
+				auto density = array2d.at(x,y);
+				if(density>minDensity && density<maxDensity){
+					particles.push_back({{x + 0.5, y + 0.5, z + 0.5}, 1.0, density});
+				}
+			}
+		}
 	}
+	return particles;*/
 }
 
 ofFloatPixels VaporOctree::getPixels(size_t z, float minDensity, float maxDensity) const{
 	ofFloatPixels pixels;
-	size_t size = pow(2,resolution);
-	pixels.allocate(size,size,1);
-	for(size_t y=0,i=0;y<size;++y){
-		for(size_t x=0;x<size;++x,i++){
-			pixels[i] = getDensity(x,y,z)>0?1.0:0.0;//ofMap(getDensity(x,y,z), minDensity, maxDensity, 0, 1.0);
+	pixels.allocate(octree->size(), octree->size(), OF_PIXELS_GRAY);
+	auto array2d = this->octree->zSlice(z);
+	for(size_t y=0, i=0; y<octree->size();++y){
+		for(size_t x=0; x<octree->size();++x,++i){
+			auto density = array2d.at(x,y);
+			pixels[i] = ofMap(density, minDensity, maxDensity, 0.0, 1.0);
 		}
 	}
-	return std::move(pixels);
+	return pixels;
 }
 
 
 float VaporOctree::getDensity(size_t x, size_t y, size_t z) const{
-	if(children.empty()){
-		return density;
-	}else{
-		if(x>this->x){
-			if(y>this->y){
-				if(z>this->z){
-					return children[7].getDensity(x,y,z);
-				}else{
-					return children[6].getDensity(x,y,z);
-				}
-			}else{
-				if(z>this->z){
-					return children[5].getDensity(x,y,z);
-				}else{
-					return children[4].getDensity(x,y,z);
-				}
-			}
-		}else{
-			if(y>this->y){
-				if(z>this->z){
-					return children[3].getDensity(x,y,z);
-				}else{
-					return children[2].getDensity(x,y,z);
-				}
-			}else{
-				if(z>this->z){
-					return children[1].getDensity(x,y,z);
-				}else{
-					return children[0].getDensity(x,y,z);
-				}
-			}
-		}
-	}
+	return octree->at(x,y,z);
 }

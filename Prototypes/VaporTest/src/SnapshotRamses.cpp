@@ -16,7 +16,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity)
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t octree_size)
 	{
 		clear();
 		
@@ -33,31 +33,38 @@ namespace ent
 		load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
 		load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
 
-		std::vector<Particle> particles(posX.size());
-		for(size_t i=0;i<posX.size();++i){
+		std::vector<Particle> particles;
+		/*for(size_t i=0;i<posX.size();++i){
 			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
-		}
+		}*/
 
 		m_numCells = posX.size();
 
 		// Set the ranges for all data.
 		for (size_t i = 0; i < posX.size(); ++i)
 		{
+			m_densityRange.add(density[i]);
 			m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
 			m_sizeRange.add(cellSize[i]);
-			m_densityRange.add(density[i]);
+		}
+
+		auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.0002f;
+		for (size_t i=0; i < posX.size(); ++i){
+			if(density[i]>threshold){
+				particles.push_back({{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]});
+			}
 		}
 
 		//ThreadPool::pool().addTask([]{cout << "starting pool" << endl;});
 		auto then = ofGetElapsedTimeMicros();
 		this->octree.setup(particles);
-		this->octree.compute(10, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
+		this->octree.compute(octree_size, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
 		auto now = ofGetElapsedTimeMicros();
-		cout << "time to compute octree " << float(now - then)/1000 << "ms" << endl;
-		cout << "octree max level " << this->octree.getMaxLevel() << endl;
+		cout << "time to compute octree " << float(now - then)/1000 << "ms. size: " << octree.size() << endl;
 		auto min = m_coordRange.getMin();
 		auto max = m_coordRange.getMax();
 		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
+		cout << "size range " << m_sizeRange.getMin() << " - " << m_sizeRange.getMax() << endl;
 
 		// Expand coord range taking cell size into account.
 		m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
@@ -71,7 +78,7 @@ namespace ent
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
 
-		auto octree_particles = octree.toVector();
+		/*auto octree_particles = octree.toVector();
 		m_numCells = octree_particles.size();
 		cout << "octree num particles " << m_numCells << endl;
 		ofBufferObject particlesBuffer;
@@ -79,7 +86,26 @@ namespace ent
 		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);
 		m_vboMesh.setVertexBuffer(particlesBuffer, 3, sizeof(Particle), 0);
 		m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*3);
-		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
+		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);*/
+
+
+		/*for(size_t z=0;z<octree.size();++z){
+			cout << z << endl;
+			pixels.push_back(std::move(octree.getPixels(z, m_densityRange.getMin(), m_densityRange.getMax())));
+		}
+		tex.allocate(pixels[0]);
+		pixelsIdx = 0;*/
+
+
+		std::vector<float> data;
+		for(size_t z=0;z<octree_size;++z){
+			cout << z << endl;
+			auto pixels = octree.getPixels(z, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
+			data.insert(data.end(), pixels.begin(), pixels.end());
+		}
+
+		volumeTexture.loadData(data.data(), octree_size, octree_size, octree_size, 0, 0, 0, GL_RED);
+
 
 		m_bLoaded = true;
 	}
