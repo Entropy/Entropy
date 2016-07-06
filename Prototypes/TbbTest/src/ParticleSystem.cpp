@@ -159,10 +159,10 @@ namespace nm
 			for (int i = 0; i < NUM_LIGHTS; i++)
 			{
 				string index = ofToString(i);
-				shader.setUniform3f("lights[" + index + "].position", lightPosns[i] * ofGetCurrentViewMatrix());
-				shader.setUniform4f("lights[" + index + "].color", lightCols[i]);
-				shader.setUniform1f("lights[" + index + "].intensity", lightIntensities[i]);
-				shader.setUniform1f("lights[" + index + "].radius", lightRadiuses[i]);
+				shader.setUniform3f("lights[" + index + "].position", lights[i].position * ofGetCurrentViewMatrix());
+				shader.setUniform4f("lights[" + index + "].color", lights[i].color);
+				shader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
+				shader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
 			}
 
 			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)

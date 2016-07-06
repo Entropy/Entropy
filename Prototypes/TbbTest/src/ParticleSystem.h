@@ -40,6 +40,14 @@ namespace nm
     {
         ofMatrix4x4 transform;
     };
+
+	struct Light
+	{
+		ofVec3f position;
+		ofFloatColor color;
+		float intensity;
+		float radius;
+	};
     
     class ParticleSystem
     {
@@ -61,10 +69,7 @@ namespace nm
         
         // lighting, should be private but for
         // GUI adding simplicity they're public
-        ofVec3f lightPosns[NUM_LIGHTS];
-        ofFloatColor lightCols[NUM_LIGHTS];
-        float lightIntensities[NUM_LIGHTS];
-        float lightRadiuses[NUM_LIGHTS];
+        Light lights[NUM_LIGHTS];
         float roughness;
         
     private:

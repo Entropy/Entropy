@@ -48,15 +48,15 @@ void ofApp::setup()
     gui.setup();
     for (unsigned i = 0; i < nm::ParticleSystem::NUM_LIGHTS; ++i)
     {
-        particleSystem.lightIntensities[i] = 1.f;
-        particleSystem.lightRadiuses[i] = 1.f;
-        particleSystem.lightCols[i].set(1.f, 1.f, 1.f, 1.f);
+        particleSystem.lights[i].intensity = 1.f;
+        particleSystem.lights[i].radius = 1.f;
+        particleSystem.lights[i].color.set(1.f, 1.f, 1.f, 1.f);
         
         string iStr = ofToString(i);
-        persistent.add("lightPosns" + iStr, particleSystem.lightPosns[i], ofVec3f(-2000.f), ofVec3f(2000.f));
-        persistent.add("lightIntensities" + iStr, particleSystem.lightIntensities[i], 0.f, 5.f);
-        persistent.add("lightRadiuses" + iStr, particleSystem.lightRadiuses[i], 0.f, 4000.f);
-        persistent.add("lightCols" + iStr, particleSystem.lightCols[i], ofFloatColor(0.f), ofFloatColor(1.f));
+        persistent.add("lightPosns" + iStr, particleSystem.lights[i].position, ofVec3f(-2000.f), ofVec3f(2000.f));
+        persistent.add("lightIntensities" + iStr, particleSystem.lights[i].intensity, 0.f, 5.f);
+        persistent.add("lightRadiuses" + iStr, particleSystem.lights[i].radius, 0.f, 4000.f);
+        persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));
     }
     persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
     persistent.load("settings/settings.xml");
