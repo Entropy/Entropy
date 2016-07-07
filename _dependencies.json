@@ -60,7 +60,7 @@
 		{
 			"name": "ofxTween",
 			"source": "https://github.com/Entropy/ofxTween.git",
-			"branch": "fix-deprecated"
+			"branch": "master"
 		},
 		{
 			"name": "ofxVolumetrics",
@@ -70,6 +70,11 @@
 		{
 			"name": "ofxWarp",
 			"source": "https://github.com/Entropy/ofxWarp.git",
+			"branch": "master"
+		},
+		{
+			"name": "ofxWMFVideoPlayer",
+			"source": "https://github.com/Entropy/ofxWMFVideoPlayer.git",
 			"branch": "master"
 		}
 	]

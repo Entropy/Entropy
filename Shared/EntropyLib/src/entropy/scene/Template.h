@@ -20,6 +20,7 @@ namespace entropy
 
 			void setup();
 			void exit();
+			void resize(ofResizeEventArgs & args);
 
 			void update(double & dt);
 
@@ -27,7 +28,7 @@ namespace entropy
 			void drawWorld();
 			void drawFront();
 
-			void gui(ofxPreset::GuiSettings & settings);
+			void gui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
@@ -45,7 +46,7 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofxPreset::Parameter<bool> filled{ "Filled", false, true };
+					ofxPreset::Parameter<bool> filled{ "Filled", false, false };
 					ofxPreset::Parameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
 					ofxPreset::Parameter<int> resolution{ "Resolution", 16, 3, 64 };
 

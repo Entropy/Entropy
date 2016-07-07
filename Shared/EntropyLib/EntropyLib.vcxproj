@@ -21,33 +21,34 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}</ProjectGuid>
     <RootNamespace>ofxKinectForWindows2Lib</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -91,7 +92,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <MinimalRebuild>false</MinimalRebuild>
       <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -131,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -153,7 +154,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ObjectFileName>$(IntDir)\%(Directory)\</ObjectFileName>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -179,9 +180,23 @@
     <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
     <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
     <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
+    <ClCompile Include="src\entropy\render\Canvas.cpp" />
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Manager.cpp" />
     <ClCompile Include="src\entropy\scene\Template.cpp" />
+    <ClCompile Include="src\entropy\scene\Video.cpp" />
+    <ClCompile Include="src\entropy\util\App.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
@@ -200,16 +215,50 @@
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.h" />
     <ClInclude Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h" />
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\AsyncCB.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\BufferLock.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\ClassFactory.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\common.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\critsec.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\GrowArray.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\linklist.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logging.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logmediatype.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mediatype.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mfutils.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\PropVar.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\registry.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\TinyMap.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\trace.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenter.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenterUuid.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
+    <ClInclude Include="src\entropy\Helpers.h" />
+    <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />
-    <ClInclude Include="src\entropy\scene\Mapping.h" />
     <ClInclude Include="src\entropy\scene\Template.h" />
+    <ClInclude Include="src\entropy\scene\Video.h" />
+    <ClInclude Include="src\entropy\util\App.h" />
+    <ClInclude Include="src\entropy\util\Mapping.h" />
+    <ClInclude Include="src\entropy\util\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl" />
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
-    <None Include="src\entropy\scene\Mapping.inl" />
+    <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimelineLib.vcxproj">

@@ -6,21 +6,11 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Manager::Manager()
-		{
-			// Register OF events.
-			ofAddListener(ofEvents().update, this, &Manager::update);
-			ofAddListener(ofEvents().draw, this, &Manager::draw);
-			ofAddListener(ofEvents().keyPressed, this, &Manager::keyPressed);
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Manager::~Manager()
 		{
-			// Unregister OF events.
-			ofRemoveListener(ofEvents().update, this, &Manager::update);
-			ofRemoveListener(ofEvents().draw, this, &Manager::draw);
-			ofRemoveListener(ofEvents().keyPressed, this, &Manager::keyPressed);
-
 			// Clear scenes.
 			if (this->currentScene)
 			{
@@ -134,25 +124,16 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::update(ofEventArgs & args)
+		void Manager::update(double dt)
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->update();
-
-				if (this->currentScene->isOverlayVisible() /*|| this->parameters.camera.mouseEnabled*/)
-				{
-					ofShowCursor();
-				}
-				else
-				{
-					ofHideCursor();
-				}
+				this->currentScene->update(dt);
 			}
 		}
 
 		//--------------------------------------------------------------
-		void Manager::draw(ofEventArgs & args)
+		void Manager::drawScene()
 		{
 			if (this->currentScene)
 			{
@@ -161,31 +142,48 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::keyPressed(ofKeyEventArgs & args)
+		void Manager::drawGui(ofxPreset::Gui::Settings & settings)
 		{
-			if (args.key == OF_KEY_TAB)
+			if (this->currentScene)
 			{
-				ofToggleFullscreen();
+				this->currentScene->gui(settings);
 			}
-			else if (this->currentScene)
+		}
+
+		//--------------------------------------------------------------
+		void Manager::drawOverlay(ofxPreset::Gui::Settings & settings)
+		{
+			if (this->currentScene)
 			{
-				switch (args.key)
+				this->currentScene->drawTimeline(settings);
+			}
+		}
+
+		//--------------------------------------------------------------
+		bool Manager::keyPressed(ofKeyEventArgs & args)
+		{
+			if (this->currentScene)
+			{
+				if (args.key == 'L')
 				{
-				case '`':
-					this->currentScene->toggleOverlayVisible();
-					break;
-
-				case 'L':
 					this->currentScene->toggleCameraLocked();
-					break;
-
-				case 'T':
-					this->currentScene->addCameraKeyframe();
-					break;
-
-				default:
-					break;
+					return true;
 				}
+				if (args.key == 'T')
+				{
+					this->currentScene->addCameraKeyframe();
+					return true;
+				}
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		void Manager::canvasResized(ofResizeEventArgs & args)
+		{
+			if (this->currentScene)
+			{
+				this->currentScene->resize(args);
 			}
 		}
 	}

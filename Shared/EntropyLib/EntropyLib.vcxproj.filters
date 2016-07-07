@@ -34,6 +34,48 @@
     <ClCompile Include="src\entropy\scene\Template.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\render\Canvas.cpp">
+      <Filter>src\entropy\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\util\App.cpp">
+      <Filter>src\entropy\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\scene\Video.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.cpp">
+      <Filter>addons\ofxWMFVideoPlayer\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -71,6 +113,33 @@
     </Filter>
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\render">
+      <UniqueIdentifier>{c5aa1753-3347-4494-8404-7180924e0b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\util">
+      <UniqueIdentifier>{68525d5f-fa32-44f4-aabe-d53e252fd0c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp">
+      <UniqueIdentifier>{6e1c5308-09ba-4873-9e9a-48bece1c072b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp\src">
+      <UniqueIdentifier>{cc65c139-e71f-4be3-b18d-2040706b3c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWarp\src\ofxWarp">
+      <UniqueIdentifier>{7a5a0808-d166-4f50-a372-c1b371b0ee5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWMFVideoPlayer">
+      <UniqueIdentifier>{32524824-4826-4e0d-af57-29e9e415f325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWMFVideoPlayer\src">
+      <UniqueIdentifier>{fc16ff10-c048-4661-9e86-823480278004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWMFVideoPlayer\src\presenter">
+      <UniqueIdentifier>{a1a1bb1d-e855-4633-9eee-2fc0f2536f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxWMFVideoPlayer\src\presenter\common">
+      <UniqueIdentifier>{064a4828-f71b-408e-b2f6-7f8393f55b0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,8 +200,110 @@
     <ClInclude Include="src\entropy\scene\Template.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\scene\Mapping.h">
+    <ClInclude Include="src\entropy\render\Canvas.h">
+      <Filter>src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\Singleton.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\App.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\Helpers.h">
+      <Filter>src\entropy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp.h">
+      <Filter>addons\ofxWarp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\Controller.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h">
+      <Filter>addons\ofxWarp\src\ofxWarp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Video.h">
       <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\AsyncCB.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\BufferLock.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\ClassFactory.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\common.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\critsec.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\GrowArray.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\linklist.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logging.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logmediatype.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mediatype.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mfutils.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\PropVar.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\registry.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\TinyMap.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\common\trace.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenter.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenterUuid.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h">
+      <Filter>addons\ofxWMFVideoPlayer\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.h">
+      <Filter>addons\ofxWMFVideoPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.h">
+      <Filter>addons\ofxWMFVideoPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\Mapping.h">
+      <Filter>src\entropy\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,8 +316,8 @@
     <None Include="..\..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
-    <None Include="src\entropy\scene\Mapping.inl">
-      <Filter>src\entropy\scene</Filter>
+    <None Include="src\entropy\util\Mapping.inl">
+      <Filter>src\entropy\util</Filter>
     </None>
   </ItemGroup>
 </Project>
