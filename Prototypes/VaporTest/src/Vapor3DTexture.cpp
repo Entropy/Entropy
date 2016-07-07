@@ -3,8 +3,6 @@
 #include "of3dGraphics.h"
 #include "ofGraphics.h"
 #include "ofUtils.h"
-#include "ThreadPool.h"
-#include <future>
 
 
 namespace{
@@ -34,13 +32,15 @@ const std::vector<float> & Vapor3DTexture::data() const{
 	return m_data;
 }
 
-void Vapor3DTexture::add(size_t x, size_t y, size_t z, float value){
-	size_t idx = z * m_size * m_size + y * m_size + x;
+inline void Vapor3DTexture::add(size_t x, size_t y, size_t z, float value){
+	size_t idx = z * this->m_quadsize + y * this->m_size + x;
 	m_data[idx] += value;
 }
 
 void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange){
 	this->m_size = size;
+	this->m_quadsize = size * size;
+	this->m_cubesize = size * this->m_quadsize;
 	this->m_data.clear();
 	this->m_data.assign(size*size*size, 0);
 	glm::vec3 coordSpan = coordsRange.getSpan();
@@ -48,9 +48,15 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	auto scale = size / normalizeFactor;
 	int isize = int(size);
 	for(auto & particle: particles){
+		if(!coordsRange.contains(particle.getMaxPos()) || !coordsRange.contains(particle.getMinPos())){
+			continue;
+		}
 		float octree_coords_x = ofMap(particle.pos.x, coordsRange.getMin().x, coordsRange.getMax().x, 0, size);
 		float octree_coords_y = ofMap(particle.pos.y, coordsRange.getMin().y, coordsRange.getMax().y, 0, size);
 		float octree_coords_z = ofMap(particle.pos.z, coordsRange.getMin().z, coordsRange.getMax().z, 0, size);
+		/*if(octree_coords_x<0 || octree_coords_x>size || octree_coords_y<0 || octree_coords_y>size || octree_coords_z<0 || octree_coords_z>size){
+			continue;
+		}*/
 		glm::vec3 particlepos = {octree_coords_x, octree_coords_y, octree_coords_z};
 		float psize = particle.size * scale;
 
@@ -71,8 +77,9 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 		}
 	}
 
+	auto minLimit = std::min(0.f, minDensity);
 	std::transform(this->m_data.begin(), this->m_data.end(), this->m_data.begin(), [&](float v){
-		return ofMap(v, minDensity, maxDensity, 0, 1);
+		return ofMap(v, minLimit, maxDensity, 0, 1);
 	});
 }
 

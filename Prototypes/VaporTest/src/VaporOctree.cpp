@@ -3,7 +3,6 @@
 #include "of3dGraphics.h"
 #include "ofGraphics.h"
 #include "ofUtils.h"
-#include "ThreadPool.h"
 #include <future>
 
 struct BoundingBoxSearch {

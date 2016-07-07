@@ -14,13 +14,17 @@ Project{
         files: [
             "bin/data/shaders/render.frag",
             "bin/data/shaders/render.vert",
-            "src/Octree.cpp",
-            "src/Octree.h",
+            "bin/data/shaders/volumetrics_frag.glsl",
+            "bin/data/shaders/volumetrics_vertex.glsl",
+            "src/Particle.h",
             "src/SequenceRamses.cpp",
             "src/SequenceRamses.h",
             "src/SnapshotRamses.cpp",
             "src/SnapshotRamses.h",
-            "src/ThreadPool.h",
+            "src/Vapor3DTexture.cpp",
+            "src/Vapor3DTexture.h",
+            "src/VaporOctree.cpp",
+            "src/VaporOctree.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
@@ -36,6 +40,7 @@ Project{
             '../../addons/ofxTextInputField',
             '../../addons/ofxTween',
             '../../addons/ofxTimecode',
+            '../../addons/ofxVolumetrics',
             'ofxXmlSettings',
         ]
 

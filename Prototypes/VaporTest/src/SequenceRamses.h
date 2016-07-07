@@ -74,6 +74,7 @@ namespace ent
         float m_normalizeFactor;
 
         ofShader m_renderShader;
+		ofShader m_volumetricsShader;
 
         float m_densityMin;
         float m_densityMax;

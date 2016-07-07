@@ -13,7 +13,7 @@ struct BoundingBox{
 	glm::vec3 center;
 	glm::vec3 size;
 
-	inline BoundingBox(const glm::vec3 & center, glm::vec3 & size)
+	inline BoundingBox(const glm::vec3 & center, const glm::vec3 & size)
 	:min(center - size * 0.5)
 	,max(center + size * 0.5)
 	,center(center)
@@ -21,7 +21,7 @@ struct BoundingBox{
 
 	BoundingBox(){}
 
-	inline static BoundingBox fromTwoPoints(const glm::vec3 & p1, glm::vec3 & p2){
+	inline static BoundingBox fromTwoPoints(const glm::vec3 & p1, const glm::vec3 & p2){
 		auto max_x = std::max(p1.x, p2.x);
 		auto max_y = std::max(p1.y, p2.y);
 		auto max_z = std::max(p1.z, p2.z);
@@ -45,6 +45,10 @@ struct BoundingBox{
 
 	inline bool inside(const glm::vec3 & p) const{
 		return p.x>=min.x && p.y>=min.y && p.z>=min.z && p.x<=max.x && p.y<=max.y && p.z<=max.z;
+	}
+
+	inline glm::vec3 getSpan() const{
+		return max - min;
 	}
 };
 

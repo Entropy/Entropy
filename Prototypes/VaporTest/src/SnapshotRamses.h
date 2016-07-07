@@ -36,6 +36,7 @@ namespace ent
 
 		std::size_t getNumCells() const;
 		bool isLoaded() const;
+		BoundingBox m_boxRange;
 
 	protected:
 		void load(const std::string& file, std::vector<float>& elements);

@@ -32,20 +32,19 @@ void ofApp::setup()
 
     m_bGuiVisible = true;
 	//m_camera.disableInertia();
-	m_camera.setDistance(2048);
+	m_camera.setDistance(1024);
 
-	fullQuadFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA32F);
+	/*fullQuadFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA32F);
 	fxaaShader.load("shaders/vert_full_quad.glsl", "shaders/frag_fxaa.glsl");
 	std::vector<glm::vec3> vertices = {{ -1, -1, 0 }, { 1, -1, 0 }, { 1, 1, 0 }, { -1, 1, 0 }};
 	std::vector<glm::vec2> texcoords = {{ 0, 1 }, { 1, 1 }, { 1, 0 }, { 0, 0 }};
 	fullQuad.addVertices(vertices);
 	fullQuad.addTexCoords(texcoords);
-	fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+	fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);*/
 
 	ofSetFrameRate(60);
 	ofEnablePointSprites();
 	//ofEnableBlendMode(OF_BLENDMODE_ADD);
-	z = 0;
 }
 
 //--------------------------------------------------------------
@@ -85,23 +84,9 @@ void ofApp::draw()
 		}
 		m_camera.end();
 	}else{
-		if(m_doFXAA){
-			fullQuadFbo.begin();
-			ofClear(0,255);
-			m_camera.begin();
-			m_sequenceRamses.drawTexture(m_scale);
-			m_camera.end();
-			fullQuadFbo.end();
-
-			fxaaShader.begin();
-			fxaaShader.setUniformTexture("tex0", fullQuadFbo.getTexture(), 0);
-			fullQuad.draw();
-			fxaaShader.end();
-		}else{
-			m_camera.begin();
-			m_sequenceRamses.drawTexture(m_scale);
-			m_camera.end();
-		}
+		m_camera.begin();
+		m_sequenceRamses.drawTexture(m_scale);
+		m_camera.end();
 	}
 
 	m_camera.begin();
@@ -203,7 +188,6 @@ bool ofApp::imGui()
 					}
 				}*/
 
-				ImGui::Checkbox("FXAA", &m_doFXAA);
 				ImGui::Checkbox("Show octree", &m_showOctree);
 				ImGui::Checkbox("Vbo/Tex3d", &m_vboTex);
 			}
@@ -244,19 +228,9 @@ void ofApp::keyPressed(int key)
 			m_cameraTrack->addKeyframe();
 			break;
 
-		case OF_KEY_UP:
-			z++;
-		break;
-
-		case OF_KEY_DOWN:
-			z--;
-		break;
-
         default:
             break;
-    }
-	z = ofClamp(z, 0, 1023);
-	cout << z << endl;
+	}
 }
 
 //--------------------------------------------------------------

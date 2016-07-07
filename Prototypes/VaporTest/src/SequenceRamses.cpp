@@ -53,10 +53,11 @@ namespace ent
 		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
 		octree_size = 512;
-		m_volumeDensity = 2.0;
+		m_volumeDensity = 20.0;
 		m_volumeQuality = 1;
-		volumeTexture.allocate(octree_size, octree_size, octree_size, GL_R32F);
-		volumetrics.setup(&volumeTexture,ofVec3f(1,1,1));
+		m_volumetricsShader.load("shaders/volumetrics_vertex.glsl", "shaders/volumetrics_frag.glsl");
+		volumeTexture.allocate(octree_size, octree_size, octree_size, GL_R16F);
+		volumetrics.setup(&volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
 		glBindTexture(volumeTexture.texData.textureTarget,volumeTexture.texData.textureID);
 		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
@@ -64,7 +65,7 @@ namespace ent
 		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
 		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
 		glBindTexture(volumeTexture.texData.textureTarget,0);
-		volumetrics.setVolumeTextureFilterMode(GL_LINEAR);
+		//volumetrics.setVolumeTextureFilterMode(GL_LINEAR);
 
 		m_bReady = true;
     }
@@ -158,7 +159,20 @@ namespace ent
 
 	//--------------------------------------------------------------
 	void SequenceRamses::drawTexture(float scale){
-		volumetrics.drawVolume(0, 0, 0, scale, 0);
+		auto original_scale = std::max(getSnapshot().getCoordRange().getSpan().x, std::max(getSnapshot().getCoordRange().getSpan().y, getSnapshot().getCoordRange().getSpan().z));
+		auto box_scale = std::max(getSnapshot().m_boxRange.getSpan().x, std::max(getSnapshot().m_boxRange.getSpan().y, getSnapshot().m_boxRange.getSpan().z));
+		auto ratio = box_scale/original_scale;
+		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity/(ratio*ratio), 0);
+		volumetrics.drawVolume(0, 0, 0, scale * ratio, 0);
+
+		ofSetColor(ofColor::white);
+		ofNoFill();
+		ofPushMatrix();
+		ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
+		ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
+		ofDrawBox(getSnapshot().m_boxRange.center, getSnapshot().m_boxRange.size.x, getSnapshot().m_boxRange.size.y, getSnapshot().m_boxRange.size.z);
+		ofPopMatrix();
+		ofFill();
 	}
 
     //--------------------------------------------------------------

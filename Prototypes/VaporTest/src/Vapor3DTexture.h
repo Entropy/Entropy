@@ -4,7 +4,6 @@
 #include "ofConstants.h"
 #include "ofVectorMath.h"
 #include "ofPixels.h"
-#include "octree/octree.h"
 #include "ofxRange.h"
 #include "Particle.h"
 
@@ -16,9 +15,9 @@ class Vapor3DTexture
 		const std::vector<float> & data() const;
 		std::pair<float,float> minmax() const;
 	private:
-		void add(size_t x, size_t y, size_t z, float value);
+		inline void add(size_t x, size_t y, size_t z, float value);
 		std::vector<float> m_data;
-		size_t m_size;
+		size_t m_size, m_cubesize, m_quadsize;
 };
 
 #endif // OCTREE_H

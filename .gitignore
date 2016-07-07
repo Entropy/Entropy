@@ -11,9 +11,11 @@ docs/
 
 .svn/
 obj/
-bin/
+Prototypes/*/bin/*
 build/
-!data/
+!Prototypes/*/bin/data/
+!Prototypes/*/bin/data/*
+!Prototypes/*/bin/data/**/*
 xcuserdata/
 
 ipch/

@@ -7,11 +7,7 @@ uniform mat4 projectionMatrix;
 in vec3 position;
 in float size;
 in float density;
-uniform float uDensityMin;
-uniform float uDensityMax;
 
-
-//uniform samplerBuffer uTransform;
 
 out float vDensity;
 const float maxDistance = 1024.;

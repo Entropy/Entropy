@@ -1,5 +1,4 @@
 #include "SnapshotRamses.h"
-#include "ThreadPool.h"
 
 namespace ent
 {
@@ -33,10 +32,10 @@ namespace ent
 		load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
 		load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
 
-		std::vector<Particle> particles;
-		/*for(size_t i=0;i<posX.size();++i){
+		std::vector<Particle> particles(posX.size());
+		for(size_t i=0;i<posX.size();++i){
 			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
-		}*/
+		}
 
 		m_numCells = posX.size();
 
@@ -49,11 +48,14 @@ namespace ent
 		}
 
 		auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.001f;
-		for (size_t i=0; i < posX.size(); ++i){
-			if(density[i]>threshold){
-				particles.push_back({{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]});
-			}
-		}
+		ofxRange3f range;
+		range.clear();
+		range = std::accumulate(particles.begin(), particles.end(), range, [&](ofxRange3f range, const Particle & p){
+		    if(p.density>threshold){
+		        range.add(p.pos);
+	        }
+		    return range;
+	    });
 
 		cout << "num particles after filter: " << particles.size() << endl;
 		auto min = m_coordRange.getMin();
@@ -64,17 +66,31 @@ namespace ent
 		// Expand coord range taking cell size into account.
 		m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
 		m_coordRange.add(m_coordRange.getMax() + m_sizeRange.getMax());
+		range.add(range.getMin() - m_sizeRange.getMax());
+		range.add(range.getMax() + m_sizeRange.getMax());
 
 		// Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
 		glm::vec3 coordSpan = m_coordRange.getSpan();
 		float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
+		glm::vec3 boxCoordSpan = range.getSpan();
+		float maxBoxSpan = std::max(boxCoordSpan.x, std::max(boxCoordSpan.y, boxCoordSpan.z));
+		float minBoxSpan = std::min(boxCoordSpan.x, std::min(boxCoordSpan.y, boxCoordSpan.z));
 		glm::vec3 spanOffset(maxSpan * 0.5);
 		glm::vec3 coordMid = m_coordRange.getCenter();
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
+		//range.add(range.getCenter() - maxBoxSpan);
+		//range.add(range.getCenter() + maxBoxSpan);
+
+		m_boxRange = BoundingBox(m_coordRange.getCenter(), glm::vec3(minBoxSpan));
+		//m_boxRange = BoundingBox(m_coordRange.getCenter(), m_coordRange.getSpan());
+		range.clear();
+		range.add(m_boxRange.center);
+		range.add(m_boxRange.min);
+		range.add(m_boxRange.max);
 
 		auto then = ofGetElapsedTimeMicros();
-		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), m_coordRange);
+		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), range);
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to compute 3D texture " << float(now - then)/1000 << "ms." << endl;
 
@@ -101,7 +117,9 @@ namespace ent
 
 
 		volumeTexture.loadData(this->vaporPixels.data().data(), worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
-
+		volumeTexture.generateMipmaps();
+		volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+		//volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
 
 		m_bLoaded = true;
 	}

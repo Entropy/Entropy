@@ -20,6 +20,6 @@ void main (void)
 #if DEBUG
 	    fragColor = vec4(1.0);
 #else
-	    fragColor = vec4(globalColor.rgb, map(vDensity, uDensityMin, uDensityMax, 0.0, 1.0));
+	    fragColor = vec4(vec3(1.0), map(vDensity, uDensityMin, uDensityMax, 0.0, 1.0));
 #endif
 }
