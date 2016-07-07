@@ -49,26 +49,20 @@ namespace nm
 		typedef shared_ptr<Octree> Ptr;
 
 		// hacky C++11 way to get around static const vars in template class
+		// have actually made a cpp class now so can change these back to 
+		// vars rather than functions
 		static constexpr unsigned POINTS_START_SIZE() { return 40; }
 		static constexpr unsigned MAX_DEPTH() { return 5; }
 		static constexpr float THETA() { return .5f; }
 		static constexpr float FORCE_MULTIPLIER() { return 1e7; }
+		static constexpr float ANNIHILATION_DISTANCE() { return 2.f; }
         
-		/*
-		static const unsigned POINTS_START_SIZE = 40;
-        static const unsigned MAX_DEPTH = 5;
-        static const float THETA;
-        static const float FORCE_MULTIPLIER;
-        */
-
         enum Location
         {
             X_SIDE = 0x01,
             Y_SIDE = 0x02,
             Z_SIDE = 0x04
         };
-        
-        //static void setMaxDepth(unsigned maxDepth) { Octree<T>::maxDepth = maxDepth; }
         
         Octree();
         ~Octree();
@@ -79,7 +73,8 @@ namespace nm
         
         void updateCenterOfCharge();
         
-        void sumForces(T& point);
+		// if close enough to another point to annihilate it, return that point
+        T* sumForces(T& point);
         
         void addPoint(T& point);
         
@@ -98,7 +93,6 @@ namespace nm
         
         void addChildren(bool recursive);
         
-        //ofVec3f getCenterOfMass() const { return centerOfMass; }
         inline float getCharge() const { return charge; }
         
         inline float getAbsCharge() const { return absCharge; }
@@ -132,8 +126,7 @@ namespace nm
 	template<class T>
 	Octree<T>::Octree() :
 		children(NULL),
-		//points(POINTS_START_SIZE), // means that this vector won't be fragmented for the first pointsStartSize elements
-		//numPoints(0),
+		numPoints(0),
 		hasPoints(false),
 		charge(0.f),
 		absCharge(0.f),
@@ -218,10 +211,11 @@ namespace nm
 	}
 
 	template<class T>
-	void Octree<T>::sumForces(T& point)
+	T* Octree<T>::sumForces(T& point)
 	{
 		if (hasPoints)
 		{
+			T* annihilate = NULL;
 			if (depth < MAX_DEPTH())
 			{
 				ofVec3f direction = centerOfCharge - point;
@@ -230,14 +224,14 @@ namespace nm
 				if (size / dist < THETA())
 				{
 					// far enough away to use this node
-					//point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
 					point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
 				}
 				else if (children)
 				{
 					for (unsigned i = 0; i < 8; ++i)
 					{
-						children[i].sumForces(point);
+						if (annihilate) children[i].sumForces(point);
+						else annihilate = children[i].sumForces(point);
 					}
 				}
 			}
@@ -250,11 +244,12 @@ namespace nm
 						ofVec3f direction = centerOfCharge - point;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
-						//point.addForce(-FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
 						point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+						if (dist < ANNIHILATION_DISTANCE()) annihilate = points[i];
 					}
 				}
 			}
+			return annihilate;
 		}
 	}
 

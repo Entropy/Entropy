@@ -37,9 +37,11 @@ namespace nm
 	const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
 
     ParticleSystem::ParticleSystem() :
+		particles(NULL),
         totalNumParticles(0),
         roughness(.1f),
-        particles(NULL)
+		deadParticles(NULL),
+		numDeadParticles(0)
     {
 		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
 		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
@@ -48,6 +50,7 @@ namespace nm
 	ParticleSystem::~ParticleSystem()
 	{
 		if (particles) delete[] particles;
+		if (deadParticles) delete[] deadParticles;
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
 			if (positions[i]) delete[] positions[i];
@@ -63,6 +66,7 @@ namespace nm
 		octree.addChildren(true);
 
 		particles = new nm::Particle[MAX_PARTICLES]();
+		deadParticles = new unsigned[MAX_PARTICLES];
 
 		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
 		
@@ -98,7 +102,6 @@ namespace nm
 			p.setCharge(Particle::CHARGES[type]);
 			p.setMass(Particle::MASSES[type]);
 			p.setRadius(radius);
-			//particles[totalNumParticles]
 
             totalNumParticles++;
 			numParticles[type]++;
@@ -119,12 +122,22 @@ namespace nm
 			[&](const tbb::blocked_range<size_t>& r) {
 			for (size_t i = r.begin(); i != r.end(); ++i)
 			{
+				// zero particle forces
 				particles[i].zeroForce();
+
+				// sum all forces acting on particle
 				octree.sumForces(particles[i]);
+
+				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
-				//particles[i].addVelocity(dt * ofVec3f(1.f, 0.f, 0.f));
-				particles[i] += particles[i].getVelocity() * dt;
+				
+				// damp velocity
 				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
+				
+				// add position (TODO: improved Euler integration)
+				particles[i] += particles[i].getVelocity() * dt;
+				
+				// check whether particle is out of bounds
 				for (unsigned j = 0; j < 3; ++j)
 				{
 					// add a little bit so things don't get stuck teleporting on the edges

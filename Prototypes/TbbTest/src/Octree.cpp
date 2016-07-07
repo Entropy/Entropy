@@ -34,6 +34,5 @@
 
 namespace nm
 {
-	unsigned Octree<Particle>::numOctrees = 0;
 	ofVboMesh Octree<Particle>::boxMesh;
 }
