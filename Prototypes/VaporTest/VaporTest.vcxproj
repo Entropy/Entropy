@@ -173,6 +173,8 @@
 	<ItemGroup>
 		<ClCompile Include="src\main.cpp" />
 		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="src\Vapor3DTexture.cpp" />
+		<ClCompile Include="src\VaporOctree.cpp" />
 		<ClCompile Include="src\SnapshotRamses.cpp" />
 		<ClCompile Include="src\SequenceRamses.cpp" />
 		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp" />
@@ -245,6 +247,9 @@
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h" />
 		<ClInclude Include="src\SequenceRamses.h" />
+		<ClInclude Include="src\Vapor3DTexture.h" />
+		<ClInclude Include="src\VaporOctree.h" />
+		<ClInclude Include="src\Particle.h" />
 		<ClInclude Include="src\SnapshotRamses.h" />
 		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.h" />
 		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h" />

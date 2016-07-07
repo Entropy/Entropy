@@ -7,6 +7,12 @@
 		<ClCompile Include="src\main.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
+		<ClCompile Include="src\Vapor3DTexture.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\VaporOctree.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
 		<ClCompile Include="src\SnapshotRamses.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
@@ -378,6 +384,15 @@
 			<Filter>src</Filter>
 		</ClInclude>
 		<ClInclude Include="src\SequenceRamses.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Vapor3DTexture.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\VaporOctree.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Particle.h">
 			<Filter>src</Filter>
 		</ClInclude>
 		<ClInclude Include="src\SnapshotRamses.h">
