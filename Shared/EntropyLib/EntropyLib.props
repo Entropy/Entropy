@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
+    <Import Project="..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxPreset\src;$(OF_ROOT)\addons\ofxWarp\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter;$(OF_ROOT)\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxPreset\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWMFVideoPlayer\src;..\..\addons\ofxWMFVideoPlayer\src\presenter;..\..\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
