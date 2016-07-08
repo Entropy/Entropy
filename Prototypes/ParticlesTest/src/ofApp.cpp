@@ -1,20 +1,23 @@
 #include "ofApp.h"
 
+#include "entropy/Helpers.h"
+#include "ParticlesTestScene.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	this->sceneManager = make_unique<entropy::scene::Manager>();
-
-	sceneTemplate = make_shared<entropy::scene::ParticlesTestScene>();
-	this->sceneManager->addScene(sceneTemplate);
-	this->sceneManager->setCurrentScene(sceneTemplate->getName());
+	// Add Scenes to the Manager.
+	auto sceneManager = entropy::GetSceneManager();
+	particlesScene = make_shared<entropy::scene::ParticlesTestScene>();
+	sceneManager->addScene(particlesScene);
+	sceneManager->setCurrentScene(particlesScene->getName());
 }
 
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	this->sceneManager.reset();
+	// TODO: Figure out why just letting the destructor do its thing crashes the app.
+	entropy::util::App::Destroy();
 }
 
 //--------------------------------------------------------------
@@ -35,7 +38,7 @@ void ofApp::keyPressed(int key)
 	switch (key)
 	{
 		case 'd':
-			sceneTemplate->deleteRandomParticle();
+			particlesScene->deleteRandomParticle();
 			break;
 	}
 }

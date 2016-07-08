@@ -2,7 +2,7 @@
 
 namespace entropy
 {
-	namespace scene
+	namespace util
 	{
 		//--------------------------------------------------------------
 		const string & AbstractMapping::getName() const
@@ -33,9 +33,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
 		Mapping<ParameterType, TrackType>::~Mapping()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>

@@ -6,6 +6,8 @@
 #include "ofxRange.h"
 
 #include "SnapshotRamses.h"
+#include "ofxVolumetrics3D.h"
+#include "ofxTexture3d.h"
 
 namespace ent
 {
@@ -20,6 +22,8 @@ namespace ent
 
         void update();
         void draw(float scale);
+		void drawOctree(float scale);
+		void drawTexture(float scale);
 
 		bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
 
@@ -70,10 +74,21 @@ namespace ent
         float m_normalizeFactor;
 
         ofShader m_renderShader;
+		ofShader m_volumetricsShader;
 
         float m_densityMin;
         float m_densityMax;
 
 		bool m_bReady;
+
+		std::time_t m_lastVertTime;
+		std::time_t m_lastFragTime;
+		std::time_t m_lastIncludesTime;
+
+		ofxVolumetrics3D volumetrics;
+		ofxTexture3d volumeTexture;
+		size_t octree_size;
+		float m_volumeQuality;
+		float m_volumeDensity;
     };
 }

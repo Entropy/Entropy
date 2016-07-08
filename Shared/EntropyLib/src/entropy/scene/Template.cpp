@@ -22,6 +22,7 @@ namespace entropy
 		void Template::setup()
 		{
 			ENTROPY_SCENE_EXIT_LISTENER;
+			ENTROPY_SCENE_RESIZE_LISTENER;
 			ENTROPY_SCENE_UPDATE_LISTENER;
 			ENTROPY_SCENE_DRAW_BACK_LISTENER;
 			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
@@ -33,6 +34,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Clean up your crap here!
 		void Template::exit()
+		{
+
+		}
+
+		//--------------------------------------------------------------
+		// Resize your content here. 
+		// Note that this is not the window size but the canvas size.
+		void Template::resize(ofResizeEventArgs & args)
 		{
 
 		}
@@ -82,7 +91,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void Template::gui(ofxPreset::GuiSettings & settings)
+		void Template::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))

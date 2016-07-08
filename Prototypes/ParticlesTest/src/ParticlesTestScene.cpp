@@ -152,7 +152,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void ParticlesTestScene::gui(ofxPreset::GuiSettings & settings)
+		void ParticlesTestScene::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))

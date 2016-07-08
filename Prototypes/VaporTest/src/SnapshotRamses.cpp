@@ -15,7 +15,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex)
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t worldsize)
 	{
 		clear();
 		
@@ -32,49 +32,94 @@ namespace ent
 		load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
 		load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
 
+		std::vector<Particle> particles(posX.size());
+		for(size_t i=0;i<posX.size();++i){
+			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
+		}
+
 		m_numCells = posX.size();
 
 		// Set the ranges for all data.
-		for (int i = 0; i < posX.size(); ++i) 
+		for (size_t i = 0; i < posX.size(); ++i)
 		{
-            m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
-			m_sizeRange.add(cellSize[i]);
 			m_densityRange.add(density[i]);
+			m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
+			m_sizeRange.add(cellSize[i]);
 		}
+
+		auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.001f;
+		ofxRange3f range;
+		range.clear();
+		range = std::accumulate(particles.begin(), particles.end(), range, [&](ofxRange3f range, const Particle & p){
+		    if(p.density>threshold){
+		        range.add(p.pos);
+	        }
+		    return range;
+	    });
+
+		cout << "num particles after filter: " << particles.size() << endl;
+		auto min = m_coordRange.getMin();
+		auto max = m_coordRange.getMax();
+		cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
+		cout << "size range " << m_sizeRange.getMin() << " - " << m_sizeRange.getMax() << endl;
 
 		// Expand coord range taking cell size into account.
 		m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
 		m_coordRange.add(m_coordRange.getMax() + m_sizeRange.getMax());
+		range.add(range.getMin() - m_sizeRange.getMax());
+		range.add(range.getMax() + m_sizeRange.getMax());
 
 		// Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
 		glm::vec3 coordSpan = m_coordRange.getSpan();
 		float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
+		glm::vec3 boxCoordSpan = range.getSpan();
+		float maxBoxSpan = std::max(boxCoordSpan.x, std::max(boxCoordSpan.y, boxCoordSpan.z));
+		float minBoxSpan = std::min(boxCoordSpan.x, std::min(boxCoordSpan.y, boxCoordSpan.z));
 		glm::vec3 spanOffset(maxSpan * 0.5);
 		glm::vec3 coordMid = m_coordRange.getCenter();
 		m_coordRange.add(coordMid - spanOffset);
 		m_coordRange.add(coordMid + spanOffset);
+		//range.add(range.getCenter() - maxBoxSpan);
+		//range.add(range.getCenter() + maxBoxSpan);
 
-		// Set up the VBO.
-		m_vboMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
-		m_vboMesh.setUsage(GL_STATIC_DRAW);
+		m_boxRange = BoundingBox(m_coordRange.getCenter(), glm::vec3(minBoxSpan));
+		//m_boxRange = BoundingBox(m_coordRange.getCenter(), m_coordRange.getSpan());
+		range.clear();
+		range.add(m_boxRange.center);
+		range.add(m_boxRange.min);
+		range.add(m_boxRange.max);
 
-		// Upload per-instance data to the VBO.
-		m_vboMesh.getVbo().setAttributeData(DENSITY_ATTRIBUTE, density.data(), 1, density.size(), GL_STATIC_DRAW, 0);
-		m_vboMesh.getVbo().setAttributeDivisor(DENSITY_ATTRIBUTE, 1);
+		auto then = ofGetElapsedTimeMicros();
+		this->vaporPixels.setup(particles, worldsize, minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax(), range);
+		auto now = ofGetElapsedTimeMicros();
+		cout << "time to compute 3D texture " << float(now - then)/1000 << "ms." << endl;
 
-		// Upload per-instance transform data to the TBO.
-		std::vector<ofVec4f> transforms;
-		transforms.resize(posX.size());
-		for (size_t i = 0; i < transforms.size(); ++i) 
-		{
-			transforms[i] = ofVec4f(posX[i], posY[i], posZ[i], cellSize[i]);
-		}
+		then = ofGetElapsedTimeMicros();
+		cout << "calculating octree with " << log2(worldsize*2) << " levels" << endl;
+		this->vaporOctree.setup(particles);
+		this->vaporOctree.compute(log2(worldsize*2), minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
+		now = ofGetElapsedTimeMicros();
+		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
 
-		m_bufferObject.allocate();
-		m_bufferObject.bind(GL_TEXTURE_BUFFER);
-		m_bufferObject.setData(transforms, GL_STREAM_DRAW);
 
-		m_bufferTexture.allocateAsBufferTexture(m_bufferObject, GL_RGBA32F);
+		auto minmax = vaporPixels.minmax();
+		cout << "min max: " << minmax.first << ", " << minmax.second << endl;
+
+		auto octree_particles = vaporOctree.toVector();
+		m_numCells = octree_particles.size();
+		cout << "octree num particles " << m_numCells << endl;
+		ofBufferObject particlesBuffer;
+		particlesBuffer.allocate();
+		particlesBuffer.setData(octree_particles, GL_STATIC_DRAW);
+		m_vboMesh.setVertexBuffer(particlesBuffer, 3, sizeof(Particle), 0);
+		m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*3);
+		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
+
+
+		volumeTexture.loadData(this->vaporPixels.data().data(), worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
+		volumeTexture.generateMipmaps();
+		volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+		//volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
 
 		m_bLoaded = true;
 	}
@@ -83,7 +128,6 @@ namespace ent
 	void SnapshotRamses::clear()
 	{
 		m_bufferTexture.clear();
-		m_bufferObject.allocate();
 
 		m_coordRange.clear();
 		m_sizeRange.clear();
@@ -119,13 +163,18 @@ namespace ent
 	//--------------------------------------------------------------
 	void SnapshotRamses::update(ofShader& shader)
 	{
-		shader.setUniformTexture("uTransform", m_bufferTexture, 0);
+
 	}
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::draw()
 	{
-		m_vboMesh.drawInstanced(OF_MESH_FILL, m_numCells);
+		m_vboMesh.draw(GL_POINTS, 0, m_numCells);
+	}
+
+	//--------------------------------------------------------------
+	void SnapshotRamses::drawOctree(float minDensity, float maxDensity){
+		vaporOctree.drawLeafs(minDensity, maxDensity);
 	}
 
 	//--------------------------------------------------------------

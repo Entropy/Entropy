@@ -16,11 +16,11 @@
     <ClCompile Include="src\ofxPersistent\Persistent.cpp">
       <Filter>src\ofxPersistent</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm.c">
+    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
       <Filter>addons\ofxObjLoader\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
+      <Filter>addons\ofxObjLoader\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,11 +65,11 @@
     <ClInclude Include="src\ofxPersistent\ofxPersistent.h">
       <Filter>src\ofxPersistent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm.h">
+    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
       <Filter>addons\ofxObjLoader\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
+      <Filter>addons\ofxObjLoader\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

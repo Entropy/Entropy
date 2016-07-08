@@ -28,13 +28,17 @@ namespace entropy
 
 			bool setCurrentScene(const string & name);
 
-		protected:
-			// OF
-			void update(ofEventArgs & args);
-			void draw(ofEventArgs & args);
-			void keyPressed(ofKeyEventArgs & args);
+			void update(double dt);
 
-			// Scenes
+			void drawScene();
+			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawOverlay(ofxPreset::Gui::Settings & settings);
+
+			bool keyPressed(ofKeyEventArgs & args);
+
+			void canvasResized(ofResizeEventArgs & args);
+
+		protected:
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;
 		};

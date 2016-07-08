@@ -1,437 +1,1452 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <ClCompile Include="src\ofApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.cpp">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SnapshotRamses.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SequenceRamses.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons">
-      <UniqueIdentifier>{b1818b53-3ec1-4bbc-a30d-7ccbe839132c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5">
-      <UniqueIdentifier>{9568108b-0953-4183-ba6c-0af045f1e0eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\src">
-      <UniqueIdentifier>{5cd8677b-f048-446e-9341-c14662871e55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs">
-      <UniqueIdentifier>{089817d9-2202-44c7-bb15-5ad97b3aaf78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\hdf5">
-      <UniqueIdentifier>{bc4e5055-1157-45b4-b158-27804652f14a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\hdf5\include">
-      <UniqueIdentifier>{7bd69093-589b-408d-8527-429b9435dc88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\szip">
-      <UniqueIdentifier>{9e2c458f-1f62-42d4-8148-f6a6328e7599}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\szip\include">
-      <UniqueIdentifier>{75debfd4-0b21-4bb1-bd27-89dcdb400f10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui">
-      <UniqueIdentifier>{8a1ff11b-101b-42ae-80f1-873e0c276af7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\src">
-      <UniqueIdentifier>{6eebb8ea-a59c-4de7-b818-5b0e9cedb258}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs">
-      <UniqueIdentifier>{c6786df1-4d93-4614-813f-49f81b818bc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs\imgui">
-      <UniqueIdentifier>{6e9e45fc-5655-4ff6-b26c-f0a21081d7fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs\imgui\src">
-      <UniqueIdentifier>{f30ed9c2-903a-4ecf-86c7-37baf263f71e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\zlib">
-      <UniqueIdentifier>{6d713124-bd68-4305-a55f-340a59e49198}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxHDF5\libs\zlib\include">
-      <UniqueIdentifier>{9728f7ac-899b-4e5c-99fb-156f6ac82fe6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxSet">
-      <UniqueIdentifier>{0a0818bb-a206-4284-95ee-9489f5eef0cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxSet\src">
-      <UniqueIdentifier>{fe0e6fe3-baf4-4ffa-9319-431c98f727d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders">
-      <UniqueIdentifier>{6dc1f201-c870-4bbd-9a6d-23b84aef9728}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5.h">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Container.h">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5File.h">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\src\ofxHDF5Group.h">
-      <Filter>addons\ofxHDF5\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5api_adpt.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Apublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5ArrayType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5AtomType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Attribute.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Classes.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CommonFG.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CompType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5CppDoc.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSet.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSpace.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DataType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DcreatProp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DOpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DSpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5DxferProp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5EnumType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epubgen.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Epublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Exception.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FaccProp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FcreatProp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDcore.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDdirect.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDfamily.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDlog.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpi.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpio.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmulti.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDsec2.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FDstdio.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5File.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5FloatType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Group.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IdComponent.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IMpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Include.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5IntType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Library.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Location.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5LTpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5MMpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Object.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5OcreatProp.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Opublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5overflow.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PacketTable.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLextern.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PLpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PredType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PropList.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5PTpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5pubconf.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5public.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Spublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5StrType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5TBpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5VarLenType.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5version.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpublic.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\hdf5\include\hdf5_hl.h">
-      <Filter>addons\ofxHDF5\libs\hdf5\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\ricehdf.h">
-      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szip_adpt.h">
-      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\szip\include\szlib.h">
-      <Filter>addons\ofxHDF5\libs\szip\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
-      <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxHDF5\libs\zlib\include\zlib.h">
-      <Filter>addons\ofxHDF5\libs\zlib\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxSet.h">
-      <Filter>addons\ofxSet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SnapshotRamses.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SequenceRamses.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxSet\src\ofxRange.h">
-      <Filter>addons\ofxSet\src</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="icon.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\addons\ofxSet\src\ofxSet.inl">
-      <Filter>addons\ofxSet\src</Filter>
-    </None>
-    <None Include="bin\data\shaders\render.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="bin\data\shaders\render.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\..\addons\ofxSet\src\ofxRange.inl">
-      <Filter>addons\ofxSet\src</Filter>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Vapor3DTexture.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\VaporOctree.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\SnapshotRamses.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\SequenceRamses.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5File.cpp">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxSet\src\ofxSet.inl">
+			<Filter>local_addons\ofxSet\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxSet\src\ofxRange.inl">
+			<Filter>local_addons\ofxSet\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPage.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCurves.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLFlags.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLBangs.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLLFO.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColors.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLInOut.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_mac.mm">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_linux.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.mm">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTimeline.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTicker.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_win.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.cpp">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fft.c">
+			<Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fftr.c">
+			<Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.cpp">
+			<Filter>local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp">
+			<Filter>local_addons\ofxMSATimer\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp">
+			<Filter>local_addons\ofxTextInputField\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasing.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\ofxTween.cpp">
+			<Filter>local_addons\ofxTween\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTimecode\src\ofxTimecode.cpp">
+			<Filter>local_addons\ofxTimecode\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons">
+			<UniqueIdentifier>{DE6745C7-E99D-D8E0-F77D-C032}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5">
+			<UniqueIdentifier>{A14E8645-312F-E1DA-63BD-FC1A}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\src">
+			<UniqueIdentifier>{F5907142-C04D-ABC0-3B28-9FBD}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs">
+			<UniqueIdentifier>{DF4D28C2-FFAD-F52C-E9D6-DC47}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\hdf5">
+			<UniqueIdentifier>{80B7E53F-C298-B85E-C08C-B6FE}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\hdf5\include">
+			<UniqueIdentifier>{4AD112E0-85DE-A9CE-1D11-F5D0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\szip">
+			<UniqueIdentifier>{DDD858C5-D9F2-FCBC-0177-6151}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\szip\include">
+			<UniqueIdentifier>{E979BA92-0B49-0EF3-DB18-92D3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\zlib">
+			<UniqueIdentifier>{0123D771-87B1-7562-C9F6-04A8}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxHDF5\libs\zlib\include">
+			<UniqueIdentifier>{950EFA3D-5B1F-BAB6-9D6D-6F04}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxImGui">
+			<UniqueIdentifier>{EA30943C-9159-F3C6-CA5A-2624}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxImGui\src">
+			<UniqueIdentifier>{6C0F77A4-05C0-8741-6EAB-BCCA}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxImGui\libs">
+			<UniqueIdentifier>{786A29BE-59D1-66A3-FDFA-48D9}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxImGui\libs\imgui">
+			<UniqueIdentifier>{4D56D533-80CB-0284-17AD-1E9E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxImGui\libs\imgui\src">
+			<UniqueIdentifier>{777A49B6-A2CF-2A9F-BB46-20C8}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxRange">
+			<UniqueIdentifier>{37BAA317-9451-E12F-7CDF-0905}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxRange\src">
+			<UniqueIdentifier>{9C86F2DF-AF0B-20E3-D9F9-5218}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet">
+			<UniqueIdentifier>{8AFCF2D2-FEB6-04EA-DF1B-5D60}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\src">
+			<UniqueIdentifier>{5AE432FB-C8D0-1918-FCBC-FD71}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs">
+			<UniqueIdentifier>{85D35A67-92BE-B0AC-14D5-480E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm">
+			<UniqueIdentifier>{F04F7F45-14EA-3068-1033-B894}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm\include">
+			<UniqueIdentifier>{9F34B012-ED2C-E830-B240-7D37}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm\include\glm">
+			<UniqueIdentifier>{FD39CD23-91C1-8E63-3297-B271}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm\include\glm\detail">
+			<UniqueIdentifier>{A44ECB07-0A46-69A2-7A61-81A8}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm\include\glm\gtx">
+			<UniqueIdentifier>{7CBDD83D-A209-CB82-0006-0844}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxSet\libs\glm\include\glm\gtc">
+			<UniqueIdentifier>{043EE924-FDBC-79B3-6812-270E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline">
+			<UniqueIdentifier>{779B08AE-F457-51A3-FAFC-82E0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\src">
+			<UniqueIdentifier>{74708723-9F17-8290-CAD1-44F2}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs">
+			<UniqueIdentifier>{0BFAE52E-3834-9FC1-F48B-4200}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\sndfile">
+			<UniqueIdentifier>{C78B1F1D-DDD9-B784-19AD-3A1E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\sndfile\include">
+			<UniqueIdentifier>{4D028A0C-B98D-7CF4-EA7F-350E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\openal">
+			<UniqueIdentifier>{ED3CB3F1-D21F-CE5E-2B45-3607}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\openal\include">
+			<UniqueIdentifier>{008A755E-BBA9-B895-CC2A-038E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\openal\include\AL">
+			<UniqueIdentifier>{A54686D7-412F-A692-5D5B-4859}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\kiss">
+			<UniqueIdentifier>{B57C3786-03FA-86BD-4510-DFBA}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\kiss\src">
+			<UniqueIdentifier>{B60ECCC0-BA57-B881-867D-9D49}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\kiss\include">
+			<UniqueIdentifier>{501856A1-A98F-FF4A-FC21-6F97}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions">
+			<UniqueIdentifier>{FD823F29-3551-6F9E-5FA9-9664}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src">
+			<UniqueIdentifier>{E32CF88C-F81A-BB61-0DF1-8073}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxMSATimer">
+			<UniqueIdentifier>{2135E2BC-9BC5-38FF-035B-658B}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxMSATimer\src">
+			<UniqueIdentifier>{85FFB0BD-BAB4-C6F2-4E24-F48D}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTextInputField">
+			<UniqueIdentifier>{5FC37960-E6F8-CD1A-33EE-F5E1}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTextInputField\src">
+			<UniqueIdentifier>{E5E3389E-B5E5-B40C-A4DC-A8AB}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTween">
+			<UniqueIdentifier>{43A316FE-B624-46A9-6F68-D1F0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTween\src">
+			<UniqueIdentifier>{CD7FA9EE-F881-0528-156E-9425}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTween\src\Easings">
+			<UniqueIdentifier>{5B7A9E65-2A50-D00F-28A3-823F}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimecode">
+			<UniqueIdentifier>{61CBE0D7-6D4D-5396-5960-D176}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\ofxTimecode\src">
+			<UniqueIdentifier>{4EAE671B-F2AB-B1ED-022C-B1A9}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings">
+			<UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\src">
+			<UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\libs">
+			<UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\SequenceRamses.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Vapor3DTexture.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\VaporOctree.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Particle.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\SnapshotRamses.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.h">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5.h">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5File.h">
+			<Filter>local_addons\ofxHDF5\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5pubconf.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Classes.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Edefin.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5MMpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Attribute.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5MPpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\hdf5.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5VarLenType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HFpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FaccProp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PacketTable.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_str.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DcreatProp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Oshared.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PredType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5diff.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_utils.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Bpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5overflow.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5AtomType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Object.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Bpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_ref.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Alltypes.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HFpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PropList.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5api_adpt.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Location.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PLextern.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90i_gen.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpio.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5trav.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Apublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Include.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Opublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5LTpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5OcreatProp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90i.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CompType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HLpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FloatType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDlog.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDstdio.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5File.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDwindows.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Spublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DxferProp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpi.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\hdf5_hl.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDdirect.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PLpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DOpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmulti.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDsec2.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5TBpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HGpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSet.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDfamily.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Opkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IntType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CppDoc.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDcore.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90proto.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Exception.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Library.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5B2pkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PTpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HLpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5LTparse.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5public.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5B2public.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5SMpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IdComponent.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_dump.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HGpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Spkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CommonFG.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSpace.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FSpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DSpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ArrayType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Einit.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FcreatProp.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5EnumType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IMpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5version.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Apkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Eterm.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FSpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Group.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpkg.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epubgen.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpublic.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5StrType.h">
+			<Filter>local_addons\ofxHDF5\libs\hdf5\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\ricehdf.h">
+			<Filter>local_addons\ofxHDF5\libs\szip\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\szip_adpt.h">
+			<Filter>local_addons\ofxHDF5\libs\szip\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\szlib.h">
+			<Filter>local_addons\ofxHDF5\libs\szip\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\zlib\include\zlib.h">
+			<Filter>local_addons\ofxHDF5\libs\zlib\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
+			<Filter>local_addons\ofxHDF5\libs\zlib\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h">
+			<Filter>local_addons\ofxImGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+			<Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxRange\src\ofRange.h">
+			<Filter>local_addons\ofxRange\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\src\ofxSet.h">
+			<Filter>local_addons\ofxSet\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\src\ofxRange.h">
+			<Filter>local_addons\ofxSet\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\geometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\packing.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\precision.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_geometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_vector_relational.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_gentype.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat4x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_int.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_fixes.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_float.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat3x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_common.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_geometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_vec4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_matrix.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_vector_relational.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat2x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_vec.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_exponential.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\setup.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_swizzle.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_half.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_common.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat4x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_noise.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_swizzle_func.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat4x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat3x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_packing.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_matrix.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_trigonometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat2x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat3x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_mat2x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_vec3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_vectorize.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_vec2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\_features.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\func_exponential.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\type_vec1.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\detail\intrinsic_trigonometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\detail</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat3x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat2x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\string_cast.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\fast_exponential.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_major_storage.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\rotate_vector.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\std_based_type.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\dual_quaternion.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_operation.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_interpolation.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\spline.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\handed_coordinate_space.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\normal.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\closest_point.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\euler_angles.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\mixed_product.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\type_aligned.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\perpendicular.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\norm.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\projection.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\simd_vec4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\common.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\range.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\scalar_multiplication.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\optimum_pow.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\fast_trigonometry.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\transform2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\raw_data.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\associated_min_max.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\simd_quat.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\component_wise.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\fast_square_root.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\number_precision.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\intersect.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\gradient_paint.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\log_base.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\orthonormalize.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\io.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\vector_query.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\extented_min_max.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\bit.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_decompose.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\simd_mat4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\vector_angle.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\hash.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_transform_2d.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\color_space_YCoCg.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\polar_coordinates.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\rotate_normalized_axis.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\transform.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\extend.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_cross_product.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\matrix_query.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\wrap.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\color_space.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\scalar_relational.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\normalize_dot.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\quaternion.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtx\compatibility.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat4x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat4x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\glm.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\exponential.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\common.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat2x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat4x4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\vec4.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat3x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\trigonometric.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\vec2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\fwd.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\vector_relational.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat2x3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\mat3x2.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\vec3.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\packing.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\round.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\random.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\type_ptr.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\epsilon.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\bitfield.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\constants.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\reciprocal.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\type_precision.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\matrix_inverse.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\ulp.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\matrix_integer.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\vec1.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\matrix_transform.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\noise.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\color_space.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\matrix_access.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\gtc\quaternion.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm\gtc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\matrix.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxSet\libs\glm\include\glm\ext.hpp">
+			<Filter>local_addons\ofxSet\libs\glm\include\glm</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLFlags.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPage.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLInOut.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTimeline.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLBangs.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEvents.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTicker.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxHotKeys.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCurves.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLLFO.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColors.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.h">
+			<Filter>local_addons\ofxTimeline\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\sndfile\include\sndfile.h">
+			<Filter>local_addons\ofxTimeline\libs\sndfile\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-presets.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-creative.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alc.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alext.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\al.h">
+			<Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\src\_kiss_fft_guts.h">
+			<Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fftr.h">
+			<Filter>local_addons\ofxTimeline\libs\kiss\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fft.h">
+			<Filter>local_addons\ofxTimeline\libs\kiss\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.h">
+			<Filter>local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.h">
+			<Filter>local_addons\ofxMSATimer\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputFieldFontRenderer.h">
+			<Filter>local_addons\ofxTextInputField\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h">
+			<Filter>local_addons\ofxTextInputField\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\easing_terms_of_use.html">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasing.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\ofxTween.h">
+			<Filter>local_addons\ofxTween\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTimecode\src\ofxTimecode.h">
+			<Filter>local_addons\ofxTimecode\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
+	</ItemGroup>
 </Project>

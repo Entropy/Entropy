@@ -10,8 +10,8 @@ void ofApp::setup()
 
     m_scale = 1024.0;
 
-    m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
-	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	//m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
+	m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -31,6 +31,20 @@ void ofApp::setup()
 	m_bExportFrames = false;
 
     m_bGuiVisible = true;
+	//m_camera.disableInertia();
+	m_camera.setDistance(1024);
+
+	/*fullQuadFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA32F);
+	fxaaShader.load("shaders/vert_full_quad.glsl", "shaders/frag_fxaa.glsl");
+	std::vector<glm::vec3> vertices = {{ -1, -1, 0 }, { 1, -1, 0 }, { 1, 1, 0 }, { -1, 1, 0 }};
+	std::vector<glm::vec2> texcoords = {{ 0, 1 }, { 1, 1 }, { 1, 0 }, { 0, 0 }};
+	fullQuad.addVertices(vertices);
+	fullQuad.addTexCoords(texcoords);
+	fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);*/
+
+	ofSetFrameRate(60);
+	ofEnablePointSprites();
+	//ofEnableBlendMode(OF_BLENDMODE_ADD);
 }
 
 //--------------------------------------------------------------
@@ -58,13 +72,29 @@ void ofApp::draw()
 {
 //    cam.setNearClip(0);
 //    cam.setFarClip(FLT_MAX);
-	m_camera.begin();
-    {
-		m_sequenceRamses.draw(m_scale);
 
-        ofNoFill();
+	if(m_vboTex){
+		m_camera.begin();
+		if(m_showOctree){
+			ofNoFill();
+			m_sequenceRamses.drawOctree(m_scale);
+			ofFill();
+		}else{
+			m_sequenceRamses.draw(m_scale);
+		}
+		m_camera.end();
+	}else{
+		m_camera.begin();
+		m_sequenceRamses.drawTexture(m_scale);
+		m_camera.end();
+	}
+
+	m_camera.begin();
+	{
+		ofNoFill();
+		ofSetColor(255,255);
         ofDrawBox(0, 0, 0, m_scale, m_scale, m_scale);
-        ofFill();
+		ofFill();
         
         ofDrawAxis(20);
     }
@@ -149,6 +179,17 @@ bool ofApp::imGui()
 						m_timeline.setFrameBased(false);
 					}
 				}
+
+				/*if(ImGui::Checkbox("GL debug", &m_glDebug)){
+					if(m_glDebug){
+						ofEnableGLDebugLog();
+					}else{
+						ofDisableGLDebugLog();
+					}
+				}*/
+
+				ImGui::Checkbox("Show octree", &m_showOctree);
+				ImGui::Checkbox("Vbo/Tex3d", &m_vboTex);
 			}
 
 			windowSize = ImGui::GetWindowSize();
@@ -189,7 +230,7 @@ void ofApp::keyPressed(int key)
 
         default:
             break;
-    }
+	}
 }
 
 //--------------------------------------------------------------

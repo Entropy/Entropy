@@ -6,7 +6,7 @@
 
 namespace entropy
 {
-	namespace scene
+	namespace util
 	{
 		class AbstractMapping
 		{

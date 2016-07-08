@@ -1,4 +1,5 @@
-#version 150
+#version 330
+#pragma include "defines.glsl"
 
 uniform vec4 globalColor;
 
@@ -16,5 +17,9 @@ float map(float value, float inMin, float inMax, float outMin, float outMax)
 
 void main (void)
 {
-    fragColor = vec4(globalColor.rgb, map(vDensity, uDensityMin, uDensityMax, 0.0, 1.0));
+#if DEBUG
+	    fragColor = vec4(1.0);
+#else
+	    fragColor = vec4(vec3(1.0), map(vDensity, uDensityMin, uDensityMax, 0.0, 1.0));
+#endif
 }
