@@ -66,6 +66,8 @@ namespace nm
         void update();
         
         void draw();
+
+		void drawProtonTest();
         
         // lighting, should be private but for
         // GUI adding simplicity they're public
@@ -77,8 +79,8 @@ namespace nm
         
         Octree<Particle> octree;
         nm::Particle* particles;
-        unsigned numParticles[Particle::NUM_TYPES];
-		unsigned totalNumParticles;
+        tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
+		tbb::atomic<unsigned> totalNumParticles;
 		unsigned* deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
@@ -89,5 +91,9 @@ namespace nm
         ofBufferObject tbo[Particle::NUM_TYPES];
 		ParticleGpuData* positions[Particle::NUM_TYPES];
         ofTexture positionsTex[Particle::NUM_TYPES];
+
+		ofVec3f* newProtons;
+		tbb::atomic<unsigned> numNewProtons;
+		ofVboMesh protonTest;
     };
 }
