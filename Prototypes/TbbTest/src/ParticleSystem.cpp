@@ -154,7 +154,7 @@ namespace nm
 					particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
 
 					// damp velocity
-					if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
+					if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
 
 					// add position (TODO: improved Euler integration)
 					particles[i] += particles[i].getVelocity() * dt;

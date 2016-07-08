@@ -35,9 +35,11 @@ void ofApp::setup()
 			ofRandom(-HALF_DIM, HALF_DIM), 
 			ofRandom(-HALF_DIM, HALF_DIM));
 
-		ofVec3f velocity(ofRandom(-20.0f, 20.0f),
-			ofRandom(-20.0f, 20.0f),
-			ofRandom(-20.0f, 20.0f));
+		const float speed = 100.f;
+
+		ofVec3f velocity(ofRandom(-speed, speed),
+			ofRandom(-speed, speed),
+			ofRandom(-speed, speed));
 
         particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
 		//nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
