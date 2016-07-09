@@ -45,13 +45,4 @@ namespace nm
 		radius(10.f)
     {
     }
-    
-    Particle::Particle(const ofVec3f& v) :
-        mass(1.f),
-        velocity(1.f, 0.f, 0.f),
-        charge(1.f),
-        ofVec3f(v),
-		radius(10.f)
-    {
-    }
 }

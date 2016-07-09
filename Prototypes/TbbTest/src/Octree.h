@@ -221,7 +221,7 @@ namespace nm
 				ofVec3f direction = centerOfCharge - point;
 				float distSq = direction.lengthSquared();
 				float dist = sqrt(distSq);
-				if (size / dist < THETA())
+				if (dist > ANNIHILATION_DISTANCE() && size / dist < THETA())
 				{
 					// far enough away to use this node
 					point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
@@ -251,6 +251,7 @@ namespace nm
 			}
 			return annihilate;
 		}
+		return NULL;
 	}
 
 	template<class T>

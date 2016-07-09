@@ -54,7 +54,6 @@ namespace nm
 		static const ofFloatColor COLORS[NUM_TYPES];
 
 		Particle();
-		Particle(const ofVec3f& v);
 
 		inline void zeroForce() { force.set(0.f); }
 		inline ofVec3f getForce() const { return force; }

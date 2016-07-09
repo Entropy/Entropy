@@ -8,8 +8,8 @@ const float ofApp::HALF_DIM = 400.f;
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    //ofSetFrameRate(60);
-    ofSetVerticalSync(false);
+    ofSetFrameRate(60);
+    //ofSetVerticalSync(false);
     
     ofBackground(0);
     particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
@@ -76,6 +76,7 @@ void ofApp::draw()
 
     cam.begin();
     particleSystem.draw();
+	particleSystem.drawProtonTest();
     cam.end();
     
     drawGui();

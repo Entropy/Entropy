@@ -34,19 +34,21 @@
 
 namespace nm
 {
-	const float ParticleSystem::MIN_SPEED_SQUARED = 1e-16;
+	const float ParticleSystem::MIN_SPEED_SQUARED = 1;// 1e-16;
 
-    ParticleSystem::ParticleSystem() :
+	ParticleSystem::ParticleSystem() :
 		particles(NULL),
-        totalNumParticles(0),
-        roughness(.1f),
+		totalNumParticles(0),
+		roughness(.1f),
 		deadParticles(NULL),
-		numDeadParticles(0)
-    {
+		numDeadParticles(0),
+		newProtons(NULL),
+		numNewProtons(0)
+	{
 		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
 		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
-    }
-    
+	}
+
 	ParticleSystem::~ParticleSystem()
 	{
 		if (particles) delete[] particles;
@@ -56,7 +58,7 @@ namespace nm
 			if (positions[i]) delete[] positions[i];
 		}
 	}
-    
+
 	void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
 	{
 		this->min = min;
@@ -67,9 +69,10 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 		deadParticles = new unsigned[MAX_PARTICLES];
+		newProtons = new ofVec3f[MAX_PARTICLES]();
 
 		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
-		
+
 		ofxObjLoader::load("models/cube.obj", meshes[Particle::POSITRON]);
 		ofxObjLoader::load("models/cube.obj", meshes[Particle::ELECTRON]);
 		ofxObjLoader::load("models/tetra.obj", meshes[Particle::UP_QUARK]);
@@ -87,30 +90,32 @@ namespace nm
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 	}
-    
-    void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity)
-    {
-        if (totalNumParticles < MAX_PARTICLES)
-        {
+
+	void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity)
+	{
+		if (totalNumParticles < MAX_PARTICLES)
+		{
 			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
 			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 5.0f, 16.0f);
 
 			Particle& p = particles[totalNumParticles];
-            p = position;
-            p.setVelocity(velocity);
+			p.set(position);
+			p.setVelocity(velocity);
 			p.setType(type);
 			p.setCharge(Particle::CHARGES[type]);
 			p.setMass(Particle::MASSES[type]);
 			p.setRadius(radius);
 
-            totalNumParticles++;
+			totalNumParticles++;
 			numParticles[type]++;
-        }
-        else ofLogError() << "Cannot add more particles";
-    }
-    
+		}
+		else ofLogError() << "Cannot add more particles";
+	}
+
 	void ParticleSystem::update()
 	{
+		numDeadParticles = 0;
+		numNewProtons = 0;
 		octree.clear();
 		octree.addPoints(particles, totalNumParticles);
 		octree.updateCenterOfCharge();
@@ -126,44 +131,82 @@ namespace nm
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
-				octree.sumForces(particles[i]);
+				Particle* annihiliate = octree.sumForces(particles[i]);
 
-				// add velocity (TODO: improved Euler integration)
-				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
-				
-				// damp velocity
-				if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
-				
-				// add position (TODO: improved Euler integration)
-				particles[i] += particles[i].getVelocity() * dt;
-				
-				// check whether particle is out of bounds
-				for (unsigned j = 0; j < 3; ++j)
+				if (annihiliate)
 				{
-					// add a little bit so things don't get stuck teleporting on the edges
-					if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f; 
-					if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
+					// close enough to another particle to annihilate it
+					unsigned deadIdx = numDeadParticles.fetch_and_increment();
+					deadParticles[deadIdx] = i;
+
+					// make the particle with the lower address in memory of
+					// the pair be the one that is responsible for producing
+					// the proton
+					if (&particles[i] < annihiliate)
+					{
+						unsigned newProtonIdx = numNewProtons.fetch_and_increment();
+						newProtons[newProtonIdx] = particles[i];
+					}
 				}
-				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
-				positions[particles[i].getType()][idx].transform =
-					ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
-					ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
-					ofMatrix4x4::newTranslationMatrix(particles[i]);
+				else
+				{
+					// add velocity (TODO: improved Euler integration)
+					particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
+
+					// damp velocity
+					if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
+
+					// add position (TODO: improved Euler integration)
+					particles[i] += particles[i].getVelocity() * dt;
+
+					// check whether particle is out of bounds
+					for (unsigned j = 0; j < 3; ++j)
+					{
+						// add a little bit so things don't get stuck teleporting on the edges
+						if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f;
+						if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
+					}
+					unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
+					positions[particles[i].getType()][idx].transform =
+						ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
+						ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
+						ofMatrix4x4::newTranslationMatrix(particles[i]);
+				}
 			}
 		});
+
+		// start deleting particles at the end first so we don't swap out a particle
+		// that is actually dead and would be swapped out later in the iteration
+		std::sort(deadParticles, deadParticles + numDeadParticles, std::greater<float>());
+	
+		if (numDeadParticles)
+		{
+			// kill all the particles
+			for (unsigned i = 0; i < numDeadParticles; ++i)
+			{
+				unsigned deadIdx = deadParticles[i];
+				unsigned endIdx = totalNumParticles.fetch_and_decrement() - 1;
+				numParticles[(unsigned)particles[deadIdx].getType()].fetch_and_decrement();
+				// replace dead particle with one from the end of the array
+				if (endIdx >= 0 && deadIdx < totalNumParticles) particles[deadIdx] = particles[endIdx];
+			}
+		}
+
+		// add new protons
+		protonTest.addVertices(newProtons, numNewProtons);
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
 			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i]);
 		}
 	}
-    
-    void ParticleSystem::draw()
-    {
-        glPushAttrib(GL_ENABLE_BIT);
-        glEnable( GL_DEPTH_TEST );
-        glEnable( GL_CULL_FACE );
-        glCullFace( GL_BACK );
-        shader.begin();
+
+	void ParticleSystem::draw()
+	{
+		glPushAttrib(GL_ENABLE_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		shader.begin();
 		{
 			shader.setUniform1i("numLights", NUM_LIGHTS);
 			shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
@@ -182,10 +225,18 @@ namespace nm
 			{
 				shader.setUniform3f("particleColor", Particle::COLORS[i].r, Particle::COLORS[i].g, Particle::COLORS[i].b);
 				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
-				meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
+				if (numParticles[i]) meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
 			}
 		}
-        shader.end();
-        glPopAttrib();
-    }
+		shader.end();
+		glPopAttrib();
+	}
+
+	void ParticleSystem::drawProtonTest()
+	{
+		ofPushStyle();
+		ofSetColor(255);
+		protonTest.drawVertices();
+		ofPopStyle();
+	}
 }
