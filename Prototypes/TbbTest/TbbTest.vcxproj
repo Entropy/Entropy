@@ -50,18 +50,22 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -95,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -114,7 +118,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -133,7 +137,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -148,6 +152,12 @@
       <AdditionalLibraryDirectories>libtbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>%(Command)
+robocopy "$(ProjectDir)libtbb/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -155,7 +165,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -171,14 +181,6 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -189,18 +191,6 @@
     <ClCompile Include="src\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="src\ofApp.h" />
@@ -214,6 +204,9 @@
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\EntropyLib\EntropyLib.vcxproj">
+      <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
