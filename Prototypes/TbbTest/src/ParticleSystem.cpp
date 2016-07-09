@@ -59,7 +59,7 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::init(const ofVec3f& min, const ofVec3f& max)
+	void ParticleSystem::init(const glm::vec3& min, const glm::vec3& max)
 	{
 		this->min = min;
 		this->max = max;
@@ -69,7 +69,7 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 		deadParticles = new unsigned[MAX_PARTICLES];
-		newProtons = new ofVec3f[MAX_PARTICLES]();
+		newProtons = new glm::vec3[MAX_PARTICLES]();
 
 		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
 
@@ -91,7 +91,7 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity)
+	void ParticleSystem::addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity)
 	{
 		if (totalNumParticles < MAX_PARTICLES)
 		{
@@ -99,7 +99,7 @@ namespace nm
 			float radius = ofMap(Particle::MASSES[type], 500.f, 2300.f, 5.0f, 16.0f);
 
 			Particle& p = particles[totalNumParticles];
-			p.set(position);
+			p.setPosition(position);
 			p.setVelocity(velocity);
 			p.setType(type);
 			p.setCharge(Particle::CHARGES[type]);
@@ -154,7 +154,7 @@ namespace nm
 					particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
 
 					// damp velocity
-					if (particles[i].getVelocity().lengthSquared() > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
+					if (glm::length2(particles[i].getVelocity()) > MIN_SPEED_SQUARED) particles[i].setVelocity(.995f * particles[i].getVelocity());
 
 					// add position (TODO: improved Euler integration)
 					particles[i] += particles[i].getVelocity() * dt;
@@ -168,9 +168,10 @@ namespace nm
 					}
 					unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
 					positions[particles[i].getType()][idx].transform =
-						ofMatrix4x4::newLookAtMatrix(ofVec3f(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), ofVec3f(0.0f, 1.0f, 0.0f)) *
-						ofMatrix4x4::newScaleMatrix(ofVec3f(particles[i].getRadius(), particles[i].getRadius(), particles[i].getRadius())) *
-						ofMatrix4x4::newTranslationMatrix(particles[i]);
+						glm::translate(particles[i]) *
+						glm::scale(glm::vec3(particles[i].getRadius())) *
+						glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), glm::vec3(0.0f, 1.0f, 0.0f));
+
 				}
 			}
 		});
@@ -215,7 +216,7 @@ namespace nm
 			for (int i = 0; i < NUM_LIGHTS; i++)
 			{
 				string index = ofToString(i);
-				shader.setUniform3f("lights[" + index + "].position", lights[i].position * ofGetCurrentViewMatrix());
+				shader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
 				shader.setUniform4f("lights[" + index + "].color", lights[i].color);
 				shader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
 				shader.setUniform1f("lights[" + index + "].radius", lights[i].radius);

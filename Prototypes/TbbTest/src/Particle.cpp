@@ -38,9 +38,9 @@ namespace nm
 	const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
 
     Particle::Particle() :
+        glm::vec3(0.0f),
         mass(1.f),
         velocity(1.f, 0.f, 0.f),
-        ofVec3f(),
         charge(1.f),
 		radius(10.f)
     {

@@ -53,7 +53,7 @@ void ofApp::setup()
         particleSystem.lights[i].color.set(1.f, 1.f, 1.f, 1.f);
         
         string iStr = ofToString(i);
-        persistent.add("lightPosns" + iStr, particleSystem.lights[i].position, ofVec3f(-2000.f), ofVec3f(2000.f));
+        persistent.add("lightPosns" + iStr, particleSystem.lights[i].position, glm::vec3(-2000.f), glm::vec3(2000.f));
         persistent.add("lightIntensities" + iStr, particleSystem.lights[i].intensity, 0.f, 5.f);
         persistent.add("lightRadiuses" + iStr, particleSystem.lights[i].radius, 0.f, 4000.f);
         persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));

@@ -60,6 +60,6 @@ typedef PersistentType<bool> PersistentBool;
 typedef PersistentType<int> PersistentInt;
 typedef PersistentType<unsigned> PersistentUnsigned;
 typedef PersistentType<float> PersistentFloat;
-typedef PersistentType<ofVec2f> PersistentVec2f;
-typedef PersistentType<ofVec3f> PersistentVec3f;
+typedef PersistentType<glm::vec2> PersistentVec2f;
+typedef PersistentType<glm::vec3> PersistentVec3f;
 typedef PersistentType<ofFloatColor> PersistentFloatColor;

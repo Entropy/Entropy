@@ -38,12 +38,12 @@ namespace nm
 {
     struct ParticleGpuData
     {
-        ofMatrix4x4 transform;
+        glm::mat4 transform;
     };
 
 	struct Light
 	{
-		ofVec3f position;
+		glm::vec3 position;
 		ofFloatColor color;
 		float intensity;
 		float radius;
@@ -59,9 +59,9 @@ namespace nm
         ParticleSystem();
         ~ParticleSystem();
         
-        void init(const ofVec3f& min, const ofVec3f& max);
+        void init(const glm::vec3& min, const glm::vec3& max);
         
-        void addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity);
+        void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
         
         void update();
         
@@ -85,14 +85,14 @@ namespace nm
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
         ofShader shader;
-        ofVec3f min, max;
+        glm::vec3 min, max;
         
         // position stuff
         ofBufferObject tbo[Particle::NUM_TYPES];
 		ParticleGpuData* positions[Particle::NUM_TYPES];
         ofTexture positionsTex[Particle::NUM_TYPES];
 
-		ofVec3f* newProtons;
+		glm::vec3* newProtons;
 		tbb::atomic<unsigned> numNewProtons;
 		ofVboMesh protonTest;
     };
