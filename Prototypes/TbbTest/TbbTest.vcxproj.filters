@@ -16,20 +16,23 @@
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp">
       <Filter>src\ofxPersistent\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Particle.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleSystem.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Octree.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
       <Filter>addons\ofxObjLoader\libs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
       <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Octree.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Particle.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\ParticleSystem.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\scene\Particles.cpp">
+      <Filter>src\entropy\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,12 +57,18 @@
     <Filter Include="addons\ofxObjLoader\libs">
       <UniqueIdentifier>{34B63617-11EF-343F-D7FD-5A0C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{26f3c8ff-62b5-474a-8741-d1cb4ba004f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\particles">
+      <UniqueIdentifier>{795d28da-6273-4a18-aed2-d7d60d6aacba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{bf56410c-6e4c-44fd-b977-9a7c531698c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Octree.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
@@ -74,20 +83,31 @@
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h">
       <Filter>src\ofxPersistent\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Particle.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticleSystem.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
       <Filter>addons\ofxObjLoader\libs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
       <Filter>addons\ofxObjLoader\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\particles\Octree.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Particle.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\ParticleSystem.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Particles.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\entropy\particles\Octree.inl">
+      <Filter>src\entropy\particles</Filter>
+    </None>
   </ItemGroup>
 </Project>

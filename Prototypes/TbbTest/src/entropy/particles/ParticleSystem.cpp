@@ -203,10 +203,16 @@ namespace nm
 
 	void ParticleSystem::draw()
 	{
-		glPushAttrib(GL_ENABLE_BIT);
+		// Save state before changing.
+		auto depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
+		auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
+		GLint cullFaceMode[1];
+		glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
+
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+
 		shader.begin();
 		{
 			shader.setUniform1i("numLights", NUM_LIGHTS);
@@ -230,7 +236,20 @@ namespace nm
 			}
 		}
 		shader.end();
-		glPopAttrib();
+
+		// Restore state.
+		if (!depthTestEnabled)
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+		if (cullFaceEnabled)
+		{
+			glCullFace(cullFaceMode[0]);
+		}
+		else
+		{
+			glDisable(GL_CULL_FACE);
+		}
 	}
 
 	void ParticleSystem::drawProtonTest()

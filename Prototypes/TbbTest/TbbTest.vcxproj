@@ -183,23 +183,25 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   <ItemGroup>
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
+    <ClCompile Include="src\entropy\particles\Octree.cpp" />
+    <ClCompile Include="src\entropy\particles\Particle.cpp" />
+    <ClCompile Include="src\entropy\particles\ParticleSystem.cpp" />
+    <ClCompile Include="src\entropy\scene\Particles.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Octree.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp" />
-    <ClCompile Include="src\Particle.cpp" />
-    <ClCompile Include="src\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
+    <ClInclude Include="src\entropy\particles\Octree.h" />
+    <ClInclude Include="src\entropy\particles\Particle.h" />
+    <ClInclude Include="src\entropy\particles\ParticleSystem.h" />
+    <ClInclude Include="src\entropy\scene\Particles.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\Octree.h" />
     <ClInclude Include="src\ofxPersistent\src\ofxPersistent.h" />
     <ClInclude Include="src\ofxPersistent\src\Persistent.h" />
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h" />
-    <ClInclude Include="src\Particle.h" />
-    <ClInclude Include="src\ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -215,6 +217,9 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\entropy\particles\Octree.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
