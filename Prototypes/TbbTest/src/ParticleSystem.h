@@ -31,6 +31,7 @@
  */
 #pragma once
 
+#include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
 
@@ -92,7 +93,7 @@ namespace nm
 		ParticleGpuData* positions[Particle::NUM_TYPES];
         ofTexture positionsTex[Particle::NUM_TYPES];
 
-		ofVec3f* newProtons;
+		glm::vec3* newProtons;
 		tbb::atomic<unsigned> numNewProtons;
 		ofVboMesh protonTest;
     };

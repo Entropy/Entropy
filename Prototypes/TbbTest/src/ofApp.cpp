@@ -13,6 +13,8 @@ void ofApp::setup()
     
     ofBackground(0);
     particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
+
+	cam.enableMouseInput();
     
 #ifdef _TEAPOT
     ofVboMesh mesh;

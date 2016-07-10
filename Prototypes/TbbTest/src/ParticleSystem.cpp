@@ -69,7 +69,7 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 		deadParticles = new unsigned[MAX_PARTICLES];
-		newProtons = new ofVec3f[MAX_PARTICLES]();
+		newProtons = new glm::vec3[MAX_PARTICLES]();
 
 		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
 
