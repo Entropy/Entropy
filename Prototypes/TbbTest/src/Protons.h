@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  Protons.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -32,74 +32,17 @@
 #pragma once
 
 #include "ofMain.h"
-#include "Octree.h"
-#include "Particle.h"
+#include "ParticleSystem.h"
 
 namespace nm
 {
-    struct ParticleGpuData
-    {
-        glm::mat4 transform;
-    };
-
-	struct Light
+	class Protons
 	{
-		glm::vec3 position;
-		ofFloatColor color;
-		float intensity;
-		float radius;
-	};
-
-	struct ProtonEventArgs
-	{
-		glm::vec3* protons;
-		unsigned numProtons;
-	};
+	public:
+		void onProtonEvent(ProtonEventArgs& protonEventArgs);
+		void draw();
     
-    class ParticleSystem
-    {
-    public:
-        static const unsigned MAX_PARTICLES = 5000;
-        static const unsigned NUM_LIGHTS = 2;
-		static const float MIN_SPEED_SQUARED;
-        
-        ParticleSystem();
-        ~ParticleSystem();
-        
-        void init(const glm::vec3& min, const glm::vec3& max);
-        
-        void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
-        
-        void update();
-        
-        void draw();
-
-		ofEvent<ProtonEventArgs> protonEvent;
-        
-        // lighting, should be private but for
-        // GUI adding simplicity they're public
-        Light lights[NUM_LIGHTS];
-        float roughness;
-        
-    private:
-        void sumForces(Particle& particle);
-        
-        Octree<Particle> octree;
-        nm::Particle* particles;
-        tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
-		tbb::atomic<unsigned> totalNumParticles;
-		unsigned* deadParticles;
-		tbb::atomic<unsigned> numDeadParticles;
-        ofVboMesh meshes[Particle::NUM_TYPES];
-        ofShader shader;
-        glm::vec3 min, max;
-        
-        // position stuff
-        ofBufferObject tbo[Particle::NUM_TYPES];
-		ParticleGpuData* positions[Particle::NUM_TYPES];
-        ofTexture positionsTex[Particle::NUM_TYPES];
-
-		glm::vec3* newProtons;
-		tbb::atomic<unsigned> numNewProtons;
+	private:
+		ofVboMesh testMesh;
     };
 }

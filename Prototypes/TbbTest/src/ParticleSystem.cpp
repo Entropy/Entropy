@@ -193,8 +193,13 @@ namespace nm
 			}
 		}
 
-		// add new protons
-		protonTest.addVertices(newProtons, numNewProtons);
+		// notify proton listeners
+		ProtonEventArgs protonEventArgs;
+		protonEventArgs.protons = newProtons;
+		protonEventArgs.numProtons = numNewProtons;
+		ofNotifyEvent(protonEvent, protonEventArgs, this);
+
+		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
 			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i]);
@@ -231,13 +236,5 @@ namespace nm
 		}
 		shader.end();
 		glPopAttrib();
-	}
-
-	void ParticleSystem::drawProtonTest()
-	{
-		ofPushStyle();
-		ofSetColor(255);
-		protonTest.drawVertices();
-		ofPopStyle();
 	}
 }

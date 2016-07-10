@@ -189,6 +189,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
+    <ClCompile Include="src\Protons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
@@ -200,6 +201,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h" />
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\ParticleSystem.h" />
+    <ClInclude Include="src\Protons.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

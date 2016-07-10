@@ -13,6 +13,7 @@ void ofApp::setup()
     
     ofBackground(0);
     particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
+	ofAddListener(particleSystem.protonEvent, &protons, &nm::Protons::onProtonEvent);
 
 	cam.enableMouseInput();
     
@@ -79,8 +80,8 @@ void ofApp::draw()
 	ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
 
     cam.begin();
-    particleSystem.draw();
-	particleSystem.drawProtonTest();
+    //particleSystem.draw();
+	protons.draw();
     cam.end();
     
     drawGui();
