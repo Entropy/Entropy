@@ -4,25 +4,26 @@
 #include "ofVectorMath.h"
 
 struct Particle{
-	glm::vec3 pos;
+	glm::vec4 pos;
 	float size;
 	float density;
+	glm::vec2 padding;
 
 	Particle(){}
 
 	Particle(const glm::vec3 & pos, float size, float density)
-	:pos(pos)
+	:pos(glm::vec4(pos,0))
 	,size(size)
 	,density(density){
 
 	}
 
 	inline glm::vec3 getMaxPos() const{
-		return pos + glm::vec3{size*0.5f, size*0.5f, size*0.5f};
+		return pos.xyz() + glm::vec3{size*0.5f, size*0.5f, size*0.5f};
 	}
 
 	inline glm::vec3 getMinPos() const{
-		return pos - glm::vec3{size*0.5f, size*0.5f, size*0.5f};
+		return pos.xyz() - glm::vec3{size*0.5f, size*0.5f, size*0.5f};
 	}
 };
 #endif // PARTICLE_H

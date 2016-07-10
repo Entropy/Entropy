@@ -10,7 +10,7 @@
 class Vapor3DTexture
 {
 	public:
-		void setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange);
+		std::vector<Particle> setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange);
 		size_t size() const;
 		const std::vector<float> & data() const;
 		std::pair<float,float> minmax() const;

@@ -53,5 +53,7 @@ namespace ent
 		ofTexture m_particlesTex;
 		Vapor3DTexture vaporPixels;
 		VaporOctree vaporOctree;
+		ofBuffer vaporPixelsBuffer;
+		ofShader particles2texture;
 	};
 }

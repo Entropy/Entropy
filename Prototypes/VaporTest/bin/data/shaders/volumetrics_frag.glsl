@@ -96,9 +96,6 @@ void main()
 									float alpha = sample3 * aScale;
 									col_acc.rgb += oneMinusAlpha * vec3(alpha) * alpha;
 									col_acc.a += alpha * oneMinusAlpha;
-									if(col_acc.a >= 1.0) {
-										break; // terminate if opacity > 1
-									}
 									vec += delta_dir;
 								}
 							}else{
@@ -112,6 +109,9 @@ void main()
 				}
 			}else{
 				vec += delta_dir*16.;
+			}
+			if(col_acc.a >= 1.0) {
+				break; // terminate if opacity > 1
 			}
 		}
 

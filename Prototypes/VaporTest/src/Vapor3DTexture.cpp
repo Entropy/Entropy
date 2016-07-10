@@ -20,12 +20,10 @@ namespace{
 		* max(min(b1.max.y, b2.max.y) - max(b1.min.y, b2.min.y),0.f)
 		* max(min(b1.max.z, b2.max.z) - max(b1.min.z, b2.min.z),0.f);
 	}
-}
 
-namespace{
-inline size_t idx_clamp(int value, int size){
-	return size_t(std::max(std::min(value, size),0));
-}
+	inline size_t idx_clamp(int value, int size){
+		return size_t(std::max(std::min(value, size),0));
+	}
 }
 
 const std::vector<float> & Vapor3DTexture::data() const{
@@ -37,7 +35,7 @@ inline void Vapor3DTexture::add(size_t x, size_t y, size_t z, float value){
 	m_data[idx] += value;
 }
 
-void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange){
+std::vector<Particle> Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange){
 	this->m_size = size;
 	this->m_quadsize = size * size;
 	this->m_cubesize = size * this->m_quadsize;
@@ -47,9 +45,12 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
 	auto scale = size / normalizeFactor;
 	int isize = int(size);
+	std::vector<Particle> particlesInBox;
 	for(auto & particle: particles){
 		if(!coordsRange.contains(particle.getMaxPos()) || !coordsRange.contains(particle.getMinPos())){
 			continue;
+		}else{
+			particlesInBox.push_back(particle);
 		}
 		float octree_coords_x = ofMap(particle.pos.x, coordsRange.getMin().x, coordsRange.getMax().x, 0, size);
 		float octree_coords_y = ofMap(particle.pos.y, coordsRange.getMin().y, coordsRange.getMax().y, 0, size);
@@ -81,6 +82,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	std::transform(this->m_data.begin(), this->m_data.end(), this->m_data.begin(), [&](float v){
 		return ofMap(v, minLimit, maxDensity, 0, 1);
 	});
+	return particlesInBox;
 }
 
 size_t Vapor3DTexture::size() const{
