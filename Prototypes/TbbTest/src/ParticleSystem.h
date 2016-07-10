@@ -31,6 +31,7 @@
  */
 #pragma once
 
+#include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
 
