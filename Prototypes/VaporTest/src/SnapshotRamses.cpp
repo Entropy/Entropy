@@ -351,29 +351,24 @@ namespace ent
 			}
 
 			voxelsFile.write((const char*)memVoxels.data(), memVoxels.size() * sizeof(uint32_t));
-
+			voxelsBuffer.allocate(memVoxels.size() * sizeof(uint32_t), memVoxels.data(), GL_STATIC_DRAW);
 			data = finalPixels.data();
 		}
 
 #if USE_COMPUTE_SHADER
-		//ofBufferObject textureBuffer;
-		//textureBuffer.allocate(worldsize*worldsize*worldsize*4, GL_STATIC_DRAW);
+		size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
 		ofTexture voxelsTexture;
 		voxelsTexture.allocateAsBufferTexture(voxelsBuffer, GL_RG32I);
-		cout << "dispatching compute shader with " << m_numCells << " instances" << endl;
+		cout << "dispatching compute shader with " << numInstances << " instances" << endl;
 		auto then = ofGetElapsedTimeMicros();
 		particles2texture.begin();
-		//voxelsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 		volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
-		//voxelsTexture.bindAsImage(1,GL_READ_ONLY);
 		particles2texture.setUniformTexture("voxels",voxelsTexture,0);
-		//textureBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
-		//particles2texture.setUniformImageTexture("volume", volumeTexture.texData.textureID, volumeTexture.texData.glInternalFormat, 0, true, GL_READ_WRITE);
 		particles2texture.setUniform1f("size",worldsize);
 		particles2texture.setUniform3f("minCoord",m_coordRange.getMin());
 		particles2texture.setUniform3f("maxCoord",m_coordRange.getMax());
 		particles2texture.setUniform3f("coordSpan",m_coordRange.getSpan());
-		particles2texture.dispatchCompute(voxelsSize/8,1,1);
+		particles2texture.dispatchCompute(numInstances,1,1);
 		particles2texture.end();
 		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
