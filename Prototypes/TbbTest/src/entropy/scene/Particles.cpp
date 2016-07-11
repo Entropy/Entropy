@@ -8,14 +8,14 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		const float Particles::HALF_DIM = 400.f;
-		
+
 		//--------------------------------------------------------------
 		Particles::Particles()
 			: Base()
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
 		}
-		
+
 		//--------------------------------------------------------------
 		Particles::~Particles()
 		{
@@ -35,7 +35,9 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			this->particleSystem.init(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
+			particleSystem.init(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
+			photons.init();
+			ofAddListener(particleSystem.photonEvent, &photons, &nm::Photons::onPhotonEvent);
 
 #ifdef _TEAPOT
 			ofVboMesh mesh;
@@ -58,9 +60,11 @@ namespace entropy
 					ofRandom(-HALF_DIM, HALF_DIM),
 					ofRandom(-HALF_DIM, HALF_DIM));
 
-				ofVec3f velocity(ofRandom(-20.0f, 20.0f),
-					ofRandom(-20.0f, 20.0f),
-					ofRandom(-20.0f, 20.0f));
+				const float speed = 100.f;
+
+				ofVec3f velocity(ofRandom(-speed, speed),
+					ofRandom(-speed, speed),
+					ofRandom(-speed, speed));
 
 				particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
 				//nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
@@ -83,7 +87,7 @@ namespace entropy
 			persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
 			persistent.load("settings/settings.xml");
 		}
-		
+
 		//--------------------------------------------------------------
 		// Clean up your crap here!
 		void Particles::exit()
@@ -92,7 +96,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Resize your content here. 
+		// Resize your content here.
 		// Note that this is not the window size but the canvas size.
 		void Particles::resize(ofResizeEventArgs & args)
 		{
@@ -104,6 +108,7 @@ namespace entropy
 		void Particles::update(double & dt)
 		{
 			particleSystem.update();
+			photons.update();
 		}
 
 		//--------------------------------------------------------------
@@ -112,13 +117,16 @@ namespace entropy
 		{
 			ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
 		}
-		
+
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
 		void Particles::drawWorld()
 		{
 			particleSystem.draw();
-			particleSystem.drawProtonTest();
+			particleSystem.drawWalls();
+			glDepthMask(GL_FALSE);
+			photons.draw();
+			glDepthMask(GL_TRUE);
 		}
 
 		//--------------------------------------------------------------
@@ -166,7 +174,7 @@ namespace entropy
 		{
 
 		}
-		
+
 		//--------------------------------------------------------------
 		// Do something after the parameters are loaded.
 		// You can load your other stuff here from that json object.

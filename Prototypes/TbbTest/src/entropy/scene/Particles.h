@@ -5,6 +5,7 @@
 
 #include "entropy/scene/Base.h"
 #include "entropy/particles/ParticleSystem.h"
+#include "entropy/particles/Photons.h"
 
 namespace entropy
 {
@@ -17,7 +18,7 @@ namespace entropy
 			static const float HALF_DIM;
 
 		public:
-			virtual string getName() const override 
+			virtual string getName() const override
 			{
 				return "entropy::scene::Particles";
 			}
@@ -43,7 +44,8 @@ namespace entropy
 		protected:
 			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
-		
+			nm::Photons photons;
+			
 		protected:
 			virtual BaseParameters & getParameters() override
 			{

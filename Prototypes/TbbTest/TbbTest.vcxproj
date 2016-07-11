@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -181,22 +181,27 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp" />
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
     <ClCompile Include="src\entropy\particles\Octree.cpp" />
     <ClCompile Include="src\entropy\particles\Particle.cpp" />
     <ClCompile Include="src\entropy\particles\ParticleSystem.cpp" />
+		<ClCompile Include="src\entropy\particles\Photons.cpp" />
     <ClCompile Include="src\entropy\scene\Particles.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h" />
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="src\entropy\particles\Octree.h" />
     <ClInclude Include="src\entropy\particles\Particle.h" />
     <ClInclude Include="src\entropy\particles\ParticleSystem.h" />
+		<ClInclude Include="src\entropy\particles\Photons.h" />
     <ClInclude Include="src\entropy\scene\Particles.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\ofxPersistent\src\ofxPersistent.h" />
@@ -220,6 +225,16 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\entropy\particles\Octree.inl" />
+	</ItemGroup>
+	<ItemGroup>
+    <None Include="bin\data\shaders\particle.frag" />
+    <None Include="bin\data\shaders\particle.vert" />
+    <None Include="bin\data\shaders\photon_draw.frag" />
+    <None Include="bin\data\shaders\photon_draw.vert" />
+    <None Include="bin\data\shaders\photon_update.frag" />
+    <None Include="bin\data\shaders\photon_update.vert" />
+    <None Include="bin\data\shaders\wall.frag" />
+    <None Include="bin\data\shaders\wall.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

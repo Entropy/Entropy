@@ -31,6 +31,7 @@
  */
 #pragma once
 
+#include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
 
@@ -47,6 +48,12 @@ namespace nm
 		ofFloatColor color;
 		float intensity;
 		float radius;
+	};
+
+	struct PhotonEventArgs
+	{
+		glm::vec3* photons;
+		unsigned numPhotons;
 	};
     
     class ParticleSystem
@@ -67,7 +74,9 @@ namespace nm
         
         void draw();
 
-		void drawProtonTest();
+		void drawWalls();
+
+		ofEvent<PhotonEventArgs> photonEvent;
         
         // lighting, should be private but for
         // GUI adding simplicity they're public
@@ -84,16 +93,16 @@ namespace nm
 		unsigned* deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
-        ofShader shader;
+        ofShader particleShader;
         glm::vec3 min, max;
+		ofShader wallShader;
         
         // position stuff
         ofBufferObject tbo[Particle::NUM_TYPES];
 		ParticleGpuData* positions[Particle::NUM_TYPES];
         ofTexture positionsTex[Particle::NUM_TYPES];
 
-		glm::vec3* newProtons;
-		tbb::atomic<unsigned> numNewProtons;
-		ofVboMesh protonTest;
+		glm::vec3* newPhotons;
+		tbb::atomic<unsigned> numNewPhotons;
     };
 }

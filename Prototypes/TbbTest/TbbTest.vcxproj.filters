@@ -16,6 +16,9 @@
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp">
       <Filter>src\ofxPersistent\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
       <Filter>addons\ofxObjLoader\libs</Filter>
     </ClCompile>
@@ -29,6 +32,9 @@
       <Filter>src\entropy\particles</Filter>
     </ClCompile>
     <ClCompile Include="src\entropy\particles\ParticleSystem.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Photons.cpp">
       <Filter>src\entropy\particles</Filter>
     </ClCompile>
     <ClCompile Include="src\entropy\scene\Particles.cpp">
@@ -66,6 +72,15 @@
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{bf56410c-6e4c-44fd-b977-9a7c531698c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="addons\ofxGpuParticles">
+      <UniqueIdentifier>{8706fd2e-05aa-4b37-8789-67559c9a9cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGpuParticles\src">
+      <UniqueIdentifier>{eb77fa45-a47b-4dbf-8b69-49fc82506fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{f95eea04-0d9a-42bb-bed8-565b30cf7fc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -82,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h">
       <Filter>src\ofxPersistent\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
       <Filter>addons\ofxObjLoader\libs</Filter>
@@ -101,6 +122,9 @@
     <ClInclude Include="src\entropy\scene\Particles.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\particles\Photons.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
@@ -108,6 +132,32 @@
   <ItemGroup>
     <None Include="src\entropy\particles\Octree.inl">
       <Filter>src\entropy\particles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\photon_draw.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_draw.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\wall.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\wall.frag">
+      <Filter>src\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
