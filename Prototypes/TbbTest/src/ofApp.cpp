@@ -79,7 +79,8 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+	//ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+	ofBackgroundGradient(ofColor(0), ofColor(20));
 
     cam.begin();
     particleSystem.draw();
