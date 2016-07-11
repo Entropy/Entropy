@@ -74,6 +74,8 @@ namespace nm
         
         void draw();
 
+		void drawWalls();
+
 		ofEvent<PhotonEventArgs> photonEvent;
         
         // lighting, should be private but for
@@ -91,8 +93,9 @@ namespace nm
 		unsigned* deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
-        ofShader shader;
+        ofShader particleShader;
         glm::vec3 min, max;
+		ofShader wallShader;
         
         // position stuff
         ofBufferObject tbo[Particle::NUM_TYPES];

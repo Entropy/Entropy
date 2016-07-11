@@ -80,10 +80,11 @@ void ofApp::update()
 void ofApp::draw()
 {
 	//ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
-	ofBackgroundGradient(ofColor(0), ofColor(20));
+	ofBackgroundGradient(ofColor(20), ofColor(30));
 
     cam.begin();
     particleSystem.draw();
+	particleSystem.drawWalls();
 	glDepthMask(GL_FALSE);
 	photons.draw();
 	glDepthMask(GL_TRUE);

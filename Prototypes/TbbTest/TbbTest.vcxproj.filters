@@ -133,5 +133,11 @@
     <None Include="bin\data\shaders\particle.vert">
       <Filter>src\shaders</Filter>
     </None>
+    <None Include="bin\data\shaders\wall.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\wall.frag">
+      <Filter>src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

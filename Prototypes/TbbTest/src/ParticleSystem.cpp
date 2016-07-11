@@ -79,7 +79,8 @@ namespace nm
 		ofxObjLoader::load("models/tetra.obj", meshes[Particle::ANTI_UP_QUARK]);
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
-		shader.load("shaders/particle");
+		particleShader.load("shaders/particle");
+		wallShader.load("shaders/wall");
 
 		// position stuff
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
@@ -179,7 +180,7 @@ namespace nm
 		// start deleting particles at the end first so we don't swap out a particle
 		// that is actually dead and would be swapped out later in the iteration
 		std::sort(deadParticles, deadParticles + numDeadParticles, std::greater<float>());
-	
+
 		if (numDeadParticles)
 		{
 			// kill all the particles
@@ -212,29 +213,63 @@ namespace nm
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		shader.begin();
+		particleShader.begin();
 		{
-			shader.setUniform1i("numLights", NUM_LIGHTS);
-			shader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
-			shader.setUniform1f("roughness", roughness);
+			particleShader.setUniform1i("numLights", NUM_LIGHTS);
+			particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+			particleShader.setUniform1f("roughness", roughness);
 
 			for (int i = 0; i < NUM_LIGHTS; i++)
 			{
 				string index = ofToString(i);
-				shader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
-				shader.setUniform4f("lights[" + index + "].color", lights[i].color);
-				shader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
-				shader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
+				particleShader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
+				particleShader.setUniform4f("lights[" + index + "].color", lights[i].color);
+				particleShader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
+				particleShader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
 			}
 
 			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 			{
-				shader.setUniform3f("particleColor", Particle::COLORS[i].r, Particle::COLORS[i].g, Particle::COLORS[i].b);
-				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
+				particleShader.setUniform3f("particleColor", Particle::COLORS[i].r, Particle::COLORS[i].g, Particle::COLORS[i].b);
+				particleShader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
 				if (numParticles[i]) meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
 			}
 		}
-		shader.end();
+		particleShader.end();
+		glPopAttrib();
+	}
+
+	void ParticleSystem::drawWalls()
+	{
+		glPushAttrib(GL_ENABLE_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		wallShader.begin();
+		{
+			wallShader.setUniform1i("numLights", NUM_LIGHTS);
+			wallShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+			wallShader.setUniform1f("roughness", roughness);
+
+			for (int i = 0; i < NUM_LIGHTS; i++)
+			{
+				string index = ofToString(i);
+				wallShader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
+				wallShader.setUniform4f("lights[" + index + "].color", lights[i].color);
+				wallShader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
+				wallShader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
+			}
+			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
+
+			ofDrawBox(0.f, 0.f, min.z - 5.f, 10000.f, 10000.f, 10.f); // back wall
+
+			ofDrawBox(0.f, min.y - 5.f, 0.f, 10000.f, 10.f, 10000.f); // floor
+			ofDrawBox(0.f, max.y + 5.f, 0.f, 10000.f, 10.f, 10000.f); // ceiling
+
+			ofDrawBox(min.x - 5.f, 0.f, 0.f, 10.f, 10000.f, 10000.f); // left wall
+			ofDrawBox(max.x + 5.f, 0.f, 0.f, 10.f, 10000.f, 10000.f); // right wall
+		}
+		wallShader.end();
 		glPopAttrib();
 	}
 }

@@ -228,6 +228,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <None Include="bin\data\shaders\photon_draw.vert" />
     <None Include="bin\data\shaders\photon_update.frag" />
     <None Include="bin\data\shaders\photon_update.vert" />
+    <None Include="bin\data\shaders\wall.frag" />
+    <None Include="bin\data\shaders\wall.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

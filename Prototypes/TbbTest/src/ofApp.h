@@ -38,4 +38,5 @@ private:
     ofEasyCam cam;
     nm::ParticleSystem particleSystem;
 	nm::Photons photons;
+
 };

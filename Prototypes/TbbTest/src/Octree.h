@@ -54,7 +54,7 @@ namespace nm
 		static constexpr unsigned POINTS_START_SIZE() { return 40; }
 		static constexpr unsigned MAX_DEPTH() { return 5; }
 		static constexpr float THETA() { return .5f; }
-		static constexpr float FORCE_MULTIPLIER() { return 1e7; }
+		static constexpr float FORCE_MULTIPLIER() { return 5e7; }
 		static constexpr float ANNIHILATION_DISTANCE() { return 2.f; }
         
         enum Location
@@ -245,7 +245,11 @@ namespace nm
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
-						if (dist < ANNIHILATION_DISTANCE()) annihilate = points[i];
+						if (dist < ANNIHILATION_DISTANCE() && 
+							((point.getType() == Particle::ANTI_UP_QUARK && points[i]->getType() == Particle::UP_QUARK) ||
+							 (point.getType() == Particle::UP_QUARK && points[i]->getType() == Particle::ANTI_UP_QUARK) ||
+							 (point.getType() == Particle::ELECTRON && points[i]->getType() == Particle::POSITRON) ||
+							 (point.getType() == Particle::POSITRON && points[i]->getType() == Particle::ELECTRON))) annihilate = points[i];
 					}
 				}
 			}
