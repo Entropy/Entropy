@@ -13,6 +13,7 @@ namespace entropy
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
+			this->fboSettings.useDepth = true;
 			this->fbo.allocate(this->fboSettings);
 
 			// Set ofxWarp shader path.
