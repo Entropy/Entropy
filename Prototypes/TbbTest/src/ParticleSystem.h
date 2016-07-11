@@ -50,10 +50,10 @@ namespace nm
 		float radius;
 	};
 
-	struct ProtonEventArgs
+	struct PhotonEventArgs
 	{
-		glm::vec3* protons;
-		unsigned numProtons;
+		glm::vec3* photons;
+		unsigned numPhotons;
 	};
     
     class ParticleSystem
@@ -74,7 +74,7 @@ namespace nm
         
         void draw();
 
-		ofEvent<ProtonEventArgs> protonEvent;
+		ofEvent<PhotonEventArgs> photonEvent;
         
         // lighting, should be private but for
         // GUI adding simplicity they're public
@@ -99,7 +99,7 @@ namespace nm
 		ParticleGpuData* positions[Particle::NUM_TYPES];
         ofTexture positionsTex[Particle::NUM_TYPES];
 
-		glm::vec3* newProtons;
-		tbb::atomic<unsigned> numNewProtons;
+		glm::vec3* newPhotons;
+		tbb::atomic<unsigned> numNewPhotons;
     };
 }

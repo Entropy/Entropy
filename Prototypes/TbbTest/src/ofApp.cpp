@@ -9,11 +9,12 @@ const float ofApp::HALF_DIM = 400.f;
 void ofApp::setup()
 {
     ofSetFrameRate(60);
-    //ofSetVerticalSync(false);
-    
     ofBackground(0);
-    particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
-	ofAddListener(particleSystem.protonEvent, &protons, &nm::Protons::onProtonEvent);
+    //ofSetVerticalSync(false); 
+    
+	particleSystem.init(ofVec3f(-HALF_DIM), ofVec3f(HALF_DIM));
+	photons.init();
+	ofAddListener(particleSystem.photonEvent, &photons, &nm::Photons::onPhotonEvent);
 
 	cam.enableMouseInput();
     
@@ -72,6 +73,7 @@ void ofApp::update()
 {
     ofSetWindowTitle(ofToString(ofGetFrameRate(), 2));
     particleSystem.update();
+	photons.update();
 }
 
 //--------------------------------------------------------------
@@ -80,8 +82,10 @@ void ofApp::draw()
 	ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
 
     cam.begin();
-    //particleSystem.draw();
-	protons.draw();
+    particleSystem.draw();
+	glDepthMask(GL_FALSE);
+	photons.draw();
+	glDepthMask(GL_TRUE);
     cam.end();
     
     drawGui();

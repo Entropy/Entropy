@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -181,6 +181,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\GpuParticles.cpp" />
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -189,9 +190,11 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
-    <ClCompile Include="src\Protons.cpp" />
+    <ClCompile Include="src\Photons.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\GpuParticles.h" />
+    <ClInclude Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\ofxGpuParticles.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="src\ofApp.h" />
@@ -201,7 +204,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h" />
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\ParticleSystem.h" />
-    <ClInclude Include="src\Protons.h" />
+    <ClInclude Include="src\Photons.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -217,6 +220,14 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\particle.frag" />
+    <None Include="bin\data\shaders\particle.vert" />
+    <None Include="bin\data\shaders\photon_draw.frag" />
+    <None Include="bin\data\shaders\photon_draw.vert" />
+    <None Include="bin\data\shaders\photon_update.frag" />
+    <None Include="bin\data\shaders\photon_update.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

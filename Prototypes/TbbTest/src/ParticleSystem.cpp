@@ -42,8 +42,8 @@ namespace nm
 		roughness(.1f),
 		deadParticles(NULL),
 		numDeadParticles(0),
-		newProtons(NULL),
-		numNewProtons(0)
+		newPhotons(NULL),
+		numNewPhotons(0)
 	{
 		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
 		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
@@ -69,7 +69,7 @@ namespace nm
 
 		particles = new nm::Particle[MAX_PARTICLES]();
 		deadParticles = new unsigned[MAX_PARTICLES];
-		newProtons = new glm::vec3[MAX_PARTICLES]();
+		newPhotons = new glm::vec3[MAX_PARTICLES]();
 
 		//for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) meshes[i] = ofMesh::box(1,1,1,1,1,1);
 
@@ -115,7 +115,7 @@ namespace nm
 	void ParticleSystem::update()
 	{
 		numDeadParticles = 0;
-		numNewProtons = 0;
+		numNewPhotons = 0;
 		octree.clear();
 		octree.addPoints(particles, totalNumParticles);
 		octree.updateCenterOfCharge();
@@ -141,11 +141,11 @@ namespace nm
 
 					// make the particle with the lower address in memory of
 					// the pair be the one that is responsible for producing
-					// the proton
+					// the photon
 					if (&particles[i] < annihiliate)
 					{
-						unsigned newProtonIdx = numNewProtons.fetch_and_increment();
-						newProtons[newProtonIdx] = particles[i];
+						unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
+						newPhotons[newPhotonIdx] = particles[i];
 					}
 				}
 				else
@@ -193,11 +193,11 @@ namespace nm
 			}
 		}
 
-		// notify proton listeners
-		ProtonEventArgs protonEventArgs;
-		protonEventArgs.protons = newProtons;
-		protonEventArgs.numProtons = numNewProtons;
-		ofNotifyEvent(protonEvent, protonEventArgs, this);
+		// notify photon listeners
+		PhotonEventArgs photonEventArgs;
+		photonEventArgs.photons = newPhotons;
+		photonEventArgs.numPhotons = numNewPhotons;
+		ofNotifyEvent(photonEvent, photonEventArgs, this);
 
 		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)

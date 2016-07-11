@@ -1,5 +1,5 @@
 /*
- *  Protons.cpp
+ *  Photons.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,17 +29,39 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#include "Protons.h"
+#pragma once
+
+#include "ofMain.h"
+#include "ParticleSystem.h"
+#include "ofxGpuParticles.h"
 
 namespace nm
 {
-	void Protons::onProtonEvent(ProtonEventArgs& protonEventArgs)
+	class Photons
 	{
-		testMesh.addVertices(protonEventArgs.protons, protonEventArgs.numProtons);
-	}
+	public:
+		static const unsigned MAX_PHOTONS = 100;
+		static const unsigned PARTICLES_PER_PHOTON = 300;
 
-	void Protons::draw()
-	{
-		testMesh.drawVertices();
-	}
+		Photons();
+
+		void init();
+		void onPhotonEvent(PhotonEventArgs& args);
+		void update();
+		void draw();
+    
+	private:
+		void onParticlesUpdate(ofShader& shader);
+		void onParticlesDraw(ofShader& shader);
+
+		ofxGpuParticles particles;
+		ofImage particleImage;
+
+		vector<glm::vec3> posns;
+		vector<glm::vec3> vels;
+
+		ofBufferObject photonPosnBuffer;
+		ofTexture photonPosnTexture;
+		unsigned currentPhotonIdx;
+    };
 }

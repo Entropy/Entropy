@@ -31,8 +31,11 @@
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
       <Filter>addons\ofxObjLoader\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Protons.cpp">
+    <ClCompile Include="src\Photons.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\GpuParticles.cpp">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +59,15 @@
     </Filter>
     <Filter Include="addons\ofxObjLoader\libs">
       <UniqueIdentifier>{34B63617-11EF-343F-D7FD-5A0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGpuParticles">
+      <UniqueIdentifier>{8706fd2e-05aa-4b37-8789-67559c9a9cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGpuParticles\src">
+      <UniqueIdentifier>{eb77fa45-a47b-4dbf-8b69-49fc82506fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{f95eea04-0d9a-42bb-bed8-565b30cf7fc1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +101,37 @@
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
       <Filter>addons\ofxObjLoader\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Protons.h">
+    <ClInclude Include="src\Photons.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\GpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\of_v0.9.3_vs_release\addons\ofxGpuParticles\src\ofxGpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\photon_draw.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_draw.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.vert">
+      <Filter>src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

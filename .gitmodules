@@ -57,3 +57,6 @@
         path = addons/ofxWMFVideoPlayer   
         url = https://github.com/Entropy/ofxWMFVideoPlayer
         branch = master
+[submodule "addons/ofxGpuParticles"]
+	path = addons/ofxGpuParticles
+	url = https://github.com/Entropy/ofxGpuParticles.git

@@ -5,7 +5,7 @@
 #include "ParticleSystem.h"
 #include "ofxImGui.h"
 #include "ofxPersistent.h"
-#include "Protons.h"
+#include "Photons.h"
 
 class ofApp : public ofBaseApp
 {
@@ -37,5 +37,5 @@ private:
     
     ofEasyCam cam;
     nm::ParticleSystem particleSystem;
-	nm::Protons protons;
+	nm::Photons photons;
 };
