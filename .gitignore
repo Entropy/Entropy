@@ -142,7 +142,7 @@ Desktop.ini
 # Default preset
 _default
 # Project data folders (everything should be in Shared/data or Shared/assets)
-*/*/bin/data
+# */*/bin/data
 # Assets (managed by Syncthing)
 Shared/assets/*
 !Shared/assets/.gitkeep
