@@ -215,7 +215,8 @@ namespace nm
 		GLint cullFaceMode[1];
 		glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
 
-		glEnable(GL_DEPTH_TEST);
+		ofEnableDepthTest();
+
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
@@ -245,11 +246,11 @@ namespace nm
 		particleShader.end();
 
 		// Restore state.
-		if (!depthTestEnabled)
+		if (GL_FALSE == depthTestEnabled)
 		{
-			glDisable(GL_DEPTH_TEST);
+			ofDisableDepthTest();
 		}
-		if (cullFaceEnabled)
+		if (GL_TRUE == cullFaceEnabled)
 		{
 			glCullFace(cullFaceMode[0]);
 		}
@@ -261,10 +262,17 @@ namespace nm
 
 	void ParticleSystem::drawWalls()
 	{
-		glPushAttrib(GL_ENABLE_BIT);
-		glEnable(GL_DEPTH_TEST);
+		// Save state before changing.
+		auto depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
+		auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
+		GLint cullFaceMode[1];
+		glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
+
+		ofEnableDepthTest();
+
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+
 		wallShader.begin();
 		{
 			wallShader.setUniform1i("numLights", NUM_LIGHTS);
@@ -290,6 +298,19 @@ namespace nm
 			ofDrawBox(max.x + 5.f, 0.f, 0.f, 10.f, 10000.f, 10000.f); // right wall
 		}
 		wallShader.end();
-		glPopAttrib();
+
+		// Restore state.
+		if (GL_FALSE == depthTestEnabled)
+		{
+			ofDisableDepthTest();
+		}
+		if (GL_TRUE == cullFaceEnabled)
+		{
+			glCullFace(cullFaceMode[0]);
+		}
+		else
+		{
+			glDisable(GL_CULL_FACE);
+		}
 	}
 }
