@@ -88,7 +88,7 @@ namespace nm
 
 		// velocities will remain constant, only age will change
 		float* particleVels = new float[w * h * 4];
-		const float speed = 20.f;
+		const float speed = 40.f;
 		for (unsigned y = 0; y < h; ++y)
 		{
 			for (unsigned x = 0; x < w; ++x)
@@ -111,10 +111,6 @@ namespace nm
 		{
 			particles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
 			particles.getMeshRef().getColors().back().a = ofRandom(.1f, 1.f); // size
-			const float speed = 20.f;
-			particles.getMeshRef().addNormal(ofVec3f(ofRandom(-speed, speed),
-				ofRandom(-speed, speed),
-				ofRandom(-speed, speed))); // random velocity
 		}
 
 		particleImage.load("images/particle1.png");

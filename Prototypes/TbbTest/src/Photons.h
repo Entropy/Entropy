@@ -45,6 +45,8 @@ namespace nm
 
 		Photons();
 
+		vector<glm::vec3>& getPosnsRef() { return posns; }
+
 		void init();
 		void onPhotonEvent(PhotonEventArgs& args);
 		void update();
