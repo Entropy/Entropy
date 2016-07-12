@@ -74,5 +74,10 @@ namespace ent
 		ofBuffer vaporPixelsBuffer;
 
 		ofVbo m_vboMesh;
+		std::string rawFileName;
+		std::string particlesFileName;
+		std::string metaFileName;
+		std::string voxelsFileName;
+		std::string particlesGroupsFileName;
 	};
 }

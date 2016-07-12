@@ -89,7 +89,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 		}
 	}
 
-
+#if USE_PARTICLES_COMPUTE_SHADER
 	auto total = particlesInBox.size();
 	std::vector<Particle> intersectingParticles;
 	intersectingParticles.reserve(particlesInBox.size());
@@ -150,9 +150,9 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 
 		m_data.assign(m_data.size(), 0.f);
 	}
+#endif
 
-
-
+#if USE_VOXELS_COMPUTE_SHADER || USE_RAW
 	float maxSize = 0;
 	float avgSize = 0;
 	for(auto & particle: particlesInBox){
@@ -202,6 +202,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 			return ent::offset_scale(v, offset, scale);
 		});
 	}
+#endif
 }
 
 size_t Vapor3DTexture::size() const{

@@ -45,12 +45,6 @@ namespace ent
 	}
 
 	void SnapshotRamses::precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize){
-		auto rawFileName = ofFilePath::removeTrailingSlash(folder) + ".raw";
-		auto particlesFileName = ofFilePath::removeTrailingSlash(folder) + ".particles";
-		auto metaFileName = ofFilePath::removeTrailingSlash(folder) + "_meta.raw";
-		auto voxelsFileName = ofFilePath::removeTrailingSlash(folder) + "_voxels.raw";
-		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(folder) + ".groups";
-
 		//------------------------------------
 		// Load the HDF5 data.
 		std::vector<float> posX;
@@ -157,8 +151,10 @@ namespace ent
 		//------------------------------------
 		// Write data to files
 		{
+            #if USE_RAW
 			ofFile texture3dRaw(rawFileName, ofFile::WriteOnly, true);
 			texture3dRaw.write((const char*)this->vaporPixels.data().data(), this->vaporPixels.data().size() * sizeof(float));
+            #endif
 
 			ofFile texture3dMeta(metaFileName, ofFile::WriteOnly, true);
 			texture3dMeta << m_densityRange.getMin() << " " << m_densityRange.getMax() << " " <<
@@ -169,10 +165,12 @@ namespace ent
 			                vaporPixels.getGroupIndices().size();
 
 
+            #if USE_PARTICLES_COMPUTE_SHADER
 			ofFile particlesFile(particlesFileName, ofFile::WriteOnly, true);
 			particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
 			ofFile particlesGroupsFile(particlesGroupsFileName, ofFile::WriteOnly, true);
 			particlesGroupsFile.write((const char*)vaporPixels.getGroupIndices().data(), sizeof(size_t) * vaporPixels.getGroupIndices().size());
+            #endif
 		}
 
 
@@ -181,6 +179,7 @@ namespace ent
 		// Find out voxels that contribute more
 		// to the final texture and remove the rest
 		// as a form of lossy compression
+        #if USE_VOXELS_COMPUTE_SHADER
 		{
 			std::array<size_t,100> histogram = {{0}};
 			std::array<double,100> histogram_contribution = {{0.}};
@@ -275,7 +274,9 @@ namespace ent
 				}
 			}
 			voxelsFile.write((const char*)memVoxels.data(), memVoxels.size() * sizeof(uint32_t));
+			cout << "number of voxels " << memVoxels.size() << endl;
 		}
+        #endif
 	}
 
 	//--------------------------------------------------------------
@@ -285,17 +286,38 @@ namespace ent
 		const float * data = nullptr;
 		void * filedata = nullptr;
 		size_t filedatalen = 0;
-		auto rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".raw";
-		auto particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".particles";
-		auto metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_meta.raw";
-		auto voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_voxels.raw";
-		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".groups";
+		rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + ".raw";
+		particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) +".particles";
+		metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + "_meta.raw";
+		voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + "_voxels.raw";
+		particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + ".groups";
+
+
 		auto voxelsSize = 0;
 		std::vector<size_t> particleGroups;
 		
+		if(!ofFile(metaFileName, ofFile::Reference).exists()){
+			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
+		}
+
+#if USE_PARTICLES_COMPUTE_SHADER
+		if(!ofFile(particlesFileName, ofFile::Reference).exists()){
+			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
+		}
+#endif
+
+#if USE_VOXELS_COMPUTE_SHADER
+		if(!ofFile(voxelsFileName, ofFile::Reference).exists()){
+			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
+		}
+#endif
+
+#if USE_RAW
 		if(!ofFile(rawFileName, ofFile::Reference).exists()){
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
+#endif
+
 
 
 		// Load data from precalculated files
@@ -398,11 +420,13 @@ namespace ent
 		    size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
 			cout << "dispatching compute shader with " << numInstances << " instances" << endl;
 			settings.voxels2texture.begin();
-			settings.volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
 			settings.voxels2texture.setUniformTexture("voxels",settings.voxelsTexture,0);
-			settings.voxels2texture.dispatchCompute(numInstances,1,1);
+			settings.volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
+			settings.voxels2texture.dispatchCompute(numInstances/1,1,1);
+			settings.voxels2texture.setUniform1f("numVoxels", numInstances);
 			settings.voxels2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
+			glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
         #elif USE_PARTICLES_COMPUTE_SHADER
 		    glm::vec3 coordSpan = m_boxRange.getSpan();
@@ -428,7 +452,7 @@ namespace ent
 				settings.particles2texture.setUniform1f("next", next);
 				settings.particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
 				idx_offset = next;
-				//glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+				glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 			}
 			settings.particles2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
@@ -436,21 +460,21 @@ namespace ent
 
             #if READ_TO_BUFFER
 		        ofBufferObject textureBuffer;
-				textureBuffer.allocate(worldsize*worldsize*worldsize*4, GL_STATIC_DRAW);
+				textureBuffer.allocate(settings.worldsize*settings.worldsize*settings.worldsize*4, GL_STATIC_DRAW);
 				char * gpudata = (char *)textureBuffer.map(GL_WRITE_ONLY);
-				memcpy(gpudata, data, worldsize*worldsize*worldsize*4);
+				memcpy(gpudata, data, settings.worldsize*settings.worldsize*settings.worldsize*4);
 				textureBuffer.unmap();
-				volumeTexture.loadData(textureBuffer, GL_RED);
+				settings.volumeTexture.loadData(textureBuffer, GL_RED);
             #else
-		        volumeTexture.loadData(data, worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
+		        settings.volumeTexture.loadData(data, settings.worldsize, settings.worldsize, settings.worldsize, 0, 0, 0, GL_RED);
             #endif
         #endif
 
         #if USE_TEXTURE_3D_MIPMAPS
-			settings.volumeTexture.generateMipmaps();
+				settings.volumeTexture.generateMipmaps();
 			settings.volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
         #else
-			settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
+				settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
         #endif
 
 		auto now = ofGetElapsedTimeMicros();
@@ -458,7 +482,7 @@ namespace ent
 
 		cout << "loaded " << m_numCells << " particles";
 
-        #if defined(TARGET_LINUX) && FAST_READ
+        #if defined(TARGET_LINUX) && FAST_READ && USE_RAW
 		    if(filedata!=nullptr){
 				munmap(filedata, filedatalen);
 			}

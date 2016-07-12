@@ -50,7 +50,7 @@ namespace ent
 #if USE_VOXELS_COMPUTE_SHADER
 		frameSettings.voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
 		frameSettings.voxels2texture.linkProgram();
-		auto maxNumVoxels = 20000000;
+		auto maxNumVoxels = 200000000;
 		auto voxelSizeBytes = 8;
 		frameSettings.voxelsBuffer.allocate(maxNumVoxels*voxelSizeBytes, GL_STATIC_DRAW);
 		frameSettings.voxelsTexture.allocateAsBufferTexture(frameSettings.voxelsBuffer, GL_RG32I);
@@ -59,7 +59,7 @@ namespace ent
 #if USE_PARTICLES_COMPUTE_SHADER
 		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
 		frameSettings.particles2texture.linkProgram();
-		auto maxNumParticles = 2000000;
+		auto maxNumParticles = 3000000;
 		frameSettings.particlesBuffer.allocate(maxNumParticles*sizeof(Particle), GL_STATIC_DRAW);
 		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
 #endif
@@ -78,9 +78,10 @@ namespace ent
 		m_volumetricsShader.end();
 
 		frameSettings.worldsize = 512;
+		m_clearData.assign(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0);
 		frameSettings.volumeTexture.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
 		frameSettings.volumeTexture.loadData(
-		    vector<float>(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0).data(),
+		    m_clearData.data(),
 		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
 		);
 
@@ -266,35 +267,36 @@ namespace ent
 			return;
 		}
 
-		if (!m_snapshots[index].isLoaded()) 
-		{
-			frameSettings.folder = m_folder;
-			frameSettings.frameIndex = m_startIndex + index;
-			frameSettings.minDensity = m_densityMin;
-			frameSettings.maxDensity = m_densityMax;
-			m_snapshots[index].setup(frameSettings);
+		frameSettings.folder = m_folder;
+		frameSettings.frameIndex = m_startIndex + index;
+		frameSettings.minDensity = m_densityMin;
+		frameSettings.maxDensity = m_densityMax;
+		frameSettings.volumeTexture.loadData(
+		    m_clearData.data(),
+		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+		);
+		m_snapshots[index].setup(frameSettings);
 
-			// Adjust the ranges.
-			m_coordRange.include(m_snapshots[index].getCoordRange());
-			m_sizeRange.include(m_snapshots[index].getSizeRange());
-			m_densityRange.include(m_snapshots[index].getDensityRange());
+		// Adjust the ranges.
+		m_coordRange.include(m_snapshots[index].getCoordRange());
+		m_sizeRange.include(m_snapshots[index].getSizeRange());
+		m_densityRange.include(m_snapshots[index].getDensityRange());
 
-			// Set normalization values to remap to [-0.5, 0.5]
-			glm::vec3 coordSpan = m_coordRange.getSpan();
-			m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
+		// Set normalization values to remap to [-0.5, 0.5]
+		glm::vec3 coordSpan = m_coordRange.getSpan();
+		m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
 
-			m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
-			m_renderShader.begin();
-			m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
-			m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
-			m_renderShader.end();
-			m_volumetricsShader.begin();
-			m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
-			m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
-			m_volumetricsShader.end();
-			cout << "min density " << m_densityMin * m_densityRange.getSpan() <<
-			        " max density " << m_densityMax * m_densityRange.getSpan() << endl;
-		}
+		m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
+		m_renderShader.begin();
+		m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+		m_renderShader.end();
+		m_volumetricsShader.begin();
+		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+		m_volumetricsShader.end();
+		cout << "min density " << m_densityMin * m_densityRange.getSpan() <<
+		        " max density " << m_densityMax * m_densityRange.getSpan() << endl;
 	}
 
 	//--------------------------------------------------------------
@@ -321,6 +323,10 @@ namespace ent
 		if (index < 0) 
 		{
 			ofLogError("SequenceRamses::setFrame") << "Index must be a positive number!";
+			return;
+		}
+
+		if(m_currFrame == index){
 			return;
 		}
 

@@ -89,6 +89,8 @@ namespace ent
 		float m_volumeQuality;
 		float m_volumeDensity;
 
+		std::vector<float> m_clearData;
+
 		SnapshotRamses::Settings frameSettings;
     };
 }
