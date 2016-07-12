@@ -9,14 +9,9 @@ struct Box{
 	vec3 max;
 };
 
-//coherent uniform layout(r16f, binding=0, location=0) image3D readonly backvolume;
-//layout(location = 0) uniform sampler3D backvolume;
 coherent uniform layout(r16f, binding=0, location=1) image3D volume;
 layout(location = 2) uniform samplerBuffer particles;
 
-/*uniform vec3 minBox;
-uniform vec3 maxBox;
-uniform vec3 boxSpan;*/
 uniform float size;
 uniform float idx_offset;
 uniform float next;
@@ -35,17 +30,6 @@ vec3 offset_scale(vec3 value, vec3 offset, float scale)
 	return (value + offset) * scale;
 }
 
-/*bool inRange(vec3 pos){
-	return pos.x>minBox.x && pos.x<maxBox.x &&
-	       pos.y>minBox.y && pos.y<maxBox.y &&
-	       pos.z>minBox.z && pos.z<maxBox.z;
-}
-
-bool inTextureRange(ivec3 pos){
-	return pos.x>0 && pos.x<size &&
-		   pos.y>0 && pos.y<size &&
-		   pos.z>0 && pos.z<size;
-}*/
 
 float boxVolume(float size) {
 	return size * size * size;
@@ -65,16 +49,11 @@ void add(ivec3 coord, float density){
 	vec4 current_d = imageLoad(volume, ivec3(coord));
 	float d = map(density, minDensity, maxDensity, 0, 1);
 	imageStore(volume, ivec3(coord), vec4(vec3(current_d.r + d), 1));
-	//imageStore(volume, ivec3(coord), vec4(d));
 }
 
 layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 void main()
 {
-	/*ivec3 coord = ivec3(gl_GlobalInvocationID.x%512, gl_GlobalInvocationID.x%512, gl_GlobalInvocationID.x%512);
-	imageStore(volume, coord, vec4(1.0));
-	return;*/
-
 	int idx = int(idx_offset) + int(gl_GlobalInvocationID.x);
 	if(idx>=int(next)) return;
 

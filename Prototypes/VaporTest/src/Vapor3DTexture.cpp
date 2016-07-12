@@ -3,6 +3,7 @@
 #include "of3dGraphics.h"
 #include "ofGraphics.h"
 #include "ofUtils.h"
+#include "Constants.h"
 
 
 namespace ent{
@@ -79,7 +80,9 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	auto offset = -coordsRange.getMin();
 	int isize = int(size);
 	for(auto & particle: particles){
-		if(!coordsRange.contains(particle.getMaxPos()) || !coordsRange.contains(particle.getMinPos())){
+		if(!coordsRange.contains(particle.getMaxPos()) ||
+		   !coordsRange.contains(particle.getMinPos()) ||
+		   particle.size * scale > MAX_PARTICLE_SIZE ){
 			continue;
 		}else{
 			particlesInBox.push_back(particle);

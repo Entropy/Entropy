@@ -1,8 +1,6 @@
 #include "SnapshotRamses.h"
-#define FAST_READ 1
-#define READ_TO_BUFFER 0
-#define USE_VOXELS_COMPUTE_SHADER 0
-#define USE_PARTICLES_COMPUTE_SHADER 1
+#include "Constants.h"
+
 #ifdef TARGET_LINUX
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -46,153 +44,38 @@ namespace ent
 		clear();
 	}
 
-	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t worldsize)
-	{
-		clear();
-		const float * data = nullptr;
-		void * filedata = nullptr;
-		size_t filedatalen = 0;
+	void SnapshotRamses::precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize){
 		auto rawFileName = ofFilePath::removeTrailingSlash(folder) + ".raw";
 		auto particlesFileName = ofFilePath::removeTrailingSlash(folder) + ".particles";
 		auto metaFileName = ofFilePath::removeTrailingSlash(folder) + "_meta.raw";
 		auto voxelsFileName = ofFilePath::removeTrailingSlash(folder) + "_voxels.raw";
 		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(folder) + ".groups";
-		ofBufferObject particlesBuffer;
-		ofBufferObject voxelsBuffer;
-		std::vector<float> finalPixels;
-		std::vector<size_t> particleGroups;
-#if USE_VOXELS_COMPUTE_SHADER
-		voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
-		voxels2texture.linkProgram();
-#endif
 
-#if USE_PARTICLES_COMPUTE_SHADER
-		particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
-		particles2texture.linkProgram();
-		int2float.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/int2float.glsl");
-		int2float.linkProgram();
-#endif
+		//------------------------------------
+		// Load the HDF5 data.
+		std::vector<float> posX;
+		std::vector<float> posY;
+		std::vector<float> posZ;
+		std::vector<float> cellSize;
+		std::vector<float> density;
 
-		size_t voxelsSize=0;
-		
-		if(ofFile(rawFileName, ofFile::Reference).exists()){
-			ofLogNotice() << "Loading from raw file";
-			// Load metadata
-			{
-				auto then = ofGetElapsedTimeMicros();
-				ofFile texture3dMeta(metaFileName, ofFile::ReadOnly, true);
-				float min_density, max_density, min_size, max_size;
-				glm::vec3 min_coords, max_coords, min_box, max_box;
-				size_t numGroups;
-				texture3dMeta >> min_density;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_density;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_coords;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_coords;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_size;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_size;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_box;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_box;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> m_numCells;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> numGroups;
-				m_densityRange.add(min_density);
-				m_densityRange.add(max_density);
-				m_coordRange.add(min_coords);
-				m_coordRange.add(max_coords);
-				m_sizeRange.add(min_size);
-				m_sizeRange.add(max_size);
-				m_boxRange = BoundingBox::fromMinMax(min_box, max_box);
-				particleGroups.resize(numGroups);
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load metadata " << float(now - then)/1000 << "ms." << endl;
-			}
+		auto then = ofGetElapsedTimeMicros();
+		loadhdf5(folder + "x/seq_" + ofToString(frameIndex) + "_x.h5", posX);
+		loadhdf5(folder + "y/seq_" + ofToString(frameIndex) + "_y.h5", posY);
+		loadhdf5(folder + "z/seq_" + ofToString(frameIndex) + "_z.h5", posZ);
+		loadhdf5(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
+		loadhdf5(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
+		auto now = ofGetElapsedTimeMicros();
+		cout << "time to load original files " << float(now - then)/1000 << "ms." << endl;
 
+		std::vector<Particle> particles(posX.size());
+		for(size_t i=0;i<posX.size();++i){
+			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
+		}
 
-			// Load raw texture
-			{
-				auto then = ofGetElapsedTimeMicros();
-                #if defined(TARGET_LINUX) && FAST_READ
-				    auto fd = open (ofToDataPath(rawFileName).c_str(), O_RDONLY, S_IRUSR);
-					filedatalen = ofFile(rawFileName, ofFile::Reference).getSize();
-					filedata = mmap (nullptr, filedatalen, PROT_READ, MAP_PRIVATE, fd, 0);
-					if(filedata == (const void *)-1){
-						ofLogError() << "Couldn't read memory mapped file";
-						return;
-					}
-					//filedata += 16*sizeof(float) + 8;
-					data = (const float*)filedata;
-                #else
-				    ofFile texture3dRaw(rawFileName, ofFile::ReadOnly, true);
-					this->vaporPixelsBuffer = ofBuffer(texture3dRaw, 1024*1024*5);
-					data = (float*)this->vaporPixelsBuffer.getData();
-                #endif
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load raw file " << float(now - then)/1000 << "ms." << endl;
-			}
-
-
-
-			// Load particles
-			{
-				particlesBuffer.allocate(m_numCells*sizeof(Particle), GL_STATIC_DRAW);
-				auto then = ofGetElapsedTimeMicros();
-				readToBuffer(particlesFileName, m_numCells*sizeof(Particle), particlesBuffer);
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
-				        "for " << m_numCells << " particles" << endl;
-			}
-
-			// Load voxels
-			{
-				voxelsSize = ofFile(voxelsFileName, ofFile::Reference).getSize();
-				voxelsBuffer.allocate(voxelsSize, GL_STATIC_DRAW);
-				auto then = ofGetElapsedTimeMicros();
-				readToBuffer(voxelsFileName, voxelsSize, voxelsBuffer);
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load voxels file " << float(now - then)/1000 << "ms. " <<
-				        "for " << voxelsSize << " bytes" << endl;
-			}
-
-			// Load particle groups
-			{
-				auto then = ofGetElapsedTimeMicros();
-				readToMemory(particlesGroupsFileName, particleGroups.size() * sizeof(size_t), (char*)particleGroups.data());
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load groups file " << float(now - then)/1000 << "ms. " <<
-				        "for " << particleGroups.size() << " groups" << endl;
-			}
-
-		}else{
-			// Load the HDF5 data.
-			std::vector<float> posX;
-			std::vector<float> posY;
-			std::vector<float> posZ;
-			std::vector<float> cellSize;
-			std::vector<float> density;
-
-			auto then = ofGetElapsedTimeMicros();
-			load(folder + "x/seq_" + ofToString(frameIndex) + "_x.h5", posX);
-			load(folder + "y/seq_" + ofToString(frameIndex) + "_y.h5", posY);
-			load(folder + "z/seq_" + ofToString(frameIndex) + "_z.h5", posZ);
-			load(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
-			load(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
-			auto now = ofGetElapsedTimeMicros();
-			cout << "time to load original files " << float(now - then)/1000 << "ms." << endl;
-
-			std::vector<Particle> particles(posX.size());
-			for(size_t i=0;i<posX.size();++i){
-				particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
-			}
-
+		//------------------------------------
+		// Precalculate ranges
+		{
 			m_numCells = posX.size();
 
 			// Set the ranges for all data.
@@ -239,7 +122,15 @@ namespace ent
 			//range.add(range.getCenter() + maxBoxSpan);
 
 			m_boxRange = BoundingBox(m_coordRange.getCenter(), glm::vec3(minBoxSpan));
-			//m_boxRange = BoundingBox(m_coordRange.getCenter(), m_coordRange.getSpan());
+		}
+
+		//------------------------------------
+		// Precalculate 3d texture pixels and
+		// order particles so they don't overlap
+		// in memory when recreating the texture
+		// with the compute shader
+		{
+			ofxRange3f range;
 			range.clear();
 			range.add(m_boxRange.center);
 			range.add(m_boxRange.min);
@@ -251,28 +142,23 @@ namespace ent
 			cout << "time to compute 3D texture " << float(now - then)/1000 << "ms." << endl;
 			m_numCells = vaporPixels.getParticlesInBox().size();
 			cout << "octree num particles " << m_numCells << endl;
+		}
 
-			/*then = ofGetElapsedTimeMicros();
-			cout << "calculating octree with " << log2(worldsize*2) << " levels" << endl;
-			this->vaporOctree.setup(particles);
-			this->vaporOctree.compute(log2(worldsize*2), minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
-			now = ofGetElapsedTimeMicros();
-			cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
-
-
-			auto minmax = vaporPixels.minmax();
-			cout << "min max: " << minmax.first << ", " << minmax.second << endl;
+		/*then = ofGetElapsedTimeMicros();
+		cout << "calculating octree with " << log2(worldsize*2) << " levels" << endl;
+		this->vaporOctree.setup(particles);
+		this->vaporOctree.compute(log2(worldsize*2), minDensity * m_densityRange.getMin(), maxDensity * m_densityRange.getMax());
+		now = ofGetElapsedTimeMicros();
+		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
+		auto octree_particles = vaporOctree.toVector();*/
 
 
-			auto octree_particles = vaporOctree.toVector();*/
 
-			particlesBuffer.allocate();
-			particlesBuffer.setData(vaporPixels.getParticlesInBox(), GL_STATIC_DRAW);
-			particleGroups = vaporPixels.getGroupIndices();
-
+		//------------------------------------
+		// Write data to files
+		{
 			ofFile texture3dRaw(rawFileName, ofFile::WriteOnly, true);
-			data = this->vaporPixels.data().data();
-			texture3dRaw.write((const char*)data, this->vaporPixels.data().size() * sizeof(float));
+			texture3dRaw.write((const char*)this->vaporPixels.data().data(), this->vaporPixels.data().size() * sizeof(float));
 
 			ofFile texture3dMeta(metaFileName, ofFile::WriteOnly, true);
 			texture3dMeta << m_densityRange.getMin() << " " << m_densityRange.getMax() << " " <<
@@ -287,7 +173,15 @@ namespace ent
 			particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
 			ofFile particlesGroupsFile(particlesGroupsFileName, ofFile::WriteOnly, true);
 			particlesGroupsFile.write((const char*)vaporPixels.getGroupIndices().data(), sizeof(size_t) * vaporPixels.getGroupIndices().size());
+		}
 
+
+
+		//------------------------------------
+		// Find out voxels that contribute more
+		// to the final texture and remove the rest
+		// as a form of lossy compression
+		{
 			std::array<size_t,100> histogram = {{0}};
 			std::array<double,100> histogram_contribution = {{0.}};
 			ofxRange3f zero;
@@ -360,7 +254,6 @@ namespace ent
 			uint32_t level = log2(worldsize);
 			cout << "storing with level " << level << endl;
 			ofFile voxelsFile(voxelsFileName, ofFile::WriteOnly, true);
-			finalPixels.resize(vaporPixels.data().size(), 0);
 			std::vector<uint32_t> memVoxels;
 			auto mask = worldsize-1;
 			auto fToi32 = pow(2,32);
@@ -377,108 +270,216 @@ namespace ent
 
 							memVoxels.push_back(idx);
 							memVoxels.push_back(vaporPixels.data()[i] * fToi32);
-							finalPixels[i] = vaporPixels.data()[i];
-							voxelsSize+=8;
 						}
 					}
 				}
 			}
-
 			voxelsFile.write((const char*)memVoxels.data(), memVoxels.size() * sizeof(uint32_t));
-
-			voxelsBuffer.allocate(memVoxels.size() * sizeof(uint32_t), memVoxels.data(), GL_STATIC_DRAW);
-			data = finalPixels.data();
 		}
+	}
+
+	//--------------------------------------------------------------
+	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t worldsize)
+	{
+		clear();
+		const float * data = nullptr;
+		void * filedata = nullptr;
+		size_t filedatalen = 0;
+		auto rawFileName = ofFilePath::removeTrailingSlash(folder) + ".raw";
+		auto particlesFileName = ofFilePath::removeTrailingSlash(folder) + ".particles";
+		auto metaFileName = ofFilePath::removeTrailingSlash(folder) + "_meta.raw";
+		auto voxelsFileName = ofFilePath::removeTrailingSlash(folder) + "_voxels.raw";
+		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(folder) + ".groups";
+		auto voxelsSize = 0;
+		ofBufferObject particlesBuffer;
+		ofBufferObject voxelsBuffer;
+		std::vector<float> finalPixels;
+		std::vector<size_t> particleGroups;
+#if USE_VOXELS_COMPUTE_SHADER
+		voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
+		voxels2texture.linkProgram();
+#endif
+
+#if USE_PARTICLES_COMPUTE_SHADER
+		particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
+		particles2texture.linkProgram();
+#endif
+		
+		if(!ofFile(rawFileName, ofFile::Reference).exists()){
+			precalculate(folder, frameIndex, minDensity, maxDensity, worldsize);
+		}
+
+
+		// Load data
+		{
+			ofLogNotice() << "Loading from raw file";
+			// Load metadata
+			{
+				auto then = ofGetElapsedTimeMicros();
+				ofFile texture3dMeta(metaFileName, ofFile::ReadOnly, true);
+				float min_density, max_density, min_size, max_size;
+				glm::vec3 min_coords, max_coords, min_box, max_box;
+				size_t numGroups;
+				texture3dMeta >> min_density;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> max_density;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> min_coords;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> max_coords;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> min_size;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> max_size;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> min_box;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> max_box;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> m_numCells;
+				texture3dMeta.ignore(1);
+				texture3dMeta >> numGroups;
+				m_densityRange.add(min_density);
+				m_densityRange.add(max_density);
+				m_coordRange.add(min_coords);
+				m_coordRange.add(max_coords);
+				m_sizeRange.add(min_size);
+				m_sizeRange.add(max_size);
+				m_boxRange = BoundingBox::fromMinMax(min_box, max_box);
+				particleGroups.resize(numGroups);
+				auto now = ofGetElapsedTimeMicros();
+				cout << "time to load metadata " << float(now - then)/1000 << "ms." << endl;
+			}
 
 #if USE_VOXELS_COMPUTE_SHADER
-		size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
-		ofTexture voxelsTexture;
-		voxelsTexture.allocateAsBufferTexture(voxelsBuffer, GL_RG32I);
-		cout << "dispatching compute shader with " << numInstances << " instances" << endl;
-		auto then = ofGetElapsedTimeMicros();
-		voxels2texture.begin();
-		volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
-		voxels2texture.setUniformTexture("voxels",voxelsTexture,0);
-		voxels2texture.dispatchCompute(numInstances,1,1);
-		voxels2texture.end();
-
-		glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
-		//volumeTexture.copyTo(textureBuffer);
-		//volumeTexture.loadData(textureBuffer, GL_RED);
-		auto now = ofGetElapsedTimeMicros();
-		cout << "time to load texture " << float(now - then)/1000 << "ms." << endl;
-
-		cout << "loaded " << m_numCells << " particles";
+			// Load voxels
+			{
+				voxelsSize = ofFile(voxelsFileName, ofFile::Reference).getSize();
+				voxelsBuffer.allocate(voxelsSize, GL_STATIC_DRAW);
+				auto then = ofGetElapsedTimeMicros();
+				readToBuffer(voxelsFileName, voxelsSize, voxelsBuffer);
+				auto now = ofGetElapsedTimeMicros();
+				cout << "time to load voxels file " << float(now - then)/1000 << "ms. " <<
+				        "for " << voxelsSize << " bytes" << endl;
+			}
 #elif USE_PARTICLES_COMPUTE_SHADER
-		size_t numInstances = m_numCells;
-		ofTexture particlesTexture;
-		particlesTexture.allocateAsBufferTexture(particlesBuffer, GL_RGBA32F);
-		/*ofxTexture3d ivolumeTex;
-		ivolumeTex.allocate(worldsize, worldsize, worldsize, GL_R32UI);
-		ivolumeTex.loadData(vector<int32_t>(worldsize*worldsize*worldsize,0).data(), worldsize, worldsize, worldsize, 0,0,0, GL_RED);*/
-		cout << "dispatching compute shader with " << numInstances << " instances" << endl;
+			// Load particles
+			{
+				particlesBuffer.allocate(m_numCells*sizeof(Particle), GL_STATIC_DRAW);
+				auto then = ofGetElapsedTimeMicros();
+				readToBuffer(particlesFileName, m_numCells*sizeof(Particle), particlesBuffer);
+				auto now = ofGetElapsedTimeMicros();
+				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
+				        "for " << m_numCells << " particles" << endl;
+			}
+
+			// Load particle groups
+			{
+				auto then = ofGetElapsedTimeMicros();
+				readToMemory(particlesGroupsFileName, particleGroups.size() * sizeof(size_t), (char*)particleGroups.data());
+				auto now = ofGetElapsedTimeMicros();
+				cout << "time to load groups file " << float(now - then)/1000 << "ms. " <<
+				        "for " << particleGroups.size() << " groups" << endl;
+			}
+#else
+			// Load raw texture
+			{
+				auto then = ofGetElapsedTimeMicros();
+                #if defined(TARGET_LINUX) && FAST_READ
+				    auto fd = open (ofToDataPath(rawFileName).c_str(), O_RDONLY, S_IRUSR);
+					filedatalen = ofFile(rawFileName, ofFile::Reference).getSize();
+					filedata = mmap (nullptr, filedatalen, PROT_READ, MAP_PRIVATE, fd, 0);
+					if(filedata == (const void *)-1){
+						ofLogError() << "Couldn't read memory mapped file";
+						return;
+					}
+					//filedata += 16*sizeof(float) + 8;
+					data = (const float*)filedata;
+                #else
+				    ofFile texture3dRaw(rawFileName, ofFile::ReadOnly, true);
+					this->vaporPixelsBuffer = ofBuffer(texture3dRaw, 1024*1024*5);
+					data = (float*)this->vaporPixelsBuffer.getData();
+                #endif
+				auto now = ofGetElapsedTimeMicros();
+				cout << "time to load raw file " << float(now - then)/1000 << "ms." << endl;
+			}
+#endif
+		}
+
 		auto then = ofGetElapsedTimeMicros();
 
-		glm::vec3 coordSpan = m_boxRange.getSpan();
-		auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
-		auto scale = worldsize / normalizeFactor;
-		auto offset = -m_boxRange.min;
+        #if USE_VOXELS_COMPUTE_SHADER
+		    size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
+			ofTexture voxelsTexture;
+			voxelsTexture.allocateAsBufferTexture(voxelsBuffer, GL_RG32I);
+			cout << "dispatching compute shader with " << numInstances << " instances" << endl;
+			voxels2texture.begin();
+			volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
+			voxels2texture.setUniformTexture("voxels",voxelsTexture,0);
+			voxels2texture.dispatchCompute(numInstances,1,1);
+			voxels2texture.end();
 
-		particles2texture.begin();
-		//glMemoryBarrier( GL_ALL_BARRIER_BITS );
-		//particles2texture.setUniformTexture("backVolume", backVolumeTexture.texData.textureTarget, backVolumeTexture.texData.textureID, 0);
-		particles2texture.setUniformTexture("particles",particlesTexture,0);
-		volumeTexture.bindAsImage(0,GL_READ_WRITE,0,1,0);
-		particles2texture.setUniform1f("size",worldsize);
-		particles2texture.setUniform1f("minDensity",minDensity * m_densityRange.getMin());
-		particles2texture.setUniform1f("maxDensity",maxDensity * m_densityRange.getMax());
-		particles2texture.setUniform3f("minBox",m_boxRange.min);
-		particles2texture.setUniform3f("maxBox",m_boxRange.max);
-		particles2texture.setUniform3f("boxSpan",m_boxRange.getSpan());
-		particles2texture.setUniform1f("scale", scale);
-		particles2texture.setUniform3f("offset", offset);
+			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
+			//volumeTexture.copyTo(textureBuffer);
+			//volumeTexture.loadData(textureBuffer, GL_RED);
+        #elif USE_PARTICLES_COMPUTE_SHADER
+		    ofTexture particlesTexture;
+			particlesTexture.allocateAsBufferTexture(particlesBuffer, GL_RGBA32F);
+			glm::vec3 coordSpan = m_boxRange.getSpan();
+			auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
+			auto scale = worldsize / normalizeFactor;
+			auto offset = -m_boxRange.min;
 
-		size_t idx_offset = 0;
-		for(auto next: particleGroups){
-			particles2texture.setUniform1f("idx_offset", idx_offset);
-			particles2texture.setUniform1f("next", next);
-			particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
-			idx_offset = next;
-			//glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
-		}
-		particles2texture.end();
-		glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
+			particles2texture.begin();
+			particles2texture.setUniformTexture("particles",particlesTexture,0);
+			volumeTexture.bindAsImage(0,GL_READ_WRITE,0,1,0);
+			particles2texture.setUniform1f("size",worldsize);
+			particles2texture.setUniform1f("minDensity",minDensity * m_densityRange.getMin());
+			particles2texture.setUniform1f("maxDensity",maxDensity * m_densityRange.getMax());
+			particles2texture.setUniform3f("minBox",m_boxRange.min);
+			particles2texture.setUniform3f("maxBox",m_boxRange.max);
+			particles2texture.setUniform3f("boxSpan",m_boxRange.getSpan());
+			particles2texture.setUniform1f("scale", scale);
+			particles2texture.setUniform3f("offset", offset);
 
-		auto now = ofGetElapsedTimeMicros();
-		cout << "time to load texture " << float(now - then)/1000 << "ms." << endl;
+			size_t idx_offset = 0;
+			for(auto next: particleGroups){
+				particles2texture.setUniform1f("idx_offset", idx_offset);
+				particles2texture.setUniform1f("next", next);
+				particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
+				idx_offset = next;
+				//glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+			}
+			particles2texture.end();
+			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
+        #else
 
-		cout << "loaded " << m_numCells << " particles";
-#else
-
-    #if READ_TO_BUFFER
-		    ofBufferObject textureBuffer;
-			textureBuffer.allocate(worldsize*worldsize*worldsize*4, GL_STATIC_DRAW);
-			auto then = ofGetElapsedTimeMicros();
-			char * gpudata = (char *)textureBuffer.map(GL_WRITE_ONLY);
-			memcpy(gpudata, data, worldsize*worldsize*worldsize*4);
-			textureBuffer.unmap();
-			volumeTexture.loadData(textureBuffer, GL_RED);
-    #else
-		    auto then = ofGetElapsedTimeMicros();
-			volumeTexture.loadData(data, worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
-    #endif
-			auto now = ofGetElapsedTimeMicros();
-			cout << "time to load texture " << float(now - then)/1000 << "ms." << endl;
-#endif
+            #if READ_TO_BUFFER
+		        ofBufferObject textureBuffer;
+				textureBuffer.allocate(worldsize*worldsize*worldsize*4, GL_STATIC_DRAW);
+				char * gpudata = (char *)textureBuffer.map(GL_WRITE_ONLY);
+				memcpy(gpudata, data, worldsize*worldsize*worldsize*4);
+				textureBuffer.unmap();
+				volumeTexture.loadData(textureBuffer, GL_RED);
+            #else
+		        volumeTexture.loadData(data, worldsize, worldsize, worldsize, 0, 0, 0, GL_RED);
+            #endif
+        #endif
 
 		volumeTexture.generateMipmaps();
 		volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 		//volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
-#if defined(TARGET_LINUX) && FAST_READ
-		if(filedata!=nullptr){
-			munmap(filedata, filedatalen);
-		}
-#endif
+
+		auto now = ofGetElapsedTimeMicros();
+		cout << "time to load texture and generate mipmaps " << float(now - then)/1000 << "ms." << endl;
+
+		cout << "loaded " << m_numCells << " particles";
+
+        #if defined(TARGET_LINUX) && FAST_READ
+		    if(filedata!=nullptr){
+				munmap(filedata, filedatalen);
+			}
+        #endif
 
 		/*GLint num_textures;
 		glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &num_textures);
@@ -498,8 +499,6 @@ namespace ent
 	//--------------------------------------------------------------
 	void SnapshotRamses::clear()
 	{
-		m_bufferTexture.clear();
-
 		m_coordRange.clear();
 		m_sizeRange.clear();
 		m_densityRange.clear();
@@ -510,7 +509,7 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::load(const std::string& file, std::vector<float>& elements)
+	void SnapshotRamses::loadhdf5(const std::string& file, std::vector<float>& elements)
 	{
 		ofxHDF5File h5File;
 		h5File.open(file, true);

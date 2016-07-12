@@ -39,9 +39,9 @@ namespace ent
 		BoundingBox m_boxRange;
 
 	protected:
-		void load(const std::string& file, std::vector<float>& elements);
+		void loadhdf5(const std::string& file, std::vector<float>& elements);
+		void precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize);
 
-		ofTexture m_bufferTexture;
 		ofVbo m_vboMesh;
 
 		ofxRange3f m_coordRange;
@@ -56,6 +56,5 @@ namespace ent
 		ofBuffer vaporPixelsBuffer;
 		ofShader voxels2texture;
 		ofShader particles2texture;
-		ofShader int2float;
 	};
 }
