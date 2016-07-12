@@ -1,4 +1,5 @@
 #include "SequenceRamses.h"
+#include "Constants.h"
 
 namespace ent
 {
@@ -28,7 +29,6 @@ namespace ent
 			ofLogError("SequenceRamses::loadSequence") << "Invalid range [" << startIndex << ", " << endIndex << "]";
 			return;
 		}
-
 		m_snapshots.resize(numFiles);
 
 		m_folder = folder;
@@ -47,12 +47,28 @@ namespace ent
 		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 		m_renderShader.end();
 
+#if USE_VOXELS_COMPUTE_SHADER
+		frameSettings.voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
+		frameSettings.voxels2texture.linkProgram();
+		auto maxNumVoxels = 20000000;
+		auto voxelSizeBytes = 8;
+		frameSettings.voxelsBuffer.allocate(maxNumVoxels*voxelSizeBytes, GL_STATIC_DRAW);
+		frameSettings.voxelsTexture.allocateAsBufferTexture(frameSettings.voxelsBuffer, GL_RG32I);
+#endif
+
+#if USE_PARTICLES_COMPUTE_SHADER
+		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
+		frameSettings.particles2texture.linkProgram();
+		auto maxNumParticles = 2000000;
+		frameSettings.particlesBuffer.allocate(maxNumParticles*sizeof(Particle), GL_STATIC_DRAW);
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
+#endif
+
 		namespace fs = std::filesystem;
 		m_lastVertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
 		m_lastFragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
-		octree_size = 512;
 		m_volumeDensity = 20.0;
 		m_volumeQuality = 1;
 		m_volumetricsShader.load("shaders/volumetrics_vertex.glsl", "shaders/volumetrics_frag.glsl");
@@ -60,17 +76,23 @@ namespace ent
 		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
 		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
 		m_volumetricsShader.end();
-		volumeTexture.allocate(octree_size, octree_size, octree_size, GL_R16F);
-		volumeTexture.loadData(vector<float>(octree_size*octree_size*octree_size,0).data(), octree_size, octree_size, octree_size, 0,0,0, GL_RED);
-		volumetrics.setup(&volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
+
+		frameSettings.worldsize = 512;
+		frameSettings.volumeTexture.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
+		frameSettings.volumeTexture.loadData(
+		    vector<float>(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0).data(),
+		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+		);
+
+		volumetrics.setup(&frameSettings.volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
-		glBindTexture(volumeTexture.texData.textureTarget,volumeTexture.texData.textureID);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
-		glBindTexture(volumeTexture.texData.textureTarget,0);
-		//volumetrics.setVolumeTextureFilterMode(GL_LINEAR);
+		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,frameSettings.volumeTexture.texData.textureID);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
+		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);
+
 
 		m_bReady = true;
     }
@@ -246,7 +268,11 @@ namespace ent
 
 		if (!m_snapshots[index].isLoaded()) 
 		{
-			m_snapshots[index].setup(m_folder, m_startIndex + index, m_densityMin, m_densityMax, volumeTexture, octree_size);
+			frameSettings.folder = m_folder;
+			frameSettings.frameIndex = m_startIndex + index;
+			frameSettings.minDensity = m_densityMin;
+			frameSettings.maxDensity = m_densityMax;
+			m_snapshots[index].setup(frameSettings);
 
 			// Adjust the ranges.
 			m_coordRange.include(m_snapshots[index].getCoordRange());

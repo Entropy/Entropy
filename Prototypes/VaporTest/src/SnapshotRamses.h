@@ -7,6 +7,7 @@
 #include "VaporOctree.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
+#include "Constants.h"
 
 namespace ent
 {
@@ -23,7 +24,26 @@ namespace ent
 		SnapshotRamses();
 		~SnapshotRamses();
 
-		void setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & tex, size_t worldsize);
+		struct Settings{
+			std::string folder;
+			int frameIndex;
+			float minDensity;
+			float maxDensity;
+			size_t worldsize;
+			ofxTexture3d volumeTexture;
+            #if USE_VOXELS_COMPUTE_SHADER
+			    ofShader voxels2texture;
+				ofBufferObject voxelsBuffer;
+				ofTexture voxelsTexture;
+            #endif
+            #if USE_PARTICLES_COMPUTE_SHADER
+				ofShader particles2texture;
+				ofBufferObject particlesBuffer;
+				ofTexture particlesTexture;
+            #endif
+		};
+
+		void setup(Settings & settings);
 		void clear();
 
 		void update(ofShader& shader);
@@ -42,7 +62,6 @@ namespace ent
 		void loadhdf5(const std::string& file, std::vector<float>& elements);
 		void precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize);
 
-		ofVbo m_vboMesh;
 
 		ofxRange3f m_coordRange;
 		ofxRange1f m_sizeRange;
@@ -50,11 +69,10 @@ namespace ent
 
 		std::size_t m_numCells;
 		bool m_bLoaded;
-		ofTexture m_particlesTex;
 		Vapor3DTexture vaporPixels;
 		VaporOctree vaporOctree;
 		ofBuffer vaporPixelsBuffer;
-		ofShader voxels2texture;
-		ofShader particles2texture;
+
+		ofVbo m_vboMesh;
 	};
 }

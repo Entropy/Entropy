@@ -279,40 +279,27 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
-	void SnapshotRamses::setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & volumeTexture, size_t worldsize)
+	void SnapshotRamses::setup(Settings & settings)
 	{
 		clear();
 		const float * data = nullptr;
 		void * filedata = nullptr;
 		size_t filedatalen = 0;
-		auto rawFileName = ofFilePath::removeTrailingSlash(folder) + ".raw";
-		auto particlesFileName = ofFilePath::removeTrailingSlash(folder) + ".particles";
-		auto metaFileName = ofFilePath::removeTrailingSlash(folder) + "_meta.raw";
-		auto voxelsFileName = ofFilePath::removeTrailingSlash(folder) + "_voxels.raw";
-		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(folder) + ".groups";
+		auto rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".raw";
+		auto particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".particles";
+		auto metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_meta.raw";
+		auto voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_voxels.raw";
+		auto particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + ".groups";
 		auto voxelsSize = 0;
-		ofBufferObject particlesBuffer;
-		ofBufferObject voxelsBuffer;
-		std::vector<float> finalPixels;
 		std::vector<size_t> particleGroups;
-#if USE_VOXELS_COMPUTE_SHADER
-		voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
-		voxels2texture.linkProgram();
-#endif
-
-#if USE_PARTICLES_COMPUTE_SHADER
-		particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
-		particles2texture.linkProgram();
-#endif
 		
 		if(!ofFile(rawFileName, ofFile::Reference).exists()){
-			precalculate(folder, frameIndex, minDensity, maxDensity, worldsize);
+			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 
 
-		// Load data
+		// Load data from precalculated files
 		{
-			ofLogNotice() << "Loading from raw file";
 			// Load metadata
 			{
 				auto then = ofGetElapsedTimeMicros();
@@ -355,24 +342,22 @@ namespace ent
 			// Load voxels
 			{
 				voxelsSize = ofFile(voxelsFileName, ofFile::Reference).getSize();
-				voxelsBuffer.allocate(voxelsSize, GL_STATIC_DRAW);
 				auto then = ofGetElapsedTimeMicros();
-				readToBuffer(voxelsFileName, voxelsSize, voxelsBuffer);
+				readToBuffer(voxelsFileName, voxelsSize, settings.voxelsBuffer);
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load voxels file " << float(now - then)/1000 << "ms. " <<
 				        "for " << voxelsSize << " bytes" << endl;
 			}
-#elif USE_PARTICLES_COMPUTE_SHADER
+#elif USE_PARTICLES_COMPUTE_SHADER || USE_VBO
 			// Load particles
 			{
-				particlesBuffer.allocate(m_numCells*sizeof(Particle), GL_STATIC_DRAW);
 				auto then = ofGetElapsedTimeMicros();
-				readToBuffer(particlesFileName, m_numCells*sizeof(Particle), particlesBuffer);
+				readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
 				        "for " << m_numCells << " particles" << endl;
 			}
-
+    #if USE_PARTICLES_COMPUTE_SHADER
 			// Load particle groups
 			{
 				auto then = ofGetElapsedTimeMicros();
@@ -381,6 +366,7 @@ namespace ent
 				cout << "time to load groups file " << float(now - then)/1000 << "ms. " <<
 				        "for " << particleGroups.size() << " groups" << endl;
 			}
+    #endif
 #else
 			// Load raw texture
 			{
@@ -410,47 +396,41 @@ namespace ent
 
         #if USE_VOXELS_COMPUTE_SHADER
 		    size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
-			ofTexture voxelsTexture;
-			voxelsTexture.allocateAsBufferTexture(voxelsBuffer, GL_RG32I);
 			cout << "dispatching compute shader with " << numInstances << " instances" << endl;
-			voxels2texture.begin();
-			volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
-			voxels2texture.setUniformTexture("voxels",voxelsTexture,0);
-			voxels2texture.dispatchCompute(numInstances,1,1);
-			voxels2texture.end();
-
+			settings.voxels2texture.begin();
+			settings.volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
+			settings.voxels2texture.setUniformTexture("voxels",settings.voxelsTexture,0);
+			settings.voxels2texture.dispatchCompute(numInstances,1,1);
+			settings.voxels2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
-			//volumeTexture.copyTo(textureBuffer);
-			//volumeTexture.loadData(textureBuffer, GL_RED);
+
         #elif USE_PARTICLES_COMPUTE_SHADER
-		    ofTexture particlesTexture;
-			particlesTexture.allocateAsBufferTexture(particlesBuffer, GL_RGBA32F);
-			glm::vec3 coordSpan = m_boxRange.getSpan();
+		    glm::vec3 coordSpan = m_boxRange.getSpan();
 			auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
-			auto scale = worldsize / normalizeFactor;
+			auto scale = settings.worldsize / normalizeFactor;
 			auto offset = -m_boxRange.min;
 
-			particles2texture.begin();
-			particles2texture.setUniformTexture("particles",particlesTexture,0);
-			volumeTexture.bindAsImage(0,GL_READ_WRITE,0,1,0);
-			particles2texture.setUniform1f("size",worldsize);
-			particles2texture.setUniform1f("minDensity",minDensity * m_densityRange.getMin());
-			particles2texture.setUniform1f("maxDensity",maxDensity * m_densityRange.getMax());
-			particles2texture.setUniform3f("minBox",m_boxRange.min);
-			particles2texture.setUniform3f("maxBox",m_boxRange.max);
-			particles2texture.setUniform3f("boxSpan",m_boxRange.getSpan());
-			particles2texture.setUniform1f("scale", scale);
-			particles2texture.setUniform3f("offset", offset);
+			settings.particles2texture.begin();
+			settings.particles2texture.setUniformTexture("particles",settings.particlesTexture,0);
+			settings.volumeTexture.bindAsImage(0,GL_READ_WRITE,0,1,0);
+			settings.particles2texture.setUniform1f("size",settings.worldsize);
+			settings.particles2texture.setUniform1f("minDensity",settings.minDensity * m_densityRange.getMin());
+			settings.particles2texture.setUniform1f("maxDensity",settings.maxDensity * m_densityRange.getMax());
+			settings.particles2texture.setUniform3f("minBox",m_boxRange.min);
+			settings.particles2texture.setUniform3f("maxBox",m_boxRange.max);
+			settings.particles2texture.setUniform3f("boxSpan",m_boxRange.getSpan());
+			settings.particles2texture.setUniform1f("scale", scale);
+			settings.particles2texture.setUniform3f("offset", offset);
 
 			size_t idx_offset = 0;
 			for(auto next: particleGroups){
-				particles2texture.setUniform1f("idx_offset", idx_offset);
-				particles2texture.setUniform1f("next", next);
-				particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
+				settings.particles2texture.setUniform1f("idx_offset", idx_offset);
+				settings.particles2texture.setUniform1f("next", next);
+				settings.particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
 				idx_offset = next;
 				//glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 			}
-			particles2texture.end();
+			settings.particles2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
         #else
 
@@ -466,9 +446,12 @@ namespace ent
             #endif
         #endif
 
-		volumeTexture.generateMipmaps();
-		volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-		//volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
+        #if USE_TEXTURE_3D_MIPMAPS
+			settings.volumeTexture.generateMipmaps();
+			settings.volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+        #else
+			settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
+        #endif
 
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to load texture and generate mipmaps " << float(now - then)/1000 << "ms." << endl;
@@ -488,11 +471,11 @@ namespace ent
 		for(auto format: formats){
 			cout << format << endl;
 		}*/
-
-		m_vboMesh.setVertexBuffer(particlesBuffer, 4, sizeof(Particle), 0);
-		m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
-		m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, particlesBuffer, 1, sizeof(Particle), sizeof(float)*5);
-
+        #if USE_VBO
+			m_vboMesh.setVertexBuffer(settings.particlesBuffer, 4, sizeof(Particle), 0);
+			m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
+			m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*5);
+        #endif
 		m_bLoaded = true;
 	}
 	
