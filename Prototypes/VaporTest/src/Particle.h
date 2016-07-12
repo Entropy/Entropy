@@ -2,6 +2,9 @@
 #define PARTICLE_H
 
 #include "ofVectorMath.h"
+#include "fbi/tuplegenerator.h" //TraitsGenerator
+#include "fbi/tuple.h"
+#include "fbi/fbi.h" //SetA::intersect
 
 struct Particle{
 	glm::vec4 pos;
@@ -26,4 +29,5 @@ struct Particle{
 		return pos.xyz() - glm::vec3{size*0.5f, size*0.5f, size*0.5f};
 	}
 };
+
 #endif // PARTICLE_H

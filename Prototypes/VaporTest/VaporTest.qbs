@@ -12,6 +12,8 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "bin/data/shaders/int2float.glsl",
+            "bin/data/shaders/maprange.glsl",
             "bin/data/shaders/particles2texture3d.glsl",
             "bin/data/shaders/render.frag",
             "bin/data/shaders/render.vert",
@@ -27,6 +29,7 @@ Project{
             "src/Vapor3DTexture.h",
             "src/VaporOctree.cpp",
             "src/VaporOctree.h",
+            "src/fn_iterator.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
@@ -43,6 +46,7 @@ Project{
             '../../addons/ofxTween',
             '../../addons/ofxTimecode',
             '../../addons/ofxVolumetrics',
+            '../../addons/ofxLibfbi',
             'ofxXmlSettings',
         ]
 

@@ -54,6 +54,8 @@ namespace ent
 		Vapor3DTexture vaporPixels;
 		VaporOctree vaporOctree;
 		ofBuffer vaporPixelsBuffer;
+		ofShader voxels2texture;
 		ofShader particles2texture;
+		ofShader int2float;
 	};
 }
