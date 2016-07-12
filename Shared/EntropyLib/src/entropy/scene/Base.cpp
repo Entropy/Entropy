@@ -320,6 +320,19 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		string Base::getCurrentPresetPath(const string & file)
+		{
+			auto currentPresetPath = this->getPresetPath(this->currPreset);
+			if (file.empty())
+			{
+				return currentPresetPath;
+			}
+
+			currentPresetPath.append(file);
+			return currentPresetPath;
+		}
+
+		//--------------------------------------------------------------
 		bool Base::loadPreset(const string & presetName)
 		{
 			const auto presetPath = this->getPresetPath(presetName);
