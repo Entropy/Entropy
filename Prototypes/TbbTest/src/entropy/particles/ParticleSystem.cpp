@@ -313,4 +313,52 @@ namespace nm
 			glDisable(GL_CULL_FACE);
 		}
 	}
+
+	//--------------------------------------------------------------
+	void ParticleSystem::serialize(nlohmann::json & json)
+	{
+		auto & jsonGroup = json["particles"];
+		for (int i = 0; i < totalNumParticles; ++i)
+		{
+			nlohmann::json jsonParticle;
+			Particle & p = particles[i];
+
+			jsonParticle["position"] = ofToString(p);
+			jsonParticle["type"] = p.getType();
+			//jsonParticle["mass"] = p.getMass();
+			//jsonParticle["charge"] = p.getCharge();
+			//jsonParticle["radius"] = p.getRadius();
+			jsonParticle["velocity"] = ofToString(p.getVelocity());
+			jsonParticle["force"] = ofToString(p.getForce());
+			
+			jsonGroup.push_back(jsonParticle);
+		}
+	}
+
+	//--------------------------------------------------------------
+	void ParticleSystem::deserialize(const nlohmann::json & json)
+	{
+		if (json.count("particles"))
+		{
+			// Reset counts.
+			totalNumParticles = 0;
+			memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
+
+			auto & jsonGroup = json["particles"];
+			for (int i = 0; i < jsonGroup.size(); ++i)
+			{
+				const auto & jsonParticle = jsonGroup[i];
+
+				// Set the force first.
+				Particle & p = particles[totalNumParticles];
+				p.setForce(ofFromString<glm::vec3>(jsonParticle["force"]));
+
+				// Set the remaining attributes.
+				const auto type = (Particle::Type)(int)jsonParticle["type"];
+				const auto position = ofFromString<glm::vec3>(jsonParticle["position"]);
+				const auto velocity = ofFromString<glm::vec3>(jsonParticle["velocity"]);
+				addParticle(type, position, velocity);
+			}
+		}
+	}
 }

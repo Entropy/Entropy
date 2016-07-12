@@ -82,6 +82,9 @@ namespace nm
         // GUI adding simplicity they're public
         Light lights[NUM_LIGHTS];
         float roughness;
+
+		void serialize(nlohmann::json & json);
+		void deserialize(const nlohmann::json & json);
         
     private:
         void sumForces(Particle& particle);

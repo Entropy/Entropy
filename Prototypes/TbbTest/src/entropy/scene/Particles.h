@@ -41,6 +41,9 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			bool saveState(const string & path);
+			bool loadState(const string & path);
+
 		protected:
 			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
@@ -54,17 +57,9 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				//struct : ofParameterGroup
-				//{
-				//	ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-				//	ofxPreset::Parameter<bool> filled{ "Filled", false, false };
-				//	ofxPreset::Parameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
-				//	ofxPreset::Parameter<int> resolution{ "Resolution", 16, 3, 64 };
+				ofParameter<string> stateFile;
 
-				//	PARAM_DECLARE("Sphere", color, filled, radius, resolution);
-				//} sphere;
-
-				//PARAM_DECLARE("Particles", sphere);
+				PARAM_DECLARE("Particles", stateFile);
 			} parameters;
 		};
 	}

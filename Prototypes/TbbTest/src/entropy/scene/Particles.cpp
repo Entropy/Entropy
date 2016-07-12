@@ -141,6 +141,32 @@ namespace entropy
 		void Particles::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow("State", settings))
+			{
+				if (ImGui::Button("Save"))
+				{
+					static const string & filename = "state.json";
+					if (this->saveState(this->getCurrentPresetPath(filename)))
+					{
+						this->parameters.stateFile = filename;
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Load..."))
+				{
+					auto result = ofSystemLoadDialog("Load State", false, this->getPresetPath());
+					if (result.bSuccess)
+					{
+						if (this->loadState(result.filePath))
+						{
+							this->parameters.stateFile = result.fileName;
+						}
+					}
+				}
+			}
+			ofxPreset::Gui::EndWindow(settings);
+
+			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Persistent", settings))
 			{
 				for (auto& pair : persistent.getFloats())
@@ -181,7 +207,39 @@ namespace entropy
 		// You can also set any refresh flags if necessary.
 		void Particles::deserialize(const nlohmann::json & json)
 		{
+			if (!this->parameters.stateFile->empty())
+			{
+				this->loadState(this->parameters.stateFile);
+			}
+		}
 
+		//--------------------------------------------------------------
+		bool Particles::saveState(const string & path)
+		{
+			auto stateFile = ofFile(path, ofFile::WriteOnly);
+			nlohmann::json json;
+			{
+				this->particleSystem.serialize(json);
+			}
+			stateFile << json;
+
+			return true;
+		}
+
+		//--------------------------------------------------------------
+		bool Particles::loadState(const string & path)
+		{
+			auto stateFile = ofFile(path);
+			if (stateFile.exists())
+			{
+				nlohmann::json json;
+				stateFile >> json;
+
+				this->particleSystem.deserialize(json);
+
+				return true;
+			}
+			return false;
 		}
 	}
 }

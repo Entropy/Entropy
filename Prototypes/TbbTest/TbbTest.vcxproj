@@ -187,7 +187,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="src\entropy\particles\Octree.cpp" />
     <ClCompile Include="src\entropy\particles\Particle.cpp" />
     <ClCompile Include="src\entropy\particles\ParticleSystem.cpp" />
-		<ClCompile Include="src\entropy\particles\Photons.cpp" />
+    <ClCompile Include="src\entropy\particles\Photons.cpp" />
     <ClCompile Include="src\entropy\scene\Particles.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -201,7 +201,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="src\entropy\particles\Octree.h" />
     <ClInclude Include="src\entropy\particles\Particle.h" />
     <ClInclude Include="src\entropy\particles\ParticleSystem.h" />
-		<ClInclude Include="src\entropy\particles\Photons.h" />
+    <ClInclude Include="src\entropy\particles\Photons.h" />
     <ClInclude Include="src\entropy\scene\Particles.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\ofxPersistent\src\ofxPersistent.h" />
@@ -225,8 +225,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\entropy\particles\Octree.inl" />
-	</ItemGroup>
-	<ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="bin\data\shaders\particle.frag" />
     <None Include="bin\data\shaders\particle.vert" />
     <None Include="bin\data\shaders\photon_draw.frag" />
