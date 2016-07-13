@@ -210,6 +210,7 @@
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="src\entropy\particles\Octree.h" />
     <ClInclude Include="src\entropy\particles\Particle.h" />
+    <ClInclude Include="src\entropy\particles\ParticleEvents.h" />
     <ClInclude Include="src\entropy\particles\ParticleSystem.h" />
     <ClInclude Include="src\entropy\particles\Photons.h" />
     <ClInclude Include="src\entropy\scene\Particles.h" />

@@ -103,10 +103,6 @@ namespace nm
 		particles.loadDataTexture(ofxGpuParticles::VELOCITY, particleVels);
 		delete[] particleVels;
 
-		// listen for update event to set additonal update uniforms
-		ofAddListener(particles.updateEvent, this, &Photons::onParticlesUpdate);
-		ofAddListener(particles.drawEvent, this, &Photons::onParticlesDraw);
-
 		for (unsigned i = 0; i < particles.getMeshRef().getNumVertices(); ++i)
 		{
 			particles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
@@ -114,6 +110,13 @@ namespace nm
 		}
 
 		particleImage.load("images/particle1.png");
+
+		// listen for ofxGpuParticle events to set additonal uniforms
+		ofAddListener(particles.updateEvent, this, &Photons::onParticlesUpdate);
+		ofAddListener(particles.drawEvent, this, &Photons::onParticlesDraw);
+
+		// listen for photon events
+		ofAddListener(ParticleEvents::getPhotonEvent(), this, &Photons::onPhotonEvent);
 	}
 
 	void Photons::onParticlesUpdate(ofShader& shader)

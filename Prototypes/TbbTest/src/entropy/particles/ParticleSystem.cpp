@@ -63,6 +63,7 @@ namespace nm
 	{
 		this->min = min;
 		this->max = max;
+		dims = max - min;
 
 		octree.init(min, max);
 		octree.addChildren(true);
@@ -198,7 +199,7 @@ namespace nm
 		PhotonEventArgs photonEventArgs;
 		photonEventArgs.photons = newPhotons;
 		photonEventArgs.numPhotons = numNewPhotons;
-		ofNotifyEvent(photonEvent, photonEventArgs, this);
+		ofNotifyEvent(ParticleEvents::getPhotonEvent(), photonEventArgs, this);
 
 		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
@@ -268,10 +269,9 @@ namespace nm
 		GLint cullFaceMode[1];
 		glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
 
-		ofEnableDepthTest();
-
 		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		glCullFace(GL_FRONT);
+		ofEnableDepthTest();
 
 		wallShader.begin();
 		{
@@ -289,29 +289,21 @@ namespace nm
 			}
 			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
 
-			ofDrawBox(0.f, 0.f, min.z - 5.f, 10000.f, 10000.f, 10.f); // back wall
+			// stop using ofDrawBox for walls and change it to one mesh
+			ofDrawBox(0.f, 0.f, min.z - 5.f, dims.x, dims.y, 10.f); // back wall
 
-			ofDrawBox(0.f, min.y - 5.f, 0.f, 10000.f, 10.f, 10000.f); // floor
-			ofDrawBox(0.f, max.y + 5.f, 0.f, 10000.f, 10.f, 10000.f); // ceiling
+			ofDrawBox(0.f, min.y - 5.f, 0.f, dims.x, 10.f, dims.z); // floor
+			ofDrawBox(0.f, max.y + 5.f, 0.f, dims.x, 10.f, dims.z); // ceiling
 
-			ofDrawBox(min.x - 5.f, 0.f, 0.f, 10.f, 10000.f, 10000.f); // left wall
-			ofDrawBox(max.x + 5.f, 0.f, 0.f, 10.f, 10000.f, 10000.f); // right wall
+			ofDrawBox(min.x - 5.f, 0.f, 0.f, 10.f, dims.y, dims.z); // left wall
+			ofDrawBox(max.x + 5.f, 0.f, 0.f, 10.f, dims.y, dims.z); // right wall
 		}
 		wallShader.end();
 
 		// Restore state.
-		if (GL_FALSE == depthTestEnabled)
-		{
-			ofDisableDepthTest();
-		}
-		if (GL_TRUE == cullFaceEnabled)
-		{
-			glCullFace(cullFaceMode[0]);
-		}
-		else
-		{
-			glDisable(GL_CULL_FACE);
-		}
+		glCullFace(cullFaceMode[0]);
+		if (depthTestEnabled) ofDisableDepthTest();
+		if (!cullFaceEnabled) glDisable(GL_CULL_FACE);
 	}
 
 	//--------------------------------------------------------------
