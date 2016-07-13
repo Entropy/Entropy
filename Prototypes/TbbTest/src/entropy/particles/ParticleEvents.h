@@ -41,20 +41,25 @@ namespace nm
 		unsigned numPhotons;
 	};
 
+	struct PairProductionEventArgs
+	{
+		glm::vec3 position;
+		glm::vec3 velocity;
+	};
+
 	class ParticleEvents
 	{
 	public:
-		/*
-		static ParticleEvents& getInstance()
-		{
-			static ParticleEvents particleEvents;
-			return particleEvents;
-		}*/
-
 		static ofEvent<PhotonEventArgs>& getPhotonEvent()
 		{
 			static ofEvent<PhotonEventArgs> photonEvent;
 			return photonEvent;
+		}
+
+		static ofEvent<PairProductionEventArgs>& getPairProductionEvent()
+		{
+			static ofEvent<PairProductionEventArgs> pairProductionEvent;
+			return pairProductionEvent;
 		}
 	};
 }
