@@ -9,8 +9,8 @@ struct Box{
 	vec3 max;
 };
 
-coherent uniform layout(r16f, binding=0, location=1) image3D volume;
-layout(location = 2) uniform samplerBuffer particles;
+coherent uniform layout(r16f, binding=0, location=0) image3D volume;
+layout(location = 1) uniform samplerBuffer particles;
 
 uniform float size;
 uniform float idx_offset;

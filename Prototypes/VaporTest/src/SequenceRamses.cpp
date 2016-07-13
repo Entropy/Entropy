@@ -9,6 +9,7 @@ namespace ent
 		, m_densityMin(0.0f)
 		, m_densityMax(0.25f)
 		, m_frameRate(30.0f)
+	    , m_currFrame(-1)
     {
 		clear();
     }
@@ -50,9 +51,14 @@ namespace ent
 #if USE_VOXELS_COMPUTE_SHADER
 		frameSettings.voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
 		frameSettings.voxels2texture.linkProgram();
-		auto maxNumVoxels = 200000000;
-		auto voxelSizeBytes = 8;
-		frameSettings.voxelsBuffer.allocate(maxNumVoxels*voxelSizeBytes, GL_STATIC_DRAW);
+		int maxBufferTextureSize;
+		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+		auto maxNumVoxelsBytes = 128*1024*1024; //MB
+		if(maxNumVoxelsBytes>maxBufferTextureSize){
+			cout << "voxels buffer size " << maxNumVoxelsBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
+			std::exit(0);
+		}
+		frameSettings.voxelsBuffer.allocate(maxNumVoxelsBytes, GL_STATIC_DRAW);
 		frameSettings.voxelsTexture.allocateAsBufferTexture(frameSettings.voxelsBuffer, GL_RG32I);
 #endif
 
@@ -60,7 +66,14 @@ namespace ent
 		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
 		frameSettings.particles2texture.linkProgram();
 		auto maxNumParticles = 3000000;
-		frameSettings.particlesBuffer.allocate(maxNumParticles*sizeof(Particle), GL_STATIC_DRAW);
+		int maxBufferTextureSize;
+		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+		auto maxNumParticlesBytes = maxNumParticles*sizeof(Particle);
+		if(maxNumParticlesBytes>maxBufferTextureSize){
+			cout << "voxels buffer size " << maxNumParticlesBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
+			std::exit(0);
+		}
+		frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
 		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
 #endif
 

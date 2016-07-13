@@ -211,7 +211,7 @@ namespace ent
 				auto span = glm::length(span3f)/totalSpan;
 				auto contribution = histogram_contribution[i]/totalDensity;
 				if(span>0){
-					histogram_factor[i] = contribution / (span*span*span);
+					histogram_factor[i] = contribution / pow(span,5);
 				}else if(contribution>0){
 					histogram_factor[i] = 1;
 				}
@@ -261,7 +261,7 @@ namespace ent
 					for(uint32_t x = 0; x<worldsize; x++, i++){
 						size_t idx_contrib = size_t(sqrt(sqrt(vaporPixels.data()[i])) * 99.f);
 						auto factor = histogram_factor[idx_contrib];
-						if(factor>0.01){
+						if(factor>0.05){
 							uint32_t idx = 0;
 							idx += (x<<(level*2));
 							idx += (y<<level);
@@ -274,7 +274,14 @@ namespace ent
 				}
 			}
 			voxelsFile.write((const char*)memVoxels.data(), memVoxels.size() * sizeof(uint32_t));
-			cout << "number of voxels " << memVoxels.size() << endl;
+			cout << "number of voxels " << memVoxels.size()/2 << endl;
+			if(memVoxels.size()*sizeof(int32_t)>128*1024*1024){
+				cout << "Couldn't compress texture to less than " << 128 << " MB" << endl;
+				std::exit(0);
+			}
+			if(memVoxels.size()==0){
+				cout << "No voxels are above the compression threshold" << endl;
+			}
 		}
         #endif
 	}
@@ -363,7 +370,9 @@ namespace ent
 #if USE_VOXELS_COMPUTE_SHADER
 			// Load voxels
 			{
-				voxelsSize = ofFile(voxelsFileName, ofFile::Reference).getSize();
+				int maxBufferTextureSize;
+				glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+				voxelsSize = std::min(ofFile(voxelsFileName, ofFile::Reference).getSize(), (uint64_t)maxBufferTextureSize);
 				auto then = ofGetElapsedTimeMicros();
 				readToBuffer(voxelsFileName, voxelsSize, settings.voxelsBuffer);
 				auto now = ofGetElapsedTimeMicros();
@@ -422,7 +431,7 @@ namespace ent
 			settings.voxels2texture.begin();
 			settings.voxels2texture.setUniformTexture("voxels",settings.voxelsTexture,0);
 			settings.volumeTexture.bindAsImage(0,GL_WRITE_ONLY,0,1,0);
-			settings.voxels2texture.dispatchCompute(numInstances/1,1,1);
+			settings.voxels2texture.dispatchCompute(numInstances,1,1);
 			settings.voxels2texture.setUniform1f("numVoxels", numInstances);
 			settings.voxels2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
