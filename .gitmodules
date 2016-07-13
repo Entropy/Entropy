@@ -1,6 +1,3 @@
-[submodule "Shared/libs/gli"]
-	path = Shared/libs/gli
-	url = https://github.com/g-truc/gli.git
 [submodule "addons/ofxHDF5"]
 	path = addons/ofxHDF5
 	url = https://github.com/Entropy/ofxHDF5
