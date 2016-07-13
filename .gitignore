@@ -1,4 +1,3 @@
-libs/
 docs/
 
 #########################
@@ -14,10 +13,6 @@ libs/openFrameworksCompiled/lib/*/*
 
 # apothecary
 scripts/apothecary/build
-
-# rule to avoid non-official addons going into git
-# see addons/.gitignore
-addons/*
 
 # rule to avoid non-official apps going into git
 # see apps/.gitignore
@@ -69,9 +64,7 @@ xcuserdata
 
 .svn/
 obj/
-Prototypes/*/bin/*
 build/
-!Prototypes/*/bin/data/shaders/*
 xcuserdata/
 
 # Visual Studio
@@ -142,7 +135,10 @@ Desktop.ini
 # Default preset
 _default
 # Project data folders (everything should be in Shared/data or Shared/assets)
-*/*/bin/data
+*/*/bin/*
+!*/*/bin/data/
+*/*/bin/data/*
+!*/*/bin/data/shaders/
 # Assets (managed by Syncthing)
 Shared/assets/*
 !Shared/assets/.gitkeep
