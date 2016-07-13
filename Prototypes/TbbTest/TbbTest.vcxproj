@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;..\..\libs\tbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxRenderToolkit\src;..\..\addons\ofxRenderToolkit\libs\gli\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -107,9 +107,13 @@
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>tbb_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libtbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,7 +122,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;..\..\libs\tbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxRenderToolkit\src;..\..\addons\ofxRenderToolkit\libs\gli\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -127,9 +131,13 @@
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>tbb_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libtbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -137,7 +145,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;..\..\libs\tbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxRenderToolkit\src;..\..\addons\ofxRenderToolkit\libs\gli\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -149,14 +157,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libtbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>%(Command)
-robocopy "$(ProjectDir)libtbb/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-if errorlevel 1 exit 0 else exit %errorlevel%</Command>
+      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+%(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,7 +171,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;libtbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\ofxPersistent\src;..\..\libs\tbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxRenderToolkit\src;..\..\addons\ofxRenderToolkit\libs\gli\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -176,9 +182,13 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libtbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp" />
