@@ -89,6 +89,100 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 		}
 	}
 
+#if USE_PARTICLES_HISTOGRAM
+	ofxRange3f zero;
+	zero.clear();
+	std::array<float,100> histogram_contribution = {{0}};
+	std::array<ofxRange3f,100> histogram_ranges = {{ zero }};
+	std::array<float,100> histogram_factor = {{0}};
+	std::array<size_t,100> histogram_num_particles = {{0}};
+	auto min_max = std::minmax_element(particlesInBox.begin(), particlesInBox.end(), [](const Particle & p1, const Particle & p2){
+		return p1.density < p2.density;
+	});
+	auto absMinDensity = min_max.first->density;
+	auto absMaxDensity = min_max.second->density;
+	cout << "min density " << absMinDensity << " " << " max " << absMaxDensity << endl;
+
+	float totalDensity = 0.f;
+	for(auto & p: particlesInBox){
+		auto normalizedDensity = ent::map(p.density, absMinDensity, absMaxDensity, 0, 1);
+		auto relDensity = normalizedDensity;///boxVolume(p.size);
+		if(relDensity>1){
+			cout << "density > 1" << p.density << " min: " << minDensity << " max: " << maxDensity << endl;
+			relDensity=1;
+		}
+		totalDensity += normalizedDensity;
+		size_t idx_contrib = size_t(sqrt(sqrt(relDensity)) * 99.f);
+		histogram_contribution[idx_contrib] += normalizedDensity;
+		histogram_ranges[idx_contrib].add(p.getMaxPos());
+		histogram_ranges[idx_contrib].add(p.getMinPos());
+		histogram_num_particles[idx_contrib] += 1;
+	}
+
+	auto totalSpan = glm::length(coordSpan);
+	size_t totalSize = 0;
+	for(size_t i=0;i<histogram_ranges.size();++i){
+		auto span3f = histogram_ranges[i].getSpan();
+		auto span = glm::length(span3f)/totalSpan;
+		auto contribution = histogram_contribution[i]/totalDensity;
+		if(span>0){
+			histogram_factor[i] = contribution / pow(span,3);
+		}else if(contribution>0){
+			histogram_factor[i] = 1;
+		}
+		auto binSize = histogram_num_particles[i] * sizeof(Particle);
+		totalSize+=binSize;
+	}
+
+	size_t i = 0;
+	auto total_pct = 0.0;
+	cout << "histogram contribution" << endl;
+	for(auto & h: histogram_contribution){
+		double pct = h/totalDensity;
+		total_pct += pct;
+		cout << i++ << ": " << pct*100 << "%" << endl;
+	}
+	cout << "total pct " << total_pct << endl;
+
+
+
+	std::array<std::pair<float,size_t>,100> histogram_factor_sorted;
+	for(size_t i=0;i<histogram_factor.size();i++){
+		histogram_factor_sorted[i] = std::make_pair(histogram_factor[i], histogram_num_particles[i]);
+	}
+	std::sort(histogram_factor_sorted.begin(), histogram_factor_sorted.end(), [&](const std::pair<float,size_t> & p1, const std::pair<float,size_t> & p2){
+		return p1.first > p2.first;
+	});
+	i = 0;
+	total_pct = 0.0;
+	double totalFactor = 0;
+	size_t byteRate = 27962026; //800Mb/s @ 30fps
+	size_t accumulatedSize = 0;
+	float threshold=0;
+	cout << "histogram factor" << endl;
+	for(auto & h: histogram_factor_sorted){
+		auto binSize = h.second * sizeof(Particle);
+		accumulatedSize+=binSize;
+		if(accumulatedSize>byteRate && !(threshold>0)){
+			threshold = h.first;
+			cout << "found threshold at " << threshold << endl;
+		}
+		totalFactor+=h.first;
+		cout << i++ << ": " << h.first*100 << "% " << binSize/1024. << "KB / " << accumulatedSize/1024./1024. << "MB" << endl;
+	}
+
+
+	particlesInBox.erase(std::remove_if(particlesInBox.begin(), particlesInBox.end(), [&](const Particle & p){
+		auto normalizedDensity = ent::map(p.density, absMinDensity, absMaxDensity, 0, 1);
+		auto relDensity = normalizedDensity;///boxVolume(p.size);
+		if(relDensity>1){
+			relDensity=1;
+		}
+		size_t idx_contrib = size_t(sqrt(sqrt(relDensity)) * 99.f);
+		return histogram_factor[idx_contrib] <= threshold;//1.2e-14;
+	}), particlesInBox.end());
+#endif
+
 #if USE_PARTICLES_COMPUTE_SHADER
 	auto total = particlesInBox.size();
 	std::vector<Particle> intersectingParticles;

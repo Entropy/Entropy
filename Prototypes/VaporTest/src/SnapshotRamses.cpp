@@ -181,12 +181,14 @@ namespace ent
 		// as a form of lossy compression
         #if USE_VOXELS_COMPUTE_SHADER
 		{
-			std::array<size_t,100> histogram = {{0}};
-			std::array<double,100> histogram_contribution = {{0.}};
+			const size_t numBins = 500;
+			std::array<size_t,numBins> histogram = {{0}};
+			std::array<double,numBins> histogram_contribution = {{0.}};
+			std::array<size_t,numBins> histogram_num_particles = {{0}};
 			ofxRange3f zero;
 			zero.clear();
-			std::array<ofxRange3f,100> histogram_ranges = {{ zero }};
-			std::array<float,100> histogram_factor = {{ 0.f }};
+			std::array<ofxRange3f,numBins> histogram_ranges = {{ zero }};
+			std::array<float,numBins> histogram_factor = {{ 0.f }};
 			double totalDensity = 0.;
 
 			for(uint32_t z = 0, i=0; z<worldsize; z++){
@@ -195,12 +197,13 @@ namespace ent
 						auto v = vaporPixels.data()[i];
 						totalDensity += v;
 						size_t idx = size_t(v * 99999.f);
-						size_t idx_contrib = size_t(sqrt(sqrt(v)) * 99.f);
-						if(idx<100){
+						size_t idx_contrib = size_t(sqrt(sqrt(v)) * float(numBins-1));
+						if(idx<numBins){
 							histogram[idx] += 1;
 						}
 						histogram_contribution[idx_contrib] += v;
 						histogram_ranges[idx_contrib].add(glm::vec3(x,y,z));
+						histogram_num_particles[idx_contrib] += 1;
 					}
 				}
 			}
@@ -250,18 +253,49 @@ namespace ent
 			}
 
 
+
+			std::array<std::pair<float,size_t>,numBins> histogram_factor_sorted;
+			for(size_t i=0;i<histogram_factor.size();i++){
+				histogram_factor_sorted[i] = std::make_pair(histogram_factor[i], histogram_num_particles[i]);
+			}
+			std::sort(histogram_factor_sorted.begin(), histogram_factor_sorted.end(), [&](const std::pair<float,size_t> & p1, const std::pair<float,size_t> & p2){
+				return p1.first > p2.first;
+			});
+			i = 0;
+			total_pct = 0.0;
+			double totalFactor = 0;
+			size_t byteRate = 100*1024*1024; //800Mb/s @ 30fps
+			size_t accumulatedSize = 0;
+			float threshold=0;
+			size_t sizeBeforeThreshold = 0;
+			cout << "histogram factor" << endl;
+			for(auto & h: histogram_factor_sorted){
+				auto binSize = h.second * sizeof(int32_t)*2;
+				accumulatedSize+=binSize;
+				if(accumulatedSize>byteRate && threshold==0){
+					threshold = h.first;
+					cout << "found threshold at " << threshold << endl;
+				}else if(threshold == 0){
+					sizeBeforeThreshold += binSize;
+				}
+				totalFactor+=h.first;
+				cout << i++ << ": " << h.first*100 << "% " << binSize/1024. << "KB / " << accumulatedSize/1024./1024. << "MB" << endl;
+			}
+
+
 			uint32_t level = log2(worldsize);
 			cout << "storing with level " << level << endl;
 			ofFile voxelsFile(voxelsFileName, ofFile::WriteOnly, true);
 			std::vector<uint32_t> memVoxels;
 			auto mask = worldsize-1;
 			auto fToi32 = pow(2,32);
+			size_t particlesInThresholdBin = (byteRate - sizeBeforeThreshold)/sizeof(int32_t)*2;
 			for(uint32_t z = 0, i=0; z<worldsize; z++){
 				for(uint32_t y = 0; y<worldsize; y++){
 					for(uint32_t x = 0; x<worldsize; x++, i++){
-						size_t idx_contrib = size_t(sqrt(sqrt(vaporPixels.data()[i])) * 99.f);
+						size_t idx_contrib = size_t(sqrt(sqrt(vaporPixels.data()[i])) * float(numBins-1));
 						auto factor = histogram_factor[idx_contrib];
-						if(factor>0.05){
+						if(factor>threshold){
 							uint32_t idx = 0;
 							idx += (x<<(level*2));
 							idx += (y<<level);
@@ -269,6 +303,16 @@ namespace ent
 
 							memVoxels.push_back(idx);
 							memVoxels.push_back(vaporPixels.data()[i] * fToi32);
+						}else if(threshold==factor && particlesInThresholdBin>0){
+							particlesInThresholdBin-=1;
+							uint32_t idx = 0;
+							idx += (x<<(level*2));
+							idx += (y<<level);
+							idx += z;
+
+							memVoxels.push_back(idx);
+							memVoxels.push_back(vaporPixels.data()[i] * fToi32);
+
 						}
 					}
 				}
