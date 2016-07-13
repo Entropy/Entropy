@@ -1,5 +1,5 @@
 /*
- *  Photons.h
+ *  ParticleEvents.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -32,38 +32,29 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ParticleEvents.h"
-#include "ofxGpuParticles.h"
 
 namespace nm
 {
-	class Photons
+	struct PhotonEventArgs
+	{
+		glm::vec3* photons;
+		unsigned numPhotons;
+	};
+
+	class ParticleEvents
 	{
 	public:
-		static const unsigned MAX_PHOTONS = 100;
-		static const unsigned PARTICLES_PER_PHOTON = 300;
+		/*
+		static ParticleEvents& getInstance()
+		{
+			static ParticleEvents particleEvents;
+			return particleEvents;
+		}*/
 
-		Photons();
-
-		vector<glm::vec3>& getPosnsRef() { return posns; }
-
-		void init();
-		void onPhotonEvent(PhotonEventArgs& args);
-		void update();
-		void draw();
-
-	private:
-		void onParticlesUpdate(ofShader& shader);
-		void onParticlesDraw(ofShader& shader);
-
-		ofxGpuParticles particles;
-		ofImage particleImage;
-
-		vector<glm::vec3> posns;
-		vector<glm::vec3> vels;
-
-		ofBufferObject photonPosnBuffer;
-		ofTexture photonPosnTexture;
-		unsigned currentPhotonIdx;
-    };
+		static ofEvent<PhotonEventArgs>& getPhotonEvent()
+		{
+			static ofEvent<PhotonEventArgs> photonEvent;
+			return photonEvent;
+		}
+	};
 }

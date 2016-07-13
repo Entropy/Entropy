@@ -34,6 +34,7 @@
 #include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
+#include "ParticleEvents.h"
 
 namespace nm
 {
@@ -50,12 +51,6 @@ namespace nm
 		float radius;
 	};
 
-	struct PhotonEventArgs
-	{
-		glm::vec3* photons;
-		unsigned numPhotons;
-	};
-    
     class ParticleSystem
     {
     public:
@@ -76,8 +71,6 @@ namespace nm
 
 		void drawWalls();
 
-		ofEvent<PhotonEventArgs> photonEvent;
-        
         // lighting, should be private but for
         // GUI adding simplicity they're public
         Light lights[NUM_LIGHTS];
@@ -87,8 +80,6 @@ namespace nm
 		void deserialize(const nlohmann::json & json);
         
     private:
-        void sumForces(Particle& particle);
-        
         Octree<Particle> octree;
         nm::Particle* particles;
         tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];

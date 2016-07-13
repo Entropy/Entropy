@@ -199,7 +199,7 @@ namespace nm
 		PhotonEventArgs photonEventArgs;
 		photonEventArgs.photons = newPhotons;
 		photonEventArgs.numPhotons = numNewPhotons;
-		ofNotifyEvent(photonEvent, photonEventArgs, this);
+		ofNotifyEvent(ParticleEvents::getPhotonEvent(), photonEventArgs, this);
 
 		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
@@ -289,6 +289,7 @@ namespace nm
 			}
 			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
 
+			// stop using ofDrawBox for walls and change it to one mesh
 			ofDrawBox(0.f, 0.f, min.z - 5.f, dims.x, dims.y, 10.f); // back wall
 
 			ofDrawBox(0.f, min.y - 5.f, 0.f, dims.x, 10.f, dims.z); // floor

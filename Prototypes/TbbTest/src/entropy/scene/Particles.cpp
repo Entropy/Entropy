@@ -37,7 +37,6 @@ namespace entropy
 
 			particleSystem.init(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
 			photons.init();
-			ofAddListener(particleSystem.photonEvent, &photons, &nm::Photons::onPhotonEvent);
 
 #ifdef _TEAPOT
 			ofVboMesh mesh;
