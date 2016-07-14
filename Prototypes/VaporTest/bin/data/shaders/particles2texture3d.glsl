@@ -47,8 +47,8 @@ float boxesIntersectionVolume(Box b1, Box b2){
 
 void add(ivec3 coord, float density){
 	vec4 current_d = imageLoad(volume, ivec3(coord));
-	float d = map(density, minDensity, maxDensity, 0, 1);
-	imageStore(volume, ivec3(coord), vec4(vec3(current_d.r + d), 1));
+	//float d = map(density, minDensity, maxDensity, 0, 1);
+	imageStore(volume, ivec3(coord), vec4(vec3(current_d.r + density), 1));
 }
 
 layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
@@ -66,9 +66,9 @@ void main()
 	float psize = particle_size * scale;
 	int isize = int(size);
 
+	float particleVolume = boxVolume(psize);
 	if(int(psize)>1){
 		Box particleBox = Box( particlepos - vec3(psize*0.5,psize*0.5,psize*0.5), particlepos + vec3(psize*0.5,psize*0.5,psize*0.5));
-		float particleVolume = boxVolume(psize);
 		int min_x = idx_clamp(int(particlepos.x-psize), isize-1);
 		int max_x = idx_clamp(int(particlepos.x+psize), isize);
 		int min_y = idx_clamp(int(particlepos.y-psize), isize-1);
@@ -86,6 +86,6 @@ void main()
 			}
 		}
 	}else{
-		add(ivec3(particlepos), particle_density);
+		add(ivec3(particlepos), particle_density/particleVolume);
 	}
 }

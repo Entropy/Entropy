@@ -14,8 +14,10 @@ class Vapor3DTexture
 		void setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange);
 		size_t size() const;
 		const std::vector<float> & data() const;
+		std::vector<float> & data();
 		std::pair<float,float> minmax() const;
 		const std::vector<Particle> & getParticlesInBox() const;
+		const std::vector<HalfParticle> & getHalfParticlesInBox() const;
 		const std::vector<size_t> & getGroupIndices() const;
 	private:
 		inline void add(size_t x, size_t y, size_t z, float value);
@@ -25,6 +27,7 @@ class Vapor3DTexture
 		std::vector<float> m_data;
 		size_t m_size, m_cubesize, m_quadsize;
 		std::vector<Particle> particlesInBox;
+		std::vector<HalfParticle> particlesHalfInBox;
 		std::vector<size_t> groupIndices;
 };
 

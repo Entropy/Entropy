@@ -4,7 +4,6 @@
 #include "ofxHDF5.h"
 #include "ofxRange.h"
 #include "Vapor3DTexture.h"
-#include "VaporOctree.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 #include "Constants.h"
@@ -70,7 +69,6 @@ namespace ent
 		std::size_t m_numCells;
 		bool m_bLoaded;
 		Vapor3DTexture vaporPixels;
-		VaporOctree vaporOctree;
 		ofBuffer vaporPixelsBuffer;
 
 		ofVbo m_vboMesh;

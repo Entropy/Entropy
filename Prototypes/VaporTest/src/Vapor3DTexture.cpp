@@ -49,6 +49,10 @@ const std::vector<float> & Vapor3DTexture::data() const{
 	return m_data;
 }
 
+std::vector<float> & Vapor3DTexture::data(){
+	return m_data;
+}
+
 inline void Vapor3DTexture::add(size_t x, size_t y, size_t z, float value){
 	size_t idx = z * this->m_quadsize + y * this->m_size + x;
 	m_data[idx] += value;
@@ -244,6 +248,17 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 
 		m_data.assign(m_data.size(), 0.f);
 	}
+
+	particlesHalfInBox.resize(particlesInBox.size());
+	{
+		auto minLimit = std::min(0.f, minDensity);
+		auto scale = 1./(maxDensity - minLimit);
+		auto offset = -minLimit;
+		std::transform(particlesInBox.begin(), particlesInBox.end(), particlesHalfInBox.begin(), [&](Particle & p){
+			p.density = ent::offset_scale(p.density, offset, scale);
+			return HalfParticle(p);
+		});
+	}
 #endif
 
 #if USE_VOXELS_COMPUTE_SHADER || USE_RAW
@@ -288,14 +303,14 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	cout << "avg particle size " << avgSize << endl;
 
 
-	{
+	/*{
 		auto minLimit = std::min(0.f, minDensity);
 		auto scale = 1./(maxDensity - minLimit);
 		auto offset = -minLimit;
 		std::transform(this->m_data.begin(), this->m_data.end(), this->m_data.begin(), [&](float v){
 			return ent::offset_scale(v, offset, scale);
 		});
-	}
+	}*/
 #endif
 }
 
@@ -314,4 +329,8 @@ const std::vector<Particle> & Vapor3DTexture::getParticlesInBox() const{
 
 const std::vector<size_t> & Vapor3DTexture::getGroupIndices() const{
 	return groupIndices;
+}
+
+const std::vector<HalfParticle> & Vapor3DTexture::getHalfParticlesInBox() const{
+	return particlesHalfInBox;
 }

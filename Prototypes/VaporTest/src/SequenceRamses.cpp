@@ -68,13 +68,21 @@ namespace ent
 		auto maxNumParticles = 3000000;
 		int maxBufferTextureSize;
 		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+#ifdef USE_HALF_PARTICLE
+		auto maxNumParticlesBytes = maxNumParticles*sizeof(HalfParticle);
+#else
 		auto maxNumParticlesBytes = maxNumParticles*sizeof(Particle);
+#endif
 		if(maxNumParticlesBytes>maxBufferTextureSize){
 			cout << "voxels buffer size " << maxNumParticlesBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
 			std::exit(0);
 		}
 		frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
+#if USE_HALF_PARTICLE
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA16F);
+#else
 		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
+#endif
 #endif
 
 		namespace fs = std::filesystem;

@@ -6,6 +6,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #endif
+
+#include "turbojpeg.h"
+
 namespace ent
 {
 
@@ -167,7 +170,11 @@ namespace ent
 
             #if USE_PARTICLES_COMPUTE_SHADER
 			ofFile particlesFile(particlesFileName, ofFile::WriteOnly, true);
-			particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
+            #if USE_HALF_PARTICLE
+			    particlesFile.write((const char*)vaporPixels.getHalfParticlesInBox().data(), vaporPixels.getHalfParticlesInBox().size() * sizeof(HalfParticle));
+            #else
+			    particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
+            #endif
 			ofFile particlesGroupsFile(particlesGroupsFileName, ofFile::WriteOnly, true);
 			particlesGroupsFile.write((const char*)vaporPixels.getGroupIndices().data(), sizeof(size_t) * vaporPixels.getGroupIndices().size());
             #endif
@@ -180,6 +187,33 @@ namespace ent
 		// to the final texture and remove the rest
 		// as a form of lossy compression
         #if USE_VOXELS_COMPUTE_SHADER
+
+
+        #if USE_VOXELS_DCT_COMPRESSION
+
+
+		ofFloatPixels pixels;
+		pixels.allocate(512*16, 512*32, OF_PIXELS_GRAY);
+		auto ptr = vaporPixels.data().data();
+		for(size_t z=0, x=0, y=0; z<worldsize; ++z){
+			ofFloatPixels pixelsSlice;
+			pixelsSlice.setFromExternalPixels(ptr,worldsize,worldsize,OF_PIXELS_GRAY);
+			ofSaveImage(pixelsSlice, voxelsFileName + "_" + ofToString(z) + ".tif");
+			//pixelsSlice.pasteInto(pixels,x,y);
+			ptr+=worldsize*worldsize;
+			/*x+=worldsize;
+			if(x>pixels.getWidth()){
+				x=0;
+				y+=worldsize;
+			}*/
+		}
+
+
+
+        #else
+
+
+
 		{
 			const size_t numBins = 500;
 			std::array<size_t,numBins> histogram = {{0}};
@@ -328,6 +362,7 @@ namespace ent
 			}
 		}
         #endif
+        #endif
 	}
 
 	//--------------------------------------------------------------
@@ -427,7 +462,11 @@ namespace ent
 			// Load particles
 			{
 				auto then = ofGetElapsedTimeMicros();
-				readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
+                #if USE_HALF_PARTICLE
+				    readToBuffer(particlesFileName, m_numCells*sizeof(HalfParticle), settings.particlesBuffer);
+                #else
+				    readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
+                #endif
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
 				        "for " << m_numCells << " particles" << endl;
@@ -549,7 +588,7 @@ namespace ent
 			cout << format << endl;
 		}*/
         #if USE_VBO
-			m_vboMesh.setVertexBuffer(settings.particlesBuffer, 4, sizeof(Particle), 0);
+			m_vboMesh.setAttributeBuffer(POSITION_ATTRIBUTE, settings.particlesBuffer, 4, sizeof(Particle), 0);
 			m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
 			m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*5);
         #endif
@@ -604,7 +643,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::drawOctree(float minDensity, float maxDensity){
-		vaporOctree.drawLeafs(minDensity, maxDensity);
+		//vaporOctree.drawLeafs(minDensity, maxDensity);
 	}
 
 	//--------------------------------------------------------------
