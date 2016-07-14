@@ -10,8 +10,8 @@ void ofApp::setup()
 
     m_scale = 1024.0;
 
-	//m_sequenceRamses.setup("RAMSES_sequence/", 338, 346);
-	m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
+	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -156,6 +156,7 @@ bool ofApp::imGui()
 						m_timeline.setCurrentFrame(0);
 						m_timeline.setFrameRate(m_sequenceRamses.getFrameRate());
 						m_timeline.setDurationInFrames(m_sequenceRamses.getTotalFrames());
+						m_timeline.setFrameBased(true);
 					}
 				}
 

@@ -4,9 +4,9 @@
 #include "ofxHDF5.h"
 #include "ofxRange.h"
 #include "Vapor3DTexture.h"
-#include "VaporOctree.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
+#include "Constants.h"
 
 namespace ent
 {
@@ -23,7 +23,26 @@ namespace ent
 		SnapshotRamses();
 		~SnapshotRamses();
 
-		void setup(const std::string& folder, int frameIndex, float minDensity, float maxDensity, ofxTexture & tex, size_t worldsize);
+		struct Settings{
+			std::string folder;
+			int frameIndex;
+			float minDensity;
+			float maxDensity;
+			size_t worldsize;
+			ofxTexture3d volumeTexture;
+            #if USE_VOXELS_COMPUTE_SHADER
+			    ofShader voxels2texture;
+				ofBufferObject voxelsBuffer;
+				ofTexture voxelsTexture;
+            #endif
+            #if USE_PARTICLES_COMPUTE_SHADER
+				ofShader particles2texture;
+				ofBufferObject particlesBuffer;
+				ofTexture particlesTexture;
+            #endif
+		};
+
+		void setup(Settings & settings);
 		void clear();
 
 		void update(ofShader& shader);
@@ -39,10 +58,9 @@ namespace ent
 		BoundingBox m_boxRange;
 
 	protected:
-		void load(const std::string& file, std::vector<float>& elements);
+		void loadhdf5(const std::string& file, std::vector<float>& elements);
+		void precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize);
 
-		ofTexture m_bufferTexture;
-		ofVbo m_vboMesh;
 
 		ofxRange3f m_coordRange;
 		ofxRange1f m_sizeRange;
@@ -50,8 +68,14 @@ namespace ent
 
 		std::size_t m_numCells;
 		bool m_bLoaded;
-		ofTexture m_particlesTex;
 		Vapor3DTexture vaporPixels;
-		VaporOctree vaporOctree;
+		ofBuffer vaporPixelsBuffer;
+
+		ofVbo m_vboMesh;
+		std::string rawFileName;
+		std::string particlesFileName;
+		std::string metaFileName;
+		std::string voxelsFileName;
+		std::string particlesGroupsFileName;
 	};
 }

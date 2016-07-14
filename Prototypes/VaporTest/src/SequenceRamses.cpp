@@ -1,4 +1,5 @@
 #include "SequenceRamses.h"
+#include "Constants.h"
 
 namespace ent
 {
@@ -8,6 +9,7 @@ namespace ent
 		, m_densityMin(0.0f)
 		, m_densityMax(0.25f)
 		, m_frameRate(30.0f)
+	    , m_currFrame(-1)
     {
 		clear();
     }
@@ -28,7 +30,6 @@ namespace ent
 			ofLogError("SequenceRamses::loadSequence") << "Invalid range [" << startIndex << ", " << endIndex << "]";
 			return;
 		}
-
 		m_snapshots.resize(numFiles);
 
 		m_folder = folder;
@@ -47,25 +48,73 @@ namespace ent
 		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 		m_renderShader.end();
 
+#if USE_VOXELS_COMPUTE_SHADER
+		frameSettings.voxels2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/voxels2texture3d.glsl");
+		frameSettings.voxels2texture.linkProgram();
+		int maxBufferTextureSize;
+		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+		auto maxNumVoxelsBytes = 128*1024*1024; //MB
+		if(maxNumVoxelsBytes>maxBufferTextureSize){
+			cout << "voxels buffer size " << maxNumVoxelsBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
+			std::exit(0);
+		}
+		frameSettings.voxelsBuffer.allocate(maxNumVoxelsBytes, GL_STATIC_DRAW);
+		frameSettings.voxelsTexture.allocateAsBufferTexture(frameSettings.voxelsBuffer, GL_RG32I);
+#endif
+
+#if USE_PARTICLES_COMPUTE_SHADER
+		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
+		frameSettings.particles2texture.linkProgram();
+		auto maxNumParticles = 3000000;
+		int maxBufferTextureSize;
+		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
+#ifdef USE_HALF_PARTICLE
+		auto maxNumParticlesBytes = maxNumParticles*sizeof(HalfParticle);
+#else
+		auto maxNumParticlesBytes = maxNumParticles*sizeof(Particle);
+#endif
+		if(maxNumParticlesBytes>maxBufferTextureSize){
+			cout << "voxels buffer size " << maxNumParticlesBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
+			std::exit(0);
+		}
+		frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
+#if USE_HALF_PARTICLE
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA16F);
+#else
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
+#endif
+#endif
+
 		namespace fs = std::filesystem;
 		m_lastVertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
 		m_lastFragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
-		octree_size = 512;
 		m_volumeDensity = 20.0;
 		m_volumeQuality = 1;
 		m_volumetricsShader.load("shaders/volumetrics_vertex.glsl", "shaders/volumetrics_frag.glsl");
-		volumeTexture.allocate(octree_size, octree_size, octree_size, GL_R16F);
-		volumetrics.setup(&volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
+		m_volumetricsShader.begin();
+		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+		m_volumetricsShader.end();
+
+		frameSettings.worldsize = 512;
+		m_clearData.assign(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0);
+		frameSettings.volumeTexture.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
+		frameSettings.volumeTexture.loadData(
+		    m_clearData.data(),
+		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+		);
+
+		volumetrics.setup(&frameSettings.volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
-		glBindTexture(volumeTexture.texData.textureTarget,volumeTexture.texData.textureID);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
-		glTexParameteri(volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
-		glBindTexture(volumeTexture.texData.textureTarget,0);
-		//volumetrics.setVolumeTextureFilterMode(GL_LINEAR);
+		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,frameSettings.volumeTexture.texData.textureID);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
+		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
+		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);
+
 
 		m_bReady = true;
     }
@@ -111,6 +160,10 @@ namespace ent
 				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
 				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 				m_renderShader.end();
+				m_volumetricsShader.begin();
+				m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+				m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+				m_volumetricsShader.end();
 			}
 
 			m_lastVertTime = vertTime;
@@ -191,6 +244,10 @@ namespace ent
 				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
 				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
 				m_renderShader.end();
+				m_volumetricsShader.begin();
+				m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+				m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+				m_volumetricsShader.end();
 			}
 			if (ImGui::Button("Next Frame"))
 			{
@@ -231,25 +288,36 @@ namespace ent
 			return;
 		}
 
-		if (!m_snapshots[index].isLoaded()) 
-		{
-			m_snapshots[index].setup(m_folder, m_startIndex + index, m_densityMin, m_densityMax, volumeTexture, octree_size);
+		frameSettings.folder = m_folder;
+		frameSettings.frameIndex = m_startIndex + index;
+		frameSettings.minDensity = m_densityMin;
+		frameSettings.maxDensity = m_densityMax;
+		frameSettings.volumeTexture.loadData(
+		    m_clearData.data(),
+		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+		);
+		m_snapshots[index].setup(frameSettings);
 
-			// Adjust the ranges.
-			m_coordRange.include(m_snapshots[index].getCoordRange());
-			m_sizeRange.include(m_snapshots[index].getSizeRange());
-			m_densityRange.include(m_snapshots[index].getDensityRange());
+		// Adjust the ranges.
+		m_coordRange.include(m_snapshots[index].getCoordRange());
+		m_sizeRange.include(m_snapshots[index].getSizeRange());
+		m_densityRange.include(m_snapshots[index].getDensityRange());
 
-			// Set normalization values to remap to [-0.5, 0.5]
-			glm::vec3 coordSpan = m_coordRange.getSpan();
-			m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
+		// Set normalization values to remap to [-0.5, 0.5]
+		glm::vec3 coordSpan = m_coordRange.getSpan();
+		m_originShift = -0.5f * coordSpan - m_coordRange.getMin();
 
-			m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
-			m_renderShader.begin();
-			m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
-			m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
-			m_renderShader.end();
-		}
+		m_normalizeFactor = MAX(MAX(coordSpan.x, coordSpan.y), coordSpan.z);
+		m_renderShader.begin();
+		m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+		m_renderShader.end();
+		m_volumetricsShader.begin();
+		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+		m_volumetricsShader.end();
+		cout << "min density " << m_densityMin * m_densityRange.getSpan() <<
+		        " max density " << m_densityMax * m_densityRange.getSpan() << endl;
 	}
 
 	//--------------------------------------------------------------
@@ -276,6 +344,10 @@ namespace ent
 		if (index < 0) 
 		{
 			ofLogError("SequenceRamses::setFrame") << "Index must be a positive number!";
+			return;
+		}
+
+		if(m_currFrame == index){
 			return;
 		}
 

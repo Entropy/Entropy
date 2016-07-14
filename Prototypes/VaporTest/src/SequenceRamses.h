@@ -86,9 +86,11 @@ namespace ent
 		std::time_t m_lastIncludesTime;
 
 		ofxVolumetrics3D volumetrics;
-		ofxTexture3d volumeTexture;
-		size_t octree_size;
 		float m_volumeQuality;
 		float m_volumeDensity;
+
+		std::vector<float> m_clearData;
+
+		SnapshotRamses::Settings frameSettings;
     };
 }

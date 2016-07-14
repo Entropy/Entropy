@@ -37,7 +37,7 @@ bool IntersectBox(Ray r, BoundingBox box, out float t0, out float t1)
     t0 = max(t.x, t.y);
     t = min(tmax.xx, tmax.yz);
     t1 = min(t.x, t.y);
-    return t0 <= t1;
+	return t0 <= t1;
 }
 
 void main()
@@ -91,14 +91,10 @@ void main()
 							float sample2 = textureLod(volume_tex, vec, 1).r;
 							if(sample2>levelThreshold){
 								for(int h=0; h<2; h++){
-									float sample3 = texture(volume_tex, vec).r;
+									float alpha = texture(volume_tex, vec).r * aScale;
 									float oneMinusAlpha = 1. - clamp(col_acc.a, 0., 1.);
-									float alpha = sample3 * aScale;
 									col_acc.rgb += oneMinusAlpha * vec3(alpha) * alpha;
 									col_acc.a += alpha * oneMinusAlpha;
-									if(col_acc.a >= 1.0) {
-										break; // terminate if opacity > 1
-									}
 									vec += delta_dir;
 								}
 							}else{
@@ -112,6 +108,9 @@ void main()
 				}
 			}else{
 				vec += delta_dir*16.;
+			}
+			if(col_acc.a >= 1.0) {
+				break; // terminate if opacity > 1
 			}
 		}
 

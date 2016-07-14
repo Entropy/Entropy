@@ -4,7 +4,7 @@
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
-in vec3 position;
+in vec4 position;
 in float size;
 in float density;
 
@@ -16,7 +16,7 @@ const float pointSizeFactor = 50000000.;
 
 void main()
 {
-	vec4 transformPosition = vec4(position, 1.0);
+	vec4 transformPosition = vec4(position.xyz, 1.0);
 	vec4 eyePosition = modelViewMatrix * transformPosition;
 
 	vDensity = density;

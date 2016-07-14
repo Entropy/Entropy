@@ -12,10 +12,15 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "bin/data/shaders/int2float.glsl",
+            "bin/data/shaders/maprange.glsl",
+            "bin/data/shaders/particles2texture3d.glsl",
             "bin/data/shaders/render.frag",
             "bin/data/shaders/render.vert",
             "bin/data/shaders/volumetrics_frag.glsl",
             "bin/data/shaders/volumetrics_vertex.glsl",
+            "bin/data/shaders/voxels2texture3d.glsl",
+            "src/Constants.h",
             "src/Particle.h",
             "src/SequenceRamses.cpp",
             "src/SequenceRamses.h",
@@ -41,6 +46,7 @@ Project{
             '../../addons/ofxTween',
             '../../addons/ofxTimecode',
             '../../addons/ofxVolumetrics',
+            '../../addons/ofxLibfbi',
             'ofxXmlSettings',
         ]
 
