@@ -16,44 +16,29 @@
     <ClCompile Include="src\ofxPersistent\src\Persistent.cpp">
       <Filter>src\ofxPersistent\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Particle.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleSystem.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Octree.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
       <Filter>addons\ofxObjLoader\libs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
       <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Octree.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Particle.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\ParticleSystem.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Photons.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\scene\Particles.cpp">
+      <Filter>src\entropy\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,21 +54,6 @@
     <Filter Include="addons">
       <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui">
-      <UniqueIdentifier>{0CD6A942-69FF-3BAA-3AF1-ADD1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\src">
-      <UniqueIdentifier>{18028A43-13D3-1DD5-471A-BE87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs">
-      <UniqueIdentifier>{BE2F957E-7DA7-055C-DC70-3070}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs\imgui">
-      <UniqueIdentifier>{296AD70B-2F2E-1462-9E7C-6030}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxImGui\libs\imgui\src">
-      <UniqueIdentifier>{5962BF19-1468-EB82-01C0-2E72}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxObjLoader">
       <UniqueIdentifier>{1CE757A6-4CD8-7597-D9C8-ADF1}</UniqueIdentifier>
     </Filter>
@@ -93,12 +63,27 @@
     <Filter Include="addons\ofxObjLoader\libs">
       <UniqueIdentifier>{34B63617-11EF-343F-D7FD-5A0C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{26f3c8ff-62b5-474a-8741-d1cb4ba004f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\particles">
+      <UniqueIdentifier>{795d28da-6273-4a18-aed2-d7d60d6aacba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{bf56410c-6e4c-44fd-b977-9a7c531698c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGpuParticles">
+      <UniqueIdentifier>{8706fd2e-05aa-4b37-8789-67559c9a9cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGpuParticles\src">
+      <UniqueIdentifier>{eb77fa45-a47b-4dbf-8b69-49fc82506fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{f95eea04-0d9a-42bb-bed8-565b30cf7fc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Octree.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
@@ -113,47 +98,11 @@
     <ClInclude Include="src\ofxPersistent\src\PersistentType.h">
       <Filter>src\ofxPersistent\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Particle.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleSystem.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
-      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
       <Filter>addons\ofxObjLoader\libs</Filter>
@@ -161,8 +110,57 @@
     <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
       <Filter>addons\ofxObjLoader\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\particles\Octree.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Particle.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\ParticleSystem.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Particles.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Photons.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\ParticleEvents.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\entropy\particles\Octree.inl">
+      <Filter>src\entropy\particles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shaders\photon_draw.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_draw.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\photon_update.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.frag">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\particle.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\wall.vert">
+      <Filter>src\shaders</Filter>
+    </None>
+    <None Include="bin\data\shaders\wall.frag">
+      <Filter>src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

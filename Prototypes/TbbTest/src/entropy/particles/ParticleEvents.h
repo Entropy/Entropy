@@ -1,5 +1,5 @@
 /*
- *  ParticleSystem.h
+ *  ParticleEvents.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -31,69 +31,30 @@
  */
 #pragma once
 
-#include "Octree.h"
-#include "Particle.h"
+#include "ofMain.h"
 
 namespace nm
 {
-    struct ParticleGpuData
-    {
-        ofMatrix4x4 transform;
-    };
-
-	struct Light
+	struct PhotonEventArgs
 	{
-		ofVec3f position;
-		ofFloatColor color;
-		float intensity;
-		float radius;
+		glm::vec3* photons;
+		unsigned numPhotons;
 	};
-    
-    class ParticleSystem
-    {
-    public:
-        static const unsigned MAX_PARTICLES = 5000;
-        static const unsigned NUM_LIGHTS = 2;
-		static const float MIN_SPEED_SQUARED;
-        
-        ParticleSystem();
-        ~ParticleSystem();
-        
-        void init(const ofVec3f& min, const ofVec3f& max);
-        
-        void addParticle(Particle::Type type, const ofVec3f& position, const ofVec3f& velocity);
-        
-        void update();
-        
-        void draw();
 
-		void drawProtonTest();
-        
-        // lighting, should be private but for
-        // GUI adding simplicity they're public
-        Light lights[NUM_LIGHTS];
-        float roughness;
-        
-    private:
-        void sumForces(Particle& particle);
-        
-        Octree<Particle> octree;
-        nm::Particle* particles;
-        tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
-		tbb::atomic<unsigned> totalNumParticles;
-		unsigned* deadParticles;
-		tbb::atomic<unsigned> numDeadParticles;
-        ofVboMesh meshes[Particle::NUM_TYPES];
-        ofShader shader;
-        ofVec3f min, max;
-        
-        // position stuff
-        ofBufferObject tbo[Particle::NUM_TYPES];
-		ParticleGpuData* positions[Particle::NUM_TYPES];
-        ofTexture positionsTex[Particle::NUM_TYPES];
+	class ParticleEvents
+	{
+	public:
+		/*
+		static ParticleEvents& getInstance()
+		{
+			static ParticleEvents particleEvents;
+			return particleEvents;
+		}*/
 
-		ofVec3f* newProtons;
-		tbb::atomic<unsigned> numNewProtons;
-		ofVboMesh protonTest;
-    };
+		static ofEvent<PhotonEventArgs>& getPhotonEvent()
+		{
+			static ofEvent<PhotonEventArgs> photonEvent;
+			return photonEvent;
+		}
+	};
 }

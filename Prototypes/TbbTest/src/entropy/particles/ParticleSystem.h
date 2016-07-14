@@ -1,5 +1,5 @@
 /*
- *  PersistentType.h
+ *  ParticleSystem.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -32,34 +32,71 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Octree.h"
+#include "Particle.h"
+#include "ParticleEvents.h"
 
-template<typename T>
-class PersistentType
+namespace nm
 {
-public:
-    PersistentType() {}
-    PersistentType(T* value, T min = T(), T max = T()) : value(value), min(min), max(max) {}
-    
-    void set(T* value, T min = T(), T max = T())
+    struct ParticleGpuData
     {
-        this->value = value;
-        this->min = min;
-        this->max = max;
-    }
-    
-    T* getValue() const { return value; }
-    T getMin() const { return min; }
-    T getMax() const { return max; }
-    
-private:
-    T min, max;
-    T* value;
-};
+        glm::mat4 transform;
+    };
 
-typedef PersistentType<bool> PersistentBool;
-typedef PersistentType<int> PersistentInt;
-typedef PersistentType<unsigned> PersistentUnsigned;
-typedef PersistentType<float> PersistentFloat;
-typedef PersistentType<glm::vec2> PersistentVec2f;
-typedef PersistentType<glm::vec3> PersistentVec3f;
-typedef PersistentType<ofFloatColor> PersistentFloatColor;
+	struct Light
+	{
+		glm::vec3 position;
+		ofFloatColor color;
+		float intensity;
+		float radius;
+	};
+
+    class ParticleSystem
+    {
+    public:
+        static const unsigned MAX_PARTICLES = 5000;
+        static const unsigned NUM_LIGHTS = 2;
+		static const float MIN_SPEED_SQUARED;
+        
+        ParticleSystem();
+        ~ParticleSystem();
+        
+        void init(const glm::vec3& min, const glm::vec3& max);
+        
+        void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
+        
+        void update();
+        
+        void draw();
+
+		void drawWalls();
+
+        // lighting, should be private but for
+        // GUI adding simplicity they're public
+        Light lights[NUM_LIGHTS];
+        float roughness;
+
+		void serialize(nlohmann::json & json);
+		void deserialize(const nlohmann::json & json);
+        
+    private:
+        Octree<Particle> octree;
+        nm::Particle* particles;
+        tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
+		tbb::atomic<unsigned> totalNumParticles;
+		unsigned* deadParticles;
+		tbb::atomic<unsigned> numDeadParticles;
+        ofVboMesh meshes[Particle::NUM_TYPES];
+        ofShader particleShader;
+        glm::vec3 min, max, dims;
+		ofShader wallShader;
+        
+        // position stuff
+        ofBufferObject tbo[Particle::NUM_TYPES];
+		ParticleGpuData* positions[Particle::NUM_TYPES];
+        ofTexture positionsTex[Particle::NUM_TYPES];
+
+		glm::vec3* newPhotons;
+		tbb::atomic<unsigned> numNewPhotons;
+    };
+}

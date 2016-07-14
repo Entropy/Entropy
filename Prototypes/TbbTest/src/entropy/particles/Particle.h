@@ -35,7 +35,7 @@
 
 namespace nm
 {
-	class Particle : public ofVec3f
+	class Particle : public glm::vec3
 	{
 	public:
 		enum Type
@@ -55,9 +55,9 @@ namespace nm
 
 		Particle();
 
-		inline void zeroForce() { force.set(0.f); }
-		inline ofVec3f getForce() const { return force; }
-		inline void setForce(const ofVec3f& force) { this->force = force; }
+		inline void zeroForce() { force = glm::vec3(0.0f); }
+		inline glm::vec3 getForce() const { return force; }
+		inline void setForce(const glm::vec3& force) { this->force = force; }
 
 		inline void setMass(float mass) { this->mass = mass; }
 		inline float getMass() const { return mass; }
@@ -65,8 +65,9 @@ namespace nm
 		inline void setCharge(float charge) { this->charge = charge; }
 		inline float getCharge() const { return charge; }
 
-		inline void setVelocity(const ofVec3f& velocity) { this->velocity = velocity; }
-		inline ofVec3f getVelocity() const { return velocity; }
+		inline void setPosition(const glm::vec3& position) { this->x = position.x; this->y = position.y; this->z = position.z; }
+		inline void setVelocity(const glm::vec3& velocity) { this->velocity = velocity; }
+		inline glm::vec3 getVelocity() const { return velocity; }
 
 		inline void setRadius(float radius) { this->radius = radius; }
 		inline float getRadius() const { return radius; }
@@ -78,8 +79,8 @@ namespace nm
         Type type;
         float mass;
         float charge;
-        ofVec3f velocity;
-        ofVec3f force;
+		glm::vec3 velocity;
+		glm::vec3 force;
 		float radius;
     };
 }

@@ -1,5 +1,5 @@
 /*
- *  Particle.cpp
+ *  Photons.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,20 +29,41 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#include "Particle.h"
+#pragma once
+
+#include "ofMain.h"
+#include "ParticleEvents.h"
+#include "ofxGpuParticles.h"
 
 namespace nm
 {
-	const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
-	const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
-	const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
+	class Photons
+	{
+	public:
+		static const unsigned MAX_PHOTONS = 100;
+		static const unsigned PARTICLES_PER_PHOTON = 300;
 
-    Particle::Particle() :
-        mass(1.f),
-        velocity(1.f, 0.f, 0.f),
-        ofVec3f(),
-        charge(1.f),
-		radius(10.f)
-    {
-    }
+		Photons();
+
+		vector<glm::vec3>& getPosnsRef() { return posns; }
+
+		void init();
+		void onPhotonEvent(PhotonEventArgs& args);
+		void update();
+		void draw();
+
+	private:
+		void onParticlesUpdate(ofShader& shader);
+		void onParticlesDraw(ofShader& shader);
+
+		ofxGpuParticles particles;
+		ofImage particleImage;
+
+		vector<glm::vec3> posns;
+		vector<glm::vec3> vels;
+
+		ofBufferObject photonPosnBuffer;
+		ofTexture photonPosnTexture;
+		unsigned currentPhotonIdx;
+    };
 }

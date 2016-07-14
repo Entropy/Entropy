@@ -45,8 +45,8 @@ public:
     void add(const string& name, int& parameter, int min, int max);
     void add(const string& name, unsigned& parameter, unsigned min, unsigned max);
     void add(const string& name, float& parameter, float min, float max);
-    void add(const string& name, ofVec2f& parameter, const ofVec2f& min, const ofVec2f& max);
-    void add(const string& name, ofVec3f& parameter, const ofVec3f& min, const ofVec3f& max);
+    void add(const string& name, glm::vec2& parameter, const glm::vec2& min, const glm::vec2& max);
+    void add(const string& name, glm::vec3& parameter, const glm::vec3& min, const glm::vec3& max);
     void add(const string& name, ofFloatColor& parameter, const ofFloatColor& min, const ofFloatColor& max);
 
     void load(const string& fileName = "settings.xml");

@@ -55,13 +55,13 @@ void Persistent::add(const string& name, float& parameter, float min, float max)
     floats[name].set(&parameter, min, max);
 }
 
-void Persistent::add(const string& name, ofVec2f& parameter, const ofVec2f& min, const ofVec2f& max)
+void Persistent::add(const string& name, glm::vec2& parameter, const glm::vec2& min, const glm::vec2& max)
 {
     if (vec2fs.find(name) != vec2fs.end()) ofLogError() << "An ofVec2f named " << name << " already exists, overwriting it.";
     vec2fs[name].set(&parameter, min, max);
 }
 
-void Persistent::add(const string& name, ofVec3f& parameter, const ofVec3f& min, const ofVec3f& max)
+void Persistent::add(const string& name, glm::vec3& parameter, const glm::vec3& min, const glm::vec3& max)
 {
     if (vec3fs.find(name) != vec3fs.end()) ofLogError() << "An ofVec3f named " << name << " already exists, overwriting it.";
     vec3fs[name].set(&parameter, min, max);

@@ -77,6 +77,7 @@ namespace entropy
             string getAssetsPath(const string & file = "");
 			string getDataPath(const string & file = "");
 			string getPresetPath(const string & preset = "");
+			string getCurrentPresetPath(const string & file = "");
 
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);

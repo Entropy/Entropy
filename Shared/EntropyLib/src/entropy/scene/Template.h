@@ -36,6 +36,7 @@ namespace entropy
 		protected:
 			ofSpherePrimitive sphere;
 
+		protected:
 			virtual BaseParameters & getParameters() override
 			{
 				return this->parameters;

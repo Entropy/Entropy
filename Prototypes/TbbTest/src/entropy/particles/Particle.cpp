@@ -1,5 +1,5 @@
 /*
- *  PersistentType.h
+ *  Particle.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,37 +29,20 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#pragma once
+#include "Particle.h"
 
-#include "ofMain.h"
-
-template<typename T>
-class PersistentType
+namespace nm
 {
-public:
-    PersistentType() {}
-    PersistentType(T* value, T min = T(), T max = T()) : value(value), min(min), max(max) {}
-    
-    void set(T* value, T min = T(), T max = T())
-    {
-        this->value = value;
-        this->min = min;
-        this->max = max;
-    }
-    
-    T* getValue() const { return value; }
-    T getMin() const { return min; }
-    T getMax() const { return max; }
-    
-private:
-    T min, max;
-    T* value;
-};
+	const float Particle::MASSES[NUM_TYPES] = { 500.f, 500.f, 2300.f, 2300.f };
+	const float Particle::CHARGES[NUM_TYPES] = { -1.f, 1.f, -1.f, 1.f };
+	const ofFloatColor Particle::COLORS[NUM_TYPES] = { ofFloatColor(0.2f), ofFloatColor(1.f), ofFloatColor(0.2f), ofFloatColor(1.f) };
 
-typedef PersistentType<bool> PersistentBool;
-typedef PersistentType<int> PersistentInt;
-typedef PersistentType<unsigned> PersistentUnsigned;
-typedef PersistentType<float> PersistentFloat;
-typedef PersistentType<glm::vec2> PersistentVec2f;
-typedef PersistentType<glm::vec3> PersistentVec3f;
-typedef PersistentType<ofFloatColor> PersistentFloatColor;
+    Particle::Particle() :
+        glm::vec3(0.0f),
+        mass(1.f),
+        velocity(1.f, 0.f, 0.f),
+        charge(1.f),
+		radius(10.f)
+    {
+    }
+}
