@@ -50,6 +50,9 @@ namespace nm
 	class ParticleEvents
 	{
 	public:
+		ParticleEvents(ParticleEvents const&) = delete;
+		void operator=(ParticleEvents const&) = delete;
+
 		static ofEvent<PhotonEventArgs>& getPhotonEvent()
 		{
 			static ofEvent<PhotonEventArgs> photonEvent;

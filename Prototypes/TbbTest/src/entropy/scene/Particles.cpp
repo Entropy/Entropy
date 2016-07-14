@@ -65,7 +65,7 @@ namespace entropy
 					ofRandom(-speed, speed),
 					ofRandom(-speed, speed));
 
-				particleSystem.addParticle((nm::Particle::Type)(i % nm::Particle::NUM_TYPES), position, velocity);
+				particleSystem.addParticle((nm::Particle::Type)(i % 4), position, velocity);
 				//nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
 				//particleSystem.addParticle(type, position, velocity);
 			}
