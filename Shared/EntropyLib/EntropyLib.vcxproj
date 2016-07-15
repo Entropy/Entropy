@@ -351,6 +351,7 @@
     <ClInclude Include="src\entropy\scene\Template.h" />
     <ClInclude Include="src\entropy\scene\Video.h" />
     <ClInclude Include="src\entropy\util\App.h" />
+    <ClInclude Include="src\entropy\util\GLError.h" />
     <ClInclude Include="src\entropy\util\Mapping.h" />
     <ClInclude Include="src\entropy\util\Singleton.h" />
   </ItemGroup>

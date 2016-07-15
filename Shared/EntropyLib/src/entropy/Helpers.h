@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entropy/util/App.h"
+#include "entropy/util/GLError.h"
 
 namespace entropy
 {
