@@ -25,6 +25,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setup()
 		{
+			// Setup default camera.
+			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
+			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+
+			// Setup child Scene.
 			this->onSetup.notify();
 			
 			// List presets.
@@ -67,6 +72,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize(ofResizeEventArgs & args)
 		{
+			this->camera.setAspectRatio(args.width / (float)args.height);
+			
 			this->onResize.notify(args);
 		}
 
@@ -110,9 +117,11 @@ namespace entropy
 		void Base::drawWorld()
 		{
 			this->getCamera().begin();
+			ofEnableDepthTest();
 			{
 				this->onDrawWorld.notify();
 			}
+			ofDisableDepthTest();
 			this->getCamera().end();
 		}
 

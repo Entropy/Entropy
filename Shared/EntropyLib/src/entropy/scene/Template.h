@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "entropy/scene/Base.h"
 
 namespace entropy
 {
