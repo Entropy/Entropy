@@ -116,7 +116,7 @@ namespace nm
 		ofAddListener(particles.drawEvent, this, &Photons::onParticlesDraw);
 
 		// listen for photon events
-		ofAddListener(ParticleEvents::getPhotonEvent(), this, &Photons::onPhotonEvent);
+		ofAddListener(ParticleEvents::getPhotonEvent(), this, &Photons::onPhoton);
 	}
 
 	void Photons::onParticlesUpdate(ofShader& shader)
@@ -133,7 +133,7 @@ namespace nm
 		shader.setUniformTexture("tex", particleImage, 4);
 	}
 
-	void Photons::onPhotonEvent(PhotonEventArgs& args)
+	void Photons::onPhoton(PhotonEventArgs& args)
 	{
 		for (unsigned i = 0; i < args.numPhotons; ++i)
 		{

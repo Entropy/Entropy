@@ -46,12 +46,33 @@ namespace nm
 			ANTI_UP_QUARK,
 			UP_QUARK,
 
+			ANTI_DOWN_QUARK,
+			DOWN_QUARK,
+			
+			UP_DOWN_QUARK, // hacky composite particle
+
 			NUM_TYPES
 		};
 
+		struct Data
+		{
+			unsigned char annihilationFlag; // particles and anti-particles
+			unsigned char fusion1Flag; // up-quarks and down-quarks
+			unsigned char fusion2Flag; // compound particles with up-quarks and down-quarks
+			float mass;
+			float charge;
+			ofFloatColor color;
+		};
+
+		static const Data DATA[NUM_TYPES];
+
+		/*
+		static const unsigned char ANNIHILATION_FLAGS[NUM_TYPES];
+		static const unsigned char FUSION_FLAGS[NUM_TYPES];
 		static const float MASSES[NUM_TYPES];
 		static const float CHARGES[NUM_TYPES];
 		static const ofFloatColor COLORS[NUM_TYPES];
+		*/
 
 		Particle();
 
