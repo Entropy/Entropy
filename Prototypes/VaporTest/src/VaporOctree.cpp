@@ -4,6 +4,7 @@
 #include "ofGraphics.h"
 #include "ofUtils.h"
 #include <future>
+#include <numeric>
 
 struct BoundingBoxSearch {
 	inline BoundingBoxSearch(const ofVec3f & min, const ofVec3f & max, float density)

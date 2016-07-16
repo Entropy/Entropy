@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #endif
 
-#include "turbojpeg.h"
+//#include "turbojpeg.h"
 
 namespace ent
 {
