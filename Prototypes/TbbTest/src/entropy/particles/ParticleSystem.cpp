@@ -216,7 +216,7 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::draw()
+	void ParticleSystem::draw(ofShader & shader)
 	{
 		// Save state before changing.
 		auto depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
@@ -229,30 +229,30 @@ namespace nm
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		particleShader.begin();
-		{
-			particleShader.setUniform1i("numLights", NUM_LIGHTS);
-			particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
-			particleShader.setUniform1f("roughness", roughness);
+		//particleShader.begin();
+		//{
+		//	particleShader.setUniform1i("numLights", NUM_LIGHTS);
+		//	particleShader.setUniformMatrix4f("viewMatrix", ofGetCurrentViewMatrix());
+		//	particleShader.setUniform1f("roughness", roughness);
 
-			for (int i = 0; i < NUM_LIGHTS; i++)
-			{
-				string index = ofToString(i);
-				particleShader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
-				particleShader.setUniform4f("lights[" + index + "].color", lights[i].color);
-				particleShader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
-				particleShader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
-			}
+		//	for (int i = 0; i < NUM_LIGHTS; i++)
+		//	{
+		//		string index = ofToString(i);
+		//		particleShader.setUniform3f("lights[" + index + "].position", (ofGetCurrentViewMatrix() * glm::vec4(lights[i].position, 0.0f)).xyz);
+		//		particleShader.setUniform4f("lights[" + index + "].color", lights[i].color);
+		//		particleShader.setUniform1f("lights[" + index + "].intensity", lights[i].intensity);
+		//		particleShader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
+		//	}
 
 			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 			{
-				particleShader.setUniform3fv("particleColor", &Particle::DATA[i].color.r);
-				particleShader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
+				//particleShader.setUniform3fv("particleColor", &Particle::DATA[i].color.r);
+				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
 				if (numParticles[i]) meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
 			}
-		}
+		//}
 
-		particleShader.end();
+		//particleShader.end();
 
 		// Restore state.
 		if (GL_FALSE == depthTestEnabled)

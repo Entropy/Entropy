@@ -245,7 +245,7 @@ namespace entropy
 		void Base::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (json.count("camera"))
+			if (false && json.count("camera"))
 			{
 				// Disable auto distance so that it doesn't interfere with the camera matrix.
 				// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.

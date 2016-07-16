@@ -13,6 +13,7 @@ namespace entropy
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.numSamples = 4;
+			//this->fboSettings.internalformat = GL_RGB16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 			this->fboSettings.useDepth = true;
 			this->fbo.allocate(this->fboSettings);
