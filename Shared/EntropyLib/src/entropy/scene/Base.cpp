@@ -116,7 +116,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::drawWorld()
 		{
-			this->getCamera().begin();
+			this->getCamera().begin(GetCanvasViewport());
 			ofEnableDepthTest();
 			{
 				this->onDrawWorld.notify();

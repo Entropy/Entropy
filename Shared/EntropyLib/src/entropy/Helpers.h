@@ -36,6 +36,12 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
+	inline const ofRectangle & GetCanvasViewport()
+	{
+		return GetCanvas()->getViewport();
+	}
+
+	//--------------------------------------------------------------
 	inline string GetSharedDataPath()
 	{
 		static string dataPath;

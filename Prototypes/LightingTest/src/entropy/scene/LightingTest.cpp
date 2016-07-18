@@ -106,8 +106,6 @@ namespace entropy
 		// Draw 3D elements here.
 		void LightingTest::drawWorld()
 		{
-			ofDisableAlphaBlending();
-			
 			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
 			GLint cullFaceMode[1];
 			glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
@@ -115,7 +113,7 @@ namespace entropy
 			ofDisableAlphaBlending();
 
 			glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
+			glCullFace(GL_FRONT);
 
 			this->viewUbo.bind();
 			{

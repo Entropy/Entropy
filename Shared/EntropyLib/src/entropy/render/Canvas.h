@@ -24,6 +24,7 @@ namespace entropy
 
 			float getWidth() const;
 			float getHeight() const;
+			const ofRectangle & getViewport() const;
 
 			void setWidth(float width);
 			void setHeight(float height);
@@ -103,6 +104,7 @@ namespace entropy
 
 			ofFbo fbo;
 			ofFbo::Settings fboSettings;
+			ofRectangle fboViewport;
 
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
 			size_t focusedIndex;
