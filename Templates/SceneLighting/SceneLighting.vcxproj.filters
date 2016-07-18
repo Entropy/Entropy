@@ -28,7 +28,7 @@
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.cpp">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\scene\LightingTest.cpp">
+    <ClCompile Include="src\entropy\scene\Lighting.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +125,7 @@
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\scene\LightingTest.h">
+    <ClInclude Include="src\entropy\scene\Lighting.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/LightingTest.h"
+#include "entropy/scene/Lighting.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -10,9 +10,9 @@ void ofApp::setup()
 
 	// Add Scenes to the Manager.
 	auto sceneManager = entropy::GetSceneManager();
-	auto sceneLightingTest = make_shared<entropy::scene::LightingTest>();
-	sceneManager->addScene(sceneLightingTest);
-	sceneManager->setCurrentScene(sceneLightingTest->getName());
+	auto sceneLighting = make_shared<entropy::scene::Lighting>();
+	sceneManager->addScene(sceneLighting);
+	sceneManager->setCurrentScene(sceneLighting->getName());
 }
 
 //--------------------------------------------------------------

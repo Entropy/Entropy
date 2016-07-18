@@ -202,7 +202,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.cpp" />
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.cpp" />
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.cpp" />
-    <ClCompile Include="src\entropy\scene\LightingTest.cpp" />
+    <ClCompile Include="src\entropy\scene\Lighting.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
   </ItemGroup>
@@ -224,7 +224,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\RadixSort.h" />
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\SphereScissor.h" />
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h" />
-    <ClInclude Include="src\entropy\scene\LightingTest.h" />
+    <ClInclude Include="src\entropy\scene\Lighting.h" />
     <ClInclude Include="src\ofApp.h" />
   </ItemGroup>
   <ItemGroup>

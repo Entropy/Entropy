@@ -1,4 +1,4 @@
-#include "LightingTest.h"
+#include "Lighting.h"
 
 #include "entropy/Helpers.h"
 
@@ -7,21 +7,21 @@ namespace entropy
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		LightingTest::LightingTest()
+		Lighting::Lighting()
 			: Base()
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
 		}
 
 		//--------------------------------------------------------------
-		LightingTest::~LightingTest()
+		Lighting::~Lighting()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Set up your crap here!
-		void LightingTest::setup()
+		void Lighting::setup()
 		{
 			ENTROPY_SCENE_EXIT_LISTENER;
 			ENTROPY_SCENE_RESIZE_LISTENER;
@@ -75,7 +75,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Clean up your crap here!
-		void LightingTest::exit()
+		void Lighting::exit()
 		{
 
 		}
@@ -83,28 +83,28 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Resize your content here. 
 		// Note that this is not the window size but the canvas size.
-		void LightingTest::resize(ofResizeEventArgs & args)
+		void Lighting::resize(ofResizeEventArgs & args)
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void LightingTest::update(double & dt)
+		void Lighting::update(double & dt)
 		{
 			this->animateLights();
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void LightingTest::drawBack()
+		void Lighting::drawBack()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void LightingTest::drawWorld()
+		void Lighting::drawWorld()
 		{
 			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
 			GLint cullFaceMode[1];
@@ -174,14 +174,14 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
-		void LightingTest::drawFront()
+		void Lighting::drawFront()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void LightingTest::gui(ofxPreset::Gui::Settings & settings)
+		void Lighting::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
@@ -230,7 +230,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Do something after the parameters are saved.
 		// You can save other stuff to the same json object here too.
-		void LightingTest::serialize(nlohmann::json & json)
+		void Lighting::serialize(nlohmann::json & json)
 		{
 
 		}
@@ -239,13 +239,13 @@ namespace entropy
 		// Do something after the parameters are loaded.
 		// You can load your other stuff here from that json object.
 		// You can also set any refresh flags if necessary.
-		void LightingTest::deserialize(const nlohmann::json & json)
+		void Lighting::deserialize(const nlohmann::json & json)
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void LightingTest::createRandomLights()
+		void Lighting::createRandomLights()
 		{
 			this->lightingSystem.clearPointLights();
 
@@ -263,7 +263,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void LightingTest::animateLights()
+		void Lighting::animateLights()
 		{
 			auto & pointLights = this->lightingSystem.getPointLights();
 			for (int idx = 0; idx < pointLights.size(); ++idx)
@@ -274,7 +274,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void LightingTest::drawSkybox()
+		void Lighting::drawSkybox()
 		{
 			glDisable(GL_CULL_FACE);
 			ofDisableDepthTest();
@@ -295,7 +295,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void LightingTest::drawScene()
+		void Lighting::drawScene()
 		{
 			static const int kNumSpheres = 8;
 

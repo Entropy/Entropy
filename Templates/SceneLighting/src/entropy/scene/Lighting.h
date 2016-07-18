@@ -10,17 +10,17 @@ namespace entropy
 {
 	namespace scene
 	{
-		class LightingTest
+		class Lighting
 			: public Base
 		{
 		public:
 			virtual string getName() const override
 			{
-				return "entropy::scene::LightingTest";
+				return "entropy::scene::Lighting";
 			}
 
-			LightingTest();
-			~LightingTest();
+			Lighting();
+			~Lighting();
 
 			void setup();
 			void exit();
@@ -84,7 +84,7 @@ namespace entropy
 					PARAM_DECLARE("Camera", exposure, gamma);
 				} camera;
 
-				PARAM_DECLARE("LightingTest", debug, camera);
+				PARAM_DECLARE("Lighting", debug, camera);
 			} parameters;
 		};
 	}
