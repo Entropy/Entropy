@@ -21,13 +21,14 @@ namespace entropy
         panelMarchingCubes.setPosition(0, 0);
 
         marchingCubes.setup();
-        marchingCubes.setResolution(resolution, resolution, resolution);
+		marchingCubes.setResolution(resolution, resolution, resolution);
         marchingCubes.scale.set(resolution * scale, resolution * scale, resolution * scale);
 
         // Noise Field
         panelNoiseField.setup(noiseField.paramGroup, "noise-field.xml");
         panelNoiseField.loadFromFile("noise-field.xml");
         panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
+		noiseField.setResolutionParam(resolution);
 
         // Render
         light.setup();
@@ -42,6 +43,7 @@ namespace entropy
         paramsRender.add(drawGrid.set("DRAW GRID", true));
         paramsRender.add(wireframe.set("WIREFRAME", true));
         paramsRender.add(shadeNormals.set("SHADE NORMALS", true));
+		paramsRender.add(simulationRunning.set("SIMULATION RUNNING", true));
 
         panelRender.setup(paramsRender, "render.xml");
         panelRender.loadFromFile("render.xml");
@@ -49,44 +51,47 @@ namespace entropy
         
         normalShader.load("shaders/normalShader");
 
+		camera.setDistance(2048);
+
         // GUI
-        guiVisible = true;
+		guiVisible = true;
     }
 
     //--------------------------------------------------------------
     void InflationApp::update()
     {
-        noiseField.update();
+		if(simulationRunning){
+			noiseField.update();
 
-        ofVec3f centroid(marchingCubes.resX * 0.5, marchingCubes.resY * 0.5, marchingCubes.resZ * 0.5);
-        float clipDistance = pow(resolution * 0.5, 2);
+			ofVec3f centroid(marchingCubes.resX * 0.5, marchingCubes.resY * 0.5, marchingCubes.resZ * 0.5);
+			float clipDistance = pow(resolution * 0.5, 2);
 
-        for (int i = 0; i < marchingCubes.resX; ++i) {
-            for (int j = 0; j < marchingCubes.resY; ++j) {
-                for (int k = 0; k < marchingCubes.resZ; ++k) {
-//                    if (radialClip && centroid.squareDistance(ofVec3f(i, j, k)) > clipDistance) {
-//                        marchingCubes.setIsoValue(i, j, k, 0);
-//                    }
-                    if (fillEdges && (i == 0 || j == 0 || k == 0 ||
-                                      i == marchingCubes.resX - 1 ||
-                                      j == marchingCubes.resY - 1 ||
-                                      k == marchingCubes.resZ - 1)) {
-                        marchingCubes.setIsoValue(i, j, k, 0.99);
-                    }
-                    else {
-                        marchingCubes.setIsoValue(i, j, k, noiseField.getValue(i, j, k));
-                    }
-                }
-            }
-        }
+			for (int i = 0; i < marchingCubes.resX; ++i) {
+				for (int j = 0; j < marchingCubes.resY; ++j) {
+					for (int k = 0; k < marchingCubes.resZ; ++k) {
+	//                    if (radialClip && centroid.squareDistance(ofVec3f(i, j, k)) > clipDistance) {
+	//                        marchingCubes.setIsoValue(i, j, k, 0);
+	//                    }
+						if (fillEdges && (i == 0 || j == 0 || k == 0 ||
+						                  i == marchingCubes.resX - 1 ||
+						                  j == marchingCubes.resY - 1 ||
+						                  k == marchingCubes.resZ - 1)) {
+							marchingCubes.setIsoValue(i, j, k, 0.99);
+						}
+						else {
+							marchingCubes.setIsoValue(i, j, k, noiseField.getValue(i, j, k));
+						}
+					}
+				}
+			}
 
-        marchingCubes.update();
+			marchingCubes.update();
+		}
     }
 
     //--------------------------------------------------------------
     void InflationApp::draw()
-    {
-        ofSetWindowTitle(ofToString(ofGetFrameRate(), 2) + " FPS");
+	{
 
         ofEnableLighting();
         ofEnableDepthTest();
@@ -120,7 +125,8 @@ namespace entropy
 
             if (shadeNormals) {
                 normalShader.begin();
-                ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf((ofGetCurrentMatrix(OF_MATRIX_MODELVIEW)).getInverse());
+				//ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf((ofGetCurrentMatrix(OF_MATRIX_MODELVIEW)).getInverse());
+				auto normalMatrix = ofGetCurrentNormalMatrix();
                 normalShader.setUniformMatrix4f("uNormalMatrix", normalMatrix);
             }
             else {
@@ -160,12 +166,15 @@ namespace entropy
     }
 
     //--------------------------------------------------------------
-    void InflationApp::keyPressed(int key){
-
+	void InflationApp::keyPressed(int key){
         switch (key) {
-            case '`':
-                guiVisible ^= 1;
+			case 'h':
+				guiVisible = !guiVisible;
                 break;
+
+			case ' ':
+				simulationRunning = !simulationRunning;
+			break;
 
             case OF_KEY_TAB:
                 ofToggleFullscreen();

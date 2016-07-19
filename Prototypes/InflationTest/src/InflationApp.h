@@ -45,12 +45,12 @@ namespace entropy
         ofParameter<bool> flipNormals;
         ofParameter<bool> smooth;
 
-        ofxPanel panelMarchingCubes;
+		ofxPanel panelMarchingCubes;
 
         // Noise Field
-        NoiseField noiseField;
+		NoiseField noiseField;
 
-        ofxPanel panelNoiseField;
+		ofxPanel panelNoiseField;
 
         // Render
         ofShader normalShader;
@@ -61,9 +61,10 @@ namespace entropy
         ofParameter<bool> wireframe;
         ofParameter<bool> shadeNormals;
 
-        ofxPanel panelRender;
+		ofxPanel panelRender;
 
         // GUI
-        bool guiVisible;
+		bool guiVisible = true;
+		ofParameter<bool> simulationRunning;
     };
 }
