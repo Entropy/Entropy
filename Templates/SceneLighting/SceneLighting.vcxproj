@@ -243,17 +243,17 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\clusteredShading.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\math.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\ofDefaultUniforms.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\ofDefaultVertexInAttributes.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\pbr.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\toneMapping.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\inc\viewData.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\main.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\main.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\skybox.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\LightingTest\shaders\skybox.vert" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\clusteredShading.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\math.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\ofDefaultUniforms.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\ofDefaultVertexInAttributes.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\pbr.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\toneMapping.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\viewData.glsl" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\main.frag" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\main.vert" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\skybox.frag" />
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

@@ -57,10 +57,10 @@ void main( void )
 	vEyeDir_ws = ( viewData.inverseViewMatrix * eyeDir_vs ).xyz;
 #else	
 	vVertex_vs = modelViewMatrix * position;
-	vVertex_ws = ( viewData.inverseViewMatrix * vVertex ).xyz;
+	vVertex_ws = ( viewData.inverseViewMatrix * vVertex_vs ).xyz;
 
 	vNormal_vs = normalize( ( uNormalMatrix * vec4( normal, 0.0 ) ).xyz );
-	vNormal_ws = ( viewData.inverseViewMatrix * vec4( vNormal, 0.0 ) ).xyz;
+	vNormal_ws = ( viewData.inverseViewMatrix * vec4( vNormal_vs, 0.0 ) ).xyz;
 
 	vec4 eyeDir_vs = vVertex_vs - vec4( 0.0, 0.0, 0.0, 1.0 );
 	vEyeDir_ws = ( viewData.inverseViewMatrix * eyeDir_vs ).xyz;

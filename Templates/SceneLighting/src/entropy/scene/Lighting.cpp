@@ -214,6 +214,27 @@ namespace entropy
 						this->lightingSystem.clearPointLights();
 					}
 
+					if (ImGui::Button("Add Dir Light"))
+					{
+						this->lightingSystem.clearDirectionalLights();
+						auto light = ofxRTK::lighting::DirectionalLight(glm::normalize(glm::vec3(1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
+						this->lightingSystem.addDirectionalLight(light);
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Clear Dir Light"))
+					{
+						this->lightingSystem.clearDirectionalLights();
+					}
+
+					auto & dirLights = this->lightingSystem.getDirectionalLights();
+					if (!dirLights.empty())
+					{
+						auto & light = dirLights.front();
+						ImGui::ColorEdit3("Color", (float *)&light.color);
+						ImGui::SliderFloat3("Direction", (float *)&light.direction, -1.0f, 1.0f);
+						ImGui::SliderFloat("Intensity", &light.intensity, 0.0f, 15.0f);
+					}
+
 					ImGui::BeginGroup();
 					ImGui::Text("Stats");
 					ImGui::Text("Visible Lights: %u", this->lightingSystem.getNumVisibleLights());
@@ -297,11 +318,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Lighting::drawScene()
 		{
-			static const int kNumSpheres = 8;
+			static const auto kNumSpheres = 8;
 
-			static const float kRadius = 30.0f;
-			static const float kSpacing = kRadius * 2.0f + 15.0f;
-			static const float kOffset = -kNumSpheres * kSpacing * 0.5f;
+			static const auto kRadius = 30.0f;
+			static const auto kSpacing = kRadius * 2.0f + 15.0f;
+			static const auto kOffset = -kNumSpheres * kSpacing * 0.5f;
 
 #ifdef USE_INSTANCED
 			static const int kTotalSpheres = kNumSpheres * kNumSpheres;
@@ -311,11 +332,11 @@ namespace entropy
 				this->vboMesh = this->sphere.getMesh();
 
 				glm::mat4 transforms[kTotalSpheres];
-				for (int z = 0; z < kNumSpheres; ++z)
+				for (auto z = 0; z < kNumSpheres; ++z)
 				{
-					for (int x = 0; x < kNumSpheres; ++x)
+					for (auto x = 0; x < kNumSpheres; ++x)
 					{
-						int idx = z * kNumSpheres + x;
+						auto idx = z * kNumSpheres + x;
 						transforms[idx] = glm::translate(glm::vec3(kOffset + x * kSpacing, kRadius * 2.0f, kOffset + z * kSpacing)) * glm::scale(glm::vec3(kRadius));
 					}
 				}
@@ -328,20 +349,20 @@ namespace entropy
 			this->shader.setUniformTexture("uOffsetTex", this->bufferTexture, 0);
 			this->vboMesh.drawInstanced(OF_MESH_FILL, kTotalSpheres);
 #else
-			for (int z = 0; z < kNumSpheres; ++z)
+			for (auto z = 0; z < kNumSpheres; ++z)
 			{
-				float zPercent = z / (float)(kNumSpheres - 1);
+				auto zPercent = z / static_cast<float>(kNumSpheres - 1);
 
-				for (int x = 0; x < kNumSpheres; ++x)
+				for (auto x = 0; x < kNumSpheres; ++x)
 				{
-					float xPercent = x / (float)(kNumSpheres - 1);
+					auto xPercent = x / static_cast<float>(kNumSpheres - 1);
 					this->material.metallic = std::max(zPercent, 0.001f);
 					this->material.roughness = std::max(xPercent * xPercent, 0.001f);
 					this->material.setUniforms(this->shader);
 
 					ofPushMatrix();
 					{
-						ofTranslate(kOffset + x * kSpacing, kRadius * 2.0, kOffset + z * kSpacing);
+						ofTranslate(kOffset + x * kSpacing, kRadius * 2.0f, kOffset + z * kSpacing);
 						ofScale(kRadius);
 						this->shader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
 

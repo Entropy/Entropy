@@ -1,4 +1,4 @@
-// Filename: passthrough.vert
+// Filename: main.vert
 // 
 // Copyright © James Acres
 // http://www.jamesacres.com
@@ -23,49 +23,50 @@ uniform samplerBuffer uOffsetTex;
 uniform mat4 uNormalMatrix;
 #endif
 
-out vec4 vPosition;
-out vec3 vNormal;
-out vec2 vTexCoord;
+// View space.
+out vec4 vVertex_vs;
+out vec3 vNormal_vs;
 
-// Cube map world space
-out vec3 vPosition_ws;
+// World space.
+out vec3 vVertex_ws;
 out vec3 vEyeDir_ws;
 out vec3 vNormal_ws;
 
-void main( void )
+out vec2 vTexCoord0;
+
+void main( void ) 
 {
 #ifdef USE_INSTANCED
-    int idx = gl_InstanceID * 4;
-    mat4 transform = mat4( 
-        texelFetch(uOffsetTex, idx+0),
-        texelFetch(uOffsetTex, idx+1),
-        texelFetch(uOffsetTex, idx+2), 
-        texelFetch(uOffsetTex, idx+3)
-    );
-    mat4 transformMatrix = modelViewMatrix * transform;
-	mat4 normalMatrix = transpose(inverse(transformMatrix));
-    
-    vPosition = transformMatrix * position;
-    vNormal = normalize((normalMatrix * vec4(normal, 0.0)).xyz);
+	int idx = gl_InstanceID * 4;
+	mat4 modelMatrix = mat4(
+		texelFetch( uOffsetTex, idx+0 ),
+		texelFetch( uOffsetTex, idx+1 ),
+		texelFetch( uOffsetTex, idx+2 ), 
+		texelFetch( uOffsetTex, idx+3 )
+	);
 
-    // Cube map vectors
-	mat4 inverseTransformMatrix = inverse(transformMatrix);
-    vec4 eyeDir_vs = vPosition - vec4( 0.0, 0.0, 0.0, 1.0);
-    vPosition_ws = (inverseTransformMatrix * vPosition).xyz;
-    vEyeDir_ws = (inverseTransformMatrix * eyeDir_vs).xyz;
-    vNormal_ws = (inverseTransformMatrix * vec4(vNormal, 0.0)).xyz;
+	vec4 vPosition_ws = modelMatrix * position;
+	vVertex_vs = modelViewMatrix * vPosition_ws;
+	vVertex_ws = vPosition_ws.xyz;
+	
+	mat4 normalMatrix = transpose( inverse( modelViewMatrix * modelMatrix ) );
+	vNormal_vs = normalize( ( normalMatrix * vec4( normal, 0.0 ) ).xyz );
+	vNormal_ws = ( viewData.inverseViewMatrix * vec4( vNormal_vs, 0.0 ) ).xyz;
+
+	vec4 eyeDir_vs = vVertex_vs - vec4( 0.0, 0.0, 0.0, 1.0 );
+	vEyeDir_ws = ( viewData.inverseViewMatrix * eyeDir_vs ).xyz;
 #else	
-	vPosition = modelViewMatrix * position; // calculate view space position (required for lighting)
-	vNormal = normalize((uNormalMatrix * vec4(normal, 0.0)).xyz); // calculate view space normal (required for lighting & normal mapping)
+	vVertex_vs = modelViewMatrix * position;
+	vVertex_ws = ( viewData.inverseViewMatrix * vVertex_vs ).xyz;
 
-    // Cube map vectors
-    vec4 eyeDir_vs = vPosition - vec4( 0.0, 0.0, 0.0, 1.0);
-    vPosition_ws = (viewData.inverseViewMatrix * vPosition).xyz;
-    vEyeDir_ws = (viewData.inverseViewMatrix * eyeDir_vs).xyz;
-    vNormal_ws = (viewData.inverseViewMatrix * vec4(vNormal, 0.0)).xyz;
+	vNormal_vs = normalize( ( uNormalMatrix * vec4( normal, 0.0 ) ).xyz );
+	vNormal_ws = ( viewData.inverseViewMatrix * vec4( vNormal_vs, 0.0 ) ).xyz;
+
+	vec4 eyeDir_vs = vVertex_vs - vec4( 0.0, 0.0, 0.0, 1.0 );
+	vEyeDir_ws = ( viewData.inverseViewMatrix * eyeDir_vs ).xyz;
 #endif
 
-    vTexCoord = texcoord; // pass texture coordinates
+	vTexCoord0 = texcoord;
 
-    gl_Position = projectionMatrix * vPosition;
+	gl_Position = projectionMatrix * vVertex_vs;
 }
