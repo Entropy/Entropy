@@ -9,6 +9,86 @@
 		<string>46</string>
 		<key>objects</key>
 		<dict>
+			<key>22EFDE70A781C5BCE3B863A5</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>mcTables.h</string>
+				<key>path</key>
+				<string>../../addons/ofxMarchingCubes/src/mcTables.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>17638B25368E74F27661A009</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxMarchingCubes.h</string>
+				<key>path</key>
+				<string>../../addons/ofxMarchingCubes/src/ofxMarchingCubes.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>3297D3281C8F6B5D32274ED8</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>EC825B42B99FE84A8F7945D4</string>
+					<string>17638B25368E74F27661A009</string>
+					<string>22EFDE70A781C5BCE3B863A5</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>3046541297782F9CDCAFD494</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>3297D3281C8F6B5D32274ED8</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxMarchingCubes</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>619792168C67B818D2B76665</key>
+			<dict>
+				<key>fileRef</key>
+				<string>EC825B42B99FE84A8F7945D4</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>EC825B42B99FE84A8F7945D4</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxMarchingCubes.cpp</string>
+				<key>path</key>
+				<string>../../addons/ofxMarchingCubes/src/ofxMarchingCubes.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>5CBB2AB3A60F65431D7B555D</key>
 			<dict>
 				<key>fileRef</key>
@@ -439,7 +519,9 @@
 			<key>6948EE371B920CB800B5AC1A</key>
 			<dict>
 				<key>children</key>
-				<array />
+				<array>
+					<string>3046541297782F9CDCAFD494</string>
+				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
 				<key>name</key>
@@ -568,6 +650,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -629,6 +712,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -830,6 +914,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -889,6 +974,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -955,6 +1041,7 @@ fi
 					<string>837220E80EB56CD44AD27F2A</string>
 					<string>F285EB3169F1566CA3D93C20</string>
 					<string>5CBB2AB3A60F65431D7B555D</string>
+					<string>619792168C67B818D2B76665</string>
 				</array>
 				<key>isa</key>
 				<string>PBXSourcesBuildPhase</string>
@@ -1042,6 +1129,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -1091,6 +1179,7 @@ fi
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
 						<string>../../../addons/ofxGui/src</string>
+						<string>../../addons/ofxMarchingCubes/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>

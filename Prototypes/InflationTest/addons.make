@@ -1,2 +1,2 @@
 ofxGui
-ofxMarchingCubes
+../../addons/ofxMarchingCubes
