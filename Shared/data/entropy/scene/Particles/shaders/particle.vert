@@ -25,17 +25,18 @@ void main()
         texelFetch(uOffsetTex, idx+3)
     );
     mat4 transformMatrix = modelViewMatrix * transform;
-	mat4  normalMatrix = transpose(inverse(transformMatrix));
+	mat4 normalMatrix = transpose(inverse(transformMatrix));
     
     vPosition = transformMatrix * position;
     vNormal = normalize((normalMatrix * vec4(normal, 0.0)).xyz);
     vTexCoord = texcoord;
 
 	 // Cube map vectors, in world space.
-    vec4 eyeDir = vPosition - vec4( 0.0, 0.0, 0.0, 1.0);
-    vPosition_ws = (viewData.inverseViewMatrix * vPosition).xyz;
-    vEyeDir_ws = vec3(viewData.inverseViewMatrix * eyeDir);
-    vNormal_ws = vec3(viewData.inverseViewMatrix * vec4(vNormal, 0.0));
+    vec4 eyeDir = vPosition - vec4(0.0, 0.0, 0.0, 1.0);
+    mat4 inverseTransformMatrix = inverse(transformMatrix);
+	vPosition_ws = (inverseTransformMatrix * vPosition).xyz;
+    vEyeDir_ws = (inverseTransformMatrix * eyeDir).xyz;
+    vNormal_ws = (inverseTransformMatrix * vec4(vNormal, 0.0)).xyz;
     
 	gl_Position = projectionMatrix * vPosition;
 }

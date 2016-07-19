@@ -91,8 +91,7 @@ namespace entropy
 			this->debug = false;
 
 			// Load shaders.
-			this->shader.load(this->getDataPath("shaders/particle"));
-			//this->shader.load(this->getDataPath("shaders/main"));
+			this->shader.load(this->getDataPath("shaders/main"));
 			this->shader.printActiveUniforms();
 			this->shader.printActiveUniformBlocks();
 			CheckGLError();
@@ -116,8 +115,8 @@ namespace entropy
 
 			// Set up PBR.
 			this->material.setBaseColor(ofFloatColor(1.0f, 1.0f, 1.0f, 1.0f));
-			this->material.setMetallic(0.0f);
-			this->material.setRoughness(0.0f);
+			this->material.setMetallic(0.67f);
+			this->material.setRoughness(0.13f);
 			this->material.setEmissiveColor(ofFloatColor(1.0f, 0.4f, 0.0f, 1.0f));
 			this->material.setEmissiveIntensity(0.0f);
 			CheckGLError();
@@ -235,7 +234,7 @@ namespace entropy
 				}
 				else
 				{
-					this->drawSkybox();
+					//this->drawSkybox();
 
 					this->lightingSystem.begin();
 					{
