@@ -58,3 +58,6 @@
         path = addons/ofxGpuParticles
         url = https://github.com/Entropy/ofxGpuParticles.git
 				branch = master
+[submodule "addons/ofxMarchingCubes"]
+	path = addons/ofxMarchingCubes
+	url = git@github.com:Entropy/ofxMarchingCubes.git
