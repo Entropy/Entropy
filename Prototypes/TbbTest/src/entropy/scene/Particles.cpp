@@ -51,24 +51,16 @@ namespace entropy
 #else
 			for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
 			{
-				/*ofVec3f position(400.f * ofSignedNoise(i / 2000.f, 10),
-				400.f * ofSignedNoise(i / 2000.f, 1e-6),
-				400.f * ofSignedNoise(i / 2000.f, 1e6));
-				*/
-
-
-				ofVec3f position(ofRandom(-HALF_DIM, HALF_DIM),
+				ofVec3f position(
 					ofRandom(-HALF_DIM, HALF_DIM),
-					ofRandom(-HALF_DIM, HALF_DIM));
+					ofRandom(-HALF_DIM, HALF_DIM),
+					ofRandom(-HALF_DIM, HALF_DIM)
+				);
 
-				const float speed = 100.f;
-
-				float speed = glm::gaussRand(100.f, 40.f);
+				float speed = glm::gaussRand(60.f, 20.f);
 				glm::vec3 velocity = glm::sphericalRand(speed);
 
 				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
-				//nm::Particle::Type type = (i % 2) ? nm::Particle::UP_QUARK : nm::Particle::POSITRON;
-				//particleSystem.addParticle(type, position, velocity);
 			}
 #endif
 

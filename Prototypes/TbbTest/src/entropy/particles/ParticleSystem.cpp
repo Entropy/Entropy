@@ -72,14 +72,14 @@ namespace nm
 		deadParticles = new unsigned[MAX_PARTICLES];
 		newPhotons = new glm::vec3[MAX_PARTICLES]();
 
-		ofxObjLoader::load("models/cube.obj", meshes[Particle::POSITRON]);
-		ofxObjLoader::load("models/cube.obj", meshes[Particle::ELECTRON]);
+		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::POSITRON]);
+		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::ELECTRON]);
 		
-		ofxObjLoader::load("models/tetra.obj", meshes[Particle::UP_QUARK]);
-		ofxObjLoader::load("models/tetra.obj", meshes[Particle::ANTI_UP_QUARK]);
+		ofxObjLoader::load("models/cube_up_quark.obj", meshes[Particle::UP_QUARK]);
+		ofxObjLoader::load("models/cube_up_quark.obj", meshes[Particle::ANTI_UP_QUARK]);
 
-		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::DOWN_QUARK]);
-		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::ANTI_DOWN_QUARK]);
+		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::DOWN_QUARK]);
+		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::ANTI_DOWN_QUARK]);
 
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
