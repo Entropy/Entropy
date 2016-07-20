@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entropy/util/App.h"
+#include "entropy/util/GLError.h"
 
 namespace entropy
 {
@@ -32,6 +33,12 @@ namespace entropy
 	inline float GetCanvasHeight()
 	{
 		return GetCanvas()->getHeight();
+	}
+
+	//--------------------------------------------------------------
+	inline const ofRectangle & GetCanvasViewport()
+	{
+		return GetCanvas()->getViewport();
 	}
 
 	//--------------------------------------------------------------

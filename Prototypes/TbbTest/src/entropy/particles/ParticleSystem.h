@@ -67,7 +67,7 @@ namespace nm
         
         void update();
         
-        void draw();
+        void draw(ofShader & shader);
 
 		void drawWalls();
 
@@ -80,6 +80,8 @@ namespace nm
 		void deserialize(const nlohmann::json & json);
         
     private:
+		void onPairProduction(PairProductionEventArgs& args);
+
         Octree<Particle> octree;
         nm::Particle* particles;
         tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];

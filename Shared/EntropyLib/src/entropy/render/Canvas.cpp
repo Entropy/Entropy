@@ -13,9 +13,14 @@ namespace entropy
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.numSamples = 4;
+			//this->fboSettings.internalformat = GL_RGB16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 			this->fboSettings.useDepth = true;
 			this->fbo.allocate(this->fboSettings);
+			this->fbo.getTexture().texData.bFlipTexture = true;
+
+			// Set fbo viewport.
+			this->fboViewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 
 			// Set ofxWarp shader path.
 			string shaderPath = GetSharedDataPath();
@@ -59,13 +64,22 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::begin()
 		{
-			this->fbo.begin();
+			// Don't use ofFbo::begin() because it messes with the winding direction.
+			// This means you'll need to set the viewports manually (e.g. for ofCamera::being())
+			ofPushView();
+			ofPushStyle();
+			ofViewport(this->fboViewport);
+			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
+			this->fbo.bind();
 		}
 		
 		//--------------------------------------------------------------
 		void Canvas::end()
 		{
-			this->fbo.end();
+			// Manual ofFbo::end(), see comment in Canvas::begin().
+			this->fbo.unbind();
+			ofPopStyle();
+			ofPopView();
 		}
 
 		//--------------------------------------------------------------
@@ -99,6 +113,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		const ofRectangle & Canvas::getViewport() const
+		{
+			return this->fboViewport;
+		}
+
+		//--------------------------------------------------------------
 		void Canvas::setWidth(float width)
 		{
 			if (this->fbo.getWidth() == width) return;
@@ -120,6 +140,10 @@ namespace entropy
 		void Canvas::updateSize()
 		{
 			this->fbo.allocate(this->fboSettings);
+			this->fbo.getTexture().texData.bFlipTexture = true;
+
+			// Update viewport.
+			this->fboViewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 
 			// Update all existing warps.
 			for (auto warp : this->warps)

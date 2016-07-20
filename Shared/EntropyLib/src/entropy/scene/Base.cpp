@@ -25,6 +25,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setup()
 		{
+			// Setup default camera.
+			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
+			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+
+			// Setup child Scene.
 			this->onSetup.notify();
 			
 			// List presets.
@@ -67,6 +72,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize(ofResizeEventArgs & args)
 		{
+			this->camera.setAspectRatio(args.width / (float)args.height);
+			
 			this->onResize.notify(args);
 		}
 
@@ -109,10 +116,12 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::drawWorld()
 		{
-			this->getCamera().begin();
+			this->getCamera().begin(GetCanvasViewport());
+			ofEnableDepthTest();
 			{
 				this->onDrawWorld.notify();
 			}
+			ofDisableDepthTest();
 			this->getCamera().end();
 		}
 
@@ -236,7 +245,7 @@ namespace entropy
 		void Base::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (json.count("camera"))
+			if (false && json.count("camera"))
 			{
 				// Disable auto distance so that it doesn't interfere with the camera matrix.
 				// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.

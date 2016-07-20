@@ -48,11 +48,11 @@ namespace nm
 		vector<glm::vec3>& getPosnsRef() { return posns; }
 
 		void init();
-		void onPhotonEvent(PhotonEventArgs& args);
 		void update();
 		void draw();
 
 	private:
+		void onPhoton(PhotonEventArgs& args);
 		void onParticlesUpdate(ofShader& shader);
 		void onParticlesDraw(ofShader& shader);
 

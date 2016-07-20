@@ -629,6 +629,9 @@
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
       <Filter>addons\ofxXmlSettings\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\util\GLError.h">
+      <Filter>src\entropy\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\entropy\util\Mapping.inl">

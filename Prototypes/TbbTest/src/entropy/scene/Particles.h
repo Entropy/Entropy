@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxPersistent.h"
+#include "ofxRenderToolkit.h"
 
 #include "entropy/scene/Base.h"
 #include "entropy/particles/ParticleSystem.h"
@@ -36,6 +37,12 @@ namespace entropy
 			void drawWorld();
 			void drawFront();
 
+			void drawSkybox();
+			void drawScene();
+
+			void createRandomLights();
+			void animateLights();
+
 			void gui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
@@ -50,6 +57,24 @@ namespace entropy
 			nm::Photons photons;
 			
 		protected:
+			bool debug;
+
+			ofxRTK::util::ViewUbo viewUbo;
+			ofxRTK::lighting::System lightingSystem;
+
+			ofxRTK::pbr::CubeMapTexture radianceMap;
+			ofxRTK::pbr::CubeMapTexture irradianceMap;
+			ofxRTK::pbr::CubeMapTexture skyboxMap;
+
+			ofxRTK::pbr::Material material;
+
+			ofShader shader;
+			ofShader skyboxShader;
+			GLuint defaultVao;
+
+			float exposure;
+			float gamma;
+
 			virtual BaseParameters & getParameters() override
 			{
 				return this->parameters;
