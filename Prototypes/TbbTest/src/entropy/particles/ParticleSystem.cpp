@@ -78,6 +78,9 @@ namespace nm
 		ofxObjLoader::load("models/tetra.obj", meshes[Particle::UP_QUARK]);
 		ofxObjLoader::load("models/tetra.obj", meshes[Particle::ANTI_UP_QUARK]);
 
+		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::DOWN_QUARK]);
+		ofxObjLoader::load("models/pyramid_fillet_1.obj", meshes[Particle::ANTI_DOWN_QUARK]);
+
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
 		particleShader.load("shaders/particle");
@@ -105,7 +108,7 @@ namespace nm
 		if (totalNumParticles < MAX_PARTICLES)
 		{
 			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
-			float radius = ofMap(Particle::DATA[type].mass, 500.f, 2300.f, 5.0f, 16.0f);
+			float radius = ofMap(Particle::DATA[type].mass, 500.f, 2300.f, 5.0f, 8.0f);
 
 			Particle& p = particles[totalNumParticles];
 			p.setPosition(position);
@@ -136,11 +139,42 @@ namespace nm
 			[&](const tbb::blocked_range<size_t>& r) {
 			for (size_t i = r.begin(); i != r.end(); ++i)
 			{
+				///////////////////////////////////////////////////////////
+				// attraction/repulsion
+				///////////////////////////////////////////////////////////
+
 				// zero particle forces
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
 				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);
+
+				// add velocity (TODO: improved Euler integration)
+				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
+
+				// damp velocity
+				if (glm::length2(particles[i].getVelocity()) > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
+
+				// add position (TODO: improved Euler integration)
+				particles[i] += particles[i].getVelocity() * dt;
+
+				// check whether particle is out of bounds
+				for (unsigned j = 0; j < 3; ++j)
+				{
+					// add a little bit so things don't get stuck teleporting on the edges
+					if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f;
+					if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
+				}
+
+				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
+				positions[particles[i].getType()][idx].transform =
+					glm::translate(particles[i]) *
+					glm::scale(glm::vec3(particles[i].getRadius())) *
+					glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), glm::vec3(0.0f, 1.0f, 0.0f));
+
+				/////////////////////////////////////////////////////////////
+				// particle interactions
+				/////////////////////////////////////////////////////////////
 
 				// make the particle with the lower address in memory
 				// the one that is responsible for the interaction
@@ -164,38 +198,12 @@ namespace nm
 					}
 					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
 					{
-						ofLogNotice() << "Fusion 1";
+						//ofLogNotice() << "Fusion 1";
 					}
 					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
 					{
-						ofLogNotice() << "Fusion 2";
+						//ofLogNotice() << "Fusion 2";
 					}
-				}
-				else
-				{
-					// add velocity (TODO: improved Euler integration)
-					particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
-
-					// damp velocity
-					if (glm::length2(particles[i].getVelocity()) > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
-
-					// add position (TODO: improved Euler integration)
-					particles[i] += particles[i].getVelocity() * dt;
-
-					// check whether particle is out of bounds
-					for (unsigned j = 0; j < 3; ++j)
-					{
-						// add a little bit so things don't get stuck teleporting on the edges
-						if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f;
-						if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
-					}
-
-					unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
-					positions[particles[i].getType()][idx].transform =
-						glm::translate(particles[i]) *
-						glm::scale(glm::vec3(particles[i].getRadius())) *
-						glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), glm::vec3(0.0f, 1.0f, 0.0f));
-
 				}
 			}
 		});
