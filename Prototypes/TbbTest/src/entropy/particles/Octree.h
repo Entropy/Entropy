@@ -55,7 +55,7 @@ namespace nm
 		static constexpr unsigned MAX_DEPTH() { return 5; }
 		static constexpr float THETA() { return .5f; }
 		static constexpr float FORCE_MULTIPLIER() { return 5e7; }
-		static constexpr float ANNIHILATION_DISTANCE() { return 2.f; }
+		static constexpr float INTERACTION_DISTANCE() { return 2.f; }
 
 		enum Location
 		{

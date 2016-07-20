@@ -140,21 +140,41 @@ namespace nm
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
-				Particle* annihiliate = octree.sumForces(particles[i]);
+				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);
 
-				if (annihiliate)
+				// make the particle with the lower address in memory
+				// the one that is responsible for the interaction
+				if (potentialInteractionPartner && &particles[i] < potentialInteractionPartner)
 				{
-					// close enough to another particle to annihilate it
-					unsigned deadIdx = numDeadParticles.fetch_and_increment();
-					deadParticles[deadIdx] = i;
-
-					// make the particle with the lower address in memory of
-					// the pair be the one that is responsible for producing
-					// the photon
-					if (&particles[i] < annihiliate)
+					// see what type of interaction we have
+					// already doing this check in sumForces() so maybe could remove to optimize but
+					// doesn't seem like it would save a worthwhile amount of time
+					if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
 					{
+						// interaction is annihilation so kill particle
+						unsigned deadIdx = numDeadParticles.fetch_and_increment();
+						deadParticles[deadIdx] = i;
+
+						// kill partner (idx of partner is potentialInteractionPartner - particles)
+						deadIdx = numDeadParticles.fetch_and_increment();
+						deadParticles[deadIdx] = potentialInteractionPartner - particles;
+
+						// make the particle with the lower address in memory of
+						// the pair be the one that is responsible for producing
+						// the photon
+						//if (&particles[i] < potentialInteractionPartner)
+						//{
 						unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
 						newPhotons[newPhotonIdx] = particles[i];
+						//}
+					}
+					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
+					{
+						ofLogNotice() << "Fusion 1";
+					}
+					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
+					{
+						ofLogNotice() << "Fusion 2";
 					}
 				}
 				else
