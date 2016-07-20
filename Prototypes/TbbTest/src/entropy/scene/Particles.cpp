@@ -175,7 +175,7 @@ namespace entropy
 			static const auto radius = 120.0f;
 			for (int i = pointLights.size(); i < photons.size(); ++i)
 			{
-				auto & light = ofxRTK::lighting::PointLight(photons[i], glm::vec3(1.0f, 1.0f, 1.0f), radius, 60000.0f);
+				auto light = ofxRTK::lighting::PointLight(photons[i], glm::vec3(1.0f, 1.0f, 1.0f), radius, 60000.0f);
 				light.color = glm::normalize(glm::vec3(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)));
 				cout << "color is " << light.color << endl;
 				this->lightingSystem.addPointLight(light);
@@ -355,8 +355,8 @@ namespace entropy
 			const auto numPointLights = 60;
 			for (int i = 0; i < numPointLights; ++i)
 			{
-				auto & offset = ofVec3f(ofRandom(-positionDist, positionDist), 0.0f, ofRandom(-positionDist, positionDist));
-				auto & light = ofxRTK::lighting::PointLight(offset, ofVec3f(1.0f, 1.0f, 1.0f), radius, 6000.0f);
+				auto offset = ofVec3f(ofRandom(-positionDist, positionDist), 0.0f, ofRandom(-positionDist, positionDist));
+				auto light = ofxRTK::lighting::PointLight(offset, ofVec3f(1.0f, 1.0f, 1.0f), radius, 6000.0f);
 				light.color = ofVec3f(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)).getNormalized();
 				this->lightingSystem.addPointLight(light);
 			}
