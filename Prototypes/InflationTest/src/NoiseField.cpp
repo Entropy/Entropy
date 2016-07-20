@@ -10,11 +10,6 @@
 
 namespace entropy
 {
-    //--------------------------------------------------------------
-    NoiseField::NoiseField()
-	{
-		now = 0;
-    }
 
 	void NoiseField::setResolutionParam(ofParameter<int> resolution){
 		this->resolution.makeReferenceTo(resolution);
@@ -22,8 +17,12 @@ namespace entropy
 
     //--------------------------------------------------------------
     void NoiseField::update()
-	{
-		now += noiseSpeed * ofGetLastFrameTime();
+    {
+        for(auto & octave: octaves){
+            if(octave.advanceTime){
+                octave.now += noiseSpeed * ofGetLastFrameTime();
+            }
+        }
     }
 
     //--------------------------------------------------------------
@@ -35,14 +34,14 @@ namespace entropy
     float NoiseField::getValue(int x, int y, int z)
     {
 		double total = 0;
-		double maxValue = 0;
-		glm::vec3 pos = glm::vec3{x,y,z} * (float)inputMultiplier;
+        double maxValue = 0;
+        glm::vec3 centeredPos = glm::vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
+		glm::vec3 pos = centeredPos * (float)inputMultiplier;
 		for(auto & octave: octaves){
 			float radius = octave.radius * resolution;
-			glm::vec3 centeredPos = glm::vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
 			if(octave.enabled &&  radius * radius > glm::length2(centeredPos)){
 				auto freqD = octave.frequency / 60.f;
-				total += ofNoise(pos.x*freqD, pos.y*freqD, pos.z*freqD, now*freqD) * octave.amplitude;
+				total += ofNoise(pos.x*freqD, pos.y*freqD, pos.z*freqD, octave.now*freqD) * octave.amplitude;
 				maxValue += octave.amplitude;
 			}
 		}

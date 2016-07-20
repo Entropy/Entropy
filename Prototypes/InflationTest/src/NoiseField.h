@@ -17,21 +17,27 @@ namespace entropy
 		    :frequency("freq. hz", frequency, 0, 200)
 		    ,amplitude("ampl. norm", amplitude, 0, 1)
 		    ,radius("radius", radius, 0, 1)
+            ,advanceTime("advance time", true)
 		    ,enabled("enabled", true)
-		    ,parameters("octave " + ofToString(idx), this->frequency, this->amplitude, this->radius, this->enabled){}
+		    ,parameters("octave " + ofToString(idx),
+                        this->frequency,
+                        this->amplitude,
+                        this->radius,
+                        this->enabled,
+                        this->advanceTime){}
 
 		ofParameter<float> frequency;
 		ofParameter<float> amplitude;
-		ofParameter<float> radius;
+        ofParameter<float> radius;
+        ofParameter<bool> advanceTime;	
 		ofParameter<bool> enabled;
-		ofParameterGroup parameters;
+        double now=0;
+        ofParameterGroup parameters;
 	};
 
     class NoiseField
     {
     public:
-        NoiseField();
-
         void update();
 
         int getNumScales();
@@ -54,7 +60,6 @@ namespace entropy
 		};
 
 		float noiseSeed;
-		double now;
 
 	public:
 
