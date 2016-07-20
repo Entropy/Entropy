@@ -159,14 +159,8 @@ namespace nm
 						deadIdx = numDeadParticles.fetch_and_increment();
 						deadParticles[deadIdx] = potentialInteractionPartner - particles;
 
-						// make the particle with the lower address in memory of
-						// the pair be the one that is responsible for producing
-						// the photon
-						//if (&particles[i] < potentialInteractionPartner)
-						//{
 						unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
 						newPhotons[newPhotonIdx] = particles[i];
-						//}
 					}
 					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
 					{
