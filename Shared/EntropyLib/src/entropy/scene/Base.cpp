@@ -258,7 +258,6 @@ namespace entropy
 					auto mapping = it.second;
 					if (ofxPreset::Gui::AddParameter(mapping->animated))
 					{
-						mapping->animated.update();
 						if (mapping->animated)
 						{
 							mapping->addTrack(this->timeline);
