@@ -20,7 +20,7 @@ namespace entropy
 			this->fbo.getTexture().texData.bFlipTexture = true;
 
 			// Set fbo viewport.
-			this->fboViewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
+			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 
 			// Set ofxWarp shader path.
 			string shaderPath = GetSharedDataPath();
@@ -68,7 +68,7 @@ namespace entropy
 			// This means you'll need to set the viewports manually (e.g. for ofCamera::being())
 			ofPushView();
 			ofPushStyle();
-			ofViewport(this->fboViewport);
+			ofViewport(this->viewport);
 			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
 			this->fbo.bind();
 		}
@@ -115,7 +115,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const ofRectangle & Canvas::getViewport() const
 		{
-			return this->fboViewport;
+			return this->viewport;
 		}
 
 		//--------------------------------------------------------------
@@ -143,7 +143,7 @@ namespace entropy
 			this->fbo.getTexture().texData.bFlipTexture = true;
 
 			// Update viewport.
-			this->fboViewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
+			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 
 			// Update all existing warps.
 			for (auto warp : this->warps)

@@ -102,9 +102,10 @@ namespace entropy
 				PARAM_DECLARE("Parameters", fillWindow);
 			} parameters;
 
+			ofRectangle viewport;
+
 			ofFbo fbo;
 			ofFbo::Settings fboSettings;
-			ofRectangle fboViewport;
 
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
 			size_t focusedIndex;

@@ -8,42 +8,42 @@
 #include "entropy/util/Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
-	onSetupListeners.push_back(this->onSetup.newListener([this]() { \
+	this->onSetupListeners.push_back(this->onSetup.newListener([this]() { \
 		this->setup(); \
 	}));
 #define ENTROPY_SCENE_EXIT_LISTENER \
-	onExitListeners.push_back(this->onExit.newListener([this]() { \
+	this->onExitListeners.push_back(this->onExit.newListener([this]() { \
 		this->exit(); \
 	}));
 #define ENTROPY_SCENE_RESIZE_LISTENER \
-	onResizeListeners.push_back(this->onResize.newListener([this](ofResizeEventArgs & args) { \
+	this->onResizeListeners.push_back(this->onResize.newListener([this](ofResizeEventArgs & args) { \
 		this->resize(args); \
 	}));
 #define ENTROPY_SCENE_UPDATE_LISTENER \
-	onUpdateListeners.push_back(this->onUpdate.newListener([this](double & dt) { \
+	this->onUpdateListeners.push_back(this->onUpdate.newListener([this](double & dt) { \
 		this->update(dt); \
 	}));
 #define ENTROPY_SCENE_DRAW_BACK_LISTENER \
-	onDrawBackListeners.push_back(this->onDrawBack.newListener([this]() { \
+	this->onDrawBackListeners.push_back(this->onDrawBack.newListener([this]() { \
 		this->drawBack(); \
 	}));
 #define ENTROPY_SCENE_DRAW_WORLD_LISTENER \
-	onDrawWorldListeners.push_back(this->onDrawWorld.newListener([this]() { \
+	this->onDrawWorldListeners.push_back(this->onDrawWorld.newListener([this]() { \
 		this->drawWorld(); \
 	}));
 #define ENTROPY_SCENE_DRAW_FRONT_LISTENER \
-	onDrawFrontListeners.push_back(this->onDrawFront.newListener([this]() { \
+	this->onDrawFrontListeners.push_back(this->onDrawFront.newListener([this]() { \
 		this->drawFront(); \
 	}));
 #define ENTROPY_SCENE_GUI_LISTENER \
-	onGuiListeners.push_back(this->onGui.newListener([this](ofxPreset::Gui::Settings & settings) { \
+	this->onGuiListeners.push_back(this->onGui.newListener([this](ofxPreset::Gui::Settings & settings) { \
 		this->gui(settings); \
 	}));
 #define ENTROPY_SCENE_SERIALIZATION_LISTENERS \
-	onSerializeListeners.push_back(this->onSerialize.newListener([this](nlohmann::json & json) { \
+	this->onSerializeListeners.push_back(this->onSerialize.newListener([this](nlohmann::json & json) { \
 		this->serialize(json); \
 	})); \
-	onDeserializeListeners.push_back(this->onDeserialize.newListener([this](const nlohmann::json & json) { \
+	this->onDeserializeListeners.push_back(this->onDeserialize.newListener([this](const nlohmann::json & json) { \
 		this->deserialize(json); \
 	}));
 
@@ -90,7 +90,7 @@ namespace entropy
 			bool isCameraLocked() const;
 
 			void addCameraKeyframe();
-
+			 
 		protected:
 			void drawBack();
 			void drawWorld();

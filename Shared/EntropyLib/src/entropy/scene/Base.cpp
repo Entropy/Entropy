@@ -271,28 +271,28 @@ namespace entropy
 			this->refreshMappings();
 		}
 
-        //--------------------------------------------------------------
-        string Base::getAssetsPath(const string & file)
-        {
-            if (this->assetsPath.empty())
-            {
-                auto tokens = ofSplitString(this->getName(), "::", true, true);
-                auto assetsPath = GetSharedAssetsPath();
-                for (auto & component : tokens)
-                {
-                    assetsPath = ofFilePath::addTrailingSlash(assetsPath.append(component));
-                }
-                this->assetsPath = assetsPath;
-            }
-            if (file.empty())
-            {
-                return this->assetsPath;
-            }
+		//--------------------------------------------------------------
+		string Base::getAssetsPath(const string & file)
+		{
+			if (this->assetsPath.empty())
+			{
+				auto tokens = ofSplitString(this->getName(), "::", true, true);
+				auto assetsPath = GetSharedAssetsPath();
+				for (auto & component : tokens)
+				{
+					assetsPath = ofFilePath::addTrailingSlash(assetsPath.append(component));
+				}
+				this->assetsPath = assetsPath;
+			}
+			if (file.empty())
+			{
+				return this->assetsPath;
+			}
 
-            auto filePath = this->assetsPath;
-            filePath.append(file);
-            return filePath;
-        }
+			auto filePath = this->assetsPath;
+			filePath.append(file);
+			return filePath;
+		}
 
 		//--------------------------------------------------------------
 		string Base::getDataPath(const string & file)
