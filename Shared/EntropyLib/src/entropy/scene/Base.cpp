@@ -239,16 +239,6 @@ namespace entropy
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
-			
-			// Pop-up gui windows.
-			{
-				auto popUpSettings = settings;
-				popUpSettings.windowPos.x += settings.windowSize.x + kGuiMargin;
-				for (auto i = 0; i < this->popUps.size(); ++i)
-				{
-					this->popUps[i]->gui(popUpSettings);
-				}
-			}
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Mappings", settings))
@@ -270,6 +260,18 @@ namespace entropy
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
+
+			// Pop-up gui windows.
+			{
+				auto popUpSettings = ofxPreset::Gui::Settings();
+				popUpSettings.windowPos.x += (settings.windowSize.x + kGuiMargin) * 2.0f;
+				popUpSettings.windowPos.y = 0.0f;
+				for (auto i = 0; i < this->popUps.size(); ++i)
+				{
+					this->popUps[i]->gui(popUpSettings);
+				}
+				settings.mouseOverGui |= popUpSettings.mouseOverGui;
+			}
 
 			if (this->onGuiListeners.size())
 			{
@@ -608,7 +610,6 @@ namespace entropy
 			if (type == popup::Base::TYPE_IMAGE)
 			{
 				popUp = make_shared<popup::Image>();
-				popUp->setup();
 			}
 			else
 			{
@@ -616,9 +617,10 @@ namespace entropy
 				return nullptr;
 			}
 
+			auto idx = this->popUps.size();
+			popUp->setup(idx);
+			popUp->addTrack(this->timeline);
 			this->popUps.push_back(popUp);
-
-			auto idx = this->popUps.size() - 1;
 
 			return popUp;
 		}

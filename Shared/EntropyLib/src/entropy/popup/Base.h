@@ -4,6 +4,7 @@
 
 #include "ofParameter.h"
 #include "ofxPreset.h"
+#include "ofxTLSwitches.h"
 
 #define ENTROPY_POPUP_SETUP_LISTENER \
 	this->onSetupListeners.push_back(this->onSetup.newListener([this]() { \
@@ -55,12 +56,16 @@ namespace entropy
 
 			Type getType() const;
 
-			void setup();
+			void setup(int index);
 			void exit();
 			void resize(ofResizeEventArgs & args);
 
 			void update(double dt);
 			void draw();
+
+			// Timeline
+			void addTrack(ofxTimeline & timeline);
+			void removeTrack(ofxTimeline & timeline);
 
 			// Parameters
 			void gui(ofxPreset::Gui::Settings & settings);
@@ -79,6 +84,7 @@ namespace entropy
 			bool boundsDirty;
 
 			Type type;
+			int index;
 
 		protected:
 			// Events
@@ -105,6 +111,9 @@ namespace entropy
 
 			vector<ofEventListener> onSerializeListeners;
 			vector<ofEventListener> onDeserializeListeners;
+
+			// Timeline
+			ofxTLSwitches * track;
 
 			// Parameters
 			struct BaseParameters

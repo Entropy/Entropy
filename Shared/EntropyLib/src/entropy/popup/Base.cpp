@@ -2,6 +2,8 @@
 
 #include "entropy/Helpers.h"
 
+static const string kTimelinePageName = "Pop-Ups";
+
 namespace entropy
 {
 	namespace popup
@@ -24,8 +26,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::setup()
+		void Base::setup(int index)
 		{
+			this->index = index;
+
 			this->onSetup.notify();
 
 			this->boundsDirty = true;
@@ -66,14 +70,58 @@ namespace entropy
 					ofDrawRectangle(this->viewport);
 				}
 		
-				if (this->getTexture().isAllocated())
+				if (this->getTexture().isAllocated() && (this->track->isOn() || this->editing))
 				{
-					ofSetColor(ofColor::white);
+					ofSetColor(ofColor::white, this->track->isOn()? 255:128);
 					this->getTexture().drawSubsection(this->viewport.x, this->viewport.y, this->viewport.width, this->viewport.height,
 													  this->roi.x, this->roi.y, this->roi.width, this->roi.height);
 				}
 			}
 			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		void Base::addTrack(ofxTimeline & timeline)
+		{
+			// Add Page if it doesn't already exist.
+			if (!timeline.hasPage(kTimelinePageName))
+			{
+				timeline.addPage(kTimelinePageName);
+			}
+			auto page = timeline.getPage(kTimelinePageName);
+
+			auto trackName = "_" + ofToString(this->index);
+			if (this->type == TYPE_IMAGE) trackName.insert(0, "Image");
+
+			if (page->getTrack(trackName))
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
+				return;
+			}
+
+			timeline.setCurrentPage(kTimelinePageName);
+
+			// Add Track.
+			this->track = timeline.addSwitches(trackName);
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeTrack(ofxTimeline & timeline)
+		{
+			if (!this->track)
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
+				return;
+			}
+
+			timeline.removeTrack(this->track);
+			this->track = nullptr;
+
+			auto page = timeline.getPage(kTimelinePageName);
+			if (page && page->getTracks().empty())
+			{
+				timeline.removePage(page);
+			}
 		}
 
 		//--------------------------------------------------------------
