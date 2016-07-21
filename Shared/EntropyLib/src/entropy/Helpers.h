@@ -42,8 +42,18 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline string GetSharedDataPath()
+	inline string GetSharedDataPath(bool absolute = false)
 	{
+		if (absolute)
+		{
+			static string dataPathAbs;
+			if (dataPathAbs.empty())
+			{
+				dataPathAbs = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data", absolute));
+			}
+			return dataPathAbs;
+		}
+		
 		static string dataPath;
 		if (dataPath.empty())
 		{
@@ -52,14 +62,50 @@ namespace entropy
 		return dataPath;
 	}
 
-    //--------------------------------------------------------------
-    inline string GetSharedAssetsPath()
-    {
-        static string assetsPath;
-        if (assetsPath.empty())
-        {
-            assetsPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets"));
-        }
-        return assetsPath;
-    }
+	//--------------------------------------------------------------
+	inline string GetSharedAssetsPath(bool absolute = false)
+	{
+		if (absolute)
+		{
+			static string assetsPathAbs;
+			if (assetsPathAbs.empty())
+			{
+				assetsPathAbs = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets", absolute));
+			}
+			return assetsPathAbs;
+		}
+
+		static string assetsPath;
+		if (assetsPath.empty())
+		{
+			assetsPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets"));
+		}
+		return assetsPath;
+	}
+
+	//--------------------------------------------------------------
+	inline string GetCurrentSceneDataPath(const string & file = "")
+	{
+		auto currentScene = GetSceneManager()->getCurrentScene();
+		if (currentScene)
+		{
+			return currentScene->getDataPath(file);
+		}
+
+		ofLogWarning(__FUNCTION__) << "No active Scene found!";
+		return GetSharedDataPath();
+	}
+
+	//--------------------------------------------------------------
+	inline string GetCurrentSceneAssetsPath(const string & file = "")
+	{
+		auto currentScene = GetSceneManager()->getCurrentScene();
+		if (currentScene)
+		{
+			return currentScene->getAssetsPath(file);
+		}
+
+		ofLogWarning(__FUNCTION__) << "No active Scene found!";
+		return GetSharedAssetsPath();
+	}
 }
