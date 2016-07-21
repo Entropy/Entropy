@@ -245,6 +245,8 @@
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
+    <ClCompile Include="src\entropy\popup\Base.cpp" />
+    <ClCompile Include="src\entropy\popup\Image.cpp" />
     <ClCompile Include="src\entropy\render\Canvas.cpp" />
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Manager.cpp" />
@@ -345,6 +347,8 @@
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
     <ClInclude Include="src\entropy\Helpers.h" />
+    <ClInclude Include="src\entropy\popup\Base.h" />
+    <ClInclude Include="src\entropy\popup\Image.h" />
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />

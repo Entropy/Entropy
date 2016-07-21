@@ -93,6 +93,11 @@ namespace entropy
 			{
 				it.second->update();
 			}
+
+			for (auto popUp : this->popUps)
+			{
+				popUp->update(dt);
+			}
 			
 			this->onUpdate.notify(dt);
 		}
@@ -129,6 +134,11 @@ namespace entropy
 		void Base::drawFront()
 		{
 			this->onDrawFront.notify();
+
+			for (auto popUp : this->popUps)
+			{
+				popUp->draw();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -184,6 +194,63 @@ namespace entropy
 			ofxPreset::Gui::EndWindow(settings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow("Pop-Ups", settings))
+			{
+				ImGui::ListBoxHeader("List", 3);
+				for (auto i = 0; i < this->popUps.size(); ++i)
+				{
+					auto name = "Pop-Up " + ofToString(i);
+					ImGui::Checkbox(name.c_str(), &this->popUps[i]->editing);
+				}
+				ImGui::ListBoxFooter();
+
+				if (ImGui::Button("Add Pop-Up..."))
+				{
+					ImGui::OpenPopup("Pop-Ups");
+					ImGui::SameLine();
+				}
+				if (ImGui::BeginPopup("Pop-Ups"))
+				{
+					static vector<string> popUpNames;
+					if (popUpNames.empty())
+					{
+						popUpNames.push_back("Image");
+					}
+					for (auto i = 0; i < popUpNames.size(); ++i)
+					{
+						if (ImGui::Selectable(popUpNames[i].c_str()))
+						{
+							if (i == 0)
+							{
+								this->addPopUp(popup::Base::TYPE_IMAGE);
+							}
+						}
+					}
+					ImGui::EndPopup();
+				}
+
+				if (!this->popUps.empty())
+				{
+					ImGui::SameLine();
+					if (ImGui::Button("Remove Pop-Up"))
+					{
+						this->removePopUp();
+					}
+				}
+			}
+			ofxPreset::Gui::EndWindow(settings);
+			
+			// Pop-up gui windows.
+			{
+				auto popUpSettings = settings;
+				popUpSettings.windowPos.x += settings.windowSize.x + kGuiMargin;
+				for (auto i = 0; i < this->popUps.size(); ++i)
+				{
+					this->popUps[i]->gui(popUpSettings);
+				}
+			}
+
+			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Mappings", settings))
 			{
 				for (auto & it : this->mappings)
@@ -234,10 +301,18 @@ namespace entropy
 			
 			this->onSerialize.notify(json);
 
-			auto & jsonGroup = json["Mappings"];
+			auto & jsonMappings = json["Mappings"];
 			for (auto & it : this->mappings)
 			{
-				ofxPreset::Serializer::Serialize(jsonGroup, it.second->animated);
+				ofxPreset::Serializer::Serialize(jsonMappings, it.second->animated);
+			}
+
+			auto & jsonPopUps = json["Pop-Ups"];
+			for (auto popUp : this->popUps)
+			{
+				nlohmann::json jsonPopUp;
+				popUp->serialize(jsonPopUp);
+				jsonPopUps.push_back(jsonPopUp);
 			}
 		}
 
@@ -269,6 +344,22 @@ namespace entropy
 				}
 			}
 			this->refreshMappings();
+
+			if (json.count("Pop-Ups"))
+			{
+				this->popUps.clear();
+				for (auto & jsonPopUp : json["Pop-Ups"])
+				{
+					int typeAsInt = jsonPopUp["type"];
+					popup::Base::Type type = (popup::Base::Type)typeAsInt;
+
+					auto popUp = this->addPopUp(type);
+					if (popUp)
+					{
+						popUp->deserialize(jsonPopUp);
+					}
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -509,6 +600,34 @@ namespace entropy
 					mapping->removeTrack(this->timeline);
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		shared_ptr<popup::Base> Base::addPopUp(popup::Base::Type type)
+		{
+			shared_ptr<popup::Base> popUp;
+			if (type == popup::Base::TYPE_IMAGE)
+			{
+				popUp = make_shared<popup::Image>();
+				popUp->setup();
+			}
+			else
+			{
+				ofLogError(__FUNCTION__) << "Unrecognized pop-up type " << type;
+				return nullptr;
+			}
+
+			this->popUps.push_back(popUp);
+
+			auto idx = this->popUps.size() - 1;
+
+			return popUp;
+		}
+
+		//--------------------------------------------------------------
+		void Base::removePopUp()
+		{
+			this->popUps.pop_back();
 		}
 
 		//--------------------------------------------------------------

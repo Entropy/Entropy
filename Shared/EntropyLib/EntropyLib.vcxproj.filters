@@ -214,6 +214,12 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
       <Filter>addons\ofxXmlSettings\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\popup\Base.cpp">
+      <Filter>src\entropy\popup</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\popup\Image.cpp">
+      <Filter>src\entropy\popup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -326,6 +332,9 @@
     </Filter>
     <Filter Include="addons\ofxWMFVideoPlayer\src\presenter\common">
       <UniqueIdentifier>{064a4828-f71b-408e-b2f6-7f8393f55b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\popup">
+      <UniqueIdentifier>{55190f11-fd57-451d-a04b-d8fd42041720}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -631,6 +640,12 @@
     </ClInclude>
     <ClInclude Include="src\entropy\util\GLError.h">
       <Filter>src\entropy\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\popup\Base.h">
+      <Filter>src\entropy\popup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\popup\Image.h">
+      <Filter>src\entropy\popup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

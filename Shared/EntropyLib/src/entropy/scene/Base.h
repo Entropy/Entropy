@@ -5,6 +5,7 @@
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
+#include "entropy/popup/Image.h"
 #include "entropy/util/Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
@@ -155,6 +156,12 @@ namespace entropy
 			ofxTimeline timeline;
 			ofxTLCameraTrack * cameraTrack;
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
+
+			// Popups
+			shared_ptr<popup::Base> addPopUp(popup::Base::Type type);
+			void removePopUp();
+
+			vector<shared_ptr<popup::Base>> popUps;
 
 		private:
 			// Timeline
