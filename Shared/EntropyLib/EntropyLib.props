@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets">
-    <Import Project="..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
-  </ImportGroup>
+  <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxPreset\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWMFVideoPlayer\src;..\..\addons\ofxWMFVideoPlayer\src\presenter;..\..\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxXmlSettings\src;..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxMSATimer\src;..\..\addons\ofxPreset\src;..\..\addons\ofxRange\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTimeline\src;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxWarp\src;..\..\addons\ofxWMFVideoPlayer\src;..\..\addons\ofxWMFVideoPlayer\src\presenter;..\..\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Shared\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
