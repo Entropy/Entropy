@@ -57,6 +57,32 @@ namespace entropy
 			{
 				this->updateBounds();
 			}
+
+			this->enabled = this->track->isOn();
+			if (this->enabled)
+			{
+				auto trackTime = this->track->currentTrackTime();
+				auto activeSwitch = this->track->getActiveSwitchAtMillis(trackTime);
+				if (activeSwitch)
+				{
+					static const ofxEasingQuad kEasingFunction;
+					long transitionDuration = this->getParameters().transition.duration * 1000; 
+					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
+					{
+						// Transitioning in.
+						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeIn);
+					}
+					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
+					{
+						// Transitioning out.
+						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeOut);
+					}
+					else
+					{
+						this->transitionAmount = 1.0f;
+					}
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -70,9 +96,9 @@ namespace entropy
 					ofDrawRectangle(this->viewport);
 				}
 		
-				if (this->getTexture().isAllocated() && (this->track->isOn() || this->editing))
+				if (this->getTexture().isAllocated() && (this->enabled || this->editing))
 				{
-					ofSetColor(ofColor::white, this->track->isOn()? 255:128);
+					ofSetColor(ofColor::white, this->enabled? (this->transitionAmount * 255):128);
 					this->getTexture().drawSubsection(this->viewport.x, this->viewport.y, this->viewport.width, this->viewport.height,
 													  this->roi.x, this->roi.y, this->roi.width, this->roi.height);
 				}
@@ -91,7 +117,7 @@ namespace entropy
 			auto page = timeline.getPage(kTimelinePageName);
 
 			auto trackName = "_" + ofToString(this->index);
-			if (this->type == TYPE_IMAGE) trackName.insert(0, "Image");
+			if (this->type == Type::Image) trackName.insert(0, "Image");
 
 			if (page->getTrack(trackName))
 			{
@@ -137,7 +163,7 @@ namespace entropy
 				ofxPreset::Gui::SetNextWindow(settings);
 				if (ofxPreset::Gui::BeginWindow("Pop-up: " + parameters.getName(), settings, false, &this->editing))
 				{
-					// Add a section for the base parameters.
+					// Add sections for the base parameters.
 					if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
 					{
 						ofxPreset::Gui::AddParameter(parameters.base.background);
@@ -149,6 +175,17 @@ namespace entropy
 						{
 							this->boundsDirty = true;
 						}
+					}
+
+					if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
+					{
+						ImGui::Columns(3);
+						ImGui::RadioButton("Cut", parameters.transition.type.getRef(), static_cast<int>(Transition::Cut)); ImGui::NextColumn();
+						ImGui::RadioButton("Mix", parameters.transition.type.getRef(), static_cast<int>(Transition::Mix)); ImGui::NextColumn();
+						ImGui::RadioButton("Wipe", parameters.transition.type.getRef(), static_cast<int>(Transition::Wipe)); ImGui::NextColumn();
+						ImGui::Columns(1);
+
+						ofxPreset::Gui::AddParameter(parameters.transition.duration);
 					}
 
 					// Let the child class handle its child parameters.
@@ -167,7 +204,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::serialize(nlohmann::json & json)
 		{
-			json["type"] = this->type;
+			json["type"] = static_cast<int>(this->type);
 
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
 
@@ -177,9 +214,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize(const nlohmann::json & json)
 		{
-			//int typeAsInt = json["type"];
-			//this->type = (Type)typeAsInt; 
-			
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
 			this->onDeserialize.notify(json);

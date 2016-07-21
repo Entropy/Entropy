@@ -222,7 +222,7 @@ namespace entropy
 						{
 							if (i == 0)
 							{
-								this->addPopUp(popup::Base::TYPE_IMAGE);
+								this->addPopUp(popup::Base::Type::Image);
 							}
 						}
 					}
@@ -352,7 +352,7 @@ namespace entropy
 				for (auto & jsonPopUp : json["Pop-Ups"])
 				{
 					int typeAsInt = jsonPopUp["type"];
-					popup::Base::Type type = (popup::Base::Type)typeAsInt;
+					popup::Base::Type type = static_cast<popup::Base::Type>(typeAsInt);
 
 					auto popUp = this->addPopUp(type);
 					if (popUp)
@@ -607,13 +607,13 @@ namespace entropy
 		shared_ptr<popup::Base> Base::addPopUp(popup::Base::Type type)
 		{
 			shared_ptr<popup::Base> popUp;
-			if (type == popup::Base::TYPE_IMAGE)
+			if (type == popup::Base::Type::Image)
 			{
 				popUp = make_shared<popup::Image>();
 			}
 			else
 			{
-				ofLogError(__FUNCTION__) << "Unrecognized pop-up type " << type;
+				ofLogError(__FUNCTION__) << "Unrecognized pop-up type " << static_cast<int>(type);
 				return nullptr;
 			}
 

@@ -45,13 +45,20 @@ namespace entropy
 		class Base
 		{
 		public:
-			typedef enum
+			enum class Type
 			{
-				TYPE_UNKNOWN,
-				TYPE_IMAGE
-			} Type;
+				Unknown,
+				Image
+			};
 
-			Base(Type type = TYPE_UNKNOWN);
+			enum class Transition
+			{
+				Cut,
+				Mix,
+				Wipe
+			};
+
+			Base(Type type = Type::Unknown);
 			virtual ~Base();
 
 			Type getType() const;
@@ -86,6 +93,8 @@ namespace entropy
 			Type type;
 			int index;
 
+			float transitionAmount;
+
 		protected:
 			// Events
 			ofEvent<void> onSetup;
@@ -114,6 +123,7 @@ namespace entropy
 
 			// Timeline
 			ofxTLSwitches * track;
+			bool enabled;
 
 			// Parameters
 			struct BaseParameters
@@ -128,7 +138,15 @@ namespace entropy
 					PARAM_DECLARE("Base", background, size, center);
 				} base;
 
-				PARAM_DECLARE("Parameters", base);
+				struct : ofParameterGroup
+				{
+					ofxPreset::Parameter<int> type{ "Type", 0, 0, 2 };
+					ofxPreset::Parameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
+
+					PARAM_DECLARE("Transition", type, duration);
+				} transition;
+
+				PARAM_DECLARE("Parameters", base, transition);
 			};
 
 			virtual BaseParameters & getParameters() = 0;

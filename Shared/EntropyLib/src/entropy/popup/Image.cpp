@@ -8,7 +8,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Image::Image()
-			: Base(TYPE_IMAGE)
+			: Base(Type::Image)
 		{
 			ENTROPY_POPUP_SETUP_LISTENER;
 		}
