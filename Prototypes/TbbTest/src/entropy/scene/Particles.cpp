@@ -49,7 +49,7 @@ namespace entropy
 				particleSystem.addParticle(v);
 			}
 #else
-			for (unsigned i = 0; i < nm::ParticleSystem::MAX_PARTICLES; ++i)
+			for (unsigned i = 0; i < 4000; ++i)
 			{
 				ofVec3f position(
 					ofRandom(-HALF_DIM, HALF_DIM),

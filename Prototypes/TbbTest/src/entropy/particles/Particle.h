@@ -50,6 +50,9 @@ namespace nm
 			DOWN_QUARK,
 			
 			UP_DOWN_QUARK, // hacky composite particle
+			
+			NEUTRON,
+			PROTON,
 
 			NUM_TYPES
 		};
@@ -62,6 +65,7 @@ namespace nm
 			float mass;
 			float charge;
 			ofFloatColor color;
+			string meshName;
 		};
 
 		static const Data DATA[NUM_TYPES];

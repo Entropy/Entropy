@@ -72,6 +72,15 @@ namespace nm
 		deadParticles = new unsigned[MAX_PARTICLES];
 		newPhotons = new glm::vec3[MAX_PARTICLES]();
 
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			ostringstream oss;
+			oss << "models/";
+			oss << Particle::DATA[i].meshName;
+			ofxObjLoader::load(oss.str(), meshes[i]);
+		}
+
+		/*
 		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::POSITRON]);
 		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::ELECTRON]);
 		
@@ -80,6 +89,7 @@ namespace nm
 
 		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::DOWN_QUARK]);
 		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::ANTI_DOWN_QUARK]);
+		*/
 
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
@@ -180,10 +190,53 @@ namespace nm
 				// the one that is responsible for the interaction
 				if (potentialInteractionPartner && &particles[i] < potentialInteractionPartner)
 				{
+					// have this so later on can have different likelihoods of different
+					// interactions occurring 
+					bool killParticles = false;
+					
 					// see what type of interaction we have
 					// already doing this check in sumForces() so maybe could remove to optimize but
 					// doesn't seem like it would save a worthwhile amount of time
 					if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
+					{
+						if (ofRandomuf() < .5f)
+						{
+							unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
+							newPhotons[newPhotonIdx] = particles[i];
+							killParticles = true;
+						}
+					}
+					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
+					{
+						if (ofRandomuf() < .00001f)
+						{
+							addParticle(
+								Particle::UP_DOWN_QUARK,
+								particles[i],
+								.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+							);
+							killParticles = true;
+						}
+					}
+					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
+					{
+						if (ofRandomuf() < .5f)
+						{
+							Particle::Type newType = Particle::PROTON;
+							if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
+							{
+								newType = Particle::NEUTRON;
+							}
+							addParticle(
+								newType,
+								particles[i],
+								.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+							);
+							killParticles = true;
+						}
+					}
+
+					if (killParticles)
 					{
 						// interaction is annihilation so kill particle
 						unsigned deadIdx = numDeadParticles.fetch_and_increment();
@@ -192,17 +245,6 @@ namespace nm
 						// kill partner (idx of partner is potentialInteractionPartner - particles)
 						deadIdx = numDeadParticles.fetch_and_increment();
 						deadParticles[deadIdx] = potentialInteractionPartner - particles;
-
-						unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
-						newPhotons[newPhotonIdx] = particles[i];
-					}
-					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
-					{
-						//ofLogNotice() << "Fusion 1";
-					}
-					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
-					{
-						//ofLogNotice() << "Fusion 2";
 					}
 				}
 			}
@@ -225,11 +267,14 @@ namespace nm
 			}
 		}
 
-		// notify photon listeners
-		PhotonEventArgs photonEventArgs;
-		photonEventArgs.photons = newPhotons;
-		photonEventArgs.numPhotons = numNewPhotons;
-		ofNotifyEvent(ParticleEvents::getPhotonEvent(), photonEventArgs, this);
+		if (numNewPhotons)
+		{
+			// notify photon listeners
+			PhotonEventArgs photonEventArgs;
+			photonEventArgs.photons = newPhotons;
+			photonEventArgs.numPhotons = numNewPhotons;
+			ofNotifyEvent(ParticleEvents::getPhotonEvent(), photonEventArgs, this);
+		}
 
 		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)

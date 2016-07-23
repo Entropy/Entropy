@@ -42,17 +42,20 @@ namespace nm
 		float mass;
 		float charge;
 		ofFloatColor color;
+		string meshName;
 	};
 	*/
 
 	const Particle::Data Particle::DATA[NUM_TYPES] = {
-		{	0x01,	0,		0,		500.f,		-1.f,			ofFloatColor(0.f)	}, // ELECTRON
-		{	~0x01,	0,		0,		500.f,		1.f,			ofFloatColor(1.f)	}, // POSITRON
-		{	0x04,	0,		0,		2300.f,		-2.f / 3.f,		ofFloatColor(0.f)	}, // ANTI_UP_QUARK
-		{	~0x04,	~0x01,	0x01,	2300.f,		2.f / 3.f,		ofFloatColor(1.f)	}, // UP_QUARK
-		{	0x02,	0,		0,		4800.f,		1.f / 3.f,		ofFloatColor(1.f)	}, // ANTI_DOWN_QUARK
-		{	~0x02,	0x01,	0x01,	4800.f,		-1.f / 3.f,		ofFloatColor(0.f)	}, // DOWN_QUARK
-		{	0,		0,		~0x01,	7100.f,		1.f / 3.f,		ofFloatColor(1.f)	}  // UP_DOWN_QUARK
+		{	0x01,	0,		0,		500.f,		-1.f,			ofFloatColor(0.f), "sphere_electron_positron.obj"	}, // ELECTRON
+		{	~0x01,	0,		0,		500.f,		1.f,			ofFloatColor(1.f), "sphere_electron_positron.obj"	}, // POSITRON
+		{	0x04,	0,		0,		2300.f,		-2.f / 3.f,		ofFloatColor(0.f), "cube_up_quark.obj"				}, // ANTI_UP_QUARK
+		{	~0x04,	~0x01,	0x01,	2300.f,		2.f / 3.f,		ofFloatColor(1.f), "cube_up_quark.obj"				}, // UP_QUARK
+		{	0x02,	0,		0,		4800.f,		1.f / 3.f,		ofFloatColor(1.f), "tetra_down_quark.obj"			}, // ANTI_DOWN_QUARK
+		{	~0x02,	0x01,	0x01,	4800.f,		-1.f / 3.f,		ofFloatColor(0.f), "tetra_down_quark.obj"			}, // DOWN_QUARK
+		{	0,		0,		~0x01,	7100.f,		1.f / 3.f,		ofFloatColor(1.f), "up_down.obj"					}, // UP_DOWN_QUARK
+		{	0,		0,		0,		14000.f,	0.f,			ofFloatColor(.5f), "up_down_down.obj"				}, // NEUTRON
+		{	0,		0,		0,		14000.f,	1.f,			ofFloatColor(1.f), "up_up_down.obj"					}  // PROTON	
 	};
 
     Particle::Particle() :
