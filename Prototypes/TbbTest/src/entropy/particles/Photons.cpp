@@ -33,7 +33,8 @@
 
 namespace nm
 {
-	Photons::Photons() : currentPhotonIdx(0)
+	Photons::Photons() : 
+		currentPhotonIdx(0)
 	{
 	}
 
@@ -48,13 +49,7 @@ namespace nm
 		vels.resize(MAX_PHOTONS);
 
 		for (auto& p : posns) p = glm::vec3(numeric_limits<float>::max());
-
-		for (auto& v : vels)
-		{
-			v = glm::vec3(ofRandomf(), ofRandomf(), ofRandomf());
-			glm::normalize(v);
-			v *= 300.f;
-		}
+		for (auto& v : vels) v = glm::sphericalRand(300.f);
 		
 		photonPosnBuffer.allocate();
 		photonPosnBuffer.setData(sizeof(posns[0]) * MAX_PHOTONS, &posns[0].x, GL_DYNAMIC_DRAW);
@@ -151,18 +146,17 @@ namespace nm
 			if (posns[i].x != numeric_limits<float>::max())
 			{
 				posns[i] += vels[i] * dt;
-				// check whether particle is out of bounds
+				// check whether photon is out of bounds
 				for (unsigned j = 0; j < 3; ++j)
 				{
-					// add a little bit so things don't get stuck teleporting on the edges
-					if (posns[i][j] > max[j]) posns[i][j] = min[j] + 10.f;
-					if (posns[i][j] < min[j]) posns[i][j] = max[j] - 10.f;
+					if (posns[i][j] > max[j]) posns[i][j] = min[j];
+					if (posns[i][j] < min[j]) posns[i][j] = max[j];
 				}
 			}
 		}
 		photonPosnBuffer.updateData(0, sizeof(posns[0]) * posns.size(), &posns[0].x);
 		trailParticles.update();
-		if (ofRandomuf() < 0.5f && posns[currentPhotonIdx].x != numeric_limits<float>::max())
+		if (ofRandomuf() < 0.5f)
 		{
 			// find a particle
 			const unsigned numTries = 100;
@@ -196,6 +190,5 @@ namespace nm
 
 		ofDisablePointSprites();
 		ofDisableBlendMode();
-		//for (auto& p : photons) ofDrawCircle(p.pos, 10.f);
 	}
 }

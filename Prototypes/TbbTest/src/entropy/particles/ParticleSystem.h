@@ -57,6 +57,8 @@ namespace nm
         static const unsigned MAX_PARTICLES = 5000;
         static const unsigned NUM_LIGHTS = 2;
 		static const float MIN_SPEED_SQUARED;
+		static const float MAX_SPEED;
+		static const float MAX_SPEED_SQUARED;
         
         ParticleSystem();
         ~ParticleSystem();

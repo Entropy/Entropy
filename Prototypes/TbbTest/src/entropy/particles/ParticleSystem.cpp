@@ -34,7 +34,9 @@
 
 namespace nm
 {
-	const float ParticleSystem::MIN_SPEED_SQUARED = 1;// 1e-16;
+	const float ParticleSystem::MIN_SPEED_SQUARED = 1;
+	const float ParticleSystem::MAX_SPEED = 1e16;
+	const float ParticleSystem::MAX_SPEED_SQUARED = MAX_SPEED * MAX_SPEED;
 
 	ParticleSystem::ParticleSystem() :
 		particles(NULL),
@@ -172,14 +174,10 @@ namespace nm
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
 
-				/*
-				if (particles[i].getType() != Particle::POSITRON && 
-					particles[i].getType() != Particle::ELECTRON &&
-					glm::length2(particles[i].getVelocity()) > 1e24) cout << particles[i].getVelocity() << endl;
-					*/
-
 				// damp velocity
-				if (glm::length2(particles[i].getVelocity()) > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
+				float velocity2 = glm::length2(particles[i].getVelocity());
+				if (velocity2 > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
+				if (velocity2 > MAX_SPEED_SQUARED) particles[i].setVelocity(MAX_SPEED * glm::normalize(particles[i].getVelocity()));
 
 				// add position (TODO: improved Euler integration)
 				particles[i] += particles[i].getVelocity() * dt;
