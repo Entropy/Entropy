@@ -47,7 +47,7 @@ namespace nm
 
 		vector<glm::vec3>& getPosnsRef() { return posns; }
 
-		void init(Universe::Ptr universe);
+		void init(Universe::Ptr universe, const glm::vec3& min, const glm::vec3& max);
 		void update();
 		void draw();
 
@@ -61,6 +61,7 @@ namespace nm
 		ofxGpuParticles trailParticles;
 		ofImage particleImage;
 
+		glm::vec3 min, max;
 		vector<glm::vec3> posns;
 		vector<glm::vec3> vels;
 

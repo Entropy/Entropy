@@ -38,7 +38,7 @@ namespace entropy
 
 			universe = nm::Universe::Ptr(new nm::Universe());
 			particleSystem.init(universe, glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
-			photons.init(universe);
+			photons.init(universe, glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
 
 #ifdef _TEAPOT
 			ofVboMesh mesh;

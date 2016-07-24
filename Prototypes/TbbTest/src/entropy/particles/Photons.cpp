@@ -37,9 +37,11 @@ namespace nm
 	{
 	}
 
-	void Photons::init(Universe::Ptr universe)
+	void Photons::init(Universe::Ptr universe, const glm::vec3& min, const glm::vec3& max)
 	{
 		this->universe = universe;
+		this->min = min;
+		this->max = max;
 
 		// photon stuff
 		posns.resize(MAX_PHOTONS);
@@ -146,17 +148,42 @@ namespace nm
 		float dt = ofGetLastFrameTime();
 		for (unsigned i = 0; i < posns.size(); ++i)
 		{
-			if (posns[i] != glm::vec3(numeric_limits<float>::max())) posns[i] += vels[i] * dt;
+			if (posns[i].x != numeric_limits<float>::max())
+			{
+				posns[i] += vels[i] * dt;
+				// check whether particle is out of bounds
+				for (unsigned j = 0; j < 3; ++j)
+				{
+					// add a little bit so things don't get stuck teleporting on the edges
+					if (posns[i][j] > max[j]) posns[i][j] = min[j] + 10.f;
+					if (posns[i][j] < min[j]) posns[i][j] = max[j] - 10.f;
+				}
+			}
 		}
 		photonPosnBuffer.updateData(0, sizeof(posns[0]) * posns.size(), &posns[0].x);
 		trailParticles.update();
-		if (ofRandomuf() < 0.02f &&  posns[currentPhotonIdx] != glm::vec3(numeric_limits<float>::max()))
+		if (ofRandomuf() < 0.5f && posns[currentPhotonIdx].x != numeric_limits<float>::max())
 		{
-			PairProductionEventArgs args;
-			args.position = posns[currentPhotonIdx];
-			args.velocity = vels[currentPhotonIdx];
-			ofNotifyEvent(universe->pairProductionEvent, args, this);
-			posns[currentPhotonIdx] = glm::vec3(numeric_limits<float>::max());
+			// find a particle
+			const unsigned numTries = 100;
+			unsigned idx = numeric_limits<unsigned>::max();
+			for (unsigned i = 0; i < numTries; ++i)
+			{
+				unsigned randIdx = rand() % MAX_PHOTONS;
+				if (posns[randIdx].x != numeric_limits<float>::max())
+				{
+					idx = randIdx;
+					break;
+				}
+			}
+			if (idx != numeric_limits<unsigned>::max())
+			{
+				PairProductionEventArgs args;
+				args.position = posns[idx];
+				args.velocity = vels[idx];
+				ofNotifyEvent(universe->pairProductionEvent, args, this);
+				posns[idx] = glm::vec3(numeric_limits<float>::max());
+			}
 		}
 	}
 
