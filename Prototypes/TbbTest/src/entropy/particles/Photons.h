@@ -40,8 +40,8 @@ namespace nm
 	class Photons
 	{
 	public:
-		static const unsigned MAX_PHOTONS = 100;
-		static const unsigned PARTICLES_PER_PHOTON = 300;
+		static const unsigned MAX_PHOTONS = 500;
+		static const unsigned PARTICLES_PER_PHOTON = 200;
 
 		Photons();
 
@@ -56,7 +56,7 @@ namespace nm
 		void onParticlesUpdate(ofShader& shader);
 		void onParticlesDraw(ofShader& shader);
 
-		ofxGpuParticles particles;
+		ofxGpuParticles trailParticles;
 		ofImage particleImage;
 
 		vector<glm::vec3> posns;

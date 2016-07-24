@@ -80,17 +80,6 @@ namespace nm
 			ofxObjLoader::load(oss.str(), meshes[i]);
 		}
 
-		/*
-		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::POSITRON]);
-		ofxObjLoader::load("models/sphere_electron_positron.obj", meshes[Particle::ELECTRON]);
-		
-		ofxObjLoader::load("models/cube_up_quark.obj", meshes[Particle::UP_QUARK]);
-		ofxObjLoader::load("models/cube_up_quark.obj", meshes[Particle::ANTI_UP_QUARK]);
-
-		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::DOWN_QUARK]);
-		ofxObjLoader::load("models/tetra_down_quark.obj", meshes[Particle::ANTI_DOWN_QUARK]);
-		*/
-
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
 
 		particleShader.load("shaders/particle");
@@ -110,14 +99,34 @@ namespace nm
 
 	void ParticleSystem::onPairProduction(PairProductionEventArgs& args)
 	{
+		Particle::Type type1, type2;
+		switch (rand() % 3)
+		{
+			case 0:
+				type1 = Particle::UP_QUARK;
+				type2 = Particle::ANTI_UP_QUARK;
+				break;
 
+			case 1:
+				type1 = Particle::DOWN_QUARK;
+				type2 = Particle::ANTI_DOWN_QUARK;
+				break;
+
+			case 2:
+				type1 = Particle::POSITRON;
+				type2 = Particle::ELECTRON;
+				break;
+		}
+		glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
+		float speed = glm::length(args.velocity);
+		addParticle(type1, args.position, .5f * speed * dir);
+		addParticle(type2, args.position, -.5f * speed * dir);
 	}
 
 	void ParticleSystem::addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity)
 	{
 		if (totalNumParticles < MAX_PARTICLES)
 		{
-			//float mass = ofMap(Particle::MASSES[type], 500.f, 2300.f, 0.01f, 0.1f);
 			float radius = ofMap(Particle::DATA[type].mass, 500.f, 2300.f, 5.0f, 8.0f);
 
 			Particle& p = particles[totalNumParticles];
@@ -161,6 +170,12 @@ namespace nm
 
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
+
+				/*
+				if (particles[i].getType() != Particle::POSITRON && 
+					particles[i].getType() != Particle::ELECTRON &&
+					glm::length2(particles[i].getVelocity()) > 1e24) cout << particles[i].getVelocity() << endl;
+					*/
 
 				// damp velocity
 				if (glm::length2(particles[i].getVelocity()) > MIN_SPEED_SQUARED) particles[i].setVelocity(.998f * particles[i].getVelocity());
@@ -294,7 +309,9 @@ namespace nm
 		ofEnableDepthTest();
 
 		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+
+		// mesh windings are backwards
+		glCullFace(GL_FRONT);
 
 		particleShader.begin();
 		{

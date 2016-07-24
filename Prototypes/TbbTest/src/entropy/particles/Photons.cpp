@@ -65,9 +65,9 @@ namespace nm
 		unsigned w = MAX_PHOTONS;
 		unsigned h = PARTICLES_PER_PHOTON;
 
-		particles.init(w, h);
+		trailParticles.init(w, h);
 
-		if (ofIsGLProgrammableRenderer()) particles.loadShaders("shaders/photon_update", "shaders/photon_draw");
+		if (ofIsGLProgrammableRenderer()) trailParticles.loadShaders("shaders/photon_update", "shaders/photon_draw");
 		else ofLogError() << "Expected programmable renderer";
 
 		// initial positions
@@ -83,7 +83,7 @@ namespace nm
 				particlePosns[idx * 4 + 3] = ofRandomuf(); // start age
 			}
 		}
-		particles.loadDataTexture(ofxGpuParticles::POSITION, particlePosns);
+		trailParticles.loadDataTexture(ofxGpuParticles::POSITION, particlePosns);
 		delete[] particlePosns;
 
 		// velocities will remain constant, only age will change
@@ -100,20 +100,20 @@ namespace nm
 				particleVels[idx * 4 + 3] = 0.f; // photon index
 			}
 		}
-		particles.loadDataTexture(ofxGpuParticles::VELOCITY, particleVels);
+		trailParticles.loadDataTexture(ofxGpuParticles::VELOCITY, particleVels);
 		delete[] particleVels;
 
-		for (unsigned i = 0; i < particles.getMeshRef().getNumVertices(); ++i)
+		for (unsigned i = 0; i < trailParticles.getMeshRef().getNumVertices(); ++i)
 		{
-			particles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
-			particles.getMeshRef().getColors().back().a = ofRandom(.1f, 1.f); // size
+			trailParticles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
+			trailParticles.getMeshRef().getColors().back().a = ofRandom(.1f, 1.f); // size
 		}
 
 		particleImage.load("images/particle1.png");
 
 		// listen for ofxGpuParticle events to set additonal uniforms
-		ofAddListener(particles.updateEvent, this, &Photons::onParticlesUpdate);
-		ofAddListener(particles.drawEvent, this, &Photons::onParticlesDraw);
+		ofAddListener(trailParticles.updateEvent, this, &Photons::onParticlesUpdate);
+		ofAddListener(trailParticles.drawEvent, this, &Photons::onParticlesDraw);
 
 		// listen for photon events
 		ofAddListener(ParticleEvents::getPhotonEvent(), this, &Photons::onPhoton);
@@ -137,9 +137,8 @@ namespace nm
 	{
 		for (unsigned i = 0; i < args.numPhotons; ++i)
 		{
-			posns[currentPhotonIdx] = args.photons[i];
-			
 			currentPhotonIdx = (currentPhotonIdx + 1) % posns.size();
+			posns[currentPhotonIdx] = args.photons[i];
 		}
 	}
 
@@ -148,10 +147,18 @@ namespace nm
 		float dt = ofGetLastFrameTime();
 		for (unsigned i = 0; i < posns.size(); ++i)
 		{
-			posns[i] += vels[i] * dt;
+			if (posns[i] != glm::vec3(numeric_limits<float>::max())) posns[i] += vels[i] * dt;
 		}
 		photonPosnBuffer.updateData(0, sizeof(posns[0]) * posns.size(), &posns[0].x);
-		particles.update();
+		trailParticles.update();
+		if (ofRandomuf() < 0.02f &&  posns[currentPhotonIdx] != glm::vec3(numeric_limits<float>::max()))
+		{
+			PairProductionEventArgs args;
+			args.position = posns[currentPhotonIdx];
+			args.velocity = vels[currentPhotonIdx];
+			ofNotifyEvent(ParticleEvents::getPairProductionEvent(), args, this);
+			posns[currentPhotonIdx] = glm::vec3(numeric_limits<float>::max());
+		}
 	}
 
 	void Photons::draw()
@@ -159,7 +166,7 @@ namespace nm
 		ofEnableBlendMode(OF_BLENDMODE_ADD);
 		ofEnablePointSprites();
 
-		particles.draw();
+		trailParticles.draw();
 
 		ofDisablePointSprites();
 		ofDisableBlendMode();

@@ -99,8 +99,8 @@ namespace entropy
 		// Update your data here, once per frame.
 		void Particles::update(double & dt)
 		{
-			particleSystem.update();
 			photons.update();
+			particleSystem.update();
 		}
 
 		//--------------------------------------------------------------
