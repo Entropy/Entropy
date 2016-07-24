@@ -20,7 +20,9 @@ void main()
     texCoordVarying = texcoord;
     vec4 pos = texture(particles0, texCoordVarying);
     ageVarying = pos.w;
-    colorVarying = vec4(hsv(clamp(universeAge - 0.1 + color.r, 0.0, 1.0), 0.5, 1.0), color.a);
+	float hueVariation = -0.1 + color.r;
+	float hue = clamp(0.5 - (0.5 * universeAge) + hueVariation, 0.0, 1.0);
+    colorVarying = vec4(hsv(hue, 0.5, 1.0), color.a);
     gl_PointSize = ageVarying * color.a * 10.0;
     gl_Position = modelViewProjectionMatrix * vec4(pos.xyz, 1.0);
 }
