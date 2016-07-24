@@ -6,6 +6,7 @@
 #include "entropy/scene/Base.h"
 #include "entropy/particles/ParticleSystem.h"
 #include "entropy/particles/Photons.h"
+#include "entropy/particles/Universe.h"
 
 namespace entropy
 {
@@ -48,6 +49,7 @@ namespace entropy
 			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
+			nm::Universe::Ptr universe;
 			
 		protected:
 			virtual BaseParameters & getParameters() override

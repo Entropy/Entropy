@@ -59,8 +59,9 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::init(const glm::vec3& min, const glm::vec3& max)
+	void ParticleSystem::init(Universe::Ptr universe, glm::vec3& min, const glm::vec3& max)
 	{
+		this->universe = universe;
 		this->min = min;
 		this->max = max;
 		dims = max - min;
@@ -94,7 +95,7 @@ namespace nm
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 
-		ofAddListener(ParticleEvents::getPairProductionEvent(), this, &ParticleSystem::onPairProduction);
+		ofAddListener(universe->pairProductionEvent, this, &ParticleSystem::onPairProduction);
 	}
 
 	void ParticleSystem::onPairProduction(PairProductionEventArgs& args)
@@ -288,7 +289,7 @@ namespace nm
 			PhotonEventArgs photonEventArgs;
 			photonEventArgs.photons = newPhotons;
 			photonEventArgs.numPhotons = numNewPhotons;
-			ofNotifyEvent(ParticleEvents::getPhotonEvent(), photonEventArgs, this);
+			ofNotifyEvent(universe->photonEvent, photonEventArgs, this);
 		}
 
 		// update the texture buffer objects with the new positions of particles

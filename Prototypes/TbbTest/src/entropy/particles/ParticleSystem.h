@@ -34,7 +34,7 @@
 #include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
-#include "ParticleEvents.h"
+#include "Universe.h"
 
 namespace nm
 {
@@ -61,7 +61,7 @@ namespace nm
         ParticleSystem();
         ~ParticleSystem();
         
-        void init(const glm::vec3& min, const glm::vec3& max);
+        void init(Universe::Ptr universe, glm::vec3& min, const glm::vec3& max);
         
         void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
         
@@ -82,6 +82,7 @@ namespace nm
     private:
 		void onPairProduction(PairProductionEventArgs& args);
 
+		Universe::Ptr universe;
         Octree<Particle> octree;
         nm::Particle* particles;
         tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];

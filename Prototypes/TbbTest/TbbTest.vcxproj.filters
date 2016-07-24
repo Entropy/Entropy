@@ -40,6 +40,9 @@
     <ClCompile Include="src\entropy\scene\Particles.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\particles\Universe.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -125,7 +128,7 @@
     <ClInclude Include="src\entropy\particles\Photons.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\particles\ParticleEvents.h">
+    <ClInclude Include="src\entropy\particles\Universe.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
   </ItemGroup>

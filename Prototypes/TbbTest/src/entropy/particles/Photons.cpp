@@ -37,19 +37,16 @@ namespace nm
 	{
 	}
 
-	void Photons::init()
+	void Photons::init(Universe::Ptr universe)
 	{
+		this->universe = universe;
+
 		// photon stuff
 		posns.resize(MAX_PHOTONS);
 		vels.resize(MAX_PHOTONS);
-		//float x = -.5f * ofGetWidth();
-		//for (auto& p : posns)
-		//{
-		//	p = glm::vec3(x, 100.f, 0);
-		//	x += 50.f;
-			//p.set(0.f, 100.f, 0.f);
-		//}
+
 		for (auto& p : posns) p = glm::vec3(numeric_limits<float>::max());
+
 		for (auto& v : vels)
 		{
 			v = glm::vec3(ofRandomf(), ofRandomf(), ofRandomf());
@@ -116,7 +113,7 @@ namespace nm
 		ofAddListener(trailParticles.drawEvent, this, &Photons::onParticlesDraw);
 
 		// listen for photon events
-		ofAddListener(ParticleEvents::getPhotonEvent(), this, &Photons::onPhoton);
+		ofAddListener(universe->photonEvent, this, &Photons::onPhoton);
 	}
 
 	void Photons::onParticlesUpdate(ofShader& shader)
@@ -156,7 +153,7 @@ namespace nm
 			PairProductionEventArgs args;
 			args.position = posns[currentPhotonIdx];
 			args.velocity = vels[currentPhotonIdx];
-			ofNotifyEvent(ParticleEvents::getPairProductionEvent(), args, this);
+			ofNotifyEvent(universe->pairProductionEvent, args, this);
 			posns[currentPhotonIdx] = glm::vec3(numeric_limits<float>::max());
 		}
 	}

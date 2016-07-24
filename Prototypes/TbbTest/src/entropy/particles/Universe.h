@@ -1,5 +1,5 @@
 /*
- *  ParticleEvents.h
+ *  Universe.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -47,22 +47,20 @@ namespace nm
 		glm::vec3 velocity;
 	};
 
-	class ParticleEvents
+	class Universe
 	{
 	public:
-		ParticleEvents(ParticleEvents const&) = delete;
-		void operator=(ParticleEvents const&) = delete;
+		typedef shared_ptr<Universe> Ptr;
 
-		static ofEvent<PhotonEventArgs>& getPhotonEvent()
-		{
-			static ofEvent<PhotonEventArgs> photonEvent;
-			return photonEvent;
-		}
+		Universe();
 
-		static ofEvent<PairProductionEventArgs>& getPairProductionEvent()
-		{
-			static ofEvent<PairProductionEventArgs> pairProductionEvent;
-			return pairProductionEvent;
-		}
-	};
+		inline float getAge() { return age; }
+		inline void setAge(float age) { this->age = age; }
+		
+		ofEvent<PairProductionEventArgs> pairProductionEvent;
+		ofEvent<PhotonEventArgs> photonEvent;
+
+	private:
+		float age; // from 0 to 1
+    };
 }

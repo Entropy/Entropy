@@ -1,5 +1,5 @@
 /*
- *  Photons.h
+ *  Universe.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,43 +29,12 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#pragma once
-
-#include "ofMain.h"
-#include "ofxGpuParticles.h"
 #include "Universe.h"
 
 namespace nm
 {
-	class Photons
+	Universe::Universe() :
+		age(0.f)
 	{
-	public:
-		static const unsigned MAX_PHOTONS = 500;
-		static const unsigned PARTICLES_PER_PHOTON = 200;
-
-		Photons();
-
-		vector<glm::vec3>& getPosnsRef() { return posns; }
-
-		void init(Universe::Ptr universe);
-		void update();
-		void draw();
-
-	private:
-		void onPhoton(PhotonEventArgs& args);
-		void onParticlesUpdate(ofShader& shader);
-		void onParticlesDraw(ofShader& shader);
-
-		Universe::Ptr universe;
-
-		ofxGpuParticles trailParticles;
-		ofImage particleImage;
-
-		vector<glm::vec3> posns;
-		vector<glm::vec3> vels;
-
-		ofBufferObject photonPosnBuffer;
-		ofTexture photonPosnTexture;
-		unsigned currentPhotonIdx;
-    };
+	}
 }
