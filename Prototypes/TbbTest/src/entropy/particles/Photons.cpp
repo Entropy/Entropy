@@ -102,7 +102,8 @@ namespace nm
 
 		for (unsigned i = 0; i < trailParticles.getMeshRef().getNumVertices(); ++i)
 		{
-			trailParticles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
+			//trailParticles.getMeshRef().addColor(ofFloatColor::fromHsb(ofRandom(.4f, .6f), .5f, 1.f)); // color
+			trailParticles.getMeshRef().addColor(ofFloatColor(ofRandom(0.f, .2f), 0.f, 0.f)); // just put hue offset into the red channel
 			trailParticles.getMeshRef().getColors().back().a = ofRandom(.1f, 1.f); // size
 		}
 
@@ -128,6 +129,7 @@ namespace nm
 	void Photons::onParticlesDraw(ofShader& shader)
 	{
 		shader.setUniformTexture("tex", particleImage, 4);
+		shader.setUniform1f("universeAge", universe->getAge());
 	}
 
 	void Photons::onPhoton(PhotonEventArgs& args)

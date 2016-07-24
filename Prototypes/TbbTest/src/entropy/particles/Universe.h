@@ -54,8 +54,9 @@ namespace nm
 
 		Universe();
 
-		inline float getAge() { return age; }
+		inline float getAge() const { return age; }
 		inline void setAge(float age) { this->age = age; }
+		inline float& getAgeRef() { return age; } // for GUI
 		
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;

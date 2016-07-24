@@ -78,6 +78,7 @@ namespace entropy
 				persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));
 			}
 			persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
+			persistent.add("universe->age", universe->getAgeRef(), 0.f, 1.f);
 			persistent.load("settings/settings.xml");
 		}
 
