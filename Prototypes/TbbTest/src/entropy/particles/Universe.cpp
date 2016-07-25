@@ -33,8 +33,16 @@
 
 namespace nm
 {
-	Universe::Universe() :
+	Universe::Universe(const glm::vec3& min, const glm::vec3& max) :
+		min(min),
+		max(max),
+		dims(max - min),
 		age(0.f)
 	{
+	}
+
+	float Universe::getExpansionScalar() const
+	{
+		return 1.f + .5f * age;
 	}
 }

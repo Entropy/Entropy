@@ -63,7 +63,7 @@ namespace nm
         ParticleSystem();
         ~ParticleSystem();
         
-        void init(Universe::Ptr universe, glm::vec3& min, const glm::vec3& max);
+		void init(Universe::Ptr universe);
         
         void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
         
@@ -93,7 +93,7 @@ namespace nm
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
         ofShader particleShader;
-        glm::vec3 min, max, dims;
+        //glm::vec3 min, max, dims;
 		ofShader wallShader;
         
         // position stuff

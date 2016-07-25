@@ -52,16 +52,23 @@ namespace nm
 	public:
 		typedef shared_ptr<Universe> Ptr;
 
-		Universe();
+		Universe(const glm::vec3& min, const glm::vec3& max);
+
+		inline glm::vec3 getMin() const { return min; }
+		inline glm::vec3 getMax() const { return max; }
+		inline glm::vec3 getDims() const { return dims; }
 
 		inline float getAge() const { return age; }
 		inline void setAge(float age) { this->age = age; }
 		inline float& getAgeRef() { return age; } // for GUI
-		
+
+		float getExpansionScalar() const;
+
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 
 	private:
+		glm::vec3 min, max, dims;
 		float age; // from 0 to 1
     };
 }

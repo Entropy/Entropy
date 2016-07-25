@@ -36,9 +36,9 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			universe = nm::Universe::Ptr(new nm::Universe());
-			particleSystem.init(universe, glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
-			photons.init(universe, glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM));
+			universe = nm::Universe::Ptr(new nm::Universe(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
+			particleSystem.init(universe);
+			photons.init(universe);
 
 #ifdef _TEAPOT
 			ofVboMesh mesh;

@@ -61,14 +61,14 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::init(Universe::Ptr universe, glm::vec3& min, const glm::vec3& max)
+	void ParticleSystem::init(Universe::Ptr universe)
 	{
 		this->universe = universe;
-		this->min = min;
-		this->max = max;
-		dims = max - min;
+		//this->min = min;
+		//this->max = max;
+		//dims = max - min;
 
-		octree.init(min, max);
+		octree.init(universe->getMin(), universe->getMax());
 		octree.addChildren(true);
 
 		particles = new nm::Particle[MAX_PARTICLES]();
@@ -154,9 +154,12 @@ namespace nm
 		octree.addPoints(particles, totalNumParticles);
 		octree.updateCenterOfCharge();
 
-		float dt = ofGetLastFrameTime();
+		const float dt = ofGetLastFrameTime();
 		tbb::atomic<unsigned> typeIndices[Particle::NUM_TYPES];
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) typeIndices[i] = 0;
+		const glm::vec3 min = universe->getMin();
+		const glm::vec3 max = universe->getMax();
+		const float expansionScalar = universe->getExpansionScalar();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
 			for (size_t i = r.begin(); i != r.end(); ++i)
@@ -192,7 +195,7 @@ namespace nm
 
 				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
 				positions[particles[i].getType()][idx].transform =
-					glm::translate(particles[i]) *
+					glm::translate(expansionScalar * particles[i]) *
 					glm::scale(glm::vec3(particles[i].getRadius())) *
 					glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -379,6 +382,11 @@ namespace nm
 				wallShader.setUniform1f("lights[" + index + "].radius", lights[i].radius);
 			}
 			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
+
+			const float expansionScalar = universe->getExpansionScalar();
+			const glm::vec3 min = expansionScalar * universe->getMin();
+			const glm::vec3 max = expansionScalar * universe->getMax();
+			const glm::vec3 dims = expansionScalar * universe->getDims();
 
 			// stop using ofDrawBox for walls and change it to one mesh
 			ofDrawBox(0.f, 0.f, min.z - 5.f, dims.x, dims.y, 10.f); // back wall

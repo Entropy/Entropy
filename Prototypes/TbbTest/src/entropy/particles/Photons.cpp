@@ -38,21 +38,23 @@ namespace nm
 	{
 	}
 
-	void Photons::init(Universe::Ptr universe, const glm::vec3& min, const glm::vec3& max)
+	void Photons::init(Universe::Ptr universe)// , const glm::vec3& min, const glm::vec3& max)
 	{
 		this->universe = universe;
-		this->min = min;
-		this->max = max;
+		//this->min = min;
+		//this->max = max;
 
 		// photon stuff
 		posns.resize(MAX_PHOTONS);
+		scaledPosns.resize(MAX_PHOTONS);
 		vels.resize(MAX_PHOTONS);
 
 		for (auto& p : posns) p = glm::vec3(numeric_limits<float>::max());
+		for (auto& p : scaledPosns) p = glm::vec3(numeric_limits<float>::max());
 		for (auto& v : vels) v = glm::sphericalRand(300.f);
 		
 		photonPosnBuffer.allocate();
-		photonPosnBuffer.setData(sizeof(posns[0]) * MAX_PHOTONS, &posns[0].x, GL_DYNAMIC_DRAW);
+		photonPosnBuffer.setData(sizeof(scaledPosns[0]) * MAX_PHOTONS, &scaledPosns[0].x, GL_DYNAMIC_DRAW);
 		photonPosnTexture.allocateAsBufferTexture(photonPosnBuffer, GL_RGB32F);
 
 		// particle stuff
@@ -71,8 +73,8 @@ namespace nm
 			for (unsigned x = 0; x < w; ++x)
 			{
 				unsigned idx = y * w + x;
-				particlePosns[idx * 4] = 400.f * x / (float)w - 200.f; // particle x
-				particlePosns[idx * 4 + 1] = 400.f * y / (float)h - 200.f; // particle y
+				particlePosns[idx * 4] = 1e10; // particle x (offscreen)
+				particlePosns[idx * 4 + 1] = 1e10; // particle y (offscreen)
 				particlePosns[idx * 4 + 2] = 0.f; // particle z
 				particlePosns[idx * 4 + 3] = ofRandomuf(); // start age
 			}
@@ -140,7 +142,11 @@ namespace nm
 
 	void Photons::update()
 	{
-		float dt = ofGetLastFrameTime();
+		const float dt = ofGetLastFrameTime();
+		const glm::vec3 min = universe->getMin();
+		const glm::vec3 max = universe->getMax();
+		const float expansionScalar = universe->getExpansionScalar();
+
 		for (unsigned i = 0; i < posns.size(); ++i)
 		{
 			if (posns[i].x != numeric_limits<float>::max())
@@ -152,9 +158,11 @@ namespace nm
 					if (posns[i][j] > max[j]) posns[i][j] = min[j];
 					if (posns[i][j] < min[j]) posns[i][j] = max[j];
 				}
+				scaledPosns[i] = expansionScalar * posns[i];
 			}
+			else scaledPosns[i] = posns[i];
 		}
-		photonPosnBuffer.updateData(0, sizeof(posns[0]) * posns.size(), &posns[0].x);
+		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
 		trailParticles.update();
 		if (ofRandomuf() < 0.5f)
 		{
