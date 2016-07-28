@@ -70,12 +70,12 @@ namespace entropy
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
-						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeIn);
+						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
 					{
 						// Transitioning out.
-						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeOut);
+						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeIn);
 					}
 					else
 					{
@@ -88,19 +88,54 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::draw()
 		{
+			auto & parameters = this->getParameters();
+			
 			ofPushStyle();
 			{
-				if (this->getParameters().base.background->a > 0)
+				if (parameters.base.background->a > 0)
 				{
-					ofSetColor(this->getParameters().base.background.get());
+					ofSetColor(parameters.base.background.get());
 					ofDrawRectangle(this->viewport);
 				}
 		
 				if (this->getTexture().isAllocated() && (this->enabled || this->editing))
 				{
-					ofSetColor(ofColor::white, this->enabled? (this->transitionAmount * 255):128);
-					this->getTexture().drawSubsection(this->viewport.x, this->viewport.y, this->viewport.width, this->viewport.height,
-													  this->roi.x, this->roi.y, this->roi.width, this->roi.height);
+					auto transition = static_cast<Transition>(parameters.transition.type.get());
+
+					// Set alpha value.
+					float alpha;
+					if (this->enabled)
+					{
+						if (transition == Transition::Mix)
+						{
+							alpha = this->transitionAmount;
+						}
+						else
+						{
+							alpha = 1.0f;
+						}
+					}
+					else
+					{
+						alpha = 0.5f;
+					}
+
+					// Set subsection.
+					auto dstBounds = this->viewport;
+					auto srcBounds = this->roi;
+					if (this->enabled && transition == Transition::Wipe && this->transitionAmount < 1.0f)
+					{
+						dstBounds.height = this->transitionAmount * this->viewport.height;
+						dstBounds.y = this->viewport.y + (1.0f - this->transitionAmount) * this->viewport.height * 0.5f;
+
+						srcBounds.height = this->transitionAmount * this->roi.height;
+						srcBounds.y = this->roi.y + (1.0f - this->transitionAmount) * this->roi.height * 0.5f;
+					}
+
+					// Draw the texture.
+					ofSetColor(ofColor::white, 255 * alpha);
+					this->getTexture().drawSubsection(dstBounds.x, dstBounds.y, dstBounds.width, dstBounds.height,
+													  srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height);
 				}
 			}
 			ofPopStyle();
@@ -185,7 +220,10 @@ namespace entropy
 						ImGui::RadioButton("Wipe", parameters.transition.type.getRef(), static_cast<int>(Transition::Wipe)); ImGui::NextColumn();
 						ImGui::Columns(1);
 
-						ofxPreset::Gui::AddParameter(parameters.transition.duration);
+						if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
+						{
+							ofxPreset::Gui::AddParameter(parameters.transition.duration);
+						}
 					}
 
 					// Let the child class handle its child parameters.

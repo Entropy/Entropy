@@ -140,7 +140,7 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<int> type{ "Type", 0, 0, 2 };
+					ofxPreset::Parameter<int> type{ "Type", 0, 0, 2, true };
 					ofxPreset::Parameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
 
 					PARAM_DECLARE("Transition", type, duration);
