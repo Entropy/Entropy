@@ -1,8 +1,7 @@
 {
-    "MARCHING_CUBES": {
-        "flip_normals": "0",
+    "marching_cubes": {
         "resolution": "128",
         "scale": "1",
-        "threshold": "0.345"
+        "threshold": "0.39"
     }
 }

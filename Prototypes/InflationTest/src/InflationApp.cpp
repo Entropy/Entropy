@@ -7,37 +7,32 @@ namespace entropy
     void InflationApp::setup()
     {
         // Marching Cubes
-        marchingCubesParameters.setName("MARCHING CUBES");
         gpuMarchingCubes.setup();
 
-        panelMarchingCubes.setup(marchingCubesParameters, "marching-cubes.json");
         panelMarchingCubes.loadFromFile("marching-cubes.json");
         panelMarchingCubes.setPosition(0, 0);
 
 
         // Noise Field
-        panelNoiseField.setup(noiseField.parameters, "noise-field.json");
-        panelNoiseField.loadFromFile("noise-field.json");
-        panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
         noiseField.setup(gpuMarchingCubes.resolution);
 
+        panelNoiseField.loadFromFile("noise-field.json");
+        panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
+
         // Render
-        panelRender.setup(paramsRender, "render.json");
         panelRender.loadFromFile("render.json");
         panelRender.setPosition(0, panelNoiseField.getShape().getMaxY() + 1);
         record.setSerializable(false);
-        
-        normalShader.load("shaders/normalShader");
 
         camera.setDistance(2);
         camera.setNearClip(0.1);
         camera.setFarClip(100000);
 
-        // GUI
 		guiVisible = true;
 		ofSetBackgroundColor(0);
         now = 0;
 
+        // postpo and recording
         ofFbo::Settings settings;
         settings.width = ofGetWidth();
         settings.height = ofGetHeight();

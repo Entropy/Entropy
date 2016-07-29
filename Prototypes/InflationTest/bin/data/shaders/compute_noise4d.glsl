@@ -152,7 +152,6 @@ struct Octave{
 
 #define NUM_OCTAVES 4
 uniform float resolution;
-uniform float inputMultiplier;
 uniform float normalizationFactor;
 uniform float fade;
 uniform Octave octaves[NUM_OCTAVES];
@@ -176,13 +175,12 @@ void main()
 		float x = gl_GlobalInvocationID.x;
 		float y = gl_GlobalInvocationID.y;
 		float z = gl_GlobalInvocationID.z;
-		vec3 centeredPos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
-        vec3 pos = centeredPos * inputMultiplier;
+        vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
 
         // fade out from the fade limit until 1
         float sphere = 1;
         if(sphericalClip){
-            vec3 normPos = centeredPos / (resolution/2.);
+            vec3 normPos = pos / (resolution/2.);
             float distance = dot(normPos, normPos);
             float edge = 1.0 - fade;
             float curveStart = int(distance+edge);
@@ -191,7 +189,7 @@ void main()
         }
 
         for(int i=0;i<NUM_OCTAVES;i++){
-            float freqD = octaves[i].frequency / 60.f;
+            float freqD = octaves[i].frequency;// / 60.f;
             float amplitude = octaves[i].amplitude * octaves[i].enabled;// * (1. - ofClamp(normDistance, 0, 1));
             float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
             if(i==0){

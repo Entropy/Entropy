@@ -30,6 +30,7 @@ namespace entropy
         void gotMessage(ofMessage msg);
 
         ofEasyCam camera;
+        double now;
 
         GPUMarchingCubes gpuMarchingCubes;
 
@@ -43,18 +44,14 @@ namespace entropy
             scale,
             threshold,
         };
-        double now;
-
-		ofxPanel panelMarchingCubes;
+        ofxPanel panelMarchingCubes{marchingCubesParameters, "marching-cubes.json"};
 
         // Noise Field
 		NoiseField noiseField;
+        ofxPanel panelNoiseField{noiseField.parameters, "noise-field.json"};
 
-		ofxPanel panelNoiseField;
 
         // Render
-        ofShader normalShader;
-
         ofParameter<bool> debug{"debug", false};
         ofParameter<bool> drawGrid{"draw grid", true};
         ofParameter<bool> simulationRunning{"simulation running", true};
@@ -88,8 +85,8 @@ namespace entropy
             bloom,
             bloomParameters,
         };
+        ofxPanel panelRender{paramsRender, "render.json"};
 
-		ofxPanel panelRender;
 
         // GUI
         bool guiVisible = true;
@@ -97,6 +94,7 @@ namespace entropy
 		uint64_t timeToUpdate;
 
 
+        // Postpo effects and recording
         ofFbo fboscene;
         ofFbo fbobright;
         ofFbo fbo2;

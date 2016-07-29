@@ -16,6 +16,18 @@
 
 namespace entropy
 {
+
+    NoiseField::NoiseField(){
+        octaves.emplace_back(0,  20, 1.f);
+        octaves.emplace_back(1,  40, 0.5f);
+        octaves.emplace_back(2,  80, 0.25f);
+        octaves.emplace_back(3, 160, 0.125f);
+
+        for(auto & octave: octaves){
+            parameters.add(octave.parameters);
+        }
+    }
+
     //--------------------------------------------------------------
     void NoiseField::compileComputeShader(){
         ofFile computeFile("shaders/compute_noise4d.glsl");
@@ -102,7 +114,6 @@ namespace entropy
             noiseComputeShader.setUniform1f(octave + "enabled", octaves[i].enabled ? 1.0f : 0.0f);
         }
         noiseComputeShader.setUniform1f("resolution", resolution);
-        noiseComputeShader.setUniform1f("inputMultiplier" , inputMultiplier);
 		noiseComputeShader.setUniform1f("normalizationFactor", normalizationFactor);
         noiseComputeShader.setUniform1f("fade", (float)fadeAt);
         noiseComputeShader.dispatchCompute(resolution/8, resolution/8, resolution/8);
@@ -162,8 +173,7 @@ namespace entropy
     {
 		auto total = 0.;
 		auto maxValue = 0.;
-		auto centeredPos = glm::vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
-        auto pos = centeredPos * (float)inputMultiplier;
+        auto pos = glm::vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
         // fade out from the fade limit until 1
         /*float sphere = 1;
         if(sphericalClip){
@@ -177,7 +187,7 @@ namespace entropy
         for(auto & octave: octaves){
             //float radius = octave.radius * resolution;
             if(octave.enabled){// &&  radius * radius > distance2){
-                auto freqD = octave.frequency / 60.f;
+                auto freqD = octave.frequency;
                 auto amplitude = octave.amplitude;// * (1. - ofClamp(normDistance, 0, 1));
                 total +=  (_slang_library_noise4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octave.now*freqD)*0.5f + 0.5f) * amplitude;
                 maxValue += amplitude;

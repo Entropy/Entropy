@@ -1,37 +1,40 @@
 {
     "noise_field": {
-        "fadeAt": "0.8",
+        "fadeAt": "0.98",
         "fill_edges": "0",
-        "input_multiplier": "0.16435",
-        "noise_speed": "0.205",
-        "norm__factor": "1",
+        "noise_speed": "5",
+        "norm__factor": "0.982",
         "octave_0": {
             "advance_time": "1",
             "ampl__norm": "1",
             "enabled": "1",
-            "freq__hz": "12",
-            "radius": "1"
+            "freq__hz": "0.015625",
+            "radius": "1",
+            "wavelength": "64"
         },
         "octave_1": {
             "advance_time": "1",
             "ampl__norm": "0.5",
             "enabled": "1",
-            "freq__hz": "24",
-            "radius": "1"
+            "freq__hz": "0.03125",
+            "radius": "1",
+            "wavelength": "32"
         },
         "octave_2": {
             "advance_time": "1",
             "ampl__norm": "0.25",
             "enabled": "1",
-            "freq__hz": "48",
-            "radius": "1"
+            "freq__hz": "0.0612501",
+            "radius": "1",
+            "wavelength": "16.3265"
         },
         "octave_3": {
             "advance_time": "1",
             "ampl__norm": "0.125",
             "enabled": "1",
-            "freq__hz": "120",
-            "radius": "1"
+            "freq__hz": "0.117788",
+            "radius": "1",
+            "wavelength": "8.4898"
         },
         "offset_multiplier": "0.1765",
         "spherical_clip": "0"
