@@ -6,6 +6,9 @@
 //
 //
 
+#if !USE_GPU_NOISE
+#include "tbb/tbb.h"
+#endif
 #include "NoiseField.h"
 #include "ofNoise.h"
 #include "Constants.h"
@@ -33,8 +36,8 @@ namespace entropy
     void NoiseField::allocateVolumeTexture(){
         volumeShader.load("shaders/volumetrics_vertex.glsl", "shaders/volumetrics_frag.glsl");
         volumeTex.allocate(resolution,resolution,resolution,GL_RGBA16F);
-        auto clearData = std::vector<ofFloatColor>(resolution*resolution*resolution, ofFloatColor::black);
-        volumeTex.loadData(reinterpret_cast<float*>(clearData.data()),resolution,resolution,resolution,0,0,0,GL_RGBA);
+        volumeValues.assign(resolution*resolution*resolution, ofFloatColor::black);
+        volumeTex.loadData(reinterpret_cast<float*>(volumeValues.data()),resolution,resolution,resolution,0,0,0,GL_RGBA);
         //volumeTex.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
         volumetrics.setup(&volumeTex, {1,1,1}, volumeShader);
     }
@@ -106,7 +109,46 @@ namespace entropy
 		noiseComputeShader.end();
 		glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
 		glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
-		//volumeTex.generateMipmaps();
+        //volumeTex.generateMipmaps();
+#else
+        tbb::parallel_for(tbb::blocked_range<size_t>(0,resolution),[&](const tbb::blocked_range<size_t> & r){
+            for(size_t z=r.begin(); z!=r.end(); ++z){
+                auto zi = z*resolution*resolution;
+                for(int y=0; y<resolution; ++y){
+                    auto yi = zi + y*resolution;
+                    for(int x=0; x<resolution; ++x){
+                        auto i = yi + x;
+                        auto total = 0.f;
+                        auto maxValue = 0.f;
+                        auto centeredPos = glm::vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
+                        auto pos = centeredPos * (float)inputMultiplier;
+                        // fade out from the fade limit until 1
+                        /*float sphere = 1;
+                        if(sphericalClip){
+                            glm::vec3 normPos = centeredPos / (resolution/2.);
+                            float distance = glm::dot(normPos, normPos);
+                            float edge = 1.0 - fadeAt;
+                            float curveStart = int(distance+edge);
+                            float fadeOut = glm::clamp((1.f - (distance - fadeAt) / edge), 0.f, 1.f);
+                            sphere = 1.0 - curveStart + curveStart * fadeOut * fadeOut;
+                        }*/
+                        for(auto & octave: octaves){
+                            //float radius = octave.radius * resolution;
+                            if(octave.enabled){// &&  radius * radius > distance2){
+                                auto freqD = octave.frequency / 60.f;
+                                auto amplitude = octave.amplitude;// * (1. - ofClamp(normDistance, 0, 1));
+                                auto noise = _slang_library_noise4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octave.now*freqD) * 0.5f + 0.5f;
+                                total +=  noise * amplitude;
+                                maxValue += amplitude;
+                            }
+                        }
+                        float normalizationValue = (maxValue * normalizationFactor);
+                        volumeValues[i] = ofFloatColor(1, total / normalizationValue);
+                    }
+                }
+            }
+        });
+        volumeTex.loadData(reinterpret_cast<float*>(volumeValues.data()),resolution,resolution,resolution,0,0,0,GL_RGBA);
 #endif
     }
 

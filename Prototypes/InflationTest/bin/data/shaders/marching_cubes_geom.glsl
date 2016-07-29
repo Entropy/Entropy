@@ -20,11 +20,23 @@ const vec3 vertDecals[8] = {
 };
 
 out vec4 rgba;
-//out vec3 normal;
+
+#define OUTPUT_NORMALS 1
+
+#if OUTPUT_NORMALS
+out vec3 normal;
+#endif
 
 layout (points) in;
-// CAREFUL! bump up to 15 to render full triangles
+
+#define WIREFRAME 1
+#if WIREFRAME
 layout (line_strip, max_vertices = 10) out;
+const int vertexPerPrimitive = 2;
+#else
+layout (triangle_strip, max_vertices = 15) out;
+const int vertexPerPrimitive = 3;
+#endif
 
 //Get vertex i position within current marching cube
 vec3 cubePos(int i){
@@ -104,24 +116,26 @@ void main(void) {
 		if(triTableValue(cubeindex, i)!=-1){
 			//Generate vertices of triangle//
 			//Fill position varying attribute for fragment shader
-            vec3 pos[2];
-            for(int j=0;j<2;j++){
+            vec3 pos[vertexPerPrimitive];
+            for(int j=0;j<vertexPerPrimitive;j++){
 				int idx = triTableValue(cubeindex, i+j);
 				pos[j] = vertlist[idx];
 			}
 
-            /*vec3 v1 = pos[1] - pos[0];
-			vec3 v2 = pos[2] - pos[1];
-			normal = normalize(vec3(
-			    v1.y * v2.z - v1.z * v2.y,
-			    v1.z * v2.x - v1.x * v2.z,
-			    v1.x * v2.y - v1.y * v2.x
-            ));*/
+            #if OUTPUT_NORMALS
+                vec3 v1 = pos[1] - pos[0];
+                vec3 v2 = pos[2] - pos[1];
+                normal = normalize(vec3(
+                    v1.y * v2.z - v1.z * v2.y,
+                    v1.z * v2.x - v1.x * v2.z,
+                    v1.x * v2.y - v1.y * v2.x
+                ));
+            #endif
 
             rgba = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8.;
 
 			//Fill gl_Position attribute for vertex raster space position
-            for(int j=0;j<2;j++){
+            for(int j=0;j<vertexPerPrimitive;j++){
 				gl_Position = modelViewProjectionMatrix * vec4(pos[j],1.0f);
 				EmitVertex();
 			}

@@ -1,0 +1,39 @@
+{
+    "noise_field": {
+        "fadeAt": "0.8",
+        "fill_edges": "0",
+        "input_multiplier": "0.16435",
+        "noise_speed": "0.205",
+        "norm__factor": "1",
+        "octave_0": {
+            "advance_time": "1",
+            "ampl__norm": "1",
+            "enabled": "1",
+            "freq__hz": "12",
+            "radius": "1"
+        },
+        "octave_1": {
+            "advance_time": "1",
+            "ampl__norm": "0.5",
+            "enabled": "1",
+            "freq__hz": "24",
+            "radius": "1"
+        },
+        "octave_2": {
+            "advance_time": "1",
+            "ampl__norm": "0.25",
+            "enabled": "1",
+            "freq__hz": "48",
+            "radius": "1"
+        },
+        "octave_3": {
+            "advance_time": "1",
+            "ampl__norm": "0.125",
+            "enabled": "1",
+            "freq__hz": "120",
+            "radius": "1"
+        },
+        "offset_multiplier": "0.1765",
+        "spherical_clip": "0"
+    }
+}

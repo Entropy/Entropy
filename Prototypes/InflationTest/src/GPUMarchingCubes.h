@@ -14,12 +14,14 @@ class GPUMarchingCubes
 
 		ofParameter<int> resolution{"resolution", 1, 1, 512};
         ofParameter<bool> wireframe{"wireframe", true};
+        ofParameter<bool> shadeNormals{"shader normals", true};
 
 	private:
+        void compileShader();
 		ofVbo vbo;
 		ofShader shader;
 		ofTexture triTableTex;
-		ofEventListener resolutionListener;
+        ofEventListener resolutionListener, wireFrameListener, shadeNormalsListener;
 };
 
 #endif // GPUMARCHINGCUBES_H

@@ -2,6 +2,5 @@
 #define CONSTANTS_H
 
 #define USE_GPU_NOISE 1
-#define USE_GPU_MARCHING_CUBES 1
 
 #endif // CONSTANTS_H

@@ -72,6 +72,7 @@ namespace entropy
 		ofShader noiseComputeShader;
 		ofxVolumetrics3D volumetrics;
 		ofxTexture3d volumeTex;
+        std::vector<ofFloatColor> volumeValues;
 		ofShader volumeShader;
         ofEventListener sphericalClipListener, fillEdgesListener, resolutionListener;
 

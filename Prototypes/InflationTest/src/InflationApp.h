@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "ofxMarchingCubes.h"
 
 #include "NoiseField.h"
 #include "GPUMarchingCubes.h"
@@ -32,36 +31,17 @@ namespace entropy
 
         ofEasyCam camera;
 
-        // Marching Cubes
-        void paramsMarchingCubesChanged(ofAbstractParameter& param);
-
-#if USE_GPU_MARCHING_CUBES
         GPUMarchingCubes gpuMarchingCubes;
-#else
-        ofxMarchingCubes marchingCubes;
-#endif
 
-        ofParameter<int> resolution{"resolution", 128, 1, 512};
         ofParameter<float> scale{"scale", 1, 1, 100};
-#if USE_GPU_MARCHING_CUBES
         ofParameter<float> threshold{"threshold", 0.345, 0.0, 1.0};
-#else
-        ofParameter<float> threshold{"threshold", marchingCubes.getThreshold(), 0.0, 1.0};
-        ofParameter<bool> smooth{"smooth", marchingCubes.getSmoothing()};
-#endif
         ofParameter<bool> inflation{"inflation", false};
         ofParameter<bool> flipNormals{"flip normals", false};
         ofParameterGroup marchingCubesParameters{
             "marching cubes",
-#if USE_GPU_MARCHING_CUBES || USE_GPU_NOISE
             gpuMarchingCubes.resolution,
-#else
-            resolution,
-            smooth,
-#endif
             scale,
             threshold,
-            flipNormals,
         };
         double now;
 
@@ -77,8 +57,6 @@ namespace entropy
 
         ofParameter<bool> debug{"debug", false};
         ofParameter<bool> drawGrid{"draw grid", true};
-        ofParameter<bool> wireframe{"wireframe", true};
-        ofParameter<bool> shadeNormals{"shader normals", true};
         ofParameter<bool> simulationRunning{"simulation running", true};
         ofParameter<bool> record{"record",false};
         ofParameter<bool> additiveBlending{"additive blending",false};
@@ -88,20 +66,22 @@ namespace entropy
         ofParameter<float> sigma{"sigma",0.9,0.5f,18};
         ofParameter<float> contrast{"contrast",1,0.5f,1.5f};
         ofParameter<float> brightness{"brightness",0,-1.f,1.f};
+        ofParameter<int> tonemapType{"tonemap",0,0,5};
         ofParameterGroup bloomParameters{
             "bloom parameters",
             brightThres,
             sigma,
             contrast,
             brightness,
+            tonemapType,
         };
 
         ofParameterGroup paramsRender{
             "render",
             debug,
             drawGrid,
-            wireframe,
-            shadeNormals,
+            gpuMarchingCubes.wireframe,
+            gpuMarchingCubes.shadeNormals,
             simulationRunning,
             record,
             additiveBlending,
