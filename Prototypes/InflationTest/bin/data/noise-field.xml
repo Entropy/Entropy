@@ -19,28 +19,36 @@
 		<input_multiplier>0.16435</input_multiplier>
 		<noise_speed>0.205</noise_speed>
 		<octave_0>
-			<freq__hz>20</freq__hz>
+            <freq__hz>12</freq__hz>
 			<ampl__norm>1</ampl__norm>
 			<radius>1</radius>
 			<enabled>1</enabled>
+		<advance_time>1</advance_time>
 		</octave_0>
 		<octave_1>
-			<freq__hz>40</freq__hz>
+            <freq__hz>24</freq__hz>
 			<ampl__norm>0.5</ampl__norm>
 			<radius>1</radius>
-			<enabled>0</enabled>
+			<enabled>1</enabled>
+		<advance_time>1</advance_time>
 		</octave_1>
 		<octave_2>
-			<freq__hz>80</freq__hz>
+            <freq__hz>48</freq__hz>
 			<ampl__norm>0.25</ampl__norm>
 			<radius>1</radius>
-			<enabled>0</enabled>
+			<enabled>1</enabled>
+		<advance_time>1</advance_time>
 		</octave_2>
 		<octave_3>
-			<freq__hz>160</freq__hz>
+            <freq__hz>120</freq__hz>
 			<ampl__norm>0.125</ampl__norm>
 			<radius>1</radius>
-			<enabled>0</enabled>
+			<enabled>1</enabled>
+		<advance_time>1</advance_time>
 		</octave_3>
+	<norm__factor>1</norm__factor>
+	<fadeAt>0.8</fadeAt>
+		<spherical_clip>0</spherical_clip>
+		<fill_edges>0</fill_edges>
 	</noise_field>
 </NOISE_FIELD>

@@ -9,6 +9,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxVolumetrics3D.h"
+#include "ofxTexture3d.h"
 
 namespace entropy
 {
@@ -38,13 +40,17 @@ namespace entropy
     class NoiseField
     {
     public:
-        void update();
+        void setup(ofParameter<int> & resolution);
+        void update(bool inflation);
+		void draw(float threshold);
 
         int getNumScales();
         void numScalesChanged(int& numScales);
 
         float getValue(int x, int y, int z);
-		void setResolutionParam(ofParameter<int> resolution);
+		ofxTexture3d & getTexture(){
+			return volumeTex;
+		}
 
 
 	private:
@@ -52,6 +58,9 @@ namespace entropy
 		ofParameter<float> inputMultiplier{"input multiplier", 1.0, 0.01, 0.5};
 		ofParameter<float> noiseSpeed{"noise speed", 0, 0, 1};
 		ofParameter<float> normalizationFactor{"norm. factor", 1., 0.8, 1.2};
+        ofParameter<float> fadeAt{"fadeAt", 0.8, 0, 1};
+        ofParameter<bool> sphericalClip{"spherical clip", false};
+        ofParameter<bool> fillEdges{"fill edges", false};
 		std::vector<Octave> octaves{
 			Octave{0,  20, 1.f,    1},
 			Octave{1,  40, 0.5f,   1},
@@ -60,16 +69,27 @@ namespace entropy
 		};
 
 		float noiseSeed;
+		ofShader noiseComputeShader;
+		ofxVolumetrics3D volumetrics;
+		ofxTexture3d volumeTex;
+		ofShader volumeShader;
+        ofEventListener sphericalClipListener, fillEdgesListener, resolutionListener;
+
+        void compileComputeShader();
+        void allocateVolumeTexture();
 
 	public:
 
 		ofParameter<int> resolution;
-		ofParameterGroup paramGroup{
+        ofParameterGroup parameters{
 			"noise field",
 			offsetMultiplier,
 			inputMultiplier,
 			noiseSpeed,
 			normalizationFactor,
+            fadeAt,
+            sphericalClip,
+            fillEdges,
 			octaves[0].parameters,
 			octaves[1].parameters,
 			octaves[2].parameters,

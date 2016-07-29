@@ -5,6 +5,9 @@
 #include "ofxMarchingCubes.h"
 
 #include "NoiseField.h"
+#include "GPUMarchingCubes.h"
+#include "ofxTextureRecorder.h"
+#include "Constants.h"
 
 namespace entropy
 {
@@ -28,22 +31,39 @@ namespace entropy
         void gotMessage(ofMessage msg);
 
         ofEasyCam camera;
-        ofLight light;
-        ofMaterial material;
 
         // Marching Cubes
         void paramsMarchingCubesChanged(ofAbstractParameter& param);
 
+#if USE_GPU_MARCHING_CUBES
+        GPUMarchingCubes gpuMarchingCubes;
+#else
         ofxMarchingCubes marchingCubes;
+#endif
 
-        ofParameterGroup paramsMarchingCubes;
-        ofParameter<int> resolution;
-        ofParameter<float> scale;
-        ofParameter<float> threshold;
-        ofParameter<bool> radialClip;
-        ofParameter<bool> fillEdges;
-        ofParameter<bool> flipNormals;
-        ofParameter<bool> smooth;
+        ofParameter<int> resolution{"resolution", 128, 1, 512};
+        ofParameter<float> scale{"scale", 1, 1, 100};
+#if USE_GPU_MARCHING_CUBES
+        ofParameter<float> threshold{"threshold", 0.345, 0.0, 1.0};
+#else
+        ofParameter<float> threshold{"threshold", marchingCubes.getThreshold(), 0.0, 1.0};
+        ofParameter<bool> smooth{"smooth", marchingCubes.getSmoothing()};
+#endif
+        ofParameter<bool> inflation{"inflation", false};
+        ofParameter<bool> flipNormals{"flip normals", false};
+        ofParameterGroup marchingCubesParameters{
+            "marching cubes",
+#if USE_GPU_MARCHING_CUBES || USE_GPU_NOISE
+            gpuMarchingCubes.resolution,
+#else
+            resolution,
+            smooth,
+#endif
+            scale,
+            threshold,
+            flipNormals,
+        };
+        double now;
 
 		ofxPanel panelMarchingCubes;
 
@@ -55,16 +75,57 @@ namespace entropy
         // Render
         ofShader normalShader;
 
-        ofParameterGroup paramsRender;
-        ofParameter<bool> debug;
-        ofParameter<bool> drawGrid;
-        ofParameter<bool> wireframe;
-        ofParameter<bool> shadeNormals;
+        ofParameter<bool> debug{"debug", false};
+        ofParameter<bool> drawGrid{"draw grid", true};
+        ofParameter<bool> wireframe{"wireframe", true};
+        ofParameter<bool> shadeNormals{"shader normals", true};
+        ofParameter<bool> simulationRunning{"simulation running", true};
+        ofParameter<bool> record{"record",false};
+        ofParameter<bool> additiveBlending{"additive blending",false};
+        ofParameter<bool> bloom{"bloom",true};
+
+        ofParameter<float> brightThres{"bright thresh.",1,0.5f,3};
+        ofParameter<float> sigma{"sigma",0.9,0.5f,18};
+        ofParameter<float> contrast{"contrast",1,0.5f,1.5f};
+        ofParameter<float> brightness{"brightness",0,-1.f,1.f};
+        ofParameterGroup bloomParameters{
+            "bloom parameters",
+            brightThres,
+            sigma,
+            contrast,
+            brightness,
+        };
+
+        ofParameterGroup paramsRender{
+            "render",
+            debug,
+            drawGrid,
+            wireframe,
+            shadeNormals,
+            simulationRunning,
+            record,
+            additiveBlending,
+            bloom,
+            bloomParameters,
+        };
 
 		ofxPanel panelRender;
 
         // GUI
-		bool guiVisible = true;
-		ofParameter<bool> simulationRunning;
+        bool guiVisible = true;
+		uint64_t timeToSetIso;
+		uint64_t timeToUpdate;
+
+
+        ofFbo fboscene;
+        ofFbo fbobright;
+        ofFbo fbo2;
+        ofFbo finalFbo;
+        ofShader shaderBright;
+        ofShader blurV;
+        ofShader blurH;
+        ofShader tonemap;
+
+        ofxTextureRecorder saverThread;
     };
 }
