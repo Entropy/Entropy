@@ -58,3 +58,6 @@
         path = addons/ofxGpuParticles
         url = https://github.com/Entropy/ofxGpuParticles.git
 				branch = master
+[submodule "addons/ofxTextureRecorder"]
+	path = addons/ofxTextureRecorder
+	url = https://github.com/arturoc/ofxTextureRecorder
