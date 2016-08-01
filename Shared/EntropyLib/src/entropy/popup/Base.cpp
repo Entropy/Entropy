@@ -100,6 +100,10 @@ namespace entropy
 					{
 						this->frontAlpha = this->transitionAmount;
 					}
+					else if (transition == Transition::Strobe)
+					{
+						this->frontAlpha = (ofRandomuf() < this->transitionAmount) ? 1.0f : 0.0f;
+					}
 					else
 					{
 						this->frontAlpha = 1.0f;
@@ -268,10 +272,11 @@ namespace entropy
 
 					if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
 					{
-						ImGui::Columns(3);
+						ImGui::Columns(2);
 						ImGui::RadioButton("Cut", parameters.transition.type.getRef(), static_cast<int>(Transition::Cut)); ImGui::NextColumn();
 						ImGui::RadioButton("Mix", parameters.transition.type.getRef(), static_cast<int>(Transition::Mix)); ImGui::NextColumn();
 						ImGui::RadioButton("Wipe", parameters.transition.type.getRef(), static_cast<int>(Transition::Wipe)); ImGui::NextColumn();
+						ImGui::RadioButton("Strobe", parameters.transition.type.getRef(), static_cast<int>(Transition::Strobe)); ImGui::NextColumn();
 						ImGui::Columns(1);
 
 						if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)

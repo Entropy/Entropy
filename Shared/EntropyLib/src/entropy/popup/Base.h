@@ -55,7 +55,8 @@ namespace entropy
 			{
 				Cut,
 				Mix,
-				Wipe
+				Wipe,
+				Strobe
 			};
 
 			Base(Type type = Type::Unknown);
