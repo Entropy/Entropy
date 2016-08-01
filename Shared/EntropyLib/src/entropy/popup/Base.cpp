@@ -61,6 +61,7 @@ namespace entropy
 			this->enabled = this->track->isOn();
 			if (this->enabled)
 			{
+				// Update the transition if any switch is currently active.
 				auto trackTime = this->track->currentTrackTime();
 				auto activeSwitch = this->track->getActiveSwitchAtMillis(trackTime);
 				if (activeSwitch)
@@ -71,16 +72,84 @@ namespace entropy
 					{
 						// Transitioning in.
 						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
+						this->borderDirty = true;
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
 					{
 						// Transitioning out.
 						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeIn);
+						this->borderDirty = true;
+					}
+					else if (this->transitionAmount != 1.0f)
+					{
+						this->transitionAmount = 1.0f;
+						this->borderDirty = true;
+					}
+				}
+			}
+
+			if (this->enabled || this->editing)
+			{
+				auto & parameters = this->getParameters();
+				auto transition = static_cast<Transition>(parameters.transition.type.get());
+				
+				// Set front color value.
+				if (this->enabled)
+				{
+					if (transition == Transition::Mix)
+					{
+						this->frontAlpha = this->transitionAmount;
 					}
 					else
 					{
-						this->transitionAmount = 1.0f;
+						this->frontAlpha = 1.0f;
 					}
+				}
+				else
+				{
+					this->frontAlpha = 0.5f;
+				}
+
+				// Set subsection bounds.
+				this->dstBounds = this->viewport;
+				this->srcBounds = this->roi;
+				if (this->enabled && transition == Transition::Wipe && this->transitionAmount < 1.0f)
+				{
+					this->dstBounds.height = this->transitionAmount * this->viewport.height;
+					this->dstBounds.y = this->viewport.y + (1.0f - this->transitionAmount) * this->viewport.height * 0.5f;
+
+					this->srcBounds.height = this->transitionAmount * this->roi.height;
+					this->srcBounds.y = this->roi.y + (1.0f - this->transitionAmount) * this->roi.height * 0.5f;
+				}
+
+				if (this->borderDirty && parameters.border.width > 0.0f)
+				{
+					// Rebuild the border mesh.
+					this->borderMesh.clear();
+					this->borderMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+
+					const auto borderBounds = ofRectangle(dstBounds.x - parameters.border.width, dstBounds.y - parameters.border.width, dstBounds.width + 2 * parameters.border.width, dstBounds.height + 2 * parameters.border.width);
+					this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMinY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMinY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMinY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMinY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMaxY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMaxY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMaxY(), 0.0f));
+					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMaxY(), 0.0f));
+					
+					this->borderMesh.addIndex(0);
+					this->borderMesh.addIndex(1);
+					this->borderMesh.addIndex(2);
+					this->borderMesh.addIndex(3);
+					this->borderMesh.addIndex(4);
+					this->borderMesh.addIndex(5);
+					this->borderMesh.addIndex(6);
+					this->borderMesh.addIndex(7);
+					this->borderMesh.addIndex(0);
+					this->borderMesh.addIndex(1);
+
+					this->borderDirty = false;
 				}
 			}
 		}
@@ -89,7 +158,7 @@ namespace entropy
 		void Base::draw()
 		{
 			auto & parameters = this->getParameters();
-			
+
 			ofPushStyle();
 			{
 				if (parameters.base.background->a > 0)
@@ -100,40 +169,15 @@ namespace entropy
 		
 				if (this->getTexture().isAllocated() && (this->enabled || this->editing))
 				{
-					auto transition = static_cast<Transition>(parameters.transition.type.get());
-
-					// Set alpha value.
-					float alpha;
-					if (this->enabled)
+					// Draw the border.
+					if (parameters.border.width > 0.0f)
 					{
-						if (transition == Transition::Mix)
-						{
-							alpha = this->transitionAmount;
-						}
-						else
-						{
-							alpha = 1.0f;
-						}
-					}
-					else
-					{
-						alpha = 0.5f;
-					}
-
-					// Set subsection.
-					auto dstBounds = this->viewport;
-					auto srcBounds = this->roi;
-					if (this->enabled && transition == Transition::Wipe && this->transitionAmount < 1.0f)
-					{
-						dstBounds.height = this->transitionAmount * this->viewport.height;
-						dstBounds.y = this->viewport.y + (1.0f - this->transitionAmount) * this->viewport.height * 0.5f;
-
-						srcBounds.height = this->transitionAmount * this->roi.height;
-						srcBounds.y = this->roi.y + (1.0f - this->transitionAmount) * this->roi.height * 0.5f;
+						ofSetColor(parameters.border.color.get(), this->frontAlpha * 255);
+						this->borderMesh.draw();
 					}
 
 					// Draw the texture.
-					ofSetColor(ofColor::white, 255 * alpha);
+					ofSetColor(255, this->frontAlpha * 255);
 					this->getTexture().drawSubsection(dstBounds.x, dstBounds.y, dstBounds.width, dstBounds.height,
 													  srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height);
 				}
@@ -212,6 +256,16 @@ namespace entropy
 						}
 					}
 
+					if (ImGui::CollapsingHeader(parameters.border.getName().c_str(), nullptr, true, true))
+					{
+						if (ofxPreset::Gui::AddParameter(parameters.border.width))
+						{
+							this->borderDirty = true;
+						}
+
+						ofxPreset::Gui::AddParameter(parameters.border.color);
+					}
+
 					if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
 					{
 						ImGui::Columns(3);
@@ -286,6 +340,8 @@ namespace entropy
 					this->roi.x = (this->getTexture().getWidth() - this->roi.width) * 0.5f;
 				}
 			}
+
+			this->borderDirty = true;
 
 			this->boundsDirty = false;
 		}

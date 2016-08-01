@@ -85,16 +85,24 @@ namespace entropy
 		protected:
 			virtual ofTexture & getTexture() = 0;
 
+			Type type;
+			int index;
+
 			void updateBounds();
 			ofRectangle viewport;
 			ofRectangle roi;
 			bool boundsDirty;
 
-			Type type;
-			int index;
+			bool borderDirty;
 
 			float transitionAmount;
 
+			// Per-frame attributes.
+			float frontAlpha;
+			ofRectangle srcBounds;
+			ofRectangle dstBounds;
+			ofVboMesh borderMesh;
+	
 		protected:
 			// Events
 			ofEvent<void> onSetup;
@@ -140,13 +148,21 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
+					ofxPreset::Parameter<float> width{ "Width", 2.0f, 0.0f, 5.0f };
+					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::white };
+
+					PARAM_DECLARE("Border", width, color);
+				} border;
+
+				struct : ofParameterGroup
+				{
 					ofxPreset::Parameter<int> type{ "Type", 0, 0, 2, true };
 					ofxPreset::Parameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
 
 					PARAM_DECLARE("Transition", type, duration);
 				} transition;
 
-				PARAM_DECLARE("Parameters", base, transition);
+				PARAM_DECLARE("Parameters", base, border, transition);
 			};
 
 			virtual BaseParameters & getParameters() = 0;
