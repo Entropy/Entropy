@@ -111,8 +111,10 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-%(Command)</Command>
+      <Command>%(Command)
+robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,8 +137,10 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-%(Command)</Command>
+      <Command>%(Command)
+robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,8 +165,10 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-%(Command)</Command>
+      <Command>%(Command)
+robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -186,8 +192,10 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-%(Command)</Command>
+      <Command>%(Command)
+robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
