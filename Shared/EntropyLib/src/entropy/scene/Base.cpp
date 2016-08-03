@@ -13,7 +13,7 @@ namespace entropy
 		{
 			return this->camera;
 		}
-			
+
 		//--------------------------------------------------------------
 		Base::Base()
 		{}
@@ -23,7 +23,7 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		void Base::setup()
+		void Base::setup_()
 		{
 			// Setup default camera.
 			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
@@ -31,7 +31,7 @@ namespace entropy
 
 			// Setup child Scene.
 			this->onSetup.notify();
-			
+
 			// List presets.
 			this->populatePresets();
 
@@ -61,7 +61,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::exit()
+		void Base::exit_()
 		{
 			this->onExit.notify();
 
@@ -70,15 +70,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::resize(ofResizeEventArgs & args)
+		void Base::resize_(ofResizeEventArgs & args)
 		{
 			this->camera.setAspectRatio(args.width / (float)args.height);
-			
+
 			this->onResize.notify(args);
 		}
 
 		//--------------------------------------------------------------
-		void Base::update(double dt)
+		void Base::update_(double dt)
 		{
 			if (GetApp()->isMouseOverGui())
 			{
@@ -88,7 +88,7 @@ namespace entropy
 			{
 				this->camera.enableMouseInput();
 			}
-			
+
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
@@ -98,20 +98,12 @@ namespace entropy
 			{
 				popUp->update(dt);
 			}
-			
+
 			this->onUpdate.notify(dt);
 		}
 
 		//--------------------------------------------------------------
-		void Base::draw()
-		{
-			this->drawBack();
-			this->drawWorld();
-			this->drawFront();
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawBack()
+		void Base::drawBack_()
 		{
 			ofBackground(this->getParameters().base.background.get());
 
@@ -119,7 +111,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawWorld()
+		void Base::drawWorld_()
 		{
 			this->getCamera().begin(GetCanvasViewport());
 			ofEnableDepthTest();
@@ -131,7 +123,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawFront()
+		void Base::drawFront_()
 		{
 			this->onDrawFront.notify();
 
@@ -160,7 +152,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::gui(ofxPreset::Gui::Settings & settings)
+		void Base::gui_(ofxPreset::Gui::Settings & settings)
 		{
 			auto & parameters = this->getParameters();
 
@@ -295,11 +287,11 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::serialize(nlohmann::json & json)
+		void Base::serialize_(nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Serialize(json, this->getParameters()); 
+			ofxPreset::Serializer::Serialize(json, this->getParameters());
 			ofxPreset::Serializer::Serialize(json, this->getCamera(), "camera");
-			
+
 			this->onSerialize.notify(json);
 
 			auto & jsonMappings = json["Mappings"];
@@ -318,7 +310,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::deserialize(const nlohmann::json & json)
+		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 			if (false && json.count("camera"))
@@ -452,7 +444,7 @@ namespace entropy
 				nlohmann::json json;
 				paramsFile >> json;
 
-				this->deserialize(json);
+				this->deserialize_(json);
 			}
 
 			this->timeline.loadTracksFromFolder(presetPath);
@@ -471,7 +463,7 @@ namespace entropy
 			paramsPath.append("parameters.json");
 			auto paramsFile = ofFile(paramsPath, ofFile::WriteOnly);
 			nlohmann::json json;
-			this->serialize(json);
+			this->serialize_(json);
 			paramsFile << json;
 
 			this->timeline.saveTracksToFolder(presetPath);

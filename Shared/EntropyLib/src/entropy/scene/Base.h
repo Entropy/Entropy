@@ -61,18 +61,21 @@ namespace entropy
 			Base();
 			virtual ~Base();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			// Base methods
+			void setup_();
+			void exit_();
+			void resize_(ofResizeEventArgs & args);
 
-			void update(double dt);
-			void draw();
+			void update_(double dt);
 
-			// Parameters
-			void gui(ofxPreset::Gui::Settings & settings);
+			void drawBack_();
+			void drawWorld_();
+			void drawFront_();
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui_(ofxPreset::Gui::Settings & settings);
+
+			void serialize_(nlohmann::json & json);
+			void deserialize_(const nlohmann::json & json);
 
 			// Resources
             string getAssetsPath(const string & file = "");
@@ -86,6 +89,7 @@ namespace entropy
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);
 
+			// Camera
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
 			bool isCameraLocked() const;
@@ -93,9 +97,6 @@ namespace entropy
 			void addCameraKeyframe();
 			 
 		protected:
-			void drawBack();
-			void drawWorld();
-			void drawFront();
 
 			// Events
 			ofEvent<void> onSetup;

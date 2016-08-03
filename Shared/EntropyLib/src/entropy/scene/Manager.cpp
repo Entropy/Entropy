@@ -14,7 +14,7 @@ namespace entropy
 			// Clear scenes.
 			if (this->currentScene)
 			{
-				this->currentScene->exit();
+				this->currentScene->exit_();
 			}
 			this->currentScene.reset();
 			this->scenes.clear();
@@ -109,14 +109,14 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->exit();
+				this->currentScene->exit_();
 			}
 			
 			auto scene = this->getScene(name);
 			if (scene)
 			{
 				this->currentScene = scene;
-				this->currentScene->setup();
+				this->currentScene->setup_();
 				return true;
 			}
 			ofLogError("Manager::getScene") << "Scene with name " << name << " does not exist!";
@@ -128,7 +128,7 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->update(dt);
+				this->currentScene->update_(dt);
 			}
 		}
 
@@ -137,7 +137,9 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->draw();
+				this->currentScene->drawBack_();
+				this->currentScene->drawWorld_();
+				this->currentScene->drawFront_();
 			}
 		}
 
@@ -146,7 +148,7 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->gui(settings);
+				this->currentScene->gui_(settings);
 			}
 		}
 
@@ -183,7 +185,7 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->resize(args);
+				this->currentScene->resize_(args);
 			}
 		}
 	}
