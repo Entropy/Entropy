@@ -4,9 +4,6 @@
     <ClCompile Include="src\GPUMarchingCubes.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\InflationApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -61,6 +58,12 @@
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
       <Filter>local_addons\ofxVolumetrics\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\scene\Inflation.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -90,15 +93,21 @@
     <Filter Include="local_addons\ofxVolumetrics\src">
       <UniqueIdentifier>{6313480d-9e53-4597-b2cf-d1601cf696a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{44b1337e-70fb-4f34-9c7e-378c7cee1fa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{e85eb4a3-c46f-4226-b5b0-e02d1ffcf183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\inflation">
+      <UniqueIdentifier>{90b0486d-cdb5-4dab-8ff4-18d7bae518e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Constants.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GPUMarchingCubes.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\InflationApp.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\NoiseField.h">
@@ -157,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
       <Filter>local_addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Inflation.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
