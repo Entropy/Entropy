@@ -134,21 +134,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawTimeline(ofxPreset::Gui::Settings & settings)
+		bool Base::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo)
 		{
-			// Disable mouse events if it's already been captured.
-			if (settings.mouseOverGui)
-			{
-				this->timeline.disableEvents();
-			}
-			else
-			{
-				this->timeline.enableEvents();
-			}
-
-			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
-			this->timeline.draw();
-			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+			// No post-processing by default, override and return true if required.
+			return false;
 		}
 
 		//--------------------------------------------------------------
@@ -353,6 +342,24 @@ namespace entropy
 					}
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawTimeline(ofxPreset::Gui::Settings & settings)
+		{
+			// Disable mouse events if it's already been captured.
+			if (settings.mouseOverGui)
+			{
+				this->timeline.disableEvents();
+			}
+			else
+			{
+				this->timeline.enableEvents();
+			}
+
+			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
+			this->timeline.draw();
+			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 
 		//--------------------------------------------------------------

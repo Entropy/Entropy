@@ -162,6 +162,16 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		bool Manager::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) const
+		{
+			if (this->currentScene)
+			{
+				return this->currentScene->postProcess(srcTexture, dstFbo);
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
 		bool Manager::keyPressed(ofKeyEventArgs & args)
 		{
 			if (this->currentScene)

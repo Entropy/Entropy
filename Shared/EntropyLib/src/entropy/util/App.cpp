@@ -100,17 +100,21 @@ namespace entropy
 		void App_::onDraw(ofEventArgs & args)
 		{
 			// Draw the content.
-			this->canvas->begin();
+			this->canvas->beginDraw();
 			{
 				this->sceneManager->drawScene();
 			}
-			this->canvas->end();
+			this->canvas->endDraw();
 
-			this->canvas->draw();
+			// Post-process the content if necessary.
+			const auto postProcessing = this->sceneManager->postProcess(this->canvas->getDrawTexture(), this->canvas->getPostFbo());
+			
+			// Render the scene.
+			this->canvas->render(postProcessing);
 
 			if (!this->overlayVisible) return;
 
-			// Draw the gui.
+			// Draw the gui overlay.
 			this->imGui.begin();
 			{
 				this->guiSettings.mouseOverGui = this->canvas->isEditing();

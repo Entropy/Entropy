@@ -9,15 +9,19 @@ namespace entropy
 		//--------------------------------------------------------------
 		Canvas::Canvas()
 		{
-			// Load default fullscreen fbo.
+			// Allocate default fullscreen fbos.
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.numSamples = 4;
 			//this->fboSettings.internalformat = GL_RGB16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 			this->fboSettings.useDepth = true;
-			this->fbo.allocate(this->fboSettings);
-			this->fbo.getTexture().texData.bFlipTexture = true;
+
+			this->fboDraw.allocate(this->fboSettings);
+			this->fboDraw.getTexture().texData.bFlipTexture = true;
+
+			this->fboPost.allocate(this->fboSettings);
+			this->fboPost.getTexture().texData.bFlipTexture = true;
 
 			// Set fbo viewport.
 			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
@@ -62,54 +66,68 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::begin()
+		void Canvas::beginDraw()
 		{
 			// Don't use ofFbo::begin() because it messes with the winding direction.
-			// This means you'll need to set the viewports manually (e.g. for ofCamera::being())
+			// This means you'll need to set the viewports manually (e.g. for ofCamera::begin())
 			ofPushView();
 			ofPushStyle();
 			ofViewport(this->viewport);
 			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
-			this->fbo.bind();
+			this->fboDraw.bind();
 		}
 		
 		//--------------------------------------------------------------
-		void Canvas::end()
+		void Canvas::endDraw()
 		{
-			// Manual ofFbo::end(), see comment in Canvas::begin().
-			this->fbo.unbind();
+			// Manual ofFbo::end(), see comment in Canvas::beginFbo().
+			this->fboDraw.unbind();
 			ofPopStyle();
 			ofPopView();
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::draw()
+		void Canvas::render(bool postProcessing)
 		{
+			const auto & texture = (postProcessing ? this->fboPost.getTexture() : this->fboDraw.getTexture());
+
 			if (this->parameters.fillWindow)
 			{
 				// Draw the fbo texture directly.
-				this->fbo.draw(0, 0);
+				texture.draw(0, 0);
 			}
 			else
 			{
 				// Go through warps and fbo texture subsections and draw the whole thing.
 				for (auto i = 0; i < this->warps.size(); ++i)
 				{
-					this->warps[i]->draw(this->fbo.getTexture(), this->srcAreas[i]);
+					this->warps[i]->draw(texture, this->srcAreas[i]);
 				}
 			}
 		}
 
 		//--------------------------------------------------------------
+		const ofTexture & Canvas::getDrawTexture() const
+		{
+			return this->fboDraw.getTexture();
+		}
+
+		//--------------------------------------------------------------
+		const ofFbo & Canvas::getPostFbo() const
+		{
+			return this->fboPost;
+		}
+
+		//--------------------------------------------------------------
 		float Canvas::getWidth() const
 		{
-			return this->fbo.getWidth();
+			return this->fboDraw.getWidth();
 		}
 
 		//--------------------------------------------------------------
 		float Canvas::getHeight() const
 		{
-			return this->fbo.getHeight();
+			return this->fboDraw.getHeight();
 		}
 
 		//--------------------------------------------------------------
@@ -121,7 +139,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::setWidth(float width)
 		{
-			if (this->fbo.getWidth() == width) return;
+			if (this->fboDraw.getWidth() == width) return;
 
 			this->fboSettings.width = width;
 			this->updateSize();
@@ -130,7 +148,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::setHeight(float height)
 		{
-			if (this->fbo.getHeight() == height) return;
+			if (this->fboDraw.getHeight() == height) return;
 
 			this->fboSettings.height = height;
 			this->updateSize();
@@ -139,8 +157,12 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
-			this->fbo.allocate(this->fboSettings);
-			this->fbo.getTexture().texData.bFlipTexture = true;
+			// Re-allocate fbos.
+			this->fboDraw.allocate(this->fboSettings);
+			this->fboDraw.getTexture().texData.bFlipTexture = true;
+
+			this->fboPost.allocate(this->fboSettings);
+			this->fboPost.getTexture().texData.bFlipTexture = true;
 
 			// Update viewport.
 			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
@@ -800,7 +822,7 @@ namespace entropy
 		{
 			if (this->parameters.fillWindow)
 			{
-				if (this->fbo.getWidth() == args.width && this->fbo.getHeight() == args.height) return;
+				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
 				this->fboSettings.width = args.width;
 				this->fboSettings.height = args.height;

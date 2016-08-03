@@ -96,8 +96,10 @@ namespace entropy
 
 			void addCameraKeyframe();
 			 
-		protected:
+			// Post-Processing
+			virtual bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo);
 
+		protected:
 			// Events
 			ofEvent<void> onSetup;
 			ofEvent<void> onExit;

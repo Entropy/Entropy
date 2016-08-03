@@ -17,10 +17,13 @@ namespace entropy
 
 			void update();
 
-			void begin();
-			void end();
+			void beginDraw();
+			void endDraw();
 
-			void draw();
+			void render(bool postProcessing);
+
+			const ofTexture & getDrawTexture() const;
+			const ofFbo & getPostFbo() const;
 
 			float getWidth() const;
 			float getHeight() const;
@@ -104,7 +107,8 @@ namespace entropy
 
 			ofRectangle viewport;
 
-			ofFbo fbo;
+			ofFbo fboDraw;
+			ofFbo fboPost;
 			ofFbo::Settings fboSettings;
 
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
