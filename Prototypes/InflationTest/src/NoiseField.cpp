@@ -6,13 +6,13 @@
 //
 //
 
-#if !USE_GPU_NOISE
-#include "tbb/tbb.h"
-#endif
 #include "NoiseField.h"
 #include "ofNoise.h"
 #include "Constants.h"
 #include <regex>
+#if !USE_GPU_NOISE
+#include "tbb/tbb.h"
+#endif
 
 namespace entropy
 {

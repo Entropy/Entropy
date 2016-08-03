@@ -1,3 +1,7 @@
+[submodule "addons/ofxGpuParticles"]
+        path = addons/ofxGpuParticles
+        url = https://github.com/Entropy/ofxGpuParticles.git
+        branch = master
 [submodule "addons/ofxHDF5"]
         path = addons/ofxHDF5
         url = https://github.com/Entropy/ofxHDF5
@@ -42,6 +46,10 @@
         path = addons/ofxTextInputField
         url = https://github.com/Entropy/ofxTextInputField
         branch = master
+[submodule "addons/ofxTextureRecorder"]
+        path = addons/ofxTextureRecorder
+        url = https://github.com/Entropy/ofxTextureRecorder
+        branch = master
 [submodule "addons/ofxTimeline"]
         path = addons/ofxTimeline
         url = https://github.com/Entropy/ofxTimeline
@@ -54,7 +62,3 @@
         path = addons/ofxWMFVideoPlayer
         url = https://github.com/Entropy/ofxWMFVideoPlayer
         branch = master
-[submodule "addons/ofxGpuParticles"]
-        path = addons/ofxGpuParticles
-        url = https://github.com/Entropy/ofxGpuParticles.git
-				branch = master

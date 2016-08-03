@@ -295,7 +295,7 @@ void GPUMarchingCubes::compileShader(){
 
 
 void GPUMarchingCubes::setup(){
-	resolutionListener = resolution.newListener([&](int res){
+	resolutionListener = resolution.newListener([&](int & res){
 		std::vector<glm::vec3> vertices(res*res*res);
 		for(int z = 0, i = 0; z < res; z++){
 			for(int y = 0; y < res; y++){
