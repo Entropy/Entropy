@@ -29,7 +29,7 @@ namespace entropy
 				return true;
 			}
 			
-			ofLogError("Manager::addScene") << "Scene with name " << scene->getName() << " already exists!";
+			ofLogError(__FUNCTION__) << "Scene with name " << scene->getName() << " already exists!";
 			return false;
 		}
 
@@ -47,7 +47,7 @@ namespace entropy
 				return true;
 			}
 
-			ofLogError("Manager::removeScene") << "Scene with name " << name << " does not exist!";
+			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
 			return false;
 		}
 
@@ -60,7 +60,7 @@ namespace entropy
 			}
 			catch (const out_of_range &)
 			{
-				ofLogError("Manager::getScene") << "Scene with name " << name << " does not exist!";
+				ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
 				return nullptr;
 			}
 		}
@@ -77,7 +77,7 @@ namespace entropy
 				{
 					return sceneTyped;
 				}
-				ofLogError("Manager::getScene") << "Scene with name " << name << " does not match template!";
+				ofLogError(__FUNCTION__) << "Scene with name " << name << " does not match template!";
 			}
 			return nullptr;
 		}
@@ -99,7 +99,7 @@ namespace entropy
 				{
 					return sceneTyped;
 				}
-				ofLogError("Manager::getCurrentScene") << "Current scene does not match template!";
+				ofLogError(__FUNCTION__) << "Current scene does not match template!";
 			}
 			return nullptr;
 		}
@@ -119,7 +119,7 @@ namespace entropy
 				this->currentScene->setup_();
 				return true;
 			}
-			ofLogError("Manager::getScene") << "Scene with name " << name << " does not exist!";
+			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
 			return false;
 		}
 

@@ -10,7 +10,7 @@ namespace entropy
 			: public Base
 		{
 		public:
-			virtual string getName() const override 
+			string getName() const override 
 			{
 				return "entropy::scene::Template";
 			}
@@ -37,7 +37,7 @@ namespace entropy
 			ofSpherePrimitive sphere;
 
 		protected:
-			virtual BaseParameters & getParameters() override
+			BaseParameters & getParameters() override
 			{
 				return this->parameters;
 			}
