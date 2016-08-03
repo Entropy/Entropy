@@ -139,6 +139,9 @@ _default
 !*/*/bin/data/
 */*/bin/data/*
 !*/*/bin/data/shaders/
+!*/*/bin/data/*.xml
+!*/*/bin/data/*.json
+
 # Assets (managed by Syncthing)
 Shared/assets/*
 !Shared/assets/.gitkeep

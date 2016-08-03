@@ -1,0 +1,19 @@
+{
+    "render": {
+        "additive_blending": "1",
+        "bloom": "1",
+        "bloom_parameters": {
+            "bright_thresh_": "3",
+            "brightness": "0",
+            "contrast": "1.07143",
+            "sigma": "1.03571",
+            "tonemap": "0"
+        },
+        "debug": "0",
+        "draw_grid": "1",
+        "record": "0",
+        "shader_normals": "0",
+        "simulation_running": "1",
+        "wireframe": "1"
+    }
+}
