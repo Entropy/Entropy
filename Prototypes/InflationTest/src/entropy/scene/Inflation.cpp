@@ -33,20 +33,21 @@ namespace entropy
 			// Marching Cubes
 			gpuMarchingCubes.setup();
 
-			panelMarchingCubes.loadFromFile("marching-cubes.json");
-			panelMarchingCubes.setPosition(0, 0);
+			//panelMarchingCubes.loadFromFile("marching-cubes.json");
+			//panelMarchingCubes.setPosition(0, 0);
 
 
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
 			panelNoiseField.loadFromFile("noise-field.json");
-			panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
+			//panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
+			panelNoiseField.setPosition(0, 0);
 
 			// Render
-			panelRender.loadFromFile("render.json");
-			panelRender.setPosition(0, panelNoiseField.getShape().getMaxY() + 1);
-			record.setSerializable(false);
+			//panelRender.loadFromFile("render.json");
+			//panelRender.setPosition(0, panelNoiseField.getShape().getMaxY() + 1);
+			//record.setSerializable(false);
 
 			camera.setDistance(2);
 			camera.setNearClip(0.1);
@@ -113,11 +114,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::update(double & dt)
 		{
-			if (simulationRunning) {
+			if (parameters.runSimulation) {
 				now += ofGetElapsedTimef();
-				noiseField.update(inflation);
-				if (inflation) {
-					scale += ofGetElapsedTimef() * 0.1;
+				noiseField.update(parameters.marchingCubes.inflation);
+				if (parameters.marchingCubes.inflation) {
+				//noiseField.update(inflation);
+				//if (inflation) {
+					//scale += ofGetElapsedTimef() * 0.1f;
+					parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
 				}
 			}
 		}
@@ -132,13 +136,14 @@ namespace entropy
 		void Inflation::drawWorld()
 		{
 
-			if (debug) {
+			if (parameters.render.debug) {
 				//camera.begin();
-				noiseField.draw(threshold);
+				noiseField.draw(parameters.marchingCubes.threshold);
+				//noiseField.draw(threshold);
 				//camera.end();
 			}
 			else {
-				if (additiveBlending) {
+				if (parameters.render.additiveBlending) {
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
 				}
 				else {
@@ -151,9 +156,11 @@ namespace entropy
 				//ofClear(0, 255);
 
 				//camera.begin();
-				ofScale(scale, scale, scale);
+				ofScale(parameters.marchingCubes.scale);
+				//ofScale(scale);
 
-				gpuMarchingCubes.draw(noiseField.getTexture(), threshold);
+				gpuMarchingCubes.draw(noiseField.getTexture(), parameters.marchingCubes.threshold);
+				//gpuMarchingCubes.draw(noiseField.getTexture(), threshold);
 
 				//camera.end();
 				if (gpuMarchingCubes.shadeNormals) {
@@ -180,6 +187,10 @@ namespace entropy
 			//else {
 			//	finalFbo.draw(0, 0);
 			//}
+
+			//panelMarchingCubes.draw();
+			panelNoiseField.draw();
+			//panelRender.draw();
 			
 			ofDrawBitmapString(ofGetFrameRate(), ofGetWidth() - 100, 20);
 
@@ -190,19 +201,19 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Inflation::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) 
 		{
-			if (bloom)
+			if (parameters.render.bloom.enabled)
 			{
 				auto texel_size = glm::vec2(1. / float(srcTexture.getWidth()), 1. / float(srcTexture.getHeight()));
 
-				auto w0 = gaussian(0.0, 0.0, sigma);
-				auto w1 = gaussian(1.0, 0.0, sigma);
-				auto w2 = gaussian(2.0, 0.0, sigma);
-				auto w3 = gaussian(3.0, 0.0, sigma);
-				auto w4 = gaussian(4.0, 0.0, sigma);
-				auto w5 = gaussian(5.0, 0.0, sigma);
-				auto w6 = gaussian(6.0, 0.0, sigma);
-				auto w7 = gaussian(7.0, 0.0, sigma);
-				auto w8 = gaussian(8.0, 0.0, sigma);
+				auto w0 = gaussian(0.0, 0.0, parameters.render.bloom.sigma);
+				auto w1 = gaussian(1.0, 0.0, parameters.render.bloom.sigma);
+				auto w2 = gaussian(2.0, 0.0, parameters.render.bloom.sigma);
+				auto w3 = gaussian(3.0, 0.0, parameters.render.bloom.sigma);
+				auto w4 = gaussian(4.0, 0.0, parameters.render.bloom.sigma);
+				auto w5 = gaussian(5.0, 0.0, parameters.render.bloom.sigma);
+				auto w6 = gaussian(6.0, 0.0, parameters.render.bloom.sigma);
+				auto w7 = gaussian(7.0, 0.0, parameters.render.bloom.sigma);
+				auto w8 = gaussian(8.0, 0.0, parameters.render.bloom.sigma);
 				auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
 
 				ofMesh fullQuad;
@@ -214,7 +225,7 @@ namespace entropy
 				ofClear(0, 255);
 				shaderBright.begin();
 				blurV.setUniformTexture("tex0", srcTexture, 0);
-				shaderBright.setUniform1f("bright_threshold", brightThres);
+				shaderBright.setUniform1f("bright_threshold", parameters.render.bloom.brightnessThreshold);
 				fullQuad.draw();
 				shaderBright.end();
 				fbobright.end();
@@ -262,14 +273,14 @@ namespace entropy
 				tonemap.begin();
 				tonemap.setUniformTexture("tex0", srcTexture, 0);
 				tonemap.setUniformTexture("blurred1", fbobright.getTexture(), 1);
-				tonemap.setUniform1f("contrast", contrast);
-				tonemap.setUniform1f("brightness", brightness);
-				tonemap.setUniform1f("tonemap_type", tonemapType);
+				tonemap.setUniform1f("contrast", parameters.render.bloom.contrast);
+				tonemap.setUniform1f("brightness", parameters.render.bloom.brightness);
+				tonemap.setUniform1f("tonemap_type", parameters.render.bloom.tonemapType);
 				fullQuad.draw();
 				tonemap.end();
 				dstFbo.end();
 
-				if (record) {
+				if (parameters.record) {
 					saverThread.save(dstFbo.getTexture());
 				}
 
@@ -283,9 +294,53 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::gui(ofxPreset::Gui::Settings & settings)
 		{
-			panelMarchingCubes.draw();
-			panelNoiseField.draw();
-			panelRender.draw();
+			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
+			{
+				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
+
+				if (ImGui::CollapsingHeader(this->parameters.marchingCubes.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.scale);
+					if (ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.resolution))
+					{
+						this->gpuMarchingCubes.resolution = this->parameters.marchingCubes.resolution;
+					}
+					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.threshold);
+					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.inflation);
+				}
+
+				if (ImGui::CollapsingHeader(this->parameters.render.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
+					ofxPreset::Gui::AddParameter(this->parameters.render.drawGrid);
+					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
+					ofxPreset::Gui::AddParameter(this->parameters.render.bloom.enabled);
+					if (this->parameters.render.bloom.enabled)
+					{
+						ImGui::SetNextTreeNodeOpen(true);
+						if (ImGui::TreeNode(this->parameters.render.bloom.getName().c_str()))
+						{
+							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.brightnessThreshold);
+							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.sigma);
+							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.contrast);
+							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.brightness);
+
+							ImGui::Columns(2);
+							ImGui::RadioButton("Linear", parameters.render.bloom.tonemapType.getRef(), 0); ImGui::NextColumn();
+							ImGui::RadioButton("Gamma", parameters.render.bloom.tonemapType.getRef(), 1); ImGui::NextColumn();
+							ImGui::RadioButton("Reinhard", parameters.render.bloom.tonemapType.getRef(), 2); ImGui::NextColumn();
+							ImGui::RadioButton("Reinhard Alt", parameters.render.bloom.tonemapType.getRef(), 3); ImGui::NextColumn();
+							ImGui::RadioButton("Filmic", parameters.render.bloom.tonemapType.getRef(), 4); ImGui::NextColumn();
+							ImGui::RadioButton("Uncharted 2", parameters.render.bloom.tonemapType.getRef(), 5); ImGui::NextColumn();
+							ImGui::Columns(1);
+
+							ImGui::TreePop();
+						}
+					}
+				}
+			}
+			ofxPreset::Gui::EndWindow(settings);
 		}
 
 		/*
