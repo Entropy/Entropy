@@ -1,7 +1,21 @@
-<RENDER>
+<render>
+    <draw_grid>0</draw_grid>
+    <wireframe>0</wireframe>
+    <shade_normals>1</shade_normals>
+    <debug>0</debug>
+    <simulation_running>0</simulation_running>
+    <bloom>1</bloom>
+    <record>0</record>
+	<bloom_parameters>
+		<bright_thresh_>1.91582</bright_thresh_>
+		<sigma>4.78571</sigma>
+		<contrast>1.07143</contrast>
+		<brightness>0</brightness>
+    </bloom_parameters>
+<DEBUG>0</DEBUG>
 	<DRAW_GRID>1</DRAW_GRID>
-	<WIREFRAME>0</WIREFRAME>
 	<SHADE_NORMALS>1</SHADE_NORMALS>
-<RENDER/>
-	<DEBUG>0</DEBUG>
-</RENDER>
+	<SIMULATION_RUNNING>1</SIMULATION_RUNNING>
+	<RECORD>0</RECORD>
+	<BLOOM>1</BLOOM>
+</render>
