@@ -127,6 +127,10 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
+src;
+..\..\addons\ofxTextureRecorder\src;
+..\..\addons\ofxVolumetrics\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
