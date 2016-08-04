@@ -36,12 +36,9 @@ namespace entropy
 
 			// Link gui parameters to internal parameters.
 			parameters.marchingCubes.resolution.makeReferenceTo(gpuMarchingCubes.resolution);
-			parameters.marchingCubes.resolution.setAutoUpdating(true);
 			parameters.render.wireframe.makeReferenceTo(gpuMarchingCubes.wireframe);
-			parameters.render.wireframe.setAutoUpdating(true);
 			parameters.render.shadeNormals.makeReferenceTo(gpuMarchingCubes.shadeNormals);
-			parameters.render.shadeNormals.setAutoUpdating(true);
-
+			
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
