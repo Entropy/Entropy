@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxPreset.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 
@@ -16,19 +17,25 @@ namespace entropy
 {
 	struct Octave{
         Octave(size_t idx, float frequency_, float amplitude_)
-            :frequency("freq. hz", frequency_, 0, 200)
-            ,wavelength("wavelength", 1.f/frequency_, 0, 128)
-            ,amplitude("ampl. norm", amplitude_, 0, 1)
-            ,radius("radius", 1, 0, 1)
-            ,advanceTime("advance time", true)
-		    ,enabled("enabled", true)
-		    ,parameters("octave " + ofToString(idx),
+            :frequency("Freq. Hz", frequency_, 0.0f, 200.0f)
+            ,wavelength("Wavelength", 1.f/frequency_, 0.0f, 128.0f)
+            ,amplitude("Amplitude", amplitude_, 0.0f, 1.0f)
+            ,radius("Radius", 1.0f, 0.0f, 1.0f)
+            ,advanceTime("Advance Time", true, false)
+		    ,enabled("Enabled", true, false)
+		    ,parameters("Octave " + ofToString(idx),
                         this->frequency,
                         this->wavelength,
                         this->amplitude,
                         this->radius,
                         this->enabled,
                         this->advanceTime){
+
+			// Give every parameter a unique name (or else imgui gets confused)
+			auto idxStr = ofToString(idx);
+			for (auto & param : parameters){
+				param->setName(param->getName() + " " + idxStr);
+			}
 
             auto wavelength(this->wavelength);
             freqListener = this->frequency.newListener([wavelength](float & freq) mutable{
@@ -41,12 +48,12 @@ namespace entropy
             });
         }
 
-		ofParameter<float> frequency;
-        ofParameter<float> wavelength;
-		ofParameter<float> amplitude;
-        ofParameter<float> radius;
-        ofParameter<bool> advanceTime;	
-		ofParameter<bool> enabled;
+		ofxPreset::Parameter<float> frequency;
+		ofxPreset::Parameter<float> wavelength;
+		ofxPreset::Parameter<float> amplitude;
+		ofxPreset::Parameter<float> radius;
+		ofxPreset::Parameter<bool> advanceTime;
+		ofxPreset::Parameter<bool> enabled;
         double now=0;
         ofParameterGroup parameters;
         ofEventListener freqListener, waveLengthListener;
@@ -70,11 +77,11 @@ namespace entropy
 
 
     private:
-        ofParameter<float> noiseSpeed{"noise speed", 0, 0, 5};
-		ofParameter<float> normalizationFactor{"norm. factor", 1., 0.8, 1.2};
-        ofParameter<float> fadeAt{"fadeAt", 0.8, 0, 1};
-        ofParameter<bool> sphericalClip{"spherical clip", false};
-        ofParameter<bool> fillEdges{"fill edges", false};
+		ofxPreset::Parameter<float> noiseSpeed{"Noise Speed", 0.0f, 0.0f, 5.0f};
+		ofxPreset::Parameter<float> normalizationFactor{"Norm. Factor", 1.0f, 0.8f, 1.2f};
+		ofxPreset::Parameter<float> fadeAt{"Fade At", 0.8f, 0.0f, 1.0f};
+		ofxPreset::Parameter<bool> sphericalClip{"Spherical Clip", false, false};
+		ofxPreset::Parameter<bool> fillEdges{"Fill Edges", false, false};
         std::vector<Octave> octaves;
 
 		float noiseSeed;
@@ -90,9 +97,9 @@ namespace entropy
 
 	public:
 
-		ofParameter<int> resolution;
+		ofxPreset::Parameter<int> resolution;
         ofParameterGroup parameters{
-            "noise field",
+            "Noise Field",
 			noiseSpeed,
 			normalizationFactor,
             fadeAt,

@@ -44,6 +44,9 @@ namespace entropy
 
 			void gui(ofxPreset::Gui::Settings & settings);
 
+			void serialize(nlohmann::json & json);
+			void deserialize(const nlohmann::json & json);
+
 			//void keyPressed(int key);
 			//void keyReleased(int key);
 			//void mouseMoved(int x, int y);
@@ -158,6 +161,8 @@ namespace entropy
 				{
 					ofxPreset::Parameter<bool> debug{ "Debug", false, false };
 					ofxPreset::Parameter<bool> drawGrid{ "Draw Grid", true, false };
+					ofxPreset::Parameter<bool> wireframe{ "Wireframe", true, false };
+					ofxPreset::Parameter<bool> shadeNormals{ "Shade Normals", false, false };
 					ofxPreset::Parameter<bool> additiveBlending{ "Additive Blending", false, false };
 
 					struct : ofParameterGroup
@@ -172,7 +177,7 @@ namespace entropy
 						PARAM_DECLARE("Bloom", enabled, brightnessThreshold, sigma, contrast, brightness, tonemapType);
 					} bloom;
 
-					PARAM_DECLARE("Render", debug, drawGrid, additiveBlending, bloom);
+					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, bloom);
 				} render;
 
 				ofxPreset::Parameter<bool> record{ "Record", false, false };

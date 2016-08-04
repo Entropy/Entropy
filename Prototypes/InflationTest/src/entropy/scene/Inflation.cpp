@@ -28,7 +28,7 @@ namespace entropy
 			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
 			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
 			ENTROPY_SCENE_GUI_LISTENER;
-			//ENTROPY_SCENE_SERIALIZATION_LISTENERS;
+			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
 			// Marching Cubes
 			gpuMarchingCubes.setup();
@@ -36,6 +36,13 @@ namespace entropy
 			//panelMarchingCubes.loadFromFile("marching-cubes.json");
 			//panelMarchingCubes.setPosition(0, 0);
 
+			// Link gui parameters to internal parameters.
+			parameters.marchingCubes.resolution.makeReferenceTo(gpuMarchingCubes.resolution);
+			parameters.marchingCubes.resolution.setAutoUpdating(true);
+			parameters.render.wireframe.makeReferenceTo(gpuMarchingCubes.wireframe);
+			parameters.render.wireframe.setAutoUpdating(true);
+			parameters.render.shadeNormals.makeReferenceTo(gpuMarchingCubes.shadeNormals);
+			parameters.render.shadeNormals.setAutoUpdating(true);
 
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
@@ -189,7 +196,7 @@ namespace entropy
 			//}
 
 			//panelMarchingCubes.draw();
-			panelNoiseField.draw();
+			//panelNoiseField.draw();
 			//panelRender.draw();
 			
 			ofDrawBitmapString(ofGetFrameRate(), ofGetWidth() - 100, 20);
@@ -299,21 +306,14 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
 
-				if (ImGui::CollapsingHeader(this->parameters.marchingCubes.getName().c_str(), nullptr, true, true))
-				{
-					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.scale);
-					if (ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.resolution))
-					{
-						this->gpuMarchingCubes.resolution = this->parameters.marchingCubes.resolution;
-					}
-					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.threshold);
-					ofxPreset::Gui::AddParameter(this->parameters.marchingCubes.inflation);
-				}
+				ofxPreset::Gui::AddGroup(this->parameters.marchingCubes, settings);
 
 				if (ImGui::CollapsingHeader(this->parameters.render.getName().c_str(), nullptr, true, true))
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
 					ofxPreset::Gui::AddParameter(this->parameters.render.drawGrid);
+					ofxPreset::Gui::AddParameter(this->parameters.render.wireframe);
+					ofxPreset::Gui::AddParameter(this->parameters.render.shadeNormals);
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 					ofxPreset::Gui::AddParameter(this->parameters.render.bloom.enabled);
 					if (this->parameters.render.bloom.enabled)
@@ -339,8 +339,22 @@ namespace entropy
 						}
 					}
 				}
+
+				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
+		}
+
+		//--------------------------------------------------------------
+		void Inflation::serialize(nlohmann::json & json)
+		{
+			ofxPreset::Serializer::Serialize(json, this->noiseField.parameters);
+		}
+
+		//--------------------------------------------------------------
+		void Inflation::deserialize(const nlohmann::json & json)
+		{
+			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
 		}
 
 		/*
