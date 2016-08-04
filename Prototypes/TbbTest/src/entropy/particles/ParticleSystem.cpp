@@ -35,7 +35,7 @@
 namespace nm
 {
 	const float ParticleSystem::MIN_SPEED_SQUARED = 1;
-	const float ParticleSystem::MAX_SPEED = 1e16;
+	const float ParticleSystem::MAX_SPEED = 1e14;
 	const float ParticleSystem::MAX_SPEED_SQUARED = MAX_SPEED * MAX_SPEED;
 
 	ParticleSystem::ParticleSystem() :
