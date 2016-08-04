@@ -89,11 +89,9 @@ namespace entropy
 			uint64_t timeToUpdate;
 
 
-			// Postpo effects and recording
-			//ofFbo fboscene;
-			ofFbo fbobright;
-			ofFbo fbo2;
-			//ofFbo finalFbo;
+			// Post Effects
+			ofFbo fboPost[2];
+
 			ofShader shaderBright;
 			ofShader blurV;
 			ofShader blurH;

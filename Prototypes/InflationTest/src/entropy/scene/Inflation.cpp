@@ -1,5 +1,6 @@
 #include "Inflation.h"
-#include <entropy/scene/Template.h>
+
+#include <entropy/Helpers.h>
 
 namespace entropy
 {
@@ -64,18 +65,13 @@ namespace entropy
 			//ofSetBackgroundColor(0);
 			now = 0;
 
-			// postpo and recording
-			ofFbo::Settings settings;
-			settings.width = ofGetWidth();
-			settings.height = ofGetHeight();
-			settings.textureTarget = GL_TEXTURE_2D;
-			settings.internalformat = GL_RGBA32F;
+			// Force resize to set FBOs.
+			ofResizeEventArgs args;
+			args.width = GetCanvasWidth();
+			args.height = GetCanvasHeight();
+			this->resize(args);
 
-			//fboscene.allocate(settings);
-			fbobright.allocate(settings);
-			fbo2.allocate(settings);
-			settings.internalformat = GL_RGB;
-			//finalFbo.allocate(settings);
+			// Setup shaders
 			shaderBright.load("shaders/vert_full_quad.glsl", "shaders/frag_bright.glsl");
 
 			ofFile frag_blur("shaders/frag_blur.glsl");
@@ -102,7 +98,6 @@ namespace entropy
 			blurH.linkProgram();
 
 			tonemap.load("shaders/vert_full_quad.glsl", "shaders/frag_tonemap.glsl");
-			saverThread.setup(ofGetWidth(), ofGetHeight(), OF_PIXELS_RGB, OF_IMAGE_FORMAT_JPEG);
 
 		}
 
@@ -115,7 +110,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::resize(ofResizeEventArgs & args)
 		{
+			ofFbo::Settings settings;
+			settings.width = args.width;
+			settings.height = args.height;
+			settings.textureTarget = GL_TEXTURE_2D;
+			settings.internalformat = GL_RGBA32F;
 
+			for (int i = 0; i < 2; ++i) {
+				fboPost[i].allocate(settings);
+			}
+
+			saverThread.setup(args.width, args.height, OF_PIXELS_RGB, OF_IMAGE_FORMAT_JPEG);
 		}
 
 		//--------------------------------------------------------------
@@ -228,19 +233,21 @@ namespace entropy
 				fullQuad.addTexCoords({ { 0,1 },{ 0,0 },{ 1,0 },{ 1,1 } });
 				fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
 
-				fbobright.begin();
+				// Pass 0: Brightness
+				fboPost[0].begin();
 				ofClear(0, 255);
 				shaderBright.begin();
 				blurV.setUniformTexture("tex0", srcTexture, 0);
 				shaderBright.setUniform1f("bright_threshold", parameters.render.bloom.brightnessThreshold);
 				fullQuad.draw();
 				shaderBright.end();
-				fbobright.end();
+				fboPost[0].end();
 
-				fbo2.begin();
+				// Pass 1: Blur Vertical
+				fboPost[1].begin();
 				ofClear(0, 255);
 				blurV.begin();
-				blurV.setUniformTexture("tex0", fbobright.getTexture(), 0);
+				blurV.setUniformTexture("tex0", fboPost[0].getTexture(), 0);
 				blurV.setUniform2f("texel_size", texel_size);
 				blurV.setUniform1f("w0", w0 / wn);
 				blurV.setUniform1f("w1", w1 / wn);
@@ -253,12 +260,13 @@ namespace entropy
 				blurV.setUniform1f("w8", w8 / wn);
 				fullQuad.draw();
 				blurV.end();
-				fbo2.end();
+				fboPost[1].end();
 
-				fbobright.begin();
+				// Pass 2: Blur Horizontal
+				fboPost[0].begin();
 				ofClear(0, 255);
 				blurH.begin();
-				blurH.setUniformTexture("tex0", fbo2.getTexture(), 0);
+				blurH.setUniformTexture("tex0", fboPost[1].getTexture(), 0);
 				blurH.setUniform2f("texel_size", texel_size);
 				blurH.setUniform1f("w0", w0 / wn);
 				blurH.setUniform1f("w1", w1 / wn);
@@ -271,15 +279,14 @@ namespace entropy
 				blurH.setUniform1f("w8", w8 / wn);
 				fullQuad.draw();
 				blurH.end();
-				fbobright.end();
+				fboPost[0].end();
 
-				//bobright.draw(0,0);
-
+				// Pass 3: Tonemap
 				dstFbo.begin();
 				ofClear(0, 255);
 				tonemap.begin();
 				tonemap.setUniformTexture("tex0", srcTexture, 0);
-				tonemap.setUniformTexture("blurred1", fbobright.getTexture(), 1);
+				tonemap.setUniformTexture("blurred1", fboPost[0].getTexture(), 1);
 				tonemap.setUniform1f("contrast", parameters.render.bloom.contrast);
 				tonemap.setUniform1f("brightness", parameters.render.bloom.brightness);
 				tonemap.setUniform1f("tonemap_type", parameters.render.bloom.tonemapType);
@@ -291,7 +298,6 @@ namespace entropy
 					saverThread.save(dstFbo.getTexture());
 				}
 
-				//finalFbo.draw(0, 0);
 				return true;
 			}
 
