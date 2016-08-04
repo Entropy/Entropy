@@ -471,7 +471,7 @@ namespace entropy
 			auto paramsFile = ofFile(paramsPath, ofFile::WriteOnly);
 			nlohmann::json json;
 			this->serialize_(json);
-			paramsFile << json;
+			paramsFile << json.dump(4);
 
 			this->timeline.saveTracksToFolder(presetPath);
 

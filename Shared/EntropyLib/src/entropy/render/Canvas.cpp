@@ -675,7 +675,7 @@ namespace entropy
 
 			auto filePath = this->getSettingsFilePath();
 			auto file = ofFile(filePath, ofFile::WriteOnly);
-			file << json;
+			file << json.dump(4);
 
 			return true;
 		}
