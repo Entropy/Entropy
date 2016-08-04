@@ -34,9 +34,6 @@ namespace entropy
 			// Marching Cubes
 			gpuMarchingCubes.setup();
 
-			//panelMarchingCubes.loadFromFile("marching-cubes.json");
-			//panelMarchingCubes.setPosition(0, 0);
-
 			// Link gui parameters to internal parameters.
 			parameters.marchingCubes.resolution.makeReferenceTo(gpuMarchingCubes.resolution);
 			parameters.marchingCubes.resolution.setAutoUpdating(true);
@@ -48,21 +45,12 @@ namespace entropy
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
-			panelNoiseField.loadFromFile("noise-field.json");
-			//panelNoiseField.setPosition(0, panelMarchingCubes.getShape().getMaxY() + 1);
-			panelNoiseField.setPosition(0, 0);
-
-			// Render
-			//panelRender.loadFromFile("render.json");
-			//panelRender.setPosition(0, panelNoiseField.getShape().getMaxY() + 1);
 			//record.setSerializable(false);
 
 			camera.setDistance(2);
 			camera.setNearClip(0.1);
 			camera.setFarClip(100000);
 
-			//guiVisible = true;
-			//ofSetBackgroundColor(0);
 			now = 0;
 
 			// Force resize to set FBOs.
@@ -130,9 +118,6 @@ namespace entropy
 				now += ofGetElapsedTimef();
 				noiseField.update(parameters.marchingCubes.inflation);
 				if (parameters.marchingCubes.inflation) {
-				//noiseField.update(inflation);
-				//if (inflation) {
-					//scale += ofGetElapsedTimef() * 0.1f;
 					parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
 				}
 			}
@@ -149,10 +134,7 @@ namespace entropy
 		{
 
 			if (parameters.render.debug) {
-				//camera.begin();
 				noiseField.draw(parameters.marchingCubes.threshold);
-				//noiseField.draw(threshold);
-				//camera.end();
 			}
 			else {
 				if (parameters.render.additiveBlending) {
@@ -161,49 +143,25 @@ namespace entropy
 				else {
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
-				//fboscene.begin(false);
 				if (gpuMarchingCubes.shadeNormals) {
 					ofEnableDepthTest();
 				}
-				//ofClear(0, 255);
 
-				//camera.begin();
 				ofScale(parameters.marchingCubes.scale);
-				//ofScale(scale);
 
 				gpuMarchingCubes.draw(noiseField.getTexture(), parameters.marchingCubes.threshold);
-				//gpuMarchingCubes.draw(noiseField.getTexture(), threshold);
 
-				//camera.end();
 				if (gpuMarchingCubes.shadeNormals) {
 					ofDisableDepthTest();
 				}
-				//fboscene.end();
 
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
-
-			//if (guiVisible) {
-				//panelMarchingCubes.draw();
-				//panelNoiseField.draw();
-				//panelRender.draw();
-			//}
 		}
 
 		//--------------------------------------------------------------
 		void Inflation::drawFront()
 		{
-			//if (!bloom) {
-			//	fboscene.draw(0, 0);
-			//}
-			//else {
-			//	finalFbo.draw(0, 0);
-			//}
-
-			//panelMarchingCubes.draw();
-			//panelNoiseField.draw();
-			//panelRender.draw();
-			
 			ofDrawBitmapString(ofGetFrameRate(), ofGetWidth() - 100, 20);
 
 			ofDrawBitmapString(timeToSetIso, ofGetWidth() - 100, 40);
@@ -362,78 +320,5 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
 		}
-
-		/*
-		//--------------------------------------------------------------
-		void InflationApp::keyPressed(int key) {
-			switch (key) {
-			case 'h':
-				guiVisible = !guiVisible;
-				break;
-
-			case ' ':
-				simulationRunning = !simulationRunning;
-				break;
-
-			case OF_KEY_TAB:
-				ofToggleFullscreen();
-				break;
-
-			default:
-				break;
-			}
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::keyReleased(int key) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mouseMoved(int x, int y) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mouseDragged(int x, int y, int button) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mousePressed(int x, int y, int button) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mouseReleased(int x, int y, int button) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mouseEntered(int x, int y) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::mouseExited(int x, int y) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::windowResized(int w, int h) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::gotMessage(ofMessage msg) {
-
-		}
-
-		//--------------------------------------------------------------
-		void InflationApp::dragEvent(ofDragInfo dragInfo) {
-
-		}
-		*/
 	}
 }

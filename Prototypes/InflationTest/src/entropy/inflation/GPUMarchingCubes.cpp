@@ -262,86 +262,95 @@ static int8_t triTable[256][16] = {
 };
 }
 
-//--------------------------------------------------------------
-void GPUMarchingCubes::compileShader(){
-    // geometry shader
-    ofFile geomFile("shaders/marching_cubes_geom.glsl");
-    ofBuffer geomBuff(geomFile);
-    std::string geomSource = geomBuff.getText();
+namespace entropy
+{
+	namespace inflation
+	{
+		//--------------------------------------------------------------
+		void GPUMarchingCubes::compileShader() {
+			// geometry shader
+			ofFile geomFile("shaders/marching_cubes_geom.glsl");
+			ofBuffer geomBuff(geomFile);
+			std::string geomSource = geomBuff.getText();
 
-    std::regex re_wireframe("#define WIREFRAME [0-1]");
-    geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME " + ofToString(wireframe));
+			std::regex re_wireframe("#define WIREFRAME [0-1]");
+			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME " + ofToString(wireframe));
 
-    std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
-    geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals && !wireframe));
+			std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
+			geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals && !wireframe));
 
-    std::regex re_resolution("const[ \t]+float[ \t]+resolution[ \t]*=.*;");
-    geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
+			std::regex re_resolution("const[ \t]+float[ \t]+resolution[ \t]*=.*;");
+			geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
 
-    //fragment shader
-    ofFile fragFile("shaders/normalShader.frag");
-    ofBuffer fragBuff(fragFile);
-    std::string fragSource = fragBuff.getText();
+			//fragment shader
+			ofFile fragFile("shaders/normalShader.frag");
+			ofBuffer fragBuff(fragFile);
+			std::string fragSource = fragBuff.getText();
 
-    std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
-    fragSource = std::regex_replace(fragSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals && !wireframe));
+			std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
+			fragSource = std::regex_replace(fragSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals && !wireframe));
 
-    shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
-    shader.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
-    shader.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
-    shader.bindDefaults();
-    shader.linkProgram();
-}
-
-
-void GPUMarchingCubes::setup(){
-	resolutionListener = resolution.newListener([&](int & res){
-		std::vector<glm::vec3> vertices(res*res*res);
-		for(int z = 0, i = 0; z < res; z++){
-			for(int y = 0; y < res; y++){
-				for(int x = 0; x < res; x++, i++){
-                    vertices[i] = glm::vec3{float(x), float(y), float(z)} / float(res) - glm::vec3(0.5f);
-				}
-			}
+			shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
+			shader.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
+			shader.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
+			shader.bindDefaults();
+			shader.linkProgram();
 		}
-        vbo.setVertexData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
-        compileShader();
-    });
-
-	triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);
-	triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
-	triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
-    wireFrameListener = wireframe.newListener([&](bool & wireframe){
-        if(wireframe && shadeNormals){
-            shadeNormals = false;
-        }else{
-            compileShader();
-        }
-    });
-
-    shadeNormalsListener = shadeNormals.newListener([&](bool & shade){
-        if(!wireframe){
-            compileShader();
-        }else{
-            shadeNormals = false;
-        }
-    });
-
-    compileShader();
-}
 
 
-void GPUMarchingCubes::draw(ofxTexture3d & isoLevels, float threshold){
-	shader.begin();
-	shader.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
-	shader.setUniformTexture("triTableTex", triTableTex, 1);
-    shader.setUniform1f("isolevel", threshold);
-    if(wireframe){
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }else{
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-	vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
-	shader.end();
+		void GPUMarchingCubes::setup() {
+			resolutionListener = resolution.newListener([&](int & res) {
+				std::vector<glm::vec3> vertices(res*res*res);
+				for (int z = 0, i = 0; z < res; z++) {
+					for (int y = 0; y < res; y++) {
+						for (int x = 0; x < res; x++, i++) {
+							vertices[i] = glm::vec3{ float(x), float(y), float(z) } / float(res) - glm::vec3(0.5f);
+						}
+					}
+				}
+				vbo.setVertexData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
+				compileShader();
+			});
+
+			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);
+			triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
+			triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+
+			wireFrameListener = wireframe.newListener([&](bool & wireframe) {
+				if (wireframe && shadeNormals) {
+					shadeNormals = false;
+				}
+				else {
+					compileShader();
+				}
+			});
+
+			shadeNormalsListener = shadeNormals.newListener([&](bool & shade) {
+				if (!wireframe) {
+					compileShader();
+				}
+				else {
+					shadeNormals = false;
+				}
+			});
+
+			compileShader();
+		}
+
+
+		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels, float threshold) {
+			shader.begin();
+			shader.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
+			shader.setUniformTexture("triTableTex", triTableTex, 1);
+			shader.setUniform1f("isolevel", threshold);
+			if (wireframe) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			else {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
+			shader.end();
+		}
+	}
 }
