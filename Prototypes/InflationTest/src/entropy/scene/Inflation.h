@@ -72,34 +72,34 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				ofxPreset::Parameter<bool> runSimulation{ "Run Simulation", true, false };
+				ofParameter<bool> runSimulation{ "Run Simulation", true };
 				
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<float> scale{ "Scale", 1.0f, 1.0f, 100.0f };
-					ofxPreset::Parameter<int> resolution{ "Resolution", 1, 1, 512 };
-					ofxPreset::Parameter<float> threshold{ "Threshold", 0.345f, 0.0f, 1.0f };
-					ofxPreset::Parameter<bool> inflation{ "Inflation", false, false };
+					ofParameter<float> scale{ "Scale", 1.0f, 1.0f, 100.0f };
+					ofParameter<int> resolution{ "Resolution", 1, 1, 512 };
+					ofParameter<float> threshold{ "Threshold", 0.345f, 0.0f, 1.0f };
+					ofParameter<bool> inflation{ "Inflation", false };
 
 					PARAM_DECLARE("Marching Cubes", scale, resolution, threshold, inflation);
 				} marchingCubes;
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<bool> debug{ "Debug", false, false };
-					ofxPreset::Parameter<bool> drawGrid{ "Draw Grid", true, false };
-					ofxPreset::Parameter<bool> wireframe{ "Wireframe", true, false };
-					ofxPreset::Parameter<bool> shadeNormals{ "Shade Normals", false, false };
-					ofxPreset::Parameter<bool> additiveBlending{ "Additive Blending", false, false };
+					ofParameter<bool> debug{ "Debug", false };
+					ofParameter<bool> drawGrid{ "Draw Grid", true };
+					ofParameter<bool> wireframe{ "Wireframe", true };
+					ofParameter<bool> shadeNormals{ "Shade Normals", false };
+					ofParameter<bool> additiveBlending{ "Additive Blending", false };
 
 					struct : ofParameterGroup
 					{
-						ofxPreset::Parameter<bool> enabled{ "Enabled", true, false };
-						ofxPreset::Parameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.5f, 3.0f };
-						ofxPreset::Parameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
-						ofxPreset::Parameter<float> contrast{ "Contrast",1.0f, 0.5f, 1.5f };
-						ofxPreset::Parameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
-						ofxPreset::Parameter<int> tonemapType{ "Tonemap Type", 0, 0, 5, true };
+						ofParameter<bool> enabled{ "Enabled", true };
+						ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.5f, 3.0f };
+						ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
+						ofParameter<float> contrast{ "Contrast",1.0f, 0.5f, 1.5f };
+						ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
+						ofParameter<int> tonemapType{ "Tonemap Type", 0, 0, 5 };
 
 						PARAM_DECLARE("Bloom", enabled, brightnessThreshold, sigma, contrast, brightness, tonemapType);
 					} bloom;
@@ -107,10 +107,12 @@ namespace entropy
 					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, bloom);
 				} render;
 
-				ofxPreset::Parameter<bool> record{ "Record", false, false };
+				ofParameter<bool> record{ "Record", false };
 
 				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render, record);
 			} parameters;
+
+			vector<ofEventListener> marchingCubesEventListeners;
 		};
     }
 }

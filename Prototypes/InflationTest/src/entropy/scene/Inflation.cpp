@@ -35,14 +35,23 @@ namespace entropy
 			gpuMarchingCubes.setup();
 
 			// Link gui parameters to internal parameters.
-			parameters.marchingCubes.resolution.makeReferenceTo(gpuMarchingCubes.resolution);
-			parameters.render.wireframe.makeReferenceTo(gpuMarchingCubes.wireframe);
-			parameters.render.shadeNormals.makeReferenceTo(gpuMarchingCubes.shadeNormals);
+			marchingCubesEventListeners.push_back(parameters.marchingCubes.resolution.newListener([this](int & resolution)
+			{
+				gpuMarchingCubes.resolution = resolution;
+			}));
+			marchingCubesEventListeners.push_back(parameters.render.wireframe.newListener([this](bool & wireframe)
+			{
+				gpuMarchingCubes.wireframe = wireframe;
+			}));
+			marchingCubesEventListeners.push_back(parameters.render.shadeNormals.newListener([this](bool & shadeNormals)
+			{
+				gpuMarchingCubes.shadeNormals = shadeNormals;
+			}));
 			
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
-			//record.setSerializable(false);
+			parameters.record.setSerializable(false);
 
 			//camera.setDistance(2);
 			//camera.setNearClip(0.1);
@@ -273,8 +282,14 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
 					ofxPreset::Gui::AddParameter(this->parameters.render.drawGrid);
-					ofxPreset::Gui::AddParameter(this->parameters.render.wireframe);
-					ofxPreset::Gui::AddParameter(this->parameters.render.shadeNormals);
+					if (ofxPreset::Gui::AddParameter(this->parameters.render.wireframe))
+					{
+						gpuMarchingCubes.wireframe = this->parameters.render.wireframe;
+					}
+					if (ofxPreset::Gui::AddParameter(this->parameters.render.shadeNormals))
+					{
+						gpuMarchingCubes.shadeNormals = this->parameters.render.shadeNormals;
+					}
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 					ofxPreset::Gui::AddParameter(this->parameters.render.bloom.enabled);
 					if (this->parameters.render.bloom.enabled)
@@ -287,19 +302,15 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.contrast);
 							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.brightness);
 
-							ImGui::Columns(2);
-							ImGui::RadioButton("Linear", parameters.render.bloom.tonemapType.getRef(), 0); ImGui::NextColumn();
-							ImGui::RadioButton("Gamma", parameters.render.bloom.tonemapType.getRef(), 1); ImGui::NextColumn();
-							ImGui::RadioButton("Reinhard", parameters.render.bloom.tonemapType.getRef(), 2); ImGui::NextColumn();
-							ImGui::RadioButton("Reinhard Alt", parameters.render.bloom.tonemapType.getRef(), 3); ImGui::NextColumn();
-							ImGui::RadioButton("Filmic", parameters.render.bloom.tonemapType.getRef(), 4); ImGui::NextColumn();
-							ImGui::RadioButton("Uncharted 2", parameters.render.bloom.tonemapType.getRef(), 5); ImGui::NextColumn();
-							ImGui::Columns(1);
+							static vector<string> labels = { "Linear", "Gamma", "Reinhard", "Reinhard Alt", "Filmic", "Uncharted 2" };
+							ofxPreset::Gui::AddRadio(parameters.render.bloom.tonemapType, labels, 2);
 
 							ImGui::TreePop();
 						}
 					}
 				}
+
+				ofxPreset::Gui::AddParameter(this->parameters.record);
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
 			}

@@ -23,8 +23,8 @@ namespace entropy
 				, wavelength("Wavelength", 1.f / frequency_, 0.0f, 128.0f)
 				, amplitude("Amplitude", amplitude_, 0.0f, 1.0f)
 				, radius("Radius", 1.0f, 0.0f, 1.0f)
-				, advanceTime("Advance Time", true, false)
-				, enabled("Enabled", true, false)
+				, advanceTime("Advance Time", true)
+				, enabled("Enabled", true)
 				, parameters("Octave " + ofToString(idx),
 					this->frequency,
 					this->wavelength,
@@ -50,12 +50,12 @@ namespace entropy
 				});
 			}
 
-			ofxPreset::Parameter<float> frequency;
-			ofxPreset::Parameter<float> wavelength;
-			ofxPreset::Parameter<float> amplitude;
-			ofxPreset::Parameter<float> radius;
-			ofxPreset::Parameter<bool> advanceTime;
-			ofxPreset::Parameter<bool> enabled;
+			ofParameter<float> frequency;
+			ofParameter<float> wavelength;
+			ofParameter<float> amplitude;
+			ofParameter<float> radius;
+			ofParameter<bool> advanceTime;
+			ofParameter<bool> enabled;
 			double now = 0;
 			ofParameterGroup parameters;
 			ofEventListener freqListener, waveLengthListener;
@@ -79,11 +79,11 @@ namespace entropy
 
 
 		private:
-			ofxPreset::Parameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
-			ofxPreset::Parameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
-			ofxPreset::Parameter<float> fadeAt{ "Fade At", 0.8f, 0.0f, 1.0f };
-			ofxPreset::Parameter<bool> sphericalClip{ "Spherical Clip", false, false };
-			ofxPreset::Parameter<bool> fillEdges{ "Fill Edges", false, false };
+			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
+			ofParameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
+			ofParameter<float> fadeAt{ "Fade At", 0.8f, 0.0f, 1.0f };
+			ofParameter<bool> sphericalClip{ "Spherical Clip", false };
+			ofParameter<bool> fillEdges{ "Fill Edges", false };
 			std::vector<Octave> octaves;
 
 			float noiseSeed;
@@ -98,8 +98,7 @@ namespace entropy
 			void allocateVolumeTexture();
 
 		public:
-
-			ofxPreset::Parameter<int> resolution;
+			ofParameter<int> resolution;
 			ofParameterGroup parameters{
 				"Noise Field",
 				noiseSpeed,
