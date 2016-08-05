@@ -3,6 +3,8 @@
 #include "entropy/util/App.h"
 #include "entropy/util/GLError.h"
 
+#include <experimental/filesystem>
+
 namespace entropy
 {
 	//--------------------------------------------------------------
@@ -55,7 +57,8 @@ namespace entropy
 			static string dataPathAbs;
 			if (dataPathAbs.empty())
 			{
-				dataPathAbs = ofFilePath::addTrailingSlash(ofFilePath::getCurrentWorkingDirectory()).append(dataPath);
+				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentWorkingDirectory()) / dataPath;
+				dataPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return dataPathAbs;
 		}
@@ -77,7 +80,8 @@ namespace entropy
 			static string assetsPathAbs;
 			if (assetsPathAbs.empty())
 			{
-				assetsPathAbs = ofFilePath::addTrailingSlash(ofFilePath::getCurrentWorkingDirectory()).append(assetsPath);
+				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentWorkingDirectory()) / assetsPath;
+				assetsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return assetsPathAbs;
 		}

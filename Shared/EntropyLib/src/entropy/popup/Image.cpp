@@ -43,7 +43,7 @@ namespace entropy
 					{
 						if (this->loadImage(result.filePath))
 						{
-							this->parameters.filePath = ofFilePath::makeRelative(GetSharedAssetsPath(true), result.filePath);
+							this->parameters.filePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
 						}
 					}
 				}
