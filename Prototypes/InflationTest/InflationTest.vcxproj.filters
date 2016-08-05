@@ -72,6 +72,9 @@
     <Filter Include="src\entropy\inflation">
       <UniqueIdentifier>{90b0486d-cdb5-4dab-8ff4-18d7bae518e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{4fd0c6fd-61a7-4ca3-8e4f-851188b712cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h">
@@ -119,5 +122,43 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_blur.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_bright.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_tonemap.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\marching_cubes_geom.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\normalShader.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\normalShader.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\passthrough_vert.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\vert_blur.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\vert_full_quad.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\volumetrics_frag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\volumetrics_vertex.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
