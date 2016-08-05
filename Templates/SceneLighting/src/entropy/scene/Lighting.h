@@ -28,14 +28,9 @@ namespace entropy
 
 			void update(double & dt);
 
-			void drawBack();
 			void drawWorld();
-			void drawFront();
 
 			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
 
 		public:
 			void createRandomLights();
