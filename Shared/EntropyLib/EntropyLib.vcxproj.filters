@@ -410,9 +410,6 @@
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Parameter.h">
-      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </ClInclude>
@@ -656,9 +653,6 @@
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
-      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
-    </None>
-    <None Include="..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </None>
   </ItemGroup>

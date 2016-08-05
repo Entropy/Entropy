@@ -526,14 +526,6 @@ namespace entropy
 				// Parameter, try ofParameter first and ofxPreset::Parameter aggregate if that fails.
 				{
 					auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(parameter);
-					if (!parameterFloat)
-					{
-						auto aggParameter = dynamic_pointer_cast<ofxPreset::Parameter<float>>(parameter);
-						if (aggParameter)
-						{
-							parameterFloat = aggParameter->getInternal();
-						}
-					}
 					if (parameterFloat)
 					{
 						auto mapping = make_shared<util::Mapping<float, ofxTLCurves>>();
@@ -543,14 +535,6 @@ namespace entropy
 					}
 
 					auto parameterInt = dynamic_pointer_cast<ofParameter<int>>(parameter);
-					if (!parameterInt)
-					{
-						auto aggParameter = dynamic_pointer_cast<ofxPreset::Parameter<int>>(parameter);
-						if (aggParameter)
-						{
-							parameterInt = aggParameter->getInternal();
-						}
-					}
 					if (parameterInt)
 					{
 						auto mapping = make_shared<util::Mapping<int, ofxTLCurves>>();
@@ -560,14 +544,6 @@ namespace entropy
 					}
 
 					auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(parameter);
-					if (!parameterBool)
-					{
-						auto aggParameter = dynamic_pointer_cast<ofxPreset::Parameter<bool>>(parameter);
-						if (aggParameter)
-						{
-							parameterBool = aggParameter->getInternal();
-						}
-					}
 					if (parameterBool)
 					{
 						auto mapping = make_shared<util::Mapping<bool, ofxTLSwitches>>();
@@ -577,14 +553,6 @@ namespace entropy
 					}
 
 					auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(parameter);
-					if (!parameterColor)
-					{
-						auto aggParameter = dynamic_pointer_cast<ofxPreset::Parameter<ofFloatColor>>(parameter);
-						if (aggParameter)
-						{
-							parameterColor = aggParameter->getInternal();
-						}
-					}
 					if (parameterColor)
 					{
 						auto mapping = make_shared<util::Mapping<ofFloatColor, ofxTLColorTrack>>();

@@ -20,7 +20,7 @@ namespace entropy
 			const inline string & getPageName() const;
 			const inline string & getTrackName() const;
 
-			ofxPreset::Parameter<bool> animated;
+			ofParameter<bool> animated;
 
 		protected:
 			string name;

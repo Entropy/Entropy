@@ -502,14 +502,19 @@ namespace entropy
 						{
 							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
 							{
-								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(*paramGroup.blend.luminance.getRef())))
+								static glm::vec3 tmpLuminanceRef;
+								static glm::vec3 tmpGammaRef;
+
+								tmpLuminanceRef = paramGroup.blend.luminance.get();
+								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
 								{
-									paramGroup.blend.luminance.update();
+									paramGroup.blend.luminance.set(tmpLuminanceRef);
 									warp->setLuminance(paramGroup.blend.luminance);
 								}
-								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(*paramGroup.blend.gamma.getRef())))
+								tmpGammaRef = paramGroup.blend.gamma.get();
+								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(tmpGammaRef)))
 								{
-									paramGroup.blend.gamma.update();
+									paramGroup.blend.gamma.set(tmpGammaRef);
 									warp->setGamma(paramGroup.blend.gamma);
 								}
 								if (ofxPreset::Gui::AddParameter(paramGroup.blend.exponent))

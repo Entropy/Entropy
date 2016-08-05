@@ -272,12 +272,8 @@ namespace entropy
 
 					if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
 					{
-						ImGui::Columns(2);
-						ImGui::RadioButton("Cut", parameters.transition.type.getRef(), static_cast<int>(Transition::Cut)); ImGui::NextColumn();
-						ImGui::RadioButton("Mix", parameters.transition.type.getRef(), static_cast<int>(Transition::Mix)); ImGui::NextColumn();
-						ImGui::RadioButton("Wipe", parameters.transition.type.getRef(), static_cast<int>(Transition::Wipe)); ImGui::NextColumn();
-						ImGui::RadioButton("Strobe", parameters.transition.type.getRef(), static_cast<int>(Transition::Strobe)); ImGui::NextColumn();
-						ImGui::Columns(1);
+						static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
+						ofxPreset::Gui::AddRadio(parameters.transition.type, labels, 2);
 
 						if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
 						{

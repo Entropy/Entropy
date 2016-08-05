@@ -46,10 +46,10 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofxPreset::Parameter<bool> filled{ "Filled", false, false };
-					ofxPreset::Parameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
-					ofxPreset::Parameter<int> resolution{ "Resolution", 16, 3, 64 };
+					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+					ofParameter<bool> filled{ "Filled", false };
+					ofParameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
+					ofParameter<int> resolution{ "Resolution", 16, 3, 64 };
 
 					PARAM_DECLARE("Sphere", color, filled, radius, resolution);
 				} sphere;

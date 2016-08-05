@@ -140,25 +140,25 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<ofFloatColor> background{ "Background", ofFloatColor::black };
-					ofxPreset::Parameter<glm::vec2> size{ "Size", glm::vec2(0.1f), glm::vec2(0.0f), glm::vec2(1.0f) };
-					ofxPreset::Parameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
+					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+					ofParameter<glm::vec2> size{ "Size", glm::vec2(0.1f), glm::vec2(0.0f), glm::vec2(1.0f) };
+					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 
 					PARAM_DECLARE("Base", background, size, center);
 				} base;
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<float> width{ "Width", 2.0f, 0.0f, 5.0f };
-					ofxPreset::Parameter<ofFloatColor> color{ "Color", ofFloatColor::white };
+					ofParameter<float> width{ "Width", 2.0f, 0.0f, 5.0f };
+					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
 					PARAM_DECLARE("Border", width, color);
 				} border;
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<int> type{ "Type", 0, 0, 2, true };
-					ofxPreset::Parameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
+					ofParameter<int> type{ "Type", 0, 0, 2 };
+					ofParameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
 
 					PARAM_DECLARE("Transition", type, duration);
 				} transition;

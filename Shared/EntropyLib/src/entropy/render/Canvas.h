@@ -73,24 +73,24 @@ namespace entropy
 			struct WarpParameters
 				: ofParameterGroup
 			{
-				ofxPreset::Parameter<bool> editing{ "Edit Shape", false, false };
-				ofxPreset::Parameter<float> brightness{ "Brightness", 1.0f, 0.0f, 1.0f };
+				ofParameter<bool> editing{ "Edit Shape", false };
+				ofParameter<float> brightness{ "Brightness", 1.0f, 0.0f, 1.0f };
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<bool> adaptive{ "Adaptive", true, false };
-					ofxPreset::Parameter<bool> linear{ "Linear", false, false };
+					ofParameter<bool> adaptive{ "Adaptive", true };
+					ofParameter<bool> linear{ "Linear", false };
 
 					PARAM_DECLARE("Mesh", adaptive, linear);
 				} mesh;
 
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<glm::vec3> luminance{ "Luminance", glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(1.0f) };
-					ofxPreset::Parameter<glm::vec3> gamma{ "Gamma", glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f) };
-					ofxPreset::Parameter<float> exponent{ "Exponent", 2.0f, 0.1f, 20.0f };
-					ofxPreset::Parameter<float> edgeLeft{ "Edge Left", 0.0f, 0.0f, 1.0f };
-					ofxPreset::Parameter<float> edgeRight{ "Edge Right", 0.0f, 0.0f, 1.0f };
+					ofParameter<glm::vec3> luminance{ "Luminance", glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(1.0f) };
+					ofParameter<glm::vec3> gamma{ "Gamma", glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f) };
+					ofParameter<float> exponent{ "Exponent", 2.0f, 0.1f, 20.0f };
+					ofParameter<float> edgeLeft{ "Edge Left", 0.0f, 0.0f, 1.0f };
+					ofParameter<float> edgeRight{ "Edge Right", 0.0f, 0.0f, 1.0f };
 
 					PARAM_DECLARE("Blend", luminance, gamma, exponent, edgeLeft, edgeRight);
 				} blend;
@@ -100,7 +100,7 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ofxPreset::Parameter<bool> fillWindow{ "Fill Window", false, true };
+				ofParameter<bool> fillWindow{ "Fill Window", false };
 
 				PARAM_DECLARE("Parameters", fillWindow);
 			} parameters;

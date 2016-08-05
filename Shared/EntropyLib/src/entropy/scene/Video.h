@@ -58,13 +58,13 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				ofParameter<string> videoPath;
-				ofxPreset::Parameter<int> contentMode{ "Content Mode", (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_SCALE_ASPECT_FIT };
+				ofParameter<string> videoPath{"Video Path", ""};
+				ofParameter<int> contentMode{ "Content Mode", (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_SCALE_ASPECT_FIT };
 		
                 struct : ofParameterGroup
                 {
-                    ofxPreset::Parameter<bool> play{ "Play", true, false };
-                    ofxPreset::Parameter<bool> loop{ "Loop", false, false };
+                    ofParameter<bool> play{ "Play", true };
+                    ofParameter<bool> loop{ "Loop", false };
 
                     PARAM_DECLARE("Playback", play, loop);
                 } playback;

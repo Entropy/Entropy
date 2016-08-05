@@ -272,7 +272,6 @@
     <ClInclude Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
-    <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Parameter.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
     <ClInclude Include="..\..\addons\ofxRange\src\ofRange.h" />
     <ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h" />
@@ -361,7 +360,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
-    <None Include="..\..\addons\ofxPreset\src\ofxPreset\Parameter.inl" />
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
     <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>

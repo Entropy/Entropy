@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxImGui.h"
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
@@ -145,7 +144,7 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 
 					PARAM_DECLARE("Base", background);
 				} base;
