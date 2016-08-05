@@ -189,14 +189,15 @@ namespace entropy
 		{
 			if (!this->parameters.videoPath.get().empty())
 			{
-				this->loadVideo(this->parameters.videoPath);
+				this->loadVideo(ofFilePath::addTrailingSlash(this->getAssetsPath("videos")).append(this->parameters.videoPath));
 			}
 		}
 
 		//--------------------------------------------------------------
 		bool Video::loadVideo(const string & filePath)
 		{
-			if (!this->videoPlayer.load(filePath)) {
+			if (!this->videoPlayer.load(filePath)) 
+			{
 				ofLogError("Video::loadVideo") << "No video found at " << filePath;
 				return false;
 			}
@@ -215,7 +216,7 @@ namespace entropy
 				this->videoPlayer.setLoopState(OF_LOOP_NONE);
 			}
 
-			this->parameters.videoPath = filePath;
+			this->parameters.videoPath = ofFilePath::makeRelative(this->getAssetsPath("videos"), filePath);
 			this->dirtyBounds = true;
 
 			ofFile file = ofFile(filePath);
