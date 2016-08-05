@@ -25,6 +25,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setup_()
 		{
+			// Set data path root for scene.
+			ofSetDataPathRoot(this->getDataPath());
+			
 			// Setup default camera.
 			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
 			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
@@ -36,7 +39,13 @@ namespace entropy
 			this->populatePresets();
 
 			// Setup timeline.
-			this->timeline.setup();
+			static string timelineDataPath;
+			if (timelineDataPath.empty())
+			{
+				timelineDataPath = ofFilePath::addTrailingSlash(GetSharedDataPath());
+				timelineDataPath.append(ofFilePath::addTrailingSlash("ofxTimeline"));
+			}
+			this->timeline.setup(timelineDataPath);
 			this->timeline.setLoopType(OF_LOOP_NONE);
 			this->timeline.setFrameRate(30.0f);
 			this->timeline.setDurationInSeconds(30);

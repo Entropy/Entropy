@@ -42,44 +42,46 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline string GetSharedDataPath(bool absolute = false)
+	inline string GetSharedDataPath(bool absolute = true)
 	{
+		static string dataPath;
+		if (dataPath.empty())
+		{
+			dataPath = ofFilePath::addTrailingSlash("../../../Shared/data");
+		}
+		
 		if (absolute)
 		{
 			static string dataPathAbs;
 			if (dataPathAbs.empty())
 			{
-				dataPathAbs = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data", absolute));
+				dataPathAbs = ofFilePath::addTrailingSlash(ofFilePath::getCurrentWorkingDirectory()).append(dataPath);
 			}
 			return dataPathAbs;
 		}
-		
-		static string dataPath;
-		if (dataPath.empty())
-		{
-			dataPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/data"));
-		}
+				
 		return dataPath;
 	}
 
 	//--------------------------------------------------------------
-	inline string GetSharedAssetsPath(bool absolute = false)
+	inline string GetSharedAssetsPath(bool absolute = true)
 	{
+		static string assetsPath;
+		if (assetsPath.empty())
+		{
+			assetsPath = ofFilePath::addTrailingSlash("../../../Shared/assets");
+		}
+		
 		if (absolute)
 		{
 			static string assetsPathAbs;
 			if (assetsPathAbs.empty())
 			{
-				assetsPathAbs = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets", absolute));
+				assetsPathAbs = ofFilePath::addTrailingSlash(ofFilePath::getCurrentWorkingDirectory()).append(assetsPath);
 			}
 			return assetsPathAbs;
 		}
 
-		static string assetsPath;
-		if (assetsPath.empty())
-		{
-			assetsPath = ofFilePath::addTrailingSlash(ofToDataPath("../../../../Shared/assets"));
-		}
 		return assetsPath;
 	}
 
