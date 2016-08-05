@@ -21,11 +21,6 @@ namespace entropy
 				return "entropy::scene::Inflation";
 			}
 
-			ofCamera & getCamera() override
-			{
-				return this->camera;
-			}
-
 			Inflation();
 			~Inflation();
 
@@ -45,7 +40,6 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
-			ofEasyCam camera;
 			double now;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;

@@ -44,9 +44,9 @@ namespace entropy
 
 			//record.setSerializable(false);
 
-			camera.setDistance(2);
-			camera.setNearClip(0.1);
-			camera.setFarClip(100000);
+			//camera.setDistance(2);
+			//camera.setNearClip(0.1);
+			//camera.setFarClip(100000);
 
 			now = 0;
 

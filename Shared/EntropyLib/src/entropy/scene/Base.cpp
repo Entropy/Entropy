@@ -31,6 +31,8 @@ namespace entropy
 			// Setup default camera.
 			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
 			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+			this->camera.setNearClip(0.1);
+			this->camera.setFarClip(100000);
 
 			// Setup child Scene.
 			this->onSetup.notify();
@@ -81,7 +83,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize_(ofResizeEventArgs & args)
 		{
-			this->camera.setAspectRatio(args.width / (float)args.height);
+			this->getCamera().setAspectRatio(args.width / static_cast<float>(args.height));
 
 			this->onResize.notify(args);
 		}
@@ -288,7 +290,7 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
-			ofxPreset::Serializer::Serialize(json, this->getCamera(), "camera");
+			ofxPreset::Serializer::Serialize(json, this->getCamera(), "Camera");
 
 			this->onSerialize.notify(json);
 
@@ -311,13 +313,13 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (false && json.count("camera"))
+			if (json.count("Camera"))
 			{
 				// Disable auto distance so that it doesn't interfere with the camera matrix.
 				// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.
 				this->camera.setAutoDistance(false);
 
-				ofxPreset::Serializer::Deserialize(json, this->getCamera(), "camera");
+				ofxPreset::Serializer::Deserialize(json, this->getCamera(), "Camera");
 			}
 
 			this->onDeserialize.notify(json);
