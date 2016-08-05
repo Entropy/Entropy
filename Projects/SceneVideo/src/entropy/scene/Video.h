@@ -2,7 +2,7 @@
 
 #include "ofxWMFVideoPlayer.h"
 
-#include "Base.h"
+#include "entropy/scene/Base.h"
 
 namespace entropy
 {
@@ -12,16 +12,16 @@ namespace entropy
 			: public Base
 		{
 		public:
-            typedef enum
+            enum class ContentMode
             {
-                CONTENT_MODE_CENTER,
-                CONTENT_MODE_TOP_LEFT,
-                CONTENT_MODE_SCALE_TO_FILL,
-                CONTENT_MODE_SCALE_ASPECT_FILL,
-                CONTENT_MODE_SCALE_ASPECT_FIT
-            } ContentMode;
+                Center,
+                TopLeft,
+                ScaleToFill,
+                ScaleAspectFill,
+                ScaleAspectFit
+            };
 
-			virtual string getName() const override
+			string getName() const override
 			{
 				return "entropy::scene::Video";
 			}
@@ -59,7 +59,7 @@ namespace entropy
 			struct : BaseParameters
 			{
 				ofParameter<string> videoPath{"Video Path", ""};
-				ofParameter<int> contentMode{ "Content Mode", (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_CENTER, (int)CONTENT_MODE_SCALE_ASPECT_FIT };
+				ofParameter<int> contentMode{ "Content Mode", (int)ContentMode::Center, (int)ContentMode::Center, (int)ContentMode::ScaleAspectFit };
 		
                 struct : ofParameterGroup
                 {

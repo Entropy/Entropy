@@ -143,6 +143,6 @@ _default
 !*/*/bin/data/*.json
 
 # Assets (managed by Syncthing)
-Shared/assets/*
-!Shared/assets/.gitkeep
-!Shared/assets/.stfolder
+Resources/assets/*
+!Resources/assets/.gitkeep
+!Resources/assets/.stfolder

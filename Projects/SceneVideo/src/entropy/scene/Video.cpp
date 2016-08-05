@@ -48,15 +48,16 @@ namespace entropy
 		{
 			if (this->dirtyBounds)
 			{
-				if (this->parameters.contentMode == CONTENT_MODE_CENTER)
+				const auto contentMode = static_cast<ContentMode>(this->parameters.contentMode.get());
+				if (contentMode == ContentMode::Center)
 				{
 					this->drawBounds.setFromCenter(GetCanvasWidth() * 0.5f, GetCanvasHeight() * 0.5f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
 				}
-				else if (this->parameters.contentMode == CONTENT_MODE_TOP_LEFT)
+				else if (contentMode == ContentMode::TopLeft)
 				{
 					this->drawBounds.set(0.0f, 0.0f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
 				}
-				else if (this->parameters.contentMode == CONTENT_MODE_SCALE_TO_FILL)
+				else if (contentMode == ContentMode::ScaleToFill)
 				{
 					this->drawBounds.set(0.0f, 0.0f, GetCanvasWidth(), GetCanvasHeight());
 				}
@@ -65,7 +66,7 @@ namespace entropy
 					const auto canvasRatio = GetCanvasWidth() / GetCanvasHeight();
 					const auto videoRatio = this->videoPlayer.getWidth() / this->videoPlayer.getHeight();
 
-					if (!(canvasRatio > videoRatio) ^ !(this->parameters.contentMode == CONTENT_MODE_SCALE_ASPECT_FIT))
+					if (!(canvasRatio > videoRatio) ^ !(contentMode == ContentMode::ScaleAspectFit))
 					{
 						this->drawBounds.width = GetCanvasWidth();
 						this->drawBounds.height = this->drawBounds.width / videoRatio;
@@ -198,7 +199,7 @@ namespace entropy
 		{
 			if (!this->videoPlayer.load(filePath)) 
 			{
-				ofLogError("Video::loadVideo") << "No video found at " << filePath;
+				ofLogError(__FUNCTION__) << "No video found at " << filePath;
 				return false;
 			}
 

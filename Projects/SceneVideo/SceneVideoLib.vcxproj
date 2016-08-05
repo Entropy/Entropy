@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}</ProjectGuid>
+    <ProjectGuid>{B3EFF3A7-AC0C-4C7D-A6D7-3577D171DD73}</ProjectGuid>
     <RootNamespace>ofxKinectForWindows2Lib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -56,22 +56,26 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="EntropyLib.props" />
+    <Import Project="SceneVideoLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="EntropyLib.props" />
+    <Import Project="SceneVideoLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="EntropyLib.props" />
+    <Import Project="SceneVideoLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="EntropyLib.props" />
+    <Import Project="SceneVideoLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -180,148 +184,15 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
-    <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
-    <ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimecode\src\ofxTimecode.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_linux.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_win.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTimeline.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLBangs.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColors.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCurves.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLFlags.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLInOut.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLLFO.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPage.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTicker.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasing.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp" />
-    <ClCompile Include="..\..\addons\ofxTween\src\ofxTween.cpp" />
-    <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp" />
-    <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp" />
-    <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp" />
-    <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp" />
-    <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
-    <ClCompile Include="src\entropy\popup\Base.cpp" />
-    <ClCompile Include="src\entropy\popup\Image.cpp" />
-    <ClCompile Include="src\entropy\render\Canvas.cpp" />
-    <ClCompile Include="src\entropy\scene\Base.cpp" />
-    <ClCompile Include="src\entropy\scene\Manager.cpp" />
-    <ClCompile Include="src\entropy\scene\Template.cpp" />
     <ClCompile Include="src\entropy\scene\Video.cpp" />
-    <ClCompile Include="src\entropy\util\App.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
-    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
-    <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />
-    <ClInclude Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.h" />
-    <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset.h" />
-    <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
-    <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
-    <ClInclude Include="..\..\addons\ofxRange\src\ofRange.h" />
-    <ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h" />
-    <ClInclude Include="..\..\addons\ofxTimecode\src\ofxTimecode.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxHotKeys.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTimeline.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLBangs.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColors.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCurves.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEvents.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLFlags.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLInOut.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLLFO.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPage.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTicker.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.h" />
-    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasing.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.h" />
-    <ClInclude Include="..\..\addons\ofxTween\src\ofxTween.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h" />
-    <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\AsyncCB.h" />
@@ -345,22 +216,6 @@
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
-    <ClInclude Include="src\entropy\Helpers.h" />
-    <ClInclude Include="src\entropy\popup\Base.h" />
-    <ClInclude Include="src\entropy\popup\Image.h" />
-    <ClInclude Include="src\entropy\render\Canvas.h" />
-    <ClInclude Include="src\entropy\scene\Base.h" />
-    <ClInclude Include="src\entropy\scene\Manager.h" />
-    <ClInclude Include="src\entropy\scene\Template.h" />
     <ClInclude Include="src\entropy\scene\Video.h" />
-    <ClInclude Include="src\entropy\util\App.h" />
-    <ClInclude Include="src\entropy\util\GLError.h" />
-    <ClInclude Include="src\entropy\util\Mapping.h" />
-    <ClInclude Include="src\entropy\util\Singleton.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
-    <None Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
-    <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
 </Project>

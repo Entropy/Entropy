@@ -49,7 +49,7 @@ namespace entropy
 		static string dataPath;
 		if (dataPath.empty())
 		{
-			dataPath = ofFilePath::addTrailingSlash("../../../Shared/data");
+			dataPath = ofFilePath::addTrailingSlash("../../../Resources/data");
 		}
 		
 		if (absolute)
@@ -72,7 +72,7 @@ namespace entropy
 		static string assetsPath;
 		if (assetsPath.empty())
 		{
-			assetsPath = ofFilePath::addTrailingSlash("../../../Shared/assets");
+			assetsPath = ofFilePath::addTrailingSlash("../../../Resources/assets");
 		}
 		
 		if (absolute)
