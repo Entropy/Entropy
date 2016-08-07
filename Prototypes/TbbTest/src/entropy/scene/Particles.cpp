@@ -81,6 +81,10 @@ namespace entropy
 			persistent.add("environment.energy", environment->getEnergyRef(), 0.f, 1.f);
 			persistent.add("environment.forceMultiplierMin", environment->getForceMultiplierMinRef(), 1e7, 1e8);
 			persistent.add("environment.forceMultiplierMax", environment->getForceMultiplierMaxRef(), 1e7, 1e8);
+			persistent.add("environment.annihilationThreshMin", environment->getAnnihilationThreshMinRef(), 0.f, 1.f);
+			persistent.add("environment.annihilationThreshMax", environment->getAnnihilationThreshMaxRef(), 0.f, 1.f);
+			persistent.add("environment.fusionThreshExponentMin", environment->getFusionThreshExponentMinRef(), -6.f, -5.f);
+			persistent.add("environment.fusionThreshExponentMax", environment->getFusionThreshExponentMaxRef(), -6.f, -5.f);
 
 			persistent.load("settings/settings.xml");
 		}

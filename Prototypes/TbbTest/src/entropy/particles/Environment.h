@@ -65,9 +65,17 @@ namespace nm
 		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; } // for GUI
 		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; } // for GUI
 
-		float getExpansionScalar() const;
+		inline float& getAnnihilationThreshMinRef() { return annihilationThreshMin; } // for GUI
+		inline float& getAnnihilationThreshMaxRef() { return annihilationThreshMax; } // for GUI
 
+		inline float& getFusionThreshExponentMinRef() { return fusionThreshExponentMin; } // for GUI
+		inline float& getFusionThreshExponentMaxRef() { return fusionThreshExponentMax; } // for GUI
+
+		float getExpansionScalar() const;
 		float getForceMultiplier() const;
+		float getAnnihilationThresh() const;
+		float getFusionThresh() const;
+		float getPairProductionThresh() const;
 
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
@@ -76,5 +84,8 @@ namespace nm
 		glm::vec3 min, max, dims;
 		float energy; // from 0 to 1
 		float forceMultiplierMin, forceMultiplierMax;
+		float fusionThreshExponentMin, fusionThreshExponentMax;
+		float annihilationThreshMin, annihilationThreshMax;
+		float pairProductionThreshMin, pairProductionThreshMax;
     };
 }

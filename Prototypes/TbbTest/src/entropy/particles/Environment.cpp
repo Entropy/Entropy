@@ -39,7 +39,9 @@ namespace nm
 		dims(max - min),
 		energy(1.f),
 		forceMultiplierMin(50000000),
-		forceMultiplierMax(50000000)
+		forceMultiplierMax(50000000),
+		annihilationThreshMin(.5f),
+		annihilationThreshMax(.5f)
 	{
 	}
 
@@ -51,5 +53,22 @@ namespace nm
 	float Environment::getForceMultiplier() const
 	{
 		return forceMultiplierMin + energy * (forceMultiplierMax - forceMultiplierMin);
+	}
+
+	float Environment::getAnnihilationThresh() const
+	{
+		return annihilationThreshMin + energy * (annihilationThreshMax - annihilationThreshMin);
+	}
+
+	float Environment::getFusionThresh() const
+	{
+		float exponent = fusionThreshExponentMin + energy * (fusionThreshExponentMax - fusionThreshExponentMin);
+		return pow(10, exponent);
+		//return fusionThresholdMin + energy * (fusionThresholdMax - fusionThresholdMin);
+	}
+
+	float Environment::getPairProductionThresh() const
+	{
+		return pairProductionThreshMin + energy * (pairProductionThreshMax - pairProductionThreshMin);
 	}
 }

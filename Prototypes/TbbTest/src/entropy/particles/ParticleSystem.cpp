@@ -160,6 +160,8 @@ namespace nm
 		const glm::vec3 min = environment->getMin();
 		const glm::vec3 max = environment->getMax();
 		const float expansionScalar = environment->getExpansionScalar();
+		const float annihilationThreshold = environment->getAnnihilationThresh(); // was 0.5
+		const float fusionThreshold = environment->getFusionThresh(); // was 0.00001
 		Octree<Particle>::setForceMultiplier(environment->getForceMultiplier());
 		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
@@ -218,7 +220,7 @@ namespace nm
 					// doesn't seem like it would save a worthwhile amount of time
 					if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
 					{
-						if (ofRandomuf() < .5f)
+						if (ofRandomuf() < annihilationThreshold)
 						{
 							unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
 							newPhotons[newPhotonIdx] = particles[i];
@@ -227,7 +229,7 @@ namespace nm
 					}
 					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
 					{
-						if (ofRandomuf() < .00001f)
+						if (ofRandomuf() < fusionThreshold)
 						{
 							addParticle(
 								Particle::UP_DOWN_QUARK,
@@ -239,20 +241,19 @@ namespace nm
 					}
 					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
 					{
-						if (ofRandomuf() < .5f)
+						// we always want this to happen if there it's possible to that the
+						// hacky up-down compound particles exist for as shorter time as possible
+						Particle::Type newType = Particle::PROTON;
+						if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
 						{
-							Particle::Type newType = Particle::PROTON;
-							if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
-							{
-								newType = Particle::NEUTRON;
-							}
-							addParticle(
-								newType,
-								particles[i],
-								.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-							);
-							killParticles = true;
+							newType = Particle::NEUTRON;
 						}
+						addParticle(
+							newType,
+							particles[i],
+							.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+						);
+						killParticles = true;
 					}
 
 					if (killParticles)

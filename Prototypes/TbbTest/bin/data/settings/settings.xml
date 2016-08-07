@@ -1,0 +1,28 @@
+<settings>
+	<bools/>
+	<unsigneds/>
+	<ints/>
+	<floats>
+		<environment.annihilationThreshMax>0.753</environment.annihilationThreshMax>
+		<environment.annihilationThreshMin>1</environment.annihilationThreshMin>
+		<environment.energy>1</environment.energy>
+		<environment.forceMultiplierMax>1e+08</environment.forceMultiplierMax>
+		<environment.forceMultiplierMin>1e+07</environment.forceMultiplierMin>
+		<environment.fusionThreshExponentMax>-5.593</environment.fusionThreshExponentMax>
+		<environment.fusionThreshExponentMin>-5.237</environment.fusionThreshExponentMin>
+		<lightIntensities0>2.887</lightIntensities0>
+		<lightIntensities1>2.784</lightIntensities1>
+		<lightRadiuses0>2453.61</lightRadiuses0>
+		<lightRadiuses1>2944.88</lightRadiuses1>
+		<roughness>0.476</roughness>
+	</floats>
+	<vec2fs/>
+	<vec3fs>
+		<lightPosns0>-1153.85, 685.714, 0</lightPosns0>
+		<lightPosns1>2000, 0, 0</lightPosns1>
+	</vec3fs>
+	<floatColors>
+		<lightCols0>0.780392, 0.888904, 1, 1</lightCols0>
+		<lightCols1>0.658823, 0.7391, 1, 1</lightCols1>
+	</floatColors>
+</settings>
