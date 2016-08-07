@@ -3,13 +3,15 @@
 	<unsigneds/>
 	<ints/>
 	<floats>
-		<environment.annihilationThreshMax>0.753</environment.annihilationThreshMax>
-		<environment.annihilationThreshMin>1</environment.annihilationThreshMin>
+		<environment.annihilationThreshMax>0.397</environment.annihilationThreshMax>
+		<environment.annihilationThreshMin>0.51</environment.annihilationThreshMin>
 		<environment.energy>1</environment.energy>
 		<environment.forceMultiplierMax>1e+08</environment.forceMultiplierMax>
 		<environment.forceMultiplierMin>1e+07</environment.forceMultiplierMin>
 		<environment.fusionThreshExponentMax>-5.593</environment.fusionThreshExponentMax>
 		<environment.fusionThreshExponentMin>-5.237</environment.fusionThreshExponentMin>
+		<environment.pairProductionThreshMax>0.428</environment.pairProductionThreshMax>
+		<environment.pairProductionThreshMin>0.572</environment.pairProductionThreshMin>
 		<lightIntensities0>2.887</lightIntensities0>
 		<lightIntensities1>2.784</lightIntensities1>
 		<lightRadiuses0>2453.61</lightRadiuses0>

@@ -60,16 +60,21 @@ namespace nm
 
 		inline float getEnergy() const { return energy; }
 		inline void setEnergy(float energy) { this->energy = energy; }
-		inline float& getEnergyRef() { return energy; } // for GUI
 
-		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; } // for GUI
-		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; } // for GUI
+		// refs for gui
+		inline float& getEnergyRef() { return energy; }
 
-		inline float& getAnnihilationThreshMinRef() { return annihilationThreshMin; } // for GUI
-		inline float& getAnnihilationThreshMaxRef() { return annihilationThreshMax; } // for GUI
+		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; }
+		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; }
 
-		inline float& getFusionThreshExponentMinRef() { return fusionThreshExponentMin; } // for GUI
-		inline float& getFusionThreshExponentMaxRef() { return fusionThreshExponentMax; } // for GUI
+		inline float& getAnnihilationThreshMinRef() { return annihilationThreshMin; }
+		inline float& getAnnihilationThreshMaxRef() { return annihilationThreshMax; }
+
+		inline float& getFusionThreshExponentMinRef() { return fusionThreshExponentMin; }
+		inline float& getFusionThreshExponentMaxRef() { return fusionThreshExponentMax; }
+
+		inline float& getPairProductionThreshMinRef() { return pairProductionThreshMin; }
+		inline float& getPairProductionThreshMaxRef() { return pairProductionThreshMax; }
 
 		float getExpansionScalar() const;
 		float getForceMultiplier() const;

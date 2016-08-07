@@ -56,7 +56,7 @@ namespace nm
 		void onParticlesUpdate(ofShader& shader);
 		void onParticlesDraw(ofShader& shader);
 
-		Environment::Ptr universe;
+		Environment::Ptr environment;
 
 		ofxGpuParticles trailParticles;
 		ofImage particleImage;

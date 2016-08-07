@@ -85,6 +85,8 @@ namespace entropy
 			persistent.add("environment.annihilationThreshMax", environment->getAnnihilationThreshMaxRef(), 0.f, 1.f);
 			persistent.add("environment.fusionThreshExponentMin", environment->getFusionThreshExponentMinRef(), -6.f, -5.f);
 			persistent.add("environment.fusionThreshExponentMax", environment->getFusionThreshExponentMaxRef(), -6.f, -5.f);
+			persistent.add("environment.pairProductionThreshMin", environment->getPairProductionThreshMinRef(), 0.f, 1.f);
+			persistent.add("environment.pairProductionThreshMax", environment->getPairProductionThreshMaxRef(), 0.f, 1.f);
 
 			persistent.load("settings/settings.xml");
 		}
