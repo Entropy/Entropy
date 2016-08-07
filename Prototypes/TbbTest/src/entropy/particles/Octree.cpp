@@ -35,4 +35,5 @@
 namespace nm
 {
 	ofVboMesh Octree<Particle>::boxMesh;
+	float Octree<Particle>::forceMultiplier = 5e7;
 }

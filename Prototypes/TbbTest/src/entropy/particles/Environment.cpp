@@ -1,5 +1,5 @@
 /*
- *  Universe.h
+ *  Environment.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,46 +29,27 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#pragma once
-
-#include "ofMain.h"
+#include "Environment.h"
 
 namespace nm
 {
-	struct PhotonEventArgs
+	Environment::Environment(const glm::vec3& min, const glm::vec3& max) :
+		min(min),
+		max(max),
+		dims(max - min),
+		energy(1.f),
+		forceMultiplierMin(50000000),
+		forceMultiplierMax(50000000)
 	{
-		glm::vec3* photons;
-		unsigned numPhotons;
-	};
+	}
 
-	struct PairProductionEventArgs
+	float Environment::getExpansionScalar() const
 	{
-		glm::vec3 position;
-		glm::vec3 velocity;
-	};
+		return 1.f + (.5f - .5f * energy);
+	}
 
-	class Universe
+	float Environment::getForceMultiplier() const
 	{
-	public:
-		typedef shared_ptr<Universe> Ptr;
-
-		Universe(const glm::vec3& min, const glm::vec3& max);
-
-		inline glm::vec3 getMin() const { return min; }
-		inline glm::vec3 getMax() const { return max; }
-		inline glm::vec3 getDims() const { return dims; }
-
-		inline float getAge() const { return age; }
-		inline void setAge(float age) { this->age = age; }
-		inline float& getAgeRef() { return age; } // for GUI
-
-		float getExpansionScalar() const;
-
-		ofEvent<PairProductionEventArgs> pairProductionEvent;
-		ofEvent<PhotonEventArgs> photonEvent;
-
-	private:
-		glm::vec3 min, max, dims;
-		float age; // from 0 to 1
-    };
+		return forceMultiplierMin + energy * (forceMultiplierMax - forceMultiplierMin);
+	}
 }

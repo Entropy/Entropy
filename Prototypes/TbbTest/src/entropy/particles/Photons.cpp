@@ -38,7 +38,7 @@ namespace nm
 	{
 	}
 
-	void Photons::init(Universe::Ptr universe)// , const glm::vec3& min, const glm::vec3& max)
+	void Photons::init(Environment::Ptr universe)// , const glm::vec3& min, const glm::vec3& max)
 	{
 		this->universe = universe;
 		//this->min = min;
@@ -128,7 +128,7 @@ namespace nm
 	void Photons::onParticlesDraw(ofShader& shader)
 	{
 		shader.setUniformTexture("tex", particleImage, 4);
-		shader.setUniform1f("universeAge", universe->getAge());
+		shader.setUniform1f("energy", universe->getEnergy());
 	}
 
 	void Photons::onPhoton(PhotonEventArgs& args)

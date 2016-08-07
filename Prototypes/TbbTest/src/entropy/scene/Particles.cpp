@@ -36,7 +36,7 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			universe = nm::Universe::Ptr(new nm::Universe(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
+			universe = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
 			particleSystem.init(universe);
 			photons.init(universe);
 
@@ -78,7 +78,7 @@ namespace entropy
 				persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));
 			}
 			persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
-			persistent.add("universe->age", universe->getAgeRef(), 0.f, 1.f);
+			persistent.add("universe->energy", universe->getEnergyRef(), 0.f, 1.f);
 			persistent.load("settings/settings.xml");
 		}
 

@@ -61,7 +61,7 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::init(Universe::Ptr universe)
+	void ParticleSystem::init(Environment::Ptr universe)
 	{
 		this->universe = universe;
 		//this->min = min;
@@ -160,6 +160,8 @@ namespace nm
 		const glm::vec3 min = universe->getMin();
 		const glm::vec3 max = universe->getMax();
 		const float expansionScalar = universe->getExpansionScalar();
+		Octree<Particle>::setForceMultiplier(universe->getForceMultiplier());
+		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
 			for (size_t i = r.begin(); i != r.end(); ++i)
@@ -172,7 +174,7 @@ namespace nm
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
-				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);
+				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);// , forceMultiplier);
 
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
