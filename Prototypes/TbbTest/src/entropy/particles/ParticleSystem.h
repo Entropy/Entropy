@@ -63,7 +63,7 @@ namespace nm
         ParticleSystem();
         ~ParticleSystem();
         
-		void init(Environment::Ptr universe);
+		void init(Environment::Ptr environment);
         
         void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
         
@@ -84,7 +84,7 @@ namespace nm
     private:
 		void onPairProduction(PairProductionEventArgs& args);
 
-		Environment::Ptr universe;
+		Environment::Ptr environment;
         Octree<Particle> octree;
         nm::Particle* particles;
         tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];

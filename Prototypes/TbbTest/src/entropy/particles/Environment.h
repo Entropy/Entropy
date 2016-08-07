@@ -62,6 +62,9 @@ namespace nm
 		inline void setEnergy(float energy) { this->energy = energy; }
 		inline float& getEnergyRef() { return energy; } // for GUI
 
+		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; } // for GUI
+		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; } // for GUI
+
 		float getExpansionScalar() const;
 
 		float getForceMultiplier() const;

@@ -49,7 +49,7 @@ namespace entropy
 			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
-			nm::Environment::Ptr universe;
+			nm::Environment::Ptr environment;
 			
 		protected:
 			virtual BaseParameters & getParameters() override

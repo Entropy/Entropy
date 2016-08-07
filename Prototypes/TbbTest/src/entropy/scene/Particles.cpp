@@ -36,9 +36,9 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			universe = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
-			particleSystem.init(universe);
-			photons.init(universe);
+			environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
+			particleSystem.init(environment);
+			photons.init(environment);
 
 #ifdef _TEAPOT
 			ofVboMesh mesh;
@@ -78,7 +78,10 @@ namespace entropy
 				persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));
 			}
 			persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
-			persistent.add("universe->energy", universe->getEnergyRef(), 0.f, 1.f);
+			persistent.add("environment.energy", environment->getEnergyRef(), 0.f, 1.f);
+			persistent.add("environment.forceMultiplierMin", environment->getForceMultiplierMinRef(), 1e7, 1e8);
+			persistent.add("environment.forceMultiplierMax", environment->getForceMultiplierMaxRef(), 1e7, 1e8);
+
 			persistent.load("settings/settings.xml");
 		}
 

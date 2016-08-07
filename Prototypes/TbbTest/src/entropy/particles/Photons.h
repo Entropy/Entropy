@@ -47,7 +47,7 @@ namespace nm
 
 		vector<glm::vec3>& getPosnsRef() { return posns; }
 
-		void init(Environment::Ptr universe);
+		void init(Environment::Ptr environment);
 		void update();
 		void draw();
 

@@ -63,7 +63,7 @@ namespace nm
 
 	void ParticleSystem::init(Environment::Ptr universe)
 	{
-		this->universe = universe;
+		this->environment = universe;
 		//this->min = min;
 		//this->max = max;
 		//dims = max - min;
@@ -157,10 +157,10 @@ namespace nm
 		const float dt = ofGetLastFrameTime();
 		tbb::atomic<unsigned> typeIndices[Particle::NUM_TYPES];
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) typeIndices[i] = 0;
-		const glm::vec3 min = universe->getMin();
-		const glm::vec3 max = universe->getMax();
-		const float expansionScalar = universe->getExpansionScalar();
-		Octree<Particle>::setForceMultiplier(universe->getForceMultiplier());
+		const glm::vec3 min = environment->getMin();
+		const glm::vec3 max = environment->getMax();
+		const float expansionScalar = environment->getExpansionScalar();
+		Octree<Particle>::setForceMultiplier(environment->getForceMultiplier());
 		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
@@ -292,7 +292,7 @@ namespace nm
 			PhotonEventArgs photonEventArgs;
 			photonEventArgs.photons = newPhotons;
 			photonEventArgs.numPhotons = numNewPhotons;
-			ofNotifyEvent(universe->photonEvent, photonEventArgs, this);
+			ofNotifyEvent(environment->photonEvent, photonEventArgs, this);
 		}
 
 		// update the texture buffer objects with the new positions of particles
@@ -385,10 +385,10 @@ namespace nm
 			}
 			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
 
-			const float expansionScalar = universe->getExpansionScalar();
-			const glm::vec3 min = expansionScalar * universe->getMin();
-			const glm::vec3 max = expansionScalar * universe->getMax();
-			const glm::vec3 dims = expansionScalar * universe->getDims();
+			const float expansionScalar = environment->getExpansionScalar();
+			const glm::vec3 min = expansionScalar * environment->getMin();
+			const glm::vec3 max = expansionScalar * environment->getMax();
+			const glm::vec3 dims = expansionScalar * environment->getDims();
 
 			// stop using ofDrawBox for walls and change it to one mesh
 			ofDrawBox(0.f, 0.f, min.z - 5.f, dims.x, dims.y, 10.f); // back wall
