@@ -199,6 +199,9 @@
     <ClCompile Include="src\entropy\popup\Image.cpp">
       <Filter>src\entropy\popup</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp">
+      <Filter>addons\ofxTextureRecorder\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -302,6 +305,12 @@
     </Filter>
     <Filter Include="src\entropy\popup">
       <UniqueIdentifier>{55190f11-fd57-451d-a04b-d8fd42041720}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTextureRecorder">
+      <UniqueIdentifier>{04d7a06e-5490-4949-9aa5-8890895a142b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTextureRecorder\src">
+      <UniqueIdentifier>{9179d57c-49ed-4789-8125-f06018bf5c7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +547,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\popup\Image.h">
       <Filter>src\entropy\popup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h">
+      <Filter>addons\ofxTextureRecorder\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

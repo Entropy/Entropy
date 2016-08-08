@@ -194,6 +194,7 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
     <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
     <ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp" />
+    <ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp" />
     <ClCompile Include="..\..\addons\ofxTimecode\src\ofxTimecode.cpp" />
     <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_linux.cpp" />
     <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_win.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
     <ClInclude Include="..\..\addons\ofxRange\src\ofRange.h" />
     <ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h" />
+    <ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h" />
     <ClInclude Include="..\..\addons\ofxTimecode\src\ofxTimecode.h" />
     <ClInclude Include="..\..\addons\ofxTimeline\src\ofxHotKeys.h" />
     <ClInclude Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.h" />

@@ -1,7 +1,0 @@
-{
-    "marching_cubes": {
-        "resolution": "128",
-        "scale": "1",
-        "threshold": "0.39"
-    }
-}

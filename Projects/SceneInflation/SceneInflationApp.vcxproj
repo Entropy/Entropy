@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>VaporTest</RootNamespace>
+    <RootNamespace>SceneInflationApp</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -50,22 +50,26 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneInflationLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneInflationLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneInflationLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneInflationLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -99,10 +103,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-src;
-..\..\addons\ofxTextureRecorder\src;
-..\..\addons\ofxVolumetrics\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -111,7 +112,8 @@ src;
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent />
+    <PostBuildEvent>
+    </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
@@ -127,10 +129,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-src;
-..\..\addons\ofxTextureRecorder\src;
-..\..\addons\ofxVolumetrics\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -138,7 +137,8 @@ src;
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent />
+    <PostBuildEvent>
+    </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
@@ -151,10 +151,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-src;
-..\..\addons\ofxTextureRecorder\src;
-..\..\addons\ofxVolumetrics\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -167,7 +164,8 @@ src;
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent />
+    <PostBuildEvent>
+    </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
@@ -180,10 +178,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);
-src;
-..\..\addons\ofxTextureRecorder\src;
-..\..\addons\ofxVolumetrics\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -195,7 +190,8 @@ src;
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent />
+    <PostBuildEvent>
+    </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
@@ -203,42 +199,21 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
-    <ClCompile Include="src\entropy\inflation\GPUMarchingCubes.cpp" />
-    <ClCompile Include="src\entropy\inflation\NoiseField.cpp" />
-    <ClCompile Include="src\entropy\scene\Inflation.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
-    <ClInclude Include="src\entropy\inflation\Constants.h" />
-    <ClInclude Include="src\entropy\inflation\GPUMarchingCubes.h" />
-    <ClInclude Include="src\entropy\inflation\NoiseField.h" />
-    <ClInclude Include="src\entropy\scene\Inflation.h" />
     <ClInclude Include="src\ofApp.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\EntropyLib\EntropyLib.vcxproj">
+    <ProjectReference Include="..\..\Projects\EntropyLib\EntropyLib.vcxproj">
       <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="SceneInflationLib.vcxproj">
+      <Project>{cb3f0a24-afe0-46d5-a08e-224654c42a55}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -247,20 +222,6 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_blur.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_bright.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\frag_tonemap.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\marching_cubes_geom.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\normalShader.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\normalShader.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\passthrough_vert.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\vert_blur.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\vert_full_quad.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\volumetrics_frag.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Inflation\shaders\volumetrics_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
