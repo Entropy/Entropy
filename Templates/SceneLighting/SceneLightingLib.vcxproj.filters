@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\ofApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
     </ClCompile>
@@ -33,47 +27,44 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons">
       <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders">
-      <UniqueIdentifier>{5efda141-efb1-4c71-a5b5-dc8533393e7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\inc">
-      <UniqueIdentifier>{a5afcac7-a699-4d16-920e-35feffac80b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxRenderToolkit">
-      <UniqueIdentifier>{21dd8001-d096-419e-8ee0-89b9860e756d}</UniqueIdentifier>
+      <UniqueIdentifier>{6e8aa595-998c-4918-a6a5-b16183966b25}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src">
-      <UniqueIdentifier>{f0c93ec7-130d-44e4-91c3-e9a6718964d0}</UniqueIdentifier>
+      <UniqueIdentifier>{9e661a55-b000-4d39-b1dc-1d8ac5d9c171}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit">
-      <UniqueIdentifier>{d3a59a81-e949-455e-b913-7f099db5f674}</UniqueIdentifier>
+      <UniqueIdentifier>{e67ac640-dc83-465c-b76c-0e7edf16b62a}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting">
-      <UniqueIdentifier>{275f1829-8669-43b2-9837-91b9d3e643bc}</UniqueIdentifier>
+      <UniqueIdentifier>{e63b6800-00a2-4a2c-b252-960dabbef702}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr">
-      <UniqueIdentifier>{24bde30a-bacd-4b0c-9f8e-e272a1d866de}</UniqueIdentifier>
+      <UniqueIdentifier>{af6430a2-2d59-47e3-bae5-c51cb8e1335b}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\util">
-      <UniqueIdentifier>{8e964bea-4509-4510-94f7-3562a2ef65d6}</UniqueIdentifier>
+      <UniqueIdentifier>{1a10dbf8-fb48-4b9d-8871-09a2b15aa771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{5c3c21a4-51b2-4565-95c6-65f497fb1fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\inc">
+      <UniqueIdentifier>{18a8ed6c-e939-49e5-92d1-89d226a5578b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c5a33991-8827-4361-8cb3-2c6cb543b24e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entropy">
-      <UniqueIdentifier>{dbc8c0a1-20d2-4918-8cac-b129b9f29d37}</UniqueIdentifier>
+      <UniqueIdentifier>{6815a759-af48-47fc-b4f8-e261e6a64eb2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entropy\scene">
-      <UniqueIdentifier>{8de01cb1-24c4-42da-b621-98c8e4cd9592}</UniqueIdentifier>
+      <UniqueIdentifier>{3f079bf8-56a0-4168-bf84-2fd607f4ad77}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit.h">
       <Filter>addons\ofxRenderToolkit\src</Filter>
     </ClInclude>
@@ -128,9 +119,6 @@
     <ClInclude Include="src\entropy\scene\Lighting.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\main.frag">
