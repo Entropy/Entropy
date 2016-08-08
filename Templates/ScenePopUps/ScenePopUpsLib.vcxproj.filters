@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c5a33991-8827-4361-8cb3-2c6cb543b24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{6815a759-af48-47fc-b4f8-e261e6a64eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{3f079bf8-56a0-4168-bf84-2fd607f4ad77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\entropy\scene\PopUps.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\entropy\scene\PopUps.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

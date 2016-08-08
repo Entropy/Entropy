@@ -7,9 +7,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\scene\PopUps.cpp">
-      <Filter>src\entropy\scene</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -18,19 +15,10 @@
     <Filter Include="addons">
       <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\entropy">
-      <UniqueIdentifier>{e4298dbb-1318-4c58-803e-dc8a763a5194}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\entropy\scene">
-      <UniqueIdentifier>{d0b261bb-24f9-4e67-9375-bda8e57e2e89}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\scene\PopUps.h">
-      <Filter>src\entropy\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

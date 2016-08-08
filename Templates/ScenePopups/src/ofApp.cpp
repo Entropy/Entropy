@@ -6,20 +6,16 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	ofBackground(ofColor::black);
-
 	// Add Scenes to the Manager.
-	auto sceneManager = entropy::GetSceneManager();
-	auto scenePopUps = make_shared<entropy::scene::PopUps>();
-	sceneManager->addScene(scenePopUps);
-	sceneManager->setCurrentScene(scenePopUps->getName());
+	auto manager = entropy::GetSceneManager();
+	auto scene = make_shared<entropy::scene::PopUps>();
+	manager->addScene(scene);
+	manager->setCurrentScene(scene->getName());
 }
 
 //--------------------------------------------------------------
-void ofApp::exit()
-{
-	// TODO: Figure out why just letting the destructor do its thing crashes the app.
-	entropy::util::App::Destroy();
+void ofApp::exit(){
+
 }
 
 //--------------------------------------------------------------
