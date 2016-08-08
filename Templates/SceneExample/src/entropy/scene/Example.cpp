@@ -1,25 +1,25 @@
-#include "Template.h"
+#include "Example.h"
 
 namespace entropy
 {
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		Template::Template()
+		Example::Example()
 			: Base()
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
 		}
 		
 		//--------------------------------------------------------------
-		Template::~Template()
+		Example::~Example()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Set up your crap here!
-		void Template::setup()
+		void Example::setup()
 		{
 			ENTROPY_SCENE_EXIT_LISTENER;
 			ENTROPY_SCENE_RESIZE_LISTENER;
@@ -33,7 +33,7 @@ namespace entropy
 		
 		//--------------------------------------------------------------
 		// Clean up your crap here!
-		void Template::exit()
+		void Example::exit()
 		{
 
 		}
@@ -41,14 +41,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Resize your content here. 
 		// Note that this is not the window size but the canvas size.
-		void Template::resize(ofResizeEventArgs & args)
+		void Example::resize(ofResizeEventArgs & args)
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void Template::update(double & dt)
+		void Example::update(double & dt)
 		{
 			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
 			{
@@ -58,14 +58,14 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void Template::drawBack()
+		void Example::drawBack()
 		{
 
 		}
 		
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Template::drawWorld()
+		void Example::drawWorld()
 		{
 			ofPushStyle();
 			{
@@ -84,14 +84,14 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
-		void Template::drawFront()
+		void Example::drawFront()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void Template::gui(ofxPreset::Gui::Settings & settings)
+		void Example::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
@@ -110,7 +110,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Do something after the parameters are saved.
 		// You can save other stuff to the same json object here too.
-		void Template::serialize(nlohmann::json & json)
+		void Example::serialize(nlohmann::json & json)
 		{
 
 		}
@@ -119,7 +119,7 @@ namespace entropy
 		// Do something after the parameters are loaded.
 		// You can load your other stuff here from that json object.
 		// You can also set any refresh flags if necessary.
-		void Template::deserialize(const nlohmann::json & json)
+		void Example::deserialize(const nlohmann::json & json)
 		{
 
 		}

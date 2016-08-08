@@ -245,7 +245,6 @@
     <ClCompile Include="src\entropy\render\Canvas.cpp" />
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Manager.cpp" />
-    <ClCompile Include="src\entropy\scene\Template.cpp" />
     <ClCompile Include="src\entropy\util\App.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -323,7 +322,6 @@
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Manager.h" />
-    <ClInclude Include="src\entropy\scene\Template.h" />
     <ClInclude Include="src\entropy\util\App.h" />
     <ClInclude Include="src\entropy\util\GLError.h" />
     <ClInclude Include="src\entropy\util\Mapping.h" />

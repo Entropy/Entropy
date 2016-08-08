@@ -6,17 +6,17 @@ namespace entropy
 {
 	namespace scene
 	{
-		class Template
+		class Example
 			: public Base
 		{
 		public:
 			string getName() const override 
 			{
-				return "entropy::scene::Template";
+				return "entropy::scene::Example";
 			}
 
-			Template();
-			~Template();
+			Example();
+			~Example();
 
 			void setup();
 			void exit();

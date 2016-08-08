@@ -7,9 +7,6 @@
     <ClCompile Include="src\entropy\scene\Manager.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\scene\Template.cpp">
-      <Filter>src\entropy\scene</Filter>
-    </ClCompile>
     <ClCompile Include="src\entropy\render\Canvas.cpp">
       <Filter>src\entropy\render</Filter>
     </ClCompile>
@@ -318,9 +315,6 @@
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\scene\Manager.h">
-      <Filter>src\entropy\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\scene\Template.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\render\Canvas.h">
