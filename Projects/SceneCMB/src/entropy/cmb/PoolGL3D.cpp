@@ -36,6 +36,7 @@ namespace entropy
 			const auto origin = glm::vec3(0.0f, GetCanvasHeight() - this->dimensions.y, 0.0f);
 
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+
 			this->mesh.addVertex(origin + glm::vec3(0.0f, 0.0f, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, 0.0f, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(0.0, this->dimensions.y, 0.0f));
@@ -45,12 +46,12 @@ namespace entropy
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, 0.0f, 0.0f));
-			this->mesh.addVertex(origin + glm::vec3(0.0f, this->dimensions.y, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, this->dimensions.y, 0.0f));
+			this->mesh.addVertex(origin + glm::vec3(0.0f, this->dimensions.y, 0.0f));
 
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.0f));
-			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 
 			// Load the shaders.
 			this->dropShader.load("shaders/passthru.vert", "shaders/drop3D.frag", "shaders/layer.geom");
@@ -146,8 +147,6 @@ namespace entropy
 			this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
 			this->volumetrics.setVolumeTextureFilterMode(this->parameters.volumetrics.filterMode);
 			this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->parameters.volumetrics.volumeSize, 0);
-
-			//this->mesh.draw();
 		}
 	}
 }

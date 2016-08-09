@@ -67,11 +67,7 @@ namespace entropy
 		void CMB::drawWorld()
 		{
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
-			glDisable(GL_CULL_FACE);
 			this->drawPool();
-			glEnable(GL_CULL_FACE);
-
-			ofDrawAxis(1.0f);
 #endif
 		}
 

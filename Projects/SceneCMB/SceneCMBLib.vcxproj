@@ -235,6 +235,10 @@
     <ClInclude Include="src\entropy\scene\CMB.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag_array.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert_array.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\CMB\cl\cmb.cl" />
     <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\copy3D.frag" />
     <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\drop3D.frag" />

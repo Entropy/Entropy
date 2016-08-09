@@ -99,6 +99,9 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{c8a239c3-1059-4256-beaf-4615545cdb49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="addons\ofxVolumetrics\src\shaders">
+      <UniqueIdentifier>{825661b5-2453-41e8-8df7-c944f7db4f38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
@@ -201,6 +204,18 @@
     </None>
     <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple3D.frag">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag.glsl">
+      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
+    </None>
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag_array.glsl">
+      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
+    </None>
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert.glsl">
+      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
+    </None>
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert_array.glsl">
+      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
