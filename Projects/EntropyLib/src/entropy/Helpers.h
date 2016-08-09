@@ -90,6 +90,29 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
+	inline string GetSharedExportsPath(bool absolute = true)
+	{
+		static string exportsPath;
+		if (exportsPath.empty())
+		{
+			exportsPath = ofFilePath::addTrailingSlash("../../../Resources/exports");
+		}
+
+		if (absolute)
+		{
+			static string exportsPathAbs;
+			if (exportsPathAbs.empty())
+			{
+				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
+				exportsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
+			}
+			return exportsPathAbs;
+		}
+
+		return exportsPath;
+	}
+
+	//--------------------------------------------------------------
 	inline string GetCurrentSceneDataPath(const string & file = "")
 	{
 		auto currentScene = GetSceneManager()->getCurrentScene();

@@ -374,6 +374,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		int Base::getCurrentTimelineFrame()
+		{
+			return this->timeline.getCurrentFrame();
+		}
+
+		//--------------------------------------------------------------
 		string Base::getAssetsPath(const string & file)
 		{
 			if (this->assetsPath.empty())
@@ -441,6 +447,12 @@ namespace entropy
 
 			currentPresetPath.append(file);
 			return currentPresetPath;
+		}
+
+		//--------------------------------------------------------------
+		const string & Base::getCurrentPresetName() const
+		{
+			return this->currPreset;
 		}
 
 		//--------------------------------------------------------------
@@ -631,6 +643,25 @@ namespace entropy
 		void Base::addCameraKeyframe()
 		{
 			this->cameraTrack->addKeyframe();
+		}
+
+		//--------------------------------------------------------------
+		void Base::beginExport()
+		{
+			this->timeline.setFrameBased(true);
+			this->cameraTrack->setTimelineInOutToTrack();
+			this->cameraTrack->lockCameraToTrack = true;
+			this->timeline.setCurrentTimeToInPoint();
+			this->timeline.play();
+		}
+
+		//--------------------------------------------------------------
+		void Base::endExport()
+		{
+			this->timeline.stop();
+			this->timeline.setFrameBased(false);
+			this->timeline.setInOutRange(ofRange(0, 1));
+			this->cameraTrack->lockCameraToTrack = false;
 		}
 	}
 }

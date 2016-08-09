@@ -82,11 +82,14 @@ namespace entropy
 			string getPresetPath(const string & preset = "");
 			string getCurrentPresetPath(const string & file = "");
 
+			const string & getCurrentPresetName() const;
+
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);
+			int getCurrentTimelineFrame();
 
 			// Camera
 			void setCameraLocked(bool cameraLocked);
@@ -97,6 +100,10 @@ namespace entropy
 			 
 			// Post-Processing
 			virtual bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo);
+
+			// Export
+			void beginExport();
+			void endExport();
 
 		protected:
 			// Events

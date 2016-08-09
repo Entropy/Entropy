@@ -3,6 +3,7 @@
 #include "ofMain.h"
 
 #include "ofxPreset.h"
+#include "ofxTextureRecorder.h"
 #include "ofxWarp.h"
 
 namespace entropy
@@ -110,6 +111,9 @@ namespace entropy
 			ofFbo fboDraw;
 			ofFbo fboPost;
 			ofFbo::Settings fboSettings;
+
+			bool exportFrames;
+			ofxTextureRecorder textureRecorder;
 
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
 			size_t focusedIndex;

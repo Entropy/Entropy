@@ -69,13 +69,6 @@ namespace entropy
 				
 				PARAM_DECLARE("CMB", tintColor);
 			} parameters;
-
-			//// Export
-			//void beginExport();
-			//void endExport();
-
-			//bool m_bExportFrames;
-			//std::string m_exportPath;
 		};
 	}
 }

@@ -104,6 +104,20 @@ namespace entropy
 					this->warps[i]->draw(texture, this->srcAreas[i]);
 				}
 			}
+
+			if (this->exportFrames)
+			{
+				auto scene = GetSceneManager()->getCurrentScene();
+				if (scene)
+				{
+					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
+				}
+				else
+				{
+					// Nope, no Scene.
+					this->exportFrames = false;
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -310,71 +324,114 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Canvas", settings))
 			{
-				if (ImGui::Button("Save"))
+				if (ImGui::CollapsingHeader("Render", nullptr, true, true))
 				{
-					this->saveSettings();
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Load"))
-				{
-					this->loadSettings();
-				}
-
-				ofxPreset::Gui::AddParameter(this->parameters.fillWindow);
-
-				if (!this->parameters.fillWindow)
-				{
-					ImGui::ListBoxHeader("List", 3);
-					for (auto i = 0; i < this->warps.size(); ++i)
+					if (ImGui::Checkbox("Export", &this->exportFrames))
 					{
-						auto name = "Warp " + ofToString(i);
-						ImGui::Checkbox(name.c_str(), &this->openGuis[i]);
-					}
-					ImGui::ListBoxFooter();
-
-					if (this->warps.size() < MAX_NUM_WARPS)
-					{
-						if (ImGui::Button("Add Warp..."))
+						auto scene = GetSceneManager()->getCurrentScene();
+						if (scene)
 						{
-							ImGui::OpenPopup("Warps");
-							ImGui::SameLine();
-						}
-						if (ImGui::BeginPopup("Warps"))
-						{
-							static vector<string> warpNames;
-							if (warpNames.empty())
+							if (this->exportFrames)
 							{
-								warpNames.push_back("Bilinear");
-								warpNames.push_back("Perspective");
-								warpNames.push_back("Perspective Bilinear");
-							}
-							for (auto i = 0; i < warpNames.size(); ++i)
-							{
-								if (ImGui::Selectable(warpNames[i].c_str()))
+								// Build with a suggested name for the export folder.
+								ostringstream oss;
+								auto tokens = ofSplitString(scene->getName(), "::", true, true);
+								oss << tokens.back() << "-" << scene->getCurrentPresetName() << "-" << ofGetTimestampString("%Y%m%d-%H%M%S");
+								auto folderName = ofSystemTextBoxDialog("Save to folder", oss.str());
+								if (folderName.length())
 								{
-									if (i == 0)
-									{
-										this->addWarp(ofxWarp::WarpBase::TYPE_BILINEAR);
-									}
-									else if (i == 1)
-									{
-										this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE);
-									}
-									else
-									{
-										this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE_BILINEAR);
-									}
+									auto exportPath = ofFilePath::addTrailingSlash(GetSharedExportsPath().append(folderName));
+									this->textureRecorder.setup(this->getWidth(), this->getHeight(), OF_PIXELS_RGBA, OF_IMAGE_FORMAT_PNG, exportPath);
+									scene->beginExport();
+								}
+								else
+								{
+									// Nope, no folder selected.
+									this->exportFrames = false;
 								}
 							}
-							ImGui::EndPopup();
+							else
+							{
+								scene->endExport();
+								this->exportFrames = false;
+							}
 						}
-						ImGui::SameLine();
-					}
-					if (!this->warps.empty())
-					{
-						if (ImGui::Button("Remove Warp"))
+						else
 						{
-							this->removeWarp();
+							// Nope, no Scene.
+							this->exportFrames = false;
+						}
+					}
+				}
+				
+				if (ImGui::CollapsingHeader("Warping", nullptr, true, true))
+				{
+					if (ImGui::Button("Save"))
+					{
+						this->saveSettings();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Load"))
+					{
+						this->loadSettings();
+					}
+
+					ofxPreset::Gui::AddParameter(this->parameters.fillWindow);
+
+					if (!this->parameters.fillWindow)
+					{
+						ImGui::ListBoxHeader("List", 3);
+						for (auto i = 0; i < this->warps.size(); ++i)
+						{
+							auto name = "Warp " + ofToString(i);
+							ImGui::Checkbox(name.c_str(), &this->openGuis[i]);
+						}
+						ImGui::ListBoxFooter();
+
+						if (this->warps.size() < MAX_NUM_WARPS)
+						{
+							if (ImGui::Button("Add Warp..."))
+							{
+								ImGui::OpenPopup("Warps");
+								ImGui::SameLine();
+							}
+							if (ImGui::BeginPopup("Warps"))
+							{
+								static vector<string> warpNames;
+								if (warpNames.empty())
+								{
+									warpNames.push_back("Bilinear");
+									warpNames.push_back("Perspective");
+									warpNames.push_back("Perspective Bilinear");
+								}
+								for (auto i = 0; i < warpNames.size(); ++i)
+								{
+									if (ImGui::Selectable(warpNames[i].c_str()))
+									{
+										if (i == 0)
+										{
+											this->addWarp(ofxWarp::WarpBase::TYPE_BILINEAR);
+										}
+										else if (i == 1)
+										{
+											this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE);
+										}
+										else
+										{
+											this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE_BILINEAR);
+										}
+									}
+								}
+								ImGui::EndPopup();
+							}
+							ImGui::SameLine();
+						}
+						if (!this->warps.empty())
+						{
+							if (ImGui::Button("Remove Warp"))
+							{
+								this->removeWarp();
+							}
 						}
 					}
 				}

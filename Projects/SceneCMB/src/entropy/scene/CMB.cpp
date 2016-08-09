@@ -53,7 +53,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void CMB::update(double & dt)
 		{
-			//this->pool.parameters.base.dropping = m_timeline.isSwitchOn("Dropping");
 			this->pool.update();
 		}
 
@@ -77,48 +76,18 @@ namespace entropy
 #if defined(COMPUTE_GL_2D) || defined(COMPUTE_CL_2D)
 			this->drawPool();
 #endif
-
-			//if (m_bExportFrames)
-			//{
-			//	if (m_timeline.getIsPlaying())
-			//	{
-			//		ofSaveScreen(m_exportPath + ofToString(m_timeline.getCurrentFrame(), 5, '0') + ".png");
-			//	}
-			//	else
-			//	{
-			//		m_bExportFrames = false;
-			//		endExport();
-			//	}
-			//}
 		}
 
 		//--------------------------------------------------------------
 		void CMB::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, false, nullptr))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
 				ofxPreset::Gui::AddGroup(this->pool.parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
-
-			//if (ImGui::Checkbox("Export", &m_bExportFrames))
-			//{
-			//	if (m_bExportFrames)
-			//	{
-			//		std::string folderName = ofSystemTextBoxDialog("Save to folder", ofGetTimestampString("%Y%m%d-%H%M%S"));
-			//		if (folderName.length())
-			//		{
-			//			m_exportPath = ofToDataPath("exports/" + folderName + "/");
-			//			beginExport();
-			//		}
-			//	}
-			//	else
-			//	{
-			//		endExport();
-			//	}
-			//}
 		}
 
 		//--------------------------------------------------------------
@@ -144,30 +113,5 @@ namespace entropy
 			}
 			ofPopStyle();
 		}
-
-		////--------------------------------------------------------------
-		//void ofApp::beginExport()
-		//{
-		//	this->pool.setDimensions(m_dimensionExport);
-		//	this->pool.setup();
-
-		//	m_timeline.setFrameBased(true);
-		//	m_cameraTrack->setTimelineInOutToTrack();
-		//	m_cameraTrack->lockCameraToTrack = true;
-		//	m_timeline.setCurrentTimeToInPoint();
-		//	m_timeline.play();
-		//}
-
-		////--------------------------------------------------------------
-		//void ofApp::endExport()
-		//{
-		//	m_timeline.stop();
-		//	m_timeline.setFrameBased(false);
-		//	m_timeline.setInOutRange(ofRange(0, 1));
-		//	m_cameraTrack->lockCameraToTrack = false;
-
-		//	this->pool.setDimensions(m_dimensionEditor);
-		//	this->pool.setup();
-		//}
 	}
 }

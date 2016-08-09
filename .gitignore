@@ -146,3 +146,7 @@ _default
 Resources/assets/*
 !Resources/assets/.gitkeep
 !Resources/assets/.stfolder
+
+# Exports (not managed)
+Resources/exports/
+!Resources/exports/.gitkeep
