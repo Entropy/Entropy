@@ -96,7 +96,12 @@ namespace entropy
 		void CMB::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			ofxPreset::Gui::AddGroup(this->parameters, settings);
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, false, nullptr))
+			{
+				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
+				ofxPreset::Gui::AddGroup(this->pool.parameters, settings);
+			}
+			ofxPreset::Gui::EndWindow(settings);
 
 			//if (ImGui::Checkbox("Export", &m_bExportFrames))
 			//{
