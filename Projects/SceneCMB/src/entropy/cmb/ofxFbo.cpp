@@ -7,7 +7,6 @@
 //
 
 #include "ofxFbo.h"
-#include "GLError.h"
 
 //----------------------------------------------------------
 ofxFbo::ofxFbo()

@@ -1,5 +1,7 @@
 #include "CmbSceneGL2D.h"
 
+#ifdef COMPUTE_GL_2D
+
 namespace ent
 {
 	//--------------------------------------------------------------
@@ -103,3 +105,5 @@ namespace ent
 		m_textures[m_prevIdx].draw(0, 0);
 	}
 }
+#endif // COMPUTE_GL_2D
+

@@ -1,5 +1,7 @@
 #include "CmbSceneCL2D.h"
 
+#ifdef COMPUTE_CL_2D
+
 namespace ent
 {
 	//--------------------------------------------------------------
@@ -65,3 +67,5 @@ namespace ent
 		m_clImages[m_prevIdx].draw(0, 0);
 	}
 }
+
+#endif // COMPUTE_CL_2D

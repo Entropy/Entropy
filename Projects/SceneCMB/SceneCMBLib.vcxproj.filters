@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.cpp">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\CmbSceneCL2D.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\CmbSceneCL3D.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\CmbSceneGL2D.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\ofxFbo.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\OpenCLImage3D.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\PoolBase.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\cmb\PoolGL3D.cpp">
+      <Filter>src\entropy\cmb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\scene\CMB.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{e0a4ff83-1a13-4f2e-8421-cb35e578d0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxVolumetrics">
+      <UniqueIdentifier>{de11ba03-5f3b-4564-bd03-f117881dc9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxVolumetrics\src">
+      <UniqueIdentifier>{3db7d1e6-2ff0-4b96-935f-f88854c61308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAOpenCL">
+      <UniqueIdentifier>{86a10d05-48a4-4a53-ace1-cb20d0077591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAOpenCL\src">
+      <UniqueIdentifier>{1165e2c9-223e-4971-b5fd-97482a149e99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\cmb">
+      <UniqueIdentifier>{72321b90-1b36-4f8c-9794-01156dec304b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cl">
+      <UniqueIdentifier>{04951e75-5b70-48e6-84a6-b8066035d74d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{c8a239c3-1059-4256-beaf-4615545cdb49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBufferManagedT.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImagePingPong.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLTypes.h">
+      <Filter>addons\ofxMSAOpenCL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\CmbSceneCL2D.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\CmbSceneCL3D.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\CmbSceneGL2D.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\ofxFbo.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\OpenCLImage3D.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\PoolBase.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\PoolGL3D.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\CMB.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\cmb\Constants.h">
+      <Filter>src\entropy\cmb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\cl\cmb.cl">
+      <Filter>cl</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\copy3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\drop3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\layer.geom">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\passthru.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

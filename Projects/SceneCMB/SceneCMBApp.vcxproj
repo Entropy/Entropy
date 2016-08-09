@@ -50,22 +50,26 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimeline.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="SceneCMBLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -99,15 +103,15 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -119,7 +123,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -127,8 +131,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -139,7 +143,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -150,8 +154,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -162,7 +166,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;$(ProjectDir)\..\..\Shared\libs\gli;$(ProjectDir)\..\..\Shared\libs\glm;$(OF_ROOT)\addons\ofxImGui\src;$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;$(OF_ROOT)\addons\ofxMSAOpenCL\src;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib;$(OF_ROOT)\addons\ofxMSAOpenCL\libs\OpenCL\lib\vs;$(OF_ROOT)\addons\ofxVolumetrics\src;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gl3;$(OF_ROOT)\addons\ofxVolumetrics\src\shaders\gles2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -172,88 +176,28 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseEngine.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\BaseTheme.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui\src\ofxImGui.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
-    <ClCompile Include="src\CmbSceneCL2D.cpp" />
-    <ClCompile Include="src\CmbSceneCL3D.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="src\CmbScene.cpp" />
-    <ClCompile Include="src\CmbSceneGL2D.cpp" />
-    <ClCompile Include="src\CmbSceneGL3D.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofxFbo.cpp" />
-    <ClCompile Include="src\OpenCLImage3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseEngine.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\BaseTheme.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineGLFW.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\imconfig.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\ofxImGui.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui\src\ThemeTest.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBufferManagedT.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImagePingPong.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLTypes.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTextureArray.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
-    <ClInclude Include="src\CmbSceneCL2D.h" />
-    <ClInclude Include="src\CmbSceneCL3D.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\CmbSceneGL2D.h" />
-    <ClInclude Include="src\CmbSceneGL3D.h" />
-    <ClInclude Include="src\GLError.h" />
-    <ClInclude Include="src\CmbScene.h" />
-    <ClInclude Include="src\ofxFbo.h" />
-    <ClInclude Include="src\OpenCLImage3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\addons\ofxTimeline\ofxTimelineLib\ofxTimelineLib.vcxproj">
-      <Project>{a72c4f16-cb16-4143-ba5c-5e4fa802d636}</Project>
+    <ProjectReference Include="..\EntropyLib\EntropyLib.vcxproj">
+      <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="SceneCMBLib.vcxproj">
+      <Project>{cb3f0a24-afe0-46d5-a08e-224654c42a55}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -262,15 +206,6 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\data\cl\cmb.cl" />
-    <None Include="bin\data\shaders\copy3D.frag" />
-    <None Include="bin\data\shaders\drop3D.frag" />
-    <None Include="bin\data\shaders\layer.geom" />
-    <None Include="bin\data\shaders\passthru.vert" />
-    <None Include="bin\data\shaders\ripple.frag" />
-    <None Include="bin\data\shaders\ripple3D.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

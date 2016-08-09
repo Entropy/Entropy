@@ -1,5 +1,7 @@
 #include "CmbSceneCL3D.h"
 
+#ifdef COMPUTE_CL_3D
+
 namespace ent
 {
 	//--------------------------------------------------------------
@@ -76,3 +78,5 @@ namespace ent
 		m_volumetrics.drawVolume(0, 0, 0, m_volumeSize, 0);
 	}
 }
+
+#endif // COMPUTE_CL_3D

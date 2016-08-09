@@ -1,12 +1,15 @@
 #pragma once
 
-#include "MSAOpenCL.h"
+#include "entropy/cmb/Constants.h"
+#ifdef COMPUTE_GL_2D
+
+#include "ofxFbo.h"
 
 #include "CmbScene.h"
 
 namespace ent
 {
-	class CmbSceneCL2D
+	class CmbSceneGL2D
 		: public CmbScene
 	{
 	public:
@@ -18,11 +21,11 @@ namespace ent
 		void stepRipple() override;
 		void copyResult() override;
 
-		msa::OpenCL m_openCL;
-		msa::OpenCLKernelPtr m_dropKernel;
-		msa::OpenCLKernelPtr m_rippleKernel;
-		msa::OpenCLKernelPtr m_copyKernel;
+		ofShader m_shader;
+		ofVboMesh m_mesh;
 
-		msa::OpenCLImage m_clImages[3];
+		ofTexture m_textures[3]; 
+		ofxFbo m_fbos[3];
 	};
 }
+#endif // COMPUTE_GL_2D
