@@ -123,7 +123,7 @@ namespace entropy
 
 				if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
 				{
-					ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
+					ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ofGetFrameRate());
 				}
 				ofxPreset::Gui::EndWindow(this->guiSettings);
 

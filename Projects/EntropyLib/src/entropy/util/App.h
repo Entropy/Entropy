@@ -43,6 +43,7 @@ namespace entropy
 
 			ofxImGui imGui;
 			ofxPreset::Gui::Settings guiSettings;
+
 			bool overlayVisible;
 		};
 

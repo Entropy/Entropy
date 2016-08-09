@@ -11,7 +11,7 @@ namespace entropy
 			: public Base
 		{
 		public:
-			virtual string getName() const override 
+			string getName() const override 
 			{
 				return "entropy::scene::PopUps";
 			}
@@ -35,7 +35,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			virtual BaseParameters & getParameters() override
+			BaseParameters & getParameters() override
 			{
 				return this->parameters;
 			}
