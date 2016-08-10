@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxTextureRecorder.h"
 
 #include "entropy/scene/Base.h"
 #include "entropy/inflation/NoiseField.h"
@@ -62,8 +61,6 @@ namespace entropy
 			ofShader blurH;
 			ofShader tonemap;
 
-			ofxTextureRecorder saverThread;
-
 		protected:
 			BaseParameters & getParameters() override
 			{
@@ -107,9 +104,7 @@ namespace entropy
 					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, bloom);
 				} render;
 
-				ofParameter<bool> record{ "Record", false };
-
-				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render, record);
+				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render);
 			} parameters;
 
 			vector<ofEventListener> marchingCubesEventListeners;

@@ -51,8 +51,6 @@ namespace entropy
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
-			parameters.record.setSerializable(false);
-
 			//camera.setDistance(2);
 			//camera.setNearClip(0.1);
 			//camera.setFarClip(100000);
@@ -113,8 +111,6 @@ namespace entropy
 			for (int i = 0; i < 2; ++i) {
 				fboPost[i].allocate(settings);
 			}
-
-			saverThread.setup(args.width, args.height, OF_PIXELS_RGB, OF_IMAGE_FORMAT_JPEG);
 		}
 
 		//--------------------------------------------------------------
@@ -258,10 +254,6 @@ namespace entropy
 				tonemap.end();
 				dstFbo.end();
 
-				if (parameters.record) {
-					saverThread.save(dstFbo.getTexture());
-				}
-
 				return true;
 			}
 
@@ -309,8 +301,6 @@ namespace entropy
 						}
 					}
 				}
-
-				ofxPreset::Gui::AddParameter(this->parameters.record);
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
 			}
