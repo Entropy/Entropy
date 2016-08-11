@@ -154,6 +154,7 @@ struct Octave{
 uniform float resolution;
 uniform float normalizationFactor;
 uniform float fade;
+uniform float scale;
 uniform Octave octaves[NUM_OCTAVES];
 
 const bool sphericalClip = false;
@@ -175,7 +176,7 @@ void main()
 		float x = gl_GlobalInvocationID.x;
 		float y = gl_GlobalInvocationID.y;
 		float z = gl_GlobalInvocationID.z;
-        vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
+        vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.) / scale;
 
         // fade out from the fade limit until 1
         float sphere = 1;
@@ -191,7 +192,7 @@ void main()
         for(int i=0;i<NUM_OCTAVES;i++){
             float freqD = octaves[i].frequency;// / 60.f;
             float amplitude = octaves[i].amplitude * octaves[i].enabled;// * (1. - ofClamp(normDistance, 0, 1));
-            float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
+            float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD / scale)) * 0.5 + 0.5;
             if(i==0){
                 totalRGB += vec3(117.,118.,118.)/255. * noise * octaves[i].enabled;
             }else if(i==1){
@@ -207,7 +208,7 @@ void main()
         }
         float normalizationValue = (maxValue * normalizationFactor);
         totalRGB = totalRGB / maxRGB * sphere;
-        total = total / normalizationValue;/* * sphere*/;
+        //total = total / normalizationValue;/* * sphere*/;
         imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(totalRGB, total));
     }
 }

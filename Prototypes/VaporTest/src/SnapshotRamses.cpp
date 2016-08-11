@@ -65,6 +65,7 @@ namespace ent
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to load original files " << float(now - then)/1000 << "ms." << endl;
 
+
 		std::vector<Particle> particles(posX.size());
 		for(size_t i=0;i<posX.size();++i){
 			particles[i] = {{posX[i], posY[i], posZ[i]}, cellSize[i], density[i]};
@@ -368,6 +369,8 @@ namespace ent
 	//--------------------------------------------------------------
 	void SnapshotRamses::setup(Settings & settings)
 	{
+        auto init = ofGetElapsedTimeMicros();
+        auto then = ofGetElapsedTimeMicros();
 		clear();
 		const float * data = nullptr;
 		void * filedata = nullptr;
@@ -403,6 +406,8 @@ namespace ent
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 #endif
+        auto now = ofGetElapsedTimeMicros();
+        cout << "time for snapshot presetup " << float(now - then)/1000 << "ms." << endl;
 
 
 
@@ -461,15 +466,16 @@ namespace ent
 #elif USE_PARTICLES_COMPUTE_SHADER || USE_VBO
 			// Load particles
 			{
-				auto then = ofGetElapsedTimeMicros();
+                auto then = ofGetElapsedTimeMicros();
                 #if USE_HALF_PARTICLE
-				    readToBuffer(particlesFileName, m_numCells*sizeof(HalfParticle), settings.particlesBuffer);
+                    readToBuffer(particlesFileName, m_numCells*sizeof(HalfParticle), settings.particlesBuffer);
                 #else
-				    readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
+                    readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
                 #endif
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
-				        "for " << m_numCells << " particles" << endl;
+                        "for " << m_numCells << " particles " <<
+                        m_numCells*sizeof(HalfParticle)/1024/1024 << "MB" << endl;
 			}
     #if USE_PARTICLES_COMPUTE_SHADER
 			// Load particle groups
@@ -506,7 +512,7 @@ namespace ent
 #endif
 		}
 
-		auto then = ofGetElapsedTimeMicros();
+        then = ofGetElapsedTimeMicros();
 
         #if USE_VOXELS_COMPUTE_SHADER
 		    size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
@@ -521,14 +527,15 @@ namespace ent
 			glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
         #elif USE_PARTICLES_COMPUTE_SHADER
+            settings.volumeTextureBack.setMinMagFilters(GL_NEAREST, GL_NEAREST);
 		    glm::vec3 coordSpan = m_boxRange.getSpan();
 			auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
 			auto scale = settings.worldsize / normalizeFactor;
 			auto offset = -m_boxRange.min;
 
 			settings.particles2texture.begin();
-			settings.particles2texture.setUniformTexture("particles",settings.particlesTexture,0);
-			settings.volumeTexture.bindAsImage(0,GL_READ_WRITE,0,1,0);
+            settings.particles2texture.setUniformTexture("particles",settings.particlesTexture,0);
+            settings.volumeTextureBack.bindAsImage(0,GL_READ_WRITE,0,1,0);
 			settings.particles2texture.setUniform1f("size",settings.worldsize);
 			settings.particles2texture.setUniform1f("minDensity",settings.minDensity * m_densityRange.getMin());
 			settings.particles2texture.setUniform1f("maxDensity",settings.maxDensity * m_densityRange.getMax());
@@ -538,14 +545,17 @@ namespace ent
 			settings.particles2texture.setUniform1f("scale", scale);
 			settings.particles2texture.setUniform3f("offset", offset);
 
-			size_t idx_offset = 0;
-			for(auto next: particleGroups){
+            size_t idx_offset = 0;
+            for(auto next: particleGroups){
 				settings.particles2texture.setUniform1f("idx_offset", idx_offset);
-				settings.particles2texture.setUniform1f("next", next);
-				settings.particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
-				idx_offset = next;
-				glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
-			}
+                settings.particles2texture.setUniform1f("next", next);
+                settings.particles2texture.dispatchCompute((next-idx_offset)/256+1,1,1);
+
+                //settings.particles2texture.setUniform1f("next", m_numCells);
+                //settings.particles2texture.dispatchCompute(1,1,1);
+                idx_offset = next;
+                glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+            }
 			settings.particles2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
         #else
@@ -563,16 +573,16 @@ namespace ent
         #endif
 
         #if USE_TEXTURE_3D_MIPMAPS
-				settings.volumeTexture.generateMipmaps();
-			settings.volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+            settings.volumeTextureBack.generateMipmaps();
+            settings.volumeTextureBack.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
         #else
-				settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
+            settings.volumeTextureBack.setMinMagFilters(GL_LINEAR, GL_LINEAR);
         #endif
 
-		auto now = ofGetElapsedTimeMicros();
+        now = ofGetElapsedTimeMicros();
 		cout << "time to load texture and generate mipmaps " << float(now - then)/1000 << "ms." << endl;
 
-		cout << "loaded " << m_numCells << " particles";
+        cout << "loaded " << m_numCells << " particles" << endl;
 
         #if defined(TARGET_LINUX) && FAST_READ && USE_RAW
 		    if(filedata!=nullptr){
@@ -593,6 +603,9 @@ namespace ent
 			m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*5);
         #endif
 		m_bLoaded = true;
+
+        now = ofGetElapsedTimeMicros();
+        cout << "time to setup snapshot " << float(now - init)/1000 << "ms." << endl;
 	}
 	
 	//--------------------------------------------------------------

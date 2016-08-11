@@ -30,6 +30,8 @@ Project{
             "src/Vapor3DTexture.h",
             "src/VaporOctree.cpp",
             "src/VaporOctree.h",
+            "src/fn_iterator.h",
+            "src/half.hpp",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
@@ -46,7 +48,8 @@ Project{
             '../../addons/ofxTween',
             '../../addons/ofxTimecode',
             '../../addons/ofxVolumetrics',
-            '../../addons/ofxLibfbi',
+            '../../addons/ofxCv',
+            'ofxOpenCv',
             'ofxXmlSettings',
         ]
 

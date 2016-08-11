@@ -65,7 +65,7 @@ namespace ent
 #if USE_PARTICLES_COMPUTE_SHADER
 		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
 		frameSettings.particles2texture.linkProgram();
-		auto maxNumParticles = 3000000;
+        auto maxNumParticles = 600000;
 		int maxBufferTextureSize;
 		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
 #ifdef USE_HALF_PARTICLE
@@ -77,11 +77,11 @@ namespace ent
 			cout << "voxels buffer size " << maxNumParticlesBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
 			std::exit(0);
 		}
-		frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
+        frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
 #if USE_HALF_PARTICLE
-		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA16F);
+        frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA16F);
 #else
-		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
+        frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
 #endif
 #endif
 
@@ -100,20 +100,25 @@ namespace ent
 
 		frameSettings.worldsize = 512;
 		m_clearData.assign(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0);
-		frameSettings.volumeTexture.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
-		frameSettings.volumeTexture.loadData(
+        frameSettings.volumeTextureBack.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
+        frameSettings.volumeTextureBack.loadData(
 		    m_clearData.data(),
 		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
 		);
+        frameSettings.volumeTextureFront.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
+        frameSettings.volumeTextureFront.loadData(
+            m_clearData.data(),
+            frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+        );
 
-		volumetrics.setup(&frameSettings.volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
+        volumetrics.setup(&frameSettings.volumeTextureFront, ofVec3f(1,1,1), m_volumetricsShader);
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
-		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,frameSettings.volumeTexture.texData.textureID);
-		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
+        /*glBindTexture(frameSettings.volumeTexture.texData.textureTarget,frameSettings.volumeTexture.texData.textureID);
+        glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_R, GL_RED);
 		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_G, GL_RED);
 		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_B, GL_RED);
-		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
-		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);
+        glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
+        glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);*/
 
 
 		m_bReady = true;
@@ -138,7 +143,7 @@ namespace ent
     //--------------------------------------------------------------
     void SequenceRamses::update()
     {
-		namespace fs = std::filesystem;
+        namespace fs = std::filesystem;
 		auto vertTime = fs::last_write_time(ofFile("shaders/render.vert", ofFile::Reference));
 		auto fragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 		auto includesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
@@ -169,7 +174,7 @@ namespace ent
 			m_lastVertTime = vertTime;
 			m_lastFragTime = fragTime;
 			m_lastIncludesTime = includesTime;
-		}
+        }
     }
 
     //--------------------------------------------------------------
@@ -212,7 +217,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	void SequenceRamses::drawTexture(float scale){
-		auto original_scale = std::max(getSnapshot().getCoordRange().getSpan().x, std::max(getSnapshot().getCoordRange().getSpan().y, getSnapshot().getCoordRange().getSpan().z));
+        auto original_scale = std::max(getSnapshot().getCoordRange().getSpan().x, std::max(getSnapshot().getCoordRange().getSpan().y, getSnapshot().getCoordRange().getSpan().z));
 		auto box_scale = std::max(getSnapshot().m_boxRange.getSpan().x, std::max(getSnapshot().m_boxRange.getSpan().y, getSnapshot().m_boxRange.getSpan().z));
 		auto ratio = box_scale/original_scale;
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity/(ratio*ratio), 0);
@@ -225,7 +230,7 @@ namespace ent
 		ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
 		ofDrawBox(getSnapshot().m_boxRange.center, getSnapshot().m_boxRange.size.x, getSnapshot().m_boxRange.size.y, getSnapshot().m_boxRange.size.z);
 		ofPopMatrix();
-		ofFill();
+        ofFill();
 	}
 
     //--------------------------------------------------------------
@@ -288,18 +293,21 @@ namespace ent
 			return;
 		}
 
+        auto then = ofGetElapsedTimeMicros();
 		frameSettings.folder = m_folder;
 		frameSettings.frameIndex = m_startIndex + index;
 		frameSettings.minDensity = m_densityMin;
-		frameSettings.maxDensity = m_densityMax;
-		frameSettings.volumeTexture.loadData(
+        frameSettings.maxDensity = m_densityMax;
+        std::swap(frameSettings.volumeTextureBack, frameSettings.volumeTextureFront);
+        frameSettings.volumeTextureBack.loadData(
 		    m_clearData.data(),
 		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
-		);
+        );
 		m_snapshots[index].setup(frameSettings);
+        volumetrics.setup(&frameSettings.volumeTextureFront, ofVec3f(1,1,1), m_volumetricsShader);
 
 		// Adjust the ranges.
-		m_coordRange.include(m_snapshots[index].getCoordRange());
+        m_coordRange.include(m_snapshots[index].getCoordRange());
 		m_sizeRange.include(m_snapshots[index].getSizeRange());
 		m_densityRange.include(m_snapshots[index].getDensityRange());
 
@@ -315,9 +323,11 @@ namespace ent
 		m_volumetricsShader.begin();
 		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
 		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
-		m_volumetricsShader.end();
+        m_volumetricsShader.end();
 		cout << "min density " << m_densityMin * m_densityRange.getSpan() <<
 		        " max density " << m_densityMax * m_densityRange.getSpan() << endl;
+        auto now = ofGetElapsedTimeMicros();
+        cout << "time to load full frame " << float(now - then)/1000 << "ms." << endl;
 	}
 
 	//--------------------------------------------------------------

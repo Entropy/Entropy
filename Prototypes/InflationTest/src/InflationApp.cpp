@@ -79,10 +79,10 @@ namespace entropy
     {
 		if(simulationRunning){
             now += ofGetElapsedTimef();
-            noiseField.update(inflation);
             if(inflation){
-                scale += ofGetElapsedTimef() * 0.1;
+                scale += ofGetElapsedTimef() * 0.0005;
             }
+            noiseField.update(inflation, scale);
 		}
     }
 
@@ -113,7 +113,7 @@ namespace entropy
             ofClear(0,255);
 
             camera.begin();
-            ofScale(scale,scale,scale);
+            //ofScale(scale,scale,scale);
 
             gpuMarchingCubes.draw(noiseField.getTexture(), threshold);
 
@@ -154,41 +154,43 @@ namespace entropy
                 shaderBright.end();
                 fbobright.end();
 
-                fbo2.begin();
-                ofClear(0,255);
-                blurV.begin();
-                blurV.setUniformTexture("tex0", fbobright.getTexture(), 0);
-                blurV.setUniform2f("texel_size", texel_size);
-                blurV.setUniform1f("w0", w0/wn);
-                blurV.setUniform1f("w1", w1/wn);
-                blurV.setUniform1f("w2", w2/wn);
-                blurV.setUniform1f("w3", w3/wn);
-                blurV.setUniform1f("w4", w4/wn);
-                blurV.setUniform1f("w5", w5/wn);
-                blurV.setUniform1f("w6", w6/wn);
-                blurV.setUniform1f("w7", w7/wn);
-                blurV.setUniform1f("w8", w8/wn);
-                fullQuad.draw();
-                blurV.end();
-                fbo2.end();
+                for(int i=0;i<blurPasses;i++){
+                    fbo2.begin();
+                    ofClear(0,255);
+                    blurV.begin();
+                    blurV.setUniformTexture("tex0", fbobright.getTexture(), 0);
+                    blurV.setUniform2f("texel_size", texel_size);
+                    blurV.setUniform1f("w0", w0/wn);
+                    blurV.setUniform1f("w1", w1/wn);
+                    blurV.setUniform1f("w2", w2/wn);
+                    blurV.setUniform1f("w3", w3/wn);
+                    blurV.setUniform1f("w4", w4/wn);
+                    blurV.setUniform1f("w5", w5/wn);
+                    blurV.setUniform1f("w6", w6/wn);
+                    blurV.setUniform1f("w7", w7/wn);
+                    blurV.setUniform1f("w8", w8/wn);
+                    fullQuad.draw();
+                    blurV.end();
+                    fbo2.end();
 
-                fbobright.begin();
-                ofClear(0,255);
-                blurH.begin();
-                blurH.setUniformTexture("tex0", fbo2.getTexture(), 0);
-                blurH.setUniform2f("texel_size", texel_size);
-                blurH.setUniform1f("w0", w0/wn);
-                blurH.setUniform1f("w1", w1/wn);
-                blurH.setUniform1f("w2", w2/wn);
-                blurH.setUniform1f("w3", w3/wn);
-                blurH.setUniform1f("w4", w4/wn);
-                blurH.setUniform1f("w5", w5/wn);
-                blurH.setUniform1f("w6", w6/wn);
-                blurH.setUniform1f("w7", w7/wn);
-                blurH.setUniform1f("w8", w8/wn);
-                fullQuad.draw();
-                blurH.end();
-                fbobright.end();
+                    fbobright.begin();
+                    ofClear(0,255);
+                    blurH.begin();
+                    blurH.setUniformTexture("tex0", fbo2.getTexture(), 0);
+                    blurH.setUniform2f("texel_size", texel_size);
+                    blurH.setUniform1f("w0", w0/wn);
+                    blurH.setUniform1f("w1", w1/wn);
+                    blurH.setUniform1f("w2", w2/wn);
+                    blurH.setUniform1f("w3", w3/wn);
+                    blurH.setUniform1f("w4", w4/wn);
+                    blurH.setUniform1f("w5", w5/wn);
+                    blurH.setUniform1f("w6", w6/wn);
+                    blurH.setUniform1f("w7", w7/wn);
+                    blurH.setUniform1f("w8", w8/wn);
+                    fullQuad.draw();
+                    blurH.end();
+                    fbobright.end();
+                }
 
                 //bobright.draw(0,0);
 

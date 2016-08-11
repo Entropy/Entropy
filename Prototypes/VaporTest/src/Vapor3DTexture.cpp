@@ -70,6 +70,7 @@ inline void Vapor3DTexture::set(size_t idx, float value){
 	m_data[idx] = value;
 }
 
+#include "fn_iterator.h"
 void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size, float minDensity, float maxDensity, ofxRange3f coordsRange){
 	this->m_size = size;
 	this->m_quadsize = size * size;
@@ -160,7 +161,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	i = 0;
 	total_pct = 0.0;
 	double totalFactor = 0;
-	size_t byteRate = 27962026; //800Mb/s @ 30fps
+    size_t byteRate = 16777216;//27962026; //800Mb/s @ 30fps
 	size_t accumulatedSize = 0;
 	float threshold=0;
 	cout << "histogram factor" << endl;
@@ -188,6 +189,10 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 #endif
 
 #if USE_PARTICLES_COMPUTE_SHADER
+	std::sort(particlesInBox.begin(), particlesInBox.begin(), [](const Particle & p1, const Particle & p2){
+		return p1.size > p2.size;
+	});
+
 	auto total = particlesInBox.size();
 	std::vector<Particle> intersectingParticles;
 	intersectingParticles.reserve(particlesInBox.size());
@@ -247,6 +252,13 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 		groupIndices.push_back(particlesInBox.size());
 
 		m_data.assign(m_data.size(), 0.f);
+	}
+
+	auto idx_offset = 0;
+	for(auto & next: groupIndices){
+		std::sort(particlesInBox.begin()+idx_offset, particlesInBox.begin()+next, [](const Particle & p1, const Particle & p2){
+			return p1.size > p2.size;
+		});
 	}
 
 	particlesHalfInBox.resize(particlesInBox.size());

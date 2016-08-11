@@ -3,10 +3,11 @@
         "additive_blending": "1",
         "bloom": "1",
         "bloom_parameters": {
+            "blur_passes": "1",
             "bright_thresh_": "3",
             "brightness": "0",
             "contrast": "1.07143",
-            "sigma": "1.03571",
+            "sigma": "0.5",
             "tonemap": "0"
         },
         "debug": "0",

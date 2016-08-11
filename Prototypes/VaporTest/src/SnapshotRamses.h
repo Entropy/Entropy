@@ -28,8 +28,9 @@ namespace ent
 			int frameIndex;
 			float minDensity;
 			float maxDensity;
-			size_t worldsize;
-			ofxTexture3d volumeTexture;
+            size_t worldsize;
+            ofxTexture3d volumeTextureFront;
+            ofxTexture3d volumeTextureBack;
             #if USE_VOXELS_COMPUTE_SHADER
 			    ofShader voxels2texture;
 				ofBufferObject voxelsBuffer;
@@ -37,8 +38,8 @@ namespace ent
             #endif
             #if USE_PARTICLES_COMPUTE_SHADER
 				ofShader particles2texture;
-				ofBufferObject particlesBuffer;
-				ofTexture particlesTexture;
+                ofBufferObject particlesBuffer;
+                ofTexture particlesTexture;
             #endif
 		};
 

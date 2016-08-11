@@ -43,6 +43,7 @@ namespace entropy
             gpuMarchingCubes.resolution,
             scale,
             threshold,
+            inflation,
         };
         ofxPanel panelMarchingCubes{marchingCubesParameters, "marching-cubes.json"};
 
@@ -61,6 +62,7 @@ namespace entropy
 
         ofParameter<float> brightThres{"bright thresh.",1,0.5f,3};
         ofParameter<float> sigma{"sigma",0.9,0.5f,18};
+        ofParameter<int> blurPasses{"blur passes", 1, 1, 5};
         ofParameter<float> contrast{"contrast",1,0.5f,1.5f};
         ofParameter<float> brightness{"brightness",0,-1.f,1.f};
         ofParameter<int> tonemapType{"tonemap",0,0,5};
@@ -68,6 +70,7 @@ namespace entropy
             "bloom parameters",
             brightThres,
             sigma,
+            blurPasses,
             contrast,
             brightness,
             tonemapType,

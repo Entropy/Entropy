@@ -32,7 +32,7 @@ namespace entropy
 
             auto wavelength(this->wavelength);
             freqListener = this->frequency.newListener([wavelength](float & freq) mutable{
-                wavelength.setWithoutEventNotifications(1.f/freq);
+                wavelength = 1.f/freq;
             });
 
             auto frequency(this->frequency);
@@ -57,7 +57,7 @@ namespace entropy
     public:
         NoiseField();
         void setup(ofParameter<int> & resolution);
-        void update(bool inflation);
+        void update(bool inflation, float scale);
 		void draw(float threshold);
 
         int getNumScales();

@@ -83,23 +83,36 @@ namespace entropy
 	}
 
     //--------------------------------------------------------------
-    void NoiseField::update(bool inflation)
+    void NoiseField::update(bool inflation, float scale)
     {
         auto i = 0;
+        float wavelength_BB = resolution / 4.;
+
         for(auto & octave: octaves){
             if(octave.advanceTime){
                 octave.now += noiseSpeed * ofGetLastFrameTime();
             }
+            /*if(inflation && octave.wavelength < wavelength_BB){
+                octave.frequency *= 0.999;
+                octave.amplitude *= 0.999;
+            }*/
         }
 
         if(inflation){
-            octaves[3].frequency *= 0.99;
-            if(octaves[3].frequency<10){
+            //octaves[3].frequency *= 0.999;
+            octaves[3].frequency *= 0.999;
+            octaves[3].amplitude *= 0.999;
+            if(octaves[3].wavelength > wavelength_BB * 2. / 3.){
                 octaves[3].advanceTime = false;
             }
-            if(octaves[3].frequency<2){
+            if(octaves[3].wavelength > wavelength_BB){
                 octaves[3].advanceTime = true;
-                octaves[3].frequency = 120;
+                //octaves[3].wavelength = wavelength_BB/8.f/scale;
+                octaves[3].amplitude = 0.125;
+                /*for(auto & octave: octaves){
+                    octave.wavelength /= scale;
+                }*/
+                octaves[3].wavelength = wavelength_BB/8.f/scale;
             }
         }
 
@@ -115,7 +128,8 @@ namespace entropy
         }
         noiseComputeShader.setUniform1f("resolution", resolution);
 		noiseComputeShader.setUniform1f("normalizationFactor", normalizationFactor);
-        noiseComputeShader.setUniform1f("fade", (float)fadeAt);
+        noiseComputeShader.setUniform1f("fade", fadeAt);
+        noiseComputeShader.setUniform1f("scale", scale);
         noiseComputeShader.dispatchCompute(resolution/8, resolution/8, resolution/8);
 		noiseComputeShader.end();
 		glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);

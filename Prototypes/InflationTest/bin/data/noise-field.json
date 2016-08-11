@@ -3,7 +3,7 @@
         "fadeAt": "0.98",
         "fill_edges": "0",
         "noise_speed": "5",
-        "norm__factor": "0.982",
+        "norm__factor": "1",
         "octave_0": {
             "advance_time": "1",
             "ampl__norm": "1",
