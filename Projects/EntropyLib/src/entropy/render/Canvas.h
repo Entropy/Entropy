@@ -46,8 +46,10 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
-			string getSettingsFilePath();
-
+			const string & getDataPath();
+			const string & getSettingsFilePath();
+			string getShaderPath(const string & shaderFile = "");
+			
 			bool loadSettings();
 			bool saveSettings();
 
@@ -101,16 +103,35 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
+				struct : ofParameterGroup
+				{
+					ofParameter<float> exposure{ "Exposure", 4.0f, 0.1f, 10.0f };
+					ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
+					ofParameter<int> tonemapping{ "Tonemapping", 1, 0, 5 };
+					ofParameter<float> contrast{ "Contrast", 1.0f, 0.5f, 1.5f };
+					ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
+
+					PARAM_DECLARE("Color", exposure, gamma, tonemapping, contrast, brightness);
+				} color;
+				
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Parameters", fillWindow);
+				PARAM_DECLARE("Parameters", color, fillWindow);
 			} parameters;
 
 			ofRectangle viewport;
 
 			ofFbo fboDraw;
 			ofFbo fboPost;
+			ofFbo fboTemp[2];
 			ofFbo::Settings fboSettings;
+
+			GLuint defaultVao;
+
+			ofShader brightnessThresholdShader;
+			ofShader blurHorzShader;
+			ofShader blurVertShader;
+			ofShader colorCorrectShader;
 
 			bool exportFrames;
 			ofxTextureRecorder textureRecorder;

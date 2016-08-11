@@ -173,6 +173,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Inflation::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) 
 		{
+			return false;
 			if (parameters.render.bloom.enabled)
 			{
 				auto texel_size = glm::vec2(1. / float(srcTexture.getWidth()), 1. / float(srcTexture.getHeight()));

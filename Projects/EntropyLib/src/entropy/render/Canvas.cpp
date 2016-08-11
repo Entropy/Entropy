@@ -9,11 +9,39 @@ namespace entropy
 		//--------------------------------------------------------------
 		Canvas::Canvas()
 		{
-			// Allocate default fullscreen fbos.
+			// Load post-processing shaders.
+			//this->brightnessThresholdShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("brightnessThreshold.frag"));
+
+			//auto blurVertFile = ofFile(this->getShaderPath("directionalBlur.vert"));
+			//auto blurFragFile = ofFile(this->getShaderPath("directionalBlur.frag"));
+			//auto blurVertSource = ofBuffer(blurVertFile);
+			//auto blurFragSource = ofBuffer(blurFragFile);
+
+			//static const auto blurHorzPrefix = "#version 330\n#define PASS_H\n#define BLUR9\n";
+			//this->blurHorzShader.setupShaderFromSource(GL_VERTEX_SHADER, blurHorzPrefix + blurVertSource.getText());
+			//this->blurHorzShader.setupShaderFromSource(GL_FRAGMENT_SHADER, blurHorzPrefix + blurFragSource.getText());
+			//this->blurHorzShader.bindDefaults();
+			//this->blurHorzShader.linkProgram();
+
+			//static const auto blurVertPrefix = "#version 330\n#define PASS_V\n#define BLUR9\n";
+			//this->blurVertShader.setupShaderFromSource(GL_VERTEX_SHADER, blurVertPrefix + blurVertSource.getText());
+			//this->blurVertShader.setupShaderFromSource(GL_FRAGMENT_SHADER, blurVertPrefix + blurFragSource.getText());
+			//this->blurVertShader.bindDefaults();
+			//this->blurVertShader.linkProgram();
+
+			this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("colorCorrect.frag"));
+
+			// Set ofxWarp shader path.
+			auto warpShaderPath = GetSharedDataPath();
+			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("ofxWarp"));
+			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("shaders"));
+			ofxWarp::WarpBase::setShaderPath(warpShaderPath);
+
+			// Set default fbo settings.
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.numSamples = 4;
-			//this->fboSettings.internalformat = GL_RGB16F;
+			//this->fboSettings.internalformat = GL_RGBA32F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 			this->fboSettings.useDepth = true;
 
@@ -21,16 +49,18 @@ namespace entropy
 			this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
-			this->fboPost.getTexture().texData.bFlipTexture = true;
+			//this->fboPost.getTexture().texData.bFlipTexture = true;
 
-			// Set fbo viewport.
+			for (int i = 0; i < 2; ++i)
+			{
+				this->fboTemp[i].allocate(this->fboSettings);
+			//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+			}
+
+			// Update viewport.
 			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
 
-			// Set ofxWarp shader path.
-			string shaderPath = GetSharedDataPath();
-			shaderPath = ofFilePath::addTrailingSlash(shaderPath.append("ofxWarp"));
-			shaderPath = ofFilePath::addTrailingSlash(shaderPath.append("shaders"));
-			ofxWarp::WarpBase::setShaderPath(shaderPath);
+			glGenVertexArrays(1, &this->defaultVao);
 
 			// Load initial settings if any.
 			if (!this->loadSettings())
@@ -54,6 +84,8 @@ namespace entropy
 
 			this->warps.clear();
 			this->srcAreas.clear();
+
+			glDeleteVertexArrays(1, &this->defaultVao);
 		}
 
 		//--------------------------------------------------------------
@@ -89,19 +121,46 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::render(bool postProcessing)
 		{
-			const auto & texture = (postProcessing ? this->fboPost.getTexture() : this->fboDraw.getTexture());
+			if (!postProcessing)
+			{
+				// Scene didn't take care of post-processing, do it here.
+
+				this->fboPost.begin();
+				{
+					ofClear(0, 255);
+					
+					this->colorCorrectShader.begin();
+					this->colorCorrectShader.setUniform1f("uExposure", this->parameters.color.exposure);
+					this->colorCorrectShader.setUniform1f("uGamma", this->parameters.color.gamma);
+					this->colorCorrectShader.setUniform1i("uTonemapType", this->parameters.color.tonemapping);
+					this->colorCorrectShader.setUniform1f("uBrightness", this->parameters.color.brightness);
+					this->colorCorrectShader.setUniform1f("uContrast", this->parameters.color.contrast);
+					this->colorCorrectShader.setUniformTexture("uTex0", this->fboDraw.getTexture(), 1);
+					{
+						// Draw full-screen quad.
+						glBindVertexArray(this->defaultVao);
+						glDrawArrays(GL_TRIANGLES, 0, 3);
+					}
+					this->colorCorrectShader.end();
+
+					//this->fboDraw.draw(0, 0);
+				}
+				this->fboPost.end();
+			}
+
+			//const auto & texture = (postProcessing ? this->fboPost.getTexture() : this->fboDraw.getTexture());
 
 			if (this->parameters.fillWindow)
 			{
 				// Draw the fbo texture directly.
-				texture.draw(0, 0);
+				this->fboPost.getTexture().draw(0, 0);
 			}
 			else
 			{
 				// Go through warps and fbo texture subsections and draw the whole thing.
 				for (auto i = 0; i < this->warps.size(); ++i)
 				{
-					this->warps[i]->draw(texture, this->srcAreas[i]);
+					this->warps[i]->draw(this->fboPost.getTexture(), this->srcAreas[i]);
 				}
 			}
 
@@ -110,7 +169,7 @@ namespace entropy
 				auto scene = GetSceneManager()->getCurrentScene();
 				if (scene)
 				{
-					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
+					this->textureRecorder.save(this->fboPost.getTexture(), scene->getCurrentTimelineFrame());
 				}
 				else
 				{
@@ -177,6 +236,12 @@ namespace entropy
 
 			this->fboPost.allocate(this->fboSettings);
 			this->fboPost.getTexture().texData.bFlipTexture = true;
+
+			for (int i = 0; i < 2; ++i)
+			{
+				this->fboTemp[i].allocate(this->fboSettings);
+				this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+			}
 
 			// Update viewport.
 			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
@@ -324,6 +389,26 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Canvas", settings))
 			{
+				if (ImGui::Button("Save"))
+				{
+					this->saveSettings();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Load"))
+				{
+					this->loadSettings();
+				}
+				
+				if (ImGui::CollapsingHeader(this->parameters.color.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.color.exposure);
+					ofxPreset::Gui::AddParameter(this->parameters.color.gamma);
+					static vector<string> labels = { "None", "Uncharted 2", "Reinhard", "Reinhard Lum", "Filmic", "ACES" };
+					ofxPreset::Gui::AddRadio(this->parameters.color.tonemapping, labels, 3);
+					ofxPreset::Gui::AddParameter(this->parameters.color.brightness);
+					ofxPreset::Gui::AddParameter(this->parameters.color.contrast);
+				}
+				
 				if (ImGui::CollapsingHeader("Render", nullptr, true, true))
 				{
 					if (ImGui::Checkbox("Export", &this->exportFrames))
@@ -366,16 +451,6 @@ namespace entropy
 				
 				if (ImGui::CollapsingHeader("Warping", nullptr, true, true))
 				{
-					if (ImGui::Button("Save"))
-					{
-						this->saveSettings();
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Load"))
-					{
-						this->loadSettings();
-					}
-
 					ofxPreset::Gui::AddParameter(this->parameters.fillWindow);
 
 					if (!this->parameters.fillWindow)
@@ -696,18 +771,45 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		string Canvas::getSettingsFilePath()
+		const string & Canvas::getDataPath()
+		{
+			static string dataPath;
+			if (dataPath.empty())
+			{
+				dataPath = GetSharedDataPath();
+				dataPath = ofFilePath::addTrailingSlash(dataPath.append("entropy"));
+				dataPath = ofFilePath::addTrailingSlash(dataPath.append("render"));
+				dataPath = ofFilePath::addTrailingSlash(dataPath.append("Canvas"));
+			}
+			return dataPath;
+		}
+
+		//--------------------------------------------------------------
+		const string & Canvas::getSettingsFilePath()
 		{
 			static string filePath;
 			if (filePath.empty())
 			{
-				filePath = GetSharedDataPath();
-				filePath = ofFilePath::addTrailingSlash(filePath.append("entropy"));
-				filePath = ofFilePath::addTrailingSlash(filePath.append("render"));
-				filePath = ofFilePath::addTrailingSlash(filePath.append("Canvas"));
+				filePath = this->getDataPath();
 				filePath.append("settings.json");
 			}
 			return filePath;
+		}
+
+		//--------------------------------------------------------------
+		string Canvas::getShaderPath(const string & shaderFile)
+		{
+			static string shadersPath;
+			if (shadersPath.empty())
+			{
+				shadersPath = this->getDataPath();
+				shadersPath = ofFilePath::addTrailingSlash(shadersPath.append("shaders"));
+			}
+			if (shaderFile.empty())
+			{
+				return shadersPath;
+			}
+			return shadersPath + shaderFile;
 		}
 
 		//--------------------------------------------------------------

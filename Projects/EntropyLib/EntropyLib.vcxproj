@@ -330,6 +330,15 @@
   <ItemGroup>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\brightnessThreshold.frag" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\colorCorrect.frag" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.frag" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.vert" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\math.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultUniforms.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultVertexInAttributes.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\toneMapping.glsl" />
     <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
 </Project>
