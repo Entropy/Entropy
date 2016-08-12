@@ -33,7 +33,7 @@
 
 #include "ofMain.h"
 #include "ofxGpuParticles.h"
-#include "Universe.h"
+#include "Environment.h"
 
 namespace nm
 {
@@ -47,7 +47,7 @@ namespace nm
 
 		vector<glm::vec3>& getPosnsRef() { return posns; }
 
-		void init(Universe::Ptr universe);
+		void init(Environment::Ptr environment);
 		void update();
 		void draw();
 
@@ -56,7 +56,7 @@ namespace nm
 		void onParticlesUpdate(ofShader& shader);
 		void onParticlesDraw(ofShader& shader);
 
-		Universe::Ptr universe;
+		Environment::Ptr environment;
 
 		ofxGpuParticles trailParticles;
 		ofImage particleImage;

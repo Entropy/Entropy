@@ -1,5 +1,5 @@
 /*
- *  Universe.cpp
+ *  Environment.cpp
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -29,20 +29,46 @@
  *  POSSIBILITY OF SUCH DAMAGE. 
  *
  */
-#include "Universe.h"
+#include "Environment.h"
 
 namespace nm
 {
-	Universe::Universe(const glm::vec3& min, const glm::vec3& max) :
+	Environment::Environment(const glm::vec3& min, const glm::vec3& max) :
 		min(min),
 		max(max),
 		dims(max - min),
-		age(0.f)
+		energy(1.f),
+		forceMultiplierMin(50000000),
+		forceMultiplierMax(50000000),
+		annihilationThreshMin(.5f),
+		annihilationThreshMax(.5f)
 	{
 	}
 
-	float Universe::getExpansionScalar() const
+	float Environment::getExpansionScalar() const
 	{
-		return 1.f + .5f * age;
+		return 1.f + (.5f - .5f * energy);
+	}
+
+	float Environment::getForceMultiplier() const
+	{
+		return forceMultiplierMin + energy * (forceMultiplierMax - forceMultiplierMin);
+	}
+
+	float Environment::getAnnihilationThresh() const
+	{
+		return annihilationThreshMin + energy * (annihilationThreshMax - annihilationThreshMin);
+	}
+
+	float Environment::getFusionThresh() const
+	{
+		float exponent = fusionThreshExponentMin + energy * (fusionThreshExponentMax - fusionThreshExponentMin);
+		return pow(10, exponent);
+		//return fusionThresholdMin + energy * (fusionThresholdMax - fusionThresholdMin);
+	}
+
+	float Environment::getPairProductionThresh() const
+	{
+		return pairProductionThreshMin + energy * (pairProductionThreshMax - pairProductionThreshMin);
 	}
 }

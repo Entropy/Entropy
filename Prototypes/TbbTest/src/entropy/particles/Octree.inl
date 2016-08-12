@@ -122,7 +122,7 @@ namespace nm
 	}
 
 	template<class T>
-	T* Octree<T>::sumForces(T& point)
+	T* Octree<T>::sumForces(T& point)//, float forceMultiplier)
 	{
 		if (hasPoints)
 		{
@@ -135,14 +135,14 @@ namespace nm
 				if (dist > INTERACTION_DISTANCE() && size / dist < THETA())
 				{
 					// far enough away to use this node
-					point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+					point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
 				}
 				else if (children)
 				{
 					for (unsigned i = 0; i < 8; ++i)
 					{
-						if (potentialInteractionPartner) children[i].sumForces(point);
-						else potentialInteractionPartner = children[i].sumForces(point);
+						if (potentialInteractionPartner) children[i].sumForces(point);// , forceMultiplier);
+						else potentialInteractionPartner = children[i].sumForces(point);// , forceMultiplier);
 					}
 				}
 			}
@@ -155,7 +155,7 @@ namespace nm
 						ofVec3f direction = centerOfCharge - point;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
-						point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
 						// CHECK THAT ^ IS ACTUALLY XOR
 						if (dist < INTERACTION_DISTANCE() && 
 							((point.getAnnihilationFlag() ^ points[i]->getAnnihilationFlag()) == 0xFF) ||

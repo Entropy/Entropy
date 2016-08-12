@@ -38,11 +38,9 @@ namespace nm
 	{
 	}
 
-	void Photons::init(Universe::Ptr universe)// , const glm::vec3& min, const glm::vec3& max)
+	void Photons::init(Environment::Ptr environment)
 	{
-		this->universe = universe;
-		//this->min = min;
-		//this->max = max;
+		this->environment = environment;
 
 		// photon stuff
 		posns.resize(MAX_PHOTONS);
@@ -113,7 +111,7 @@ namespace nm
 		ofAddListener(trailParticles.drawEvent, this, &Photons::onParticlesDraw);
 
 		// listen for photon events
-		ofAddListener(universe->photonEvent, this, &Photons::onPhoton);
+		ofAddListener(environment->photonEvent, this, &Photons::onPhoton);
 	}
 
 	void Photons::onParticlesUpdate(ofShader& shader)
@@ -128,7 +126,7 @@ namespace nm
 	void Photons::onParticlesDraw(ofShader& shader)
 	{
 		shader.setUniformTexture("tex", particleImage, 4);
-		shader.setUniform1f("universeAge", universe->getAge());
+		shader.setUniform1f("energy", environment->getEnergy());
 	}
 
 	void Photons::onPhoton(PhotonEventArgs& args)
@@ -143,9 +141,9 @@ namespace nm
 	void Photons::update()
 	{
 		const float dt = ofGetLastFrameTime();
-		const glm::vec3 min = universe->getMin();
-		const glm::vec3 max = universe->getMax();
-		const float expansionScalar = universe->getExpansionScalar();
+		const glm::vec3 min = environment->getMin();
+		const glm::vec3 max = environment->getMax();
+		const float expansionScalar = environment->getExpansionScalar();
 
 		for (unsigned i = 0; i < posns.size(); ++i)
 		{
@@ -164,7 +162,7 @@ namespace nm
 		}
 		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
 		trailParticles.update();
-		if (ofRandomuf() < 0.5f)
+		if (ofRandomuf() < environment->getPairProductionThresh())
 		{
 			// find a particle
 			const unsigned numTries = 100;
@@ -183,7 +181,7 @@ namespace nm
 				PairProductionEventArgs args;
 				args.position = posns[idx];
 				args.velocity = vels[idx];
-				ofNotifyEvent(universe->pairProductionEvent, args, this);
+				ofNotifyEvent(environment->pairProductionEvent, args, this);
 				posns[idx] = glm::vec3(numeric_limits<float>::max());
 			}
 		}

@@ -1,5 +1,5 @@
 /*
- *  Universe.h
+ *  Environment.h
  *
  *  Copyright (c) 2016, Neil Mendoza, http://www.neilmendoza.com
  *  All rights reserved. 
@@ -47,28 +47,50 @@ namespace nm
 		glm::vec3 velocity;
 	};
 
-	class Universe
+	class Environment
 	{
 	public:
-		typedef shared_ptr<Universe> Ptr;
+		typedef shared_ptr<Environment> Ptr;
 
-		Universe(const glm::vec3& min, const glm::vec3& max);
+		Environment(const glm::vec3& min, const glm::vec3& max);
 
 		inline glm::vec3 getMin() const { return min; }
 		inline glm::vec3 getMax() const { return max; }
 		inline glm::vec3 getDims() const { return dims; }
 
-		inline float getAge() const { return age; }
-		inline void setAge(float age) { this->age = age; }
-		inline float& getAgeRef() { return age; } // for GUI
+		inline float getEnergy() const { return energy; }
+		inline void setEnergy(float energy) { this->energy = energy; }
+
+		// refs for gui
+		inline float& getEnergyRef() { return energy; }
+
+		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; }
+		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; }
+
+		inline float& getAnnihilationThreshMinRef() { return annihilationThreshMin; }
+		inline float& getAnnihilationThreshMaxRef() { return annihilationThreshMax; }
+
+		inline float& getFusionThreshExponentMinRef() { return fusionThreshExponentMin; }
+		inline float& getFusionThreshExponentMaxRef() { return fusionThreshExponentMax; }
+
+		inline float& getPairProductionThreshMinRef() { return pairProductionThreshMin; }
+		inline float& getPairProductionThreshMaxRef() { return pairProductionThreshMax; }
 
 		float getExpansionScalar() const;
+		float getForceMultiplier() const;
+		float getAnnihilationThresh() const;
+		float getFusionThresh() const;
+		float getPairProductionThresh() const;
 
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 
 	private:
 		glm::vec3 min, max, dims;
-		float age; // from 0 to 1
+		float energy; // from 0 to 1
+		float forceMultiplierMin, forceMultiplierMax;
+		float fusionThreshExponentMin, fusionThreshExponentMax;
+		float annihilationThreshMin, annihilationThreshMax;
+		float pairProductionThreshMin, pairProductionThreshMax;
     };
 }

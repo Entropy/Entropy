@@ -35,7 +35,7 @@
 namespace nm
 {
 	const float ParticleSystem::MIN_SPEED_SQUARED = 1;
-	const float ParticleSystem::MAX_SPEED = 1e16;
+	const float ParticleSystem::MAX_SPEED = 1e14;
 	const float ParticleSystem::MAX_SPEED_SQUARED = MAX_SPEED * MAX_SPEED;
 
 	ParticleSystem::ParticleSystem() :
@@ -61,9 +61,9 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::init(Universe::Ptr universe)
+	void ParticleSystem::init(Environment::Ptr universe)
 	{
-		this->universe = universe;
+		this->environment = universe;
 		//this->min = min;
 		//this->max = max;
 		//dims = max - min;
@@ -157,9 +157,13 @@ namespace nm
 		const float dt = ofGetLastFrameTime();
 		tbb::atomic<unsigned> typeIndices[Particle::NUM_TYPES];
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) typeIndices[i] = 0;
-		const glm::vec3 min = universe->getMin();
-		const glm::vec3 max = universe->getMax();
-		const float expansionScalar = universe->getExpansionScalar();
+		const glm::vec3 min = environment->getMin();
+		const glm::vec3 max = environment->getMax();
+		const float expansionScalar = environment->getExpansionScalar();
+		const float annihilationThreshold = environment->getAnnihilationThresh(); // was 0.5
+		const float fusionThreshold = environment->getFusionThresh(); // was 0.00001
+		Octree<Particle>::setForceMultiplier(environment->getForceMultiplier());
+		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
 			for (size_t i = r.begin(); i != r.end(); ++i)
@@ -172,7 +176,7 @@ namespace nm
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
-				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);
+				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);// , forceMultiplier);
 
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
@@ -216,7 +220,7 @@ namespace nm
 					// doesn't seem like it would save a worthwhile amount of time
 					if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
 					{
-						if (ofRandomuf() < .5f)
+						if (ofRandomuf() < annihilationThreshold)
 						{
 							unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
 							newPhotons[newPhotonIdx] = particles[i];
@@ -225,7 +229,7 @@ namespace nm
 					}
 					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
 					{
-						if (ofRandomuf() < .00001f)
+						if (ofRandomuf() < fusionThreshold)
 						{
 							addParticle(
 								Particle::UP_DOWN_QUARK,
@@ -237,20 +241,19 @@ namespace nm
 					}
 					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
 					{
-						if (ofRandomuf() < .5f)
+						// we always want this to happen if there it's possible to that the
+						// hacky up-down compound particles exist for as shorter time as possible
+						Particle::Type newType = Particle::PROTON;
+						if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
 						{
-							Particle::Type newType = Particle::PROTON;
-							if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
-							{
-								newType = Particle::NEUTRON;
-							}
-							addParticle(
-								newType,
-								particles[i],
-								.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-							);
-							killParticles = true;
+							newType = Particle::NEUTRON;
 						}
+						addParticle(
+							newType,
+							particles[i],
+							.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+						);
+						killParticles = true;
 					}
 
 					if (killParticles)
@@ -290,7 +293,7 @@ namespace nm
 			PhotonEventArgs photonEventArgs;
 			photonEventArgs.photons = newPhotons;
 			photonEventArgs.numPhotons = numNewPhotons;
-			ofNotifyEvent(universe->photonEvent, photonEventArgs, this);
+			ofNotifyEvent(environment->photonEvent, photonEventArgs, this);
 		}
 
 		// update the texture buffer objects with the new positions of particles
@@ -383,10 +386,10 @@ namespace nm
 			}
 			wallShader.setUniform3f("wallColor", 1.f, 1.f, 1.f);
 
-			const float expansionScalar = universe->getExpansionScalar();
-			const glm::vec3 min = expansionScalar * universe->getMin();
-			const glm::vec3 max = expansionScalar * universe->getMax();
-			const glm::vec3 dims = expansionScalar * universe->getDims();
+			const float expansionScalar = environment->getExpansionScalar();
+			const glm::vec3 min = expansionScalar * environment->getMin();
+			const glm::vec3 max = expansionScalar * environment->getMax();
+			const glm::vec3 dims = expansionScalar * environment->getDims();
 
 			// stop using ofDrawBox for walls and change it to one mesh
 			ofDrawBox(0.f, 0.f, min.z - 5.f, dims.x, dims.y, 10.f); // back wall
