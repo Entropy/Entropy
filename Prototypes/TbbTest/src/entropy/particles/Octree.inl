@@ -122,27 +122,27 @@ namespace nm
 	}
 
 	template<class T>
-	T* Octree<T>::sumForces(T& point)
+	T* Octree<T>::sumForces(T& point)//, float forceMultiplier)
 	{
 		if (hasPoints)
 		{
-			T* annihilate = NULL;
+			T* potentialInteractionPartner = NULL;
 			if (depth < MAX_DEPTH())
 			{
 				ofVec3f direction = centerOfCharge - point;
 				float distSq = direction.lengthSquared();
 				float dist = sqrt(distSq);
-				if (dist > ANNIHILATION_DISTANCE() && size / dist < THETA())
+				if (dist > INTERACTION_DISTANCE() && size / dist < THETA())
 				{
 					// far enough away to use this node
-					point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
+					point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
 				}
 				else if (children)
 				{
 					for (unsigned i = 0; i < 8; ++i)
 					{
-						if (annihilate) children[i].sumForces(point);
-						else annihilate = children[i].sumForces(point);
+						if (potentialInteractionPartner) children[i].sumForces(point);// , forceMultiplier);
+						else potentialInteractionPartner = children[i].sumForces(point);// , forceMultiplier);
 					}
 				}
 			}
@@ -155,16 +155,16 @@ namespace nm
 						ofVec3f direction = centerOfCharge - point;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
-						point.setForce(point.getForce() - FORCE_MULTIPLIER() * direction * point.getCharge() * charge / (distSq * dist));
-						if (dist < ANNIHILATION_DISTANCE() &&
-							((point.getType() == Particle::ANTI_UP_QUARK && points[i]->getType() == Particle::UP_QUARK) ||
-							(point.getType() == Particle::UP_QUARK && points[i]->getType() == Particle::ANTI_UP_QUARK) ||
-								(point.getType() == Particle::ELECTRON && points[i]->getType() == Particle::POSITRON) ||
-								(point.getType() == Particle::POSITRON && points[i]->getType() == Particle::ELECTRON))) annihilate = points[i];
+						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
+						// CHECK THAT ^ IS ACTUALLY XOR
+						if (dist < INTERACTION_DISTANCE() && 
+							((point.getAnnihilationFlag() ^ points[i]->getAnnihilationFlag()) == 0xFF) ||
+							((point.getFusion1Flag() ^ points[i]->getFusion1Flag()) == 0xFF) ||
+							((point.getFusion2Flag() ^ points[i]->getFusion2Flag()) == 0xFF)) potentialInteractionPartner = points[i];
 					}
 				}
 			}
-			return annihilate;
+			return potentialInteractionPartner;
 		}
 		return NULL;
 	}

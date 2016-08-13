@@ -34,7 +34,7 @@
 #include "ofMain.h"
 #include "Octree.h"
 #include "Particle.h"
-#include "ParticleEvents.h"
+#include "Environment.h"
 
 namespace nm
 {
@@ -57,17 +57,19 @@ namespace nm
         static const unsigned MAX_PARTICLES = 5000;
         static const unsigned NUM_LIGHTS = 2;
 		static const float MIN_SPEED_SQUARED;
+		static const float MAX_SPEED;
+		static const float MAX_SPEED_SQUARED;
         
         ParticleSystem();
         ~ParticleSystem();
         
-        void init(const glm::vec3& min, const glm::vec3& max);
+		void init(Environment::Ptr environment);
         
         void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
         
         void update();
         
-        void draw(ofShader & shader);
+        void draw(/*ofShader & shader*/);
 
 		void drawWalls();
 
@@ -82,6 +84,7 @@ namespace nm
     private:
 		void onPairProduction(PairProductionEventArgs& args);
 
+		Environment::Ptr environment;
         Octree<Particle> octree;
         nm::Particle* particles;
         tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
@@ -90,7 +93,7 @@ namespace nm
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
         ofShader particleShader;
-        glm::vec3 min, max, dims;
+        //glm::vec3 min, max, dims;
 		ofShader wallShader;
         
         // position stuff
