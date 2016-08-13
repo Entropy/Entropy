@@ -92,8 +92,6 @@ namespace nm
 		unsigned* deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
         ofVboMesh meshes[Particle::NUM_TYPES];
-        ofShader particleShader;
-        //glm::vec3 min, max, dims;
 		ofShader wallShader;
         
         // position stuff

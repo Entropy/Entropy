@@ -144,7 +144,7 @@ namespace entropy
 			if (pointLights.size() > photons.size())
 			{
 				pointLights.resize(photons.size());
-				cout << "removing point light " << this->lightingSystem.getPointLights().size() << endl;
+				//cout << "removing point light " << this->lightingSystem.getPointLights().size() << endl;
 			}
 			// Update current point lights.
 			for (int i = 0; i < pointLights.size(); ++i)
@@ -157,12 +157,10 @@ namespace entropy
 			{
 				auto light = ofxRTK::lighting::PointLight(photons[i], glm::vec3(1.0f, 1.0f, 1.0f), radius, 60000.0f);
 				//light.color = glm::normalize(glm::vec3(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)));
-				cout << "color is " << light.color << endl;
+				//cout << "color is " << light.color << endl;
 				this->lightingSystem.addPointLight(light);
-				cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
+				//cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
 			}
-
-			//this->animateLights();
 		}
 
 		//--------------------------------------------------------------
@@ -285,75 +283,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Particles::drawScene()
-		{
-			//glCullFace(GL_FRONT);
-
-			//int numSpheres = 8;
-
-			//float radius = 30.0f;
-			//float spacing = radius * 2.0f + 15.0f;
-			//float offset = -numSpheres * spacing * 0.5f;
-
-			//for (int z = 0; z < numSpheres; ++z)
-			//{
-			//	float zPercent = z / (float)(numSpheres - 1);
-
-			//	for (int x = 0; x < numSpheres; ++x)
-			//	{
-			//		float xPercent = x / (float)(numSpheres - 1);
-			//		this->material.metallic = std::max(zPercent, 0.001f);
-			//		this->material.roughness = std::max(xPercent * xPercent, 0.001f);
-			//		this->material.setUniforms(this->shader);
-
-			//		ofPushMatrix();
-			//		{
-			//			ofTranslate(offset + x * spacing, radius * 2.0, offset + z * spacing);
-			//			ofScale(radius);
-			//			this->shader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
-
-			//			//ofDrawSphere(glm::vec3(offset + x * spacing, /*radius * 2.*/0, offset + z * spacing), radius);
-			//			//ofDrawSphere(1.0f);
-			//			static ofSpherePrimitive sphere(1.0f, 24);
-			//			sphere.draw();
-			//		}
-			//		ofPopMatrix();
-			//	}
-			//}
-
-			//glCullFace(GL_BACK);
-		}
-
-		//--------------------------------------------------------------
-		void Particles::createRandomLights()
-		{
-			//this->lightingSystem.clearPointLights();
-
-			//const auto positionDist = 330.0f;
-			//const auto radius = 60.0f;
-
-			//const auto numPointLights = 60;
-			//for (int i = 0; i < numPointLights; ++i)
-			//{
-			//	auto offset = ofVec3f(ofRandom(-positionDist, positionDist), 0.0f, ofRandom(-positionDist, positionDist));
-			//	auto light = ofxRTK::lighting::PointLight(offset, ofVec3f(1.0f, 1.0f, 1.0f), radius, 6000.0f);
-			//	light.color = ofVec3f(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)).getNormalized();
-			//	this->lightingSystem.addPointLight(light);
-			//}
-		}
-
-		//--------------------------------------------------------------
-		void Particles::animateLights()
-		{
-			//auto & pointLights = this->lightingSystem.getPointLights();
-			//for (int idx = 0; idx < pointLights.size(); ++idx)
-			//{
-			//	auto & light = pointLights[idx];
-			//	light.position.y = (sinf((ofGetElapsedTimeMillis() + idx * 40) / 1400.0f) * 0.5f + 0.5f) * 100.0f;
-			//}
-		}
-
-		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
 		void Particles::gui(ofxPreset::Gui::Settings & settings)
 		{
@@ -404,15 +333,6 @@ namespace entropy
 				if (ImGui::CollapsingHeader("Lighting", nullptr, true, true))
 				{
 					ImGui::SliderFloat("Ambient IBL Strength", &this->lightingSystem.ambientIntensity, 0.0f, 3.0f);
-					if (ImGui::Button("Create Point Lights"))
-					{
-						createRandomLights();
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Clear Point Lights"))
-					{
-						this->lightingSystem.clearPointLights();
-					}
 					ImGui::Checkbox("Debug", &this->debug);
 
 					ImGui::BeginGroup();

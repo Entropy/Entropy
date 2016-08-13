@@ -38,10 +38,6 @@ namespace entropy
 			void drawFront();
 
 			void drawSkybox();
-			void drawScene();
-
-			void createRandomLights();
-			void animateLights();
 
 			void gui(ofxPreset::Gui::Settings & settings);
 
