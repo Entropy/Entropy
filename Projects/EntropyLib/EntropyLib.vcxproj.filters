@@ -580,13 +580,7 @@
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultVertexInAttributes.glsl">
       <Filter>shaders\entropy\render\Canvas\inc</Filter>
     </None>
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\toneMapping.glsl">
-      <Filter>shaders\entropy\render\Canvas\inc</Filter>
-    </None>
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\brightnessThreshold.frag">
-      <Filter>shaders\entropy\render\Canvas</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\colorCorrect.frag">
       <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.frag">
@@ -598,19 +592,10 @@
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert">
       <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_blur.glsl">
-      <Filter>shaders\entropy\render\Canvas</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_bright.glsl">
-      <Filter>shaders\entropy\render\Canvas</Filter>
-    </None>
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_tonemap.glsl">
       <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\passthrough_vert.glsl">
-      <Filter>shaders\entropy\render\Canvas</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\vert_blur.glsl">
       <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
   </ItemGroup>
