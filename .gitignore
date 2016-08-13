@@ -1,25 +1,3 @@
-docs/
-
-#########################
-# openFrameworks patterns
-#########################
-
-# build files
-openFrameworks.a
-openFrameworksDebug.a
-openFrameworksUniversal.a
-libs/openFrameworksCompiled/lib/*/*
-!libs/openFrameworksCompiled/lib/*/.gitkeep
-
-# apothecary
-scripts/apothecary/build
-
-# rule to avoid non-official apps going into git
-# see apps/.gitignore
-apps/*
-
-# also, see examples/.gitignore
-
 #########################
 # general
 #########################
@@ -37,6 +15,7 @@ apps/*
 *.cpp.eep
 *.cpp.elf
 *.cpp.hex
+*.lib
 
 #########################
 # IDE
@@ -65,7 +44,6 @@ xcuserdata
 .svn/
 obj/
 build/
-xcuserdata/
 
 # Visual Studio
 *.sdf
@@ -81,8 +59,6 @@ xcuserdata/
 *.opendb
 *.db
 ipch/
-*.opensdf
-*.opendb
 *.vcxproj.user
 
 
@@ -150,3 +126,10 @@ Resources/assets/*
 # Exports (not managed)
 Resources/exports/
 !Resources/exports/.gitkeep
+
+# ImGui garbage
+imgui.ini
+
+# ofxTimeline garbage
+Resources/data/*/*/*/_Page_One_trackPositions.xml
+Resources/data/*/*/*/timeline0_Base_trackPositions.xml
