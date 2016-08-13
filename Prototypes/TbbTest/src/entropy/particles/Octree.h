@@ -52,10 +52,12 @@ namespace nm
 		// have actually made a cpp class now so can change these back to 
 		// vars rather than functions
 		static constexpr unsigned POINTS_START_SIZE() { return 40; }
-		static constexpr unsigned MAX_DEPTH() { return 5; }
+		static constexpr unsigned MAX_DEPTH() { return 4; }
 		static constexpr float THETA() { return .5f; }
-		static constexpr float FORCE_MULTIPLIER() { return 5e7; }
-		static constexpr float ANNIHILATION_DISTANCE() { return 2.f; }
+		//static constexpr float FORCE_MULTIPLIER() { return 5e7; }
+		static constexpr float INTERACTION_DISTANCE() { return 2.f; }
+
+		static void setForceMultiplier(float forceMultiplier) { Octree::forceMultiplier = forceMultiplier; }
 
 		enum Location
 		{
@@ -74,7 +76,7 @@ namespace nm
 		void updateCenterOfCharge();
 
 		// if close enough to another point to annihilate it, return that point
-		T* sumForces(T& point);
+		T* sumForces(T& point);// , float forceMultiplier);
 
 		void addPoint(T& point);
 
@@ -107,6 +109,7 @@ namespace nm
 	private:
 		static ofVboMesh boxMesh;
 		static unsigned numOctrees;
+		static float forceMultiplier;
 
 		// hopefully after the first few iterations this shouldn't be resized too often
 		tbb::concurrent_vector<T*> points;

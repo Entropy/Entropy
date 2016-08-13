@@ -50,6 +50,9 @@ namespace nm
 			DOWN_QUARK,
 			
 			UP_DOWN_QUARK, // hacky composite particle
+			
+			NEUTRON,
+			PROTON,
 
 			NUM_TYPES
 		};
@@ -62,17 +65,10 @@ namespace nm
 			float mass;
 			float charge;
 			ofFloatColor color;
+			string meshName;
 		};
 
 		static const Data DATA[NUM_TYPES];
-
-		/*
-		static const unsigned char ANNIHILATION_FLAGS[NUM_TYPES];
-		static const unsigned char FUSION_FLAGS[NUM_TYPES];
-		static const float MASSES[NUM_TYPES];
-		static const float CHARGES[NUM_TYPES];
-		static const ofFloatColor COLORS[NUM_TYPES];
-		*/
 
 		Particle();
 
@@ -95,6 +91,10 @@ namespace nm
 
 		inline void setType(Particle::Type type) { this->type = type; }
 		inline Type getType() const { return type; }
+
+		inline unsigned char getAnnihilationFlag() const { return DATA[type].annihilationFlag; }
+		inline unsigned char getFusion1Flag() const { return DATA[type].fusion1Flag; }
+		inline unsigned char getFusion2Flag() const { return DATA[type].fusion2Flag; }
         
     private:
         Type type;

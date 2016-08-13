@@ -57,7 +57,7 @@ namespace entropy
 			static string dataPathAbs;
 			if (dataPathAbs.empty())
 			{
-				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentExeDir()) / dataPath;
+				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / dataPath;
 				dataPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return dataPathAbs;

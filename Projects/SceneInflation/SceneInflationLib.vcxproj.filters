@@ -55,7 +55,7 @@
       <UniqueIdentifier>{3db7d1e6-2ff0-4b96-935f-f88854c61308}</UniqueIdentifier>
     </Filter>
     <Filter Include="shaders">
-      <UniqueIdentifier>{fa1e0ca3-3d2d-4e40-a3d6-4eaebf973fd4}</UniqueIdentifier>
+      <UniqueIdentifier>{092ce113-0de7-4458-8e0f-e5269418a019}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace entropy
 		static const string kPresetDefaultName = "_default";
 
 		//--------------------------------------------------------------
-		ofCamera & Base::getCamera()
+		ofEasyCam & Base::getCamera()
 		{
 			return this->camera;
 		}

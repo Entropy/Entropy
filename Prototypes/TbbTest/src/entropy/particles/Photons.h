@@ -32,22 +32,22 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ParticleEvents.h"
 #include "ofxGpuParticles.h"
+#include "Environment.h"
 
 namespace nm
 {
 	class Photons
 	{
 	public:
-		static const unsigned MAX_PHOTONS = 100;
-		static const unsigned PARTICLES_PER_PHOTON = 300;
+		static const unsigned MAX_PHOTONS = 500;
+		static const unsigned PARTICLES_PER_PHOTON = 200;
 
 		Photons();
 
 		vector<glm::vec3>& getPosnsRef() { return posns; }
 
-		void init();
+		void init(Environment::Ptr environment);
 		void update();
 		void draw();
 
@@ -56,10 +56,13 @@ namespace nm
 		void onParticlesUpdate(ofShader& shader);
 		void onParticlesDraw(ofShader& shader);
 
-		ofxGpuParticles particles;
+		Environment::Ptr environment;
+
+		ofxGpuParticles trailParticles;
 		ofImage particleImage;
 
 		vector<glm::vec3> posns;
+		vector<glm::vec3> scaledPosns; // scale positions to simulate universe expanding
 		vector<glm::vec3> vels;
 
 		ofBufferObject photonPosnBuffer;

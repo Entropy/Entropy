@@ -40,6 +40,9 @@
     <ClCompile Include="src\entropy\scene\Particles.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\particles\Environment.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
     </ClCompile>
@@ -167,7 +170,7 @@
     <ClInclude Include="src\entropy\particles\Photons.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\particles\ParticleEvents.h">
+    <ClInclude Include="src\entropy\particles\Environment.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.h">

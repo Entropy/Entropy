@@ -7,6 +7,7 @@
 #include "entropy/scene/Base.h"
 #include "entropy/particles/ParticleSystem.h"
 #include "entropy/particles/Photons.h"
+#include "entropy/particles/Environment.h"
 
 namespace entropy
 {
@@ -55,25 +56,26 @@ namespace entropy
 			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
+			nm::Environment::Ptr environment;
 			
 		protected:
 			bool debug;
 
-			ofxRTK::util::ViewUbo viewUbo;
-			ofxRTK::lighting::System lightingSystem;
+			//ofxRTK::util::ViewUbo viewUbo;
+			//ofxRTK::lighting::System lightingSystem;
 
-			ofxRTK::pbr::CubeMapTexture radianceMap;
-			ofxRTK::pbr::CubeMapTexture irradianceMap;
-			ofxRTK::pbr::CubeMapTexture skyboxMap;
+			//ofxRTK::pbr::CubeMapTexture radianceMap;
+			//ofxRTK::pbr::CubeMapTexture irradianceMap;
+			//ofxRTK::pbr::CubeMapTexture skyboxMap;
 
-			ofxRTK::pbr::Material material;
+			//ofxRTK::pbr::Material material;
 
-			ofShader shader;
-			ofShader skyboxShader;
-			GLuint defaultVao;
+			//ofShader shader;
+			//ofShader skyboxShader;
+			//GLuint defaultVao;
 
-			float exposure;
-			float gamma;
+			//float exposure;
+			//float gamma;
 
 			virtual BaseParameters & getParameters() override
 			{

@@ -50,22 +50,22 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Shared\EntropyLib\EntropyLib.props" />
+    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -213,6 +213,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="src\entropy\particles\Particle.cpp" />
     <ClCompile Include="src\entropy\particles\ParticleSystem.cpp" />
     <ClCompile Include="src\entropy\particles\Photons.cpp" />
+    <ClCompile Include="src\entropy\particles\Environment.cpp" />
     <ClCompile Include="src\entropy\scene\Particles.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -242,9 +243,9 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h" />
     <ClInclude Include="src\entropy\particles\Octree.h" />
     <ClInclude Include="src\entropy\particles\Particle.h" />
-    <ClInclude Include="src\entropy\particles\ParticleEvents.h" />
     <ClInclude Include="src\entropy\particles\ParticleSystem.h" />
     <ClInclude Include="src\entropy\particles\Photons.h" />
+    <ClInclude Include="src\entropy\particles\Environment.h" />
     <ClInclude Include="src\entropy\scene\Particles.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\ofxPersistent\src\ofxPersistent.h" />
@@ -255,7 +256,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\EntropyLib\EntropyLib.vcxproj">
+    <ProjectReference Include="..\..\Projects\EntropyLib\EntropyLib.vcxproj">
       <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
     </ProjectReference>
   </ItemGroup>

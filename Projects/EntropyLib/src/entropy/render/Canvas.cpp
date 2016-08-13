@@ -8,6 +8,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Canvas::Canvas()
+			: exportFrames(false)
 		{
 			// Load post-processing shaders.
 			//this->brightnessThresholdShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("brightnessThreshold.frag"));
