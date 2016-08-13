@@ -22,37 +22,10 @@
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.cpp">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entropy\cmb\CmbSceneCL2D.cpp">
-      <Filter>src\entropy\cmb</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entropy\cmb\CmbSceneCL3D.cpp">
-      <Filter>src\entropy\cmb</Filter>
-    </ClCompile>
     <ClCompile Include="src\entropy\cmb\CmbSceneGL2D.cpp">
       <Filter>src\entropy\cmb</Filter>
     </ClCompile>
     <ClCompile Include="src\entropy\cmb\ofxFbo.cpp">
-      <Filter>src\entropy\cmb</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entropy\cmb\OpenCLImage3D.cpp">
       <Filter>src\entropy\cmb</Filter>
     </ClCompile>
     <ClCompile Include="src\entropy\cmb\PoolBase.cpp">
@@ -83,12 +56,6 @@
     </Filter>
     <Filter Include="addons\ofxVolumetrics\src">
       <UniqueIdentifier>{3db7d1e6-2ff0-4b96-935f-f88854c61308}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxMSAOpenCL">
-      <UniqueIdentifier>{86a10d05-48a4-4a53-ace1-cb20d0077591}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxMSAOpenCL\src">
-      <UniqueIdentifier>{1165e2c9-223e-4971-b5fd-97482a149e99}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entropy\cmb">
       <UniqueIdentifier>{72321b90-1b36-4f8c-9794-01156dec304b}</UniqueIdentifier>
@@ -128,46 +95,10 @@
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBufferManagedT.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImagePingPong.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLTypes.h">
-      <Filter>addons\ofxMSAOpenCL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\cmb\CmbSceneCL2D.h">
-      <Filter>src\entropy\cmb</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\cmb\CmbSceneCL3D.h">
-      <Filter>src\entropy\cmb</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\cmb\CmbSceneGL2D.h">
       <Filter>src\entropy\cmb</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\cmb\ofxFbo.h">
-      <Filter>src\entropy\cmb</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\cmb\OpenCLImage3D.h">
       <Filter>src\entropy\cmb</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\cmb\PoolBase.h">
