@@ -69,7 +69,7 @@ namespace nm
         
         void update();
         
-        void draw(/*ofShader & shader*/);
+        void draw(ofShader & shader);
 
 		void drawWalls();
 

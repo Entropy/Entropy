@@ -20,7 +20,7 @@ namespace entropy
 			static const float HALF_DIM;
 
 		public:
-			virtual string getName() const override
+			string getName() const override
 			{
 				return "entropy::scene::Particles";
 			}
@@ -61,23 +61,23 @@ namespace entropy
 		protected:
 			bool debug;
 
-			//ofxRTK::util::ViewUbo viewUbo;
-			//ofxRTK::lighting::System lightingSystem;
+			ofxRTK::util::ViewUbo viewUbo;
+			ofxRTK::lighting::System lightingSystem;
 
-			//ofxRTK::pbr::CubeMapTexture radianceMap;
-			//ofxRTK::pbr::CubeMapTexture irradianceMap;
-			//ofxRTK::pbr::CubeMapTexture skyboxMap;
+			ofxRTK::pbr::CubeMapTexture radianceMap;
+			ofxRTK::pbr::CubeMapTexture irradianceMap;
+			ofxRTK::pbr::CubeMapTexture skyboxMap;
 
-			//ofxRTK::pbr::Material material;
+			ofxRTK::pbr::Material material;
 
-			//ofShader shader;
-			//ofShader skyboxShader;
-			//GLuint defaultVao;
+			ofShader shader;
+			ofShader skyboxShader;
+			GLuint defaultVao;
 
-			//float exposure;
-			//float gamma;
+			float exposure;
+			float gamma;
 
-			virtual BaseParameters & getParameters() override
+			BaseParameters & getParameters() override
 			{
 				return this->parameters;
 			}
