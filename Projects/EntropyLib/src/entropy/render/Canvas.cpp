@@ -8,6 +8,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Canvas::Canvas()
+			: exportFrames(false)
 		{
 			// Allocate default fullscreen fbos.
 			this->fboSettings.width = ofGetWidth();
