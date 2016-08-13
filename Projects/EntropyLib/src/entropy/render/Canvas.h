@@ -105,18 +105,30 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
+					ofParameter<bool> enabled{ "Enabled", true };
+					ofParameter<int> numPasses{ "Num Passes", 1, 1, 10 };
+					ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.5f, 3.0f };
+					ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
+					ofParameter<bool> debugBlur{ "Debug blur", false };
+
+					PARAM_DECLARE("Bloom", enabled, numPasses, brightnessThreshold, sigma, debugBlur);
+				} bloom;
+
+				struct : ofParameterGroup
+				{
 					ofParameter<float> exposure{ "Exposure", 4.0f, 0.1f, 10.0f };
 					ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
-					ofParameter<int> tonemapping{ "Tonemapping", 1, 0, 5 };
+					ofParameter<int> tonemapping{ "Tonemapping", 6, 0, 6 };
 					ofParameter<float> contrast{ "Contrast", 1.0f, 0.5f, 1.5f };
 					ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
 
 					PARAM_DECLARE("Color", exposure, gamma, tonemapping, contrast, brightness);
 				} color;
+
 				
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Parameters", color, fillWindow);
+				PARAM_DECLARE("Parameters", bloom, color, fillWindow);
 			} parameters;
 
 			ofRectangle viewport;
@@ -144,6 +156,7 @@ namespace entropy
 			bool openGuis[MAX_NUM_WARPS];  // Don't use vector<bool> because they're weird: http://en.cppreference.com/w/cpp/container/vector_bool
 			
 			bool dirtyStitches;
+			ofVboMesh fullQuad;
 		};
 	}
 }

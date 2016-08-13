@@ -334,11 +334,16 @@
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\colorCorrect.frag" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.frag" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.vert" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_blur.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_bright.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_tonemap.glsl" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\math.glsl" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultUniforms.glsl" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultVertexInAttributes.glsl" />
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\toneMapping.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\passthrough_vert.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\vert_blur.glsl" />
     <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
 </Project>

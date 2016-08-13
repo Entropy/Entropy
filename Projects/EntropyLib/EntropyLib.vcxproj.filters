@@ -598,5 +598,20 @@
     <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert">
       <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_blur.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_bright.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_tonemap.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\passthrough_vert.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\vert_blur.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
   </ItemGroup>
 </Project>

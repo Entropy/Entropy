@@ -89,19 +89,7 @@ namespace entropy
 					ofParameter<bool> shadeNormals{ "Shade Normals", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
 
-					struct : ofParameterGroup
-					{
-						ofParameter<bool> enabled{ "Enabled", true };
-						ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.5f, 3.0f };
-						ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
-						ofParameter<float> contrast{ "Contrast",1.0f, 0.5f, 1.5f };
-						ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
-						ofParameter<int> tonemapType{ "Tonemap Type", 0, 0, 5 };
-
-						PARAM_DECLARE("Bloom", enabled, brightnessThreshold, sigma, contrast, brightness, tonemapType);
-					} bloom;
-
-					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, bloom);
+					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending);
 				} render;
 
 				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render);
