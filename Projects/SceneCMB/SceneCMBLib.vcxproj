@@ -184,12 +184,6 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.cpp" />
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
@@ -197,25 +191,13 @@
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
-    <ClCompile Include="src\entropy\cmb\CmbSceneCL2D.cpp" />
-    <ClCompile Include="src\entropy\cmb\CmbSceneCL3D.cpp" />
     <ClCompile Include="src\entropy\cmb\CmbSceneGL2D.cpp" />
     <ClCompile Include="src\entropy\cmb\ofxFbo.cpp" />
-    <ClCompile Include="src\entropy\cmb\OpenCLImage3D.cpp" />
     <ClCompile Include="src\entropy\cmb\PoolBase.cpp" />
     <ClCompile Include="src\entropy\cmb\PoolGL3D.cpp" />
     <ClCompile Include="src\entropy\scene\CMB.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCL.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBuffer.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLBufferManagedT.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImage.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLImagePingPong.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLKernel.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLMemoryObject.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLProgram.h" />
-    <ClInclude Include="..\..\..\addons\ofxMSAOpenCL\src\MSAOpenCLTypes.h" />
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
@@ -224,12 +206,9 @@
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
-    <ClInclude Include="src\entropy\cmb\CmbSceneCL2D.h" />
-    <ClInclude Include="src\entropy\cmb\CmbSceneCL3D.h" />
     <ClInclude Include="src\entropy\cmb\CmbSceneGL2D.h" />
     <ClInclude Include="src\entropy\cmb\Constants.h" />
     <ClInclude Include="src\entropy\cmb\ofxFbo.h" />
-    <ClInclude Include="src\entropy\cmb\OpenCLImage3D.h" />
     <ClInclude Include="src\entropy\cmb\PoolBase.h" />
     <ClInclude Include="src\entropy\cmb\PoolGL3D.h" />
     <ClInclude Include="src\entropy\scene\CMB.h" />
