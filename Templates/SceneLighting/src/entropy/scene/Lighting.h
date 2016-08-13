@@ -28,14 +28,9 @@ namespace entropy
 
 			void update(double & dt);
 
-			void drawBack();
 			void drawWorld();
-			void drawFront();
 
 			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
 
 		public:
 			void createRandomLights();
@@ -74,12 +69,12 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				ofxPreset::Parameter<bool> debug{ "Debug", false, false }; 
+				ofParameter<bool> debug{ "Debug", false }; 
 				
 				struct : ofParameterGroup
 				{
-					ofxPreset::Parameter<float> exposure{ "Exposure", 1.0f, 0.01f, 10.0f };
-					ofxPreset::Parameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
+					ofParameter<float> exposure{ "Exposure", 1.0f, 0.01f, 10.0f };
+					ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
 
 					PARAM_DECLARE("Camera", exposure, gamma);
 				} camera;

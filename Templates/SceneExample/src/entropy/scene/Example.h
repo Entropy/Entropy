@@ -1,23 +1,22 @@
 #pragma once
 
 #include "entropy/scene/Base.h"
-#include "entropy/popup/Base.h"
 
 namespace entropy
 {
 	namespace scene
 	{
-		class PopUps
+		class Example
 			: public Base
 		{
 		public:
 			string getName() const override 
 			{
-				return "entropy::scene::PopUps";
+				return "entropy::scene::Example";
 			}
 
-			PopUps();
-			~PopUps();
+			Example();
+			~Example();
 
 			void setup();
 			void exit();
@@ -35,6 +34,9 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
+			ofSpherePrimitive sphere;
+
+		protected:
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;
@@ -42,7 +44,17 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				
+				struct : ofParameterGroup
+				{
+					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+					ofParameter<bool> filled{ "Filled", false };
+					ofParameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
+					ofParameter<int> resolution{ "Resolution", 16, 3, 64 };
+
+					PARAM_DECLARE("Sphere", color, filled, radius, resolution);
+				} sphere;
+
+				PARAM_DECLARE("Template", sphere);
 			} parameters;
 		};
 	}

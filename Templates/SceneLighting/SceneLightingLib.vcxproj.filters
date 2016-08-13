@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.cpp">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\scene\Lighting.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit">
+      <UniqueIdentifier>{6e8aa595-998c-4918-a6a5-b16183966b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit\src">
+      <UniqueIdentifier>{9e661a55-b000-4d39-b1dc-1d8ac5d9c171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit">
+      <UniqueIdentifier>{e67ac640-dc83-465c-b76c-0e7edf16b62a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting">
+      <UniqueIdentifier>{e63b6800-00a2-4a2c-b252-960dabbef702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr">
+      <UniqueIdentifier>{af6430a2-2d59-47e3-bae5-c51cb8e1335b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\util">
+      <UniqueIdentifier>{1a10dbf8-fb48-4b9d-8871-09a2b15aa771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{5c3c21a4-51b2-4565-95c6-65f497fb1fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\inc">
+      <UniqueIdentifier>{18a8ed6c-e939-49e5-92d1-89d226a5578b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c5a33991-8827-4361-8cb3-2c6cb543b24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{6815a759-af48-47fc-b4f8-e261e6a64eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{3f079bf8-56a0-4168-bf84-2fd607f4ad77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit.h">
+      <Filter>addons\ofxRenderToolkit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\DirectionalLight.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\PointLight.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ProjInfo.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\CameraTools.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\FrustumTools.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\GLError.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\MatrixTools.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\RadixSort.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\SphereScissor.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h">
+      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Lighting.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\main.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\main.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\skybox.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\skybox.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\clusteredShading.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\math.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\ofDefaultUniforms.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\ofDefaultVertexInAttributes.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\pbr.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\toneMapping.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Lighting\shaders\inc\viewData.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+  </ItemGroup>
+</Project>

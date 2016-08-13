@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Lighting.h"
+#include "entropy/scene/Inflation.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -10,7 +10,7 @@ void ofApp::setup()
 
 	// Add Scenes to the Manager.
 	auto manager = entropy::GetSceneManager();
-	auto scene = make_shared<entropy::scene::Lighting>();
+	auto scene = make_shared<entropy::scene::Inflation>();
 	manager->addScene(scene);
 	manager->setCurrentScene(scene->getName());
 }
