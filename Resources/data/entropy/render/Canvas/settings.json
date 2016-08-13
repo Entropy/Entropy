@@ -1,1 +1,53 @@
-{"Parameters":{"Fill Window":"0"},"areas":["0, 0, 0, 1710, 1080"],"warps":[{"adaptive":true,"blend":{"edges":"0, 0, 0, 0","exponent":2.0,"gamma":"1, 1, 1","luminance":"0.5, 0.5, 0.5"},"brightness":1.0,"corners":["0, 0","1, 0","1, 1","0, 1"],"linear":false,"resolution":16,"type":3,"warp":{"columns":2,"control points":["0, 0","0, 1","1, 0","1, 1"],"rows":2}}]}
+{
+    "Parameters": {
+        "Bloom": {
+            "Brightness Threshold": "0.5",
+            "Debug blur": "0",
+            "Enabled": "1",
+            "Num Passes": "5",
+            "Sigma": "4.92"
+        },
+        "Color": {
+            "Brightness": "0",
+            "Contrast": "1",
+            "Exposure": "4",
+            "Gamma": "2.2",
+            "Tonemapping": "1"
+        },
+        "Fill Window": "0"
+    },
+    "areas": [
+        "0, 0, 0, 1916, 1053"
+    ],
+    "warps": [
+        {
+            "adaptive": true,
+            "blend": {
+                "edges": "0, 0, 0, 0",
+                "exponent": 2.0,
+                "gamma": "1, 1, 1",
+                "luminance": "0.5, 0.5, 0.5"
+            },
+            "brightness": 1.0,
+            "corners": [
+                "0, 0",
+                "1, 0",
+                "1, 1",
+                "0, 1"
+            ],
+            "linear": false,
+            "resolution": 16,
+            "type": 3,
+            "warp": {
+                "columns": 2,
+                "control points": [
+                    "0, 0",
+                    "0, 1",
+                    "1, 0",
+                    "1, 1"
+                ],
+                "rows": 2
+            }
+        }
+    ]
+}

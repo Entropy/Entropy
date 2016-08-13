@@ -309,6 +309,21 @@
     <Filter Include="addons\ofxTextureRecorder\src">
       <UniqueIdentifier>{9179d57c-49ed-4789-8125-f06018bf5c7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{732ef84a-8548-4ef3-baa9-f73897f2081d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\entropy">
+      <UniqueIdentifier>{ccc3b83f-5325-4ba1-a2bd-e9ecbd7123ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\entropy\render">
+      <UniqueIdentifier>{5db10052-74e3-4216-8df2-30b05aa6b281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\entropy\render\Canvas">
+      <UniqueIdentifier>{7933b13a-66ff-4ca8-b318-1678fbff4cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\entropy\render\Canvas\inc">
+      <UniqueIdentifier>{e910e8ae-55f9-4463-90c1-bac65b4902d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Base.h">
@@ -555,6 +570,48 @@
     </None>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\math.glsl">
+      <Filter>shaders\entropy\render\Canvas\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultUniforms.glsl">
+      <Filter>shaders\entropy\render\Canvas\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultVertexInAttributes.glsl">
+      <Filter>shaders\entropy\render\Canvas\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\toneMapping.glsl">
+      <Filter>shaders\entropy\render\Canvas\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\brightnessThreshold.frag">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\colorCorrect.frag">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.frag">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.vert">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_blur.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_bright.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_tonemap.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\passthrough_vert.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\vert_blur.glsl">
+      <Filter>shaders\entropy\render\Canvas</Filter>
     </None>
   </ItemGroup>
 </Project>
