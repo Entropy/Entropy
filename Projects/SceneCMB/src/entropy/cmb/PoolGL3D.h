@@ -4,7 +4,7 @@
 #ifdef COMPUTE_GL_3D
 
 #include "ofxFbo.h"
-#include "ofxVolumetrics3D.h"
+#include "ofxVolumetricsArray.h"
 
 #include "PoolBase.h"
 
@@ -49,9 +49,11 @@ namespace entropy
 			ofShader copyShader;
 			ofVboMesh mesh;
 
-			ofxTexture3d textures[3];
+			ofBufferObject copyBuffer;
+
+			ofxTextureArray textures[3];
 			ofxFbo fbos[3];
-			ofxVolumetrics3D volumetrics;
+			ofxVolumetricsArray volumetrics;
 		};
 	}
 }

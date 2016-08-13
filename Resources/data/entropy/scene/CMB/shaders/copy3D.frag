@@ -1,7 +1,7 @@
 #version 430
 
 // App uniforms and attributes
-uniform sampler3D uCopyBuffer;
+uniform sampler2DArray uCopyBuffer;
 uniform vec3 uDims;
 
 in vec2 gTexCoord;

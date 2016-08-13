@@ -1,8 +1,8 @@
 #version 430
 
 // App uniforms and attributes
-uniform sampler3D uPrevBuffer;
-uniform sampler3D uCurrBuffer;
+uniform sampler2DArray uPrevBuffer;
+uniform sampler2DArray uCurrBuffer;
 uniform vec3 uDims;
 uniform float uDamping;
 
