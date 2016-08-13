@@ -51,7 +51,7 @@ namespace entropy
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
-			//camera.setDistance(2);
+			this->getCamera().setDistance(2);
 			//camera.setNearClip(0.1);
 			//camera.setFarClip(100000);
 

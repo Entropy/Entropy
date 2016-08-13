@@ -55,7 +55,7 @@ namespace entropy
 		{
 		public:
 			virtual string getName() const = 0;
-			virtual ofCamera & getCamera();
+			virtual ofEasyCam & getCamera();
 
 			Base();
 			virtual ~Base();
