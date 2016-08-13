@@ -1,27 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\ofApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
-      <Filter>addons\ofxGpuParticles\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\entropy\particles\Octree.cpp">
       <Filter>src\entropy\particles</Filter>
     </ClCompile>
@@ -34,11 +13,20 @@
     <ClCompile Include="src\entropy\particles\Photons.cpp">
       <Filter>src\entropy\particles</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\particles\Environment.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
     <ClCompile Include="src\entropy\scene\Particles.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\particles\Environment.cpp">
-      <Filter>src\entropy\particles</Filter>
+    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
+      <Filter>addons\ofxObjLoader\libs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
@@ -63,80 +51,62 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons">
-      <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader">
-      <UniqueIdentifier>{1CE757A6-4CD8-7597-D9C8-ADF1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader\src">
-      <UniqueIdentifier>{4D864338-9CF5-6DAD-25EE-DF7F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader\libs">
-      <UniqueIdentifier>{34B63617-11EF-343F-D7FD-5A0C}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\entropy">
-      <UniqueIdentifier>{26f3c8ff-62b5-474a-8741-d1cb4ba004f8}</UniqueIdentifier>
+      <UniqueIdentifier>{e0a4ff83-1a13-4f2e-8421-cb35e578d0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{61f2200c-c059-471e-9ce7-35721a4cf86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\inc">
+      <UniqueIdentifier>{ec7cae39-1d3a-4e0a-9aba-83879c9916f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entropy\particles">
-      <UniqueIdentifier>{795d28da-6273-4a18-aed2-d7d60d6aacba}</UniqueIdentifier>
+      <UniqueIdentifier>{353157e7-ee62-4e99-b08c-a47e5eadc004}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\entropy\scene">
-      <UniqueIdentifier>{bf56410c-6e4c-44fd-b977-9a7c531698c8}</UniqueIdentifier>
+      <UniqueIdentifier>{69a1ef76-619d-47c1-a127-b05d10be4bcd}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxGpuParticles">
-      <UniqueIdentifier>{8706fd2e-05aa-4b37-8789-67559c9a9cb6}</UniqueIdentifier>
+      <UniqueIdentifier>{f4619e87-0161-47de-b2d2-3852a38bc2ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxGpuParticles\src">
-      <UniqueIdentifier>{eb77fa45-a47b-4dbf-8b69-49fc82506fcb}</UniqueIdentifier>
+      <UniqueIdentifier>{b18b2930-f745-4c36-a470-b3fb24ccb908}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\shaders">
-      <UniqueIdentifier>{f95eea04-0d9a-42bb-bed8-565b30cf7fc1}</UniqueIdentifier>
+    <Filter Include="addons\ofxObjLoader">
+      <UniqueIdentifier>{f1414a4f-020e-4a01-bf51-2f844938c568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\src">
+      <UniqueIdentifier>{78acedcd-f8a0-4ba4-9b59-f93f56bad822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs">
+      <UniqueIdentifier>{92cbf42b-0361-4c82-8fa9-bf03dfde55fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit">
-      <UniqueIdentifier>{6018804a-b0ee-4802-8b70-ea7a7586455f}</UniqueIdentifier>
+      <UniqueIdentifier>{9f3f303f-9a75-4c7a-8924-9d729bd1d15f}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src">
-      <UniqueIdentifier>{e0a8990a-6f6e-45f7-8eea-dea9ed1d7ac3}</UniqueIdentifier>
+      <UniqueIdentifier>{f4e0af19-23f9-4c37-b2a1-789cb1de75a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit">
-      <UniqueIdentifier>{dcea6f7f-1198-4290-9f9c-421a43c237b1}</UniqueIdentifier>
+      <UniqueIdentifier>{4f18e583-c915-4e0e-905b-a9aa638a5938}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting">
-      <UniqueIdentifier>{7c11d7ce-af9b-4742-9cff-6e79c649ba1a}</UniqueIdentifier>
+      <UniqueIdentifier>{b84f36f5-4c21-4f77-988e-6d3e3cb765ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr">
-      <UniqueIdentifier>{0d0f6fa2-74c4-4d52-8f4e-3782754c3d69}</UniqueIdentifier>
+      <UniqueIdentifier>{8db70eaf-b0dc-4b41-9406-07e040d3391c}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\util">
-      <UniqueIdentifier>{b92272d6-88c5-4068-8bb7-58ff217f1d56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\shaders\inc">
-      <UniqueIdentifier>{3f821d41-f1af-4670-b75a-57d75b10de9d}</UniqueIdentifier>
+      <UniqueIdentifier>{04a7a5ee-bbc5-4d99-9267-3210b2e84a4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
-      <Filter>addons\ofxGpuParticles\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
-      <Filter>addons\ofxGpuParticles\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\particles\Octree.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
@@ -146,14 +116,26 @@
     <ClInclude Include="src\entropy\particles\ParticleSystem.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\scene\Particles.h">
-      <Filter>src\entropy\scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\particles\Photons.h">
       <Filter>src\entropy\particles</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\particles\Environment.h">
       <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Particles.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
+      <Filter>addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
+      <Filter>addons\ofxObjLoader\libs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.h">
       <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
@@ -208,71 +190,68 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="icon.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\entropy\particles\Octree.inl">
-      <Filter>src\entropy\particles</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\math.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\pbr.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\viewData.glsl">
-      <Filter>src\shaders\inc</Filter>
-    </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.frag">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.vert">
-      <Filter>src\shaders</Filter>
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\math.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\pbr.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\viewData.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="src\entropy\particles\Octree.inl">
+      <Filter>src\entropy\particles</Filter>
     </None>
   </ItemGroup>
 </Project>

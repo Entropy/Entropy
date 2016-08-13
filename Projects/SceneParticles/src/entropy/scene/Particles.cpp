@@ -346,6 +346,7 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
+			ofxPreset::Gui::SetNextWindow(settings);
 			ofxPreset::Gui::AddGroup(this->environment->parameters, settings);
 		}
 
