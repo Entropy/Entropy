@@ -188,6 +188,10 @@ namespace entropy
 				auto w8 = gaussian(8.0, 0.0, parameters.render.bloom.sigma);
 				auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
 
+				/*std::array<char, 256> buff{ {0} };
+				sprintf(buff.data(), "blur coeffs %f, %f, %f, %f, %f, %f, %f, %f, %f\n", w0, w1, w2, w3, w4, w5, w6, w7, w8);
+				OutputDebugStringA(buff.data());*/
+
 				ofMesh fullQuad;
 				fullQuad.addVertices({ { -1, -1, 0 },{ -1,1,0 },{ 1,1,0 },{ 1,-1,0 } });
 				fullQuad.addTexCoords({ { 0,1 },{ 0,0 },{ 1,0 },{ 1,1 } });
