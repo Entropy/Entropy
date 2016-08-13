@@ -114,38 +114,13 @@ namespace entropy
 			 CheckGLError();
 			
 			 glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-
-			//for (unsigned i = 0; i < nm::ParticleSystem::NUM_LIGHTS; ++i)
-			//{
-			//	particleSystem.lights[i].intensity = 1.f;
-			//	particleSystem.lights[i].radius = 1.f;
-			//	particleSystem.lights[i].color.set(1.f, 1.f, 1.f, 1.f);
-
-			//	string iStr = ofToString(i);
-			//	persistent.add("lightPosns" + iStr, particleSystem.lights[i].position, glm::vec3(-2000.f), glm::vec3(2000.f));
-			//	persistent.add("lightIntensities" + iStr, particleSystem.lights[i].intensity, 0.f, 5.f);
-			//	persistent.add("lightRadiuses" + iStr, particleSystem.lights[i].radius, 0.f, 4000.f);
-			//	persistent.add("lightCols" + iStr, particleSystem.lights[i].color, ofFloatColor(0.f), ofFloatColor(1.f));
-			//}
-			//persistent.add("roughness", particleSystem.roughness, 0.f, 1.f);
-			persistent.add("environment.energy", environment->getEnergyRef(), 0.f, 1.f);
-			persistent.add("environment.forceMultiplierMin", environment->getForceMultiplierMinRef(), 1e7, 1e8);
-			persistent.add("environment.forceMultiplierMax", environment->getForceMultiplierMaxRef(), 1e7, 1e8);
-			persistent.add("environment.annihilationThreshMin", environment->getAnnihilationThreshMinRef(), 0.f, 1.f);
-			persistent.add("environment.annihilationThreshMax", environment->getAnnihilationThreshMaxRef(), 0.f, 1.f);
-			persistent.add("environment.fusionThreshExponentMin", environment->getFusionThreshExponentMinRef(), -6.f, -5.f);
-			persistent.add("environment.fusionThreshExponentMax", environment->getFusionThreshExponentMaxRef(), -6.f, -5.f);
-			persistent.add("environment.pairProductionThreshMin", environment->getPairProductionThreshMinRef(), 0.f, 1.f);
-			persistent.add("environment.pairProductionThreshMax", environment->getPairProductionThreshMaxRef(), 0.f, 1.f);
-
-			persistent.load("settings/settings.xml");
 		}
 
 		//--------------------------------------------------------------
 		// Clean up your crap here!
 		void Particles::exit()
 		{
-			persistent.save("settings/settings.xml");
+
 		}
 
 		//--------------------------------------------------------------
@@ -451,31 +426,7 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Persistent", settings))
-			{
-				for (auto& pair : persistent.getFloats())
-				{
-					ImGui::SliderFloat(pair.first.c_str(), pair.second.getValue(), pair.second.getMin(), pair.second.getMax());
-				}
-				for (auto& pair : persistent.getVec2fs())
-				{
-					ImGui::SliderFloat2(pair.first.c_str(), &pair.second.getValue()->x, pair.second.getMin().x, pair.second.getMax().x);
-				}
-				for (auto& pair : persistent.getVec3fs())
-				{
-					ImGui::SliderFloat3(pair.first.c_str(), &pair.second.getValue()->x, pair.second.getMin().x, pair.second.getMax().x);
-				}
-				for (auto& pair : persistent.getBools())
-				{
-					ImGui::Checkbox(pair.first.c_str(), pair.second.getValue());
-				}
-				for (auto& pair : persistent.getFloatColors())
-				{
-					ImGui::ColorEdit4(pair.first.c_str(), &pair.second.getValue()->r);
-				}
-			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxPreset::Gui::AddGroup(this->environment->parameters, settings);
 		}
 
 		//--------------------------------------------------------------
@@ -483,7 +434,7 @@ namespace entropy
 		// You can save other stuff to the same json object here too.
 		void Particles::serialize(nlohmann::json & json)
 		{
-
+			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -492,6 +443,8 @@ namespace entropy
 		// You can also set any refresh flags if necessary.
 		void Particles::deserialize(const nlohmann::json & json)
 		{
+			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
+			
 			if (!this->parameters.stateFile->empty())
 			{
 				this->loadState(this->parameters.stateFile);

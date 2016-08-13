@@ -61,21 +61,6 @@ namespace nm
 		inline float getEnergy() const { return energy; }
 		inline void setEnergy(float energy) { this->energy = energy; }
 
-		// refs for gui
-		inline float& getEnergyRef() { return energy; }
-
-		inline float& getForceMultiplierMinRef() { return forceMultiplierMin; }
-		inline float& getForceMultiplierMaxRef() { return forceMultiplierMax; }
-
-		inline float& getAnnihilationThreshMinRef() { return annihilationThreshMin; }
-		inline float& getAnnihilationThreshMaxRef() { return annihilationThreshMax; }
-
-		inline float& getFusionThreshExponentMinRef() { return fusionThreshExponentMin; }
-		inline float& getFusionThreshExponentMaxRef() { return fusionThreshExponentMax; }
-
-		inline float& getPairProductionThreshMinRef() { return pairProductionThreshMin; }
-		inline float& getPairProductionThreshMaxRef() { return pairProductionThreshMax; }
-
 		float getExpansionScalar() const;
 		float getForceMultiplier() const;
 		float getAnnihilationThresh() const;
@@ -85,12 +70,19 @@ namespace nm
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 
+		ofParameterGroup parameters;
+
 	private:
+		ofParameter<float> energy{ "Energy", 1.0f, 0.0f, 1.0f };
+		ofParameter<float> forceMultiplierMin{ "Force Multiplier Min", 1e7, 1e7, 1e8 };
+		ofParameter<float> forceMultiplierMax{ "Force Multiplier Max", 1e8, 1e7, 1e8 };
+		ofParameter<float> annihilationThreshMin{ "Annihiliation Threshold Min", 0.3f, 0.0f, 1.0f };
+		ofParameter<float> annihilationThreshMax{ "Annihiliation Threshold Max", 0.5f, 0.0f, 1.0f };
+		ofParameter<float> fusionThresholdExponentMin{ "Fusion Threshold Exponent Min", -5.237f, -6.0f, -5.0f };
+		ofParameter<float> fusionThresholdExponentMax{ "Fusion Threshold Exponent Max", -5.593, -6.0f, -5.0f };
+		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
+		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+
 		glm::vec3 min, max, dims;
-		float energy; // from 0 to 1
-		float forceMultiplierMin, forceMultiplierMax;
-		float fusionThreshExponentMin, fusionThreshExponentMax;
-		float annihilationThreshMin, annihilationThreshMax;
-		float pairProductionThreshMin, pairProductionThreshMax;
     };
 }

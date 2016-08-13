@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxPersistent.h"
 #include "ofxRenderToolkit.h"
 
 #include "entropy/scene/Base.h"
@@ -53,7 +52,6 @@ namespace entropy
 			bool loadState(const string & path);
 
 		protected:
-			ofxPersistent persistent;
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
 			nm::Environment::Ptr environment;

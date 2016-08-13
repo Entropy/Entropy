@@ -13,9 +13,6 @@
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ofxPersistent\src\Persistent.cpp">
-      <Filter>src\ofxPersistent\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
       <Filter>addons\ofxGpuParticles\src</Filter>
     </ClCompile>
@@ -68,12 +65,6 @@
   <ItemGroup>
     <Filter Include="src">
       <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\ofxPersistent">
-      <UniqueIdentifier>{B998148F-ACB2-C8F4-BD56-3B7C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\ofxPersistent\src">
-      <UniqueIdentifier>{127426DD-F979-D3F0-9F20-B03B}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons">
       <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
@@ -133,15 +124,6 @@
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxPersistent\src\ofxPersistent.h">
-      <Filter>src\ofxPersistent\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxPersistent\src\Persistent.h">
-      <Filter>src\ofxPersistent\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofxPersistent\src\PersistentType.h">
-      <Filter>src\ofxPersistent\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
       <Filter>addons\ofxGpuParticles\src</Filter>

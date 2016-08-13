@@ -33,16 +33,22 @@
 
 namespace nm
 {
-	Environment::Environment(const glm::vec3& min, const glm::vec3& max) :
-		min(min),
-		max(max),
-		dims(max - min),
-		energy(1.f),
-		forceMultiplierMin(50000000),
-		forceMultiplierMax(50000000),
-		annihilationThreshMin(.5f),
-		annihilationThreshMax(.5f)
+	Environment::Environment(const glm::vec3& min, const glm::vec3& max) 
+		: min(min)
+		, max(max)
+		, dims(max - min)
 	{
+		parameters.setName("Environment");
+		parameters.add(
+			energy,
+			forceMultiplierMin,
+			forceMultiplierMax,
+			annihilationThreshMin,
+			annihilationThreshMax,
+			fusionThresholdExponentMin,
+			fusionThresholdExponentMax,
+			pairProductionThresholdMin,
+			pairProductionThresholdMax);
 	}
 
 	float Environment::getExpansionScalar() const
@@ -62,13 +68,13 @@ namespace nm
 
 	float Environment::getFusionThresh() const
 	{
-		float exponent = fusionThreshExponentMin + energy * (fusionThreshExponentMax - fusionThreshExponentMin);
+		float exponent = fusionThresholdExponentMin + energy * (fusionThresholdExponentMax - fusionThresholdExponentMin);
 		return pow(10, exponent);
 		//return fusionThresholdMin + energy * (fusionThresholdMax - fusionThresholdMin);
 	}
 
 	float Environment::getPairProductionThresh() const
 	{
-		return pairProductionThreshMin + energy * (pairProductionThreshMax - pairProductionThreshMin);
+		return pairProductionThresholdMin + energy * (pairProductionThresholdMax - pairProductionThresholdMin);
 	}
 }
