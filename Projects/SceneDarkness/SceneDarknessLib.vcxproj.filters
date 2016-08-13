@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\entropy\scene\Darkness.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5File.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\darkness\GaussianMapTexture.cpp">
+      <Filter>src\entropy\darkness</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{e0a4ff83-1a13-4f2e-8421-cb35e578d0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{c8a239c3-1059-4256-beaf-4615545cdb49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5">
+      <UniqueIdentifier>{7f938f99-801d-48c0-a960-4ca74d3e28a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxHDF5\src">
+      <UniqueIdentifier>{c13e3114-9085-46ad-bb1c-db5497958fdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\darkness">
+      <UniqueIdentifier>{f112b60a-f52d-4991-88da-95a5e2235b63}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\entropy\scene\Darkness.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5File.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h">
+      <Filter>addons\ofxHDF5\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\darkness\GaussianMapTexture.h">
+      <Filter>src\entropy\darkness</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\render.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\render.vert">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
