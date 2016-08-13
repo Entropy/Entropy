@@ -173,94 +173,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Inflation::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) 
 		{
-			if (parameters.render.bloom.enabled)
-			{
-				auto texel_size = glm::vec2(1. / float(srcTexture.getWidth()), 1. / float(srcTexture.getHeight()));
-
-				auto w0 = gaussian(0.0, 0.0, parameters.render.bloom.sigma);
-				auto w1 = gaussian(1.0, 0.0, parameters.render.bloom.sigma);
-				auto w2 = gaussian(2.0, 0.0, parameters.render.bloom.sigma);
-				auto w3 = gaussian(3.0, 0.0, parameters.render.bloom.sigma);
-				auto w4 = gaussian(4.0, 0.0, parameters.render.bloom.sigma);
-				auto w5 = gaussian(5.0, 0.0, parameters.render.bloom.sigma);
-				auto w6 = gaussian(6.0, 0.0, parameters.render.bloom.sigma);
-				auto w7 = gaussian(7.0, 0.0, parameters.render.bloom.sigma);
-				auto w8 = gaussian(8.0, 0.0, parameters.render.bloom.sigma);
-				auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
-
-				/*std::array<char, 256> buff{ {0} };
-				sprintf(buff.data(), "blur coeffs %f, %f, %f, %f, %f, %f, %f, %f, %f\n", w0, w1, w2, w3, w4, w5, w6, w7, w8);
-				OutputDebugStringA(buff.data());*/
-
-				ofMesh fullQuad;
-				fullQuad.addVertices({ { -1, -1, 0 },{ -1,1,0 },{ 1,1,0 },{ 1,-1,0 } });
-				fullQuad.addTexCoords({ { 0,1 },{ 0,0 },{ 1,0 },{ 1,1 } });
-				fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
-
-				// Pass 0: Brightness
-				fboPost[0].begin();
-				ofClear(0, 255);
-				shaderBright.begin();
-				blurV.setUniformTexture("tex0", srcTexture, 0);
-				shaderBright.setUniform1f("bright_threshold", parameters.render.bloom.brightnessThreshold);
-				fullQuad.draw();
-				shaderBright.end();
-				fboPost[0].end();
-
-				// Pass 1: Blur Vertical
-				fboPost[1].begin();
-				ofClear(0, 255);
-				blurV.begin();
-				blurV.setUniformTexture("tex0", fboPost[0].getTexture(), 0);
-				blurV.setUniform2f("texel_size", texel_size);
-				blurV.setUniform1f("w0", w0 / wn);
-				blurV.setUniform1f("w1", w1 / wn);
-				blurV.setUniform1f("w2", w2 / wn);
-				blurV.setUniform1f("w3", w3 / wn);
-				blurV.setUniform1f("w4", w4 / wn);
-				blurV.setUniform1f("w5", w5 / wn);
-				blurV.setUniform1f("w6", w6 / wn);
-				blurV.setUniform1f("w7", w7 / wn);
-				blurV.setUniform1f("w8", w8 / wn);
-				fullQuad.draw();
-				blurV.end();
-				fboPost[1].end();
-
-				// Pass 2: Blur Horizontal
-				fboPost[0].begin();
-				ofClear(0, 255);
-				blurH.begin();
-				blurH.setUniformTexture("tex0", fboPost[1].getTexture(), 0);
-				blurH.setUniform2f("texel_size", texel_size);
-				blurH.setUniform1f("w0", w0 / wn);
-				blurH.setUniform1f("w1", w1 / wn);
-				blurH.setUniform1f("w2", w2 / wn);
-				blurH.setUniform1f("w3", w3 / wn);
-				blurH.setUniform1f("w4", w4 / wn);
-				blurH.setUniform1f("w5", w5 / wn);
-				blurH.setUniform1f("w6", w6 / wn);
-				blurH.setUniform1f("w7", w7 / wn);
-				blurH.setUniform1f("w8", w8 / wn);
-				fullQuad.draw();
-				blurH.end();
-				fboPost[0].end();
-
-				// Pass 3: Tonemap
-				dstFbo.begin();
-				ofClear(0, 255);
-				tonemap.begin();
-				tonemap.setUniformTexture("tex0", srcTexture, 0);
-				tonemap.setUniformTexture("blurred1", fboPost[0].getTexture(), 1);
-				tonemap.setUniform1f("contrast", parameters.render.bloom.contrast);
-				tonemap.setUniform1f("brightness", parameters.render.bloom.brightness);
-				tonemap.setUniform1f("tonemap_type", parameters.render.bloom.tonemapType);
-				fullQuad.draw();
-				tonemap.end();
-				dstFbo.end();
-
-				return true;
-			}
-
 			return false;
 		}
 
@@ -287,23 +199,6 @@ namespace entropy
 						gpuMarchingCubes.shadeNormals = this->parameters.render.shadeNormals;
 					}
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
-					ofxPreset::Gui::AddParameter(this->parameters.render.bloom.enabled);
-					if (this->parameters.render.bloom.enabled)
-					{
-						ImGui::SetNextTreeNodeOpen(true);
-						if (ImGui::TreeNode(this->parameters.render.bloom.getName().c_str()))
-						{
-							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.brightnessThreshold);
-							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.sigma);
-							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.contrast);
-							ofxPreset::Gui::AddParameter(this->parameters.render.bloom.brightness);
-
-							static vector<string> labels = { "Linear", "Gamma", "Reinhard", "Reinhard Alt", "Filmic", "Uncharted 2" };
-							ofxPreset::Gui::AddRadio(parameters.render.bloom.tonemapType, labels, 2);
-
-							ImGui::TreePop();
-						}
-					}
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
