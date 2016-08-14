@@ -1,7 +1,7 @@
 {
     "Parameters": {
         "Bloom": {
-            "Brightness Threshold": "0.5",
+            "Brightness Threshold": "0.503",
             "Debug blur": "0",
             "Enabled": "1",
             "Num Passes": "5",
@@ -12,7 +12,7 @@
             "Contrast": "1",
             "Exposure": "4",
             "Gamma": "2.2",
-            "Tonemapping": "1"
+            "Tonemapping": "6"
         },
         "Fill Window": "0"
     },

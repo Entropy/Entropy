@@ -1,0 +1,94 @@
+{
+    "Camera": {
+        "aspectRatio": 1.81956315040588,
+        "distance": 40.851131439209,
+        "drag": 0.899999976158142,
+        "farClip": 100000.0,
+        "forceAspectRatio": true,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": false,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 0.100000001490116,
+        "ortho": false,
+        "target": "0, 0, 0",
+        "transform": "-0.301061, -1.58325e-08, -0.953605,        0\n0.0227583, 0.999715, -0.007185,        0\n0.953333, -0.0238655, -0.300976,        0\n 38.9447, -0.974931, -12.2952,        1",
+        "translationKey": 109
+    },
+    "Inflation": {
+        "Base": {
+            "Background": "0, 0, 0, 1"
+        },
+        "Marching Cubes": {
+            "Inflation": "0",
+            "Resolution": "233",
+            "Scale": "42.335",
+            "Threshold": "0.268"
+        },
+        "Render": {
+            "Additive Blending": "0",
+            "Debug": "0",
+            "Draw Grid": "1",
+            "Shade Normals": "0",
+            "Wireframe": "1"
+        },
+        "Run Simulation": "1"
+    },
+    "Mappings": {
+        "Base::Background": "0",
+        "Marching_Cubes::Inflation": "0",
+        "Marching_Cubes::Resolution": "0",
+        "Marching_Cubes::Scale": "0",
+        "Marching_Cubes::Threshold": "0",
+        "Render::Additive Blending": "0",
+        "Render::Debug": "0",
+        "Render::Draw Grid": "0",
+        "Render::Shade Normals": "0",
+        "Render::Wireframe": "0",
+        "Run Simulation": "0"
+    },
+    "Noise Field": {
+        "Fade At": "0.263",
+        "Fill Edges": "0",
+        "Noise Speed": "5",
+        "Norm. Factor": "1.181",
+        "Octave 0": {
+            "Advance Time 0": "1",
+            "Amplitude 0": "1",
+            "Color 0": "0.886275, 0.784314, 0.443137, 1",
+            "Enabled 0": "1",
+            "Freq. Hz 0": "0.0154655",
+            "Radius 0": "0.603",
+            "Wavelength 0": "64.66"
+        },
+        "Octave 1": {
+            "Advance Time 1": "1",
+            "Amplitude 1": "0.608",
+            "Color 1": "0.905882, 1, 1, 1",
+            "Enabled 1": "1",
+            "Freq. Hz 1": "0.0303122",
+            "Radius 1": "0.644",
+            "Wavelength 1": "32.99"
+        },
+        "Octave 2": {
+            "Advance Time 2": "1",
+            "Amplitude 2": "0.25",
+            "Color 2": "0.419608, 0.631373, 0.733333, 1",
+            "Enabled 2": "1",
+            "Freq. Hz 2": "0.0631512",
+            "Radius 2": "0.149",
+            "Wavelength 2": "15.835"
+        },
+        "Octave 3": {
+            "Advance Time 3": "0",
+            "Amplitude 3": "0.186",
+            "Color 3": "0.121569, 0.870588, 1, 1",
+            "Enabled 3": "1",
+            "Freq. Hz 3": "0.116591",
+            "Radius 3": "0.005",
+            "Wavelength 3": "8.577"
+        },
+        "Spherical Clip": "1"
+    },
+    "Pop-Ups": null
+}

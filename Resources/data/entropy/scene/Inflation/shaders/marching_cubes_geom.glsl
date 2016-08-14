@@ -33,7 +33,7 @@ layout (points) in;
 #if WIREFRAME
 layout (line_strip, max_vertices = 10) out;
 const int vertexPerPrimitive = 2;
-const float colorFactor = 0.8;
+const float colorFactor = 0.3;
 #else
 layout (triangle_strip, max_vertices = 15) out;
 const int vertexPerPrimitive = 3;
@@ -60,6 +60,9 @@ float floatInterp(float isolevel, float v0, float l0, float v1, float l1){
 	return mix(v0, v1, (isolevel-l0)/(l1-l0));
 }
 
+float bright(vec3 rgb){
+	return max(max(rgb.r, rgb.g), rgb.b);
+}
 //Geometry Shader entry point
 void main(void) {
 
@@ -134,10 +137,12 @@ void main(void) {
                 ));
             #endif
 
+			vec4 color = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8.;
 			#if WIREFRAME
-				rgba = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8. * colorFactor;
+				rgba = vec4(vec3(bright(color.rgb)), 0.25);
 			#else
-				rgba = vec4(vec3(colorFactor),0.3);
+				rgba = color * colorFactor;
+				rgba.w *= 0.5;
 			#endif
 
 			//Fill gl_Position attribute for vertex raster space position

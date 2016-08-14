@@ -107,7 +107,7 @@ namespace entropy
 				{
 					ofParameter<bool> enabled{ "Enabled", true };
 					ofParameter<int> numPasses{ "Num Passes", 1, 1, 10 };
-					ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.5f, 3.0f };
+					ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.01f, 3.0f };
 					ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
 					ofParameter<bool> debugBlur{ "Debug blur", false };
 
