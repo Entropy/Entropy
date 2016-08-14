@@ -148,6 +148,7 @@ struct Octave{
     float frequency;
     float amplitude;
     float enabled;
+	vec4 color;
 };
 
 #define NUM_OCTAVES 4
@@ -192,7 +193,8 @@ void main()
             float freqD = octaves[i].frequency;// / 60.f;
             float amplitude = octaves[i].amplitude * octaves[i].enabled;// * (1. - ofClamp(normDistance, 0, 1));
             float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
-            if(i==0){
+			totalRGB += octaves[i].color.rgb * noise * octaves[i].enabled;
+            /*if(i==0){
                 totalRGB += vec3(117.,118.,118.)/255. * noise * octaves[i].enabled;
             }else if(i==1){
                 totalRGB += vec3(200.,200.,200.)/255. * noise * octaves[i].enabled;
@@ -200,7 +202,7 @@ void main()
                 totalRGB += vec3(240.,127.,19.)/255. * noise * octaves[i].enabled;
             }else if(i==3){
                 totalRGB += vec3(128.,9.,9.)/255. * (noise * noise * noise) * octaves[i].enabled;
-            }
+            }*/
             total +=  noise * amplitude;
             maxRGB += noise;
             maxValue += amplitude;

@@ -23,6 +23,7 @@ namespace entropy
 				, wavelength("Wavelength", 1.f / frequency_, 0.0f, 128.0f)
 				, amplitude("Amplitude", amplitude_, 0.0f, 1.0f)
 				, radius("Radius", 1.0f, 0.0f, 1.0f)
+				, color("Color", ofFloatColor::white)
 				, advanceTime("Advance Time", true)
 				, enabled("Enabled", true)
 				, parameters("Octave " + ofToString(idx),
@@ -30,6 +31,7 @@ namespace entropy
 					this->wavelength,
 					this->amplitude,
 					this->radius,
+					this->color,
 					this->enabled,
 					this->advanceTime) {
 
@@ -55,6 +57,7 @@ namespace entropy
 			ofParameter<float> amplitude;
 			ofParameter<float> radius;
 			ofParameter<bool> advanceTime;
+			ofParameter<ofFloatColor> color;
 			ofParameter<bool> enabled;
 			double now = 0;
 			ofParameterGroup parameters;

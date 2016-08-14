@@ -116,6 +116,7 @@ namespace entropy
 				noiseComputeShader.setUniform1f(octave + "frequency", octaves[i].frequency);
 				noiseComputeShader.setUniform1f(octave + "amplitude", octaves[i].amplitude);
 				noiseComputeShader.setUniform1f(octave + "enabled", octaves[i].enabled ? 1.0f : 0.0f);
+				noiseComputeShader.setUniform4f(octave + "color", octaves[i].color);
 			}
 			noiseComputeShader.setUniform1f("resolution", resolution);
 			noiseComputeShader.setUniform1f("normalizationFactor", normalizationFactor);
