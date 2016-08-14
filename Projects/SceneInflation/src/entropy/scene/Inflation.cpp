@@ -134,6 +134,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::drawWorld()
 		{
+			ofDisableDepthTest();
 
 			if (parameters.render.debug) {
 				noiseField.draw(parameters.marchingCubes.threshold);
