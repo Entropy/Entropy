@@ -74,10 +74,11 @@ namespace nm
 
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
-			ostringstream oss;
-			oss << "models/";
-			oss << Particle::DATA[i].meshName;
-			ofxObjLoader::load(oss.str(), meshes[i]);
+			//ostringstream oss;
+			//oss << "models/";
+			//oss << Particle::DATA[i].meshName;
+			//ofxObjLoader::load(oss.str(), meshes[i]);
+			meshes[i] = ofSpherePrimitive(1.0f, 16).getMesh();
 		}
 
 		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
