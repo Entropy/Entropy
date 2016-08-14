@@ -274,7 +274,7 @@ namespace entropy
 			std::string geomSource = geomBuff.getText();
 
 			std::regex re_wireframe("#define WIREFRAME [0-1]");
-			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME " + ofToString(wireframe));
+			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME 0");
 
 			std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
 			geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals && !wireframe));
@@ -290,11 +290,20 @@ namespace entropy
 			std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
 			fragSource = std::regex_replace(fragSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals && !wireframe));
 
-			shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
-			shader.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
-			shader.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
-			shader.bindDefaults();
-			shader.linkProgram();
+			OutputDebugStringA(geomSource.c_str());
+			shaderFill.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
+			shaderFill.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
+			shaderFill.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
+			shaderFill.bindDefaults();
+			shaderFill.linkProgram();
+
+			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME 1");
+
+			shaderWireframe.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
+			shaderWireframe.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
+			shaderWireframe.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
+			shaderWireframe.bindDefaults();
+			shaderWireframe.linkProgram();
 		}
 
 
@@ -316,7 +325,7 @@ namespace entropy
 			triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
 			triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-			wireFrameListener = wireframe.newListener([&](bool & wireframe) {
+			/*wireFrameListener = wireframe.newListener([&](bool & wireframe) {
 				if (wireframe && shadeNormals) {
 					shadeNormals = false;
 				}
@@ -332,25 +341,31 @@ namespace entropy
 				else {
 					shadeNormals = false;
 				}
-			});
+			});*/
 
 			compileShader();
 		}
 
 
 		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels, float threshold) {
-			shader.begin();
-			shader.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
-			shader.setUniformTexture("triTableTex", triTableTex, 1);
-			shader.setUniform1f("isolevel", threshold);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			if (fill) {
+				shaderFill.begin();
+				shaderFill.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
+				shaderFill.setUniformTexture("triTableTex", triTableTex, 1);
+				shaderFill.setUniform1f("isolevel", threshold);
+				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
+				shaderFill.end();
+			}
+
 			if (wireframe) {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				shaderWireframe.begin();
+				shaderWireframe.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
+				shaderWireframe.setUniformTexture("triTableTex", triTableTex, 1);
+				shaderWireframe.setUniform1f("isolevel", threshold);
+				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
+				shaderWireframe.end();
 			}
-			else {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
-			shader.end();
 		}
 	}
 }

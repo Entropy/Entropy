@@ -33,9 +33,11 @@ layout (points) in;
 #if WIREFRAME
 layout (line_strip, max_vertices = 10) out;
 const int vertexPerPrimitive = 2;
+const float colorFactor = 0.8;
 #else
 layout (triangle_strip, max_vertices = 15) out;
 const int vertexPerPrimitive = 3;
+const float colorFactor = 0.5;
 #endif
 
 //Get vertex i position within current marching cube
@@ -132,7 +134,11 @@ void main(void) {
                 ));
             #endif
 
-            rgba = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8.;
+			#if WIREFRAME
+				rgba = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8. * colorFactor;
+			#else
+				rgba = vec4(vec3(colorFactor),0.3);
+			#endif
 
 			//Fill gl_Position attribute for vertex raster space position
             for(int j=0;j<vertexPerPrimitive;j++){

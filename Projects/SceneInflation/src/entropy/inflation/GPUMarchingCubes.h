@@ -18,12 +18,13 @@ namespace entropy
 
 			ofParameter<int> resolution{ "Resolution", 1, 1, 512 };
 			ofParameter<bool> wireframe{ "Wireframe", true };
+			ofParameter<bool> fill{ "Fill", true };
 			ofParameter<bool> shadeNormals{ "Shade Normals", true };
 
 		private:
 			void compileShader();
 			ofVbo vbo;
-			ofShader shader;
+			ofShader shaderWireframe, shaderFill;
 			ofTexture triTableTex;
 			ofEventListener resolutionListener, wireFrameListener, shadeNormalsListener;
 		};
