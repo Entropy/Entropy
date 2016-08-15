@@ -239,8 +239,6 @@
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\pbr.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\viewData.glsl" />
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.frag" />

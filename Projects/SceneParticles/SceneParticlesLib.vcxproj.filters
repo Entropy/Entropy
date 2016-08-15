@@ -193,18 +193,6 @@
     <None Include="src\entropy\particles\Octree.inl">
       <Filter>src\entropy\particles</Filter>
     </None>
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.frag">
       <Filter>shaders</Filter>
     </None>
@@ -252,6 +240,12 @@
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\viewData.glsl">
       <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.vert">
+      <Filter>shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

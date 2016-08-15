@@ -71,7 +71,7 @@ namespace entropy
 			 this->debug = false;
 			
 			 // Load shaders.
-			 this->shader.load(this->getDataPath("shaders/main"));
+			 this->shader.load(this->getDataPath("shaders/particle"));
 			 this->shader.printActiveUniforms();
 			 this->shader.printActiveUniformBlocks();
 			 CheckGLError();
@@ -160,15 +160,13 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void Particles::drawBack()
 		{
-			ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
 		void Particles::drawWorld()
 		{
-			ofClear(0.0f, 1.0f);
-
 			ofDisableAlphaBlending();
 
 			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
