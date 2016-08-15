@@ -77,11 +77,13 @@ namespace nm
 			//ostringstream oss;
 			//oss << "models/";
 			//oss << Particle::DATA[i].meshName;
-			//ofxObjLoader::load(oss.str(), meshes[i]);
-			meshes[i] = ofSpherePrimitive(1.0f, 16).getMesh();
-		}
+			//ofxObjLoader::load(oss.str(), meshesFill[i]);
+			meshesFill[i] = ofSpherePrimitive(1.0f, 3).getMesh();
+			meshesWire[i] = ofIcoSpherePrimitive(1.0f, 1).getMesh();
 
-		for (auto& mesh : meshes) mesh.setUsage(GL_STATIC_DRAW);
+			meshesFill[i].setUsage(GL_STATIC_DRAW);
+			meshesWire[i].setUsage(GL_STATIC_DRAW);
+		}
 
 		wallShader.load("shaders/wall");
 
@@ -305,16 +307,25 @@ namespace nm
 		}
 	}
 
-	void ParticleSystem::draw(ofShader & shader)
+	void ParticleSystem::draw(ofShader & shader, bool wireframe)
 	{
-			for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
+		{
+			if (numParticles[i])
 			{
-				if (numParticles[i])
+				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
+				if (wireframe)
 				{
-					shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
-					meshes[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
+					shader.setUniform1f("uScale", 1.4f);
+					meshesWire[i].drawInstanced(OF_MESH_WIREFRAME, numParticles[i]);
+				}
+				else
+				{
+					shader.setUniform1f("uScale", 1.0f);
+					meshesFill[i].drawInstanced(OF_MESH_FILL, numParticles[i]);
 				}
 			}
+		}
 	}
 
 	void ParticleSystem::drawWalls()

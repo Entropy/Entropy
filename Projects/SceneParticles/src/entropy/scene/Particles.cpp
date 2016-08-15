@@ -215,8 +215,8 @@ namespace entropy
 							this->shader.setUniform1i("uIrradianceMap", 2);
 							this->shader.setUniform1i("uRadianceMap", 3);
 
-							//this->drawScene();
-							particleSystem.draw(this->shader);
+							particleSystem.draw(this->shader, false);
+							particleSystem.draw(this->shader, true);
 						}
 						this->shader.end();
 					}
