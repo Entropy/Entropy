@@ -39,7 +39,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			void loadData(const string & filePath);
+			void loadData(const string & filePath, ofVboMesh & vboMesh);
 
 			typedef struct
 			{
@@ -49,7 +49,8 @@ namespace entropy
 			} Coordinate;
 
 			ofShader shader;
-			ofVboMesh vboMesh;
+			ofVboMesh vboBoss;
+			ofVboMesh vboDes;
 			ofTexture texture;
 
 		protected:
