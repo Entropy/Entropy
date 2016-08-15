@@ -210,6 +210,8 @@
     <ClInclude Include="src\entropy\scene\Inflation.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\cool\parameters.json" />
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\_default\parameters.json" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\frag_blur.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\frag_bright.glsl" />

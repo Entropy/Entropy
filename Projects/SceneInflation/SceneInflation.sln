@@ -7,6 +7,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntropyLib", "..\EntropyLib\EntropyLib.vcxproj", "{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationLib", "SceneInflationLib.vcxproj", "{CB3F0A24-AFE0-46D5-A08E-224654C42A55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5837595D-ACA9-485C-8E76-729040CE4B0B} = {5837595D-ACA9-485C-8E76-729040CE4B0B}
+		{F6008D6A-6D39-4B68-840E-E7AC8ED855DA} = {F6008D6A-6D39-4B68-840E-E7AC8ED855DA}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationApp", "SceneInflationApp.vcxproj", "{7FD42DF7-442E-479A-BA76-D0022F99702A}"
 EndProject

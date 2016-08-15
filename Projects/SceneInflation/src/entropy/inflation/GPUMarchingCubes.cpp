@@ -279,6 +279,9 @@ namespace entropy
 			std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
 			geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals && !wireframe));
 
+			std::regex re_fog_enabled("#define FOG_ENABLED [0-1]");
+			geomSource = std::regex_replace(geomSource, re_fog_enabled, "#define FOG_ENABLED " + ofToString(fogEnabled));
+
 			std::regex re_resolution("const[ \t]+float[ \t]+resolution[ \t]*=.*;");
 			geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
 
@@ -289,6 +292,7 @@ namespace entropy
 
 			std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
 			fragSource = std::regex_replace(fragSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals && !wireframe));
+
 
 			OutputDebugStringA(geomSource.c_str());
 			shaderFill.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
@@ -343,18 +347,25 @@ namespace entropy
 				}
 			});*/
 
+			fogEnabledListener = fogEnabled.newListener([&](bool & fog) {
+				compileShader();
+			});
+
 			compileShader();
 		}
 
 
 		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels, float threshold) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			ofDisableDepthTest();
 			if (fill) {
 				shaderFill.begin();
 				shaderFill.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
 				shaderFill.setUniformTexture("triTableTex", triTableTex, 1);
 				shaderFill.setUniform1f("isolevel", threshold);
+				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
 				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
+				shaderFill.setUniform1f("fogPower", fogPower);
 				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
 				shaderFill.end();
 			}
@@ -364,10 +375,35 @@ namespace entropy
 				shaderWireframe.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
 				shaderWireframe.setUniformTexture("triTableTex", triTableTex, 1);
 				shaderWireframe.setUniform1f("isolevel", threshold);
+				shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
 				shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
+				shaderFill.setUniform1f("fogPower", fogPower);
 				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
 				shaderWireframe.end();
 			}
+		}
+
+		using namespace glm;
+		float fog(float dist, float minDist, float maxDist, float power) {
+			dist = pow(dist, power);
+			minDist = pow(minDist, power);
+			maxDist = pow(maxDist, power);
+			float invDistanceToCamera = clamp(1 - (dist - minDist) / maxDist, 0.f, 1.f);
+			if (dist > minDist) {
+				return invDistanceToCamera;
+			}
+			else {
+				return 1;
+			}
+		}
+
+		std::vector<float> GPUMarchingCubes::getFogFunctionPlot(size_t numberOfPoints) const {
+			std::vector<float> plot(numberOfPoints);
+			for (size_t i = 0; i < numberOfPoints; i++) {
+				float distanceToCamera = i/float(numberOfPoints) * 10.;
+				plot[i] = fog(distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
+			}
+			return plot;
 		}
 	}
 }

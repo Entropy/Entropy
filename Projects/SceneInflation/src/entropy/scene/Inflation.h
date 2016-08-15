@@ -89,8 +89,11 @@ namespace entropy
 					ofParameter<bool> shadeNormals{ "Shade Normals", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
 					ofParameter<float> fogMaxDistance{ "Fog max dist.", 1.0, 0.1, 10 };
+					ofParameter<float> fogMinDistance{ "Fog min dist.", 0.1f, 0.0f, 5.f };
+					ofParameter<bool> fogEnabled{ "Fog enabled", true };
+					ofParameter<float> fogPower{ "Fog power", 1.f, 0.00001f, 10.f };
 
-					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, fogMaxDistance);
+					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, fogMaxDistance, fogMinDistance, fogEnabled, fogPower);
 				} render;
 
 				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render);

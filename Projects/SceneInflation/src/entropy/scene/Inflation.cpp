@@ -35,8 +35,11 @@ namespace entropy
 			// Link gui parameters to internal parameters.
 			gpuMarchingCubes.resolution.makeReferenceTo(parameters.marchingCubes.resolution);
 			gpuMarchingCubes.wireframe.makeReferenceTo(parameters.render.wireframe);
-			gpuMarchingCubes.shadeNormals.makeReferenceTo(parameters.render.wireframe);
+			gpuMarchingCubes.shadeNormals.makeReferenceTo(parameters.render.shadeNormals);
+			gpuMarchingCubes.fogEnabled.makeReferenceTo(parameters.render.fogEnabled);
 			gpuMarchingCubes.fogMaxDistance.makeReferenceTo(parameters.render.fogMaxDistance);
+			gpuMarchingCubes.fogMinDistance.makeReferenceTo(parameters.render.fogMinDistance);
+			gpuMarchingCubes.fogPower.makeReferenceTo(parameters.render.fogPower);
 
 			// Marching Cubes
 			gpuMarchingCubes.setup();
@@ -194,7 +197,12 @@ namespace entropy
 					}
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 
+					ofxPreset::Gui::AddParameter(this->parameters.render.fogEnabled);
 					ofxPreset::Gui::AddParameter(this->parameters.render.fogMaxDistance);
+					ofxPreset::Gui::AddParameter(this->parameters.render.fogMinDistance);
+					ofxPreset::Gui::AddParameter(this->parameters.render.fogPower);
+					auto numPoints = 100;
+					ImGui::PlotLines("Fog funtion", this->gpuMarchingCubes.getFogFunctionPlot(numPoints).data(), numPoints);
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
