@@ -355,17 +355,18 @@ namespace entropy
 		}
 
 
-		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels, float threshold) {
+		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			ofDisableDepthTest();
 			if (fill) {
 				shaderFill.begin();
 				shaderFill.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
 				shaderFill.setUniformTexture("triTableTex", triTableTex, 1);
-				shaderFill.setUniform1f("isolevel", threshold);
+				shaderFill.setUniform1f("isolevel", isoLevel);
 				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
 				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
 				shaderFill.setUniform1f("fogPower", fogPower);
+				shaderFill.setUniform1f("fillAlpha", fillAlpha);
 				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
 				shaderFill.end();
 			}
@@ -374,10 +375,11 @@ namespace entropy
 				shaderWireframe.begin();
 				shaderWireframe.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
 				shaderWireframe.setUniformTexture("triTableTex", triTableTex, 1);
-				shaderWireframe.setUniform1f("isolevel", threshold);
+				shaderWireframe.setUniform1f("isolevel", isoLevel);
 				shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
 				shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-				shaderFill.setUniform1f("fogPower", fogPower);
+				shaderWireframe.setUniform1f("fogPower", fogPower);
+				shaderWireframe.setUniform1f("wireframeAlpha", wireframeAlpha);
 				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
 				shaderWireframe.end();
 			}
