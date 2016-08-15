@@ -167,7 +167,7 @@ namespace entropy
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 			// Popups
-			shared_ptr<popup::Base> addPopUp(popup::Base::Type type);
+			shared_ptr<popup::Base> addPopUp(popup::Type type);
 			void removePopUp();
 
 			vector<shared_ptr<popup::Base>> popUps;

@@ -104,7 +104,7 @@ namespace entropy
 
 			for (auto popUp : this->popUps)
 			{
-				popUp->update(dt);
+				popUp->update_(dt);
 			}
 
 			this->onUpdate.notify(dt);
@@ -137,7 +137,7 @@ namespace entropy
 
 			for (auto popUp : this->popUps)
 			{
-				popUp->draw();
+				popUp->draw_();
 			}
 		}
 
@@ -211,7 +211,7 @@ namespace entropy
 						{
 							if (i == 0)
 							{
-								this->addPopUp(popup::Base::Type::Image);
+								this->addPopUp(popup::Type::Image);
 							}
 						}
 					}
@@ -257,7 +257,7 @@ namespace entropy
 				popUpSettings.windowPos.y = 0.0f;
 				for (auto i = 0; i < this->popUps.size(); ++i)
 				{
-					this->popUps[i]->gui(popUpSettings);
+					this->popUps[i]->gui_(popUpSettings);
 				}
 				settings.mouseOverGui |= popUpSettings.mouseOverGui;
 			}
@@ -305,7 +305,7 @@ namespace entropy
 			for (auto popUp : this->popUps)
 			{
 				nlohmann::json jsonPopUp;
-				popUp->serialize(jsonPopUp);
+				popUp->serialize_(jsonPopUp);
 				jsonPopUps.push_back(jsonPopUp);
 			}
 		}
@@ -341,12 +341,12 @@ namespace entropy
 				for (auto & jsonPopUp : json["Pop-Ups"])
 				{
 					int typeAsInt = jsonPopUp["type"];
-					popup::Base::Type type = static_cast<popup::Base::Type>(typeAsInt);
+					popup::Type type = static_cast<popup::Type>(typeAsInt);
 
 					auto popUp = this->addPopUp(type);
 					if (popUp)
 					{
-						popUp->deserialize(jsonPopUp);
+						popUp->deserialize_(jsonPopUp);
 					}
 				}
 			}
@@ -599,10 +599,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<popup::Base> Base::addPopUp(popup::Base::Type type)
+		shared_ptr<popup::Base> Base::addPopUp(popup::Type type)
 		{
 			shared_ptr<popup::Base> popUp;
-			if (type == popup::Base::Type::Image)
+			if (type == popup::Type::Image)
 			{
 				popUp = make_shared<popup::Image>();
 			}
@@ -613,7 +613,7 @@ namespace entropy
 			}
 
 			auto idx = this->popUps.size();
-			popUp->setup(idx);
+			popUp->setup_(idx);
 			popUp->addTrack(this->timeline);
 			this->popUps.push_back(popUp);
 

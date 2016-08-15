@@ -42,44 +42,46 @@ namespace entropy
 {
 	namespace popup
 	{
+		enum class Type
+		{
+			Unknown,
+			Image,
+			Video
+		};
+
+		enum class Transition
+		{
+			Cut,
+			Mix,
+			Wipe,
+			Strobe
+		}; 
+		
 		class Base
 		{
 		public:
-			enum class Type
-			{
-				Unknown,
-				Image
-			};
-
-			enum class Transition
-			{
-				Cut,
-				Mix,
-				Wipe,
-				Strobe
-			};
 
 			Base(Type type = Type::Unknown);
 			virtual ~Base();
 
 			Type getType() const;
 
-			void setup(int index);
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			// Base methods
+			void setup_(int index);
+			void exit_();
+			void resize_(ofResizeEventArgs & args);
 
-			void update(double dt);
-			void draw();
+			void update_(double dt);
+			void draw_();
+
+			void gui_(ofxPreset::Gui::Settings & settings);
+			
+			void serialize_(nlohmann::json & json);
+			void deserialize_(const nlohmann::json & json);
 
 			// Timeline
 			void addTrack(ofxTimeline & timeline);
 			void removeTrack(ofxTimeline & timeline);
-
-			// Parameters
-			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
 
 			bool editing;
 

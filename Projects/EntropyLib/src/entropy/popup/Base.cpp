@@ -20,13 +20,13 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		Base::Type Base::getType() const
+		Type Base::getType() const
 		{
 			return this->type;
 		}
 
 		//--------------------------------------------------------------
-		void Base::setup(int index)
+		void Base::setup_(int index)
 		{
 			this->index = index;
 
@@ -36,13 +36,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::exit()
+		void Base::exit_()
 		{
 			this->onExit.notify();
 		}
 
 		//--------------------------------------------------------------
-		void Base::resize(ofResizeEventArgs & args)
+		void Base::resize_(ofResizeEventArgs & args)
 		{
 			// Update right away so that event listeners can use the new bounds.
 			this->updateBounds();
@@ -51,7 +51,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::update(double dt)
+		void Base::update_(double dt)
 		{
 			if (this->boundsDirty)
 			{
@@ -159,7 +159,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::draw()
+		void Base::draw_()
 		{
 			auto & parameters = this->getParameters();
 
@@ -190,51 +190,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addTrack(ofxTimeline & timeline)
-		{
-			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(kTimelinePageName))
-			{
-				timeline.addPage(kTimelinePageName);
-			}
-			auto page = timeline.getPage(kTimelinePageName);
-
-			auto trackName = "_" + ofToString(this->index);
-			if (this->type == Type::Image) trackName.insert(0, "Image");
-
-			if (page->getTrack(trackName))
-			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
-				return;
-			}
-
-			timeline.setCurrentPage(kTimelinePageName);
-
-			// Add Track.
-			this->track = timeline.addSwitches(trackName);
-		}
-
-		//--------------------------------------------------------------
-		void Base::removeTrack(ofxTimeline & timeline)
-		{
-			if (!this->track)
-			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
-				return;
-			}
-
-			timeline.removeTrack(this->track);
-			this->track = nullptr;
-
-			auto page = timeline.getPage(kTimelinePageName);
-			if (page && page->getTracks().empty())
-			{
-				timeline.removePage(page);
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::gui(ofxPreset::Gui::Settings & settings)
+		void Base::gui_(ofxPreset::Gui::Settings & settings)
 		{
 			if (!this->editing) return;
 
@@ -295,7 +251,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::serialize(nlohmann::json & json)
+		void Base::serialize_(nlohmann::json & json)
 		{
 			json["type"] = static_cast<int>(this->type);
 
@@ -305,13 +261,57 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::deserialize(const nlohmann::json & json)
+		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
 			this->onDeserialize.notify(json);
 
 			this->boundsDirty = true;
+		}
+
+		//--------------------------------------------------------------
+		void Base::addTrack(ofxTimeline & timeline)
+		{
+			// Add Page if it doesn't already exist.
+			if (!timeline.hasPage(kTimelinePageName))
+			{
+				timeline.addPage(kTimelinePageName);
+			}
+			auto page = timeline.getPage(kTimelinePageName);
+
+			auto trackName = "_" + ofToString(this->index);
+			if (this->type == Type::Image) trackName.insert(0, "Image");
+
+			if (page->getTrack(trackName))
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
+				return;
+			}
+
+			timeline.setCurrentPage(kTimelinePageName);
+
+			// Add Track.
+			this->track = timeline.addSwitches(trackName);
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeTrack(ofxTimeline & timeline)
+		{
+			if (!this->track)
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
+				return;
+			}
+
+			timeline.removeTrack(this->track);
+			this->track = nullptr;
+
+			auto page = timeline.getPage(kTimelinePageName);
+			if (page && page->getTracks().empty())
+			{
+				timeline.removePage(page);
+			}
 		}
 
 		//--------------------------------------------------------------
