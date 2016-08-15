@@ -190,68 +190,68 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\math.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\pbr.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\viewData.glsl">
-      <Filter>shaders\inc</Filter>
-    </None>
     <None Include="src\entropy\particles\Octree.inl">
       <Filter>src\entropy\particles</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\main.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_update.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_update.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\skybox.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\skybox.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\wall.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\wall.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\math.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\pbr.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl">
+      <Filter>shaders\inc</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\viewData.glsl">
+      <Filter>shaders\inc</Filter>
     </None>
   </ItemGroup>
 </Project>
