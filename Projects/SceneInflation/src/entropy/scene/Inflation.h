@@ -88,14 +88,13 @@ namespace entropy
 					ofParameter<bool> wireframe{ "Wireframe", true };
 					ofParameter<bool> shadeNormals{ "Shade Normals", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
+					ofParameter<float> fogMaxDistance{ "Fog max dist.", 1.0, 0.1, 10 };
 
-					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending);
+					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, fogMaxDistance);
 				} render;
 
 				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render);
 			} parameters;
-
-			vector<ofEventListener> marchingCubesEventListeners;
 		};
     }
 }

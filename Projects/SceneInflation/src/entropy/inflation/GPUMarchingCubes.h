@@ -20,6 +20,7 @@ namespace entropy
 			ofParameter<bool> wireframe{ "Wireframe", true };
 			ofParameter<bool> fill{ "Fill", true };
 			ofParameter<bool> shadeNormals{ "Shade Normals", true };
+			ofParameter<float> fogMaxDistance{ "Fog max dist.", 1.5f, 0.2f, 5.f };
 
 		private:
 			void compileShader();

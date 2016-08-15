@@ -31,22 +31,15 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			// Marching Cubes
-			gpuMarchingCubes.setup();
 
 			// Link gui parameters to internal parameters.
-			marchingCubesEventListeners.push_back(parameters.marchingCubes.resolution.newListener([this](int & resolution)
-			{
-				gpuMarchingCubes.resolution = resolution;
-			}));
-			marchingCubesEventListeners.push_back(parameters.render.wireframe.newListener([this](bool & wireframe)
-			{
-				gpuMarchingCubes.wireframe = wireframe;
-			}));
-			marchingCubesEventListeners.push_back(parameters.render.shadeNormals.newListener([this](bool & shadeNormals)
-			{
-				gpuMarchingCubes.shadeNormals = shadeNormals;
-			}));
+			gpuMarchingCubes.resolution.makeReferenceTo(parameters.marchingCubes.resolution);
+			gpuMarchingCubes.wireframe.makeReferenceTo(parameters.render.wireframe);
+			gpuMarchingCubes.shadeNormals.makeReferenceTo(parameters.render.wireframe);
+			gpuMarchingCubes.fogMaxDistance.makeReferenceTo(parameters.render.fogMaxDistance);
+
+			// Marching Cubes
+			gpuMarchingCubes.setup();
 			
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
@@ -200,6 +193,8 @@ namespace entropy
 						gpuMarchingCubes.shadeNormals = this->parameters.render.shadeNormals;
 					}
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
+
+					ofxPreset::Gui::AddParameter(this->parameters.render.fogMaxDistance);
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);

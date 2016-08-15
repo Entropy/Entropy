@@ -1,11 +1,14 @@
 #version 450
 uniform mat4 modelViewProjectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
 //Volume data field texture
 uniform sampler3D dataFieldTex;
 //Triangles table texture
 uniform isampler2D triTableTex;
 //Global iso level
 uniform float isolevel;
+uniform float fogMaxDistance;
 const float resolution = 128.f;
 //Marching cubes vertices decal
 const vec3 vertDecals[8] = {
@@ -20,6 +23,7 @@ const vec3 vertDecals[8] = {
 };
 
 out vec4 rgba;
+out float invDistanceToCamera;
 
 #define OUTPUT_NORMALS 1
 
@@ -147,7 +151,9 @@ void main(void) {
 
 			//Fill gl_Position attribute for vertex raster space position
             for(int j=0;j<vertexPerPrimitive;j++){
-				gl_Position = modelViewProjectionMatrix * vec4(pos[j],1.0f);
+				vec4 eyePosition =  modelViewMatrix * vec4(pos[j],1.0f);
+				gl_Position = projectionMatrix * eyePosition;
+				invDistanceToCamera = 1-clamp(dot(eyePosition, eyePosition) / (fogMaxDistance*fogMaxDistance), 0, 1);
 				EmitVertex();
 			}
 			EndPrimitive();
