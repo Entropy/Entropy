@@ -1,7 +1,7 @@
 {
     "Camera": {
         "aspectRatio": 1.81956315040588,
-        "distance": 40.851131439209,
+        "distance": 1.53658735752106,
         "drag": 0.899999976158142,
         "farClip": 100000.0,
         "forceAspectRatio": true,
@@ -12,7 +12,7 @@
         "nearClip": 0.100000001490116,
         "ortho": false,
         "target": "0, 0, 0",
-        "transform": "-0.301061, -1.58325e-08, -0.953605,        0\n0.0227583, 0.999715, -0.007185,        0\n0.953333, -0.0238655, -0.300976,        0\n 38.9447, -0.974931, -12.2952,        1",
+        "transform": "-0.594763, -2.08616e-07, -0.803901,        0\n-0.574768, 0.699152, 0.425239,        0\n0.562049, 0.714973, -0.415829,        0\n0.863638,  1.09862, -0.638958,        1",
         "translationKey": 109
     },
     "Inflation": {
@@ -21,14 +21,18 @@
         },
         "Marching Cubes": {
             "Inflation": "0",
-            "Resolution": "233",
-            "Scale": "42.335",
-            "Threshold": "0.268"
+            "Resolution": "256",
+            "Scale": "1",
+            "Threshold": "0.284"
         },
         "Render": {
-            "Additive Blending": "0",
+            "Additive Blending": "1",
             "Debug": "0",
-            "Draw Grid": "1",
+            "Draw Grid": "0",
+            "Fog enabled": "1",
+            "Fog max dist.": "2.294",
+            "Fog min dist.": "0.155",
+            "Fog power": "3.402",
             "Shade Normals": "0",
             "Wireframe": "1"
         },
@@ -43,6 +47,10 @@
         "Render::Additive Blending": "0",
         "Render::Debug": "0",
         "Render::Draw Grid": "0",
+        "Render::Fog enabled": "0",
+        "Render::Fog max dist.": "0",
+        "Render::Fog min dist.": "0",
+        "Render::Fog power": "0",
         "Render::Shade Normals": "0",
         "Render::Wireframe": "0",
         "Run Simulation": "0"
@@ -88,7 +96,7 @@
             "Radius 3": "0.005",
             "Wavelength 3": "8.577"
         },
-        "Spherical Clip": "1"
+        "Spherical Clip": "0"
     },
     "Pop-Ups": null
 }

@@ -57,6 +57,15 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{092ce113-0de7-4458-8e0f-e5269418a019}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{eaabf0e8-97c1-4852-8479-5d6b0168647b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\cool">
+      <UniqueIdentifier>{0c06c59d-1eb5-44f3-9d76-6da9b4a4da7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\_default">
+      <UniqueIdentifier>{03344cd1-7a56-4e69-a71f-7322fc9e717e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Inflation.h">
@@ -132,6 +141,12 @@
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\volumetrics_vertex.glsl">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\cool\parameters.json">
+      <Filter>resources\cool</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\_default\parameters.json">
+      <Filter>resources\_default</Filter>
     </None>
   </ItemGroup>
 </Project>

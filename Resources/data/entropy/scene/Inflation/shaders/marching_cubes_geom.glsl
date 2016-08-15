@@ -9,6 +9,9 @@ uniform isampler2D triTableTex;
 //Global iso level
 uniform float isolevel;
 uniform float fogMaxDistance;
+uniform float fogMinDistance;
+uniform float fogPower;
+
 const float resolution = 128.f;
 //Marching cubes vertices decal
 const vec3 vertDecals[8] = {
@@ -23,7 +26,6 @@ const vec3 vertDecals[8] = {
 };
 
 out vec4 rgba;
-out float invDistanceToCamera;
 
 #define OUTPUT_NORMALS 1
 
@@ -43,6 +45,8 @@ layout (triangle_strip, max_vertices = 15) out;
 const int vertexPerPrimitive = 3;
 const float colorFactor = 0.5;
 #endif
+
+#define FOG_ENABLED 1
 
 //Get vertex i position within current marching cube
 vec3 cubePos(int i){
@@ -67,6 +71,20 @@ float floatInterp(float isolevel, float v0, float l0, float v1, float l1){
 float bright(vec3 rgb){
 	return max(max(rgb.r, rgb.g), rgb.b);
 }
+
+float fog(float dist, float minDist, float maxDist, float power) {
+	dist = pow(dist, power);
+	minDist = pow(minDist, power);
+	maxDist = pow(maxDist, power);
+	float invDistanceToCamera = clamp(1 - (dist - minDist) / maxDist, 0.f, 1.f);
+	if (dist > minDist) {
+		return invDistanceToCamera;
+	}
+	else {
+		return 1;
+	}
+}
+
 //Geometry Shader entry point
 void main(void) {
 
@@ -146,14 +164,17 @@ void main(void) {
 				rgba = vec4(vec3(bright(color.rgb)), 0.25);
 			#else
 				rgba = color * colorFactor;
-				rgba.w *= 0.5;
+				rgba.a *= 0.5;
 			#endif
 
 			//Fill gl_Position attribute for vertex raster space position
             for(int j=0;j<vertexPerPrimitive;j++){
 				vec4 eyePosition =  modelViewMatrix * vec4(pos[j],1.0f);
 				gl_Position = projectionMatrix * eyePosition;
-				invDistanceToCamera = 1-clamp(dot(eyePosition, eyePosition) / (fogMaxDistance*fogMaxDistance), 0, 1);
+				#if FOG_ENABLED
+				float distanceToCamera=length(eyePosition);
+				rgba.a *= fog(distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
+				#endif
 				EmitVertex();
 			}
 			EndPrimitive();

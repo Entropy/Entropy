@@ -8,7 +8,6 @@ const float resolution = 64.f;
 in vec3 normal;
 #endif
 in vec4 rgba;
-in float invDistanceToCamera;
 
 out vec4 vFragColor;
 
@@ -18,6 +17,6 @@ void main(void)
     vFragColor = vec4(normal, 1.0);
 #else
     //vFragColor = vec4(vec3(1.0), isolevel);
-    vFragColor = vec4(rgba.rgb, rgba.a * invDistanceToCamera);
+    vFragColor = rgba;
 #endif
 }
