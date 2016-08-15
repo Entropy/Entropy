@@ -178,6 +178,8 @@ namespace entropy
 			void refreshMappings();
 
 			// Camera
+			void resetCamera();
+
 			ofEasyCam camera;
 		};
 	}

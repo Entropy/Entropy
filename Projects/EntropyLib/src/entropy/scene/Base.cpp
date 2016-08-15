@@ -29,10 +29,7 @@ namespace entropy
 			ofSetDataPathRoot(this->getDataPath());
 			
 			// Setup default camera.
-			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
-			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
-			this->camera.setNearClip(0.1);
-			this->camera.setFarClip(100000);
+			this->resetCamera();
 
 			// Setup child Scene.
 			this->onSetup.notify();
@@ -272,6 +269,10 @@ namespace entropy
 				if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 				{
 					ofxPreset::Gui::AddParameter(parameters.base.background);
+					if (ImGui::Button("Reset Camera"))
+					{
+						this->resetCamera();
+					}
 				}
 				ofxPreset::Gui::EndWindow(settings);
 
@@ -313,12 +314,8 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (false && json.count("Camera"))
+			if (json.count("Camera"))
 			{
-				// Disable auto distance so that it doesn't interfere with the camera matrix.
-				// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.
-				this->camera.setAutoDistance(false);
-
 				ofxPreset::Serializer::Deserialize(json, this->getCamera(), "Camera");
 			}
 
@@ -591,6 +588,14 @@ namespace entropy
 					mapping->removeTrack(this->timeline);
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::resetCamera()
+		{
+			this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
+			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+			this->camera.reset();
 		}
 
 		//--------------------------------------------------------------
