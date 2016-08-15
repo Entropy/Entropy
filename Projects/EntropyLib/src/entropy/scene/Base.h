@@ -5,6 +5,7 @@
 #include "ofxTimeline.h"
 
 #include "entropy/popup/Image.h"
+#include "entropy/popup/Video.h"
 #include "entropy/util/Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
