@@ -3,7 +3,7 @@
         "Bloom": {
             "Brightness Threshold": "0.503",
             "Debug blur": "0",
-            "Enabled": "1",
+            "Enabled": "0",
             "Num Passes": "5",
             "Sigma": "4.92"
         },
