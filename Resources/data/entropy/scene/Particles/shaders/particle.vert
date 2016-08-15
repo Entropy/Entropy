@@ -1,51 +1,49 @@
-#version 150
+// Filename: main.vert
+// 
+// Copyright © James Acres
+#version 400
 
-#define MAX_LIGHTS 8
+#pragma include <inc/ofDefaultUniforms.glsl>
+#pragma include <inc/ofDefaultVertexInAttributes.glsl> 
+
+#pragma include <inc/viewData.glsl>
 
 uniform samplerBuffer uOffsetTex;
+uniform float uScale;
 
-uniform mat4 projectionMatrix;
-uniform mat4 modelViewMatrix;
-uniform mat4 textureMatrix;
-uniform mat4 modelViewProjectionMatrix;
-//uniform vec4 globalColor;
+// View space.
+out vec4 vVertex_vs;
+out vec3 vNormal_vs;
 
-uniform mat4 viewMatrix;
-uniform int numLights;
+// World space.
+out vec3 vVertex_ws;
+out vec3 vEyeDir_ws;
+out vec3 vNormal_ws;
 
-in vec4  position;
-in vec3  normal;
-in vec2  texcoord;
+out vec2 vTexCoord0;
 
-//out vec4 positionVarying;
-//out vec3 normalVarying;
-out vec2 texCoordVarying;
-
-//out vec4 colorVarying;
-out vec3 v_normalVarying;
-out vec4 v_positionVarying;
-
-
-void main() 
+void main( void ) 
 {
-    int idx = gl_InstanceID * 4;
-    mat4 transform = mat4( 
-        texelFetch( uOffsetTex, idx ),
-        texelFetch( uOffsetTex, idx+1 ),
-        texelFetch( uOffsetTex, idx+2 ), 
-        texelFetch( uOffsetTex, idx+3 )
-    );
-    mat4 mvMatrix = modelViewMatrix * transform;
+	int idx = gl_InstanceID * 4;
+	mat4 modelMatrix = mat4(
+		texelFetch( uOffsetTex, idx+0 ),
+		texelFetch( uOffsetTex, idx+1 ),
+		texelFetch( uOffsetTex, idx+2 ), 
+		texelFetch( uOffsetTex, idx+3 )
+	);
 
-    mat3 normalMatrix = transpose(inverse(mat3(mvMatrix)));
-    
-    //normalVarying = normal;
-    //positionVarying = position;
-    texCoordVarying = texcoord;
-    //colorVarying = globalColor;
-    
-    v_normalVarying = normalize(vec3(normalMatrix * normal));
-    v_positionVarying = mvMatrix * position;
-    
-	gl_Position = projectionMatrix * v_positionVarying;
+	vec4 vPosition_ws = modelMatrix * ( position * vec4( uScale, uScale, uScale, 1.0 ) );
+	vVertex_vs = modelViewMatrix * vPosition_ws;
+	vVertex_ws = vPosition_ws.xyz;
+	
+	mat4 normalMatrix = transpose( inverse( modelViewMatrix * modelMatrix ) );
+	vNormal_vs = normalize( ( normalMatrix * vec4( normal, 0.0 ) ).xyz );
+	vNormal_ws = ( viewData.inverseViewMatrix * vec4( vNormal_vs, 0.0 ) ).xyz;
+
+	vec4 eyeDir_vs = vVertex_vs - vec4( 0.0, 0.0, 0.0, 1.0 );
+	vEyeDir_ws = ( viewData.inverseViewMatrix * eyeDir_vs ).xyz;
+
+	vTexCoord0 = texcoord;
+
+	gl_Position = projectionMatrix * vVertex_vs;
 }

@@ -231,26 +231,24 @@
     <ClInclude Include="src\entropy\scene\Particles.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\math.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\pbr.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\inc\viewData.glsl" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\main.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\particle.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_draw.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\photon_update.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\skybox.vert" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.frag" />
-    <None Include="..\..\Shared\data\entropy\scene\Particles\shaders\wall.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\clusteredShading.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\computeBrdfLut.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\math.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\ofDefaultUniforms.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\ofDefaultVertexInAttributes.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\pbr.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\toneMapping.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\inc\viewData.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\particle.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_draw.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_update.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\photon_update.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\skybox.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\skybox.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\wall.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Particles\shaders\wall.vert" />
     <None Include="src\entropy\particles\Octree.inl" />
   </ItemGroup>
 </Project>

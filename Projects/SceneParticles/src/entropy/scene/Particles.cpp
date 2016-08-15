@@ -71,7 +71,7 @@ namespace entropy
 			 this->debug = false;
 			
 			 // Load shaders.
-			 this->shader.load(this->getDataPath("shaders/main"));
+			 this->shader.load(this->getDataPath("shaders/particle"));
 			 this->shader.printActiveUniforms();
 			 this->shader.printActiveUniformBlocks();
 			 CheckGLError();
@@ -94,13 +94,6 @@ namespace entropy
 			 CheckGLError();
 			
 			 // Set up PBR.
-			 this->material.setBaseColor(ofFloatColor(1.0f, 1.0f, 1.0f, 1.0f));
-			 this->material.setMetallic(0.67f);
-			 this->material.setRoughness(0.13f);
-			 this->material.setEmissiveColor(ofFloatColor(1.0f, 0.4f, 0.0f, 1.0f));
-			 this->material.setEmissiveIntensity(0.0f);
-			 CheckGLError();
-			
 			 float aperture = 0.5f;
 			 float shutterSpeed = 1.0f / 60.0f;
 			
@@ -167,15 +160,13 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void Particles::drawBack()
 		{
-			ofBackgroundGradient(ofColor::darkBlue, ofColor::skyBlue);
+
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
 		void Particles::drawWorld()
 		{
-			ofClear(0.0f, 1.0f);
-
 			ofDisableAlphaBlending();
 
 			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
@@ -315,24 +306,17 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
 			{
-				if (ImGui::CollapsingHeader("Material", nullptr, true, true))
-				{
-					ImGui::ColorEdit4("Base Color", (float *)&this->material.baseColor);
-					ImGui::SliderFloat("Emissive Intensity", &this->material.emissiveIntensity, 0.0f, 1.0f);
-					ImGui::ColorEdit4("Emissive Color", (float *)&this->material.emissiveColor);
-					ImGui::SliderFloat("Metallic", &this->material.metallic, 0.0f, 1.0f);
-					ImGui::SliderFloat("Roughness", &this->material.roughness, 0.0f, 1.0f);
-				}
-
+				ofxPreset::Gui::AddGroup(this->material.parameters, settings);
+				
 				if (ImGui::CollapsingHeader("Camera", nullptr, true, true))
 				{
 					ImGui::SliderFloat("Exposure", &this->exposure, 0.01f, 10.0f);
 					ImGui::SliderFloat("Gamma", &this->gamma, 0.01f, 10.0f);
 				}
 
-				if (ImGui::CollapsingHeader("Lighting", nullptr, true, true))
+				if (ImGui::CollapsingHeader(this->lightingSystem.parameters.getName().c_str(), nullptr, true, true))
 				{
-					ImGui::SliderFloat("Ambient IBL Strength", &this->lightingSystem.ambientIntensity, 0.0f, 3.0f);
+					ofxPreset::Gui::AddParameter(this->lightingSystem.ambientIntensity);
 					ImGui::Checkbox("Debug", &this->debug);
 
 					ImGui::BeginGroup();
@@ -356,6 +340,8 @@ namespace entropy
 		void Particles::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
+			ofxPreset::Serializer::Serialize(json, this->lightingSystem.parameters);
+			ofxPreset::Serializer::Serialize(json, this->material.parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -365,7 +351,9 @@ namespace entropy
 		void Particles::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
-			
+			ofxPreset::Serializer::Deserialize(json, this->lightingSystem.parameters);
+			ofxPreset::Serializer::Deserialize(json, this->material.parameters);
+
 			if (!this->parameters.stateFile->empty())
 			{
 				this->loadState(this->parameters.stateFile);

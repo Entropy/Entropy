@@ -9,10 +9,10 @@ void ofApp::setup()
 	ofBackground(ofColor::black);
 
 	// Add Scenes to the Manager.
-	auto sceneManager = entropy::GetSceneManager();
-	auto sceneParticles = make_shared<entropy::scene::Particles>();
-	sceneManager->addScene(sceneParticles);
-	sceneManager->setCurrentScene(sceneParticles->getName());
+	auto manager = entropy::GetSceneManager();
+	auto scene = make_shared<entropy::scene::Particles>();
+	manager->addScene(scene);
+	manager->setCurrentScene(scene->getName());
 }
 
 //--------------------------------------------------------------

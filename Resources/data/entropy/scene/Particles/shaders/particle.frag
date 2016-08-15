@@ -1,82 +1,98 @@
-#version 150
+#version 330 core
 
-#define MAX_LIGHTS 8
+#pragma include <inc/ofDefaultUniforms.glsl>
 
-uniform mat4 viewMatrix;
+#pragma include <inc/viewData.glsl>
+#pragma include <inc/clusteredShading.glsl>
 
-struct Light{
-    vec3 position;
-    vec4 color;
-    float intensity;
-    float radius;
-};
+// PBR
+#pragma include <inc/math.glsl>
+#pragma include <inc/toneMapping.glsl>
+#pragma include <inc/pbr.glsl>
 
-uniform Light lights[MAX_LIGHTS];
-uniform int numLights;
-uniform float roughness;
-uniform vec3 particleColor;
+in vec4 vVertex_vs;
+in vec3 vNormal_vs;
 
-//in vec4 colorVarying;
-in vec2 texCoordVarying;
+in vec3 vVertex_ws;
+in vec3 vNormal_ws;
+in vec3 vEyeDir_ws;
 
-in vec3 v_normalVarying;
-in vec4 v_positionVarying;
+in vec2 vTexCoord0;
 
 out vec4 fragColor;
 
-float BechmannDistribution(float d, float m)
+void main( void )
 {
-    float d2 = d * d;
-    float m2 = m * m;
-    return exp((d2 - 1.0) / (d2 * m2)) / (m2 * d2 * d2);
-}
+	vec3 baseColor = uBaseColor.rgb;
+	float fMetalness = uMetallic;
+	float fRoughness = uRoughness;
 
-float CookTorranceSpecular(vec3 lightDirection, vec3 viewDirection, vec3 surfaceNormal, float roughness)
-{
-    vec3 l = normalize(lightDirection);
-    vec3 n = normalize(surfaceNormal);
-    
-    vec3 v = normalize(viewDirection);
-    vec3 h = normalize(l + v);
-    
-    float hn = dot(h, n);
-    float ln = dot(l, n);
-    float lh = dot(l, h);
-    float vn = dot(v, n);
-    
-    float f = 0.02 + pow(1.0 - dot(v, h), 5.0) * (1.0 - 0.02);
-    float d = BechmannDistribution(hn, roughness);
-    float t = 2.0 * hn / dot(v, h);
-    float g = min(1.0, min(t * vn, t * ln));
-    float m = 3.14159265 * vn * ln;
-    float spec = max(f * d * g / m, 0.0);
-    return spec;
-}
+	// metallic is fully black base color
+	vec3 diffuseColor = baseColor * ( 1.0f - fMetalness );
 
-float Falloff(float dist, float lightRadius)
-{
-    float att = clamp(1.0 - dist * dist / (lightRadius * lightRadius), 0.0, 1.0);
-    att *= att;
-    return att;
-}
+	// get specular color from the base color based on specular level and how metallic the material is 
+	// 0.04 is specular color for non-metallic surfaces, but UE4/Disney uses 0.08
+	const vec3 dielectricColor = vec3( 0.08f );
+	vec3 specularColor = mix( dielectricColor, baseColor, fMetalness );
 
-vec3 CalcPointLight(vec4 v_positionVarying, vec3 v_normalVarying, vec3 color, Light light)
-{
-    vec3 s = normalize(light.position - v_positionVarying.xyz);
-    float lambert = max(dot(s, v_normalVarying), 0.0);
-    float falloff = Falloff(length(light.position - v_positionVarying.xyz), light.radius);
-    float specular = CookTorranceSpecular(s, -normalize(v_positionVarying.xyz), v_normalVarying, roughness);
-    return light.intensity * (color.rgb * light.color.rgb * lambert * falloff + color.rgb * light.color.rgb * specular * falloff);
-}
+	vec3 N_ws = normalize( vNormal_ws ); // normal
+	vec3 V_ws = normalize( -vVertex_ws.xyz ); // view position  
+	float NoV_ws = saturate( dot( N_ws, V_ws ) ) + EPSILON;
 
-void main (void)
-{
-    vec3 color = vec3(0.0);
-    vec3 light = vec3(0.0);
-    for(int i = 0; i < numLights; i++)
+	vec3 specularContrib = vec3( 0.0, 0.0, 0.0 );
+	vec3 diffuseContrib = vec3( 0.0, 0.0, 0.0 );
+
+	int lightIndexOffset = 0;
+	int pointLightCount = 0;
+	GetLightOffsetAndCount( gl_FragCoord.xy, vVertex_vs.z, lightIndexOffset, pointLightCount );
+
+	vec3 diffuseResult = vec3( 0.0f );
+	vec3 specularResult = vec3( 0.0f );
+
+	for ( int i = 0; i < pointLightCount; ++i )
 	{
-		//color += CalcPointLight(v_positionVarying, v_normalVarying, colorVarying.xyz, lights[i]);
-		color += CalcPointLight(v_positionVarying, v_normalVarying, vec3(1.0), lights[i]);
-    }
-    fragColor = vec4(particleColor, 1.0) * vec4(color, 1.0);
+		PointLight light = GetPointLight( lightIndexOffset++ );
+		CalcPointLight( light, vVertex_ws.xyz, N_ws, V_ws, NoV_ws, fRoughness, specularColor, diffuseResult, specularResult );
+
+		diffuseContrib += diffuseResult;
+		specularContrib += specularResult;
+	}
+
+	for ( int i = 0; i < directionalLightCount; ++i )
+	{
+		DirectionalLight light = directionalLights[ i ];
+		CalcDirectionalLight( light, vVertex_ws.xyz, N_ws, V_ws, NoV_ws, fRoughness, specularColor, diffuseResult, specularResult );
+
+		diffuseContrib += diffuseResult;
+		specularContrib += specularResult;    
+	}
+	
+	// Image based lighting
+
+	const int NUM_MIP_LEVELS = 7;
+
+	vec3 reflect_ws = normalize( reflect( vEyeDir_ws, N_ws ) );
+	vec3 N_vs = normalize( vNormal_vs ); // normal
+	vec3 V_vs = normalize( -vVertex_vs.xyz ); // view position  
+	float NoV_vs = saturate( dot( N_vs, V_vs ) ) + EPSILON;
+
+	diffuseContrib += CalcIBLDiffuse( uIrradianceMap, N_ws, ambientIntensity );
+	specularContrib += CalcIBLSpecular( uRadianceMap, NUM_MIP_LEVELS, reflect_ws, NoV_vs, fRoughness, ambientIntensity );
+ 
+	diffuseContrib *= diffuseColor;
+	specularContrib *= specularColor;
+
+	diffuseContrib = mix( diffuseContrib, uEmissiveColor.rgb, uEmissiveIntensity ); // emissive
+
+	vec3 color = diffuseContrib + specularContrib;
+
+	// tonemap function requires exposure corrected color
+	color = tonemapUncharted2( color * uExposure );
+
+	// Correct for white input level
+	const float whiteInputLevel = 2.0f;
+	vec3 whiteScale = 1.0f / tonemapUncharted2( vec3( whiteInputLevel ) );
+	color = color * whiteScale;
+
+	fragColor = vec4( linearToGamma( color, uGamma ), uBaseColor.a );
 }

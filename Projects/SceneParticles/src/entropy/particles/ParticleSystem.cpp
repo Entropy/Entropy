@@ -271,6 +271,7 @@ namespace nm
 		// that is actually dead and would be swapped out later in the iteration
 		std::sort(deadParticles, deadParticles + numDeadParticles, std::greater<float>());
 
+		cout << "Num dead particles is " << numDeadParticles << " / " << totalNumParticles << endl;
 		if (numDeadParticles)
 		{
 			// kill all the particles
@@ -278,7 +279,10 @@ namespace nm
 			{
 				unsigned deadIdx = deadParticles[i];
 				unsigned endIdx = totalNumParticles.fetch_and_decrement() - 1;
-				numParticles[(unsigned)particles[deadIdx].getType()].fetch_and_decrement();
+				const auto idx = (unsigned)particles[deadIdx].getType();
+				cout << "  Killing particle " << i << ": From " << numParticles[idx];
+				numParticles[idx].fetch_and_decrement();
+				cout << " to " << numParticles[idx] << endl;
 				// replace dead particle with one from the end of the array
 				if (endIdx >= 0 && deadIdx < totalNumParticles) particles[deadIdx] = particles[endIdx];
 			}
@@ -296,6 +300,7 @@ namespace nm
 		// update the texture buffer objects with the new positions of particles
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
+			cout << "Updating " << i << " w/ " << numParticles[i] << " particles" << endl;
 			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i]);
 		}
 	}
