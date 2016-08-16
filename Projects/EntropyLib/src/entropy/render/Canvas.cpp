@@ -55,7 +55,7 @@ namespace entropy
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-			//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+				//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
@@ -70,7 +70,7 @@ namespace entropy
 				{
 					this->openGuis[i] = false;
 				}
-				
+
 				// Add a default warp to start with.
 				this->addWarp(ofxWarp::WarpBase::TYPE_PERSPECTIVE_BILINEAR);
 			}
@@ -114,7 +114,7 @@ namespace entropy
 			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
 			this->fboDraw.bind();
 		}
-		
+
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
@@ -205,7 +205,7 @@ namespace entropy
 				this->fboPost.begin();
 				{
 					ofClear(0, 255);
-					
+
 					this->colorCorrectShader.begin();
 					this->colorCorrectShader.setUniform1f("exposureBias", this->parameters.color.exposure);
 					this->colorCorrectShader.setUniform1f("gamma", this->parameters.color.gamma);
@@ -220,7 +220,8 @@ namespace entropy
 						this->colorCorrectShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
 						if (parameters.bloom.enabled) {
 							this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
-						}else{
+						}
+						else {
 							this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
 						}
 					}

@@ -220,6 +220,9 @@
     <ClCompile Include="src\entropy\popup\Video.cpp">
       <Filter>src\entropy\popup</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.cpp">
+      <Filter>addons\ofxPreset\src\ofxPreset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
