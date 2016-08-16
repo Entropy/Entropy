@@ -60,7 +60,7 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void Example::drawBack()
 		{
-
+			ofClear(128, 255);
 		}
 		
 		//--------------------------------------------------------------

@@ -113,6 +113,7 @@ namespace entropy
 			ofViewport(this->viewport);
 			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
 			this->fboDraw.bind();
+			//this->fboDraw.begin();
 		}
 		
 		//--------------------------------------------------------------
@@ -122,6 +123,7 @@ namespace entropy
 			this->fboDraw.unbind();
 			ofPopStyle();
 			ofPopView();
+			//this->fboDraw.end();
 		}
 
 		float gaussian(float x, float mu, float sigma) {
@@ -388,6 +390,7 @@ namespace entropy
 				return nullptr;
 			}
 
+			cout << "add warp " << this->getWidth() << "x" << this->getHeight() << endl;
 			warp->setSize(this->getWidth(), this->getHeight());
 
 			this->warps.push_back(warp);

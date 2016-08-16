@@ -14,40 +14,8 @@
             "Gamma": "2.224",
             "Tonemapping": "6"
         },
-        "Fill Window": "0"
+        "Fill Window": "1"
     },
-    "areas": [
-        "0, 0, 0, 1920, 1061"
-    ],
-    "warps": [
-        {
-            "adaptive": true,
-            "blend": {
-                "edges": "0, 0, 0, 0",
-                "exponent": 2.0,
-                "gamma": "1, 1, 1",
-                "luminance": "0.5, 0.5, 0.5"
-            },
-            "brightness": 1.0,
-            "corners": [
-                "0, 0",
-                "1, 0",
-                "1, 1",
-                "0, 1"
-            ],
-            "linear": false,
-            "resolution": 16,
-            "type": 3,
-            "warp": {
-                "columns": 2,
-                "control points": [
-                    "0, 0",
-                    "0, 1",
-                    "1, 0",
-                    "1, 1"
-                ],
-                "rows": 2
-            }
-        }
-    ]
+    "areas": [],
+    "warps": []
 }
