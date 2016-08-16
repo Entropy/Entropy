@@ -15,7 +15,21 @@
 #define INV_PI  0.31830988618
 #define EPSILON 0.00000001
 
-#define saturate(x) clamp(x, 0.0, 1.0)
+// ========================================================
+//   Utility Functions
+// ========================================================
+
+// Value clamping to 0 - 1 range
+float saturate( float value )
+{
+    return clamp( value, 0.0, 1.0 );
+}
+
+// Value clamping to 0 - 1 range
+vec3 saturate( in vec3 value )
+{
+    return clamp( value, vec3( 0.0 ), vec3( 1.0 ) );
+}
 
 // https://www.shadertoy.com/view/4ssXRX
 //note: uniformly distributed, normalized random

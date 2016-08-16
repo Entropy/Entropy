@@ -7,7 +7,6 @@
 
 // PBR
 #pragma include <inc/math.glsl>
-#pragma include <inc/toneMapping.glsl>
 #pragma include <inc/pbr.glsl>
 
 in vec4 vVertex_vs;
@@ -85,14 +84,5 @@ void main( void )
 	diffuseContrib = mix( diffuseContrib, uEmissiveColor.rgb, uEmissiveIntensity ); // emissive
 
 	vec3 color = diffuseContrib + specularContrib;
-
-	// tonemap function requires exposure corrected color
-	color = tonemapUncharted2( color * uExposure );
-
-	// Correct for white input level
-	const float whiteInputLevel = 2.0f;
-	vec3 whiteScale = 1.0f / tonemapUncharted2( vec3( whiteInputLevel ) );
-	color = color * whiteScale;
-
-	fragColor = vec4( linearToGamma( color, uGamma ), uBaseColor.a );
+	fragColor = vec4( color, uBaseColor.a );
 }

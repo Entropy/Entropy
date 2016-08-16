@@ -11,6 +11,8 @@
 #ifndef RTK_PBR
 #define RTK_PBR
 
+#pragma include <toneMapping.glsl>
+
 const float RCP_4PI = 1.0 / ( 4.0 * PI );
 
 uniform vec4  uBaseColor;
