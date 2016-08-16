@@ -596,6 +596,7 @@ namespace entropy
 		{
 			this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
 			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+			this->camera.setRelativeYAxis(true);
 			this->camera.reset();
 		}
 
