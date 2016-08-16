@@ -27,17 +27,6 @@ namespace entropy
 
 			ofAddListener(this->canvas->resizeEvent, this, &App_::onCanvasResized);
 			ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
-
-			// Configure for back screen ratio.
-			const auto screenWidth = 1400;
-			const auto screenHeight = 1050;
-			const auto numRows = 1;
-			const auto numCols = 3;
-			const auto dimensions = glm::vec2(screenWidth * numCols, screenHeight * numRows);
-			const auto scaledWidth = ofGetScreenWidth();
-			const auto scaledHeight = scaledWidth * dimensions.y / dimensions.x;
-			cout << "window size is " << scaledWidth << "x" << scaledHeight << endl;
-			ofSetWindowShape(scaledWidth, scaledHeight);
 		}
 
 		//--------------------------------------------------------------

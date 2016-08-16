@@ -599,7 +599,6 @@ namespace entropy
 			this->camera.setNearClip(0.1f);
 			this->camera.setFarClip(100000.0f);
 			this->camera.setFov(60.0f);
-			cout << "resetCamera() " << GetCanvasWidth() << "x" << GetCanvasHeight() << endl;
 			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
 			this->camera.reset();
 		}

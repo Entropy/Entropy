@@ -319,6 +319,27 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Canvas::updateConfiguration()
+		{
+			if (this->parameters.configuration.screenWidth == this->editingConfig.screenWidth &&
+				this->parameters.configuration.screenHeight == this->editingConfig.screenHeight &&
+				this->parameters.configuration.numCols == this->editingConfig.numCols &&
+				this->parameters.configuration.numRows == this->editingConfig.numRows)
+			{
+				return;
+			}
+
+			this->parameters.configuration.screenWidth = this->editingConfig.screenWidth;
+			this->parameters.configuration.screenHeight = this->editingConfig.screenHeight;
+			this->parameters.configuration.numCols = this->editingConfig.numCols;
+			this->parameters.configuration.numRows = this->editingConfig.numRows;
+
+			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
+			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
+			this->updateSize();
+		}
+
+		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
 			// Re-allocate fbos.
@@ -435,7 +456,7 @@ namespace entropy
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = ofGetWidth() / (float)numWarps;
+				const auto areaWidth = this->getWidth() / static_cast<float>(numWarps);
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
@@ -446,10 +467,10 @@ namespace entropy
 				}
 
 				// Adjust the fbo width.
-				this->setWidth(ofGetWidth() - totalOverlap);
+				this->setWidth(this->getWidth() - totalOverlap);
 
 				// Update the areas for each warp.
-				const auto areaSize = glm::vec2(this->getWidth() / (float)numWarps, this->getHeight());
+				const auto areaSize = glm::vec2(this->getWidth() / static_cast<float>(numWarps), this->getHeight());
 				auto currX = 0.0f;
 				for (auto i = 0; i < numWarps; ++i)
 				{
@@ -489,6 +510,18 @@ namespace entropy
 				if (ImGui::Button("Load"))
 				{
 					this->loadSettings();
+				}
+
+				if (ImGui::CollapsingHeader(this->editingConfig.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->editingConfig.screenWidth);
+					ofxPreset::Gui::AddParameter(this->editingConfig.screenHeight);
+					ofxPreset::Gui::AddParameter(this->editingConfig.numRows);
+					ofxPreset::Gui::AddParameter(this->editingConfig.numCols);
+					if (ImGui::Button("Apply"))
+					{
+						this->updateConfiguration();
+					}
 				}
 
 				ofxPreset::Gui::AddGroup(this->parameters.bloom, settings);
@@ -862,6 +895,16 @@ namespace entropy
 
 			// Deserialize the parameters.
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
+
+			// Sync the configuration parameters and update the Canvas size.
+			this->editingConfig.screenWidth = this->parameters.configuration.screenWidth;
+			this->editingConfig.screenHeight = this->parameters.configuration.screenHeight;
+			this->editingConfig.numCols = this->parameters.configuration.numCols;
+			this->editingConfig.numRows = this->parameters.configuration.numRows;
+
+			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
+			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
+			this->updateSize();
 		}
 
 		//--------------------------------------------------------------
@@ -1053,19 +1096,19 @@ namespace entropy
 				auto shift = glm::vec2(0.0f);
 				if (args.key == OF_KEY_UP)
 				{
-					shift.y = -step / (float)ofGetHeight();
+					shift.y = -step / static_cast<float>(ofGetHeight());
 				}
 				else if (args.key == OF_KEY_DOWN)
 				{
-					shift.y = step / (float)ofGetHeight();
+					shift.y = step / static_cast<float>(ofGetHeight());
 				}
 				else if (args.key == OF_KEY_LEFT)
 				{
-					shift.x = -step / (float)ofGetWidth();
+					shift.x = -step / static_cast<float>(ofGetWidth());
 				}
 				else
 				{
-					shift.x = step / (float)ofGetWidth();
+					shift.x = step / static_cast<float>(ofGetWidth());
 				}
 				warp->moveControlPoint(warp->getSelectedControlPoint(), shift);
 

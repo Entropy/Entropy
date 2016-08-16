@@ -68,11 +68,22 @@ namespace entropy
 			static const int MAX_NUM_WARPS = 8;
 
 		protected:
+			void updateConfiguration();
 			void updateSize();
-
 			void updateStitches();
 
 		protected:
+			struct ConfigParameters
+				: ofParameterGroup
+			{
+				ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
+				ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
+				ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
+				ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
+
+				PARAM_DECLARE("Configuration", screenWidth, screenHeight, numRows, numCols);
+			};
+
 			struct WarpParameters
 				: ofParameterGroup
 			{
@@ -98,11 +109,13 @@ namespace entropy
 					PARAM_DECLARE("Blend", luminance, gamma, exponent, edgeLeft, edgeRight);
 				} blend;
 
-				PARAM_DECLARE("Parameters", editing, brightness, mesh, blend);
+				PARAM_DECLARE("Warp", editing, brightness, mesh, blend);
 			};
 
 			struct : ofParameterGroup
 			{
+				ConfigParameters configuration;
+				
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> enabled{ "Enabled", true };
@@ -125,11 +138,12 @@ namespace entropy
 					PARAM_DECLARE("Color", exposure, gamma, tonemapping, contrast, brightness);
 				} color;
 
-				
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Parameters", bloom, color, fillWindow);
+				PARAM_DECLARE("Parameters", configuration, bloom, color, fillWindow);
 			} parameters;
+
+			ConfigParameters editingConfig;
 
 			ofRectangle viewport;
 
