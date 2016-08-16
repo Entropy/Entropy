@@ -137,12 +137,13 @@ namespace entropy
 			if (pointLights.size() > photons.size())
 			{
 				pointLights.resize(photons.size());
-				//cout << "removing point light " << this->lightingSystem.getPointLights().size() << endl;
+				cout << "removing point light " << this->lightingSystem.getPointLights().size() << endl;
 			}
 			// Update current point lights.
 			for (int i = 0; i < pointLights.size(); ++i)
 			{
 				pointLights[i].position = glm::vec4(photons[i], 1.0f);
+				//cout << "updating point light " << i << " " << pointLights[i].position << endl;
 			}
 			// Add new point lights.
 			static const auto radius = 120.0f;
@@ -152,7 +153,7 @@ namespace entropy
 				//light.color = glm::normalize(glm::vec3(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)));
 				//cout << "color is " << light.color << endl;
 				this->lightingSystem.addPointLight(light);
-				//cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
+				cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
 			}
 		}
 
@@ -174,7 +175,7 @@ namespace entropy
 			glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
 
 			glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
+			glCullFace(GL_FRONT);
 
 			this->viewUbo.bind();
 			{
@@ -230,9 +231,9 @@ namespace entropy
 			this->viewUbo.unbind();
 
 			//particleSystem.drawWalls();
-			glDepthMask(GL_FALSE);
-			photons.draw();
-			glDepthMask(GL_TRUE);
+			//glDepthMask(GL_FALSE);
+			//photons.draw();
+			//glDepthMask(GL_TRUE);
 
 			// Restore state.
 			if (GL_TRUE == cullFaceEnabled)

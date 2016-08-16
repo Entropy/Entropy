@@ -7,6 +7,7 @@
 void ofApp::setup()
 {
 	ofBackground(ofColor::black);
+//	ofEnableGLDebugLog();
 
 	// Add Scenes to the Manager.
 	auto manager = entropy::GetSceneManager();
