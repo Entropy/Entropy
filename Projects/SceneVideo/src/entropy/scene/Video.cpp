@@ -197,12 +197,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Video::loadVideo(const string & filePath)
 		{
-			if (!this->videoPlayer.load(filePath)) 
+			if (!ofFile::doesFileExist(filePath))
 			{
 				ofLogError(__FUNCTION__) << "No video found at " << filePath;
 				return false;
 			}
-
+			
+			this->videoPlayer.loadAsync(filePath);
+			
 			if (this->parameters.playback.play)
 			{
 				this->videoPlayer.play();
