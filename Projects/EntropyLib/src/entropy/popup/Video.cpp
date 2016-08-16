@@ -1,4 +1,4 @@
-#include "Image.h"
+#include "Video.h"
 
 #include "entropy/Helpers.h"
 
@@ -7,41 +7,48 @@ namespace entropy
 	namespace popup
 	{
 		//--------------------------------------------------------------
-		Image::Image()
-			: Base(Type::Image)
+		Video::Video()
+			: Base(Type::Video)
 		{
 			ENTROPY_POPUP_SETUP_LISTENER;
 		}
 
 		//--------------------------------------------------------------
-		Image::~Image()
+		Video::~Video()
 		{}
 
 		//--------------------------------------------------------------
-		void Image::setup()
+		void Video::setup()
 		{
 			ENTROPY_POPUP_EXIT_LISTENER;
+			ENTROPY_POPUP_UPDATE_LISTENER;
 			ENTROPY_POPUP_GUI_LISTENER;
 			ENTROPY_POPUP_SERIALIZATION_LISTENERS;
 		}
 
 		//--------------------------------------------------------------
-		void Image::exit()
+		void Video::exit()
 		{
-			this->image.clear();
+			this->video.close();
 		}
 
 		//--------------------------------------------------------------
-		void Image::gui(ofxPreset::Gui::Settings & settings)
+		void Video::update(double dt)
+		{
+			this->video.update();
+		}
+
+		//--------------------------------------------------------------
+		void Video::gui(ofxPreset::Gui::Settings & settings)
 		{
 			if (ImGui::CollapsingHeader("File", nullptr, true, true))
 			{
 				if (ImGui::Button("Load..."))
 				{
-					auto result = ofSystemLoadDialog("Select an image file.", false, GetCurrentSceneAssetsPath());
+					auto result = ofSystemLoadDialog("Select a video file.", false, GetCurrentSceneAssetsPath());
 					if (result.bSuccess)
 					{
-						if (this->loadImage(result.filePath))
+						if (this->loadVideo(result.filePath))
 						{
 							this->parameters.filePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
 						}
@@ -52,70 +59,69 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Image::serialize(nlohmann::json & json)
+		void Video::serialize(nlohmann::json & json)
 		{}
 
 		//--------------------------------------------------------------
-		void Image::deserialize(const nlohmann::json & json)
+		void Video::deserialize(const nlohmann::json & json)
 		{
 			if (!this->parameters.filePath->empty())
 			{
-				this->loadImage(GetSharedAssetsPath() + this->parameters.filePath.get());
+				this->loadVideo(GetSharedAssetsPath() + this->parameters.filePath.get());
 			}
 		}
 
 		//--------------------------------------------------------------
-		bool Image::loadImage(const string & filePath)
+		bool Video::loadVideo(const string & filePath)
 		{
-			ofPixels pixels;
-			ofLoadImage(pixels, filePath);
-			if (!pixels.isAllocated())
+			if (!ofFile::doesFileExist(filePath))
 			{
-				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
+				ofLogError(__FUNCTION__) << "No video found at " << filePath;
 				return false;
 			}
-
+			
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
-				this->image.enableMipmap();
-				this->image.loadData(pixels);
+				this->video.load(filePath);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
 
-			if (this->image.isAllocated())
+			this->video.play();
+			// TODO: Time video to ofxTimeline track
+
+			this->fileName = ofFilePath::getFileName(filePath);
+			this->boundsDirty = true;
+			return true;
+		}
+
+		//--------------------------------------------------------------
+		bool Video::isLoaded() const
+		{
+			return this->video.isLoaded();
+		}
+
+		//--------------------------------------------------------------
+		float Video::getContentWidth() const
+		{
+			return this->video.getWidth();
+		}
+
+		//--------------------------------------------------------------
+		float Video::getContentHeight() const
+		{
+			return this->video.getHeight();
+		}
+
+		//--------------------------------------------------------------
+		void Video::renderContent()
+		{
+			if (this->video.lockSharedTexture())
 			{
-				this->fileName = ofFilePath::getFileName(filePath);
-				this->boundsDirty = true;
-				return true;
+				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
+														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+				this->video.unlockSharedTexture();
 			}
-
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		bool Image::isLoaded() const
-		{
-			return this->image.isAllocated();
-		}
-
-		//--------------------------------------------------------------
-		float Image::getContentWidth() const
-		{
-			return this->image.getWidth();
-		}
-		
-		//--------------------------------------------------------------
-		float Image::getContentHeight() const
-		{
-			return this->image.getHeight();
-		}
-		
-		//--------------------------------------------------------------
-		void Image::renderContent()
-		{
-			this->image.drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-				this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
 		}
 	}
 }

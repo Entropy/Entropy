@@ -70,33 +70,18 @@ namespace entropy
 			struct : BaseParameters
 			{
 				ofParameter<bool> runSimulation{ "Run Simulation", true };
-				
-				struct : ofParameterGroup
-				{
-					ofParameter<float> scale{ "Scale", 1.0f, 1.0f, 100.0f };
-					ofParameter<int> resolution{ "Resolution", 1, 1, 512 };
-					ofParameter<float> threshold{ "Threshold", 0.345f, 0.0f, 1.0f };
-					ofParameter<bool> inflation{ "Inflation", false };
-
-					PARAM_DECLARE("Marching Cubes", scale, resolution, threshold, inflation);
-				} marchingCubes;
 
 				struct : ofParameterGroup
 				{
-					ofParameter<bool> debug{ "Debug", false };
-					ofParameter<bool> drawGrid{ "Draw Grid", true };
-					ofParameter<bool> wireframe{ "Wireframe", true };
-					ofParameter<bool> shadeNormals{ "Shade Normals", false };
+					ofParameter<bool> debug{ "Debug noise", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
-					ofParameter<float> fogMaxDistance{ "Fog max dist.", 1.0, 0.1, 10 };
-					ofParameter<float> fogMinDistance{ "Fog min dist.", 0.1f, 0.0f, 5.f };
-					ofParameter<bool> fogEnabled{ "Fog enabled", true };
-					ofParameter<float> fogPower{ "Fog power", 1.f, 0.00001f, 10.f };
 
-					PARAM_DECLARE("Render", debug, drawGrid, wireframe, shadeNormals, additiveBlending, fogMaxDistance, fogMinDistance, fogEnabled, fogPower);
+					PARAM_DECLARE("Render", 
+						debug,
+						additiveBlending );
 				} render;
 
-				PARAM_DECLARE("Inflation", runSimulation, marchingCubes, render);
+				PARAM_DECLARE("Inflation", runSimulation, render);
 			} parameters;
 		};
     }

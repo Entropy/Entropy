@@ -11,6 +11,8 @@ uniform float isolevel;
 uniform float fogMaxDistance;
 uniform float fogMinDistance;
 uniform float fogPower;
+uniform float wireframeAlpha;
+uniform float fillAlpha;
 
 const float resolution = 128.f;
 //Marching cubes vertices decal
@@ -39,11 +41,9 @@ layout (points) in;
 #if WIREFRAME
 layout (line_strip, max_vertices = 10) out;
 const int vertexPerPrimitive = 2;
-const float colorFactor = 0.3;
 #else
 layout (triangle_strip, max_vertices = 15) out;
 const int vertexPerPrimitive = 3;
-const float colorFactor = 0.5;
 #endif
 
 #define FOG_ENABLED 1
@@ -160,11 +160,12 @@ void main(void) {
             #endif
 
 			vec4 color = (cubeVal0 + cubeVal1 + cubeVal2 + cubeVal3 + cubeVal4 + cubeVal5 + cubeVal6 + cubeVal7) / 8.;
+			float bright = bright(color.rgb);
 			#if WIREFRAME
-				rgba = vec4(vec3(bright(color.rgb)), 0.25);
+				rgba = vec4(vec3(bright), wireframeAlpha);
 			#else
-				rgba = color * colorFactor;
-				rgba.a *= 0.5;
+				rgba = color;
+				rgba.a *= fillAlpha;
 			#endif
 
 			//Fill gl_Position attribute for vertex raster space position

@@ -36,23 +36,23 @@ namespace entropy
 			for (int i = 0; i < 10; i++)
 			{
 				const auto filename = this->getAssetsPath("particles/boss_fragment-batch-" + ofToString(i + 1) + "of10.hdf5");// "sample_contig.hdf5";
-				this->loadData(filename);
+				this->loadData(filename, this->vboBoss);
 			}
 			for (int i = 0; i < 20; i++)
 			{
 				const auto filename = this->getAssetsPath("particles/des_fragment-batch-" + ofToString(i + 1) + "of20.hdf5");// "sample_contig.hdf5";
-				this->loadData(filename);
+				this->loadData(filename, this->vboDes);
 			}
 
 			// Build the texture.
 			entropy::darkness::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
 
 			// Load the shader.
-			shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
-			shader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
-			shader.bindAttribute(MASS_ATTRIBUTE, "mass");
-			shader.bindDefaults();
-			shader.linkProgram();
+			this->shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
+			this->shader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
+			this->shader.bindAttribute(MASS_ATTRIBUTE, "mass");
+			this->shader.bindDefaults();
+			this->shader.linkProgram();
 		}
 		
 		//--------------------------------------------------------------
@@ -64,9 +64,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Darkness::resize(ofResizeEventArgs & args)
 		{
-#if defined(COMPUTE_GL_2D) || defined(COMPUTE_CL_2D)
-			this->pool.restartSimulation = true;
-#endif
+
 		}
 
 		//--------------------------------------------------------------
@@ -94,20 +92,24 @@ namespace entropy
 				ofDisableDepthTest();
 					
 				if (this->parameters.useSprites) {
-					shader.begin();
-					shader.setUniformTexture("texx", texture, 1);
-					shader.setUniform1f("pointSize", this->parameters.pointSize);
+					this->shader.begin();
+					this->shader.setUniformTexture("texx", texture, 1);
+					this->shader.setUniform1f("pointSize", this->parameters.pointSize);
 					ofEnablePointSprites();
 				}
 				else {
 					glPointSize(this->parameters.pointSize);
 				}
 
-				vboMesh.draw(OF_MESH_POINTS);
+				ofSetColor(ofColor::red);
+				this->vboBoss.draw(OF_MESH_POINTS);
+
+				ofSetColor(ofColor::blue);
+				this->vboDes.draw(OF_MESH_POINTS);
 
 				if (this->parameters.useSprites) {
 					ofDisablePointSprites();
-					shader.end();
+					this->shader.end();
 				}
 				else {
 					glPointSize(1.0f);
@@ -150,7 +152,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::loadData(const string & filePath)
+		void Darkness::loadData(const string & filePath, ofVboMesh & vboMesh)
 		{
 			const int stride = 1;
 
@@ -183,7 +185,7 @@ namespace entropy
 			}
 
 			// Upload everything to the VBO.
-			vboMesh.clear();
+			//vboMesh.clear();
 			vboMesh.addVertices(vertices);
 			vboMesh.getVbo().setAttributeData(MASS_ATTRIBUTE, massesData.data(), 1, massesData.size(), GL_STATIC_DRAW, 0);
 		}

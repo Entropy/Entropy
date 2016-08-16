@@ -2,22 +2,24 @@
 
 #include "Base.h"
 
-#include "ofImage.h"
 #include "ofxPreset.h"
+#include "ofxWMFVideoPlayer.h"
 
 namespace entropy
 {
 	namespace popup
 	{
-		class Image 
+		class Video 
 			: public Base
 		{
 		public:
-			Image();
-			virtual ~Image();
+			Video();
+			virtual ~Video();
 
 			void setup();
 			void exit();
+
+			void update(double dt);
 			
 			void gui(ofxPreset::Gui::Settings & settings);
 
@@ -25,7 +27,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			bool loadImage(const string & filePath);
+			bool loadVideo(const string & filePath);
 
 			bool isLoaded() const override;
 
@@ -33,7 +35,7 @@ namespace entropy
 			float getContentHeight() const override;
 			void renderContent() override;
 
-			ofTexture image;
+			ofxWMFVideoPlayer video;
 			string fileName;
 
 		protected:
@@ -46,7 +48,7 @@ namespace entropy
 			{
 				ofParameter<string> filePath{ "File Path", "" };
 
-				PARAM_DECLARE("Image", filePath);
+				PARAM_DECLARE("Video", filePath);
 			} parameters;
 		};
 	}

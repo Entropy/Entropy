@@ -29,10 +29,7 @@ namespace entropy
 			ofSetDataPathRoot(this->getDataPath());
 			
 			// Setup default camera.
-			this->camera.setupPerspective(false, 60.0f, 0.1f, 2000.0f);
-			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
-			this->camera.setNearClip(0.1);
-			this->camera.setFarClip(100000);
+			this->resetCamera();
 
 			// Setup child Scene.
 			this->onSetup.notify();
@@ -107,7 +104,7 @@ namespace entropy
 
 			for (auto popUp : this->popUps)
 			{
-				popUp->update(dt);
+				popUp->update_(dt);
 			}
 
 			this->onUpdate.notify(dt);
@@ -140,7 +137,7 @@ namespace entropy
 
 			for (auto popUp : this->popUps)
 			{
-				popUp->draw();
+				popUp->draw_();
 			}
 		}
 
@@ -203,18 +200,18 @@ namespace entropy
 				}
 				if (ImGui::BeginPopup("Pop-Ups"))
 				{
-					static vector<string> popUpNames;
-					if (popUpNames.empty())
-					{
-						popUpNames.push_back("Image");
-					}
+					static vector<string> popUpNames{ "Image", "Video" };
 					for (auto i = 0; i < popUpNames.size(); ++i)
 					{
 						if (ImGui::Selectable(popUpNames[i].c_str()))
 						{
 							if (i == 0)
 							{
-								this->addPopUp(popup::Base::Type::Image);
+								this->addPopUp(popup::Type::Image);
+							}
+							else if (i == 1)
+							{
+								this->addPopUp(popup::Type::Video);
 							}
 						}
 					}
@@ -260,7 +257,7 @@ namespace entropy
 				popUpSettings.windowPos.y = 0.0f;
 				for (auto i = 0; i < this->popUps.size(); ++i)
 				{
-					this->popUps[i]->gui(popUpSettings);
+					this->popUps[i]->gui_(popUpSettings);
 				}
 				settings.mouseOverGui |= popUpSettings.mouseOverGui;
 			}
@@ -272,6 +269,10 @@ namespace entropy
 				if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 				{
 					ofxPreset::Gui::AddParameter(parameters.base.background);
+					if (ImGui::Button("Reset Camera"))
+					{
+						this->resetCamera();
+					}
 				}
 				ofxPreset::Gui::EndWindow(settings);
 
@@ -304,7 +305,7 @@ namespace entropy
 			for (auto popUp : this->popUps)
 			{
 				nlohmann::json jsonPopUp;
-				popUp->serialize(jsonPopUp);
+				popUp->serialize_(jsonPopUp);
 				jsonPopUps.push_back(jsonPopUp);
 			}
 		}
@@ -313,12 +314,8 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (false && json.count("Camera"))
+			if (json.count("Camera"))
 			{
-				// Disable auto distance so that it doesn't interfere with the camera matrix.
-				// This is done here because getCamera() returns an ofCamera and not an ofEasyCam.
-				this->camera.setAutoDistance(false);
-
 				ofxPreset::Serializer::Deserialize(json, this->getCamera(), "Camera");
 			}
 
@@ -344,12 +341,12 @@ namespace entropy
 				for (auto & jsonPopUp : json["Pop-Ups"])
 				{
 					int typeAsInt = jsonPopUp["type"];
-					popup::Base::Type type = static_cast<popup::Base::Type>(typeAsInt);
+					popup::Type type = static_cast<popup::Type>(typeAsInt);
 
 					auto popUp = this->addPopUp(type);
 					if (popUp)
 					{
-						popUp->deserialize(jsonPopUp);
+						popUp->deserialize_(jsonPopUp);
 					}
 				}
 			}
@@ -594,12 +591,24 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<popup::Base> Base::addPopUp(popup::Base::Type type)
+		void Base::resetCamera()
+		{
+			this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
+			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
+			this->camera.reset();
+		}
+
+		//--------------------------------------------------------------
+		shared_ptr<popup::Base> Base::addPopUp(popup::Type type)
 		{
 			shared_ptr<popup::Base> popUp;
-			if (type == popup::Base::Type::Image)
+			if (type == popup::Type::Image)
 			{
 				popUp = make_shared<popup::Image>();
+			}
+			else if (type == popup::Type::Video)
+			{
+				popUp = make_shared<popup::Video>();
 			}
 			else
 			{
@@ -608,7 +617,7 @@ namespace entropy
 			}
 
 			auto idx = this->popUps.size();
-			popUp->setup(idx);
+			popUp->setup_(idx);
 			popUp->addTrack(this->timeline);
 			this->popUps.push_back(popUp);
 

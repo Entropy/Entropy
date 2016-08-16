@@ -184,38 +184,9 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.cpp" />
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.cpp" />
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.cpp" />
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.cpp" />
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
-    <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
     <ClCompile Include="src\entropy\scene\Video.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayer.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\ofxWMFVideoPlayerUtils.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\AsyncCB.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\BufferLock.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\ClassFactory.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\common.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\critsec.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\GrowArray.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\linklist.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logging.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\logmediatype.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mediatype.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\mfutils.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\PropVar.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\registry.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\TinyMap.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\common\trace.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenter.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\EVRPresenterUuid.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Helpers.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\PresentEngine.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
-    <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
     <ClInclude Include="src\entropy\scene\Video.h" />
   </ItemGroup>
 </Project>

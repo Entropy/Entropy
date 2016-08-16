@@ -20,13 +20,13 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		Base::Type Base::getType() const
+		Type Base::getType() const
 		{
 			return this->type;
 		}
 
 		//--------------------------------------------------------------
-		void Base::setup(int index)
+		void Base::setup_(int index)
 		{
 			this->index = index;
 
@@ -36,13 +36,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::exit()
+		void Base::exit_()
 		{
 			this->onExit.notify();
 		}
 
 		//--------------------------------------------------------------
-		void Base::resize(ofResizeEventArgs & args)
+		void Base::resize_(ofResizeEventArgs & args)
 		{
 			// Update right away so that event listeners can use the new bounds.
 			this->updateBounds();
@@ -51,7 +51,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::update(double dt)
+		void Base::update_(double dt)
 		{
 			if (this->boundsDirty)
 			{
@@ -156,10 +156,12 @@ namespace entropy
 					this->borderDirty = false;
 				}
 			}
+
+			this->onUpdate.notify(dt);
 		}
 
 		//--------------------------------------------------------------
-		void Base::draw()
+		void Base::draw_()
 		{
 			auto & parameters = this->getParameters();
 
@@ -171,7 +173,7 @@ namespace entropy
 					ofDrawRectangle(this->viewport);
 				}
 		
-				if (this->getTexture().isAllocated() && (this->enabled || this->editing))
+				if (this->isLoaded() && (this->enabled || this->editing))
 				{
 					// Draw the border.
 					if (parameters.border.width > 0.0f)
@@ -180,61 +182,18 @@ namespace entropy
 						this->borderMesh.draw();
 					}
 
-					// Draw the texture.
+					// Draw the content.
 					ofSetColor(255, this->frontAlpha * 255);
-					this->getTexture().drawSubsection(dstBounds.x, dstBounds.y, dstBounds.width, dstBounds.height,
-													  srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height);
+					this->renderContent();
 				}
 			}
 			ofPopStyle();
+
+			this->onDraw.notify();
 		}
 
 		//--------------------------------------------------------------
-		void Base::addTrack(ofxTimeline & timeline)
-		{
-			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(kTimelinePageName))
-			{
-				timeline.addPage(kTimelinePageName);
-			}
-			auto page = timeline.getPage(kTimelinePageName);
-
-			auto trackName = "_" + ofToString(this->index);
-			if (this->type == Type::Image) trackName.insert(0, "Image");
-
-			if (page->getTrack(trackName))
-			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
-				return;
-			}
-
-			timeline.setCurrentPage(kTimelinePageName);
-
-			// Add Track.
-			this->track = timeline.addSwitches(trackName);
-		}
-
-		//--------------------------------------------------------------
-		void Base::removeTrack(ofxTimeline & timeline)
-		{
-			if (!this->track)
-			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
-				return;
-			}
-
-			timeline.removeTrack(this->track);
-			this->track = nullptr;
-
-			auto page = timeline.getPage(kTimelinePageName);
-			if (page && page->getTracks().empty())
-			{
-				timeline.removePage(page);
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::gui(ofxPreset::Gui::Settings & settings)
+		void Base::gui_(ofxPreset::Gui::Settings & settings)
 		{
 			if (!this->editing) return;
 
@@ -295,7 +254,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::serialize(nlohmann::json & json)
+		void Base::serialize_(nlohmann::json & json)
 		{
 			json["type"] = static_cast<int>(this->type);
 
@@ -305,7 +264,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::deserialize(const nlohmann::json & json)
+		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
@@ -315,30 +274,74 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::addTrack(ofxTimeline & timeline)
+		{
+			// Add Page if it doesn't already exist.
+			if (!timeline.hasPage(kTimelinePageName))
+			{
+				timeline.addPage(kTimelinePageName);
+			}
+			auto page = timeline.getPage(kTimelinePageName);
+
+			auto trackName = "_" + ofToString(this->index);
+			if (this->type == Type::Image) trackName.insert(0, "Image");
+
+			if (page->getTrack(trackName))
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
+				return;
+			}
+
+			timeline.setCurrentPage(kTimelinePageName);
+
+			// Add Track.
+			this->track = timeline.addSwitches(trackName);
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeTrack(ofxTimeline & timeline)
+		{
+			if (!this->track)
+			{
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
+				return;
+			}
+
+			timeline.removeTrack(this->track);
+			this->track = nullptr;
+
+			auto page = timeline.getPage(kTimelinePageName);
+			if (page && page->getTracks().empty())
+			{
+				timeline.removePage(page);
+			}
+		}
+
+		//--------------------------------------------------------------
 		void Base::updateBounds()
 		{
 			const auto canvasSize = glm::vec2(GetCanvasWidth(), GetCanvasHeight());
 			this->viewport.setFromCenter(canvasSize * this->getParameters().base.center.get(), canvasSize.x * this->getParameters().base.size->x, canvasSize.y * this->getParameters().base.size->y);
 			
-			if (this->getTexture().isAllocated())
+			if (this->isLoaded())
 			{
-				const auto contentRatio = this->getTexture().getWidth() / this->getTexture().getHeight();
+				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
 				const auto viewportRatio = this->viewport.getAspectRatio();
 				
 				// Calculate the source subsection for Aspect Fill.
 				if (this->viewport.getAspectRatio() > contentRatio)
 				{
-					this->roi.width = this->getTexture().getWidth();
+					this->roi.width = this->getContentWidth();
 					this->roi.height = this->roi.width / viewportRatio;
 					this->roi.x = 0.0f;
-					this->roi.y = (this->getTexture().getHeight() - this->roi.height) * 0.5f;
+					this->roi.y = (this->getContentHeight() - this->roi.height) * 0.5f;
 				}
 				else
 				{
-					this->roi.height = this->getTexture().getHeight();
+					this->roi.height = this->getContentHeight();
 					this->roi.width = this->roi.height * viewportRatio;
 					this->roi.y = 0.0f;
-					this->roi.x = (this->getTexture().getWidth() - this->roi.width) * 0.5f;
+					this->roi.x = (this->getContentWidth() - this->roi.width) * 0.5f;
 				}
 			}
 

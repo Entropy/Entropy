@@ -5,6 +5,7 @@
 #include "ofxTimeline.h"
 
 #include "entropy/popup/Image.h"
+#include "entropy/popup/Video.h"
 #include "entropy/util/Mapping.h"
 
 #define ENTROPY_SCENE_SETUP_LISTENER \
@@ -77,7 +78,7 @@ namespace entropy
 			void deserialize_(const nlohmann::json & json);
 
 			// Resources
-            string getAssetsPath(const string & file = "");
+			string getAssetsPath(const string & file = "");
 			string getDataPath(const string & file = "");
 			string getPresetPath(const string & preset = "");
 			string getCurrentPresetPath(const string & file = "");
@@ -140,7 +141,7 @@ namespace entropy
 			// Resources
 			void populatePresets();
 
-            string assetsPath;
+			string assetsPath;
 			string dataPath;
 			string currPreset;
 			vector<string> presets;
@@ -167,7 +168,7 @@ namespace entropy
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 			// Popups
-			shared_ptr<popup::Base> addPopUp(popup::Base::Type type);
+			shared_ptr<popup::Base> addPopUp(popup::Type type);
 			void removePopUp();
 
 			vector<shared_ptr<popup::Base>> popUps;
@@ -178,6 +179,8 @@ namespace entropy
 			void refreshMappings();
 
 			// Camera
+			void resetCamera();
+
 			ofEasyCam camera;
 		};
 	}

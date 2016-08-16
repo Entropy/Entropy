@@ -31,16 +31,6 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-
-			// Link gui parameters to internal parameters.
-			gpuMarchingCubes.resolution.makeReferenceTo(parameters.marchingCubes.resolution);
-			gpuMarchingCubes.wireframe.makeReferenceTo(parameters.render.wireframe);
-			gpuMarchingCubes.shadeNormals.makeReferenceTo(parameters.render.shadeNormals);
-			gpuMarchingCubes.fogEnabled.makeReferenceTo(parameters.render.fogEnabled);
-			gpuMarchingCubes.fogMaxDistance.makeReferenceTo(parameters.render.fogMaxDistance);
-			gpuMarchingCubes.fogMinDistance.makeReferenceTo(parameters.render.fogMinDistance);
-			gpuMarchingCubes.fogPower.makeReferenceTo(parameters.render.fogPower);
-
 			// Marching Cubes
 			gpuMarchingCubes.setup();
 			
@@ -114,9 +104,10 @@ namespace entropy
 		{
 			if (parameters.runSimulation) {
 				now += ofGetElapsedTimef();
-				noiseField.update(parameters.marchingCubes.inflation);
-				if (parameters.marchingCubes.inflation) {
-					parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
+				auto inflation = false;
+				noiseField.update(inflation);
+				if (inflation) {
+					//parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
 				}
 			}
 		}
@@ -133,7 +124,7 @@ namespace entropy
 			ofDisableDepthTest();
 
 			if (parameters.render.debug) {
-				noiseField.draw(parameters.marchingCubes.threshold);
+				noiseField.draw(this->gpuMarchingCubes.isoLevel);
 			}
 			else {
 				if (parameters.render.additiveBlending) {
@@ -146,9 +137,9 @@ namespace entropy
 					ofEnableDepthTest();
 				}
 
-				ofScale(parameters.marchingCubes.scale);
+				//ofScale(parameters.marchingCubes.scale);
 
-				gpuMarchingCubes.draw(noiseField.getTexture(), parameters.marchingCubes.threshold);
+				gpuMarchingCubes.draw(noiseField.getTexture());
 
 				if (gpuMarchingCubes.shadeNormals) {
 					ofDisableDepthTest();
@@ -181,26 +172,27 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
 
-				ofxPreset::Gui::AddGroup(this->parameters.marchingCubes, settings);
+				if (ImGui::CollapsingHeader(this->gpuMarchingCubes.parameters.getName().c_str(), nullptr, true, true)) {
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.resolution);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.isoLevel);
+				}
 
 				if (ImGui::CollapsingHeader(this->parameters.render.getName().c_str(), nullptr, true, true))
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
-					ofxPreset::Gui::AddParameter(this->parameters.render.drawGrid);
-					if (ofxPreset::Gui::AddParameter(this->parameters.render.wireframe))
-					{
-						gpuMarchingCubes.wireframe = this->parameters.render.wireframe;
-					}
-					if (ofxPreset::Gui::AddParameter(this->parameters.render.shadeNormals))
-					{
-						gpuMarchingCubes.shadeNormals = this->parameters.render.shadeNormals;
-					}
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.wireframe);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fill);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 
-					ofxPreset::Gui::AddParameter(this->parameters.render.fogEnabled);
-					ofxPreset::Gui::AddParameter(this->parameters.render.fogMaxDistance);
-					ofxPreset::Gui::AddParameter(this->parameters.render.fogMinDistance);
-					ofxPreset::Gui::AddParameter(this->parameters.render.fogPower);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogEnabled);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogMaxDistance);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogMinDistance);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogPower);
+
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fillAlpha);
+					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.wireframeAlpha);
+
 					auto numPoints = 100;
 					ImGui::PlotLines("Fog funtion", this->gpuMarchingCubes.getFogFunctionPlot(numPoints).data(), numPoints);
 				}
@@ -214,12 +206,14 @@ namespace entropy
 		void Inflation::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->noiseField.parameters);
+			ofxPreset::Serializer::Serialize(json, this->gpuMarchingCubes.parameters);
 		}
 
 		//--------------------------------------------------------------
 		void Inflation::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
+			ofxPreset::Serializer::Deserialize(json, this->gpuMarchingCubes.parameters);
 		}
 	}
 }

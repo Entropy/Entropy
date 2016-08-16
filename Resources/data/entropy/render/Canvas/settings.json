@@ -10,14 +10,14 @@
         "Color": {
             "Brightness": "0",
             "Contrast": "1",
-            "Exposure": "4",
-            "Gamma": "2.2",
-            "Tonemapping": "5"
+            "Exposure": "2.039",
+            "Gamma": "2.224",
+            "Tonemapping": "6"
         },
         "Fill Window": "0"
     },
     "areas": [
-        "0, 0, 0, 1916, 1053"
+        "0, 0, 0, 1920, 1061"
     ],
     "warps": [
         {
