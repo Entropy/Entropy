@@ -27,13 +27,17 @@ namespace entropy
 		protected:
 			bool loadImage(const string & filePath);
 
-			virtual ofTexture & getTexture() override;
+			bool isLoaded() const override;
+
+			float getContentWidth() const override;
+			float getContentHeight() const override;
+			void renderContent() override;
 
 			ofTexture image;
 			string fileName;
 
 		protected:
-			virtual BaseParameters & getParameters() override
+			BaseParameters & getParameters() override
 			{
 				return this->parameters;
 			}

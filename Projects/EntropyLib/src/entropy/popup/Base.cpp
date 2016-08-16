@@ -156,6 +156,8 @@ namespace entropy
 					this->borderDirty = false;
 				}
 			}
+
+			this->onUpdate.notify(dt);
 		}
 
 		//--------------------------------------------------------------
@@ -171,7 +173,7 @@ namespace entropy
 					ofDrawRectangle(this->viewport);
 				}
 		
-				if (this->getTexture().isAllocated() && (this->enabled || this->editing))
+				if (this->isLoaded() && (this->enabled || this->editing))
 				{
 					// Draw the border.
 					if (parameters.border.width > 0.0f)
@@ -180,13 +182,14 @@ namespace entropy
 						this->borderMesh.draw();
 					}
 
-					// Draw the texture.
+					// Draw the content.
 					ofSetColor(255, this->frontAlpha * 255);
-					this->getTexture().drawSubsection(dstBounds.x, dstBounds.y, dstBounds.width, dstBounds.height,
-													  srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height);
+					this->renderContent();
 				}
 			}
 			ofPopStyle();
+
+			this->onDraw.notify();
 		}
 
 		//--------------------------------------------------------------
@@ -320,25 +323,25 @@ namespace entropy
 			const auto canvasSize = glm::vec2(GetCanvasWidth(), GetCanvasHeight());
 			this->viewport.setFromCenter(canvasSize * this->getParameters().base.center.get(), canvasSize.x * this->getParameters().base.size->x, canvasSize.y * this->getParameters().base.size->y);
 			
-			if (this->getTexture().isAllocated())
+			if (this->isLoaded())
 			{
-				const auto contentRatio = this->getTexture().getWidth() / this->getTexture().getHeight();
+				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
 				const auto viewportRatio = this->viewport.getAspectRatio();
 				
 				// Calculate the source subsection for Aspect Fill.
 				if (this->viewport.getAspectRatio() > contentRatio)
 				{
-					this->roi.width = this->getTexture().getWidth();
+					this->roi.width = this->getContentWidth();
 					this->roi.height = this->roi.width / viewportRatio;
 					this->roi.x = 0.0f;
-					this->roi.y = (this->getTexture().getHeight() - this->roi.height) * 0.5f;
+					this->roi.y = (this->getContentHeight() - this->roi.height) * 0.5f;
 				}
 				else
 				{
-					this->roi.height = this->getTexture().getHeight();
+					this->roi.height = this->getContentHeight();
 					this->roi.width = this->roi.height * viewportRatio;
 					this->roi.y = 0.0f;
-					this->roi.x = (this->getTexture().getWidth() - this->roi.width) * 0.5f;
+					this->roi.x = (this->getContentWidth() - this->roi.width) * 0.5f;
 				}
 			}
 

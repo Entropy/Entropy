@@ -94,9 +94,28 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		ofTexture & Image::getTexture()
+		bool Image::isLoaded() const
 		{
-			return this->image;
+			return this->image.isAllocated();
+		}
+
+		//--------------------------------------------------------------
+		float Image::getContentWidth() const
+		{
+			return this->image.getWidth();
+		}
+		
+		//--------------------------------------------------------------
+		float Image::getContentHeight() const
+		{
+			return this->image.getHeight();
+		}
+		
+		//--------------------------------------------------------------
+		void Image::renderContent()
+		{
+			this->image.drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
+				this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
 		}
 	}
 }

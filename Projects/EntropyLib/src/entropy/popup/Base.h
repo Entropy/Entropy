@@ -86,7 +86,11 @@ namespace entropy
 			bool editing;
 
 		protected:
-			virtual ofTexture & getTexture() = 0;
+			virtual bool isLoaded() const = 0;
+
+			virtual float getContentWidth() const = 0;
+			virtual float getContentHeight() const = 0;
+			virtual void renderContent() = 0;
 
 			Type type;
 			int index;

@@ -3,6 +3,7 @@
 #include "Base.h"
 
 #include "ofxPreset.h"
+#include "ofxWMFVideoPlayer.h"
 
 namespace entropy
 {
@@ -28,9 +29,13 @@ namespace entropy
 		protected:
 			bool loadVideo(const string & filePath);
 
-			ofTexture & getTexture() override;
+			bool isLoaded() const override;
 
-			ofVideoPlayer video;
+			float getContentWidth() const override;
+			float getContentHeight() const override;
+			void renderContent() override;
+
+			ofxWMFVideoPlayer video;
 			string fileName;
 
 		protected:

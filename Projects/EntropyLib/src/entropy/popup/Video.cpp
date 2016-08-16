@@ -74,13 +74,21 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Video::loadVideo(const string & filePath)
 		{
+			if (!ofFile::doesFileExist(filePath))
+			{
+				ofLogError(__FUNCTION__) << "No video found at " << filePath;
+				return false;
+			}
+			
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
 				this->video.load(filePath);
-				this->video.play();
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
+
+			this->video.play();
+			// TODO: Time video to ofxTimeline track
 
 			this->fileName = ofFilePath::getFileName(filePath);
 			this->boundsDirty = true;
@@ -88,9 +96,32 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		ofTexture & Video::getTexture()
+		bool Video::isLoaded() const
 		{
-			return this->video.getTextureReference();
+			return this->video.isLoaded();
+		}
+
+		//--------------------------------------------------------------
+		float Video::getContentWidth() const
+		{
+			return this->video.getWidth();
+		}
+
+		//--------------------------------------------------------------
+		float Video::getContentHeight() const
+		{
+			return this->video.getHeight();
+		}
+
+		//--------------------------------------------------------------
+		void Video::renderContent()
+		{
+			if (this->video.lockSharedTexture())
+			{
+				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
+														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+				this->video.unlockSharedTexture();
+			}
 		}
 	}
 }
