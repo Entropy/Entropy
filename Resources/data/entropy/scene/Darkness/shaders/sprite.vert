@@ -3,7 +3,7 @@
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
-uniform float pointSize;
+uniform float uPointSize;
 
 in vec4 position;
 in float mass;
@@ -16,5 +16,5 @@ void main()
     float dist = sqrt(eyeCoord.x * eyeCoord.x + eyeCoord.y * eyeCoord.y + eyeCoord.z * eyeCoord.z);
     float attenuation = 600.0 / dist;
 
-    gl_PointSize = pointSize * mass * attenuation;
+    gl_PointSize = uPointSize * mass * attenuation;
 }

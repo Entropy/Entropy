@@ -188,6 +188,7 @@
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp" />
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5File.cpp" />
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp" />
+    <ClCompile Include="src\entropy\darkness\DataSet.cpp" />
     <ClCompile Include="src\entropy\darkness\GaussianMapTexture.cpp" />
     <ClCompile Include="src\entropy\scene\Darkness.cpp" />
   </ItemGroup>
@@ -197,11 +198,12 @@
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h" />
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5File.h" />
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h" />
+    <ClInclude Include="src\entropy\darkness\DataSet.h" />
     <ClInclude Include="src\entropy\darkness\GaussianMapTexture.h" />
     <ClInclude Include="src\entropy\scene\Darkness.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\render.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\render.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\sprite.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\sprite.vert" />
   </ItemGroup>
 </Project>

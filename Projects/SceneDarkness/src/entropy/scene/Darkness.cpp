@@ -1,6 +1,5 @@
 #include "Darkness.h"
 
-#include "ofxHDF5.h"
 #include "entropy/darkness/GaussianMapTexture.h"
 
 namespace entropy
@@ -32,27 +31,19 @@ namespace entropy
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
-			// Load initial data.
-			for (int i = 0; i < 10; i++)
-			{
-				const auto filename = this->getAssetsPath("particles/boss_fragment-batch-" + ofToString(i + 1) + "of10.hdf5");// "sample_contig.hdf5";
-				this->loadData(filename, this->vboBoss);
-			}
-			for (int i = 0; i < 20; i++)
-			{
-				const auto filename = this->getAssetsPath("particles/des_fragment-batch-" + ofToString(i + 1) + "of20.hdf5");// "sample_contig.hdf5";
-				this->loadData(filename, this->vboDes);
-			}
+			// Load data.
+			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 10);
+			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
 
 			// Build the texture.
 			entropy::darkness::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
 
 			// Load the shader.
-			this->shader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
-			this->shader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
-			this->shader.bindAttribute(MASS_ATTRIBUTE, "mass");
-			this->shader.bindDefaults();
-			this->shader.linkProgram();
+			this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
+			this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
+			this->spriteShader.bindAttribute(entropy::darkness::DataSet::MASS_ATTRIBUTE, "mass");
+			this->spriteShader.bindDefaults();
+			this->spriteShader.linkProgram();
 		}
 		
 		//--------------------------------------------------------------
@@ -83,33 +74,51 @@ namespace entropy
 		void Darkness::drawWorld()
 		{
 			glEnable(GL_POINT_SMOOTH);
-			glPointSize(this->parameters.pointSize);
+			glPointSize(this->parameters.render.pointSize);
 
 			ofPushMatrix();
-			ofScale(this->parameters.scale);
+			ofScale(this->parameters.render.scale);
 			{
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				ofDisableDepthTest();
 					
-				if (this->parameters.useSprites) {
-					this->shader.begin();
-					this->shader.setUniformTexture("texx", texture, 1);
-					this->shader.setUniform1f("pointSize", this->parameters.pointSize);
+				if (this->parameters.render.useSprites) {
+					this->spriteShader.begin();
+					this->spriteShader.setUniformTexture("uTex0", texture, 1);
+					this->spriteShader.setUniform1f("uPointSize", this->parameters.render.pointSize);
 					ofEnablePointSprites();
 				}
 				else {
-					glPointSize(this->parameters.pointSize);
+					glPointSize(this->parameters.render.pointSize);
 				}
 
-				ofSetColor(ofColor::red);
-				this->vboBoss.draw(OF_MESH_POINTS);
+				//if (this->parameters.boss.fragments > 0)
+				//{
+				//	int total = 0;
+				//	for (int i = 0; i < this->parameters.boss.fragments; ++i)
+				//	{
+				//		total += this->dataSetBoss.counts[i];
+				//	}
+				//	ofSetColor(ofColor::red);
+				//	this->dataSetBoss.vboMesh.getVbo().draw(GL_POINTS, 0, total);
+				//}
 
-				ofSetColor(ofColor::blue);
-				this->vboDes.draw(OF_MESH_POINTS);
+				//if (this->parameters.des.fragments > 0)
+				//{
+				//	int total = 0;
+				//	for (int i = 0; i < this->parameters.des.fragments; ++i)
+				//	{
+				//		total += this->dataSetDes.counts[i];
+				//	}
+				//	ofSetColor(ofColor::blue);
+				//	this->dataSetDes.vboMesh.getVbo().draw(GL_POINTS, 0, total);
+				//}
+				this->dataSetBoss.draw();
+				this->dataSetDes.draw();
 
-				if (this->parameters.useSprites) {
+				if (this->parameters.render.useSprites) {
 					ofDisablePointSprites();
-					this->shader.end();
+					this->spriteShader.end();
 				}
 				else {
 					glPointSize(1.0f);
@@ -132,9 +141,10 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.scale);
-				ofxPreset::Gui::AddParameter(this->parameters.pointSize);
-				ofxPreset::Gui::AddParameter(this->parameters.useSprites);
+				ofxPreset::Gui::AddGroup(this->parameters.render, settings);
+
+				this->dataSetBoss.gui(settings);
+				this->dataSetDes.gui(settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}
@@ -142,52 +152,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Darkness::serialize(nlohmann::json & json)
 		{
-
+			this->dataSetBoss.serialize(json);
+			this->dataSetDes.serialize(json);
 		}
 		
 		//--------------------------------------------------------------
 		void Darkness::deserialize(const nlohmann::json & json)
 		{
-
-		}
-
-		//--------------------------------------------------------------
-		void Darkness::loadData(const string & filePath, ofVboMesh & vboMesh)
-		{
-			const int stride = 1;
-
-			ofxHDF5File h5File;
-			h5File.open(filePath, true);
-			ofxHDF5GroupPtr h5Group = h5File.loadGroup("PartType6");
-
-			ofxHDF5DataSetPtr coordsDataSet = h5Group->loadDataSet("Coordinates");
-			int coordsCount = coordsDataSet->getDimensionSize(0) / stride;
-			coordsDataSet->setHyperslab(0, coordsCount, stride);
-			//
-			vector<Coordinate> coordsData(coordsCount);
-			coordsDataSet->read(coordsData.data());
-
-			// Load the mass data.
-			ofxHDF5DataSetPtr massesDataSet = h5Group->loadDataSet("Masses");
-			int massesCount = massesDataSet->getDimensionSize(0) / stride;
-			massesDataSet->setHyperslab(0, massesCount, stride);
-
-			vector<float> massesData(massesCount);
-			massesDataSet->read(massesData.data());
-
-			// Convert the position data to Cartesian coordinates.
-			vector<glm::vec3> vertices(coordsCount);
-			for (int i = 0; i < vertices.size(); ++i) 
-			{
-				vertices[i].x = coordsData[i].radius * cos(ofDegToRad(coordsData[i].latitude)) * cos(ofDegToRad(coordsData[i].longitude));
-				vertices[i].y = coordsData[i].radius * cos(ofDegToRad(coordsData[i].latitude)) * sin(ofDegToRad(coordsData[i].longitude));
-				vertices[i].z = coordsData[i].radius * sin(ofDegToRad(coordsData[i].latitude));
-			}
-
-			// Upload everything to the VBO.
-			//vboMesh.clear();
-			vboMesh.addVertices(vertices);
-			vboMesh.getVbo().setAttributeData(MASS_ATTRIBUTE, massesData.data(), 1, massesData.size(), GL_STATIC_DRAW, 0);
+			this->dataSetBoss.deserialize(json);
+			this->dataSetDes.deserialize(json);
 		}
 	}
 }
