@@ -6,7 +6,7 @@
 
 namespace entropy
 {
-	namespace darkness
+	namespace survey
 	{
 		//--------------------------------------------------------------
 		DataSet::DataSet()
@@ -24,6 +24,7 @@ namespace entropy
 		void DataSet::setup(const std::string & name, const std::string & format, size_t startIdx, size_t count)
 		{
 			this->parameters.setName(name);
+			this->parameters.fragments.setMax(count);
 
 			this->clear();
 
@@ -36,7 +37,6 @@ namespace entropy
 				char filename[256];
 				sprintf(filename, format.c_str(), (i + startIdx + 1));
 				const auto filePath = GetCurrentSceneAssetsPath(filename);
-
 				this->counts[i] = this->loadFragment(filePath, vertices, masses);
 			}
 
@@ -95,7 +95,7 @@ namespace entropy
 			// Sort the data points by radius.
 			std::sort(points.begin(), points.end(), [](const Point & a, const Point & b) -> bool
 			{
-				return (a.radius > b.radius);
+				return (a.radius < b.radius);
 			});
 
 			// Convert the position data to Cartesian coordinates and store all data in the passed vectors.
@@ -134,7 +134,10 @@ namespace entropy
 				total += this->counts[i];
 			}
 
-			this->vbo.draw(GL_POINTS, 0, total);
+			int startIdx = ofMap(this->parameters.minDistance, 0.0f, 1.0f, 0, total, true);
+			int endIdx = ofMap(this->parameters.maxDistance, 0.0f, 1.0f, 0, total, true);
+
+			this->vbo.draw(GL_POINTS, startIdx, endIdx - startIdx + 1);
 		}
 
 		//--------------------------------------------------------------

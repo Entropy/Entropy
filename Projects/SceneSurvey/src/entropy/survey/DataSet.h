@@ -5,7 +5,7 @@
 
 namespace entropy
 {
-	namespace darkness
+	namespace survey
 	{
 		class DataSet
 		{
@@ -31,6 +31,16 @@ namespace entropy
 
 			static const size_t MAX_FRAGMENTS = 20;
 
+			struct : ofParameterGroup
+			{
+				ofParameter<int> fragments{ "Fragments", 1, 0, MAX_FRAGMENTS };
+				ofParameter<float> minDistance{ "Min Distance", 0.0f, 0.0f, 1.0f };
+				ofParameter<float> maxDistance{ "Max Distance", 0.5f, 0.0f, 1.0f };
+				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
+
+				PARAM_DECLARE("DataSet", fragments, minDistance, maxDistance, color);
+			} parameters;
+
 		protected:
 			typedef struct
 			{
@@ -41,16 +51,6 @@ namespace entropy
 				uint32_t fragment;
 				ofIndexType index;
 			} Point;
-
-			struct : ofParameterGroup
-			{
-				ofParameter<int> fragments{ "Fragments", 1, 0, MAX_FRAGMENTS };
-				ofParameter<float> minDistance{ "Min Distance", 0.0f, 0.0f, 1.0f };
-				ofParameter<float> maxDistance{ "Max Distance", 0.5f, 0.0f, 1.0f };
-				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
-
-				PARAM_DECLARE("DataSet", fragments, minDistance, maxDistance, color);
-			} parameters;
 
 			size_t loadFragment(const string & filePath, std::vector<glm::vec3> & vertices, std::vector<float> & masses);
 

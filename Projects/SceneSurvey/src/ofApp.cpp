@@ -1,14 +1,14 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Darkness.h"
+#include "entropy/scene/Survey.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
 	// Add Scenes to the Manager.
 	auto manager = entropy::GetSceneManager();
-	auto scene = make_shared<entropy::scene::Darkness>();
+	auto scene = make_shared<entropy::scene::Survey>();
 	manager->addScene(scene);
 	manager->setCurrentScene(scene->getName());
 }

@@ -533,7 +533,7 @@ namespace entropy
 					continue;
 				}
 
-				// Parameter, try ofParameter first and ofxPreset::Parameter aggregate if that fails.
+				// Parameter.
 				{
 					auto parameterFloat = dynamic_pointer_cast<ofParameter<float>>(parameter);
 					if (parameterFloat)

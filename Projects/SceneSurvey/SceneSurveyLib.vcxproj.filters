@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\entropy\scene\Darkness.cpp">
+    <ClCompile Include="src\entropy\scene\Survey.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
@@ -16,11 +16,11 @@
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp">
       <Filter>addons\ofxHDF5\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\darkness\GaussianMapTexture.cpp">
-      <Filter>src\entropy\darkness</Filter>
+    <ClCompile Include="src\entropy\survey\GaussianMapTexture.cpp">
+      <Filter>src\entropy\survey</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\darkness\DataSet.cpp">
-      <Filter>src\entropy\darkness</Filter>
+    <ClCompile Include="src\entropy\survey\DataSet.cpp">
+      <Filter>src\entropy\survey</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,12 +45,12 @@
     <Filter Include="addons\ofxHDF5\src">
       <UniqueIdentifier>{c13e3114-9085-46ad-bb1c-db5497958fdc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\entropy\darkness">
+    <Filter Include="src\entropy\survey">
       <UniqueIdentifier>{f112b60a-f52d-4991-88da-95a5e2235b63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entropy\scene\Darkness.h">
+    <ClInclude Include="src\entropy\scene\Survey.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5.h">
@@ -68,18 +68,18 @@
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h">
       <Filter>addons\ofxHDF5\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\darkness\GaussianMapTexture.h">
-      <Filter>src\entropy\darkness</Filter>
+    <ClInclude Include="src\entropy\survey\GaussianMapTexture.h">
+      <Filter>src\entropy\survey</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\darkness\DataSet.h">
-      <Filter>src\entropy\darkness</Filter>
+    <ClInclude Include="src\entropy\survey\DataSet.h">
+      <Filter>src\entropy\survey</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\sprite.frag">
+    <None Include="..\..\Resources\data\entropy\scene\Survey\shaders\sprite.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\Resources\data\entropy\scene\Darkness\shaders\sprite.vert">
+    <None Include="..\..\Resources\data\entropy\scene\Survey\shaders\sprite.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

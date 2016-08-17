@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\addons\ofxHDF5\src;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\zlib\include;..\..\Projects\SceneDarkness\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\addons\ofxHDF5\src;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\zlib\include;..\..\Projects\SceneSurvey\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\..\addons\ofxHDF5\libs\hdf5\lib\vs\$(Platform);..\..\addons\ofxHDF5\libs\szip\lib\vs\$(Platform);..\..\addons\ofxHDF5\libs\zlib\lib\vs\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
