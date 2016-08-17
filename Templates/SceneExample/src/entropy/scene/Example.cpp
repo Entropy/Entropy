@@ -1,5 +1,7 @@
 #include "Example.h"
 
+#include "entropy/Helpers.h"
+
 namespace entropy
 {
 	namespace scene
@@ -86,7 +88,15 @@ namespace entropy
 		// Draw 2D elements in the foreground here.
 		void Example::drawFront()
 		{
-
+			static const float kBorderSize = 20.0f;
+			ofSetColor(255, 0, 0, 128);
+			ofDrawRectangle(0.0f, 0.0f, GetCanvasWidth(), kBorderSize);
+			ofSetColor(0, 255, 0, 128);
+			ofDrawRectangle(0.0f, GetCanvasHeight() - kBorderSize, GetCanvasWidth(), kBorderSize);
+			ofSetColor(0, 0, 255, 128);
+			ofDrawRectangle(0.0f, 0.0f, kBorderSize, GetCanvasHeight());
+			ofSetColor(0, 255, 255, 128);
+			ofDrawRectangle(GetCanvasWidth() - kBorderSize, 0.0f, kBorderSize, GetCanvasHeight());
 		}
 
 		//--------------------------------------------------------------

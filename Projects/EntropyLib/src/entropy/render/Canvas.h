@@ -68,6 +68,9 @@ namespace entropy
 			static const int MAX_NUM_WARPS = 8;
 
 		protected:
+			float getScreenWidth() const;
+			float getScreenHeight() const; 
+			
 			void updateConfiguration();
 			void updateSize();
 			void updateStitches();

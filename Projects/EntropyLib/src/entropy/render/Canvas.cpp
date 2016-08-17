@@ -319,6 +319,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		float Canvas::getScreenWidth() const
+		{
+			return (this->parameters.configuration.screenWidth * this->parameters.configuration.numCols);
+		}
+
+		//--------------------------------------------------------------
+		float Canvas::getScreenHeight() const
+		{
+			return (this->parameters.configuration.screenHeight * this->parameters.configuration.numRows);
+		}
+
+		//--------------------------------------------------------------
 		void Canvas::updateConfiguration()
 		{
 			if (this->parameters.configuration.screenWidth == this->editingConfig.screenWidth &&
@@ -411,7 +423,6 @@ namespace entropy
 				return nullptr;
 			}
 
-			cout << "add warp " << this->getWidth() << "x" << this->getHeight() << endl;
 			warp->setSize(this->getWidth(), this->getHeight());
 
 			this->warps.push_back(warp);
@@ -466,16 +477,22 @@ namespace entropy
 					totalOverlap += overlaps[i];
 				}
 
+				//cout << "Stitches: Total is " << this->getScreenWidth() << " with overlap " << totalOverlap;
+
 				// Adjust the fbo width.
-				this->setWidth(this->getWidth() - totalOverlap);
+				this->setWidth(this->getScreenWidth() - totalOverlap);
+
+				//cout << " to new size " << this->getWidth() << endl;
 
 				// Update the areas for each warp.
 				const auto areaSize = glm::vec2(this->getWidth() / static_cast<float>(numWarps), this->getHeight());
-				auto currX = 0.0f;
+				//cout << " Area width is " << areaSize.x << " for " << numWarps << " warps" << endl;
 				for (auto i = 0; i < numWarps; ++i)
 				{
-					this->srcAreas[i] = ofRectangle(currX, 0.0f, areaSize.x, areaSize.y);
-					currX = currX + areaSize.x - overlaps[i];
+					auto offsetLeft = (i * areaSize.x) - ((i > 0)? overlaps[i] : 0.0f);
+					auto offsetRight = ((i + 1) * areaSize.x) + ((i < numWarps - 1) ? overlaps[i + 1] : 0.0f);
+					this->srcAreas[i] = ofRectangle(offsetLeft, 0.0f, offsetRight - offsetLeft, areaSize.y);
+					//cout <add< "  Warp " << i << " with area  " << this->srcAreas[i] << endl;
 				}
 			}
 
@@ -761,8 +778,8 @@ namespace entropy
 						{
 							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
 							{
-								static glm::vec3 tmpLuminanceRef;
-								static glm::vec3 tmpGammaRef;
+								glm::vec3 tmpLuminanceRef;
+								glm::vec3 tmpGammaRef;
 
 								tmpLuminanceRef = paramGroup.blend.luminance.get();
 								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
