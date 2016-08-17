@@ -1,5 +1,7 @@
 #include "Example.h"
 
+#include "entropy/Helpers.h"
+
 namespace entropy
 {
 	namespace scene
@@ -29,6 +31,8 @@ namespace entropy
 			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
+
+			ofEnableLighting();
 		}
 		
 		//--------------------------------------------------------------
@@ -50,9 +54,10 @@ namespace entropy
 		// Update your data here, once per frame.
 		void Example::update(double & dt)
 		{
-			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
+			if (this->sphere.getSize().x != this->parameters.sphere.radius || this->sphere.getResolution().x != this->parameters.sphere.resolution)
 			{
-				this->sphere.set(this->parameters.sphere.radius, this->parameters.sphere.resolution);
+				this->sphere.set(this->parameters.sphere.radius);
+				light.setPosition(this->sphere.getSize() * 2);
 			}
 		}
 
@@ -69,7 +74,12 @@ namespace entropy
 		{
 			ofPushStyle();
 			{
+				ofEnableDepthTest();
+				material.setDiffuseColor(this->parameters.sphere.color);
+				light.enable();
+				glEnable(GL_CULL_FACE);
 				ofSetColor(this->parameters.sphere.color.get());
+				material.begin();
 				if (this->parameters.sphere.filled)
 				{
 					this->sphere.draw(OF_MESH_FILL);
@@ -78,6 +88,10 @@ namespace entropy
 				{
 					this->sphere.draw(OF_MESH_WIREFRAME);
 				}
+				glDisable(GL_CULL_FACE);
+				material.end();
+				light.disable();
+				ofDisableDepthTest();
 			}
 			ofPopStyle();
 		}
@@ -86,7 +100,15 @@ namespace entropy
 		// Draw 2D elements in the foreground here.
 		void Example::drawFront()
 		{
-
+			static const float kBorderSize = 20.0f;
+			ofSetColor(255, 0, 0, 128);
+			ofDrawRectangle(0.0f, 0.0f, GetCanvasWidth(), kBorderSize);
+			ofSetColor(0, 255, 0, 128);
+			ofDrawRectangle(0.0f, GetCanvasHeight() - kBorderSize, GetCanvasWidth(), kBorderSize);
+			ofSetColor(0, 0, 255, 128);
+			ofDrawRectangle(0.0f, 0.0f, kBorderSize, GetCanvasHeight());
+			ofSetColor(0, 255, 255, 128);
+			ofDrawRectangle(GetCanvasWidth() - kBorderSize, 0.0f, kBorderSize, GetCanvasHeight());
 		}
 
 		//--------------------------------------------------------------

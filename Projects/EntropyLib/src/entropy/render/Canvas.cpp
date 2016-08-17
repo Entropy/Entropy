@@ -47,7 +47,7 @@ namespace entropy
 			this->fboSettings.useDepth = true;
 
 			this->fboDraw.allocate(this->fboSettings);
-			this->fboDraw.getTexture().texData.bFlipTexture = true;
+			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
 			//this->fboPost.getTexture().texData.bFlipTexture = true;
@@ -106,20 +106,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::beginDraw()
 		{
-			// Don't use ofFbo::begin() because it messes with the winding direction.
-			// This means you'll need to set the viewports manually (e.g. for ofCamera::begin())
 			ofPushView();
 			ofPushStyle();
-			ofViewport(this->viewport);
-			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
-			this->fboDraw.bind();
+			this->fboDraw.beginNoMatrixFlip();
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
-			// Manual ofFbo::end(), see comment in Canvas::beginFbo().
-			this->fboDraw.unbind();
+			this->fboDraw.end();
 			ofPopStyle();
 			ofPopView();
 		}
@@ -135,6 +130,7 @@ namespace entropy
 		{
 			if (!postProcessing)
 			{
+				ofSetColor(255);
 				// Scene didn't take care of post-processing, do it here.
 				if (parameters.bloom.enabled) {
 					// Pass 0: Brightness
@@ -318,19 +314,54 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		float Canvas::getScreenWidth() const
+		{
+			return (this->parameters.configuration.screenWidth * this->parameters.configuration.numCols);
+		}
+
+		//--------------------------------------------------------------
+		float Canvas::getScreenHeight() const
+		{
+			return (this->parameters.configuration.screenHeight * this->parameters.configuration.numRows);
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::updateConfiguration()
+		{
+			if (this->parameters.configuration.screenWidth == this->editingConfig.screenWidth &&
+				this->parameters.configuration.screenHeight == this->editingConfig.screenHeight &&
+				this->parameters.configuration.numCols == this->editingConfig.numCols &&
+				this->parameters.configuration.numRows == this->editingConfig.numRows)
+			{
+				return;
+			}
+
+			this->parameters.configuration.screenWidth = this->editingConfig.screenWidth;
+			this->parameters.configuration.screenHeight = this->editingConfig.screenHeight;
+			this->parameters.configuration.numCols = this->editingConfig.numCols;
+			this->parameters.configuration.numRows = this->editingConfig.numRows;
+
+			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
+			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
+			this->updateSize();
+		}
+
+		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
+			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
+			
 			// Re-allocate fbos.
 			this->fboDraw.allocate(this->fboSettings);
-			this->fboDraw.getTexture().texData.bFlipTexture = true;
+			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
-			this->fboPost.getTexture().texData.bFlipTexture = true;
+			//this->fboPost.getTexture().texData.bFlipTexture = true;
 
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-				this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+				//this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
@@ -433,7 +464,7 @@ namespace entropy
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = ofGetWidth() / (float)numWarps;
+				const auto areaWidth = this->getWidth() / static_cast<float>(numWarps);
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
@@ -443,16 +474,22 @@ namespace entropy
 					totalOverlap += overlaps[i];
 				}
 
+				//cout << "Stitches: Total is " << this->getScreenWidth() << " with overlap " << totalOverlap;
+
 				// Adjust the fbo width.
-				this->setWidth(ofGetWidth() - totalOverlap);
+				this->setWidth(this->getScreenWidth() - totalOverlap);
+
+				//cout << " to new size " << this->getWidth() << endl;
 
 				// Update the areas for each warp.
-				const auto areaSize = glm::vec2(this->getWidth() / (float)numWarps, this->getHeight());
-				auto currX = 0.0f;
+				const auto areaSize = glm::vec2(this->getWidth() / static_cast<float>(numWarps), this->getHeight());
+				//cout << " Area width is " << areaSize.x << " for " << numWarps << " warps" << endl;
 				for (auto i = 0; i < numWarps; ++i)
 				{
-					this->srcAreas[i] = ofRectangle(currX, 0.0f, areaSize.x, areaSize.y);
-					currX = currX + areaSize.x - overlaps[i];
+					auto offsetLeft = (i * areaSize.x) - ((i > 0)? overlaps[i] : 0.0f);
+					auto offsetRight = ((i + 1) * areaSize.x) + ((i < numWarps - 1) ? overlaps[i + 1] : 0.0f);
+					this->srcAreas[i] = ofRectangle(offsetLeft, 0.0f, offsetRight - offsetLeft, areaSize.y);
+					//cout <add< "  Warp " << i << " with area  " << this->srcAreas[i] << endl;
 				}
 			}
 
@@ -487,6 +524,18 @@ namespace entropy
 				if (ImGui::Button("Load"))
 				{
 					this->loadSettings();
+				}
+
+				if (ImGui::CollapsingHeader(this->editingConfig.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->editingConfig.screenWidth);
+					ofxPreset::Gui::AddParameter(this->editingConfig.screenHeight);
+					ofxPreset::Gui::AddParameter(this->editingConfig.numRows);
+					ofxPreset::Gui::AddParameter(this->editingConfig.numCols);
+					if (ImGui::Button("Apply"))
+					{
+						this->updateConfiguration();
+					}
 				}
 
 				ofxPreset::Gui::AddGroup(this->parameters.bloom, settings);
@@ -726,8 +775,8 @@ namespace entropy
 						{
 							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
 							{
-								static glm::vec3 tmpLuminanceRef;
-								static glm::vec3 tmpGammaRef;
+								glm::vec3 tmpLuminanceRef;
+								glm::vec3 tmpGammaRef;
 
 								tmpLuminanceRef = paramGroup.blend.luminance.get();
 								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
@@ -860,6 +909,16 @@ namespace entropy
 
 			// Deserialize the parameters.
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
+
+			// Sync the configuration parameters and update the Canvas size.
+			this->editingConfig.screenWidth = this->parameters.configuration.screenWidth;
+			this->editingConfig.screenHeight = this->parameters.configuration.screenHeight;
+			this->editingConfig.numCols = this->parameters.configuration.numCols;
+			this->editingConfig.numRows = this->parameters.configuration.numRows;
+
+			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
+			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
+			this->updateSize();
 		}
 
 		//--------------------------------------------------------------
@@ -1051,19 +1110,19 @@ namespace entropy
 				auto shift = glm::vec2(0.0f);
 				if (args.key == OF_KEY_UP)
 				{
-					shift.y = -step / (float)ofGetHeight();
+					shift.y = -step / static_cast<float>(ofGetHeight());
 				}
 				else if (args.key == OF_KEY_DOWN)
 				{
-					shift.y = step / (float)ofGetHeight();
+					shift.y = step / static_cast<float>(ofGetHeight());
 				}
 				else if (args.key == OF_KEY_LEFT)
 				{
-					shift.x = -step / (float)ofGetWidth();
+					shift.x = -step / static_cast<float>(ofGetWidth());
 				}
 				else
 				{
-					shift.x = step / (float)ofGetWidth();
+					shift.x = step / static_cast<float>(ofGetWidth());
 				}
 				warp->moveControlPoint(warp->getSelectedControlPoint(), shift);
 
@@ -1076,12 +1135,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::windowResized(ofResizeEventArgs & args)
 		{
+			// Update viewport.
+			//this->viewport = ofRectangle(0.0f, 0.0f, args.width, args.height);
+			
 			if (this->parameters.fillWindow)
 			{
-				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
+				//if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
-				this->fboSettings.width = args.width;
-				this->fboSettings.height = args.height;
+				//this->fboSettings.width = args.width;
+				//this->fboSettings.height = args.height;
 				this->updateSize();
 			}
 			else

@@ -34,7 +34,9 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			ofSpherePrimitive sphere;
+			ofBoxPrimitive sphere;
+			ofLight light;
+			ofMaterial material;
 
 		protected:
 			BaseParameters & getParameters() override
