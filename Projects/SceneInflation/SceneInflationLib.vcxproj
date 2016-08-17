@@ -210,6 +210,7 @@
     <ClInclude Include="src\entropy\scene\Inflation.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Common\shaders\inc\fog.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\cool\parameters.json" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\_default\parameters.json" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl" />

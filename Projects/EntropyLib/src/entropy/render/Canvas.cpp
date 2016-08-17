@@ -32,6 +32,8 @@ namespace entropy
 
 			this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("frag_tonemap.glsl"));
 
+			this->fogShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("fog_frag.glsl"));
+
 			// Set ofxWarp shader path.
 			auto warpShaderPath = GetSharedDataPath();
 			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("ofxWarp"));
@@ -42,20 +44,18 @@ namespace entropy
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
 			this->fboSettings.numSamples = 4;
-			//this->fboSettings.internalformat = GL_RGBA32F;
+			this->fboSettings.internalformat = GL_RGBA16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
-			this->fboSettings.useDepth = true;
 
 			this->fboDraw.allocate(this->fboSettings);
-			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
+			this->fboSettings.numSamples = 0;
 			this->fboPost.allocate(this->fboSettings);
-			//this->fboPost.getTexture().texData.bFlipTexture = true;
+			this->fboFog.allocate(this->fboSettings);
 
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-				//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
@@ -131,13 +131,15 @@ namespace entropy
 			if (!postProcessing)
 			{
 				ofSetColor(255);
+				ofTexture * originalTexture = &fboDraw.getTexture();
+
 				// Scene didn't take care of post-processing, do it here.
 				if (parameters.bloom.enabled) {
 					// Pass 0: Brightness
 					this->fboTemp[0].begin();
 					ofClear(0, 255);
 					brightnessThresholdShader.begin();
-					brightnessThresholdShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
+					brightnessThresholdShader.setUniformTexture("tex0", *originalTexture, 0);
 					brightnessThresholdShader.setUniform1f("bright_threshold", parameters.bloom.brightnessThreshold);
 					fullQuad.draw();
 					brightnessThresholdShader.end();
@@ -213,7 +215,7 @@ namespace entropy
 						this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
 					}
 					else {
-						this->colorCorrectShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
+						this->colorCorrectShader.setUniformTexture("tex0", *originalTexture, 0);
 						if (parameters.bloom.enabled) {
 							this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
 						}
@@ -352,7 +354,13 @@ namespace entropy
 			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
 			
 			// Re-allocate fbos.
+			this->fboSettings.numSamples = 4;
+			this->fboSettings.internalformat = GL_RGBA16F;
+			this->fboSettings.textureTarget = GL_TEXTURE_2D;
+
 			this->fboDraw.allocate(this->fboSettings);
+
+			this->fboSettings.numSamples = 0;
 			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);

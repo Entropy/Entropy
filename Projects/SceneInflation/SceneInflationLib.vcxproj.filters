@@ -66,6 +66,12 @@
     <Filter Include="resources\_default">
       <UniqueIdentifier>{03344cd1-7a56-4e69-a71f-7322fc9e717e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common shaders">
+      <UniqueIdentifier>{6d4cc65b-69e9-42cc-9dd5-e107e98097f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common shaders\inc">
+      <UniqueIdentifier>{0cdb262a-2a70-418a-866f-36c9ba49d3c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Inflation.h">
@@ -147,6 +153,9 @@
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\_default\parameters.json">
       <Filter>resources\_default</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Common\shaders\inc\fog.glsl">
+      <Filter>common shaders\inc</Filter>
     </None>
   </ItemGroup>
 </Project>

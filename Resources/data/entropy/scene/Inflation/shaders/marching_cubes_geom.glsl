@@ -14,6 +14,8 @@ uniform float fogPower;
 uniform float wireframeAlpha;
 uniform float fillAlpha;
 
+#pragma include "../Common/shaders/inc/fog.glsl"
+
 const float resolution = 128.f;
 //Marching cubes vertices decal
 const vec3 vertDecals[8] = {
@@ -52,37 +54,28 @@ const int vertexPerPrimitive = 3;
 vec3 cubePos(int i){
 	return gl_in[0].gl_Position.xyz + vertDecals[i];
 }
+
 //Get vertex i value within current marching cube
 vec4 cubeVal(int i){
     return texture(dataFieldTex, (cubePos(i)+vec3(0.5)));
 }
+
 //Get triangle table value
 int triTableValue(int i, int j){
 	return texelFetch(triTableTex, ivec2(j, i), 0).r;
 }
+
 //Compute interpolated vertex along an edge
 vec3 vertexInterp(float isolevel, vec3 v0, float l0, vec3 v1, float l1){
 	return mix(v0, v1, (isolevel-l0)/(l1-l0));
 }
+
 float floatInterp(float isolevel, float v0, float l0, float v1, float l1){
 	return mix(v0, v1, (isolevel-l0)/(l1-l0));
 }
 
 float bright(vec3 rgb){
 	return max(max(rgb.r, rgb.g), rgb.b);
-}
-
-float fog(float dist, float minDist, float maxDist, float power) {
-	dist = pow(dist, power);
-	minDist = pow(minDist, power);
-	maxDist = pow(maxDist, power);
-	float invDistanceToCamera = clamp(1 - (dist - minDist) / maxDist, 0.f, 1.f);
-	if (dist > minDist) {
-		return invDistanceToCamera;
-	}
-	else {
-		return 1;
-	}
 }
 
 //Geometry Shader entry point
@@ -173,7 +166,7 @@ void main(void) {
 				vec4 eyePosition =  modelViewMatrix * vec4(pos[j],1.0f);
 				gl_Position = projectionMatrix * eyePosition;
 				#if FOG_ENABLED
-				float distanceToCamera=length(eyePosition);
+				float distanceToCamera = length(eyePosition);
 				rgba.a *= fog(distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
 				#endif
 				EmitVertex();

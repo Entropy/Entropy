@@ -38,8 +38,8 @@ namespace entropy
 			noiseField.setup(gpuMarchingCubes.resolution);
 
 			this->getCamera().setDistance(2);
-			//camera.setNearClip(0.1);
-			//camera.setFarClip(100000);
+			this->getCamera().setNearClip(0.01);
+			this->getCamera().setFarClip(6.0);
 
 			now = 0;
 
@@ -121,7 +121,10 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::drawWorld()
 		{
-			ofDisableDepthTest();
+			//ofDisableDepthTest();
+			ofEnableDepthTest();
+			this->getCamera().setNearClip(0.01);
+			this->getCamera().setFarClip(6.0);
 
 			if (parameters.render.debug) {
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
@@ -142,7 +145,7 @@ namespace entropy
 				gpuMarchingCubes.draw(noiseField.getTexture());
 
 				if (gpuMarchingCubes.shadeNormals) {
-					ofDisableDepthTest();
+					//ofDisableDepthTest();
 				}
 
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);

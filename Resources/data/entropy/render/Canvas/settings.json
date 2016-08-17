@@ -1,11 +1,11 @@
 {
     "Parameters": {
         "Bloom": {
-            "Brightness Threshold": "0.688",
+            "Brightness Threshold": "0.18",
             "Debug blur": "0",
             "Enabled": "1",
             "Num Passes": "5",
-            "Sigma": "4.92"
+            "Sigma": "3.657"
         },
         "Color": {
             "Brightness": "0",
@@ -20,12 +20,12 @@
             "Screen Height": "1080",
             "Screen Width": "1920"
         },
-        "Fill Window": "0"
+        "Fill Window": "1"
     },
     "areas": [
-        "0, 0, 0, 639.367, 1080",
-        "555.967, 0, 0, 639.367, 1080",
-        "1195.33, 0, 0, 597.667, 1080"
+        "0, 0, 0, 639.329, 1080",
+        "556.671, 0, 0, 639.329, 1080",
+        "1196, 0, 0, 598, 1080"
     ],
     "warps": [
         {

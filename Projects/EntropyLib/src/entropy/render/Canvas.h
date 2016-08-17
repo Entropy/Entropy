@@ -151,12 +151,14 @@ namespace entropy
 			ofRectangle viewport;
 
 			ofFbo fboDraw;
+			ofFbo fboFog;
 			ofFbo fboPost;
 			ofFbo fboTemp[2];
 			ofFbo::Settings fboSettings;
 
 			GLuint defaultVao;
 
+			ofShader fogShader;
 			ofShader brightnessThresholdShader;
 			ofShader blurHorzShader;
 			ofShader blurVertShader;

@@ -596,8 +596,8 @@ namespace entropy
 		{
 			//this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
 			//this->camera.setVFlip(false);
-			this->camera.setNearClip(0.1f);
-			this->camera.setFarClip(100000.0f);
+			//this->camera.setNearClip(0.1f);
+			//this->camera.setFarClip(100000.0f);
 			this->camera.setFov(60.0f);
 			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
 			this->camera.setRelativeYAxis(true);
