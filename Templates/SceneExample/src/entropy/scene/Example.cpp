@@ -31,6 +31,8 @@ namespace entropy
 			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
 			ENTROPY_SCENE_GUI_LISTENER;
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
+
+			ofEnableLighting();
 		}
 		
 		//--------------------------------------------------------------
@@ -52,9 +54,10 @@ namespace entropy
 		// Update your data here, once per frame.
 		void Example::update(double & dt)
 		{
-			if (this->sphere.getRadius() != this->parameters.sphere.radius || this->sphere.getResolution() != this->parameters.sphere.resolution)
+			if (this->sphere.getSize().x != this->parameters.sphere.radius || this->sphere.getResolution().x != this->parameters.sphere.resolution)
 			{
-				this->sphere.set(this->parameters.sphere.radius, this->parameters.sphere.resolution);
+				this->sphere.set(this->parameters.sphere.radius);
+				light.setPosition(this->sphere.getSize() * 2);
 			}
 		}
 
@@ -71,7 +74,12 @@ namespace entropy
 		{
 			ofPushStyle();
 			{
+				ofEnableDepthTest();
+				material.setDiffuseColor(this->parameters.sphere.color);
+				light.enable();
+				glEnable(GL_CULL_FACE);
 				ofSetColor(this->parameters.sphere.color.get());
+				material.begin();
 				if (this->parameters.sphere.filled)
 				{
 					this->sphere.draw(OF_MESH_FILL);
@@ -80,6 +88,10 @@ namespace entropy
 				{
 					this->sphere.draw(OF_MESH_WIREFRAME);
 				}
+				glDisable(GL_CULL_FACE);
+				material.end();
+				light.disable();
+				ofDisableDepthTest();
 			}
 			ofPopStyle();
 		}

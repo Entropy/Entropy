@@ -47,7 +47,7 @@ namespace entropy
 			this->fboSettings.useDepth = true;
 
 			this->fboDraw.allocate(this->fboSettings);
-			this->fboDraw.getTexture().texData.bFlipTexture = true;
+			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
 			//this->fboPost.getTexture().texData.bFlipTexture = true;
@@ -106,24 +106,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::beginDraw()
 		{
-			// Don't use ofFbo::begin() because it messes with the winding direction.
-			// This means you'll need to set the viewports manually (e.g. for ofCamera::begin())
 			ofPushView();
 			ofPushStyle();
-			ofViewport(this->viewport);
-			ofSetupScreenPerspective(this->getWidth(), this->getHeight());
-			this->fboDraw.bind();
-			//this->fboDraw.begin();
+			this->fboDraw.beginNoMatrixFlip();
 		}
 		
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
-			// Manual ofFbo::end(), see comment in Canvas::beginFbo().
-			this->fboDraw.unbind();
+			this->fboDraw.end();
 			ofPopStyle();
 			ofPopView();
-			//this->fboDraw.end();
 		}
 
 		float gaussian(float x, float mu, float sigma) {
@@ -137,6 +130,7 @@ namespace entropy
 		{
 			if (!postProcessing)
 			{
+				ofSetColor(255);
 				// Scene didn't take care of post-processing, do it here.
 				if (parameters.bloom.enabled) {
 					// Pass 0: Brightness
@@ -354,9 +348,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
+			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
+			
 			// Re-allocate fbos.
 			this->fboDraw.allocate(this->fboSettings);
-			this->fboDraw.getTexture().texData.bFlipTexture = true;
+			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
 			//this->fboPost.getTexture().texData.bFlipTexture = true;
@@ -1138,12 +1134,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::windowResized(ofResizeEventArgs & args)
 		{
+			// Update viewport.
+			//this->viewport = ofRectangle(0.0f, 0.0f, args.width, args.height);
+			
 			if (this->parameters.fillWindow)
 			{
-				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
+				//if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
-				this->fboSettings.width = args.width;
-				this->fboSettings.height = args.height;
+				//this->fboSettings.width = args.width;
+				//this->fboSettings.height = args.height;
 				this->updateSize();
 			}
 			else
