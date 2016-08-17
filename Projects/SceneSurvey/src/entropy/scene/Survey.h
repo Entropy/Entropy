@@ -58,25 +58,7 @@ namespace entropy
 					PARAM_DECLARE("Render", scale, pointSize, useSprites);
 				} render;
 
-				struct : ofParameterGroup
-				{
-					ofParameter<int> fragments{ "Fragments", 1, 0, 10 };
-					ofParameter<float> minDistance{ "Min Distance", 0.0f, 0.0f, 1.0f };
-					ofParameter<float> maxDistance{ "Max Distance", 0.5f, 0.0f, 1.0f };
-
-					PARAM_DECLARE("BOSS", fragments, minDistance, maxDistance);
-				} boss;
-
-				struct : ofParameterGroup
-				{
-					ofParameter<int> fragments{ "Fragments ", 1, 0, 20 };
-					ofParameter<float> minDistance{ "Min Distance ", 0.0f, 0.0f, 1.0f };
-					ofParameter<float> maxDistance{ "Max Distance ", 0.5f, 0.0f, 1.0f };
-
-					PARAM_DECLARE("DES", fragments, minDistance, maxDistance);
-				} des;
-
-				PARAM_DECLARE("Survey", render, boss, des);
+				PARAM_DECLARE("Survey", render);
 			} parameters;
 		};
 	}

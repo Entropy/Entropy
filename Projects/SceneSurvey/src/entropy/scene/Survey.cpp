@@ -32,8 +32,12 @@ namespace entropy
 			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
 
 			// Load data.
-			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 10);
-			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
+			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 1);
+			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 2);
+
+			// Add DataSet parameters to the group (for serialization and ofxTimeline mappings).
+			this->parameters.add(this->dataSetBoss.parameters);
+			this->parameters.add(this->dataSetDes.parameters);
 
 			// Build the texture.
 			entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
@@ -152,15 +156,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Survey::serialize(nlohmann::json & json)
 		{
-			this->dataSetBoss.serialize(json);
-			this->dataSetDes.serialize(json);
+
 		}
 		
 		//--------------------------------------------------------------
 		void Survey::deserialize(const nlohmann::json & json)
 		{
-			this->dataSetBoss.deserialize(json);
-			this->dataSetDes.deserialize(json);
+
 		}
 	}
 }
