@@ -80,7 +80,7 @@ namespace entropy
 			static string assetsPathAbs;
 			if (assetsPathAbs.empty())
 			{
-				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentExeDir()) / assetsPath;
+				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / assetsPath;
 				assetsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return assetsPathAbs;
