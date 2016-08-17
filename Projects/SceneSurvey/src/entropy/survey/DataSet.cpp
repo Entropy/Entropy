@@ -6,7 +6,7 @@
 
 namespace entropy
 {
-	namespace darkness
+	namespace survey
 	{
 		//--------------------------------------------------------------
 		DataSet::DataSet()
@@ -24,6 +24,7 @@ namespace entropy
 		void DataSet::setup(const std::string & name, const std::string & format, size_t startIdx, size_t count)
 		{
 			this->parameters.setName(name);
+			this->parameters.fragments.setMax(count);
 
 			this->clear();
 
@@ -36,7 +37,6 @@ namespace entropy
 				char filename[256];
 				sprintf(filename, format.c_str(), (i + startIdx + 1));
 				const auto filePath = GetCurrentSceneAssetsPath(filename);
-
 				this->counts[i] = this->loadFragment(filePath, vertices, masses);
 			}
 

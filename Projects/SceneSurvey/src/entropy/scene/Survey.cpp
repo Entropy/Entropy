@@ -1,26 +1,26 @@
-#include "Darkness.h"
+#include "Survey.h"
 
-#include "entropy/darkness/GaussianMapTexture.h"
+#include "entropy/survey/GaussianMapTexture.h"
 
 namespace entropy
 {
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		Darkness::Darkness()
+		Survey::Survey()
 			: Base()
 		{
 			ENTROPY_SCENE_SETUP_LISTENER;
 		}
 		
 		//--------------------------------------------------------------
-		Darkness::~Darkness()
+		Survey::~Survey()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::setup()
+		void Survey::setup()
 		{
 			ENTROPY_SCENE_EXIT_LISTENER;
 			ENTROPY_SCENE_RESIZE_LISTENER;
@@ -36,42 +36,42 @@ namespace entropy
 			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
 
 			// Build the texture.
-			entropy::darkness::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
+			entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
 
 			// Load the shader.
 			this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
 			this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
-			this->spriteShader.bindAttribute(entropy::darkness::DataSet::MASS_ATTRIBUTE, "mass");
+			this->spriteShader.bindAttribute(entropy::survey::DataSet::MASS_ATTRIBUTE, "mass");
 			this->spriteShader.bindDefaults();
 			this->spriteShader.linkProgram();
 		}
 		
 		//--------------------------------------------------------------
-		void Darkness::exit()
+		void Survey::exit()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::resize(ofResizeEventArgs & args)
+		void Survey::resize(ofResizeEventArgs & args)
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::update(double & dt)
+		void Survey::update(double & dt)
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::drawBack()
+		void Survey::drawBack()
 		{
 
 		}
 		
 		//--------------------------------------------------------------
-		void Darkness::drawWorld()
+		void Survey::drawWorld()
 		{
 			glEnable(GL_POINT_SMOOTH);
 			glPointSize(this->parameters.render.pointSize);
@@ -130,13 +130,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::drawFront()
+		void Survey::drawFront()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::gui(ofxPreset::Gui::Settings & settings)
+		void Survey::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
@@ -150,14 +150,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Darkness::serialize(nlohmann::json & json)
+		void Survey::serialize(nlohmann::json & json)
 		{
 			this->dataSetBoss.serialize(json);
 			this->dataSetDes.serialize(json);
 		}
 		
 		//--------------------------------------------------------------
-		void Darkness::deserialize(const nlohmann::json & json)
+		void Survey::deserialize(const nlohmann::json & json)
 		{
 			this->dataSetBoss.deserialize(json);
 			this->dataSetDes.deserialize(json);

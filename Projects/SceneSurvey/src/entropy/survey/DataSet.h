@@ -5,7 +5,7 @@
 
 namespace entropy
 {
-	namespace darkness
+	namespace survey
 	{
 		class DataSet
 		{

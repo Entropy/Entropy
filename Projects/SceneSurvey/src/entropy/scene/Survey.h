@@ -1,23 +1,23 @@
 #pragma once
 
 #include "entropy/scene/Base.h"
-#include "entropy/darkness/DataSet.h"
+#include "entropy/survey/DataSet.h"
 
 namespace entropy
 {
 	namespace scene
 	{
-		class Darkness
+		class Survey
 			: public Base
 		{
 		public:
 			string getName() const override
 			{
-				return "entropy::scene::Darkness";
+				return "entropy::scene::Survey";
 			}
 
-			Darkness();
-			~Darkness();
+			Survey();
+			~Survey();
 
 			void setup();
 			void exit();
@@ -38,8 +38,8 @@ namespace entropy
 			ofShader spriteShader;
 			ofTexture texture;
 
-			entropy::darkness::DataSet dataSetBoss;
-			entropy::darkness::DataSet dataSetDes;
+			entropy::survey::DataSet dataSetBoss;
+			entropy::survey::DataSet dataSetDes;
 
 		protected:
 			BaseParameters & getParameters() override
@@ -76,7 +76,7 @@ namespace entropy
 					PARAM_DECLARE("DES", fragments, minDistance, maxDistance);
 				} des;
 
-				PARAM_DECLARE("Darkness", render, boss, des);
+				PARAM_DECLARE("Survey", render, boss, des);
 			} parameters;
 		};
 	}
