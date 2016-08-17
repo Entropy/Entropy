@@ -32,8 +32,6 @@ namespace entropy
 
 			this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("frag_tonemap.glsl"));
 
-			this->fogShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("fog_frag.glsl"));
-
 			// Set ofxWarp shader path.
 			auto warpShaderPath = GetSharedDataPath();
 			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("ofxWarp"));

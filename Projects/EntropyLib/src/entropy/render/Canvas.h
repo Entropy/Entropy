@@ -158,7 +158,6 @@ namespace entropy
 
 			GLuint defaultVao;
 
-			ofShader fogShader;
 			ofShader brightnessThresholdShader;
 			ofShader blurHorzShader;
 			ofShader blurVertShader;

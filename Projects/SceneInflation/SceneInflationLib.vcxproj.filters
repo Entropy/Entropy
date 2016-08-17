@@ -115,28 +115,10 @@
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\frag_blur.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\frag_bright.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\frag_tonemap.glsl">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\marching_cubes_geom.glsl">
       <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\normalShader.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\normalShader.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\passthrough_vert.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\vert_blur.glsl">
       <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\vert_full_quad.glsl">

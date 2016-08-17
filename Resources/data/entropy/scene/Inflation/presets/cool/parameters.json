@@ -1,18 +1,18 @@
 {
     "Camera": {
-        "aspectRatio": 1.80961358547211,
-        "distance": 1.60452556610107,
+        "aspectRatio": 1.6611111164093,
+        "distance": 1.3474326133728,
         "drag": 0.899999976158142,
-        "farClip": 100000.0,
+        "farClip": 6.0,
         "forceAspectRatio": true,
         "fov": 60.0,
         "lensOffset": "0, 0",
-        "mouseInputEnabled": false,
+        "mouseInputEnabled": true,
         "mouseMiddleButtonEnabled": true,
-        "nearClip": 0.100000001490116,
+        "nearClip": 0.00999999977648258,
         "ortho": false,
         "target": "0, 0, 0",
-        "transform": "0.807622, -2.83122e-07,  -0.5897,        0\n-0.425231, 0.692834, -0.582374,        0\n0.408564, 0.721097, 0.559548,        0\n0.655552,  1.15702, 0.897809,        1",
+        "transform": "0.581275, -0.796737, 0.165131,        0\n0.512662, 0.516231, 0.686012,        0\n-0.631851, -0.314079, 0.708573,        0\n-0.851372, -0.423477, 0.954677,        1",
         "translationKey": 109
     },
     "Inflation": {
@@ -33,18 +33,18 @@
     },
     "Marching Cubes": {
         "Fill": "1",
-        "Fill alpha": "0.366",
+        "Fill alpha": "0.206",
         "Fog enabled": "1",
-        "Fog max dist.": "2.271",
-        "Fog min dist.": "0.077",
-        "Fog power": "4.073",
+        "Fog max dist.": "1.816",
+        "Fog min dist.": "0.258",
+        "Fog power": "10",
         "Resolution": "256",
-        "Shade Normals": "1",
+        "Shade Normals": "0",
         "Wireframe": "1",
-        "Wireframe alpha": "0.119"
+        "Wireframe alpha": "0.021"
     },
     "Noise Field": {
-        "Fade At": "0.263",
+        "Fade At": "1",
         "Fill Edges": "0",
         "Noise Speed": "5",
         "Norm. Factor": "1.181",
@@ -84,7 +84,7 @@
             "Radius 3": "0.005",
             "Wavelength 3": "8.577"
         },
-        "Spherical Clip": "0"
+        "Spherical Clip": "1"
     },
     "Pop-Ups": null
 }

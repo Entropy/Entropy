@@ -186,7 +186,7 @@ void main()
             float edge = 1.0 - fade;
             float curveStart = int(distance+edge);
             float fadeOut = clamp((1 - (distance - fade) / edge), 0, 1);
-            sphere = 1.0 - curveStart + curveStart * fadeOut * fadeOut;
+            sphere = clamp(1.0 - curveStart + curveStart * fadeOut * fadeOut, 0, 1);
         }
 
         for(int i=0;i<NUM_OCTAVES;i++){
