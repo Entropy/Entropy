@@ -81,8 +81,8 @@ namespace entropy
 			{
 				ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
 				ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
-				ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
-				ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
+				ofParameter<int> numRows{ "Num Rows", 1, 1, 5 };
+				ofParameter<int> numCols{ "Num Cols", 1, 1, 5 };
 
 				PARAM_DECLARE("Configuration", screenWidth, screenHeight, numRows, numCols);
 			};
