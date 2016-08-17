@@ -18,20 +18,24 @@ namespace entropy
 			Example();
 			~Example();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void exit() override;
+			void resize(ofResizeEventArgs & args) override;
 
-			void update(double & dt);
+			void update(double dt) override;
 
-			void drawBack();
-			void drawWorld();
-			void drawFront();
+			void drawBackBase() override;
+			void drawBackWorld() override;
+			void drawBackOverlay() override;
 
-			void gui(ofxPreset::Gui::Settings & settings);
+			void drawFrontBase() override;
+			void drawFrontWorld() override;
+			void drawFrontOverlay() override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
+
+			void serialize(nlohmann::json & json) override;
+			void deserialize(const nlohmann::json & json) override;
 
 		protected:
 			ofBoxPrimitive sphere;

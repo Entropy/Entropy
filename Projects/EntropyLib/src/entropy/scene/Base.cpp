@@ -9,12 +9,6 @@ namespace entropy
 		static const string kPresetDefaultName = "_default";
 
 		//--------------------------------------------------------------
-		ofEasyCam & Base::getCamera()
-		{
-			return this->camera;
-		}
-
-		//--------------------------------------------------------------
 		Base::Base()
 			: cameraTrack(nullptr)
 		{}
@@ -33,7 +27,7 @@ namespace entropy
 			this->resetCamera();
 
 			// Setup child Scene.
-			this->onSetup.notify();
+			this->setup();
 
 			// List presets.
 			this->populatePresets();
@@ -55,7 +49,7 @@ namespace entropy
 			const auto trackName = "Camera";
 			const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
 			this->cameraTrack = new ofxTLCameraTrack();
-			this->cameraTrack->setCamera(this->getCamera());
+			this->cameraTrack->setCamera(this->cameraBack);
 			this->cameraTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
 			this->timeline.addTrack(trackIdentifier, this->cameraTrack);
 			this->cameraTrack->setDisplayName(trackName);
@@ -72,7 +66,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::exit_()
 		{
-			this->onExit.notify();
+			this->exit();
 
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
@@ -81,9 +75,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize_(ofResizeEventArgs & args)
 		{
-			this->getCamera().setAspectRatio(args.width / static_cast<float>(args.height));
+			this->cameraBack.setAspectRatio(args.width / static_cast<float>(args.height));
 
-			this->onResize.notify(args);
+			this->resize(args);
 		}
 
 		//--------------------------------------------------------------
@@ -91,11 +85,11 @@ namespace entropy
 		{
 			if (GetApp()->isMouseOverGui())
 			{
-				this->camera.disableMouseInput();
+				this->cameraBack.disableMouseInput();
 			}
 			else
 			{
-				this->camera.enableMouseInput();
+				this->cameraBack.enableMouseInput();
 			}
 
 			for (auto & it : this->mappings)
@@ -108,33 +102,62 @@ namespace entropy
 				popUp->update_(dt);
 			}
 
-			this->onUpdate.notify(dt);
+			this->update(dt);
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawBack_()
+		void Base::drawBackBase_()
 		{
 			ofBackground(this->getParameters().base.background.get());
 
-			this->onDrawBack.notify();
+			this->drawBackBase();
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawWorld_()
+		void Base::drawBackWorld_()
 		{
-			this->getCamera().begin(GetCanvasViewport());
+			this->cameraBack.begin(GetCanvasBackViewport());
 			ofEnableDepthTest();
 			{
-				this->onDrawWorld.notify();
+				this->drawBackWorld();
 			}
 			ofDisableDepthTest();
-			this->getCamera().end();
+			this->cameraBack.end();
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawFront_()
+		void Base::drawBackOverlay_()
 		{
-			this->onDrawFront.notify();
+			this->drawBackOverlay();
+
+			//for (auto popUp : this->popUps)
+			//{
+			//	popUp->draw_();
+			//}
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawFrontBase_()
+		{
+			this->drawFrontBase();
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawFrontWorld_()
+		{
+			this->cameraFront.begin(GetCanvasFrontViewport());
+			ofEnableDepthTest();
+			{
+				this->drawFrontWorld();
+			}
+			ofDisableDepthTest();
+			this->cameraFront.end();
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawFrontOverlay_()
+		{
+			this->drawFrontOverlay();
 
 			for (auto popUp : this->popUps)
 			{
@@ -263,38 +286,50 @@ namespace entropy
 				settings.mouseOverGui |= popUpSettings.mouseOverGui;
 			}
 
-			if (this->onGuiListeners.size())
+			// Add a GUI window for the Base parameters.
+			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 			{
-				// Add a GUI window for the Base parameters.
-				ofxPreset::Gui::SetNextWindow(settings);
-				if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
+				ofxPreset::Gui::AddParameter(parameters.base.background);
+				
+				if (ImGui::CollapsingHeader(parameters.base.camera.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.background);
+					if (ofxPreset::Gui::AddParameter(parameters.base.camera.relativeYAxis))
+					{
+						this->cameraBack.setRelativeYAxis(parameters.base.camera.relativeYAxis);
+						this->cameraFront.setRelativeYAxis(parameters.base.camera.relativeYAxis);
+					}
+					if (ofxPreset::Gui::AddParameter(parameters.base.camera.attachFrontToBack))
+					{
+						if (parameters.base.camera.attachFrontToBack)
+						{
+							this->cameraFront.clearParent();
+						}
+						else
+						{
+							this->cameraFront.setParent(this->cameraBack);
+						}
+					}
 					if (ImGui::Button("Reset Camera"))
 					{
 						this->resetCamera();
 					}
 				}
-				ofxPreset::Gui::EndWindow(settings);
+			}
+			ofxPreset::Gui::EndWindow(settings);
 
-				// Let the child class handle its child parameters.
-				this->onGui.notify(settings);
-			}
-			else
-			{
-				// Build a default GUI for all parameters.
-				ofxPreset::Gui::SetNextWindow(settings);
-				ofxPreset::Gui::AddGroup(parameters, settings);
-			}
+			// Let the child class handle its child parameters.
+			this->gui(settings);
 		}
 
 		//--------------------------------------------------------------
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
-			ofxPreset::Serializer::Serialize(json, this->getCamera(), "Camera");
+			ofxPreset::Serializer::Serialize(json, this->cameraBack, "Camera Back");
+			ofxPreset::Serializer::Serialize(json, this->cameraFront, "Camera Front");
 
-			this->onSerialize.notify(json);
+			this->serialize(json);
 
 			auto & jsonMappings = json["Mappings"];
 			for (auto & it : this->mappings)
@@ -315,12 +350,13 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			if (json.count("Camera"))
+			if (json.count("Camera Back"))
 			{
-				ofxPreset::Serializer::Deserialize(json, this->getCamera(), "Camera");
+				ofxPreset::Serializer::Deserialize(json, this->cameraBack, "Camera Back");
+				ofxPreset::Serializer::Deserialize(json, this->cameraFront, "Camera Back");
 			}
 
-			this->onDeserialize.notify(json);
+			this->deserialize(json);
 
 			for (auto & it : this->mappings)
 			{
@@ -594,14 +630,27 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resetCamera()
 		{
+			auto & parameters = this->getParameters();
+			
 			//this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
 			//this->camera.setVFlip(false);
-			this->camera.setNearClip(0.1f);
-			this->camera.setFarClip(100000.0f);
-			this->camera.setFov(60.0f);
-			this->camera.setAspectRatio(GetCanvasWidth() / GetCanvasHeight());
-			this->camera.setRelativeYAxis(true);
-			this->camera.reset();
+			this->cameraBack.setNearClip(0.1f);
+			this->cameraBack.setFarClip(100000.0f);
+			this->cameraBack.setFov(60.0f);
+			this->cameraBack.setAspectRatio(GetCanvasBackWidth() / GetCanvasBackHeight());
+			this->cameraBack.setRelativeYAxis(parameters.base.camera.relativeYAxis);
+			this->cameraBack.reset();
+
+			this->cameraFront.setNearClip(0.1f);
+			this->cameraFront.setFarClip(100000.0f);
+			this->cameraFront.setFov(60.0f);
+			this->cameraFront.setAspectRatio(GetCanvasFrontWidth() / GetCanvasFrontHeight());
+			this->cameraFront.setRelativeYAxis(parameters.base.camera.relativeYAxis);
+			this->cameraFront.reset();
+			if (parameters.base.camera.attachFrontToBack)
+			{
+				this->cameraFront.setParent(this->cameraBack);
+			}
 		}
 
 		//--------------------------------------------------------------

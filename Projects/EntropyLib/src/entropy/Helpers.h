@@ -20,27 +20,51 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline shared_ptr<entropy::render::Canvas> GetCanvas()
+	inline shared_ptr<entropy::render::Canvas> GetCanvasBack()
 	{
-		return GetApp()->getCanvas();
+		return GetApp()->getCanvasBack();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasWidth()
+	inline float GetCanvasBackWidth()
 	{
-		return GetCanvas()->getWidth();
+		return GetCanvasBack()->getWidth();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasHeight()
+	inline float GetCanvasBackHeight()
 	{
-		return GetCanvas()->getHeight();
+		return GetCanvasBack()->getHeight();
 	}
 
 	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasViewport()
+	inline const ofRectangle & GetCanvasBackViewport()
 	{
-		return GetCanvas()->getViewport();
+		return GetCanvasBack()->getViewport();
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<entropy::render::Canvas> GetCanvasFront()
+	{
+		return GetApp()->getCanvasFront();
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasFrontWidth()
+	{
+		return GetCanvasFront()->getWidth();
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasFrontHeight()
+	{
+		return GetCanvasFront()->getHeight();
+	}
+
+	//--------------------------------------------------------------
+	inline const ofRectangle & GetCanvasFrontViewport()
+	{
+		return GetCanvasFront()->getViewport();
 	}
 
 	//--------------------------------------------------------------

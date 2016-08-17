@@ -56,7 +56,6 @@ namespace entropy
 		{
 		public:
 			virtual string getName() const = 0;
-			virtual ofEasyCam & getCamera();
 
 			Base();
 			virtual ~Base();
@@ -68,14 +67,38 @@ namespace entropy
 
 			void update_(double dt);
 
-			void drawBack_();
-			void drawWorld_();
-			void drawFront_();
+			void drawBackBase_();
+			void drawBackWorld_();
+			void drawBackOverlay_();
+
+			void drawFrontBase_();
+			void drawFrontWorld_();
+			void drawFrontOverlay_();
 
 			void gui_(ofxPreset::Gui::Settings & settings);
 
 			void serialize_(nlohmann::json & json);
 			void deserialize_(const nlohmann::json & json);
+
+			// Override methods
+			virtual void setup() {}
+			virtual void exit() {}
+			virtual void resize(ofResizeEventArgs & args) {}
+
+			virtual void update(double dt) {}
+
+			virtual void drawBackBase() {}
+			virtual void drawBackWorld() {}
+			virtual void drawBackOverlay() {}
+
+			virtual void drawFrontBase() {}
+			virtual void drawFrontWorld() {}
+			virtual void drawFrontOverlay() {}
+
+			virtual void gui(ofxPreset::Gui::Settings & settings) {}
+
+			virtual void serialize(nlohmann::json & json) {}
+			virtual void deserialize(const nlohmann::json & json) {}
 
 			// Resources
 			string getAssetsPath(const string & file = "");
@@ -107,36 +130,11 @@ namespace entropy
 			void endExport();
 
 		protected:
-			// Events
-			ofEvent<void> onSetup;
-			ofEvent<void> onExit;
-			ofEvent<ofResizeEventArgs> onResize;
+			// Camera
+			virtual void resetCamera();
 
-			ofEvent<double> onUpdate;
-
-			ofEvent<void> onDrawBack;
-			ofEvent<void> onDrawWorld;
-			ofEvent<void> onDrawFront;
-
-			ofEvent<ofxPreset::Gui::Settings> onGui;
-
-			ofEvent<nlohmann::json> onSerialize;
-			ofEvent<const nlohmann::json> onDeserialize;
-
-			vector<ofEventListener> onSetupListeners;
-			vector<ofEventListener> onExitListeners;
-			vector<ofEventListener> onResizeListeners;
-
-			vector<ofEventListener> onUpdateListeners;
-
-			vector<ofEventListener> onDrawBackListeners;
-			vector<ofEventListener> onDrawWorldListeners;
-			vector<ofEventListener> onDrawFrontListeners;
-
-			vector<ofEventListener> onGuiListeners;
-
-			vector<ofEventListener> onSerializeListeners;
-			vector<ofEventListener> onDeserializeListeners;
+			ofEasyCam cameraBack;
+			ofEasyCam cameraFront;
 
 			// Resources
 			void populatePresets();
@@ -153,8 +151,15 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+					struct : ofParameterGroup
+					{
+						ofParameter<bool> relativeYAxis{ "Relative Y Axis", true };
+						ofParameter<bool> attachFrontToBack{ "Attach Front to Back", true };
 
-					PARAM_DECLARE("Base", background);
+						PARAM_DECLARE("Camera", relativeYAxis, attachFrontToBack);
+					} camera;
+
+					PARAM_DECLARE("Base", background, camera);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);
@@ -177,11 +182,6 @@ namespace entropy
 			// Timeline
 			void populateMappings(const ofParameterGroup & group, string name = "");
 			void refreshMappings();
-
-			// Camera
-			void resetCamera();
-
-			ofEasyCam camera;
 		};
 	}
 }

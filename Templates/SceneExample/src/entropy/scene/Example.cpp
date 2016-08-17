@@ -9,29 +9,16 @@ namespace entropy
 		//--------------------------------------------------------------
 		Example::Example()
 			: Base()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 		
 		//--------------------------------------------------------------
 		Example::~Example()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
 		// Set up your crap here!
 		void Example::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
-			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			ofEnableLighting();
 		}
 		
@@ -39,7 +26,7 @@ namespace entropy
 		// Clean up your crap here!
 		void Example::exit()
 		{
-
+			
 		}
 
 		//--------------------------------------------------------------
@@ -52,7 +39,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void Example::update(double & dt)
+		void Example::update(double dt)
 		{
 			if (this->sphere.getSize().x != this->parameters.sphere.radius || this->sphere.getResolution().x != this->parameters.sphere.resolution)
 			{
@@ -63,14 +50,14 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void Example::drawBack()
+		void Example::drawBackBase()
 		{
 
 		}
 		
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Example::drawWorld()
+		void Example::drawBackWorld()
 		{
 			ofPushStyle();
 			{
@@ -98,17 +85,70 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
-		void Example::drawFront()
+		void Example::drawBackOverlay()
 		{
-			static const float kBorderSize = 20.0f;
+			//static const float kBorderSize = 20.0f;
+			//ofSetColor(255, 0, 0, 128);
+			//ofDrawRectangle(0.0f, 0.0f, GetCanvasWidth(), kBorderSize);
+			//ofSetColor(0, 255, 0, 128);
+			//ofDrawRectangle(0.0f, GetCanvasHeight() - kBorderSize, GetCanvasWidth(), kBorderSize);
+			//ofSetColor(0, 0, 255, 128);
+			//ofDrawRectangle(0.0f, 0.0f, kBorderSize, GetCanvasHeight());
+			//ofSetColor(0, 255, 255, 128);
+			//ofDrawRectangle(GetCanvasWidth() - kBorderSize, 0.0f, kBorderSize, GetCanvasHeight());
+		}
+
+		//--------------------------------------------------------------
+		// Draw 2D elements in the background here.
+		void Example::drawFrontBase()
+		{
+
+		}
+
+		//--------------------------------------------------------------
+		// Draw 3D elements here.
+		void Example::drawFrontWorld()
+		{
+			//ofPushStyle();
+			//{
+			//	ofEnableDepthTest();
+			//	material.setDiffuseColor(this->parameters.sphere.color);
+			//	light.enable();
+			//	glEnable(GL_CULL_FACE);
+			//	ofSetColor(this->parameters.sphere.color.get());
+			//	material.begin();
+			//	if (this->parameters.sphere.filled)
+			//	{
+			//		this->sphere.draw(OF_MESH_FILL);
+			//	}
+			//	else
+			//	{
+			//		this->sphere.draw(OF_MESH_WIREFRAME);
+			//	}
+			//	glDisable(GL_CULL_FACE);
+			//	material.end();
+			//	light.disable();
+			//	ofDisableDepthTest();
+			//}
+			//ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		// Draw 2D elements in the foreground here.
+		void Example::drawFrontOverlay()
+		{
+			static const auto kBorderSize = 20.0f;
+			const auto canvasWidth = GetCanvasFrontWidth();
+			const auto canvasHeight = GetCanvasFrontHeight();
+
 			ofSetColor(255, 0, 0, 128);
-			ofDrawRectangle(0.0f, 0.0f, GetCanvasWidth(), kBorderSize);
+			ofDrawRectangle(0.0f, 0.0f, canvasWidth, kBorderSize);
 			ofSetColor(0, 255, 0, 128);
-			ofDrawRectangle(0.0f, GetCanvasHeight() - kBorderSize, GetCanvasWidth(), kBorderSize);
+			ofDrawRectangle(0.0f, canvasHeight - kBorderSize, canvasWidth, kBorderSize);
 			ofSetColor(0, 0, 255, 128);
-			ofDrawRectangle(0.0f, 0.0f, kBorderSize, GetCanvasHeight());
+			ofDrawRectangle(0.0f, 0.0f, kBorderSize, canvasHeight);
 			ofSetColor(0, 255, 255, 128);
-			ofDrawRectangle(GetCanvasWidth() - kBorderSize, 0.0f, kBorderSize, GetCanvasHeight());
+			ofDrawRectangle(canvasWidth - kBorderSize, 0.0f, kBorderSize, canvasHeight);
 		}
 
 		//--------------------------------------------------------------

@@ -7,9 +7,11 @@ namespace entropy
 	namespace render
 	{
 		//--------------------------------------------------------------
-		Canvas::Canvas()
+		Canvas::Canvas(const string & name)
 			: exportFrames(false)
 		{
+			this->parameters.setName(name);
+			
 			// Load post-processing shaders.
 			this->brightnessThresholdShader.load(this->getShaderPath("passthrough_vert.glsl"), this->getShaderPath("brightnessThreshold.frag"));
 
@@ -55,7 +57,7 @@ namespace entropy
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-				//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+				//this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
@@ -314,39 +316,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		float Canvas::getScreenWidth() const
-		{
-			return (this->parameters.configuration.screenWidth * this->parameters.configuration.numCols);
-		}
-
-		//--------------------------------------------------------------
-		float Canvas::getScreenHeight() const
-		{
-			return (this->parameters.configuration.screenHeight * this->parameters.configuration.numRows);
-		}
-
-		//--------------------------------------------------------------
-		void Canvas::updateConfiguration()
-		{
-			if (this->parameters.configuration.screenWidth == this->editingConfig.screenWidth &&
-				this->parameters.configuration.screenHeight == this->editingConfig.screenHeight &&
-				this->parameters.configuration.numCols == this->editingConfig.numCols &&
-				this->parameters.configuration.numRows == this->editingConfig.numRows)
-			{
-				return;
-			}
-
-			this->parameters.configuration.screenWidth = this->editingConfig.screenWidth;
-			this->parameters.configuration.screenHeight = this->editingConfig.screenHeight;
-			this->parameters.configuration.numCols = this->editingConfig.numCols;
-			this->parameters.configuration.numRows = this->editingConfig.numRows;
-
-			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
-			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
-			this->updateSize();
-		}
-
-		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
 			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
@@ -464,7 +433,7 @@ namespace entropy
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = this->getWidth() / static_cast<float>(numWarps);
+				const auto areaWidth = this->screenWidth / static_cast<float>(numWarps);
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
@@ -477,7 +446,7 @@ namespace entropy
 				//cout << "Stitches: Total is " << this->getScreenWidth() << " with overlap " << totalOverlap;
 
 				// Adjust the fbo width.
-				this->setWidth(this->getScreenWidth() - totalOverlap);
+				this->setWidth(this->screenWidth - totalOverlap);
 
 				//cout << " to new size " << this->getWidth() << endl;
 
@@ -514,7 +483,7 @@ namespace entropy
 		void Canvas::drawGui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Canvas", settings))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings))
 			{
 				if (ImGui::Button("Save"))
 				{
@@ -524,18 +493,6 @@ namespace entropy
 				if (ImGui::Button("Load"))
 				{
 					this->loadSettings();
-				}
-
-				if (ImGui::CollapsingHeader(this->editingConfig.getName().c_str(), nullptr, true, true))
-				{
-					ofxPreset::Gui::AddParameter(this->editingConfig.screenWidth);
-					ofxPreset::Gui::AddParameter(this->editingConfig.screenHeight);
-					ofxPreset::Gui::AddParameter(this->editingConfig.numRows);
-					ofxPreset::Gui::AddParameter(this->editingConfig.numCols);
-					if (ImGui::Button("Apply"))
-					{
-						this->updateConfiguration();
-					}
 				}
 
 				ofxPreset::Gui::AddGroup(this->parameters.bloom, settings);
@@ -799,13 +756,13 @@ namespace entropy
 									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeLeft))
 									{
 										// Set current left edge.
-										auto & edgesSelf = warp->getEdges();
+										auto edgesSelf = warp->getEdges();
 										edgesSelf.x = paramGroup.blend.edgeLeft;
 										warp->setEdges(edgesSelf);
 
 										// Set previous right edge.
 										auto warpPrev = this->warps[i - 1];
-										auto & edgesPrev = warpPrev->getEdges();
+										auto edgesPrev = warpPrev->getEdges();
 										edgesPrev.z = paramGroup.blend.edgeLeft;
 										warpPrev->setEdges(edgesPrev);
 
@@ -817,13 +774,13 @@ namespace entropy
 									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeRight))
 									{
 										// Set current right edge.
-										auto & edges = warp->getEdges();
+										auto edges = warp->getEdges();
 										edges.z = paramGroup.blend.edgeRight;
 										warp->setEdges(edges);
 
 										// Set next left edge.
 										auto warpNext = this->warps[i + 1];
-										auto & edgeNext = warpNext->getEdges();
+										auto edgeNext = warpNext->getEdges();
 										edgeNext.x = paramGroup.blend.edgeRight;
 										warpNext->setEdges(edgeNext);
 
@@ -909,16 +866,6 @@ namespace entropy
 
 			// Deserialize the parameters.
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
-
-			// Sync the configuration parameters and update the Canvas size.
-			this->editingConfig.screenWidth = this->parameters.configuration.screenWidth;
-			this->editingConfig.screenHeight = this->parameters.configuration.screenHeight;
-			this->editingConfig.numCols = this->parameters.configuration.numCols;
-			this->editingConfig.numRows = this->parameters.configuration.numRows;
-
-			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
-			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
-			this->updateSize();
 		}
 
 		//--------------------------------------------------------------
@@ -970,7 +917,7 @@ namespace entropy
 			auto file = ofFile(filePath, ofFile::ReadOnly);
 			if (!file.exists())
 			{
-				ofLogWarning("Warp::loadSettings") << "File not found at path " << filePath;
+				ofLogWarning(__FUNCTION__) << "File not found at path " << filePath;
 				return false;
 			}
 
@@ -1133,10 +1080,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::windowResized(ofResizeEventArgs & args)
+		void Canvas::screenResized(ofResizeEventArgs & args)
 		{
 			// Update viewport.
 			//this->viewport = ofRectangle(0.0f, 0.0f, args.width, args.height);
+
+			this->screenWidth = args.width;
+			this->screenHeight = args.height;
 			
 			if (this->parameters.fillWindow)
 			{

@@ -133,13 +133,24 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::drawScene()
+		void Manager::drawSceneBack()
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->drawBack_();
-				this->currentScene->drawWorld_();
-				this->currentScene->drawFront_();
+				this->currentScene->drawBackBase_();
+				this->currentScene->drawBackWorld_();
+				this->currentScene->drawBackOverlay_();
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Manager::drawSceneFront()
+		{
+			if (this->currentScene)
+			{
+				this->currentScene->drawFrontBase_();
+				this->currentScene->drawFrontWorld_();
+				this->currentScene->drawFrontOverlay_();
 			}
 		}
 

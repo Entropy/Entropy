@@ -26,6 +26,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		Layout Base::getLayout()
+		{
+			return static_cast<Layout>(this->getParameters().base.layout.get());
+		}
+
+		//--------------------------------------------------------------
 		void Base::setup_(int index)
 		{
 			this->index = index;
@@ -208,6 +214,8 @@ namespace entropy
 					// Add sections for the base parameters.
 					if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
 					{
+						static vector<string> labels{ "Back", "Front" };
+						ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2);
 						ofxPreset::Gui::AddParameter(parameters.base.background);
 						if (ofxPreset::Gui::AddParameter(parameters.base.size))
 						{
@@ -320,8 +328,19 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::updateBounds()
 		{
-			const auto canvasSize = glm::vec2(GetCanvasWidth(), GetCanvasHeight());
-			this->viewport.setFromCenter(canvasSize * this->getParameters().base.center.get(), canvasSize.x * this->getParameters().base.size->x, canvasSize.y * this->getParameters().base.size->y);
+			auto & parameters = this->getParameters();
+
+			glm::vec2 canvasSize;
+			const auto layout = static_cast<Layout>(parameters.base.layout.get());
+			if (layout == Layout::Back)
+			{
+				canvasSize = glm::vec2(GetCanvasBackWidth(), GetCanvasBackHeight());
+			}
+			else
+			{
+				canvasSize = glm::vec2(GetCanvasFrontWidth(), GetCanvasFrontHeight());
+			}
+			this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), canvasSize.x * parameters.base.size->x, canvasSize.y * parameters.base.size->y);
 			
 			if (this->isLoaded())
 			{

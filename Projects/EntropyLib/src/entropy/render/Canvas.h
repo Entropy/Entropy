@@ -13,7 +13,7 @@ namespace entropy
 		class Canvas
 		{
 		public:
-			Canvas();
+			Canvas(const string & name);
 			~Canvas();
 
 			void update();
@@ -61,32 +61,17 @@ namespace entropy
 
 			bool keyPressed(ofKeyEventArgs & args);
 
-			void windowResized(ofResizeEventArgs & args);
+			void screenResized(ofResizeEventArgs & args);
 			
 			ofEvent<ofResizeEventArgs> resizeEvent;
 
 			static const int MAX_NUM_WARPS = 8;
 
 		protected:
-			float getScreenWidth() const;
-			float getScreenHeight() const; 
-			
-			void updateConfiguration();
 			void updateSize();
 			void updateStitches();
 
 		protected:
-			struct ConfigParameters
-				: ofParameterGroup
-			{
-				ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
-				ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
-				ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
-				ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
-
-				PARAM_DECLARE("Configuration", screenWidth, screenHeight, numRows, numCols);
-			};
-
 			struct WarpParameters
 				: ofParameterGroup
 			{
@@ -117,8 +102,6 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ConfigParameters configuration;
-				
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> enabled{ "Enabled", true };
@@ -143,13 +126,11 @@ namespace entropy
 
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Parameters", configuration, bloom, color, fillWindow);
+				PARAM_DECLARE("Canvas", bloom, color, fillWindow);
 			} parameters;
 
-			ConfigParameters editingConfig;
-
 			ofRectangle viewport;
-
+			
 			ofFbo fboDraw;
 			ofFbo fboPost;
 			ofFbo fboTemp[2];
@@ -165,6 +146,9 @@ namespace entropy
 			bool exportFrames;
 			ofxTextureRecorder textureRecorder;
 
+			float screenWidth;
+			float screenHeight;
+			
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
 			size_t focusedIndex;
 

@@ -55,16 +55,22 @@ namespace entropy
 			Mix,
 			Wipe,
 			Strobe
-		}; 
+		};
+
+		enum class Layout
+		{
+			Back,
+			Front
+		};
 		
 		class Base
 		{
 		public:
-
 			Base(Type type = Type::Unknown);
 			virtual ~Base();
 
 			Type getType() const;
+			Layout getLayout();
 
 			// Base methods
 			void setup_(int index);
@@ -146,11 +152,12 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
+					ofParameter<int> layout{ "Layout", static_cast<int>(Layout::Front), static_cast<int>(Layout::Back), static_cast<int>(Layout::Front) };
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 					ofParameter<glm::vec2> size{ "Size", glm::vec2(0.1f), glm::vec2(0.0f), glm::vec2(1.0f) };
 					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 
-					PARAM_DECLARE("Base", background, size, center);
+					PARAM_DECLARE("Base", layout, background, size, center);
 				} base;
 
 				struct : ofParameterGroup

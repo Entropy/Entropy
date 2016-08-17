@@ -30,7 +30,8 @@ namespace entropy
 
 			void update(double dt);
 
-			void drawScene();
+			void drawSceneBack();
+			void drawSceneFront();
 			void drawGui(ofxPreset::Gui::Settings & settings);
 			void drawOverlay(ofxPreset::Gui::Settings & settings);
 
