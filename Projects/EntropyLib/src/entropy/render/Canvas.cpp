@@ -55,7 +55,7 @@ namespace entropy
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-			//	this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+				//this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
@@ -359,12 +359,12 @@ namespace entropy
 			this->fboDraw.getTexture().texData.bFlipTexture = true;
 
 			this->fboPost.allocate(this->fboSettings);
-			this->fboPost.getTexture().texData.bFlipTexture = true;
+			//this->fboPost.getTexture().texData.bFlipTexture = true;
 
 			for (int i = 0; i < 2; ++i)
 			{
 				this->fboTemp[i].allocate(this->fboSettings);
-				this->fboTemp[i].getTexture().texData.bFlipTexture = true;
+				//this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
 
 			// Update viewport.
