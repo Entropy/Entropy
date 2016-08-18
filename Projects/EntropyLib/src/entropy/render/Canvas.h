@@ -6,6 +6,8 @@
 #include "ofxTextureRecorder.h"
 #include "ofxWarp.h"
 
+#include "Layout.h"
+
 namespace entropy
 {
 	namespace render
@@ -13,7 +15,7 @@ namespace entropy
 		class Canvas
 		{
 		public:
-			Canvas(const string & name);
+			Canvas(Layout layout);
 			~Canvas();
 
 			void update();
@@ -45,6 +47,8 @@ namespace entropy
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
+
+			Layout getLayout() const;
 
 			const string & getDataPath();
 			string getSettingsFilePath();
@@ -129,7 +133,7 @@ namespace entropy
 				PARAM_DECLARE("Canvas", bloom, color, fillWindow);
 			} parameters;
 
-			string name;
+			Layout layout;
 
 			ofRectangle viewport;
 			

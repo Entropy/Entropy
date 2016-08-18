@@ -10,7 +10,6 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		Base::Base()
-			: cameraTrack(nullptr)
 		{}
 
 		//--------------------------------------------------------------
@@ -47,14 +46,18 @@ namespace entropy
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(this->getParameters().base.getName());
 
-			const auto trackName = "Camera";
-			const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
-			this->cameraTrack = new ofxTLCameraTrack();
-			this->cameraTrack->setCamera(this->cameras[render::Layout::Back]);
-			this->cameraTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
-			this->timeline.addTrack(trackIdentifier, this->cameraTrack);
-			this->cameraTrack->setDisplayName(trackName);
-			this->cameraTrack->lockCameraToTrack = false;
+			for (auto & it : this->cameras)
+			{
+				const auto trackName = ((it.first == render::Layout::Back) ? "Camera Back" : "Camera Front");
+				const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
+				auto track = new ofxTLCameraTrack();
+				track->setCamera(it.second);
+				track->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
+				this->timeline.addTrack(trackIdentifier, track);
+				track->setDisplayName(trackName);
+				track->lockCameraToTrack = false;
+				this->cameraTracks[it.first] = track;
+			}
 
 			auto & parameters = this->getParameters();
 
@@ -93,6 +96,14 @@ namespace entropy
 
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
+
+			// Clear camera tracks.
+			for (auto & it : this->cameraTracks)
+			{
+				this->timeline.removeTrack(it.second);
+				delete it.second;
+			}
+			this->cameraTracks.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -719,33 +730,41 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setCameraLocked(bool cameraLocked)
 		{
-			this->cameraTrack->lockCameraToTrack = cameraLocked;
+			for (auto & it : this->cameraTracks)
+			{
+				it.second->lockCameraToTrack = cameraLocked;
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Base::toggleCameraLocked()
 		{
-			this->cameraTrack->lockCameraToTrack ^= 1;
+			for (auto & it : this->cameraTracks)
+			{
+				it.second->lockCameraToTrack ^= 1;
+			}
 		}
 
 		//--------------------------------------------------------------
 		bool Base::isCameraLocked() const
 		{
-			return this->cameraTrack->lockCameraToTrack;
+			return this->cameraTracks.at(render::Layout::Back)->lockCameraToTrack;
 		}
 
 		//--------------------------------------------------------------
-		void Base::addCameraKeyframe()
+		void Base::addCameraKeyframe(render::Layout layout)
 		{
-			this->cameraTrack->addKeyframe();
+			this->cameraTracks[layout]->addKeyframe();
 		}
 
 		//--------------------------------------------------------------
 		void Base::beginExport()
 		{
 			this->timeline.setFrameBased(true);
-			this->cameraTrack->setTimelineInOutToTrack();
-			this->cameraTrack->lockCameraToTrack = true;
+			for (auto & it : this->cameraTracks)
+			{
+				it.second->lockCameraToTrack = true;
+			}
 			this->timeline.setCurrentTimeToInPoint();
 			this->timeline.play();
 		}
@@ -755,8 +774,10 @@ namespace entropy
 		{
 			this->timeline.stop();
 			this->timeline.setFrameBased(false);
-			this->timeline.setInOutRange(ofRange(0, 1));
-			this->cameraTrack->lockCameraToTrack = false;
+			for (auto & it : this->cameraTracks)
+			{
+				it.second->lockCameraToTrack = false;
+			}
 		}
 	}
 }

@@ -7,11 +7,11 @@ namespace entropy
 	namespace render
 	{
 		//--------------------------------------------------------------
-		Canvas::Canvas(const string & name)
-			: name(name)
+		Canvas::Canvas(Layout layout)
+			: layout(layout)
 			, exportFrames(false)
 		{
-			this->parameters.setName("Canvas " + name);
+			this->parameters.setName((layout == Layout::Back) ? "Canvas Back" : "Canvas Front");
 			
 			// Load post-processing shaders.
 			this->brightnessThresholdShader.load(this->getShaderPath("passthrough_vert.glsl"), this->getShaderPath("brightnessThreshold.frag"));
@@ -875,6 +875,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		Layout Canvas::getLayout() const
+		{
+			return this->layout;
+		}
+
+		//--------------------------------------------------------------
 		const string & Canvas::getDataPath()
 		{
 			static string dataPath;
@@ -892,7 +898,7 @@ namespace entropy
 		string Canvas::getSettingsFilePath()
 		{
 			auto filePath = this->getDataPath();
-			filePath.append(name + ".json");
+			filePath.append((this->layout == Layout::Back) ? "Back.json" : "Front.json");
 			return filePath;
 		}
 

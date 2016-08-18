@@ -13,19 +13,11 @@ namespace entropy
 		App_::App_()
 		{
 			// Instantiate attributes.
-			this->canvasBack = make_shared<entropy::render::Canvas>("Back");
-			this->canvasFront = make_shared<entropy::render::Canvas>("Front");
-			this->sceneManager = make_shared<entropy::scene::Manager>();
+			this->canvasBack = make_shared<render::Canvas>(render::Layout::Back);
+			this->canvasFront = make_shared<render::Canvas>(render::Layout::Front);
+			this->sceneManager = make_shared<scene::Manager>();
 
-			// Setup parameters and gui.
-			this->controlScreenParameters.setName("Control Screen");
-			this->backScreenParameters.setName("Back Screen");
-			this->frontScreenParameters.setName("Front Screen");
-
-			this->parameters.add(this->controlScreenParameters);
-			this->parameters.add(this->backScreenParameters);
-			this->parameters.add(this->frontScreenParameters);
-
+			// Setup gui.
 			this->imGui.setup();
 			this->overlayVisible = true;
 			
@@ -44,6 +36,12 @@ namespace entropy
 			ofAddListener(this->canvasBack->resizeEvent, this, &App_::onCanvasBackResized);
 			ofAddListener(this->canvasFront->resizeEvent, this, &App_::onCanvasFrontResized);
 			ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
+
+			// Set base parameter listeners.
+			this->parameterListeners.push_back(parameters.controlScreen.preview.scale.newListener([this](float & value)
+			{
+				this->updatePreviews();
+			}));
 
 			// Load initial settings, if any.
 			this->loadSettings();
@@ -241,20 +239,33 @@ namespace entropy
 				this->canvasFront->render(postProcessing, this->boundsFront);
 			}
 
+			// Control screen.
+			if (this->parameters.controlScreen.enabled)
+			{
+				if (this->parameters.controlScreen.preview.backEnabled)
+				{
+					this->canvasBack->getPostFbo().draw(this->previewBoundsBack);
+				}
+				if (this->parameters.controlScreen.preview.frontEnabled)
+				{
+					this->canvasFront->getPostFbo().draw(this->previewBoundsFront);
+				}
+			}
+
 			if (!this->overlayVisible) return;
 
 			this->guiSettings.mouseOverGui = this->canvasBack->isEditing() || this->canvasFront->isEditing();
 			this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
 			this->guiSettings.windowSize = ofVec2f::zero();
-			if (this->controlScreenParameters.enabled)
+			if (this->parameters.controlScreen.enabled)
 			{
 				this->guiSettings.screenBounds = this->boundsControl;
 			}
-			else if (this->backScreenParameters.enabled)
+			else if (this->parameters.backScreen.enabled)
 			{
 				this->guiSettings.screenBounds = this->boundsBack;
 			}
-			else if (this->frontScreenParameters.enabled)
+			else if (this->parameters.frontScreen.enabled)
 			{
 				this->guiSettings.screenBounds = this->boundsFront;
 			}
@@ -266,28 +277,7 @@ namespace entropy
 			// Draw the gui overlay.
 			this->imGui.begin();
 			{
-				if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
-				{
-					ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ofGetFrameRate());
-
-					ofxPreset::Gui::AddParameter(this->parameters.background);
-					
-					ofxPreset::Gui::AddGroup(this->controlScreenParameters, this->guiSettings);
-					ofxPreset::Gui::AddGroup(this->backScreenParameters, this->guiSettings);
-					ofxPreset::Gui::AddGroup(this->frontScreenParameters, this->guiSettings);
-
-					if (ImGui::Button("Apply and Save"))
-					{
-						this->applyConfiguration();
-						this->saveSettings();
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Restore"))
-					{
-						this->loadSettings();
-					}
-				}
-				ofxPreset::Gui::EndWindow(this->guiSettings);
+				this->drawGui(this->guiSettings);
 
 				this->canvasBack->drawGui(this->guiSettings);
 				this->canvasFront->drawGui(this->guiSettings);
@@ -300,28 +290,104 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void App_::drawGui(ofxPreset::Gui::Settings & settings)
+		{
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), this->guiSettings))
+			{
+				ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ofGetFrameRate());
+
+				if (ImGui::Button("Save"))
+				{
+					this->applyConfiguration();
+					this->saveSettings();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Load"))
+				{
+					this->loadSettings();
+				}
+
+				ofxPreset::Gui::AddParameter(this->parameters.background);
+
+				if (ImGui::CollapsingHeader(this->parameters.controlScreen.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.controlScreen.enabled);
+					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenWidth);
+					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenHeight);
+
+					ImGui::SetNextTreeNodeOpen(true);
+					if (ImGui::TreeNode(this->parameters.controlScreen.preview.getName().c_str()))
+					{
+						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.backEnabled);
+						ImGui::SameLine();
+						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.frontEnabled);
+						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.scale);
+
+						ImGui::TreePop();
+					}
+				}
+
+				if (ImGui::CollapsingHeader(this->parameters.backScreen.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.backScreen.enabled);
+					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenWidth);
+					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenHeight);
+					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numRows);
+					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numCols);
+				}
+
+				if (ImGui::CollapsingHeader(this->parameters.frontScreen.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.frontScreen.enabled);
+					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenWidth);
+					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenHeight);
+					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numRows);
+					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numCols);
+				}
+			}
+			ofxPreset::Gui::EndWindow(this->guiSettings);
+		}
+
+		//--------------------------------------------------------------
 		void App_::applyConfiguration()
 		{
 			// Calculate the bounds per screen.
 			ofRectangle totalBounds;
-			if (this->controlScreenParameters.enabled)
+			if (this->parameters.controlScreen.enabled)
 			{
-				this->boundsControl = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->controlScreenParameters.screenWidth * this->controlScreenParameters.numCols, this->controlScreenParameters.screenHeight * this->controlScreenParameters.numRows);
+				this->boundsControl = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.controlScreen.screenWidth, this->parameters.controlScreen.screenHeight);
 				totalBounds.growToInclude(this->boundsControl);
 			}
-			if (this->backScreenParameters.enabled)
+			if (this->parameters.backScreen.enabled)
 			{
-				this->boundsBack = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->backScreenParameters.screenWidth * this->backScreenParameters.numCols, this->backScreenParameters.screenHeight * this->backScreenParameters.numRows);
+				this->boundsBack = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.backScreen.screenWidth * this->parameters.backScreen.numCols, this->parameters.backScreen.screenHeight * this->parameters.backScreen.numRows);
 				totalBounds.growToInclude(this->boundsBack);
 			}
-			if (this->frontScreenParameters.enabled)
+			if (this->parameters.frontScreen.enabled)
 			{
-				this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->frontScreenParameters.screenWidth * this->frontScreenParameters.numCols, this->frontScreenParameters.screenHeight * this->frontScreenParameters.numRows);
+				this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.frontScreen.screenWidth * this->parameters.frontScreen.numCols, this->parameters.frontScreen.screenHeight * this->parameters.frontScreen.numRows);
 				totalBounds.growToInclude(this->boundsFront);
 			}
 
 			// Resize the window.
 			ofSetWindowShape(totalBounds.width, totalBounds.height);
+		}
+
+		//--------------------------------------------------------------
+		void App_::updatePreviews()
+		{
+			// Fit the Canvas previews for the Control screen.
+			this->previewBoundsBack.width = this->boundsControl.getWidth() * this->parameters.controlScreen.preview.scale;
+			this->previewBoundsBack.height = (this->boundsBack.getHeight() * this->previewBoundsBack.width) / this->boundsBack.getWidth();
+
+			this->previewBoundsFront.width = this->previewBoundsBack.width * this->boundsFront.getWidth() / this->boundsBack.getWidth();
+			this->previewBoundsFront.height = (this->boundsFront.getHeight() * this->previewBoundsFront.width) / this->boundsFront.getWidth();
+		
+			this->previewBoundsBack.x = (this->boundsControl.getWidth() - this->previewBoundsBack.getWidth()) * 0.5f;
+			this->previewBoundsFront.x = (this->boundsControl.getWidth() - this->previewBoundsFront.getWidth()) * 0.5f;
+
+			this->previewBoundsBack.y = this->boundsControl.getMinY() + kGuiMargin;
+			this->previewBoundsFront.y = this->previewBoundsBack.getMaxY() + kGuiMargin;
 		}
 		
 		//--------------------------------------------------------------
@@ -428,6 +494,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onWindowResized(ofResizeEventArgs & args)
 		{
+			this->updatePreviews();
+
+			// Notify listeners.
 			auto resizeBackArgs = ofResizeEventArgs(this->boundsBack.width, this->boundsBack.height);
 			this->canvasBack->screenResized(resizeBackArgs);
 

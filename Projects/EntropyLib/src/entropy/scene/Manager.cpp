@@ -181,9 +181,14 @@ namespace entropy
 					this->currentScene->toggleCameraLocked();
 					return true;
 				}
-				if (args.key == 'T')
+				if (args.key == 'B')
 				{
-					this->currentScene->addCameraKeyframe();
+					this->currentScene->addCameraKeyframe(render::Layout::Back);
+					return true;
+				}
+				if (args.key == 'F')
+				{
+					this->currentScene->addCameraKeyframe(render::Layout::Front);
 					return true;
 				}
 			}

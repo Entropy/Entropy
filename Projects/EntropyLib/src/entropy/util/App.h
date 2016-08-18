@@ -43,6 +43,8 @@ namespace entropy
 			void onCanvasFrontResized(ofResizeEventArgs & args);
 			void onWindowResized(ofResizeEventArgs & args);
 
+			std::vector<ofEventListener> parameterListeners;
+
 		protected:
 			const string & getDataPath();
 			const string & getSettingsFilePath();
@@ -50,7 +52,10 @@ namespace entropy
 			bool loadSettings();
 			bool saveSettings();
 
+			void drawGui(ofxPreset::Gui::Settings & settings);
+
 			void applyConfiguration();
+			void updatePreviews();
 
 		protected:
 			shared_ptr<entropy::render::Canvas> canvasBack;
@@ -64,28 +69,55 @@ namespace entropy
 			ofxImGui imGui;
 			ofxPreset::Gui::Settings guiSettings;
 
-			struct ScreenParameters
-				: ofParameterGroup
-			{
-				ofParameter<bool> enabled{ "Enabled", true };
-				ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
-				ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
-				ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
-				ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
-
-				PARAM_DECLARE("Screen", enabled, screenWidth, screenHeight, numRows, numCols);
-			};
-
-			ScreenParameters controlScreenParameters;
-			ScreenParameters backScreenParameters;
-			ScreenParameters frontScreenParameters;
-
 			struct : ofParameterGroup
 			{
 				ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 			
-				PARAM_DECLARE("App", background);
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> enabled{ "Enabled", true };
+					ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
+					ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
+
+					struct : ofParameterGroup
+					{
+						ofParameter<bool> backEnabled{ "Back Enabled", true };
+						ofParameter<bool> frontEnabled{ "Front Enabled", true };
+						ofParameter<float> scale{ "Scale", 0.5f, 0.1f, 1.0f };
+
+						PARAM_DECLARE("Preview", backEnabled, frontEnabled, scale);
+					} preview;
+					
+					PARAM_DECLARE("Control Screen", enabled, screenWidth, screenHeight, preview);
+				} controlScreen;
+
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> enabled{ "Enabled", true };
+					ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
+					ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
+					ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
+					ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
+
+					PARAM_DECLARE("Back Screen", enabled, screenWidth, screenHeight, numRows, numCols);
+				} backScreen;
+
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> enabled{ "Enabled", true };
+					ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
+					ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
+					ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
+					ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
+
+					PARAM_DECLARE("Front Screen", enabled, screenWidth, screenHeight, numRows, numCols);
+				} frontScreen;
+
+				PARAM_DECLARE("App", background, controlScreen, backScreen, frontScreen);
 			} parameters;
+
+			ofRectangle previewBoundsBack;
+			ofRectangle previewBoundsFront;
 
 			bool overlayVisible;
 		};

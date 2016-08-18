@@ -80,7 +80,7 @@ namespace entropy
 			void toggleCameraLocked();
 			bool isCameraLocked() const;
 
-			void addCameraKeyframe();
+			void addCameraKeyframe(render::Layout layout);
 			 
 			// Post-Processing
 			virtual bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo);
@@ -131,7 +131,7 @@ namespace entropy
 
 			// Timeline
 			ofxTimeline timeline;
-			ofxTLCameraTrack * cameraTrack;
+			map<render::Layout, ofxTLCameraTrack *> cameraTracks;
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 			// Popups
