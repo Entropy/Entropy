@@ -133,24 +133,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::drawSceneBack()
+		void Manager::drawScene(render::Layout layout)
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->drawBackBase_();
-				this->currentScene->drawBackWorld_();
-				this->currentScene->drawBackOverlay_();
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Manager::drawSceneFront()
-		{
-			if (this->currentScene)
-			{
-				this->currentScene->drawFrontBase_();
-				this->currentScene->drawFrontWorld_();
-				this->currentScene->drawFrontOverlay_();
+				this->currentScene->drawBase_(layout);
+				this->currentScene->drawWorld_(layout);
+				this->currentScene->drawOverlay_(layout);
 			}
 		}
 
@@ -202,11 +191,11 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::canvasResized(ofResizeEventArgs & args)
+		void Manager::canvasResized(render::Layout layout, ofResizeEventArgs & args)
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->resize_(args);
+				this->currentScene->resize_(layout, args);
 			}
 		}
 	}

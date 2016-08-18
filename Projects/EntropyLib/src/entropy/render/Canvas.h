@@ -21,7 +21,7 @@ namespace entropy
 			void beginDraw();
 			void endDraw();
 
-			void render(bool postProcessing);
+			void render(bool postProcessing, const ofRectangle & bounds);
 
 			const ofTexture & getDrawTexture() const;
 			const ofFbo & getPostFbo() const;
@@ -47,7 +47,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 			const string & getDataPath();
-			const string & getSettingsFilePath();
+			string getSettingsFilePath();
 			string getShaderPath(const string & shaderFile = "");
 			
 			bool loadSettings();
@@ -128,6 +128,8 @@ namespace entropy
 
 				PARAM_DECLARE("Canvas", bloom, color, fillWindow);
 			} parameters;
+
+			string name;
 
 			ofRectangle viewport;
 			

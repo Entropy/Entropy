@@ -8,9 +8,10 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Canvas::Canvas(const string & name)
-			: exportFrames(false)
+			: name(name)
+			, exportFrames(false)
 		{
-			this->parameters.setName(name);
+			this->parameters.setName("Canvas " + name);
 			
 			// Load post-processing shaders.
 			this->brightnessThresholdShader.load(this->getShaderPath("passthrough_vert.glsl"), this->getShaderPath("brightnessThreshold.frag"));
@@ -128,7 +129,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::render(bool postProcessing)
+		void Canvas::render(bool postProcessing, const ofRectangle & bounds)
 		{
 			if (!postProcessing)
 			{
@@ -241,15 +242,20 @@ namespace entropy
 			if (this->parameters.fillWindow)
 			{
 				// Draw the fbo texture directly.
-				this->fboPost.getTexture().draw(0, 0);
+				this->fboPost.getTexture().draw(bounds);
 			}
 			else
 			{
-				// Go through warps and fbo texture subsections and draw the whole thing.
-				for (auto i = 0; i < this->warps.size(); ++i)
+				ofPushMatrix();
+				ofTranslate(bounds.x, bounds.y);
 				{
-					this->warps[i]->draw(this->fboPost.getTexture(), this->srcAreas[i]);
+					// Go through warps and fbo texture subsections and draw the whole thing.
+					for (auto i = 0; i < this->warps.size(); ++i)
+					{
+						this->warps[i]->draw(this->fboPost.getTexture(), this->srcAreas[i]);
+					}
 				}
+				ofPopMatrix();
 			}
 
 			if (this->exportFrames)
@@ -883,14 +889,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & Canvas::getSettingsFilePath()
+		string Canvas::getSettingsFilePath()
 		{
-			static string filePath;
-			if (filePath.empty())
-			{
-				filePath = this->getDataPath();
-				filePath.append("settings.json");
-			}
+			auto filePath = this->getDataPath();
+			filePath.append(name + ".json");
 			return filePath;
 		}
 

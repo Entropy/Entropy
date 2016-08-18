@@ -23,8 +23,9 @@ namespace entropy
 			// Set data path root for scene.
 			ofSetDataPathRoot(this->getDataPath());
 			
-			// Setup default camera.
-			this->resetCamera();
+			// Setup default cameras.
+			this->resetCamera(render::Layout::Back);
+			this->resetCamera(render::Layout::Front);
 
 			// Setup child Scene.
 			this->setup();
@@ -49,14 +50,36 @@ namespace entropy
 			const auto trackName = "Camera";
 			const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
 			this->cameraTrack = new ofxTLCameraTrack();
-			this->cameraTrack->setCamera(this->cameraBack);
+			this->cameraTrack->setCamera(this->cameras[render::Layout::Back]);
 			this->cameraTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
 			this->timeline.addTrack(trackIdentifier, this->cameraTrack);
 			this->cameraTrack->setDisplayName(trackName);
 			this->cameraTrack->lockCameraToTrack = false;
 
+			auto & parameters = this->getParameters();
+
 			// List mappings.
-			this->populateMappings(this->getParameters());
+			this->populateMappings(parameters);
+
+			// Set base parameter listeners.
+			this->parameterListeners.push_back(parameters.base.camera.relativeYAxis.newListener([this](bool & value)
+			{
+				for (auto & it : this->cameras)
+				{
+					it.second.setRelativeYAxis(value);
+				}
+			}));
+			this->parameterListeners.push_back(parameters.base.camera.attachFrontToBack.newListener([this](bool & value)
+			{
+				if (value)
+				{
+					this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
+				}
+				else
+				{
+					this->cameras[render::Layout::Front].clearParent(true);
+				}
+			}));
 
 			// Load default preset.
 			this->currPreset.clear();
@@ -73,11 +96,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::resize_(ofResizeEventArgs & args)
+		void Base::resize_(render::Layout layout, ofResizeEventArgs & args)
 		{
-			this->cameraBack.setAspectRatio(args.width / static_cast<float>(args.height));
+			this->cameras[layout].setAspectRatio(args.width / static_cast<float>(args.height));
 
-			this->resize(args);
+			if (layout == render::Layout::Back)
+			{
+				this->resizeBack(args);
+			}
+			else
+			{
+				this->resizeFront(args);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -85,11 +115,23 @@ namespace entropy
 		{
 			if (GetApp()->isMouseOverGui())
 			{
-				this->cameraBack.disableMouseInput();
+				for (auto & it : this->cameras)
+				{
+					it.second.disableMouseInput();
+				}
 			}
 			else
 			{
-				this->cameraBack.enableMouseInput();
+				if (this->getParameters().base.camera.mouseEnabled == static_cast<int>(render::Layout::Back))
+				{
+					this->cameras[render::Layout::Back].enableMouseInput();
+					this->cameras[render::Layout::Front].disableMouseInput();
+				}
+				else
+				{
+					this->cameras[render::Layout::Back].disableMouseInput();
+					this->cameras[render::Layout::Front].enableMouseInput();
+				}
 			}
 
 			for (auto & it : this->mappings)
@@ -106,62 +148,57 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawBackBase_()
+		void Base::drawBase_(render::Layout layout)
 		{
-			ofBackground(this->getParameters().base.background.get());
-
-			this->drawBackBase();
+			if (layout == render::Layout::Back)
+			{
+				ofBackground(this->getParameters().base.background.get());
+				this->drawBackBase();
+			}
+			else
+			{
+				ofClear(0, 255);
+				this->drawFrontBase();
+			}
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawBackWorld_()
+		void Base::drawWorld_(render::Layout layout)
 		{
-			this->cameraBack.begin(GetCanvasBackViewport());
+			this->cameras[layout].begin(GetCanvasViewport(layout));
 			ofEnableDepthTest();
 			{
-				this->drawBackWorld();
+				if (layout == render::Layout::Back)
+				{
+					this->drawBackWorld();
+				}
+				else
+				{
+					this->drawFrontWorld();
+				}
 			}
 			ofDisableDepthTest();
-			this->cameraBack.end();
+			this->cameras[layout].end();
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawBackOverlay_()
+		void Base::drawOverlay_(render::Layout layout)
 		{
-			this->drawBackOverlay();
-
-			//for (auto popUp : this->popUps)
-			//{
-			//	popUp->draw_();
-			//}
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawFrontBase_()
-		{
-			this->drawFrontBase();
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawFrontWorld_()
-		{
-			this->cameraFront.begin(GetCanvasFrontViewport());
-			ofEnableDepthTest();
+			if (layout == render::Layout::Back)
 			{
-				this->drawFrontWorld();
+				this->drawBackOverlay();
 			}
-			ofDisableDepthTest();
-			this->cameraFront.end();
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawFrontOverlay_()
-		{
-			this->drawFrontOverlay();
+			else
+			{
+				this->drawFrontOverlay();
+			}
 
 			for (auto popUp : this->popUps)
 			{
-				popUp->draw_();
+				if (popUp->getLayout() == layout)
+				{
+					popUp->draw_();
+				}
 			}
 		}
 
@@ -294,25 +331,21 @@ namespace entropy
 				
 				if (ImGui::CollapsingHeader(parameters.base.camera.getName().c_str(), nullptr, true, true))
 				{
-					if (ofxPreset::Gui::AddParameter(parameters.base.camera.relativeYAxis))
+					ofxPreset::Gui::AddParameter(parameters.base.camera.relativeYAxis);
+					ofxPreset::Gui::AddParameter(parameters.base.camera.attachFrontToBack);
+
+					ImGui::Text(parameters.base.camera.mouseEnabled.getName().c_str());
+					std::vector<std::string> labels = { "Back", "Front" };
+					ofxPreset::Gui::AddRadio(parameters.base.camera.mouseEnabled, labels, 2);
+
+					if (ImGui::Button("Reset Back"))
 					{
-						this->cameraBack.setRelativeYAxis(parameters.base.camera.relativeYAxis);
-						this->cameraFront.setRelativeYAxis(parameters.base.camera.relativeYAxis);
+						this->resetCamera(render::Layout::Back);
 					}
-					if (ofxPreset::Gui::AddParameter(parameters.base.camera.attachFrontToBack))
+					ImGui::SameLine();
+					if (ImGui::Button("Reset Front"))
 					{
-						if (parameters.base.camera.attachFrontToBack)
-						{
-							this->cameraFront.clearParent();
-						}
-						else
-						{
-							this->cameraFront.setParent(this->cameraBack);
-						}
-					}
-					if (ImGui::Button("Reset Camera"))
-					{
-						this->resetCamera();
+						this->resetCamera(render::Layout::Front);
 					}
 				}
 			}
@@ -326,8 +359,8 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
-			ofxPreset::Serializer::Serialize(json, this->cameraBack, "Camera Back");
-			ofxPreset::Serializer::Serialize(json, this->cameraFront, "Camera Front");
+			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
+			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
 
 			this->serialize(json);
 
@@ -352,8 +385,11 @@ namespace entropy
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 			if (json.count("Camera Back"))
 			{
-				ofxPreset::Serializer::Deserialize(json, this->cameraBack, "Camera Back");
-				ofxPreset::Serializer::Deserialize(json, this->cameraFront, "Camera Back");
+				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
+			}
+			if (json.count("Camera Front"))
+			{
+				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
 
 			this->deserialize(json);
@@ -402,7 +438,8 @@ namespace entropy
 				this->timeline.enableEvents();
 			}
 
-			this->timeline.setOffset(ofVec2f(0.0, ofGetHeight() - this->timeline.getHeight()));
+			this->timeline.setWidth(settings.screenBounds.getWidth());
+			this->timeline.setOffset(glm::vec2(settings.screenBounds.getMinY(), settings.screenBounds.getMaxY() - this->timeline.getHeight()));
 			this->timeline.draw();
 			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
@@ -628,28 +665,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::resetCamera()
+		void Base::resetCamera(render::Layout layout)
 		{
 			auto & parameters = this->getParameters();
 			
-			//this->camera.setupPerspective(false, 60.0f, 0.1f, 100000.0f);
-			//this->camera.setVFlip(false);
-			this->cameraBack.setNearClip(0.1f);
-			this->cameraBack.setFarClip(100000.0f);
-			this->cameraBack.setFov(60.0f);
-			this->cameraBack.setAspectRatio(GetCanvasBackWidth() / GetCanvasBackHeight());
-			this->cameraBack.setRelativeYAxis(parameters.base.camera.relativeYAxis);
-			this->cameraBack.reset();
+			//this->cameras[layout].setupPerspective(false, 60.0f, 0.1f, 100000.0f);
+			//this->cameras[layout].setVFlip(false);
+			this->cameras[layout].setNearClip(0.1f);
+			this->cameras[layout].setFarClip(100000.0f);
+			this->cameras[layout].setFov(60.0f);
+			this->cameras[layout].setAspectRatio(GetCanvasWidth(layout) / GetCanvasHeight(layout));
+			this->cameras[layout].setRelativeYAxis(parameters.base.camera.relativeYAxis);
+			this->cameras[layout].reset();
 
-			this->cameraFront.setNearClip(0.1f);
-			this->cameraFront.setFarClip(100000.0f);
-			this->cameraFront.setFov(60.0f);
-			this->cameraFront.setAspectRatio(GetCanvasFrontWidth() / GetCanvasFrontHeight());
-			this->cameraFront.setRelativeYAxis(parameters.base.camera.relativeYAxis);
-			this->cameraFront.reset();
-			if (parameters.base.camera.attachFrontToBack)
+			if (layout == render::Layout::Front && parameters.base.camera.attachFrontToBack)
 			{
-				this->cameraFront.setParent(this->cameraBack);
+				this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
 			}
 		}
 

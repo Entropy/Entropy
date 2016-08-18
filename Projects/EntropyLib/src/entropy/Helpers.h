@@ -1,9 +1,8 @@
 #pragma once
 
+#include "entropy/render/Layout.h"
 #include "entropy/util/App.h"
 #include "entropy/util/GLError.h"
-
-#include <experimental/filesystem>
 
 namespace entropy
 {
@@ -20,51 +19,31 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline shared_ptr<entropy::render::Canvas> GetCanvasBack()
+	inline shared_ptr<entropy::render::Canvas> GetCanvas(entropy::render::Layout layout)
 	{
-		return GetApp()->getCanvasBack();
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasBackWidth()
-	{
-		return GetCanvasBack()->getWidth();
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasBackHeight()
-	{
-		return GetCanvasBack()->getHeight();
-	}
-
-	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasBackViewport()
-	{
-		return GetCanvasBack()->getViewport();
-	}
-
-	//--------------------------------------------------------------
-	inline shared_ptr<entropy::render::Canvas> GetCanvasFront()
-	{
+		if (layout == entropy::render::Layout::Back)
+		{
+			return GetApp()->getCanvasBack();
+		}
 		return GetApp()->getCanvasFront();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasFrontWidth()
+	inline float GetCanvasWidth(entropy::render::Layout layout)
 	{
-		return GetCanvasFront()->getWidth();
+		return GetCanvas(layout)->getWidth();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasFrontHeight()
+	inline float GetCanvasHeight(entropy::render::Layout layout)
 	{
-		return GetCanvasFront()->getHeight();
+		return GetCanvas(layout)->getHeight();
 	}
 
 	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasFrontViewport()
+	inline const ofRectangle & GetCanvasViewport(entropy::render::Layout layout)
 	{
-		return GetCanvasFront()->getViewport();
+		return GetCanvas(layout)->getViewport();
 	}
 
 	//--------------------------------------------------------------
@@ -127,7 +106,7 @@ namespace entropy
 			static string exportsPathAbs;
 			if (exportsPathAbs.empty())
 			{
-				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
+				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
 				exportsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return exportsPathAbs;

@@ -26,9 +26,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		Layout Base::getLayout()
+		render::Layout Base::getLayout()
 		{
-			return static_cast<Layout>(this->getParameters().base.layout.get());
+			return static_cast<render::Layout>(this->getParameters().base.layout.get());
 		}
 
 		//--------------------------------------------------------------
@@ -330,16 +330,8 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 
-			glm::vec2 canvasSize;
-			const auto layout = static_cast<Layout>(parameters.base.layout.get());
-			if (layout == Layout::Back)
-			{
-				canvasSize = glm::vec2(GetCanvasBackWidth(), GetCanvasBackHeight());
-			}
-			else
-			{
-				canvasSize = glm::vec2(GetCanvasFrontWidth(), GetCanvasFrontHeight());
-			}
+			const auto layout = static_cast<render::Layout>(parameters.base.layout.get());
+			const auto canvasSize = glm::vec2(GetCanvasWidth(layout), GetCanvasHeight(layout));
 			this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), canvasSize.x * parameters.base.size->x, canvasSize.y * parameters.base.size->y);
 			
 			if (this->isLoaded())

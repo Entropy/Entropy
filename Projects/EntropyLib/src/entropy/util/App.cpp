@@ -1,6 +1,8 @@
 #include "App.h"
 
 #include "ofxPreset.h"
+
+#include "entropy/render/Layout.h"
 #include "entropy/Helpers.h"
 
 namespace entropy
@@ -11,14 +13,18 @@ namespace entropy
 		App_::App_()
 		{
 			// Instantiate attributes.
-			this->canvasBack = make_shared<entropy::render::Canvas>("Canvas Back");
-			this->canvasFront = make_shared<entropy::render::Canvas>("Canvas Front");
+			this->canvasBack = make_shared<entropy::render::Canvas>("Back");
+			this->canvasFront = make_shared<entropy::render::Canvas>("Front");
 			this->sceneManager = make_shared<entropy::scene::Manager>();
 
-			// Setup gui.
+			// Setup parameters and gui.
 			this->controlScreenParameters.setName("Control Screen");
 			this->backScreenParameters.setName("Back Screen");
 			this->frontScreenParameters.setName("Front Screen");
+
+			this->parameters.add(this->controlScreenParameters);
+			this->parameters.add(this->backScreenParameters);
+			this->parameters.add(this->frontScreenParameters);
 
 			this->imGui.setup();
 			this->overlayVisible = true;
@@ -41,6 +47,9 @@ namespace entropy
 
 			// Load initial settings, if any.
 			this->loadSettings();
+
+			// Apply initial configuration.
+			this->applyConfiguration();
 		}
 
 		//--------------------------------------------------------------
@@ -110,9 +119,7 @@ namespace entropy
 			nlohmann::json json;
 			file >> json;
 
-			ofxPreset::Serializer::Deserialize(json, this->controlScreenParameters);
-			ofxPreset::Serializer::Deserialize(json, this->backScreenParameters);
-			ofxPreset::Serializer::Deserialize(json, this->frontScreenParameters);
+			ofxPreset::Serializer::Deserialize(json, this->parameters);
 
 			return true;
 		}
@@ -121,9 +128,7 @@ namespace entropy
 		bool App_::saveSettings()
 		{
 			nlohmann::json json;
-			ofxPreset::Serializer::Serialize(json, this->controlScreenParameters);
-			ofxPreset::Serializer::Serialize(json, this->backScreenParameters);
-			ofxPreset::Serializer::Serialize(json, this->frontScreenParameters);
+			ofxPreset::Serializer::Serialize(json, this->parameters);
 
 			auto filePath = this->getSettingsFilePath();
 			auto file = ofFile(filePath, ofFile::WriteOnly);
@@ -165,7 +170,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const ofRectangle & App_::getBoundsFront() const
 		{
-			return this->viewportFront;
+			return this->boundsFront;
 		}
 
 		//--------------------------------------------------------------
@@ -202,12 +207,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onDraw(ofEventArgs & args)
 		{
+			ofBackground(this->parameters.background.get());
+
 			// Back screen.
 			{
 				// Draw the content.
 				this->canvasBack->beginDraw();
 				{
-					this->sceneManager->drawSceneBack();
+					this->sceneManager->drawScene(render::Layout::Back);
 				}
 				this->canvasBack->endDraw();
 
@@ -215,7 +222,7 @@ namespace entropy
 				const auto postProcessing = this->sceneManager->postProcess(this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
 
 				// Render the scene.
-				this->canvasBack->render(postProcessing);
+				this->canvasBack->render(postProcessing, this->boundsBack);
 			}
 
 			// Front screen.
@@ -223,7 +230,7 @@ namespace entropy
 				// Draw the content.
 				this->canvasFront->beginDraw();
 				{
-					this->sceneManager->drawSceneFront();
+					this->sceneManager->drawScene(render::Layout::Front);
 				}
 				this->canvasFront->endDraw();
 
@@ -231,22 +238,40 @@ namespace entropy
 				const auto postProcessing = this->sceneManager->postProcess(this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
 
 				// Render the scene.
-				this->canvasFront->render(postProcessing);
+				this->canvasFront->render(postProcessing, this->boundsFront);
 			}
 
 			if (!this->overlayVisible) return;
 
+			this->guiSettings.mouseOverGui = this->canvasBack->isEditing() || this->canvasFront->isEditing();
+			this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
+			this->guiSettings.windowSize = ofVec2f::zero();
+			if (this->controlScreenParameters.enabled)
+			{
+				this->guiSettings.screenBounds = this->boundsControl;
+			}
+			else if (this->backScreenParameters.enabled)
+			{
+				this->guiSettings.screenBounds = this->boundsBack;
+			}
+			else if (this->frontScreenParameters.enabled)
+			{
+				this->guiSettings.screenBounds = this->boundsFront;
+			}
+			else
+			{
+				this->guiSettings.screenBounds = ofRectangle(0.0f, 0.0f, ofGetWidth(), ofGetHeight());
+			}
+
 			// Draw the gui overlay.
 			this->imGui.begin();
 			{
-				this->guiSettings.mouseOverGui = this->canvasBack->isEditing() || this->canvasFront->isEditing();
-				this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
-				this->guiSettings.windowSize = ofVec2f::zero();
-
 				if (ofxPreset::Gui::BeginWindow("App", this->guiSettings))
 				{
 					ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ofGetFrameRate());
 
+					ofxPreset::Gui::AddParameter(this->parameters.background);
+					
 					ofxPreset::Gui::AddGroup(this->controlScreenParameters, this->guiSettings);
 					ofxPreset::Gui::AddGroup(this->backScreenParameters, this->guiSettings);
 					ofxPreset::Gui::AddGroup(this->frontScreenParameters, this->guiSettings);
@@ -291,8 +316,8 @@ namespace entropy
 			}
 			if (this->frontScreenParameters.enabled)
 			{
-				this->viewportFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->frontScreenParameters.screenWidth * this->frontScreenParameters.numCols, this->frontScreenParameters.screenHeight * this->frontScreenParameters.numRows);
-				totalBounds.growToInclude(this->viewportFront);
+				this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->frontScreenParameters.screenWidth * this->frontScreenParameters.numCols, this->frontScreenParameters.screenHeight * this->frontScreenParameters.numRows);
+				totalBounds.growToInclude(this->boundsFront);
 			}
 
 			// Resize the window.
@@ -334,19 +359,52 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onMouseMoved(ofMouseEventArgs & args)
 		{
-			//this->canvas->cursorMoved(args);
+			if (this->boundsBack.inside(args))
+			{
+				args.x -= this->boundsBack.getMinX();
+				args.y -= this->boundsBack.getMinY();
+				this->canvasBack->cursorMoved(args);
+			}
+			else if (this->boundsFront.inside(args))
+			{
+				args.x -= this->boundsFront.getMinX();
+				args.y -= this->boundsFront.getMinY();
+				this->canvasFront->cursorMoved(args);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMousePressed(ofMouseEventArgs & args)
 		{
-			//this->canvas->cursorDown(args);
+			if (this->boundsBack.inside(args))
+			{
+				args.x -= this->boundsBack.getMinX();
+				args.y -= this->boundsBack.getMinY();
+				this->canvasBack->cursorDown(args);
+			}
+			else if (this->boundsFront.inside(args))
+			{
+				args.x -= this->boundsFront.getMinX();
+				args.y -= this->boundsFront.getMinY();
+				this->canvasFront->cursorDown(args);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMouseDragged(ofMouseEventArgs & args)
 		{
-			//this->canvas->cursorDragged(args);
+			if (this->boundsBack.inside(args))
+			{
+				args.x -= this->boundsBack.getMinX();
+				args.y -= this->boundsBack.getMinY();
+				this->canvasBack->cursorDragged(args);
+			}
+			else if (this->boundsFront.inside(args))
+			{
+				args.x -= this->boundsFront.getMinX();
+				args.y -= this->boundsFront.getMinY();
+				this->canvasFront->cursorDragged(args);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -358,19 +416,23 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onCanvasBackResized(ofResizeEventArgs & args)
 		{
-			this->sceneManager->canvasResized(args);
+			this->sceneManager->canvasResized(render::Layout::Back, args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onCanvasFrontResized(ofResizeEventArgs & args)
 		{
-			this->sceneManager->canvasResized(args);
+			this->sceneManager->canvasResized(render::Layout::Front, args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onWindowResized(ofResizeEventArgs & args)
 		{
-			//this->canvas->windowResized(args);
+			auto resizeBackArgs = ofResizeEventArgs(this->boundsBack.width, this->boundsBack.height);
+			this->canvasBack->screenResized(resizeBackArgs);
+
+			auto resizeFrontArgs = ofResizeEventArgs(this->boundsFront.width, this->boundsFront.height);
+			this->canvasFront->screenResized(resizeFrontArgs);
 		}
 	}
 }

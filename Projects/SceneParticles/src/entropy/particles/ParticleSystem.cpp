@@ -79,7 +79,10 @@ namespace nm
 			//oss << Particle::DATA[i].meshName;
 			//ofxObjLoader::load(oss.str(), meshesFill[i]);
 			meshesFill[i] = ofSpherePrimitive(1.0f, 3).getMesh();
-			meshesWire[i] = ofIcoSpherePrimitive(1.0f, 1).getMesh();
+			if (i%2 == 0)
+				meshesWire[i] = ofIcoSpherePrimitive(1.0f, 1).getMesh();
+			else
+				meshesWire[i] = ofSpherePrimitive(1.0f, 6).getMesh();
 
 			meshesFill[i].setUsage(GL_STATIC_DRAW);
 			meshesWire[i].setUsage(GL_STATIC_DRAW);
@@ -316,7 +319,7 @@ namespace nm
 				shader.setUniformTexture("uOffsetTex", positionsTex[i], 0);
 				if (wireframe)
 				{
-					shader.setUniform1f("uScale", 1.4f);
+					shader.setUniform1f("uScale", 1.0f);
 					meshesWire[i].drawInstanced(OF_MESH_WIREFRAME, numParticles[i]);
 				}
 				else

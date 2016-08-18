@@ -59,7 +59,7 @@ namespace entropy
 
 			ofRectangle boundsControl;
 			ofRectangle boundsBack;
-			ofRectangle viewportFront;
+			ofRectangle boundsFront;
 
 			ofxImGui imGui;
 			ofxPreset::Gui::Settings guiSettings;
@@ -73,12 +73,19 @@ namespace entropy
 				ofParameter<int> numRows{ "Num Rows", 1, 1, 3 };
 				ofParameter<int> numCols{ "Num Cols", 1, 1, 3 };
 
-				PARAM_DECLARE("Screen", screenWidth, screenHeight, numRows, numCols);
+				PARAM_DECLARE("Screen", enabled, screenWidth, screenHeight, numRows, numCols);
 			};
 
 			ScreenParameters controlScreenParameters;
 			ScreenParameters backScreenParameters;
 			ScreenParameters frontScreenParameters;
+
+			struct : ofParameterGroup
+			{
+				ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+			
+				PARAM_DECLARE("App", background);
+			} parameters;
 
 			bool overlayVisible;
 		};

@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 
+#include "entropy/render/Layout.h"
+
 #include "Base.h"
 
 namespace entropy
@@ -30,8 +32,7 @@ namespace entropy
 
 			void update(double dt);
 
-			void drawSceneBack();
-			void drawSceneFront();
+			void drawScene(render::Layout layout);
 			void drawGui(ofxPreset::Gui::Settings & settings);
 			void drawOverlay(ofxPreset::Gui::Settings & settings);
 
@@ -39,7 +40,7 @@ namespace entropy
 
 			bool keyPressed(ofKeyEventArgs & args);
 
-			void canvasResized(ofResizeEventArgs & args);
+			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
 		protected:
 			map<string, shared_ptr<Base>> scenes;

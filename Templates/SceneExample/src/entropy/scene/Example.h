@@ -20,7 +20,8 @@ namespace entropy
 
 			void setup() override;
 			void exit() override;
-			void resize(ofResizeEventArgs & args) override;
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
 
 			void update(double dt) override;
 
@@ -38,7 +39,10 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			ofBoxPrimitive sphere;
+			void drawScene(bool filled);
+			void drawOverlay(bool filled, render::Layout layout);
+			
+			ofBoxPrimitive box;
 			ofLight light;
 			ofMaterial material;
 
@@ -53,14 +57,12 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofParameter<bool> filled{ "Filled", false };
-					ofParameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
-					ofParameter<int> resolution{ "Resolution", 16, 3, 64 };
+					ofParameter<float> size{ "Size", 20.0f, 0.0f, 200.0f };
 
-					PARAM_DECLARE("Sphere", color, filled, radius, resolution);
-				} sphere;
+					PARAM_DECLARE("Box", color, size);
+				} box;
 
-				PARAM_DECLARE("Template", sphere);
+				PARAM_DECLARE("Example", box);
 			} parameters;
 		};
 	}
