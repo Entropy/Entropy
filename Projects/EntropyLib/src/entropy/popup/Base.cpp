@@ -36,7 +36,7 @@ namespace entropy
 		{
 			this->index = index;
 
-			this->onSetup.notify();
+			this->setup();
 
 			this->boundsDirty = true;
 		}
@@ -44,7 +44,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::exit_()
 		{
-			this->onExit.notify();
+			this->exit();
 		}
 
 		//--------------------------------------------------------------
@@ -53,7 +53,7 @@ namespace entropy
 			// Update right away so that event listeners can use the new bounds.
 			this->updateBounds();
 			
-			this->onResize.notify(args);
+			this->resize(args);
 		}
 
 		//--------------------------------------------------------------
@@ -163,7 +163,7 @@ namespace entropy
 				}
 			}
 
-			this->onUpdate.notify(dt);
+			this->update(dt);
 		}
 
 		//--------------------------------------------------------------
@@ -195,7 +195,7 @@ namespace entropy
 			}
 			ofPopStyle();
 
-			this->onDraw.notify();
+			this->draw();
 		}
 
 		//--------------------------------------------------------------
@@ -205,60 +205,51 @@ namespace entropy
 
 			auto & parameters = this->getParameters();
 
-			if (this->onGuiListeners.size())
+			// Add a GUI window for the parameters.
+			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow("Pop-up: " + parameters.getName(), settings, false, &this->editing))
 			{
-				// Add a GUI window for the parameters.
-				ofxPreset::Gui::SetNextWindow(settings);
-				if (ofxPreset::Gui::BeginWindow("Pop-up: " + parameters.getName(), settings, false, &this->editing))
+				// Add sections for the base parameters.
+				if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
 				{
-					// Add sections for the base parameters.
-					if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
+					static vector<string> labels{ "Back", "Front" };
+					ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2);
+					ofxPreset::Gui::AddParameter(parameters.base.background);
+					if (ofxPreset::Gui::AddParameter(parameters.base.size))
 					{
-						static vector<string> labels{ "Back", "Front" };
-						ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2);
-						ofxPreset::Gui::AddParameter(parameters.base.background);
-						if (ofxPreset::Gui::AddParameter(parameters.base.size))
-						{
-							this->boundsDirty = true;
-						}
-						if (ofxPreset::Gui::AddParameter(parameters.base.center))
-						{
-							this->boundsDirty = true;
-						}
+						this->boundsDirty = true;
 					}
-
-					if (ImGui::CollapsingHeader(parameters.border.getName().c_str(), nullptr, true, true))
+					if (ofxPreset::Gui::AddParameter(parameters.base.center))
 					{
-						if (ofxPreset::Gui::AddParameter(parameters.border.width))
-						{
-							this->borderDirty = true;
-						}
-
-						ofxPreset::Gui::AddParameter(parameters.border.color);
+						this->boundsDirty = true;
 					}
-
-					if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
-					{
-						static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
-						ofxPreset::Gui::AddRadio(parameters.transition.type, labels, 2);
-
-						if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
-						{
-							ofxPreset::Gui::AddParameter(parameters.transition.duration);
-						}
-					}
-
-					// Let the child class handle its child parameters.
-					this->onGui.notify(settings);
 				}
-				ofxPreset::Gui::EndWindow(settings);
+
+				if (ImGui::CollapsingHeader(parameters.border.getName().c_str(), nullptr, true, true))
+				{
+					if (ofxPreset::Gui::AddParameter(parameters.border.width))
+					{
+						this->borderDirty = true;
+					}
+
+					ofxPreset::Gui::AddParameter(parameters.border.color);
+				}
+
+				if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
+				{
+					static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
+					ofxPreset::Gui::AddRadio(parameters.transition.type, labels, 2);
+
+					if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
+					{
+						ofxPreset::Gui::AddParameter(parameters.transition.duration);
+					}
+				}
+
+				// Let the child class handle its child parameters.
+				this->gui(settings);
 			}
-			else
-			{
-				// Build a default GUI for all parameters.
-				ofxPreset::Gui::SetNextWindow(settings);
-				ofxPreset::Gui::AddGroup(parameters, settings);
-			}
+			ofxPreset::Gui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------
@@ -268,7 +259,7 @@ namespace entropy
 
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
 
-			this->onSerialize.notify(json);
+			this->serialize(json);
 		}
 
 		//--------------------------------------------------------------
@@ -276,7 +267,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
-			this->onDeserialize.notify(json);
+			this->deserialize(json);
 
 			this->boundsDirty = true;
 		}
