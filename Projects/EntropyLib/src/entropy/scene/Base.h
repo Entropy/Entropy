@@ -55,6 +55,10 @@ namespace entropy
 			virtual void drawFrontWorld() {}
 			virtual void drawFrontOverlay() {}
 
+			// No post-processing by default, return true to override!
+			virtual bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; }
+			virtual bool postProcessFront(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; };
+
 			virtual void gui(ofxPreset::Gui::Settings & settings) {}
 
 			virtual void serialize(nlohmann::json & json) {}
@@ -81,9 +85,6 @@ namespace entropy
 			bool isCameraLocked() const;
 
 			void addCameraKeyframe(render::Layout layout);
-			 
-			// Post-Processing
-			virtual bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo);
 
 			// Export
 			void beginExport();

@@ -208,6 +208,7 @@ namespace entropy
 			ofBackground(this->parameters.background.get());
 
 			// Back screen.
+			if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
 			{
 				// Draw the content.
 				this->canvasBack->beginDraw();
@@ -216,14 +217,22 @@ namespace entropy
 				}
 				this->canvasBack->endDraw();
 
-				// Post-process the content if necessary.
-				const auto postProcessing = this->sceneManager->postProcess(this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
+				// Post-process the content, either directly in the Scene or in the Canvas.
+				const auto postProcessing = this->sceneManager->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
+				if (!postProcessing)
+				{
+					this->canvasBack->postProcess();
+				}
 
-				// Render the scene.
-				this->canvasBack->render(postProcessing, this->boundsBack);
+				if (this->parameters.backScreen.enabled)
+				{
+					// Render the scene.
+					this->canvasBack->render(this->boundsBack);
+				}
 			}
 
 			// Front screen.
+			if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
 			{
 				// Draw the content.
 				this->canvasFront->beginDraw();
@@ -232,11 +241,18 @@ namespace entropy
 				}
 				this->canvasFront->endDraw();
 
-				// Post-process the content if necessary.
-				const auto postProcessing = this->sceneManager->postProcess(this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
+				// Post-process the content, either directly in the Scene or in the Canvas.
+				const auto postProcessing = this->sceneManager->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
+				if (!postProcessing)
+				{
+					this->canvasFront->postProcess();
+				}
 
-				// Render the scene.
-				this->canvasFront->render(postProcessing, this->boundsFront);
+				if (this->parameters.frontScreen.enabled)
+				{
+					// Render the scene.
+					this->canvasFront->render(this->boundsFront);
+				}
 			}
 
 			// Control screen.
@@ -244,11 +260,11 @@ namespace entropy
 			{
 				if (this->parameters.controlScreen.preview.backEnabled)
 				{
-					this->canvasBack->getPostFbo().draw(this->previewBoundsBack);
+					this->canvasBack->getRenderTexture().draw(this->previewBoundsBack);
 				}
 				if (this->parameters.controlScreen.preview.frontEnabled)
 				{
-					this->canvasFront->getPostFbo().draw(this->previewBoundsFront);
+					this->canvasFront->getRenderTexture().draw(this->previewBoundsFront);
 				}
 			}
 
@@ -311,9 +327,16 @@ namespace entropy
 
 				if (ImGui::CollapsingHeader(this->parameters.controlScreen.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.controlScreen.enabled);
+					if (ofxPreset::Gui::AddParameter(this->parameters.controlScreen.enabled))
+					{
+						this->applyConfiguration();
+					}
 					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenWidth);
 					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenHeight);
+					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					{
+						this->applyConfiguration();
+					}
 
 					ImGui::SetNextTreeNodeOpen(true);
 					if (ImGui::TreeNode(this->parameters.controlScreen.preview.getName().c_str()))
@@ -329,20 +352,34 @@ namespace entropy
 
 				if (ImGui::CollapsingHeader(this->parameters.backScreen.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.backScreen.enabled);
+					if (ofxPreset::Gui::AddParameter(this->parameters.backScreen.enabled))
+					{
+						this->applyConfiguration();
+					}
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenWidth);
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenHeight);
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numRows);
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numCols);
+					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					{
+						this->applyConfiguration();
+					}
 				}
 
 				if (ImGui::CollapsingHeader(this->parameters.frontScreen.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.frontScreen.enabled);
+					if (ofxPreset::Gui::AddParameter(this->parameters.frontScreen.enabled))
+					{
+						this->applyConfiguration();
+					}
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenWidth);
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenHeight);
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numRows);
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numCols);
+					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					{
+						this->applyConfiguration();
+					}
 				}
 			}
 			ofxPreset::Gui::EndWindow(this->guiSettings);

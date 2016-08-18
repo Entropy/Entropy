@@ -104,6 +104,9 @@ namespace entropy
 			{
 				this->updateStitches();
 			}
+
+			// Reset post-processing flag, it will be set in postProcess() if called.
+			this->postApplied = false;
 		}
 
 		//--------------------------------------------------------------
@@ -129,120 +132,122 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::render(bool postProcessing, const ofRectangle & bounds)
+		void Canvas::postProcess()
 		{
-			if (!postProcessing)
+			ofSetColor(255);
+
+			if (parameters.bloom.enabled) 
 			{
-				ofSetColor(255);
-				// Scene didn't take care of post-processing, do it here.
-				if (parameters.bloom.enabled) {
-					// Pass 0: Brightness
+				// Pass 0: Brightness
+				this->fboTemp[0].begin();
+				ofClear(0, 255);
+				brightnessThresholdShader.begin();
+				brightnessThresholdShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
+				brightnessThresholdShader.setUniform1f("bright_threshold", parameters.bloom.brightnessThreshold);
+				fullQuad.draw();
+				brightnessThresholdShader.end();
+				this->fboTemp[0].end();
+
+
+				auto texel_size = glm::vec2(1. / float(this->fboDraw.getWidth()), 1. / float(this->fboDraw.getHeight()));
+
+				auto w0 = gaussian(0.0, 0.0, parameters.bloom.sigma);
+				auto w1 = gaussian(1.0, 0.0, parameters.bloom.sigma);
+				auto w2 = gaussian(2.0, 0.0, parameters.bloom.sigma);
+				auto w3 = gaussian(3.0, 0.0, parameters.bloom.sigma);
+				auto w4 = gaussian(4.0, 0.0, parameters.bloom.sigma);
+				auto w5 = gaussian(5.0, 0.0, parameters.bloom.sigma);
+				auto w6 = gaussian(6.0, 0.0, parameters.bloom.sigma);
+				auto w7 = gaussian(7.0, 0.0, parameters.bloom.sigma);
+				auto w8 = gaussian(8.0, 0.0, parameters.bloom.sigma);
+				auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
+
+				for (int i = 0; i < parameters.bloom.numPasses; i++) {
+					// Pass 1: Blur Vertical
+					this->fboTemp[1].begin();
+					ofClear(0, 255);
+					this->blurVertShader.begin();
+					this->blurVertShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
+					this->blurVertShader.setUniform2f("texel_size", texel_size);
+					this->blurVertShader.setUniform1f("w0", w0 / wn);
+					this->blurVertShader.setUniform1f("w1", w1 / wn);
+					this->blurVertShader.setUniform1f("w2", w2 / wn);
+					this->blurVertShader.setUniform1f("w3", w3 / wn);
+					this->blurVertShader.setUniform1f("w4", w4 / wn);
+					this->blurVertShader.setUniform1f("w5", w5 / wn);
+					this->blurVertShader.setUniform1f("w6", w6 / wn);
+					this->blurVertShader.setUniform1f("w7", w7 / wn);
+					this->blurVertShader.setUniform1f("w8", w8 / wn);
+					this->fullQuad.draw();
+					this->blurVertShader.end();
+					this->fboTemp[1].end();
+
+					// Pass 2: Blur Horizontal
 					this->fboTemp[0].begin();
 					ofClear(0, 255);
-					brightnessThresholdShader.begin();
-					brightnessThresholdShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
-					brightnessThresholdShader.setUniform1f("bright_threshold", parameters.bloom.brightnessThreshold);
-					fullQuad.draw();
-					brightnessThresholdShader.end();
+					this->blurHorzShader.begin();
+					this->blurHorzShader.setUniformTexture("tex0", this->fboTemp[1].getTexture(), 0);
+					this->blurHorzShader.setUniform2f("texel_size", texel_size);
+					this->blurHorzShader.setUniform1f("w0", w0 / wn);
+					this->blurHorzShader.setUniform1f("w1", w1 / wn);
+					this->blurHorzShader.setUniform1f("w2", w2 / wn);
+					this->blurHorzShader.setUniform1f("w3", w3 / wn);
+					this->blurHorzShader.setUniform1f("w4", w4 / wn);
+					this->blurHorzShader.setUniform1f("w5", w5 / wn);
+					this->blurHorzShader.setUniform1f("w6", w6 / wn);
+					this->blurHorzShader.setUniform1f("w7", w7 / wn);
+					this->blurHorzShader.setUniform1f("w8", w8 / wn);
+					this->fullQuad.draw();
+					this->blurHorzShader.end();
 					this->fboTemp[0].end();
-
-
-					auto texel_size = glm::vec2(1. / float(this->fboDraw.getWidth()), 1. / float(this->fboDraw.getHeight()));
-
-					auto w0 = gaussian(0.0, 0.0, parameters.bloom.sigma);
-					auto w1 = gaussian(1.0, 0.0, parameters.bloom.sigma);
-					auto w2 = gaussian(2.0, 0.0, parameters.bloom.sigma);
-					auto w3 = gaussian(3.0, 0.0, parameters.bloom.sigma);
-					auto w4 = gaussian(4.0, 0.0, parameters.bloom.sigma);
-					auto w5 = gaussian(5.0, 0.0, parameters.bloom.sigma);
-					auto w6 = gaussian(6.0, 0.0, parameters.bloom.sigma);
-					auto w7 = gaussian(7.0, 0.0, parameters.bloom.sigma);
-					auto w8 = gaussian(8.0, 0.0, parameters.bloom.sigma);
-					auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
-
-					for (int i = 0; i < parameters.bloom.numPasses; i++) {
-						// Pass 1: Blur Vertical
-						this->fboTemp[1].begin();
-						ofClear(0, 255);
-						this->blurVertShader.begin();
-						this->blurVertShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
-						this->blurVertShader.setUniform2f("texel_size", texel_size);
-						this->blurVertShader.setUniform1f("w0", w0 / wn);
-						this->blurVertShader.setUniform1f("w1", w1 / wn);
-						this->blurVertShader.setUniform1f("w2", w2 / wn);
-						this->blurVertShader.setUniform1f("w3", w3 / wn);
-						this->blurVertShader.setUniform1f("w4", w4 / wn);
-						this->blurVertShader.setUniform1f("w5", w5 / wn);
-						this->blurVertShader.setUniform1f("w6", w6 / wn);
-						this->blurVertShader.setUniform1f("w7", w7 / wn);
-						this->blurVertShader.setUniform1f("w8", w8 / wn);
-						this->fullQuad.draw();
-						this->blurVertShader.end();
-						this->fboTemp[1].end();
-
-						// Pass 2: Blur Horizontal
-						this->fboTemp[0].begin();
-						ofClear(0, 255);
-						this->blurHorzShader.begin();
-						this->blurHorzShader.setUniformTexture("tex0", this->fboTemp[1].getTexture(), 0);
-						this->blurHorzShader.setUniform2f("texel_size", texel_size);
-						this->blurHorzShader.setUniform1f("w0", w0 / wn);
-						this->blurHorzShader.setUniform1f("w1", w1 / wn);
-						this->blurHorzShader.setUniform1f("w2", w2 / wn);
-						this->blurHorzShader.setUniform1f("w3", w3 / wn);
-						this->blurHorzShader.setUniform1f("w4", w4 / wn);
-						this->blurHorzShader.setUniform1f("w5", w5 / wn);
-						this->blurHorzShader.setUniform1f("w6", w6 / wn);
-						this->blurHorzShader.setUniform1f("w7", w7 / wn);
-						this->blurHorzShader.setUniform1f("w8", w8 / wn);
-						this->fullQuad.draw();
-						this->blurHorzShader.end();
-						this->fboTemp[0].end();
-					}
 				}
-
-				this->fboPost.begin();
-				{
-					ofClear(0, 255);
-
-					this->colorCorrectShader.begin();
-					this->colorCorrectShader.setUniform1f("exposureBias", this->parameters.color.exposure);
-					this->colorCorrectShader.setUniform1f("gamma", this->parameters.color.gamma);
-					this->colorCorrectShader.setUniform1f("tonemap_type", this->parameters.color.tonemapping);
-					this->colorCorrectShader.setUniform1f("brightness", this->parameters.color.brightness);
-					this->colorCorrectShader.setUniform1f("contrast", this->parameters.color.contrast);
-					if (this->parameters.bloom.debugBlur) {
-						this->colorCorrectShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
-						this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
-					}
-					else {
-						this->colorCorrectShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
-						if (parameters.bloom.enabled) {
-							this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
-						}
-						else {
-							this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
-						}
-					}
-
-					{
-						// Draw full-screen quad.
-						glBindVertexArray(this->defaultVao);
-						glDrawArrays(GL_TRIANGLES, 0, 3);
-					}
-					this->colorCorrectShader.end();
-
-					//this->fboDraw.draw(0, 0);
-				}
-				this->fboPost.end();
 			}
 
-			//const auto & texture = (postProcessing ? this->fboPost.getTexture() : this->fboDraw.getTexture());
+			this->fboPost.begin();
+			{
+				ofClear(0, 255);
+
+				this->colorCorrectShader.begin();
+				this->colorCorrectShader.setUniform1f("exposureBias", this->parameters.color.exposure);
+				this->colorCorrectShader.setUniform1f("gamma", this->parameters.color.gamma);
+				this->colorCorrectShader.setUniform1f("tonemap_type", this->parameters.color.tonemapping);
+				this->colorCorrectShader.setUniform1f("brightness", this->parameters.color.brightness);
+				this->colorCorrectShader.setUniform1f("contrast", this->parameters.color.contrast);
+				if (this->parameters.bloom.debugBlur) {
+					this->colorCorrectShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
+					this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
+				}
+				else {
+					this->colorCorrectShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
+					if (parameters.bloom.enabled) {
+						this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
+					}
+					else {
+						this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
+					}
+				}
+
+				{
+					// Draw full-screen quad.
+					glBindVertexArray(this->defaultVao);
+					glDrawArrays(GL_TRIANGLES, 0, 3);
+				}
+				this->colorCorrectShader.end();
+			}
+			this->fboPost.end();
+
+			this->postApplied = true;
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::render(const ofRectangle & bounds)
+		{
+			auto & texture = this->getRenderTexture();
 
 			if (this->parameters.fillWindow)
 			{
 				// Draw the fbo texture directly.
-				this->fboPost.getTexture().draw(bounds);
+				texture.draw(bounds);
 			}
 			else
 			{
@@ -252,7 +257,7 @@ namespace entropy
 					// Go through warps and fbo texture subsections and draw the whole thing.
 					for (auto i = 0; i < this->warps.size(); ++i)
 					{
-						this->warps[i]->draw(this->fboPost.getTexture(), this->srcAreas[i]);
+						this->warps[i]->draw(texture, this->srcAreas[i]);
 					}
 				}
 				ofPopMatrix();
@@ -263,7 +268,7 @@ namespace entropy
 				auto scene = GetSceneManager()->getCurrentScene();
 				if (scene)
 				{
-					this->textureRecorder.save(this->fboPost.getTexture(), scene->getCurrentTimelineFrame());
+					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
 				}
 				else
 				{
@@ -283,6 +288,12 @@ namespace entropy
 		const ofFbo & Canvas::getPostFbo() const
 		{
 			return this->fboPost;
+		}
+
+		//--------------------------------------------------------------
+		const ofTexture & Canvas::getRenderTexture() const
+		{
+			return (this->postApplied ? this->fboPost.getTexture() : this->fboDraw.getTexture());
 		}
 
 		//--------------------------------------------------------------
@@ -1098,10 +1109,10 @@ namespace entropy
 			
 			if (this->parameters.fillWindow)
 			{
-				//if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
+				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
-				//this->fboSettings.width = args.width;
-				//this->fboSettings.height = args.height;
+				this->fboSettings.width = args.width;
+				this->fboSettings.height = args.height;
 				this->updateSize();
 			}
 			else

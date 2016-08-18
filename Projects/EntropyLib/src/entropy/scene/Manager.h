@@ -36,7 +36,7 @@ namespace entropy
 			void drawGui(ofxPreset::Gui::Settings & settings);
 			void drawOverlay(ofxPreset::Gui::Settings & settings);
 
-			bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) const;
+			bool postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const;
 
 			bool keyPressed(ofKeyEventArgs & args);
 

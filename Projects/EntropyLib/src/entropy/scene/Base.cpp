@@ -214,13 +214,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Base::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo)
-		{
-			// No post-processing by default, override and return true if required.
-			return false;
-		}
-
-		//--------------------------------------------------------------
 		void Base::gui_(ofxPreset::Gui::Settings & settings)
 		{
 			auto & parameters = this->getParameters();

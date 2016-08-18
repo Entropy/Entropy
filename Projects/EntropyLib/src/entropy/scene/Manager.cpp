@@ -162,11 +162,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) const
+		bool Manager::postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const
 		{
 			if (this->currentScene)
 			{
-				return this->currentScene->postProcess(srcTexture, dstFbo);
+				if (layout == render::Layout::Back)
+				{
+					return this->currentScene->postProcessBack(srcTexture, dstFbo);
+				}
+				return this->currentScene->postProcessFront(srcTexture, dstFbo);
 			}
 			return false;
 		}

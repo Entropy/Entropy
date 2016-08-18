@@ -22,11 +22,13 @@ namespace entropy
 
 			void beginDraw();
 			void endDraw();
-
-			void render(bool postProcessing, const ofRectangle & bounds);
+			void postProcess();
+			
+			void render(const ofRectangle & bounds);
 
 			const ofTexture & getDrawTexture() const;
 			const ofFbo & getPostFbo() const;
+			const ofTexture & getRenderTexture() const;
 
 			float getWidth() const;
 			float getHeight() const;
@@ -141,6 +143,8 @@ namespace entropy
 			ofFbo fboPost;
 			ofFbo fboTemp[2];
 			ofFbo::Settings fboSettings;
+
+			bool postApplied;
 
 			GLuint defaultVao;
 
