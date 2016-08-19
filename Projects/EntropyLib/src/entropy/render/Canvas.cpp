@@ -402,11 +402,12 @@ namespace entropy
 			}
 			else
 			{
-				ofLogError("Canvas::addWarp") << "Unrecognized warp type " << type;
+				ofLogError(__FUNCTION__) << "Unrecognized warp type " << type;
 				return nullptr;
 			}
 
 			warp->setSize(this->getWidth(), this->getHeight());
+			warp->handleWindowResize(this->screenWidth, this->screenHeight);
 
 			this->warps.push_back(warp);
 
@@ -628,8 +629,8 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
-			auto warpSettings = settings;
-			warpSettings.windowPos = glm::vec2(ofGetWidth() - warpSettings.windowSize.x - kGuiMargin * 3, kGuiMargin);
+			auto warpSettings = ofxPreset::Gui::Settings();
+			warpSettings.windowPos.x = settings.windowPos.x + settings.windowSize.x + kGuiMargin;
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
@@ -637,7 +638,6 @@ namespace entropy
 					auto warp = this->warps[i];
 					auto & paramGroup = this->warpParameters[i];
 					
-					ofxPreset::Gui::SetNextWindow(warpSettings);
 					if (ofxPreset::Gui::BeginWindow(paramGroup.getName(), warpSettings, false, &this->openGuis[i]))
 					{
 						if (ofxPreset::Gui::AddParameter(paramGroup.editing))
@@ -808,6 +808,7 @@ namespace entropy
 						}
 					}
 					ofxPreset::Gui::EndWindow(warpSettings);
+					ofxPreset::Gui::SetNextWindow(warpSettings);
 				}
 			}
 
@@ -1101,9 +1102,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::screenResized(ofResizeEventArgs & args)
 		{
-			// Update viewport.
-			//this->viewport = ofRectangle(0.0f, 0.0f, args.width, args.height);
-
 			this->screenWidth = args.width;
 			this->screenHeight = args.height;
 			
@@ -1115,12 +1113,10 @@ namespace entropy
 				this->fboSettings.height = args.height;
 				this->updateSize();
 			}
-			else
+
+			for (auto warp : this->warps)
 			{
-				for (auto warp : this->warps)
-				{
-					warp->handleWindowResize(args.width, args.height);
-				}
+				warp->handleWindowResize(args.width, args.height);
 			}
 		}
 	}
