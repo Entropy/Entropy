@@ -16,13 +16,11 @@ namespace entropy
 			Image();
 			virtual ~Image();
 
-			void setup();
-			void exit();
+			void exit() override;
 			
-			void gui(ofxPreset::Gui::Settings & settings);
+			void gui(ofxPreset::Gui::Settings & settings) override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void deserialize(const nlohmann::json & json) override;
 
 		protected:
 			bool loadImage(const string & filePath);

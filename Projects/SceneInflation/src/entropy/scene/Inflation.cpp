@@ -9,45 +9,33 @@ namespace entropy
 		//--------------------------------------------------------------
 		Inflation::Inflation()
 			: Base()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Inflation::~Inflation()
-		{
-
-		}
+		{}
 		
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			//ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
-			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			// Marching Cubes
 			gpuMarchingCubes.setup();
 			
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
-			this->getCamera().setDistance(2);
-			this->getCamera().setNearClip(0.01);
-			this->getCamera().setFarClip(6.0);
+			this->cameras[render::Layout::Back].setDistance(2);
+			this->cameras[render::Layout::Back].setNearClip(0.01);
+			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			now = 0;
 
+			/*
 			// Force resize to set FBOs.
 			ofResizeEventArgs args;
-			args.width = GetCanvasWidth();
-			args.height = GetCanvasHeight();
-			this->resize(args);
+			args.width = GetCanvasWidth(render::Layout::Back);
+			args.height = GetCanvasHeight(render::Layout::Back);
+			this->resizeBack(args);
 
 			// Setup shaders
 			shaderBright.load("shaders/vert_full_quad.glsl", "shaders/frag_bright.glsl");
@@ -76,7 +64,7 @@ namespace entropy
 			blurH.linkProgram();
 
 			tonemap.load("shaders/vert_full_quad.glsl", "shaders/frag_tonemap.glsl");
-
+			*/
 		}
 
 		//--------------------------------------------------------------
@@ -85,6 +73,7 @@ namespace entropy
 
 		}
 
+		/*
 		//--------------------------------------------------------------
 		void Inflation::resize(ofResizeEventArgs & args)
 		{
@@ -98,9 +87,10 @@ namespace entropy
 				fboPost[i].allocate(settings);
 			}
 		}
+		*/
 
 		//--------------------------------------------------------------
-		void Inflation::update(double & dt)
+		void Inflation::update(double dt)
 		{
 			if (parameters.runSimulation) {
 				now += ofGetElapsedTimef();
@@ -112,19 +102,21 @@ namespace entropy
 			}
 		}
 
+		/*
 		float gaussian(float x, float mu, float sigma) {
 			auto d = x - mu;
 			auto n = 1.0 / (sqrtf(glm::two_pi<float>()) * sigma);
 			return exp(-d * d / (2.0 * sigma * sigma)) * n;
 		}
+		*/
 
 		//--------------------------------------------------------------
-		void Inflation::drawWorld()
+		void Inflation::drawBackWorld()
 		{
 			//ofDisableDepthTest();
 			ofEnableDepthTest();
-			this->getCamera().setNearClip(0.01);
-			this->getCamera().setFarClip(6.0);
+			this->cameras[render::Layout::Back].setNearClip(0.01);
+			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			if (parameters.render.debug) {
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
@@ -153,7 +145,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Inflation::drawFront()
+		void Inflation::drawFrontOverlay()
 		{
 			ofDrawBitmapString(ofGetFrameRate(), ofGetWidth() - 100, 20);
 
@@ -161,11 +153,13 @@ namespace entropy
 			ofDrawBitmapString(timeToUpdate, ofGetWidth() - 100, 60);
 		}
 
+		/*
 		//--------------------------------------------------------------
 		bool Inflation::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) 
 		{
 			return false;
 		}
+		*/
 
 		//--------------------------------------------------------------
 		void Inflation::gui(ofxPreset::Gui::Settings & settings)

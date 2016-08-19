@@ -1,9 +1,8 @@
 #pragma once
 
+#include "entropy/render/Layout.h"
 #include "entropy/util/App.h"
 #include "entropy/util/GLError.h"
-
-#include <experimental/filesystem>
 
 namespace entropy
 {
@@ -20,27 +19,31 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline shared_ptr<entropy::render::Canvas> GetCanvas()
+	inline shared_ptr<entropy::render::Canvas> GetCanvas(entropy::render::Layout layout)
 	{
-		return GetApp()->getCanvas();
+		if (layout == entropy::render::Layout::Back)
+		{
+			return GetApp()->getCanvasBack();
+		}
+		return GetApp()->getCanvasFront();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasWidth()
+	inline float GetCanvasWidth(entropy::render::Layout layout)
 	{
-		return GetCanvas()->getWidth();
+		return GetCanvas(layout)->getWidth();
 	}
 
 	//--------------------------------------------------------------
-	inline float GetCanvasHeight()
+	inline float GetCanvasHeight(entropy::render::Layout layout)
 	{
-		return GetCanvas()->getHeight();
+		return GetCanvas(layout)->getHeight();
 	}
 
 	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasViewport()
+	inline const ofRectangle & GetCanvasViewport(entropy::render::Layout layout)
 	{
-		return GetCanvas()->getViewport();
+		return GetCanvas(layout)->getViewport();
 	}
 
 	//--------------------------------------------------------------
@@ -103,7 +106,7 @@ namespace entropy
 			static string exportsPathAbs;
 			if (exportsPathAbs.empty())
 			{
-				auto path = std::experimental::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
+				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
 				exportsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return exportsPathAbs;

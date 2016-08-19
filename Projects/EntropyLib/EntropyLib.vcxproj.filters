@@ -668,6 +668,9 @@
     <ClInclude Include="src\entropy\popup\Video.h">
       <Filter>src\entropy\popup</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\render\Layout.h">
+      <Filter>src\entropy\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\entropy\util\Mapping.inl">

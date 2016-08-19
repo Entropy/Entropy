@@ -9,29 +9,16 @@ namespace entropy
 		//--------------------------------------------------------------
 		Example::Example()
 			: Base()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 		
 		//--------------------------------------------------------------
 		Example::~Example()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
 		// Set up your crap here!
 		void Example::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
-			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			ofEnableLighting();
 		}
 		
@@ -39,55 +26,90 @@ namespace entropy
 		// Clean up your crap here!
 		void Example::exit()
 		{
+			
+		}
+
+		//--------------------------------------------------------------
+		// Resize your content here. 
+		// Note that this is not the window size but the canvas size.
+		void Example::resizeBack(ofResizeEventArgs & args)
+		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Resize your content here. 
 		// Note that this is not the window size but the canvas size.
-		void Example::resize(ofResizeEventArgs & args)
+		void Example::resizeFront(ofResizeEventArgs & args)
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void Example::update(double & dt)
+		void Example::update(double dt)
 		{
-			if (this->sphere.getSize().x != this->parameters.sphere.radius || this->sphere.getResolution().x != this->parameters.sphere.resolution)
+			if (this->box.getSize().x != this->parameters.box.size)
 			{
-				this->sphere.set(this->parameters.sphere.radius);
-				light.setPosition(this->sphere.getSize() * 2);
+				this->box.set(this->parameters.box.size);
+				light.setPosition(this->box.getSize() * 2);
 			}
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void Example::drawBack()
+		void Example::drawBackBase()
 		{
 
 		}
 		
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Example::drawWorld()
+		void Example::drawBackWorld()
+		{
+			this->drawScene(true);
+		}
+
+		//--------------------------------------------------------------
+		// Draw 2D elements in the foreground here.
+		void Example::drawBackOverlay()
+		{
+			this->drawOverlay(true, render::Layout::Back);
+		}
+
+		//--------------------------------------------------------------
+		// Draw 2D elements in the background here.
+		void Example::drawFrontBase()
+		{
+
+		}
+
+		//--------------------------------------------------------------
+		// Draw 3D elements here.
+		void Example::drawFrontWorld()
+		{
+			this->drawScene(false);
+		}
+
+		//--------------------------------------------------------------
+		// Draw 2D elements in the foreground here.
+		void Example::drawFrontOverlay()
+		{
+			this->drawOverlay(false, render::Layout::Front);
+		}
+
+		//--------------------------------------------------------------
+		void Example::drawScene(bool filled)
 		{
 			ofPushStyle();
 			{
 				ofEnableDepthTest();
-				material.setDiffuseColor(this->parameters.sphere.color);
+				material.setDiffuseColor(this->parameters.box.color);
 				light.enable();
 				glEnable(GL_CULL_FACE);
-				ofSetColor(this->parameters.sphere.color.get());
+				ofSetColor(this->parameters.box.color.get());
 				material.begin();
-				if (this->parameters.sphere.filled)
-				{
-					this->sphere.draw(OF_MESH_FILL);
-				}
-				else
-				{
-					this->sphere.draw(OF_MESH_WIREFRAME);
-				}
+				this->box.draw(filled ? OF_MESH_FILL : OF_MESH_WIREFRAME);
 				glDisable(GL_CULL_FACE);
 				material.end();
 				light.disable();
@@ -97,18 +119,26 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the foreground here.
-		void Example::drawFront()
+		void Example::drawOverlay(bool filled, render::Layout layout)
 		{
-			static const float kBorderSize = 20.0f;
-			ofSetColor(255, 0, 0, 128);
-			ofDrawRectangle(0.0f, 0.0f, GetCanvasWidth(), kBorderSize);
-			ofSetColor(0, 255, 0, 128);
-			ofDrawRectangle(0.0f, GetCanvasHeight() - kBorderSize, GetCanvasWidth(), kBorderSize);
-			ofSetColor(0, 0, 255, 128);
-			ofDrawRectangle(0.0f, 0.0f, kBorderSize, GetCanvasHeight());
-			ofSetColor(0, 255, 255, 128);
-			ofDrawRectangle(GetCanvasWidth() - kBorderSize, 0.0f, kBorderSize, GetCanvasHeight());
+			ofPushStyle();
+			{
+				filled ? ofFill() : ofNoFill();
+
+				static const auto kBorderSize = 20.0f;
+				const auto canvasWidth = GetCanvasWidth(layout);
+				const auto canvasHeight = GetCanvasHeight(layout);
+
+				ofSetColor(255, 0, 0, 128);
+				ofDrawRectangle(0.0f, 0.0f, canvasWidth, kBorderSize);
+				ofSetColor(0, 255, 0, 128);
+				ofDrawRectangle(0.0f, canvasHeight - kBorderSize, canvasWidth, kBorderSize);
+				ofSetColor(0, 0, 255, 128);
+				ofDrawRectangle(0.0f, 0.0f, kBorderSize, canvasHeight);
+				ofSetColor(0, 255, 255, 128);
+				ofDrawRectangle(canvasWidth - kBorderSize, 0.0f, kBorderSize, canvasHeight);
+			}
+			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------
@@ -118,12 +148,10 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				if (ImGui::CollapsingHeader(this->parameters.sphere.getName().c_str(), nullptr, true, true))
+				if (ImGui::CollapsingHeader(this->parameters.box.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.color);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.filled);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.radius);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.resolution);
+					ofxPreset::Gui::AddParameter(this->parameters.box.color);
+					ofxPreset::Gui::AddParameter(this->parameters.box.size);
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);

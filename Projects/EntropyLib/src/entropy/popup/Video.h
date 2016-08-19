@@ -16,15 +16,13 @@ namespace entropy
 			Video();
 			virtual ~Video();
 
-			void setup();
-			void exit();
+			void exit() override;
 
-			void update(double dt);
+			void update(double dt) override;
 			
-			void gui(ofxPreset::Gui::Settings & settings);
+			void gui(ofxPreset::Gui::Settings & settings) override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void deserialize(const nlohmann::json & json) override;
 
 		protected:
 			bool loadVideo(const string & filePath);

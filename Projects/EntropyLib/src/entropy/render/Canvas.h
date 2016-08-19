@@ -6,6 +6,8 @@
 #include "ofxTextureRecorder.h"
 #include "ofxWarp.h"
 
+#include "Layout.h"
+
 namespace entropy
 {
 	namespace render
@@ -13,18 +15,20 @@ namespace entropy
 		class Canvas
 		{
 		public:
-			Canvas();
+			Canvas(Layout layout);
 			~Canvas();
 
 			void update();
 
 			void beginDraw();
 			void endDraw();
-
-			void render(bool postProcessing);
+			void postProcess();
+			
+			void render(const ofRectangle & bounds);
 
 			const ofTexture & getDrawTexture() const;
 			const ofFbo & getPostFbo() const;
+			const ofTexture & getRenderTexture() const;
 
 			float getWidth() const;
 			float getHeight() const;
@@ -46,8 +50,10 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			Layout getLayout() const;
+
 			const string & getDataPath();
-			const string & getSettingsFilePath();
+			string getSettingsFilePath();
 			string getShaderPath(const string & shaderFile = "");
 			
 			bool loadSettings();
@@ -61,32 +67,17 @@ namespace entropy
 
 			bool keyPressed(ofKeyEventArgs & args);
 
-			void windowResized(ofResizeEventArgs & args);
+			void screenResized(ofResizeEventArgs & args);
 			
 			ofEvent<ofResizeEventArgs> resizeEvent;
 
 			static const int MAX_NUM_WARPS = 8;
 
 		protected:
-			float getScreenWidth() const;
-			float getScreenHeight() const; 
-			
-			void updateConfiguration();
 			void updateSize();
 			void updateStitches();
 
 		protected:
-			struct ConfigParameters
-				: ofParameterGroup
-			{
-				ofParameter<int> screenWidth{ "Screen Width", 1920, 1280, 1920 };
-				ofParameter<int> screenHeight{ "Screen Height", 1080, 720, 1080 };
-				ofParameter<int> numRows{ "Num Rows", 1, 1, 5 };
-				ofParameter<int> numCols{ "Num Cols", 1, 1, 5 };
-
-				PARAM_DECLARE("Configuration", screenWidth, screenHeight, numRows, numCols);
-			};
-
 			struct WarpParameters
 				: ofParameterGroup
 			{
@@ -117,8 +108,6 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ConfigParameters configuration;
-				
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> enabled{ "Enabled", true };
@@ -143,18 +132,20 @@ namespace entropy
 
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Parameters", configuration, bloom, color, fillWindow);
+				PARAM_DECLARE("Canvas", bloom, color, fillWindow);
 			} parameters;
 
-			ConfigParameters editingConfig;
+			Layout layout;
 
 			ofRectangle viewport;
-
+			
 			ofFbo fboDraw;
 			ofFbo fboFog;
 			ofFbo fboPost;
 			ofFbo fboTemp[2];
 			ofFbo::Settings fboSettings;
+
+			bool postApplied;
 
 			GLuint defaultVao;
 
@@ -166,6 +157,9 @@ namespace entropy
 			bool exportFrames;
 			ofxTextureRecorder textureRecorder;
 
+			float screenWidth;
+			float screenHeight;
+			
 			vector<shared_ptr<ofxWarp::WarpBase>> warps;
 			size_t focusedIndex;
 

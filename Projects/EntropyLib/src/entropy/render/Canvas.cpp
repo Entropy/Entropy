@@ -7,9 +7,12 @@ namespace entropy
 	namespace render
 	{
 		//--------------------------------------------------------------
-		Canvas::Canvas()
-			: exportFrames(false)
+		Canvas::Canvas(Layout layout)
+			: layout(layout)
+			, exportFrames(false)
 		{
+			this->parameters.setName((layout == Layout::Back) ? "Canvas Back" : "Canvas Front");
+			
 			// Load post-processing shaders.
 			this->brightnessThresholdShader.load(this->getShaderPath("passthrough_vert.glsl"), this->getShaderPath("brightnessThreshold.frag"));
 
@@ -99,6 +102,9 @@ namespace entropy
 			{
 				this->updateStitches();
 			}
+
+			// Reset post-processing flag, it will be set in postProcess() if called.
+			this->postApplied = false;
 		}
 
 		//--------------------------------------------------------------
@@ -124,43 +130,47 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::render(bool postProcessing)
+		void Canvas::postProcess()
 		{
-			if (!postProcessing)
-			{
-				ofSetColor(255);
-				ofTexture * originalTexture = &fboDraw.getTexture();
+			ofSetColor(255);
 
-				// Scene didn't take care of post-processing, do it here.
-				if (parameters.bloom.enabled) {
-					// Pass 0: Brightness
-					this->fboTemp[0].begin();
+			// Scene didn't take care of post-processing, do it here.
+			if (parameters.bloom.enabled) {
+				// Pass 0: Brightness
+				this->fboTemp[0].begin();
+				{
 					ofClear(0, 255);
 					brightnessThresholdShader.begin();
-					brightnessThresholdShader.setUniformTexture("tex0", *originalTexture, 0);
+					brightnessThresholdShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
 					brightnessThresholdShader.setUniform1f("bright_threshold", parameters.bloom.brightnessThreshold);
-					fullQuad.draw();
+					{
+						fullQuad.draw();
+					}
 					brightnessThresholdShader.end();
-					this->fboTemp[0].end();
+				}
+				this->fboTemp[0].end();
 
+				// Multi-pass Directional Blur.
+				auto texel_size = glm::vec2(1. / float(this->fboDraw.getWidth()), 1. / float(this->fboDraw.getHeight()));
 
-					auto texel_size = glm::vec2(1. / float(this->fboDraw.getWidth()), 1. / float(this->fboDraw.getHeight()));
+				auto w0 = gaussian(0.0, 0.0, parameters.bloom.sigma);
+				auto w1 = gaussian(1.0, 0.0, parameters.bloom.sigma);
+				auto w2 = gaussian(2.0, 0.0, parameters.bloom.sigma);
+				auto w3 = gaussian(3.0, 0.0, parameters.bloom.sigma);
+				auto w4 = gaussian(4.0, 0.0, parameters.bloom.sigma);
+				auto w5 = gaussian(5.0, 0.0, parameters.bloom.sigma);
+				auto w6 = gaussian(6.0, 0.0, parameters.bloom.sigma);
+				auto w7 = gaussian(7.0, 0.0, parameters.bloom.sigma);
+				auto w8 = gaussian(8.0, 0.0, parameters.bloom.sigma);
+				auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
 
-					auto w0 = gaussian(0.0, 0.0, parameters.bloom.sigma);
-					auto w1 = gaussian(1.0, 0.0, parameters.bloom.sigma);
-					auto w2 = gaussian(2.0, 0.0, parameters.bloom.sigma);
-					auto w3 = gaussian(3.0, 0.0, parameters.bloom.sigma);
-					auto w4 = gaussian(4.0, 0.0, parameters.bloom.sigma);
-					auto w5 = gaussian(5.0, 0.0, parameters.bloom.sigma);
-					auto w6 = gaussian(6.0, 0.0, parameters.bloom.sigma);
-					auto w7 = gaussian(7.0, 0.0, parameters.bloom.sigma);
-					auto w8 = gaussian(8.0, 0.0, parameters.bloom.sigma);
-					auto wn = w0 + 2.0 * (w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8);
-
-					for (int i = 0; i < parameters.bloom.numPasses; i++) {
-						// Pass 1: Blur Vertical
-						this->fboTemp[1].begin();
+				for (int i = 0; i < parameters.bloom.numPasses; i++)
+				{
+					// Pass 1: Blur Vertical
+					this->fboTemp[1].begin();
+					{
 						ofClear(0, 255);
+
 						this->blurVertShader.begin();
 						this->blurVertShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
 						this->blurVertShader.setUniform2f("texel_size", texel_size);
@@ -173,13 +183,18 @@ namespace entropy
 						this->blurVertShader.setUniform1f("w6", w6 / wn);
 						this->blurVertShader.setUniform1f("w7", w7 / wn);
 						this->blurVertShader.setUniform1f("w8", w8 / wn);
-						this->fullQuad.draw();
+						{
+							this->fullQuad.draw();
+						}
 						this->blurVertShader.end();
-						this->fboTemp[1].end();
+					}
+					this->fboTemp[1].end();
 
-						// Pass 2: Blur Horizontal
-						this->fboTemp[0].begin();
+					// Pass 2: Blur Horizontal
+					this->fboTemp[0].begin();
+					{
 						ofClear(0, 255);
+
 						this->blurHorzShader.begin();
 						this->blurHorzShader.setUniformTexture("tex0", this->fboTemp[1].getTexture(), 0);
 						this->blurHorzShader.setUniform2f("texel_size", texel_size);
@@ -192,62 +207,77 @@ namespace entropy
 						this->blurHorzShader.setUniform1f("w6", w6 / wn);
 						this->blurHorzShader.setUniform1f("w7", w7 / wn);
 						this->blurHorzShader.setUniform1f("w8", w8 / wn);
-						this->fullQuad.draw();
+						{
+							this->fullQuad.draw();
+						}
 						this->blurHorzShader.end();
-						this->fboTemp[0].end();
 					}
+					this->fboTemp[0].end();
 				}
-
-				this->fboPost.begin();
-				{
-					ofClear(0, 255);
-
-					this->colorCorrectShader.begin();
-					this->colorCorrectShader.setUniform1f("exposureBias", this->parameters.color.exposure);
-					this->colorCorrectShader.setUniform1f("gamma", this->parameters.color.gamma);
-					this->colorCorrectShader.setUniform1f("tonemap_type", this->parameters.color.tonemapping);
-					this->colorCorrectShader.setUniform1f("brightness", this->parameters.color.brightness);
-					this->colorCorrectShader.setUniform1f("contrast", this->parameters.color.contrast);
-					if (this->parameters.bloom.debugBlur) {
-						this->colorCorrectShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
-						this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
-					}
-					else {
-						this->colorCorrectShader.setUniformTexture("tex0", *originalTexture, 0);
-						if (parameters.bloom.enabled) {
-							this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
-						}
-						else {
-							this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
-						}
-					}
-
-					{
-						// Draw full-screen quad.
-						glBindVertexArray(this->defaultVao);
-						glDrawArrays(GL_TRIANGLES, 0, 3);
-					}
-					this->colorCorrectShader.end();
-
-					//this->fboDraw.draw(0, 0);
-				}
-				this->fboPost.end();
 			}
 
-			//const auto & texture = (postProcessing ? this->fboPost.getTexture() : this->fboDraw.getTexture());
+			// Color Correction.
+			this->fboPost.begin();
+			{
+				ofClear(0, 255);
+
+				this->colorCorrectShader.begin();
+				this->colorCorrectShader.setUniform1f("exposureBias", this->parameters.color.exposure);
+				this->colorCorrectShader.setUniform1f("gamma", this->parameters.color.gamma);
+				this->colorCorrectShader.setUniform1f("tonemap_type", this->parameters.color.tonemapping);
+				this->colorCorrectShader.setUniform1f("brightness", this->parameters.color.brightness);
+				this->colorCorrectShader.setUniform1f("contrast", this->parameters.color.contrast);
+				if (this->parameters.bloom.debugBlur)
+				{
+					this->colorCorrectShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);
+					this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
+				}
+				else
+				{
+					this->colorCorrectShader.setUniformTexture("tex0", this->fboDraw.getTexture(), 0);
+					if (parameters.bloom.enabled)
+					{
+						this->colorCorrectShader.setUniformTexture("blurred1", this->fboTemp[0].getTexture(), 1);
+					}
+					else
+					{
+						this->colorCorrectShader.setUniformTexture("blurred1", GL_TEXTURE_2D, 0, 1);
+					}
+				}
+				{
+					// Draw full-screen quad.
+					glBindVertexArray(this->defaultVao);
+					glDrawArrays(GL_TRIANGLES, 0, 3);
+				}
+				this->colorCorrectShader.end();
+			}
+			this->fboPost.end();
+
+			this->postApplied = true;
+		}
+
+		//--------------------------------------------------------------
+		void Canvas::render(const ofRectangle & bounds)
+		{
+			auto & texture = this->getRenderTexture();
 
 			if (this->parameters.fillWindow)
 			{
 				// Draw the fbo texture directly.
-				this->fboPost.getTexture().draw(0, 0);
+				texture.draw(bounds);
 			}
 			else
 			{
-				// Go through warps and fbo texture subsections and draw the whole thing.
-				for (auto i = 0; i < this->warps.size(); ++i)
+				ofPushMatrix();
+				ofTranslate(bounds.x, bounds.y);
 				{
-					this->warps[i]->draw(this->fboPost.getTexture(), this->srcAreas[i]);
+					// Go through warps and fbo texture subsections and draw the whole thing.
+					for (auto i = 0; i < this->warps.size(); ++i)
+					{
+						this->warps[i]->draw(texture, this->srcAreas[i]);
+					}
 				}
+				ofPopMatrix();
 			}
 
 			if (this->exportFrames)
@@ -255,7 +285,7 @@ namespace entropy
 				auto scene = GetSceneManager()->getCurrentScene();
 				if (scene)
 				{
-					this->textureRecorder.save(this->fboPost.getTexture(), scene->getCurrentTimelineFrame());
+					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
 				}
 				else
 				{
@@ -275,6 +305,12 @@ namespace entropy
 		const ofFbo & Canvas::getPostFbo() const
 		{
 			return this->fboPost;
+		}
+
+		//--------------------------------------------------------------
+		const ofTexture & Canvas::getRenderTexture() const
+		{
+			return (this->postApplied ? this->fboPost.getTexture() : this->fboDraw.getTexture());
 		}
 
 		//--------------------------------------------------------------
@@ -314,42 +350,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		float Canvas::getScreenWidth() const
-		{
-			return (this->parameters.configuration.screenWidth * this->parameters.configuration.numCols);
-		}
-
-		//--------------------------------------------------------------
-		float Canvas::getScreenHeight() const
-		{
-			return (this->parameters.configuration.screenHeight * this->parameters.configuration.numRows);
-		}
-
-		//--------------------------------------------------------------
-		void Canvas::updateConfiguration()
-		{
-			if (this->parameters.configuration.screenWidth == this->editingConfig.screenWidth &&
-				this->parameters.configuration.screenHeight == this->editingConfig.screenHeight &&
-				this->parameters.configuration.numCols == this->editingConfig.numCols &&
-				this->parameters.configuration.numRows == this->editingConfig.numRows)
-			{
-				return;
-			}
-
-			this->parameters.configuration.screenWidth = this->editingConfig.screenWidth;
-			this->parameters.configuration.screenHeight = this->editingConfig.screenHeight;
-			this->parameters.configuration.numCols = this->editingConfig.numCols;
-			this->parameters.configuration.numRows = this->editingConfig.numRows;
-
-			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
-			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
-			this->updateSize();
-		}
-
-		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
-			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
+			//ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height;
 			
 			// Re-allocate fbos.
 			this->fboSettings.numSamples = 4;
@@ -422,11 +425,12 @@ namespace entropy
 			}
 			else
 			{
-				ofLogError("Canvas::addWarp") << "Unrecognized warp type " << type;
+				ofLogError(__FUNCTION__) << "Unrecognized warp type " << type;
 				return nullptr;
 			}
 
 			warp->setSize(this->getWidth(), this->getHeight());
+			warp->handleWindowResize(this->screenWidth, this->screenHeight);
 
 			this->warps.push_back(warp);
 
@@ -470,7 +474,7 @@ namespace entropy
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = this->getWidth() / static_cast<float>(numWarps);
+				const auto areaWidth = this->screenWidth / static_cast<float>(numWarps);
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
@@ -483,7 +487,7 @@ namespace entropy
 				//cout << "Stitches: Total is " << this->getScreenWidth() << " with overlap " << totalOverlap;
 
 				// Adjust the fbo width.
-				this->setWidth(this->getScreenWidth() - totalOverlap);
+				this->setWidth(this->screenWidth - totalOverlap);
 
 				//cout << " to new size " << this->getWidth() << endl;
 
@@ -520,7 +524,7 @@ namespace entropy
 		void Canvas::drawGui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Canvas", settings))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings))
 			{
 				if (ImGui::Button("Save"))
 				{
@@ -530,18 +534,6 @@ namespace entropy
 				if (ImGui::Button("Load"))
 				{
 					this->loadSettings();
-				}
-
-				if (ImGui::CollapsingHeader(this->editingConfig.getName().c_str(), nullptr, true, true))
-				{
-					ofxPreset::Gui::AddParameter(this->editingConfig.screenWidth);
-					ofxPreset::Gui::AddParameter(this->editingConfig.screenHeight);
-					ofxPreset::Gui::AddParameter(this->editingConfig.numRows);
-					ofxPreset::Gui::AddParameter(this->editingConfig.numCols);
-					if (ImGui::Button("Apply"))
-					{
-						this->updateConfiguration();
-					}
 				}
 
 				ofxPreset::Gui::AddGroup(this->parameters.bloom, settings);
@@ -660,8 +652,8 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
-			auto warpSettings = settings;
-			warpSettings.windowPos = glm::vec2(ofGetWidth() - warpSettings.windowSize.x - kGuiMargin * 3, kGuiMargin);
+			auto warpSettings = ofxPreset::Gui::Settings();
+			warpSettings.windowPos.x = settings.windowPos.x + settings.windowSize.x + kGuiMargin;
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
@@ -669,7 +661,6 @@ namespace entropy
 					auto warp = this->warps[i];
 					auto & paramGroup = this->warpParameters[i];
 					
-					ofxPreset::Gui::SetNextWindow(warpSettings);
 					if (ofxPreset::Gui::BeginWindow(paramGroup.getName(), warpSettings, false, &this->openGuis[i]))
 					{
 						if (ofxPreset::Gui::AddParameter(paramGroup.editing))
@@ -805,13 +796,13 @@ namespace entropy
 									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeLeft))
 									{
 										// Set current left edge.
-										auto & edgesSelf = warp->getEdges();
+										auto edgesSelf = warp->getEdges();
 										edgesSelf.x = paramGroup.blend.edgeLeft;
 										warp->setEdges(edgesSelf);
 
 										// Set previous right edge.
 										auto warpPrev = this->warps[i - 1];
-										auto & edgesPrev = warpPrev->getEdges();
+										auto edgesPrev = warpPrev->getEdges();
 										edgesPrev.z = paramGroup.blend.edgeLeft;
 										warpPrev->setEdges(edgesPrev);
 
@@ -823,13 +814,13 @@ namespace entropy
 									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeRight))
 									{
 										// Set current right edge.
-										auto & edges = warp->getEdges();
+										auto edges = warp->getEdges();
 										edges.z = paramGroup.blend.edgeRight;
 										warp->setEdges(edges);
 
 										// Set next left edge.
 										auto warpNext = this->warps[i + 1];
-										auto & edgeNext = warpNext->getEdges();
+										auto edgeNext = warpNext->getEdges();
 										edgeNext.x = paramGroup.blend.edgeRight;
 										warpNext->setEdges(edgeNext);
 
@@ -840,6 +831,7 @@ namespace entropy
 						}
 					}
 					ofxPreset::Gui::EndWindow(warpSettings);
+					ofxPreset::Gui::SetNextWindow(warpSettings);
 				}
 			}
 
@@ -915,16 +907,12 @@ namespace entropy
 
 			// Deserialize the parameters.
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
+		}
 
-			// Sync the configuration parameters and update the Canvas size.
-			this->editingConfig.screenWidth = this->parameters.configuration.screenWidth;
-			this->editingConfig.screenHeight = this->parameters.configuration.screenHeight;
-			this->editingConfig.numCols = this->parameters.configuration.numCols;
-			this->editingConfig.numRows = this->parameters.configuration.numRows;
-
-			this->fboSettings.width = this->parameters.configuration.screenWidth * this->parameters.configuration.numCols;
-			this->fboSettings.height = this->parameters.configuration.screenHeight * this->parameters.configuration.numRows;
-			this->updateSize();
+		//--------------------------------------------------------------
+		Layout Canvas::getLayout() const
+		{
+			return this->layout;
 		}
 
 		//--------------------------------------------------------------
@@ -942,14 +930,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & Canvas::getSettingsFilePath()
+		string Canvas::getSettingsFilePath()
 		{
-			static string filePath;
-			if (filePath.empty())
-			{
-				filePath = this->getDataPath();
-				filePath.append("settings.json");
-			}
+			auto filePath = this->getDataPath();
+			filePath.append((this->layout == Layout::Back) ? "Back.json" : "Front.json");
 			return filePath;
 		}
 
@@ -976,7 +960,7 @@ namespace entropy
 			auto file = ofFile(filePath, ofFile::ReadOnly);
 			if (!file.exists())
 			{
-				ofLogWarning("Warp::loadSettings") << "File not found at path " << filePath;
+				ofLogWarning(__FUNCTION__) << "File not found at path " << filePath;
 				return false;
 			}
 
@@ -1139,25 +1123,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::windowResized(ofResizeEventArgs & args)
+		void Canvas::screenResized(ofResizeEventArgs & args)
 		{
-			// Update viewport.
-			//this->viewport = ofRectangle(0.0f, 0.0f, args.width, args.height);
+			this->screenWidth = args.width;
+			this->screenHeight = args.height;
 			
 			if (this->parameters.fillWindow)
 			{
-				//if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
+				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
-				//this->fboSettings.width = args.width;
-				//this->fboSettings.height = args.height;
+				this->fboSettings.width = args.width;
+				this->fboSettings.height = args.height;
 				this->updateSize();
 			}
-			else
+
+			for (auto warp : this->warps)
 			{
-				for (auto warp : this->warps)
-				{
-					warp->handleWindowResize(args.width, args.height);
-				}
+				warp->handleWindowResize(args.width, args.height);
 			}
 		}
 	}

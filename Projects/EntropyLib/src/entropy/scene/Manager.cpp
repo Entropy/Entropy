@@ -117,6 +117,12 @@ namespace entropy
 			{
 				this->currentScene = scene;
 				this->currentScene->setup_();
+
+				for (auto & it : this->cameraControlAreas)
+				{
+					this->currentScene->setCameraControlArea(it.first, it.second);
+				}
+
 				return true;
 			}
 			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
@@ -133,13 +139,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::drawScene()
+		void Manager::drawScene(render::Layout layout)
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->drawBack_();
-				this->currentScene->drawWorld_();
-				this->currentScene->drawFront_();
+				this->currentScene->drawBase_(layout);
+				this->currentScene->drawWorld_(layout);
+				this->currentScene->drawOverlay_(layout);
 			}
 		}
 
@@ -162,11 +168,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Manager::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) const
+		bool Manager::postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const
 		{
 			if (this->currentScene)
 			{
-				return this->currentScene->postProcess(srcTexture, dstFbo);
+				if (layout == render::Layout::Back)
+				{
+					return this->currentScene->postProcessBack(srcTexture, dstFbo);
+				}
+				return this->currentScene->postProcessFront(srcTexture, dstFbo);
 			}
 			return false;
 		}
@@ -181,9 +191,14 @@ namespace entropy
 					this->currentScene->toggleCameraLocked();
 					return true;
 				}
-				if (args.key == 'T')
+				if (args.key == 'B')
 				{
-					this->currentScene->addCameraKeyframe();
+					this->currentScene->addCameraKeyframe(render::Layout::Back);
+					return true;
+				}
+				if (args.key == 'F')
+				{
+					this->currentScene->addCameraKeyframe(render::Layout::Front);
 					return true;
 				}
 			}
@@ -191,11 +206,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Manager::canvasResized(ofResizeEventArgs & args)
+		void Manager::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
+		{
+			this->cameraControlAreas[layout] = controlArea;
+			
+			if (this->currentScene)
+			{
+				this->currentScene->setCameraControlArea(layout, controlArea);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Manager::canvasResized(render::Layout layout, ofResizeEventArgs & args)
 		{
 			if (this->currentScene)
 			{
-				this->currentScene->resize_(args);
+				this->currentScene->resize_(layout, args);
 			}
 		}
 	}

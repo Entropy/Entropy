@@ -9,22 +9,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		Video::Video()
 			: Base(Type::Video)
-		{
-			ENTROPY_POPUP_SETUP_LISTENER;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Video::~Video()
 		{}
-
-		//--------------------------------------------------------------
-		void Video::setup()
-		{
-			ENTROPY_POPUP_EXIT_LISTENER;
-			ENTROPY_POPUP_UPDATE_LISTENER;
-			ENTROPY_POPUP_GUI_LISTENER;
-			ENTROPY_POPUP_SERIALIZATION_LISTENERS;
-		}
 
 		//--------------------------------------------------------------
 		void Video::exit()
@@ -57,10 +46,6 @@ namespace entropy
 				ImGui::Text("Filename: %s", this->fileName.c_str());
 			}
 		}
-
-		//--------------------------------------------------------------
-		void Video::serialize(nlohmann::json & json)
-		{}
 
 		//--------------------------------------------------------------
 		void Video::deserialize(const nlohmann::json & json)

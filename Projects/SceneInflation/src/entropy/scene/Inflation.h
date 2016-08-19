@@ -23,21 +23,22 @@ namespace entropy
 			Inflation();
 			~Inflation();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void exit() override;
 
-			void update(double & dt);
+			//void resizeBack(ofResizeEventArgs & args) override;
 
-			void drawWorld();
-			void drawFront();
+			void update(double dt) override;
 
-			bool postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) override;
+			void drawBackWorld() override;
+			void drawFrontOverlay() override;
 
-			void gui(ofxPreset::Gui::Settings & settings);
+			//bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
+
+			void serialize(nlohmann::json & json) override;
+			void deserialize(const nlohmann::json & json) override;
 
 			double now;
 
@@ -52,7 +53,7 @@ namespace entropy
 			uint64_t timeToSetIso;
 			uint64_t timeToUpdate;
 
-
+			/*
 			// Post Effects
 			ofFbo fboPost[2];
 
@@ -60,6 +61,7 @@ namespace entropy
 			ofShader blurV;
 			ofShader blurH;
 			ofShader tonemap;
+			*/
 
 		protected:
 			BaseParameters & getParameters() override

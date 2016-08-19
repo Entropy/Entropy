@@ -9,21 +9,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		Image::Image()
 			: Base(Type::Image)
-		{
-			ENTROPY_POPUP_SETUP_LISTENER;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Image::~Image()
 		{}
-
-		//--------------------------------------------------------------
-		void Image::setup()
-		{
-			ENTROPY_POPUP_EXIT_LISTENER;
-			ENTROPY_POPUP_GUI_LISTENER;
-			ENTROPY_POPUP_SERIALIZATION_LISTENERS;
-		}
 
 		//--------------------------------------------------------------
 		void Image::exit()
@@ -50,10 +40,6 @@ namespace entropy
 				ImGui::Text("Filename: %s", this->fileName.c_str());
 			}
 		}
-
-		//--------------------------------------------------------------
-		void Image::serialize(nlohmann::json & json)
-		{}
 
 		//--------------------------------------------------------------
 		void Image::deserialize(const nlohmann::json & json)
@@ -115,7 +101,7 @@ namespace entropy
 		void Image::renderContent()
 		{
 			this->image.drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-				this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+									   this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
 		}
 	}
 }

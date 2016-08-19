@@ -8,6 +8,7 @@ int main()
 	settings.setGLVersion(4, 5);
 	settings.width = 1920;
 	settings.height = 1080;
+	settings.resizable = false;
 	settings.multiMonitorFullScreen = true;
 	ofCreateWindow(settings);
 

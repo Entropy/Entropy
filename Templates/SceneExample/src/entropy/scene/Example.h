@@ -18,23 +18,31 @@ namespace entropy
 			Example();
 			~Example();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void exit() override;
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
 
-			void update(double & dt);
+			void update(double dt) override;
 
-			void drawBack();
-			void drawWorld();
-			void drawFront();
+			void drawBackBase() override;
+			void drawBackWorld() override;
+			void drawBackOverlay() override;
 
-			void gui(ofxPreset::Gui::Settings & settings);
+			void drawFrontBase() override;
+			void drawFrontWorld() override;
+			void drawFrontOverlay() override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
+
+			void serialize(nlohmann::json & json) override;
+			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			ofBoxPrimitive sphere;
+			void drawScene(bool filled);
+			void drawOverlay(bool filled, render::Layout layout);
+			
+			ofBoxPrimitive box;
 			ofLight light;
 			ofMaterial material;
 
@@ -49,14 +57,12 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofParameter<bool> filled{ "Filled", false };
-					ofParameter<float> radius{ "Radius", 20.0f, 0.0f, 200.0f };
-					ofParameter<int> resolution{ "Resolution", 16, 3, 64 };
+					ofParameter<float> size{ "Size", 20.0f, 0.0f, 200.0f };
 
-					PARAM_DECLARE("Sphere", color, filled, radius, resolution);
-				} sphere;
+					PARAM_DECLARE("Box", color, size);
+				} box;
 
-				PARAM_DECLARE("Template", sphere);
+				PARAM_DECLARE("Example", box);
 			} parameters;
 		};
 	}
