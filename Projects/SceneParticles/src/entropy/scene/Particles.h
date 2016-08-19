@@ -27,22 +27,18 @@ namespace entropy
 			Particles();
 			~Particles();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
 
-			void update(double & dt);
+			void update(double dt) override;
 
-			void drawBack();
-			void drawWorld();
-			void drawFront();
+			void drawBackWorld() override;
+
+			void gui(ofxPreset::Gui::Settings & settings) override;
+
+			void serialize(nlohmann::json & json) override;
+			void deserialize(const nlohmann::json & json) override;
 
 			void drawSkybox();
-
-			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
 
 			bool saveState(const string & path);
 			bool loadState(const string & path);

@@ -721,6 +721,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		ofEasyCam & Base::getCameraBack()
+		{
+			return this->cameras[render::Layout::Back];
+		}
+		
+		//--------------------------------------------------------------
+		ofEasyCam & Base::getCameraFront()
+		{
+			return this->cameras[render::Layout::Front];
+		}
+
+		//--------------------------------------------------------------
 		void Base::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
 		{
 			this->cameras[layout].setControlArea(controlArea);

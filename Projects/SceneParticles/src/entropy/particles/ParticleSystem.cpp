@@ -74,11 +74,11 @@ namespace nm
 
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
-			//ostringstream oss;
-			//oss << "models/";
-			//oss << Particle::DATA[i].meshName;
-			//ofxObjLoader::load(oss.str(), meshesFill[i]);
-			meshesFill[i] = ofSpherePrimitive(1.0f, 3).getMesh();
+			ostringstream oss;
+			oss << "models/";
+			oss << Particle::DATA[i].meshName;
+			ofxObjLoader::load(oss.str(), meshesFill[i]);
+			//meshesFill[i] = ofSpherePrimitive(1.0f, 3).getMesh();
 			if (i%2 == 0)
 				meshesWire[i] = ofIcoSpherePrimitive(1.0f, 1).getMesh();
 			else

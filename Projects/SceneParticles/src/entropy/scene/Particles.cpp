@@ -15,29 +15,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		Particles::Particles()
 			: Base()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 
 		//--------------------------------------------------------------
 		Particles::~Particles()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
-		// Set up your crap here!
 		void Particles::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
-			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
 			particleSystem.init(environment);
 			photons.init(environment);
@@ -88,7 +74,7 @@ namespace entropy
 			 CheckGLError();
 			
 			 // Set up lighting.
-			 this->lightingSystem.setup(this->getCamera());
+			 this->lightingSystem.setup(this->getCameraBack());
 			 this->lightingSystem.configureShader(this->shader);
 			 this->lightingSystem.setAmbientIntensity(0.5f);
 			 CheckGLError();
@@ -110,23 +96,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Clean up your crap here!
-		void Particles::exit()
-		{
-
-		}
-
-		//--------------------------------------------------------------
-		// Resize your content here.
-		// Note that this is not the window size but the canvas size.
-		void Particles::resize(ofResizeEventArgs & args)
-		{
-
-		}
-
-		//--------------------------------------------------------------
-		// Update your data here, once per frame.
-		void Particles::update(double & dt)
+		void Particles::update(double dt)
 		{
 			photons.update();
 			particleSystem.update();
@@ -158,15 +128,8 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the background here.
-		void Particles::drawBack()
-		{
-
-		}
-
-		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Particles::drawWorld()
+		void Particles::drawBackWorld()
 		{
 			ofDisableAlphaBlending();
 
@@ -183,18 +146,18 @@ namespace entropy
 				this->irradianceMap.bind(2);
 				this->radianceMap.bind(3);
 
-				this->viewUbo.update(this->getCamera());
-				this->lightingSystem.update(this->getCamera());
+				this->viewUbo.update(this->getCameraBack());
+				this->lightingSystem.update(this->getCameraBack());
 
 				ofSetColor(255, 255, 255, 255);
 
 				if (this->debug)
 				{
-					this->lightingSystem.debugDrawFrustum(this->getCamera());
+					this->lightingSystem.debugDrawFrustum(this->getCameraBack());
 
 					this->lightingSystem.debugDrawCulledPointLights();
 					this->lightingSystem.debugDrawClusteredPointLights();
-					this->lightingSystem.debugDrawOccupiedClusters(this->getCamera());
+					this->lightingSystem.debugDrawOccupiedClusters(this->getCameraBack());
 
 					for (auto & light : this->lightingSystem.getPointLights())
 					{
@@ -231,9 +194,9 @@ namespace entropy
 			this->viewUbo.unbind();
 
 			//particleSystem.drawWalls();
-			//glDepthMask(GL_FALSE);
-			//photons.draw();
-			//glDepthMask(GL_TRUE);
+			glDepthMask(GL_FALSE);
+			photons.draw();
+			glDepthMask(GL_TRUE);
 
 			// Restore state.
 			if (GL_TRUE == cullFaceEnabled)
@@ -244,13 +207,6 @@ namespace entropy
 			{
 				glDisable(GL_CULL_FACE);
 			}
-		}
-
-		//--------------------------------------------------------------
-		// Draw 2D elements in the foreground here.
-		void Particles::drawFront()
-		{
-
 		}
 
 		//--------------------------------------------------------------
@@ -275,7 +231,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Add Scene specific GUI windows here.
 		void Particles::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
@@ -336,8 +291,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Do something after the parameters are saved.
-		// You can save other stuff to the same json object here too.
 		void Particles::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
@@ -346,9 +299,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Do something after the parameters are loaded.
-		// You can load your other stuff here from that json object.
-		// You can also set any refresh flags if necessary.
 		void Particles::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
