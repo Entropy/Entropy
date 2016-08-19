@@ -1,0 +1,29 @@
+{
+    "App": {
+        "Back Screen": {
+            "Enabled": "1",
+            "Num Cols": "1",
+            "Num Rows": "1",
+            "Screen Height": "1080",
+            "Screen Width": "1920"
+        },
+        "Background": "0.15674, 0.188407, 0.192157, 1",
+        "Control Screen": {
+            "Enabled": "0",
+            "Preview": {
+                "Back Enabled": "1",
+                "Front Enabled": "1",
+                "Scale": "0.397"
+            },
+            "Screen Height": "1080",
+            "Screen Width": "1920"
+        },
+        "Front Screen": {
+            "Enabled": "0",
+            "Num Cols": "1",
+            "Num Rows": "1",
+            "Screen Height": "1080",
+            "Screen Width": "1920"
+        }
+    }
+}
