@@ -721,6 +721,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
+		{
+			this->cameras[layout].setControlArea(controlArea);
+		}
+
+		//--------------------------------------------------------------
 		void Base::setCameraLocked(bool cameraLocked)
 		{
 			for (auto & it : this->cameraTracks)

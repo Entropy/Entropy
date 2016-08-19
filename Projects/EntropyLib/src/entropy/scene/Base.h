@@ -80,6 +80,8 @@ namespace entropy
 			int getCurrentTimelineFrame();
 
 			// Camera
+			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
+
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
 			bool isCameraLocked() const;

@@ -408,23 +408,42 @@ namespace entropy
 
 			// Resize the window.
 			ofSetWindowShape(totalBounds.width, totalBounds.height);
+
+			// Force call the callback, in case the actual application window doesn't resize.
+			// This happens if there aren't enough screens connected to span the whole thing.
+			auto dummyArgs = ofResizeEventArgs();
+			this->onWindowResized(dummyArgs);
 		}
 
 		//--------------------------------------------------------------
 		void App_::updatePreviews()
 		{
-			// Fit the Canvas previews for the Control screen.
-			this->previewBoundsBack.width = this->boundsControl.getWidth() * this->parameters.controlScreen.preview.scale;
-			this->previewBoundsBack.height = (this->boundsBack.getHeight() * this->previewBoundsBack.width) / this->boundsBack.getWidth();
+			if (this->parameters.controlScreen.enabled)
+			{
+				// Fit the Canvas previews for the Control screen.
+				this->previewBoundsBack.height = this->boundsControl.getHeight() * this->parameters.controlScreen.preview.scale;
+				this->previewBoundsBack.width = this->boundsBack.getWidth() * this->previewBoundsBack.height / this->boundsBack.getHeight();
 
-			this->previewBoundsFront.width = this->previewBoundsBack.width * this->boundsFront.getWidth() / this->boundsBack.getWidth();
-			this->previewBoundsFront.height = (this->boundsFront.getHeight() * this->previewBoundsFront.width) / this->boundsFront.getWidth();
-		
-			this->previewBoundsBack.x = (this->boundsControl.getWidth() - this->previewBoundsBack.getWidth()) * 0.5f;
-			this->previewBoundsFront.x = (this->boundsControl.getWidth() - this->previewBoundsFront.getWidth()) * 0.5f;
+				this->previewBoundsFront.width = this->previewBoundsBack.width * this->boundsFront.getWidth() / this->boundsBack.getWidth();
+				this->previewBoundsFront.height = (this->boundsFront.getHeight() * this->previewBoundsFront.width) / this->boundsFront.getWidth();
 
-			this->previewBoundsBack.y = this->boundsControl.getMinY() + kGuiMargin;
-			this->previewBoundsFront.y = this->previewBoundsBack.getMaxY() + kGuiMargin;
+				this->previewBoundsBack.x = (this->boundsControl.getWidth() - this->previewBoundsBack.getWidth()) * 0.5f;
+				this->previewBoundsFront.x = (this->boundsControl.getWidth() - this->previewBoundsFront.getWidth()) * 0.5f;
+
+				this->previewBoundsBack.y = this->boundsControl.getMinY() + kGuiMargin;
+				this->previewBoundsFront.y = this->previewBoundsBack.getMaxY() + kGuiMargin;
+			
+				// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
+				this->sceneManager->setCameraControlArea(render::Layout::Back, this->previewBoundsBack);
+				this->sceneManager->setCameraControlArea(render::Layout::Front, this->previewBoundsFront);
+			}
+			else
+			{
+				// Set the Scene cameras to use the Canvas bounds as mouse-enabled areas.
+				this->sceneManager->setCameraControlArea(render::Layout::Back, this->boundsBack);
+				this->sceneManager->setCameraControlArea(render::Layout::Front, this->boundsFront);
+
+			}
 		}
 		
 		//--------------------------------------------------------------

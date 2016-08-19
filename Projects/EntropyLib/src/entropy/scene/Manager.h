@@ -40,11 +40,15 @@ namespace entropy
 
 			bool keyPressed(ofKeyEventArgs & args);
 
+			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
+
 			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
 		protected:
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;
+
+			map<render::Layout, ofRectangle> cameraControlAreas;
 		};
 	}
 }

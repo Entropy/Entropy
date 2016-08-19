@@ -117,6 +117,12 @@ namespace entropy
 			{
 				this->currentScene = scene;
 				this->currentScene->setup_();
+
+				for (auto & it : this->cameraControlAreas)
+				{
+					this->currentScene->setCameraControlArea(it.first, it.second);
+				}
+
 				return true;
 			}
 			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
@@ -197,6 +203,17 @@ namespace entropy
 				}
 			}
 			return false;
+		}
+
+		//--------------------------------------------------------------
+		void Manager::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
+		{
+			this->cameraControlAreas[layout] = controlArea;
+			
+			if (this->currentScene)
+			{
+				this->currentScene->setCameraControlArea(layout, controlArea);
+			}
 		}
 
 		//--------------------------------------------------------------
