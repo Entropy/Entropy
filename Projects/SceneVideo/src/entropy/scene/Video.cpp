@@ -8,9 +8,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Video::Video()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 		
 		//--------------------------------------------------------------
 		Video::~Video()
@@ -21,68 +19,35 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			this->dirtyBounds = false;
 		}
 		
 		//--------------------------------------------------------------
 		void Video::exit()
 		{
-
+			this->videoPlayer.close();
 		}
 
 		//--------------------------------------------------------------
-		void Video::resize(ofResizeEventArgs & args)
+		void Video::resizeBack(ofResizeEventArgs & args)
 		{
 			this->dirtyBounds = true;
 		}
 
 		//--------------------------------------------------------------
-		void Video::update(double & dt)
+		void Video::resizeFront(ofResizeEventArgs & args)
 		{
+			this->dirtyBounds = true;
+		}
+
+		//--------------------------------------------------------------
+		void Video::update(double dt)
+		{
+			this->layout = static_cast<render::Layout>(this->parameters.layout.get());
+			
 			if (this->dirtyBounds)
 			{
-				const auto contentMode = static_cast<ContentMode>(this->parameters.contentMode.get());
-				if (contentMode == ContentMode::Center)
-				{
-					this->drawBounds.setFromCenter(GetCanvasWidth() * 0.5f, GetCanvasHeight() * 0.5f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
-				}
-				else if (contentMode == ContentMode::TopLeft)
-				{
-					this->drawBounds.set(0.0f, 0.0f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
-				}
-				else if (contentMode == ContentMode::ScaleToFill)
-				{
-					this->drawBounds.set(0.0f, 0.0f, GetCanvasWidth(), GetCanvasHeight());
-				}
-				else
-				{
-					const auto canvasRatio = GetCanvasWidth() / GetCanvasHeight();
-					const auto videoRatio = this->videoPlayer.getWidth() / this->videoPlayer.getHeight();
-
-					if (!(canvasRatio > videoRatio) ^ !(contentMode == ContentMode::ScaleAspectFit))
-					{
-						this->drawBounds.width = GetCanvasWidth();
-						this->drawBounds.height = this->drawBounds.width / videoRatio;
-						this->drawBounds.x = 0.0f;
-						this->drawBounds.y = (GetCanvasHeight() - this->drawBounds.height) * 0.5f;
-					}
-					else
-					{
-						this->drawBounds.height = GetCanvasHeight();
-						this->drawBounds.width = this->drawBounds.height * videoRatio;
-						this->drawBounds.y = 0.0f;
-						this->drawBounds.x = (GetCanvasWidth() - this->drawBounds.width) * 0.5f;
-					}
-				}
-
-				this->dirtyBounds = false;
+				this->updateBounds();
 			}
 
 			this->videoPlayer.update();
@@ -93,11 +58,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::drawBack()
+		void Video::drawBackBase()
 		{
-			if (this->videoPlayer.isLoaded())
+			if (this->layout == render::Layout::Back)
 			{
-				this->videoPlayer.draw(this->drawBounds.x, this->drawBounds.y, this->drawBounds.width, this->drawBounds.height);
+				this->drawVideo();
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Video::drawFrontBase()
+		{
+			if (this->layout == render::Layout::Front)
+			{
+				this->drawVideo();
 			}
 		}
 
@@ -120,15 +94,25 @@ namespace entropy
 					ImGui::Text("File: %s", this->fileName.c_str());
 				}
 
-				static vector<string> contentModes;
-				if (contentModes.empty())
+				ImGui::Text("Layout");
+				static vector<string> layouts
+				{ 
+					"Back", 
+					"Front" 
+				};
+				if (ofxPreset::Gui::AddRadio(this->parameters.layout, layouts, 2))
 				{
-					contentModes.push_back("Center");
-					contentModes.push_back("Top Left");
-					contentModes.push_back("Scale To Fill");
-					contentModes.push_back("Scale Aspect Fill");
-					contentModes.push_back("Scale Aspect Fit");
+					this->dirtyBounds = true;
 				}
+
+				static vector<string> contentModes
+				{ 
+					"Center", 
+					"Top Left", 
+					"Scale To Fill", 
+					"Scale Aspect Fill", 
+					"Scale Aspect Fit" 
+				};
 				if (ImGui::Button("Content Mode..."))
 				{
 					ImGui::OpenPopup("Content Modes");
@@ -178,12 +162,6 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}
-
-		//--------------------------------------------------------------
-		void Video::serialize(nlohmann::json & json)
-		{
-
-		}
 		
 		//--------------------------------------------------------------
 		void Video::deserialize(const nlohmann::json & json)
@@ -226,6 +204,58 @@ namespace entropy
 			this->fileName = file.getFileName();
 
 			return true;
+		}
+
+		//--------------------------------------------------------------
+		void Video::drawVideo()
+		{
+			if (this->videoPlayer.isLoaded())
+			{
+				this->videoPlayer.draw(this->drawBounds.x, this->drawBounds.y, this->drawBounds.width, this->drawBounds.height);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Video::updateBounds()
+		{
+			const auto canvasWidth = GetCanvasWidth(layout);
+			const auto canvasHeight = GetCanvasHeight(layout);
+
+			const auto contentMode = static_cast<ContentMode>(this->parameters.contentMode.get());
+			if (contentMode == ContentMode::Center)
+			{
+				this->drawBounds.setFromCenter(canvasWidth * 0.5f, canvasHeight * 0.5f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
+			}
+			else if (contentMode == ContentMode::TopLeft)
+			{
+				this->drawBounds.set(0.0f, 0.0f, this->videoPlayer.getWidth(), this->videoPlayer.getHeight());
+			}
+			else if (contentMode == ContentMode::ScaleToFill)
+			{
+				this->drawBounds.set(0.0f, 0.0f, canvasWidth, canvasHeight);
+			}
+			else
+			{
+				const auto canvasRatio = canvasWidth / canvasHeight;
+				const auto videoRatio = this->videoPlayer.getWidth() / this->videoPlayer.getHeight();
+
+				if (!(canvasRatio > videoRatio) ^ !(contentMode == ContentMode::ScaleAspectFit))
+				{
+					this->drawBounds.width = canvasWidth;
+					this->drawBounds.height = this->drawBounds.width / videoRatio;
+					this->drawBounds.x = 0.0f;
+					this->drawBounds.y = (canvasHeight - this->drawBounds.height) * 0.5f;
+				}
+				else
+				{
+					this->drawBounds.height = canvasHeight;
+					this->drawBounds.width = this->drawBounds.height * videoRatio;
+					this->drawBounds.y = 0.0f;
+					this->drawBounds.x = (canvasWidth - this->drawBounds.width) * 0.5f;
+				}
+			}
+
+			this->dirtyBounds = false;
 		}
 	}
 }

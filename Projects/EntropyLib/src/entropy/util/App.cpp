@@ -390,19 +390,22 @@ namespace entropy
 		{
 			// Calculate the bounds per screen.
 			ofRectangle totalBounds;
+
+			this->boundsControl = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.controlScreen.screenWidth, this->parameters.controlScreen.screenHeight);
 			if (this->parameters.controlScreen.enabled)
 			{
-				this->boundsControl = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.controlScreen.screenWidth, this->parameters.controlScreen.screenHeight);
 				totalBounds.growToInclude(this->boundsControl);
 			}
+
+			this->boundsBack = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.backScreen.screenWidth * this->parameters.backScreen.numCols, this->parameters.backScreen.screenHeight * this->parameters.backScreen.numRows);
 			if (this->parameters.backScreen.enabled)
 			{
-				this->boundsBack = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.backScreen.screenWidth * this->parameters.backScreen.numCols, this->parameters.backScreen.screenHeight * this->parameters.backScreen.numRows);
 				totalBounds.growToInclude(this->boundsBack);
 			}
+
+			this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.frontScreen.screenWidth * this->parameters.frontScreen.numCols, this->parameters.frontScreen.screenHeight * this->parameters.frontScreen.numRows);
 			if (this->parameters.frontScreen.enabled)
 			{
-				this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.frontScreen.screenWidth * this->parameters.frontScreen.numCols, this->parameters.frontScreen.screenHeight * this->parameters.frontScreen.numRows);
 				totalBounds.growToInclude(this->boundsFront);
 			}
 

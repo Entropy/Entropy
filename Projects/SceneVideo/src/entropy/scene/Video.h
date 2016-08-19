@@ -2,6 +2,7 @@
 
 #include "ofxWMFVideoPlayer.h"
 
+#include "entropy/render/Layout.h"
 #include "entropy/scene/Base.h"
 
 namespace entropy
@@ -29,27 +30,33 @@ namespace entropy
 			Video();
 			~Video();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void exit() override;
 
-			void update(double & dt);
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
 
-			void drawBack();
+			void update(double dt) override;
 
-			void gui(ofxPreset::Gui::Settings & settings);
+			void drawBackBase() override;
+			void drawFrontBase() override;
 
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
+
+			void deserialize(const nlohmann::json & json) override;
 
 		protected:
 			bool loadVideo(const string & filePath);
+			void drawVideo();
 
 			ofxWMFVideoPlayer videoPlayer;
 			string fileName;
 
+			void updateBounds();
 			ofRectangle drawBounds;
 			bool dirtyBounds;
+
+			render::Layout layout;
 
 			virtual BaseParameters & getParameters() override
 			{
@@ -59,6 +66,7 @@ namespace entropy
 			struct : BaseParameters
 			{
 				ofParameter<string> videoPath{"Video Path", ""};
+				ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 				ofParameter<int> contentMode{ "Content Mode", (int)ContentMode::Center, (int)ContentMode::Center, (int)ContentMode::ScaleAspectFit };
 		
                 struct : ofParameterGroup
