@@ -19,27 +19,36 @@ namespace entropy
 			Survey();
 			~Survey();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void exit() override;
 
-			void update(double & dt);
+			void drawBackWorld() override;
+			void drawFrontWorld() override;
 
-			void drawBack();
-			void drawWorld();
-			void drawFront();
-
-			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
 
 		protected:
+			struct LayoutParameters : ofParameterGroup
+			{
+				ofParameter<bool> renderBoss{ "Render BOSS", true };
+				ofParameter<bool> renderDes{ "Render DES", false };
+				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 20.0f };
+				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
+				ofParameter<bool> useSprites{ "Use Sprites", true };
+
+				PARAM_DECLARE("Back", renderBoss, renderDes, scale, pointSize, useSprites);
+			};
+
+			LayoutParameters backParameters;
+			LayoutParameters frontParameters;
+
+			survey::DataSet dataSetBoss;
+			survey::DataSet dataSetDes;
+
 			ofShader spriteShader;
 			ofTexture texture;
 
-			entropy::survey::DataSet dataSetBoss;
-			entropy::survey::DataSet dataSetDes;
+			void drawDataSet(LayoutParameters & parameters);
 
 		protected:
 			BaseParameters & getParameters() override
@@ -47,19 +56,7 @@ namespace entropy
 				return this->parameters;
 			}
 
-			struct : BaseParameters
-			{
-				struct : ofParameterGroup
-				{
-					ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 20.0f };
-					ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 32.0f };
-					ofParameter<bool> useSprites{ "Use Sprites", true };
-
-					PARAM_DECLARE("Render", scale, pointSize, useSprites);
-				} render;
-
-				PARAM_DECLARE("Survey", render);
-			} parameters;
+			BaseParameters parameters;
 		};
 	}
 }

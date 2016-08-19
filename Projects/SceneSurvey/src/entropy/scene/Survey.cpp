@@ -9,33 +9,27 @@ namespace entropy
 		//--------------------------------------------------------------
 		Survey::Survey()
 			: Base()
-		{
-			ENTROPY_SCENE_SETUP_LISTENER;
-		}
+		{}
 		
 		//--------------------------------------------------------------
 		Survey::~Survey()
-		{
-
-		}
+		{}
 
 		//--------------------------------------------------------------
 		void Survey::setup()
 		{
-			ENTROPY_SCENE_EXIT_LISTENER;
-			ENTROPY_SCENE_RESIZE_LISTENER;
-			ENTROPY_SCENE_UPDATE_LISTENER;
-			ENTROPY_SCENE_DRAW_BACK_LISTENER;
-			ENTROPY_SCENE_DRAW_WORLD_LISTENER;
-			ENTROPY_SCENE_DRAW_FRONT_LISTENER;
-			ENTROPY_SCENE_GUI_LISTENER;
-			ENTROPY_SCENE_SERIALIZATION_LISTENERS;
-
 			// Load data.
-			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 1);
-			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 2);
+			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 10);
+			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
 
-			// Add DataSet parameters to the group (for serialization and ofxTimeline mappings).
+			// Set ofParameterGroup names.
+			this->parameters.setName("Survey");
+			this->backParameters.setName("Back");
+			this->frontParameters.setName("Front");
+			
+			// Add extra parameters to the group (for serialization and ofxTimeline mappings).
+			this->parameters.add(this->backParameters);
+			this->parameters.add(this->frontParameters);
 			this->parameters.add(this->dataSetBoss.parameters);
 			this->parameters.add(this->dataSetDes.parameters);
 
@@ -53,74 +47,56 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Survey::exit()
 		{
+			this->dataSetBoss.clear();
+			this->dataSetDes.clear();
 
-		}
-
-		//--------------------------------------------------------------
-		void Survey::resize(ofResizeEventArgs & args)
-		{
-
-		}
-
-		//--------------------------------------------------------------
-		void Survey::update(double & dt)
-		{
-
-		}
-
-		//--------------------------------------------------------------
-		void Survey::drawBack()
-		{
-
+			texture.clear();
 		}
 		
 		//--------------------------------------------------------------
-		void Survey::drawWorld()
+		void Survey::drawBackWorld()
+		{
+			this->drawDataSet(this->backParameters);
+		}
+
+		//--------------------------------------------------------------
+		void Survey::drawFrontWorld()
+		{
+			this->drawDataSet(this->frontParameters);
+		}
+
+		//--------------------------------------------------------------
+		void Survey::drawDataSet(LayoutParameters & parameters)
 		{
 			glEnable(GL_POINT_SMOOTH);
-			glPointSize(this->parameters.render.pointSize);
+			glPointSize(parameters.pointSize);
 
 			ofPushMatrix();
-			ofScale(this->parameters.render.scale);
+			ofScale(parameters.scale);
 			{
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				ofDisableDepthTest();
-					
-				if (this->parameters.render.useSprites) {
+
+				if (parameters.useSprites) {
 					this->spriteShader.begin();
 					this->spriteShader.setUniformTexture("uTex0", texture, 1);
-					this->spriteShader.setUniform1f("uPointSize", this->parameters.render.pointSize);
+					this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
 					ofEnablePointSprites();
 				}
 				else {
-					glPointSize(this->parameters.render.pointSize);
+					glPointSize(parameters.pointSize);
 				}
 
-				//if (this->parameters.boss.fragments > 0)
-				//{
-				//	int total = 0;
-				//	for (int i = 0; i < this->parameters.boss.fragments; ++i)
-				//	{
-				//		total += this->dataSetBoss.counts[i];
-				//	}
-				//	ofSetColor(ofColor::red);
-				//	this->dataSetBoss.vboMesh.getVbo().draw(GL_POINTS, 0, total);
-				//}
+				if (parameters.renderBoss)
+				{
+					this->dataSetBoss.draw();
+				}
+				if (parameters.renderDes)
+				{
+					this->dataSetDes.draw();
+				}
 
-				//if (this->parameters.des.fragments > 0)
-				//{
-				//	int total = 0;
-				//	for (int i = 0; i < this->parameters.des.fragments; ++i)
-				//	{
-				//		total += this->dataSetDes.counts[i];
-				//	}
-				//	ofSetColor(ofColor::blue);
-				//	this->dataSetDes.vboMesh.getVbo().draw(GL_POINTS, 0, total);
-				//}
-				this->dataSetBoss.draw();
-				this->dataSetDes.draw();
-
-				if (this->parameters.render.useSprites) {
+				if (parameters.useSprites) {
 					ofDisablePointSprites();
 					this->spriteShader.end();
 				}
@@ -134,35 +110,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Survey::drawFront()
-		{
-
-		}
-
-		//--------------------------------------------------------------
 		void Survey::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				ofxPreset::Gui::AddGroup(this->parameters.render, settings);
-
 				this->dataSetBoss.gui(settings);
 				this->dataSetDes.gui(settings);
+
+				ofxPreset::Gui::AddGroup(this->backParameters, settings);
+				ofxPreset::Gui::AddGroup(this->frontParameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
-		}
-
-		//--------------------------------------------------------------
-		void Survey::serialize(nlohmann::json & json)
-		{
-
-		}
-		
-		//--------------------------------------------------------------
-		void Survey::deserialize(const nlohmann::json & json)
-		{
-
 		}
 	}
 }
