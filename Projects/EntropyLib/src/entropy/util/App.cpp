@@ -254,7 +254,7 @@ namespace entropy
 					this->canvasFront->render(this->boundsFront);
 				}
 			}
-
+			
 			// Control screen.
 			if (this->parameters.controlScreen.enabled)
 			{
@@ -422,10 +422,10 @@ namespace entropy
 			{
 				// Fit the Canvas previews for the Control screen.
 				this->previewBoundsBack.height = this->boundsControl.getHeight() * this->parameters.controlScreen.preview.scale;
-				this->previewBoundsBack.width = this->boundsBack.getWidth() * this->previewBoundsBack.height / this->boundsBack.getHeight();
+				this->previewBoundsBack.width = this->canvasBack->getWidth() * this->previewBoundsBack.height / this->canvasBack->getHeight();
 
-				this->previewBoundsFront.width = this->previewBoundsBack.width * this->boundsFront.getWidth() / this->boundsBack.getWidth();
-				this->previewBoundsFront.height = (this->boundsFront.getHeight() * this->previewBoundsFront.width) / this->boundsFront.getWidth();
+				this->previewBoundsFront.width = this->previewBoundsBack.width * this->canvasFront->getWidth() / this->canvasBack->getWidth();
+				this->previewBoundsFront.height = (this->canvasFront->getHeight() * this->previewBoundsFront.width) / this->canvasFront->getWidth();
 
 				this->previewBoundsBack.x = (this->boundsControl.getWidth() - this->previewBoundsBack.getWidth()) * 0.5f;
 				this->previewBoundsFront.x = (this->boundsControl.getWidth() - this->previewBoundsFront.getWidth()) * 0.5f;
@@ -538,12 +538,16 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onCanvasBackResized(ofResizeEventArgs & args)
 		{
+			this->updatePreviews();
+
 			this->sceneManager->canvasResized(render::Layout::Back, args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onCanvasFrontResized(ofResizeEventArgs & args)
 		{
+			this->updatePreviews();
+			
 			this->sceneManager->canvasResized(render::Layout::Front, args);
 		}
 

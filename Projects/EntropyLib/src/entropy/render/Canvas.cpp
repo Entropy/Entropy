@@ -335,7 +335,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::updateSize()
 		{
-			ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height << endl;
+			//ofLogNotice(__FUNCTION__) << "FBO dimensions " << this->fboSettings.width << " x " << this->fboSettings.height;
 			
 			// Re-allocate fbos.
 			this->fboDraw.allocate(this->fboSettings);
