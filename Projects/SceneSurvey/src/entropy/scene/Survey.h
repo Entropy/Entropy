@@ -34,9 +34,8 @@ namespace entropy
 				ofParameter<bool> renderDes{ "Render DES", false };
 				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 20.0f };
 				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
-				ofParameter<bool> useSprites{ "Use Sprites", true };
 
-				PARAM_DECLARE("Back", renderBoss, renderDes, scale, pointSize, useSprites);
+				PARAM_DECLARE("Back", renderBoss, renderDes, scale, pointSize);
 			};
 
 			LayoutParameters backParameters;

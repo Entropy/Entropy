@@ -24,44 +24,39 @@ namespace entropy
 		void DataSet::setup(const std::string & name, const std::string & format, size_t startIdx, size_t count)
 		{
 			this->parameters.setName(name);
-			this->parameters.fragments.setMax(count);
 
 			this->clear();
 
 			// Load the data one fragment at a time.
-			std::vector<glm::vec3> vertices;
-			std::vector<float> masses;
-			this->counts.resize(count);
 			for (int i = 0; i < count; ++i)
 			{
 				char filename[256];
 				sprintf(filename, format.c_str(), (i + startIdx + 1));
 				const auto filePath = GetCurrentSceneAssetsPath(filename);
-				this->counts[i] = this->loadFragment(filePath, vertices, masses);
+				this->loadFragment(filePath, this->points);
 			}
 
+			// Sort the data points by radius.
+			std::sort(this->points.begin(), this->points.end(), [](const glm::vec4 & a, const glm::vec4 & b) -> bool
+			{
+				return (a.z < b.z);
+			});
+
 			// Upload everything to the vbo.
-			this->vbo.setVertexData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
-			this->vbo.setAttributeData(MASS_ATTRIBUTE, masses.data(), 1, masses.size(), GL_STATIC_DRAW, 0);
+			this->vbo.setVertexData((float *)(this->points.data()), 4, this->points.size(), GL_STATIC_DRAW, sizeof(glm::vec4));
 		}
 		
 		//--------------------------------------------------------------
 		void DataSet::clear()
 		{
-			this->fragments.clear();
-			this->counts.clear();
-
-			for (int i = 0; i < MAX_FRAGMENTS; ++i)
-			{
-				this->enabled[i] = false;
-			}
+			this->points.clear();
 
 			this->vbo.clear();
 			this->vboDirty = false;
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::loadFragment(const string & filePath, vector<glm::vec3> & vertices, vector<float> & masses)
+		size_t DataSet::loadFragment(const string & filePath, vector<glm::vec4> & points)
 		{
 			static const int stride = 1;
 
@@ -86,32 +81,37 @@ namespace entropy
 			massesDataSet->read(massesData.data());
 
 			// Combine the data into a single struct.
-			std::vector<Point> points(coordsData.size());
+			// x == longitude
+			// y == latitude
+			// z == radius
+			// w == mass
 			for (int i = 0; i < coordsData.size(); ++i)
 			{
-				points[i] = { coordsData[i].x, coordsData[i].y, coordsData[i].z, massesData[i] };
+				points.push_back(glm::vec4(ofDegToRad(coordsData[i].x), ofDegToRad(coordsData[i].y), coordsData[i].z, massesData[i]));
 			}
 
-			// Sort the data points by radius.
-			std::sort(points.begin(), points.end(), [](const Point & a, const Point & b) -> bool
-			{
-				return (a.radius < b.radius);
-			});
+			return coordsData.size();
 
-			// Convert the position data to Cartesian coordinates and store all data in the passed vectors.
-			int startIdx = vertices.size();
-			vertices.resize(startIdx + points.size());
-			masses.resize(startIdx + massesData.size());
-			for (int i = 0; i < points.size(); ++i)
-			{
-				int idx = startIdx + i;
-				vertices[idx].x = points[i].radius * cos(ofDegToRad(points[i].latitude)) * cos(ofDegToRad(points[i].longitude));
-				vertices[idx].y = points[i].radius * cos(ofDegToRad(points[i].latitude)) * sin(ofDegToRad(points[i].longitude));
-				vertices[idx].z = points[i].radius * sin(ofDegToRad(points[i].latitude));
-				masses[idx] = massesData[i];
-			}
+			//// Sort the data points by radius.
+			//std::sort(points.begin(), points.end(), [](const glm::vec4 & a, const glm::vec4 & b) -> bool
+			//{
+			//	return (a.z < b.z);
+			//});
 
-			return points.size();
+			//// Convert the position data to Cartesian coordinates and store all data in the passed vectors.
+			//int startIdx = vertices.size();
+			//vertices.resize(startIdx + points.size());
+			//masses.resize(startIdx + massesData.size());
+			//for (int i = 0; i < points.size(); ++i)
+			//{
+			//	int idx = startIdx + i;
+			//	vertices[idx].x = points[i].radius * cos(ofDegToRad(points[i].latitude)) * cos(ofDegToRad(points[i].longitude));
+			//	vertices[idx].y = points[i].radius * cos(ofDegToRad(points[i].latitude)) * sin(ofDegToRad(points[i].longitude));
+			//	vertices[idx].z = points[i].radius * sin(ofDegToRad(points[i].latitude));
+			//	masses[idx] = massesData[i];
+			//}
+
+			//return points.size();
 		}
 
 		//--------------------------------------------------------------
@@ -128,14 +128,8 @@ namespace entropy
 		{
 			ofSetColor(this->parameters.color.get());
 
-			int total = 0;
-			for (int i = 0; i < this->parameters.fragments; ++i)
-			{
-				total += this->counts[i];
-			}
-
-			int startIdx = ofMap(this->parameters.minDistance, 0.0f, 1.0f, 0, total, true);
-			int endIdx = ofMap(this->parameters.maxDistance, 0.0f, 1.0f, 0, total, true);
+			int startIdx = ofMap(this->parameters.minDistance, 0.0f, 1.0f, 0, this->points.size(), true);
+			int endIdx = ofMap(this->parameters.maxDistance, 0.0f, 1.0f, 0, this->points.size(), true);
 
 			this->vbo.draw(GL_POINTS, startIdx, endIdx - startIdx + 1);
 		}
@@ -145,7 +139,6 @@ namespace entropy
 		{
 			if (ImGui::CollapsingHeader(this->parameters.getName().c_str(), nullptr, true, true))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.fragments);					
 				ofxPreset::Gui::AddRange("Distance", this->parameters.minDistance, this->parameters.maxDistance);
 			}
 		}

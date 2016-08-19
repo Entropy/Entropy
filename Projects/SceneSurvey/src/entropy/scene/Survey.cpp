@@ -37,11 +37,7 @@ namespace entropy
 			entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
 
 			// Load the shader.
-			this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
-			this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
-			this->spriteShader.bindAttribute(entropy::survey::DataSet::MASS_ATTRIBUTE, "mass");
-			this->spriteShader.bindDefaults();
-			this->spriteShader.linkProgram();
+			this->spriteShader.load("shaders/sprite");
 		}
 		
 		//--------------------------------------------------------------
@@ -68,42 +64,30 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Survey::drawDataSet(LayoutParameters & parameters)
 		{
-			glEnable(GL_POINT_SMOOTH);
-			glPointSize(parameters.pointSize);
-
 			ofPushMatrix();
 			ofScale(parameters.scale);
 			{
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				ofDisableDepthTest();
 
-				if (parameters.useSprites) {
-					this->spriteShader.begin();
-					this->spriteShader.setUniformTexture("uTex0", texture, 1);
-					this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
-					ofEnablePointSprites();
-				}
-				else {
-					glPointSize(parameters.pointSize);
-				}
-
-				if (parameters.renderBoss)
+				this->spriteShader.begin();
+				this->spriteShader.setUniformTexture("uTex0", texture, 1);
+				this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
+				ofEnablePointSprites();
 				{
-					this->dataSetBoss.draw();
-				}
-				if (parameters.renderDes)
-				{
-					this->dataSetDes.draw();
-				}
 
-				if (parameters.useSprites) {
-					ofDisablePointSprites();
-					this->spriteShader.end();
+					if (parameters.renderBoss)
+					{
+						this->dataSetBoss.draw();
+					}
+					if (parameters.renderDes)
+					{
+						this->dataSetDes.draw();
+					}
 				}
-				else {
-					glPointSize(1.0f);
-				}
-
+				ofDisablePointSprites();
+				this->spriteShader.end();
+				
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 			ofPopMatrix();

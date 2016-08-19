@@ -10,11 +10,6 @@ namespace entropy
 		class DataSet
 		{
 		public:
-			enum ExtraAttributes
-			{
-				MASS_ATTRIBUTE = 5,
-			};
-
 			DataSet();
 			~DataSet();
 
@@ -33,30 +28,17 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ofParameter<int> fragments{ "Fragments", 1, 0, MAX_FRAGMENTS };
 				ofParameter<float> minDistance{ "Min Distance", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> maxDistance{ "Max Distance", 0.5f, 0.0f, 1.0f };
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
-				PARAM_DECLARE("DataSet", fragments, minDistance, maxDistance, color);
+				PARAM_DECLARE("DataSet", minDistance, maxDistance, color);
 			} parameters;
 
 		protected:
-			typedef struct
-			{
-				float longitude;
-				float latitude;
-				float radius;
-				float mass;
-				uint32_t fragment;
-				ofIndexType index;
-			} Point;
+			size_t loadFragment(const string & filePath, std::vector<glm::vec4> & points);
 
-			size_t loadFragment(const string & filePath, std::vector<glm::vec3> & vertices, std::vector<float> & masses);
-
-			std::vector<Point> fragments;
-			std::vector<size_t> counts;
-			bool enabled[MAX_FRAGMENTS];
+			std::vector<glm::vec4> points;
 
 			ofVbo vbo;
 			bool vboDirty;
