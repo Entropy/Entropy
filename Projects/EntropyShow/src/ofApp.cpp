@@ -1,6 +1,11 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/scene/CMB.h"
+#include "entropy/scene/Example.h"
+#include "entropy/scene/Inflation.h"
+#include "entropy/scene/Particles.h"
+#include "entropy/scene/Survey.h"
 #include "entropy/scene/Video.h"
 
 //--------------------------------------------------------------
@@ -8,11 +13,14 @@ void ofApp::setup()
 {
 	ofBackground(ofColor::black);
 
-	// Add Scenes to the Manager.
-	auto sceneManager = entropy::GetSceneManager();
-	auto sceneVideo = make_shared<entropy::scene::Video>();
-	sceneManager->addScene(sceneVideo);
-	sceneManager->setCurrentScene(sceneVideo->getName());
+	// Add all Scenes to the Playlist.
+	auto playlist = entropy::GetPlaylist();
+	playlist->addScene(make_shared<entropy::scene::CMB>());
+	playlist->addScene(make_shared<entropy::scene::Example>());
+	playlist->addScene(make_shared<entropy::scene::Inflation>());
+	playlist->addScene(make_shared<entropy::scene::Particles>());
+	playlist->addScene(make_shared<entropy::scene::Survey>());
+	playlist->addScene(make_shared<entropy::scene::Video>());
 }
 
 //--------------------------------------------------------------

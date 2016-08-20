@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
+    <ProjectGuid>{E2C983B0-C898-4513-A571-CD633830FC1F}</ProjectGuid>
     <RootNamespace>SceneParticlesLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

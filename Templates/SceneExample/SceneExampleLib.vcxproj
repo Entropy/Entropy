@@ -25,7 +25,7 @@
     <ClInclude Include="src\entropy\scene\Example.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
+    <ProjectGuid>{68E1CF70-4E98-4685-8A96-589E1073E797}</ProjectGuid>
     <RootNamespace>SceneExampleLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

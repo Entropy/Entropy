@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
+    <ProjectGuid>{426A8CA4-2C29-46C3-B14A-EA1DF58EB707}</ProjectGuid>
     <RootNamespace>SceneCMBLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

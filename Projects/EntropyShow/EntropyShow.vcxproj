@@ -53,6 +53,10 @@
     <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
     <Import Project="..\SceneVideo\SceneVideoLib.props" />
     <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\SceneCMB\SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -60,6 +64,10 @@
     <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
     <Import Project="..\SceneVideo\SceneVideoLib.props" />
     <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\SceneCMB\SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -67,6 +75,10 @@
     <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
     <Import Project="..\SceneVideo\SceneVideoLib.props" />
     <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\SceneCMB\SceneCMBLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -74,6 +86,10 @@
     <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
     <Import Project="..\SceneVideo\SceneVideoLib.props" />
     <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\SceneCMB\SceneCMBLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -120,6 +136,7 @@
     </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
@@ -145,6 +162,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
@@ -172,6 +190,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
@@ -198,6 +217,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Command>%(Command)
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
 if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </PostBuildEvent>
@@ -215,6 +235,18 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\Projects\EntropyLib\EntropyLib.vcxproj">
       <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Templates\SceneExample\SceneExampleLib.vcxproj">
+      <Project>{68e1cf70-4e98-4685-8a96-589e1073e797}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SceneCMB\SceneCMBLib.vcxproj">
+      <Project>{426a8ca4-2c29-46c3-b14a-ea1df58eb707}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SceneInflation\SceneInflationLib.vcxproj">
+      <Project>{47faed23-8a9b-48eb-9f1b-92a152f7e070}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SceneParticles\SceneParticlesLib.vcxproj">
+      <Project>{e2c983b0-c898-4513-a571-cd633830fc1f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SceneSurvey\SceneSurveyLib.vcxproj">
       <Project>{cb3f0a24-afe0-46d5-a08e-224654c42a55}</Project>
