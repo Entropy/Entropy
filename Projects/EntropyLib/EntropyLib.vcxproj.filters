@@ -4,9 +4,6 @@
     <ClCompile Include="src\entropy\scene\Base.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\scene\Manager.cpp">
-      <Filter>src\entropy\scene</Filter>
-    </ClCompile>
     <ClCompile Include="src\entropy\render\Canvas.cpp">
       <Filter>src\entropy\render</Filter>
     </ClCompile>
@@ -223,6 +220,9 @@
     <ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.cpp">
       <Filter>addons\ofxPreset\src\ofxPreset</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\scene\Playlist.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -363,9 +363,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Base.h">
-      <Filter>src\entropy\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entropy\scene\Manager.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\render\Canvas.h">
@@ -670,6 +667,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\render\Layout.h">
       <Filter>src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\scene\Playlist.h">
+      <Filter>src\entropy\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

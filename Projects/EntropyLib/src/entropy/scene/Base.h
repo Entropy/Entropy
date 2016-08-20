@@ -13,6 +13,8 @@ namespace entropy
 {
 	namespace scene
 	{
+		static const string kPresetDefaultName = "_default";
+		
 		class Base
 		{
 		public:
@@ -70,10 +72,13 @@ namespace entropy
 			string getPresetPath(const string & preset = "");
 			string getCurrentPresetPath(const string & file = "");
 
+			const vector<string> & getPresets() const;
 			const string & getCurrentPresetName() const;
 
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
+
+			ofEvent<string> presetLoadedEvent;
 
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);

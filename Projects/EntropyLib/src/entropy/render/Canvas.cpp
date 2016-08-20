@@ -282,7 +282,7 @@ namespace entropy
 
 			if (this->exportFrames)
 			{
-				auto scene = GetSceneManager()->getCurrentScene();
+				auto scene = GetCurrentScene();
 				if (scene)
 				{
 					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
@@ -552,7 +552,7 @@ namespace entropy
 				{
 					if (ImGui::Checkbox("Export", &this->exportFrames))
 					{
-						auto scene = GetSceneManager()->getCurrentScene();
+						auto scene = GetCurrentScene();
 						if (scene)
 						{
 							if (this->exportFrames)
