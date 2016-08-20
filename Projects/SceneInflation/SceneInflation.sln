@@ -1,12 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openframeworksLib", "..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj", "{5837595D-ACA9-485C-8E76-729040CE4B0B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntropyLib", "..\EntropyLib\EntropyLib.vcxproj", "{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationLib", "SceneInflationLib.vcxproj", "{CB3F0A24-AFE0-46D5-A08E-224654C42A55}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationLib", "SceneInflationLib.vcxproj", "{47FAED23-8A9B-48EB-9F1B-92A152F7E070}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5837595D-ACA9-485C-8E76-729040CE4B0B} = {5837595D-ACA9-485C-8E76-729040CE4B0B}
 		{F6008D6A-6D39-4B68-840E-E7AC8ED855DA} = {F6008D6A-6D39-4B68-840E-E7AC8ED855DA}
@@ -38,14 +38,14 @@ Global
 		{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}.Release|Win32.Build.0 = Release|Win32
 		{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}.Release|x64.ActiveCfg = Release|x64
 		{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}.Release|x64.Build.0 = Release|x64
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Debug|Win32.Build.0 = Debug|Win32
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Debug|x64.ActiveCfg = Debug|x64
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Debug|x64.Build.0 = Debug|x64
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Release|Win32.ActiveCfg = Release|Win32
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Release|Win32.Build.0 = Release|Win32
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Release|x64.ActiveCfg = Release|x64
-		{CB3F0A24-AFE0-46D5-A08E-224654C42A55}.Release|x64.Build.0 = Release|x64
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Debug|Win32.ActiveCfg = Debug|Win32
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Debug|Win32.Build.0 = Debug|Win32
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Debug|x64.ActiveCfg = Debug|x64
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Debug|x64.Build.0 = Debug|x64
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Release|Win32.ActiveCfg = Release|Win32
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Release|Win32.Build.0 = Release|Win32
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Release|x64.ActiveCfg = Release|x64
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070}.Release|x64.Build.0 = Release|x64
 		{7FD42DF7-442E-479A-BA76-D0022F99702A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7FD42DF7-442E-479A-BA76-D0022F99702A}.Debug|Win32.Build.0 = Debug|Win32
 		{7FD42DF7-442E-479A-BA76-D0022F99702A}.Debug|x64.ActiveCfg = Debug|x64

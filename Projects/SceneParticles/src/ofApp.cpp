@@ -9,11 +9,10 @@ void ofApp::setup()
 	ofBackground(ofColor::black);
 //	ofEnableGLDebugLog();
 
-	// Add Scenes to the Manager.
-	auto manager = entropy::GetSceneManager();
-	auto scene = make_shared<entropy::scene::Particles>();
-	manager->addScene(scene);
-	manager->setCurrentScene(scene->getName());
+	// Add Scene to the Playlist.
+	auto playlist = entropy::GetPlaylist();
+	playlist->addScene(make_shared<entropy::scene::Particles>());
+	playlist->previewScene();
 }
 
 //--------------------------------------------------------------

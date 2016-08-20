@@ -20,6 +20,8 @@ namespace entropy
 			bool removeScene(shared_ptr<Base> scene);
 			bool removeScene(const string & name);
 
+			void previewScene();
+
 			shared_ptr<Base> getScene(const string & name);
 			template<typename SceneType>
 			shared_ptr<SceneType> getScene(const string & name);

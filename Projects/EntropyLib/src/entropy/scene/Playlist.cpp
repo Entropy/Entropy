@@ -72,6 +72,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Playlist::previewScene()
+		{
+			// Just start the first scene in the map.
+			this->setCurrentScene(this->scenes.begin()->first);
+		}
+
+		//--------------------------------------------------------------
 		shared_ptr<Base> Playlist::getScene(const string & name)
 		{
 			try
@@ -277,93 +284,99 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Playlist::drawGui(ofxPreset::Gui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Playlist", settings))
+			if (this->scenes.size() > 1)
 			{
-				if (ImGui::Button("Save"))
+				ofxPreset::Gui::SetNextWindow(settings);
+				if (ofxPreset::Gui::BeginWindow("Playlist", settings))
 				{
-					this->saveSettings();
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Load"))
-				{
-					this->loadSettings();
-				}
-
-				if (ImGui::Button("Add Track..."))
-				{
-					ImGui::OpenPopup("Tracks");
-					ImGui::SameLine();
-				}
-				if (ImGui::BeginPopup("Tracks"))
-				{
-					for (auto & it : this->shortNames)
+					if (ImGui::Button("Save"))
 					{
-						if (ImGui::Selectable(it.first.c_str()))
-						{
-							this->addTrack(it.first, kPresetDefaultName);
-						}
+						this->saveSettings();
 					}
-					ImGui::EndPopup();
-				}
-				if (!this->tracks.empty())
-				{
 					ImGui::SameLine();
-					if (ImGui::Button("Remove Track"))
+					if (ImGui::Button("Load"))
 					{
-						this->removeTrack();
+						this->loadSettings();
 					}
-				}
 
-				if (ImGui::CollapsingHeader("Tracks", nullptr, true, true))
-				{
-					for (int i = 0; i < this->tracks.size(); ++i)
+					if (ImGui::Button("Add Track..."))
 					{
-						const auto savedCurrTrack = this->currentTrack;
-						if (i == savedCurrTrack)
+						ImGui::OpenPopup("Tracks");
+						ImGui::SameLine();
+					}
+					if (ImGui::BeginPopup("Tracks"))
+					{
+						for (auto & it : this->shortNames)
 						{
-							ImGui::PushStyleColor(ImGuiCol_Text, ImColor(ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]));
-						}
-						ImGui::PushID(i);
-						ImGui::AlignFirstTextHeightToWidgets(); 
-						ImGui::Text("%d", i);
-						ImGui::SameLine(40);
-						ImGui::Text(this->tracks[i].first.c_str());
-						ImGui::SameLine(120);
-						ImGui::AlignFirstTextHeightToWidgets();
-						ImGui::Text(this->tracks[i].second.c_str());
-						ImGui::SameLine(200);
-						ImGui::PushItemWidth(-1);
-						if (i == savedCurrTrack)
-						{
-							ImGui::PopStyleColor();
-						}
-						if (i == savedCurrTrack)
-						{
-							if (ImGui::Button("Stop"))
+							if (ImGui::Selectable(it.first.c_str()))
 							{
-								this->stopTrack();
+								this->addTrack(it.first, kPresetDefaultName);
 							}
 						}
-						else
+						ImGui::EndPopup();
+					}
+					if (!this->tracks.empty())
+					{
+						ImGui::SameLine();
+						if (ImGui::Button("Remove Track"))
 						{
-							if (ImGui::Button("Play"))
-							{
-								this->playTrack(i);
-							}
+							this->removeTrack();
 						}
-						ImGui::PopItemWidth();
-						ImGui::PopID();
+					}
+
+					if (ImGui::CollapsingHeader("Tracks", nullptr, true, true))
+					{
+						for (int i = 0; i < this->tracks.size(); ++i)
+						{
+							const auto savedCurrTrack = this->currentTrack;
+							if (i == savedCurrTrack)
+							{
+								ImGui::PushStyleColor(ImGuiCol_Text, ImColor(ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]));
+							}
+							ImGui::PushID(i);
+							ImGui::AlignFirstTextHeightToWidgets();
+							ImGui::Text("%d", i);
+							ImGui::SameLine(40);
+							ImGui::Text(this->tracks[i].first.c_str());
+							ImGui::SameLine(120);
+							ImGui::AlignFirstTextHeightToWidgets();
+							ImGui::Text(this->tracks[i].second.c_str());
+							ImGui::SameLine(200);
+							ImGui::PushItemWidth(-1);
+							if (i == savedCurrTrack)
+							{
+								ImGui::PopStyleColor();
+							}
+							if (i == savedCurrTrack)
+							{
+								if (ImGui::Button("Stop"))
+								{
+									this->stopTrack();
+								}
+							}
+							else
+							{
+								if (ImGui::Button("Play"))
+								{
+									this->playTrack(i);
+								}
+							}
+							ImGui::PopItemWidth();
+							ImGui::PopID();
+						}
 					}
 				}
+				ofxPreset::Gui::EndWindow(settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
 			
 			if (this->currentScene)
 			{
-				// Move to the next column for the Scene specific gui windows.
-				settings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
-				settings.windowSize = glm::vec2(0.0f);
+				if (this->scenes.size() > 1)
+				{
+					// Move to the next column for the Scene specific gui windows.
+					settings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
+					settings.windowSize = glm::vec2(0.0f);
+				}
 
 				this->currentScene->gui_(settings);
 			}
