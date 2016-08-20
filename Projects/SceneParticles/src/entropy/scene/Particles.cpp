@@ -38,6 +38,7 @@ namespace entropy
 				particleSystem.addParticle(v);
 			}
 #else
+			ofSeedRandom();
 			for (unsigned i = 0; i < 4000; ++i)
 			{
 				ofVec3f position(
@@ -62,7 +63,7 @@ namespace entropy
 			 this->shader.printActiveUniformBlocks();
 			 CheckGLError();
 			
-			 this->skyboxShader.load(this->getDataPath("shaders/skybox"));
+			 /*this->skyboxShader.load(this->getDataPath("shaders/skybox"));
 			 glGenVertexArrays(1, &this->defaultVao);
 			 CheckGLError();
 			
@@ -92,7 +93,7 @@ namespace entropy
 			 this->radianceMap.loadDDSTexture(this->getDataPath("textures/output_pmrem.dds"));
 			 CheckGLError();
 			
-			 glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+			 glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);*/
 		}
 
 		//--------------------------------------------------------------
@@ -100,7 +101,8 @@ namespace entropy
 		{
 			photons.update();
 			particleSystem.update();
-
+			
+			/*
 			auto & pointLights = this->lightingSystem.getPointLights();
 			auto & photons = this->photons.getPosnsRef();
 			// Remove extra point lights.
@@ -124,13 +126,14 @@ namespace entropy
 				//cout << "color is " << light.color << endl;
 				this->lightingSystem.addPointLight(light);
 				cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
-			}
+			}*/
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
 		void Particles::drawBackWorld()
 		{
+			/*
 			ofDisableAlphaBlending();
 
 			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
@@ -191,13 +194,14 @@ namespace entropy
 				this->irradianceMap.unbind(2);
 				this->radianceMap.unbind(3);
 			}
-			this->viewUbo.unbind();
+			this->viewUbo.unbind();*/
 
 			//particleSystem.drawWalls();
 			glDepthMask(GL_FALSE);
 			photons.draw();
 			glDepthMask(GL_TRUE);
 
+			/*
 			// Restore state.
 			if (GL_TRUE == cullFaceEnabled)
 			{
@@ -206,7 +210,7 @@ namespace entropy
 			else
 			{
 				glDisable(GL_CULL_FACE);
-			}
+			}*/
 		}
 
 		//--------------------------------------------------------------
