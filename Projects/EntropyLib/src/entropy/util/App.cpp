@@ -136,13 +136,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<entropy::render::Canvas> App_::getCanvasBack() const
+		shared_ptr<render::Canvas> App_::getCanvasBack() const
 		{
 			return this->canvasBack;
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<entropy::render::Canvas> App_::getCanvasFront() const
+		shared_ptr<render::Canvas> App_::getCanvasFront() const
 		{
 			return this->canvasFront;
 		}
@@ -176,7 +176,7 @@ namespace entropy
 		{
 			return this->guiSettings.mouseOverGui;
 		}
-		
+
 		//--------------------------------------------------------------
 		bool App_::isOverlayVisible() const
 		{
@@ -254,7 +254,7 @@ namespace entropy
 					this->canvasFront->render(this->boundsFront);
 				}
 			}
-			
+
 			// Control screen.
 			if (this->parameters.controlScreen.enabled)
 			{

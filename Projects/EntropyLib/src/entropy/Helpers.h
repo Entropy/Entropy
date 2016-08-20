@@ -137,7 +137,7 @@ namespace entropy
 	//--------------------------------------------------------------
 	inline string GetCurrentSceneAssetsPath(const string & file = "")
 	{
-		auto currentScene = GetSceneManager()->getCurrentScene();
+		auto currentScene = GetCurrentScene();
 		if (currentScene)
 		{
 			return currentScene->getAssetsPath(file);

@@ -16,8 +16,8 @@ namespace entropy
 			App_();
 			~App_();
 
-			shared_ptr<entropy::render::Canvas> getCanvasBack() const;
-			shared_ptr<entropy::render::Canvas> getCanvasFront() const;
+			shared_ptr<render::Canvas> getCanvasBack() const;
+			shared_ptr<render::Canvas> getCanvasFront() const;
 			shared_ptr<scene::Playlist> getPlaylist() const;
 
 			const ofRectangle & getBoundsControl() const;
@@ -58,8 +58,8 @@ namespace entropy
 			void updatePreviews();
 
 		protected:
-			shared_ptr<entropy::render::Canvas> canvasBack;
-			shared_ptr<entropy::render::Canvas> canvasFront;
+			shared_ptr<render::Canvas> canvasBack;
+			shared_ptr<render::Canvas> canvasFront;
 			shared_ptr<scene::Playlist> playlist;
 
 			ofRectangle boundsControl;
@@ -122,6 +122,6 @@ namespace entropy
 			bool overlayVisible;
 		};
 
-		typedef entropy::util::Singleton<App_> App;
+		typedef util::Singleton<App_> App;
 	}
 }
