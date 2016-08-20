@@ -11,7 +11,8 @@
       <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes</Command>
+      <Command>%(Command)
+robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">

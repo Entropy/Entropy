@@ -6,8 +6,6 @@ namespace entropy
 {
 	namespace scene
 	{
-		static const string kPresetDefaultName = "_default";
-
 		//--------------------------------------------------------------
 		Base::Base()
 		{}
@@ -327,7 +325,7 @@ namespace entropy
 				settings.mouseOverGui |= popUpSettings.mouseOverGui;
 			}
 
-			// Add a GUI window for the Base parameters.
+			// Add a gui window for the Base parameters.
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 			{
@@ -525,6 +523,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		const vector<string> & Base::getPresets() const
+		{
+			return this->presets;
+		}
+
+		//--------------------------------------------------------------
 		const string & Base::getCurrentPresetName() const
 		{
 			return this->currPreset;
@@ -555,6 +559,8 @@ namespace entropy
 			this->timeline.loadTracksFromFolder(presetPath);
 
 			this->currPreset = presetName;
+
+			this->presetLoadedEvent.notify(this->currPreset);
 
 			return true;
 		}

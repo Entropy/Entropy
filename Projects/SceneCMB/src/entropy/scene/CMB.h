@@ -29,20 +29,15 @@ namespace entropy
 			CMB();
 			~CMB();
 
-			void setup();
-			void exit();
-			void resize(ofResizeEventArgs & args);
+			void setup() override;
+			void resizeBack(ofResizeEventArgs & args) override;
 
-			void update(double & dt);
+			void update(double dt) override;
 
-			void drawBack();
-			void drawWorld();
-			void drawFront();
+			void drawBackWorld() override;
+			void drawBackOverlay() override;
 
-			void gui(ofxPreset::Gui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			void gui(ofxPreset::Gui::Settings & settings) override;
 
 		protected:
 			void drawPool();

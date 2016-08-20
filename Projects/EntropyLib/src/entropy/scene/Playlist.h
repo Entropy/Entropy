@@ -10,25 +10,34 @@ namespace entropy
 {
 	namespace scene
 	{
-		class Manager
+		class Playlist
 		{
 		public:
-			Manager();
-			~Manager();
+			Playlist();
+			~Playlist();
 
 			bool addScene(shared_ptr<Base> scene);
 			bool removeScene(shared_ptr<Base> scene);
 			bool removeScene(const string & name);
 
+			void previewScene();
+
 			shared_ptr<Base> getScene(const string & name);
 			template<typename SceneType>
 			shared_ptr<SceneType> getScene(const string & name);
 
-			shared_ptr<Base> getCurrentScene();
+			shared_ptr<Base> getCurrentScene() const;
 			template<typename SceneType>
 			shared_ptr<SceneType> getCurrentScene();
 
-			bool setCurrentScene(const string & name);
+			const string & getCurrentPresetName() const;
+
+			void addTrack(const string & sceneName, const string & presetName);
+			void removeTrack();
+
+			bool playTrack(size_t index);
+			bool stopTrack();
+			size_t getCurrentTrack() const;
 
 			void update(double dt);
 
@@ -44,9 +53,28 @@ namespace entropy
 
 			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
+			const string & getDataPath();
+			const string & getSettingsFilePath();
+
+			bool loadSettings();
+			bool saveSettings();
+
+			void serialize(nlohmann::json & json);
+			void deserialize(const nlohmann::json & json);
+
 		protected:
+			bool setCurrentScene(const string & name);
+			bool setCurrentPreset(const string & name);
+			void unsetCurrent();
+
 			map<string, shared_ptr<Base>> scenes;
 			shared_ptr<Base> currentScene;
+
+			map<string, string> shortNames;
+			vector<pair<string, string>> tracks;
+			size_t currentTrack;
+
+			ofEventListener presetLoadedListener;
 
 			map<render::Layout, ofRectangle> cameraControlAreas;
 		};

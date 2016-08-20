@@ -35,7 +35,7 @@ namespace entropy
 			this->copyBuffer.allocate(this->dimensions.x * this->dimensions.y * this->dimensions.z * 2 * 4, GL_STATIC_DRAW);
 
 			// Build a mesh to render a quad.
-			const auto origin = glm::vec3(0.0f, GetCanvasHeight() - this->dimensions.y, 0.0f);
+			const auto origin = glm::vec3(0.0f, GetCanvasHeight(render::Layout::Back) - this->dimensions.y, 0.0f);
 
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 

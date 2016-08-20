@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
+    <ProjectGuid>{47FAED23-8A9B-48EB-9F1B-92A152F7E070}</ProjectGuid>
     <RootNamespace>SceneInflationLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

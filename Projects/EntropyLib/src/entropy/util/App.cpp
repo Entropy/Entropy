@@ -15,16 +15,16 @@ namespace entropy
 			// Instantiate attributes.
 			this->canvasBack = make_shared<render::Canvas>(render::Layout::Back);
 			this->canvasFront = make_shared<render::Canvas>(render::Layout::Front);
-			this->sceneManager = make_shared<scene::Manager>();
+			this->playlist = make_shared<scene::Playlist>();
 
 			// Setup gui.
 			this->imGui.setup();
 			this->overlayVisible = true;
-			
+
 			// Register events listeners.
 			ofAddListener(ofEvents().update, this, &App_::onUpdate);
 			ofAddListener(ofEvents().draw, this, &App_::onDraw);
-			
+
 			ofAddListener(ofEvents().keyPressed, this, &App_::onKeyPressed);
 			ofAddListener(ofEvents().keyReleased, this, &App_::onKeyReleased);
 
@@ -74,7 +74,7 @@ namespace entropy
 			// Reset pointers.
 			this->canvasBack.reset();
 			this->canvasFront.reset();
-			this->sceneManager.reset();
+			this->playlist.reset();
 		}
 
 		//--------------------------------------------------------------
@@ -136,21 +136,21 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<entropy::render::Canvas> App_::getCanvasBack() const
+		shared_ptr<render::Canvas> App_::getCanvasBack() const
 		{
 			return this->canvasBack;
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<entropy::render::Canvas> App_::getCanvasFront() const
+		shared_ptr<render::Canvas> App_::getCanvasFront() const
 		{
 			return this->canvasFront;
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<entropy::scene::Manager> App_::getSceneManager() const
+		shared_ptr<scene::Playlist> App_::getPlaylist() const
 		{
-			return this->sceneManager;
+			return this->playlist;
 		}
 
 		//--------------------------------------------------------------
@@ -176,7 +176,7 @@ namespace entropy
 		{
 			return this->guiSettings.mouseOverGui;
 		}
-		
+
 		//--------------------------------------------------------------
 		bool App_::isOverlayVisible() const
 		{
@@ -199,7 +199,7 @@ namespace entropy
 			this->canvasFront->update();
 
 			auto dt = ofGetLastFrameTime();
-			this->sceneManager->update(dt);
+			this->playlist->update(dt);
 		}
 		
 		//--------------------------------------------------------------
@@ -213,12 +213,12 @@ namespace entropy
 				// Draw the content.
 				this->canvasBack->beginDraw();
 				{
-					this->sceneManager->drawScene(render::Layout::Back);
+					this->playlist->drawScene(render::Layout::Back);
 				}
 				this->canvasBack->endDraw();
 
 				// Post-process the content, either directly in the Scene or in the Canvas.
-				const auto postProcessing = this->sceneManager->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
+				const auto postProcessing = this->playlist->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
 				if (!postProcessing)
 				{
 					this->canvasBack->postProcess();
@@ -237,12 +237,12 @@ namespace entropy
 				// Draw the content.
 				this->canvasFront->beginDraw();
 				{
-					this->sceneManager->drawScene(render::Layout::Front);
+					this->playlist->drawScene(render::Layout::Front);
 				}
 				this->canvasFront->endDraw();
 
 				// Post-process the content, either directly in the Scene or in the Canvas.
-				const auto postProcessing = this->sceneManager->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
+				const auto postProcessing = this->playlist->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
 				if (!postProcessing)
 				{
 					this->canvasFront->postProcess();
@@ -254,7 +254,7 @@ namespace entropy
 					this->canvasFront->render(this->boundsFront);
 				}
 			}
-			
+
 			// Control screen.
 			if (this->parameters.controlScreen.enabled)
 			{
@@ -297,12 +297,12 @@ namespace entropy
 
 				this->canvasBack->drawGui(this->guiSettings);
 				this->canvasFront->drawGui(this->guiSettings);
-				this->sceneManager->drawGui(this->guiSettings);
+				this->playlist->drawGui(this->guiSettings);
 			}
 			this->imGui.end();
 
 			// Draw the non-gui overlay.
-			this->sceneManager->drawOverlay(this->guiSettings);
+			this->playlist->drawOverlay(this->guiSettings);
 		}
 
 		//--------------------------------------------------------------
@@ -435,17 +435,16 @@ namespace entropy
 
 				this->previewBoundsBack.y = this->boundsControl.getMinY() + kGuiMargin;
 				this->previewBoundsFront.y = this->previewBoundsBack.getMaxY() + kGuiMargin;
-			
+
 				// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
-				this->sceneManager->setCameraControlArea(render::Layout::Back, this->previewBoundsBack);
-				this->sceneManager->setCameraControlArea(render::Layout::Front, this->previewBoundsFront);
+				this->playlist->setCameraControlArea(render::Layout::Back, this->previewBoundsBack);
+				this->playlist->setCameraControlArea(render::Layout::Front, this->previewBoundsFront);
 			}
 			else
 			{
 				// Set the Scene cameras to use the Canvas bounds as mouse-enabled areas.
-				this->sceneManager->setCameraControlArea(render::Layout::Back, this->boundsBack);
-				this->sceneManager->setCameraControlArea(render::Layout::Front, this->boundsFront);
-
+				this->playlist->setCameraControlArea(render::Layout::Back, this->boundsBack);
+				this->playlist->setCameraControlArea(render::Layout::Front, this->boundsFront);
 			}
 		}
 		
@@ -469,7 +468,7 @@ namespace entropy
 			{
 				return;
 			}
-			if (this->sceneManager->keyPressed(args))
+			if (this->playlist->keyPressed(args))
 			{
 				return;
 			}
@@ -543,15 +542,15 @@ namespace entropy
 		{
 			this->updatePreviews();
 
-			this->sceneManager->canvasResized(render::Layout::Back, args);
+			this->playlist->canvasResized(render::Layout::Back, args);
 		}
 
 		//--------------------------------------------------------------
 		void App_::onCanvasFrontResized(ofResizeEventArgs & args)
 		{
 			this->updatePreviews();
-			
-			this->sceneManager->canvasResized(render::Layout::Front, args);
+
+			this->playlist->canvasResized(render::Layout::Front, args);
 		}
 
 		//--------------------------------------------------------------

@@ -13,40 +13,6 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline shared_ptr<entropy::scene::Manager> GetSceneManager()
-	{
-		return GetApp()->getSceneManager();
-	}
-
-	//--------------------------------------------------------------
-	inline shared_ptr<entropy::render::Canvas> GetCanvas(entropy::render::Layout layout)
-	{
-		if (layout == entropy::render::Layout::Back)
-		{
-			return GetApp()->getCanvasBack();
-		}
-		return GetApp()->getCanvasFront();
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasWidth(entropy::render::Layout layout)
-	{
-		return GetCanvas(layout)->getWidth();
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasHeight(entropy::render::Layout layout)
-	{
-		return GetCanvas(layout)->getHeight();
-	}
-
-	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasViewport(entropy::render::Layout layout)
-	{
-		return GetCanvas(layout)->getViewport();
-	}
-
-	//--------------------------------------------------------------
 	inline string GetSharedDataPath(bool absolute = true)
 	{
 		static string dataPath;
@@ -54,7 +20,7 @@ namespace entropy
 		{
 			dataPath = ofFilePath::addTrailingSlash("../../../Resources/data");
 		}
-		
+
 		if (absolute)
 		{
 			static string dataPathAbs;
@@ -65,7 +31,7 @@ namespace entropy
 			}
 			return dataPathAbs;
 		}
-				
+
 		return dataPath;
 	}
 
@@ -77,7 +43,7 @@ namespace entropy
 		{
 			assetsPath = ofFilePath::addTrailingSlash("../../../Resources/assets");
 		}
-		
+
 		if (absolute)
 		{
 			static string assetsPathAbs;
@@ -116,9 +82,49 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
+	inline shared_ptr<render::Canvas> GetCanvas(render::Layout layout)
+	{
+		if (layout == entropy::render::Layout::Back)
+		{
+			return GetApp()->getCanvasBack();
+		}
+		return GetApp()->getCanvasFront();
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasWidth(render::Layout layout)
+	{
+		return GetCanvas(layout)->getWidth();
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasHeight(render::Layout layout)
+	{
+		return GetCanvas(layout)->getHeight();
+	}
+
+	//--------------------------------------------------------------
+	inline const ofRectangle & GetCanvasViewport(render::Layout layout)
+	{
+		return GetCanvas(layout)->getViewport();
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<scene::Playlist> GetPlaylist()
+	{
+		return GetApp()->getPlaylist();
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<scene::Base> GetCurrentScene()
+	{
+		return GetPlaylist()->getCurrentScene();
+	}
+
+	//--------------------------------------------------------------
 	inline string GetCurrentSceneDataPath(const string & file = "")
 	{
-		auto currentScene = GetSceneManager()->getCurrentScene();
+		auto currentScene = GetCurrentScene();
 		if (currentScene)
 		{
 			return currentScene->getDataPath(file);
@@ -131,7 +137,7 @@ namespace entropy
 	//--------------------------------------------------------------
 	inline string GetCurrentSceneAssetsPath(const string & file = "")
 	{
-		auto currentScene = GetSceneManager()->getCurrentScene();
+		auto currentScene = GetCurrentScene();
 		if (currentScene)
 		{
 			return currentScene->getAssetsPath(file);

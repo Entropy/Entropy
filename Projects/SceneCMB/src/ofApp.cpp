@@ -6,11 +6,10 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	// Add Scenes to the Manager.
-	auto manager = entropy::GetSceneManager();
-	auto scene = make_shared<entropy::scene::CMB>();
-	manager->addScene(scene);
-	manager->setCurrentScene(scene->getName());
+	// Add Scene to the Playlist.
+	auto playlist = entropy::GetPlaylist();
+	playlist->addScene(make_shared<entropy::scene::CMB>());
+	playlist->previewScene();
 }
 
 //--------------------------------------------------------------
@@ -80,6 +79,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }

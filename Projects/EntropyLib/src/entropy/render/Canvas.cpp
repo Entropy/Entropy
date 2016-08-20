@@ -282,7 +282,7 @@ namespace entropy
 
 			if (this->exportFrames)
 			{
-				auto scene = GetSceneManager()->getCurrentScene();
+				auto scene = GetCurrentScene();
 				if (scene)
 				{
 					this->textureRecorder.save(texture, scene->getCurrentTimelineFrame());
@@ -542,7 +542,16 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.color.exposure);
 					ofxPreset::Gui::AddParameter(this->parameters.color.gamma);
-					static vector<string> labels = { "None", "Gamma Only", "Reinhard", "Reinhard Lum", "Filmic", "ACES", "Uncharted 2", };
+					static vector<string> labels = 
+					{ 
+						"None", 
+						"Gamma Only", 
+						"Reinhard", 
+						"Reinhard Lum", 
+						"Filmic", 
+						"ACES", 
+						"Uncharted 2"
+					};
 					ofxPreset::Gui::AddRadio(this->parameters.color.tonemapping, labels, 3);
 					ofxPreset::Gui::AddParameter(this->parameters.color.brightness);
 					ofxPreset::Gui::AddParameter(this->parameters.color.contrast);
@@ -552,7 +561,7 @@ namespace entropy
 				{
 					if (ImGui::Checkbox("Export", &this->exportFrames))
 					{
-						auto scene = GetSceneManager()->getCurrentScene();
+						auto scene = GetCurrentScene();
 						if (scene)
 						{
 							if (this->exportFrames)
@@ -611,13 +620,12 @@ namespace entropy
 							}
 							if (ImGui::BeginPopup("Warps"))
 							{
-								static vector<string> warpNames;
-								if (warpNames.empty())
-								{
-									warpNames.push_back("Bilinear");
-									warpNames.push_back("Perspective");
-									warpNames.push_back("Perspective Bilinear");
-								}
+								static vector<string> warpNames = 
+								{ 
+									"Bilinear", 
+									"Perspective", 
+									"Perspective Bilinear"
+								};
 								for (auto i = 0; i < warpNames.size(); ++i)
 								{
 									if (ImGui::Selectable(warpNames[i].c_str()))
@@ -652,8 +660,9 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
+			// Move to the next column for the Warp gui windows.
 			auto warpSettings = ofxPreset::Gui::Settings();
-			warpSettings.windowPos.x = settings.windowPos.x + settings.windowSize.x + kGuiMargin;
+			warpSettings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
@@ -661,6 +670,7 @@ namespace entropy
 					auto warp = this->warps[i];
 					auto & paramGroup = this->warpParameters[i];
 					
+					ofxPreset::Gui::SetNextWindow(warpSettings);
 					if (ofxPreset::Gui::BeginWindow(paramGroup.getName(), warpSettings, false, &this->openGuis[i]))
 					{
 						if (ofxPreset::Gui::AddParameter(paramGroup.editing))
@@ -831,10 +841,10 @@ namespace entropy
 						}
 					}
 					ofxPreset::Gui::EndWindow(warpSettings);
-					ofxPreset::Gui::SetNextWindow(warpSettings);
 				}
 			}
 
+			settings.totalBounds.growToInclude(warpSettings.totalBounds);
 			settings.mouseOverGui |= warpSettings.mouseOverGui;
 		}
 
