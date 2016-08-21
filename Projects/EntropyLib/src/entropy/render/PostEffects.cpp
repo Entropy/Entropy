@@ -61,7 +61,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void PostEffects::process(const ofTexture & srcTexture, const ofFbo & dstFbo, PostParameters & parameters)
+		void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, PostParameters & parameters)
 		{
 			ofSetColor(255);
 

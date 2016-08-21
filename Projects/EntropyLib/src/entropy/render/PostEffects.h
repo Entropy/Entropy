@@ -41,7 +41,7 @@ namespace entropy
 			PostEffects();
 			~PostEffects();
 
-			void process(const ofTexture & srcTexture, const ofFbo & dstFbo, PostParameters & parameters);
+			void process(const ofTexture & srcTexture, ofFbo & dstFbo, PostParameters & parameters);
 
 			void resize(int width, int height);
 

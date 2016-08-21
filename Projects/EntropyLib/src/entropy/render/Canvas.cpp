@@ -73,17 +73,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::beginDraw()
 		{
-			ofPushView();
-			ofPushStyle();
-			this->fboDraw.beginNoMatrixFlip();
+			this->fboDraw.begin(ofFboBeginMode::Perspective);
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
 			this->fboDraw.end();
-			ofPopStyle();
-			ofPopView();
 		}
 
 		//--------------------------------------------------------------
