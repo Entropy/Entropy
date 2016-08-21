@@ -7,6 +7,7 @@
 #include "ofxWarp.h"
 
 #include "Layout.h"
+#include "PostEffects.h"
 
 namespace entropy
 {
@@ -22,7 +23,8 @@ namespace entropy
 
 			void beginDraw();
 			void endDraw();
-			void postProcess();
+
+			void postProcess(PostParameters & parameters);
 			
 			void render(const ofRectangle & bounds);
 
@@ -77,7 +79,6 @@ namespace entropy
 			void updateSize();
 			void updateStitches();
 
-		protected:
 			struct WarpParameters
 				: ofParameterGroup
 			{
@@ -108,51 +109,21 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				struct : ofParameterGroup
-				{
-					ofParameter<bool> enabled{ "Enabled", true };
-					ofParameter<int> numPasses{ "Num Passes", 1, 1, 10 };
-					ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.01f, 3.0f };
-					ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
-					ofParameter<bool> debugBlur{ "Debug blur", false };
-
-					PARAM_DECLARE("Bloom", enabled, numPasses, brightnessThreshold, sigma, debugBlur);
-				} bloom;
-
-				struct : ofParameterGroup
-				{
-					ofParameter<float> exposure{ "Exposure", 4.0f, 0.1f, 10.0f };
-					ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
-					ofParameter<int> tonemapping{ "Tonemapping", 6, 0, 6 };
-					ofParameter<float> contrast{ "Contrast", 1.0f, 0.5f, 1.5f };
-					ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
-
-					PARAM_DECLARE("Color", exposure, gamma, tonemapping, contrast, brightness);
-				} color;
-
 				ofParameter<bool> fillWindow{ "Fill Window", false };
 
-				PARAM_DECLARE("Canvas", bloom, color, fillWindow);
+				PARAM_DECLARE("Canvas", fillWindow);
 			} parameters;
 
 			Layout layout;
 
 			ofRectangle viewport;
-			
+
 			ofFbo fboDraw;
-			ofFbo fboFog;
 			ofFbo fboPost;
-			ofFbo fboTemp[2];
 			ofFbo::Settings fboSettings;
 
+			PostEffects postEffects;
 			bool postApplied;
-
-			GLuint defaultVao;
-
-			ofShader brightnessThresholdShader;
-			ofShader blurHorzShader;
-			ofShader blurVertShader;
-			ofShader colorCorrectShader;
 
 			bool exportFrames;
 			ofxTextureRecorder textureRecorder;
@@ -168,7 +139,6 @@ namespace entropy
 			bool openGuis[MAX_NUM_WARPS];  // Don't use vector<bool> because they're weird: http://en.cppreference.com/w/cpp/container/vector_bool
 			
 			bool dirtyStitches;
-			ofVboMesh fullQuad;
 		};
 	}
 }

@@ -24,6 +24,10 @@ namespace entropy
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
 
+			// Setup post processing parameters.
+			this->postEffects[render::Layout::Back].setName("Post Effects Back");
+			this->postEffects[render::Layout::Front].setName("Post Effects Front");
+
 			// Setup child Scene.
 			this->setup();
 
@@ -353,6 +357,37 @@ namespace entropy
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
+			// Add gui windows for the Post Effects parameters.
+			for (auto & it : this->postEffects)
+			{
+				auto & postParameters = it.second;
+				ofxPreset::Gui::SetNextWindow(settings);
+				if (ofxPreset::Gui::BeginWindow(postParameters.getName().c_str(), settings))
+				{
+					ofxPreset::Gui::AddGroup(postParameters.bloom, settings);
+
+					if (ImGui::CollapsingHeader(postParameters.color.getName().c_str(), nullptr, true, true))
+					{
+						ofxPreset::Gui::AddParameter(postParameters.color.exposure);
+						ofxPreset::Gui::AddParameter(postParameters.color.gamma);
+						static vector<string> labels =
+						{
+							"None",
+							"Gamma Only",
+							"Reinhard",
+							"Reinhard Lum",
+							"Filmic",
+							"ACES",
+							"Uncharted 2"
+						};
+						ofxPreset::Gui::AddRadio(postParameters.color.tonemapping, labels, 3);
+						ofxPreset::Gui::AddParameter(postParameters.color.brightness);
+						ofxPreset::Gui::AddParameter(postParameters.color.contrast);
+					}
+				}
+				ofxPreset::Gui::EndWindow(settings);
+			}
+
 			// Let the child class handle its child parameters.
 			this->gui(settings);
 		}
@@ -361,9 +396,11 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
+			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Back]);
+			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Front]);
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
-
+			
 			this->serialize(json);
 
 			auto & jsonMappings = json["Mappings"];
@@ -385,6 +422,8 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
+			ofxPreset::Serializer::Deserialize(json, this->postEffects[render::Layout::Back]);
+			ofxPreset::Serializer::Deserialize(json, this->postEffects[render::Layout::Front]);
 			if (json.count("Camera Back"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
@@ -772,6 +811,12 @@ namespace entropy
 		void Base::addCameraKeyframe(render::Layout layout)
 		{
 			this->cameraTracks[layout]->addKeyframe();
+		}
+
+		//--------------------------------------------------------------
+		render::PostParameters & Base::getPostParameters(render::Layout layout)
+		{
+			return this->postEffects[layout];
 		}
 
 		//--------------------------------------------------------------

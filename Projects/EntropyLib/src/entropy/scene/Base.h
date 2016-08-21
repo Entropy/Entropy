@@ -7,6 +7,7 @@
 #include "entropy/popup/Image.h"
 #include "entropy/popup/Video.h"
 #include "entropy/render/Layout.h"
+#include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"
 
 namespace entropy
@@ -96,6 +97,9 @@ namespace entropy
 
 			void addCameraKeyframe(render::Layout layout);
 
+			// Post Effects.
+			render::PostParameters & getPostParameters(render::Layout layout);
+
 			// Export
 			void beginExport();
 			void endExport();
@@ -121,6 +125,7 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+					
 					struct : ofParameterGroup
 					{
 						ofParameter<bool> relativeYAxis{ "Relative Y Axis", true };
@@ -137,6 +142,8 @@ namespace entropy
 			};
 
 			virtual BaseParameters & getParameters() = 0;
+
+			std::map<render::Layout, render::PostParameters> postEffects;
 
 			std::vector<ofEventListener> parameterListeners;
 

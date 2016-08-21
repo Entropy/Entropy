@@ -251,6 +251,7 @@
     <ClCompile Include="src\entropy\popup\Image.cpp" />
     <ClCompile Include="src\entropy\popup\Video.cpp" />
     <ClCompile Include="src\entropy\render\Canvas.cpp" />
+    <ClCompile Include="src\entropy\render\PostEffects.cpp" />
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Playlist.cpp" />
     <ClCompile Include="src\entropy\util\App.cpp" />
@@ -352,6 +353,7 @@
     <ClInclude Include="src\entropy\popup\Image.h" />
     <ClInclude Include="src\entropy\popup\Video.h" />
     <ClInclude Include="src\entropy\render\Canvas.h" />
+    <ClInclude Include="src\entropy\render\PostEffects.h" />
     <ClInclude Include="src\entropy\render\Layout.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Playlist.h" />
@@ -363,15 +365,15 @@
   <ItemGroup>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\brightnessThreshold.frag" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.frag" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\directionalBlur.vert" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\frag_tonemap.glsl" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\fullscreenTriangle.vert" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\math.glsl" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultUniforms.glsl" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\inc\ofDefaultVertexInAttributes.glsl" />
-    <None Include="..\..\Resources\data\entropy\render\Canvas\shaders\passthrough_vert.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\brightnessThreshold.frag" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\directionalBlur.frag" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\directionalBlur.vert" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\frag_tonemap.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\fullscreenTriangle.vert" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\inc\math.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\inc\ofDefaultUniforms.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\inc\ofDefaultVertexInAttributes.glsl" />
+    <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\passthrough_vert.glsl" />
     <None Include="src\entropy\util\Mapping.inl" />
   </ItemGroup>
 </Project>

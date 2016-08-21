@@ -207,64 +207,68 @@ namespace entropy
 		{
 			ofBackground(this->parameters.background.get());
 
-			// Back screen.
-			if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
+			auto scene = GetCurrentScene();
+			if (scene)
 			{
-				// Draw the content.
-				this->canvasBack->beginDraw();
+				// Back screen.
+				if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
 				{
-					this->playlist->drawScene(render::Layout::Back);
-				}
-				this->canvasBack->endDraw();
+					// Draw the content.
+					this->canvasBack->beginDraw();
+					{
+						this->playlist->drawScene(render::Layout::Back);
+					}
+					this->canvasBack->endDraw();
 
-				// Post-process the content, either directly in the Scene or in the Canvas.
-				const auto postProcessing = this->playlist->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
-				if (!postProcessing)
-				{
-					this->canvasBack->postProcess();
-				}
+					// Post-process the content, either directly in the Scene or in the Canvas.
+					const auto postProcessing = this->playlist->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
+					if (!postProcessing)
+					{
+						this->canvasBack->postProcess(scene->getPostParameters(render::Layout::Back));
+					}
 
-				if (this->parameters.backScreen.enabled)
-				{
-					// Render the scene.
-					this->canvasBack->render(this->boundsBack);
-				}
-			}
-
-			// Front screen.
-			if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
-			{
-				// Draw the content.
-				this->canvasFront->beginDraw();
-				{
-					this->playlist->drawScene(render::Layout::Front);
-				}
-				this->canvasFront->endDraw();
-
-				// Post-process the content, either directly in the Scene or in the Canvas.
-				const auto postProcessing = this->playlist->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
-				if (!postProcessing)
-				{
-					this->canvasFront->postProcess();
+					if (this->parameters.backScreen.enabled)
+					{
+						// Render the scene.
+						this->canvasBack->render(this->boundsBack);
+					}
 				}
 
-				if (this->parameters.frontScreen.enabled)
+				// Front screen.
+				if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
 				{
-					// Render the scene.
-					this->canvasFront->render(this->boundsFront);
-				}
-			}
+					// Draw the content.
+					this->canvasFront->beginDraw();
+					{
+						this->playlist->drawScene(render::Layout::Front);
+					}
+					this->canvasFront->endDraw();
 
-			// Control screen.
-			if (this->parameters.controlScreen.enabled)
-			{
-				if (this->parameters.controlScreen.preview.backEnabled)
-				{
-					this->canvasBack->getRenderTexture().draw(this->previewBoundsBack);
+					// Post-process the content, either directly in the Scene or in the Canvas.
+					const auto postProcessing = this->playlist->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
+					if (!postProcessing)
+					{
+						this->canvasFront->postProcess(scene->getPostParameters(render::Layout::Front));
+					}
+
+					if (this->parameters.frontScreen.enabled)
+					{
+						// Render the scene.
+						this->canvasFront->render(this->boundsFront);
+					}
 				}
-				if (this->parameters.controlScreen.preview.frontEnabled)
+
+				// Control screen.
+				if (this->parameters.controlScreen.enabled)
 				{
-					this->canvasFront->getRenderTexture().draw(this->previewBoundsFront);
+					if (this->parameters.controlScreen.preview.backEnabled)
+					{
+						this->canvasBack->getRenderTexture().draw(this->previewBoundsBack);
+					}
+					if (this->parameters.controlScreen.preview.frontEnabled)
+					{
+						this->canvasFront->getRenderTexture().draw(this->previewBoundsFront);
+					}
 				}
 			}
 
