@@ -106,6 +106,9 @@ namespace entropy
 				delete it.second;
 			}
 			this->cameraTracks.clear();
+
+			// Clear Pop-ups.
+			this->popUps.clear();
 		}
 
 		//--------------------------------------------------------------
