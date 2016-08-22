@@ -146,4 +146,37 @@ namespace entropy
 		ofLogWarning(__FUNCTION__) << "No active Scene found!";
 		return GetSharedAssetsPath();
 	}
+
+    //--------------------------------------------------------------
+    enum class Module{
+        Renderers,
+        Canvas,
+        PostEffects,
+    };
+
+    //--------------------------------------------------------------
+    inline std::string ToString(Module module){
+        switch(module){
+        case Module::Renderers: return "Renderers";
+        case Module::Canvas: return "Canvas";
+        case Module::PostEffects: return "PostEffects";
+        }
+    }
+
+    //--------------------------------------------------------------
+    inline std::filesystem::path GetDataPath(Module module)
+    {
+        namespace fs = std::filesystem;
+        fs::path dataPath(GetSharedDataPath());
+        dataPath = dataPath / fs::path("entropy") / fs::path("render") / fs::path(ToString(module));
+        return dataPath;
+    }
+
+    //--------------------------------------------------------------
+    inline std::filesystem::path GetShadersPath(Module module){
+        namespace fs = std::filesystem;
+        fs::path dataPath(GetDataPath(module));
+        return (dataPath / "shaders");
+    }
+
 }

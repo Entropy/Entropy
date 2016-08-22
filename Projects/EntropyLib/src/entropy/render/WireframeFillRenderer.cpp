@@ -1,14 +1,15 @@
 #include "WireframeFillRenderer.h"
 #include "ofGraphics.h"
+#include "entropy/Helpers.h"
 #include <regex>
 
 namespace entropy
 {
-    namespace inflation
+    namespace render
     {
         void WireframeFillRenderer::compileShader(){
             //fragment shader
-            ofFile vertFile("shaders/wireframeFillRender.vert");
+            ofFile vertFile(GetShadersPath(Module::Renderers) / "wireframeFillRender.vert");
             ofBuffer vertBuff(vertFile);
             std::string vertSource = vertBuff.getText();
 
@@ -22,13 +23,13 @@ namespace entropy
 
             vertSource = std::regex_replace(vertSource, re_wireframe, "#define WIREFRAME 0");
             shaderFill.setupShaderFromSource(GL_VERTEX_SHADER, vertSource);
-            shaderFill.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/wireframeFillRender.frag");
+            shaderFill.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
             shaderFill.bindDefaults();
             shaderFill.linkProgram();
 
             vertSource = std::regex_replace(vertSource, re_wireframe, "#define WIREFRAME 1");
             shaderWireframe.setupShaderFromSource(GL_VERTEX_SHADER, vertSource);
-            shaderWireframe.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/wireframeFillRender.frag");
+            shaderWireframe.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
             shaderWireframe.bindDefaults();
             shaderWireframe.linkProgram();
         }

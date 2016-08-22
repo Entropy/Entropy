@@ -12,7 +12,8 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
-            "../../Resources/data/entropy/render/Canvas/Back.json",
+            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
+            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
             "../../Resources/data/entropy/scene/Inflation/presets/_default/parameters.json",
             "../../Resources/data/entropy/scene/Inflation/presets/cool/parameters.json",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
@@ -25,10 +26,7 @@ Project{
             "../../Resources/data/entropy/scene/Inflation/shaders/vert_full_quad.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_vertex.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/wireframeFillRender.frag",
-            "../../Resources/data/entropy/scene/Inflation/shaders/wireframeFillRender.vert",
-            "src/entropy/inflation/WireframeFillRenderer.cpp",
-            "src/entropy/inflation/WireframeFillRenderer.h",
+            "addons.make",
             "src/entropy/inflation/Constants.h",
             "src/entropy/inflation/GPUMarchingCubes.cpp",
             "src/entropy/inflation/GPUMarchingCubes.h",

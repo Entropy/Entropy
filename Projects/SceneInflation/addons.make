@@ -7,5 +7,8 @@
 ../../addons/ofxTextureRecorder
 ../../addons/ofxVolumetrics
 ../../addons/ofxTimeline
-ofxWrap
+../../addons/ofxTimecode
+../../addons/ofxTween
+../../addons/ofxMSATimer
 ../../addons/ofxWarp
+ofxXmlSettings

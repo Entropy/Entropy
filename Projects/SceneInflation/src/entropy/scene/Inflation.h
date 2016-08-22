@@ -6,7 +6,7 @@
 #include "entropy/inflation/NoiseField.h"
 #include "entropy/inflation/GPUMarchingCubes.h"
 #include "entropy/inflation/Constants.h"
-#include "entropy/inflation/WireframeFillRenderer.h"
+#include "entropy/render/WireframeFillRenderer.h"
 
 namespace entropy
 {
@@ -44,7 +44,7 @@ namespace entropy
 			double now;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
-            inflation::WireframeFillRenderer renderer;
+            entropy::render::WireframeFillRenderer renderer;
 
 			// Noise Field
 			inflation::NoiseField noiseField;

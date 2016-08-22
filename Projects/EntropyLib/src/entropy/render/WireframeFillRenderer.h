@@ -8,7 +8,7 @@
 
 namespace entropy
 {
-    namespace inflation
+    namespace render
     {
         class WireframeFillRenderer
         {
