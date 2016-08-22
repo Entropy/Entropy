@@ -271,47 +271,32 @@ namespace entropy
 			// geometry shader
 			ofFile geomFile("shaders/marching_cubes_geom.glsl");
 			ofBuffer geomBuff(geomFile);
-			std::string geomSource = geomBuff.getText();
-
-			std::regex re_wireframe("#define WIREFRAME [0-1]");
-			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME 0");
+            std::string geomSource = geomBuff.getText();
 
 			std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
-			geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals && !wireframe));
-
-			std::regex re_fog_enabled("#define FOG_ENABLED [0-1]");
-			geomSource = std::regex_replace(geomSource, re_fog_enabled, "#define FOG_ENABLED " + ofToString(fogEnabled));
+            geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals));
 
 			std::regex re_resolution("const[ \t]+float[ \t]+resolution[ \t]*=.*;");
-			geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
+            geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
 
-			//fragment shader
-			ofFile fragFile("shaders/normalShader.frag");
-			ofBuffer fragBuff(fragFile);
-			std::string fragSource = fragBuff.getText();
+            std::regex re_out_subdivisions("#define SUBDIVISIONS [0-1]");
+            geomSource = std::regex_replace(geomSource, re_out_subdivisions, "#define SUBDIVISIONS " + ofToString(subdivisions));
 
-			std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
-			fragSource = std::regex_replace(fragSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals && !wireframe));
-
-
-			OutputDebugStringA(geomSource.c_str());
-			shaderFill.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
-			shaderFill.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
-			shaderFill.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
-			shaderFill.bindDefaults();
-			shaderFill.linkProgram();
-
-			geomSource = std::regex_replace(geomSource, re_wireframe, "#define WIREFRAME 1");
-
-			shaderWireframe.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/passthrough_vert.glsl");
-			shaderWireframe.setupShaderFromSource(GL_GEOMETRY_SHADER, geomSource);
-			shaderWireframe.setupShaderFromSource(GL_FRAGMENT_SHADER, fragSource);
-			shaderWireframe.bindDefaults();
-			shaderWireframe.linkProgram();
+            ofShader::TransformFeedbackSettings settings;
+            settings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthrough_vert.glsl";
+            settings.shaderSources[GL_GEOMETRY_SHADER] = geomSource;
+            settings.bindDefaults = false;
+            if(shadeNormals){
+                settings.varyingsToCapture = {"position", "color"};
+            }else{
+                settings.varyingsToCapture = {"position", "color", "normal"};
+            }
+            shader.setup(settings);
 		}
 
 
-		void GPUMarchingCubes::setup() {
+        void GPUMarchingCubes::setup(size_t maxMemorySize) {
+            this->maxMemorySize = maxMemorySize;
 			resolutionListener = resolution.newListener([&](int & res) {
 				std::vector<glm::vec3> vertices(res*res*res);
 				for (int z = 0, i = 0; z < res; z++) {
@@ -322,90 +307,78 @@ namespace entropy
 					}
 				}
 				vbo.setVertexData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
-				compileShader();
+
+                feedbackBufferSize = std::min(getFeedbackBufferSize(), this->maxMemorySize);
+                cout << getFeedbackBufferSize() << " calculated buffer size" << endl;
+                cout << getVertexStride() << " calculated buffer stride" << endl;
+                cout << "allocating with " << feedbackBufferSize/getVertexStride() << " for resolution " << resolution << " and max memory size " << this->maxMemorySize << endl;
+                bufferFeedback.allocate(feedbackBufferSize, GL_STATIC_DRAW);
+
+                auto offset = 0;
+                vboFeedback.setVertexBuffer(bufferFeedback, 3, getVertexStride(), offset);
+                offset += sizeof(glm::vec4);
+                vboFeedback.setColorBuffer(bufferFeedback, getVertexStride(), offset);
+                offset += sizeof(ofFloatColor);
+                if(shadeNormals){
+                    vboFeedback.setNormalBuffer(bufferFeedback, getVertexStride(), offset);
+                }
+                compileShader();
 			});
+
+            subdivisionsListener = subdivisions.newListener([&](int & subs){
+                compileShader();
+            });
 
 			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);
 			triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
-			triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+            triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-			/*wireFrameListener = wireframe.newListener([&](bool & wireframe) {
-				if (wireframe && shadeNormals) {
-					shadeNormals = false;
-				}
-				else {
-					compileShader();
-				}
-			});
 
-			shadeNormalsListener = shadeNormals.newListener([&](bool & shade) {
-				if (!wireframe) {
-					compileShader();
-				}
-				else {
-					shadeNormals = false;
-				}
-			});*/
-
-			fogEnabledListener = fogEnabled.newListener([&](bool & fog) {
-				compileShader();
-			});
-
-			compileShader();
+            compileShader();
+            glGenQueries(1, &numVerticesQuery);
 		}
 
 
-		void GPUMarchingCubes::draw(ofxTexture3d & isoLevels) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			ofDisableDepthTest();
-			if (fill) {
-				shaderFill.begin();
-				shaderFill.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
-				shaderFill.setUniformTexture("triTableTex", triTableTex, 1);
-				shaderFill.setUniform1f("isolevel", isoLevel);
-				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
-				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
-				shaderFill.setUniform1f("fogPower", fogPower);
-				shaderFill.setUniform1f("fillAlpha", fillAlpha);
-				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
-				shaderFill.end();
-			}
+        void GPUMarchingCubes::update(ofxTexture3d & isoLevels) {
+            ofShader::TransformFeedbackBinding binding(bufferFeedback);
+            binding.index = 0;
+            binding.offset = 0;
+            binding.size = getFeedbackBufferSize();
+            //glEnable(GL_RASTERIZER_DISCARD);
+            glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numVerticesQuery);
+            shader.beginTransformFeedback(GL_TRIANGLES, binding);
+            shader.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
+            shader.setUniformTexture("triTableTex", triTableTex, 1);
+            shader.setUniform1f("isolevel", isoLevel);
+            vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
+            shader.endTransformFeedback();
+            glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+            glGetQueryObjectuiv(numVerticesQuery, GL_QUERY_RESULT, &numPrimitives);
+            //glDisable(GL_RASTERIZER_DISCARD);
+        }
 
-			if (wireframe) {
-				shaderWireframe.begin();
-				shaderWireframe.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
-				shaderWireframe.setUniformTexture("triTableTex", triTableTex, 1);
-				shaderWireframe.setUniform1f("isolevel", isoLevel);
-				shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-				shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-				shaderWireframe.setUniform1f("fogPower", fogPower);
-				shaderWireframe.setUniform1f("wireframeAlpha", wireframeAlpha);
-				vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
-				shaderWireframe.end();
-			}
-		}
+        const ofVbo & GPUMarchingCubes::getGeometry(){
+            return vboFeedback;
+        }
 
-		using namespace glm;
-		float fog(float dist, float minDist, float maxDist, float power) {
-			dist = pow(dist, power);
-			minDist = pow(minDist, power);
-			maxDist = pow(maxDist, power);
-			float invDistanceToCamera = clamp(1 - (dist - minDist) / maxDist, 0.f, 1.f);
-			if (dist > minDist) {
-				return invDistanceToCamera;
-			}
-			else {
-				return 1;
-			}
-		}
+        size_t GPUMarchingCubes::getNumVertices() const{
+            return numPrimitives * 3;
+        }
 
-		std::vector<float> GPUMarchingCubes::getFogFunctionPlot(size_t numberOfPoints) const {
-			std::vector<float> plot(numberOfPoints);
-			for (size_t i = 0; i < numberOfPoints; i++) {
-				float distanceToCamera = i/float(numberOfPoints) * 10.;
-				plot[i] = fog(distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
-			}
-			return plot;
-		}
+        size_t GPUMarchingCubes::getFeedbackBufferSize() const{
+            return resolution*resolution*resolution * getVertexStride() * 15;
+        }
+
+        size_t GPUMarchingCubes::getVertexStride() const{
+            if(shadeNormals){
+                return sizeof(glm::vec4) * 2 + sizeof(glm::vec3);
+            }else{
+                return sizeof(glm::vec4) * 2;
+            }
+        }
+
+        size_t GPUMarchingCubes::getBufferSize() const{
+            return feedbackBufferSize;
+        }
 	}
 }

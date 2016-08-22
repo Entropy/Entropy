@@ -5,6 +5,7 @@
 #include "ofShader.h"
 #include "ofParameter.h"
 #include "ofxTexture3d.h"
+#include "ofEvents.h"
 
 namespace entropy
 {
@@ -13,42 +14,39 @@ namespace entropy
 		class GPUMarchingCubes
 		{
 		public:
-			void setup();
-			void draw(ofxTexture3d & isoLevels);
-			std::vector<float> getFogFunctionPlot(size_t numberOfPoints) const;
+            void setup(size_t maxMemory);
+            void update(ofxTexture3d & isoLevels);
+            const ofVbo & getGeometry();
+            size_t getNumVertices() const;
+            size_t getBufferSize() const;
+            size_t getVertexStride() const;
 
-			ofParameter<int> resolution{ "Resolution", 1, 1, 512 };
-			ofParameter<float> isoLevel{ "IsoLevel", 0.3f, 0.0f, 1.0f };
-			ofParameter<bool> wireframe{ "Wireframe", true };
-			ofParameter<bool> fill{ "Fill", true };
-			ofParameter<bool> shadeNormals{ "Shade Normals", true };
-			ofParameter<float> fogMaxDistance{ "Fog max dist.", 1.5f, 0.2f, 10.f };
-			ofParameter<float> fogMinDistance{ "Fog min dist.", 0.1f, 0.0f, 5.f };
-			ofParameter<float> fogPower{ "Fog power", 1.f, 0.001f, 10.f };
-			ofParameter<bool> fogEnabled{ "Fog enabled", true };
-			ofParameter<float> wireframeAlpha{ "Wireframe alpha", 0.25f, 0.f, 1.f };
-			ofParameter<float> fillAlpha{ "Fill alpha", 0.5f, 0.f, 1.f };
+
+            ofParameter<int> resolution{ "Resolution", 64, 1, 512 };
+            ofParameter<int> subdivisions{ "subdivisions", 0, 0, 4 };
+            ofParameter<float> isoLevel{ "IsoLevel", 0.3f, 0.0f, 1.0f };
+            ofParameter<bool> shadeNormals{ "Shade Normals", false };
 
 			ofParameterGroup parameters{
 				"Marching Cubes",
-				resolution,
-				wireframe,
-				fill,
-				shadeNormals,
-				fogMaxDistance,
-				fogMinDistance,
-				fogPower,
-				fogEnabled,
-				wireframeAlpha,
-				fillAlpha,
+                resolution,
+                isoLevel,
+                shadeNormals,
+                subdivisions,
 			};
 
 		private:
 			void compileShader();
-			ofVbo vbo;
-			ofShader shaderWireframe, shaderFill;
+            size_t getFeedbackBufferSize() const;
+            ofBufferObject bufferFeedback;
+            ofVbo vbo, vboFeedback;
+            ofShader shader;
 			ofTexture triTableTex;
-			ofEventListener resolutionListener, wireFrameListener, shadeNormalsListener, fogEnabledListener;
+            ofEventListener resolutionListener, subdivisionsListener;
+            GLuint numVerticesQuery;
+            GLuint numPrimitives;
+            size_t feedbackBufferSize;
+            size_t maxMemorySize;
 		};
 	}
 }
