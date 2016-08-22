@@ -2,6 +2,10 @@
 
 #include "entropy/Helpers.h"
 
+#ifdef TARGET_WIN32
+#include "ofxWMFVideoPlayer.h"
+#endif
+
 namespace entropy
 {
 	namespace popup
@@ -9,7 +13,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		Video::Video()
 			: Base(Type::Video)
-		{}
+		{
+#ifdef TARGET_WIN32
+            this->video.setPlayer(std::make_shared<ofxWMFVideoPlayer>());
+#endif
+		}
 
 		//--------------------------------------------------------------
 		Video::~Video()
@@ -101,12 +109,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::renderContent()
 		{
+#ifdef TARGET_WIN32
 			if (this->video.lockSharedTexture())
 			{
 				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
 														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
 				this->video.unlockSharedTexture();
-			}
-		}
+            }
+#else
+            this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
+                                                    this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+#endif
+        }
 	}
 }

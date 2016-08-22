@@ -141,7 +141,7 @@ vec4 toLinear(vec4 _rgba)
     return vec4(toLinear(_rgba.xyz), _rgba.w);
 }
 
-coherent uniform layout(rgba16f, binding=0, location=0) image3D volume;
+restrict uniform layout(rgba16f, binding=0, location=0) image3D volume;
 
 struct Octave{
     float now;
@@ -164,11 +164,11 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 void main()
 {
 
-    if (fillEdges && !sphericalClip && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
+	if (fillEdges && !sphericalClip && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
 	    gl_GlobalInvocationID.y == 0 || gl_GlobalInvocationID.y == resolution -1 ||
         gl_GlobalInvocationID.z == 0 || gl_GlobalInvocationID.z == resolution -1)){
-        imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(vec3(117,118,118)/255.,1.0));
-    }else{
+		imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(octaves[0].color.rgb, 1.0));
+	}else{
 		float total = 0.;
         vec3 totalRGB = vec3(0.);
         float maxValue = 0.;
@@ -190,26 +190,17 @@ void main()
         }
 
         for(int i=0;i<NUM_OCTAVES;i++){
-            float freqD = octaves[i].frequency;// / 60.f;
+			float freqD = octaves[i].frequency;
             float amplitude = octaves[i].amplitude * octaves[i].enabled;// * (1. - ofClamp(normDistance, 0, 1));
-            float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
+			float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
 			totalRGB += octaves[i].color.rgb * noise * octaves[i].enabled;
-            /*if(i==0){
-                totalRGB += vec3(117.,118.,118.)/255. * noise * octaves[i].enabled;
-            }else if(i==1){
-                totalRGB += vec3(200.,200.,200.)/255. * noise * octaves[i].enabled;
-            }else if(i==2){
-                totalRGB += vec3(240.,127.,19.)/255. * noise * octaves[i].enabled;
-            }else if(i==3){
-                totalRGB += vec3(128.,9.,9.)/255. * (noise * noise * noise) * octaves[i].enabled;
-            }*/
             total +=  noise * amplitude;
             maxRGB += noise;
             maxValue += amplitude;
         }
         float normalizationValue = (maxValue * normalizationFactor);
         totalRGB = totalRGB / maxRGB * sphere;
-        total = total / normalizationValue;/* * sphere*/;
+		total = total / normalizationValue /* * sphere*/;
         imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(totalRGB, total));
-    }
+	}
 }

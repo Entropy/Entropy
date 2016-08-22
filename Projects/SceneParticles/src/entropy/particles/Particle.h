@@ -59,9 +59,9 @@ namespace nm
 
 		struct Data
 		{
-			unsigned char annihilationFlag; // particles and anti-particles
-			unsigned char fusion1Flag; // up-quarks and down-quarks
-			unsigned char fusion2Flag; // compound particles with up-quarks and down-quarks
+            char annihilationFlag; // particles and anti-particles
+            char fusion1Flag; // up-quarks and down-quarks
+            char fusion2Flag; // compound particles with up-quarks and down-quarks
 			float mass;
 			float charge;
 			ofFloatColor color;

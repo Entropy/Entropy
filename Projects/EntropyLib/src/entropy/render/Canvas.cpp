@@ -741,41 +741,16 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & Canvas::getDataPath()
+        std::filesystem::path Canvas::getSettingsFilePath()
 		{
-			static string dataPath;
-			if (dataPath.empty())
-			{
-				dataPath = GetSharedDataPath();
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("entropy"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("render"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("Canvas"));
-			}
-			return dataPath;
+            auto file = std::filesystem::path((this->layout == Layout::Back) ? "Back.json" : "Front.json");
+            return GetDataPath(Module::Canvas) / file;
 		}
 
 		//--------------------------------------------------------------
-		string Canvas::getSettingsFilePath()
+        std::filesystem::path Canvas::getShaderPath(const string & shaderFile)
 		{
-			auto filePath = this->getDataPath();
-			filePath.append((this->layout == Layout::Back) ? "Back.json" : "Front.json");
-			return filePath;
-		}
-
-		//--------------------------------------------------------------
-		string Canvas::getShaderPath(const string & shaderFile)
-		{
-			static string shadersPath;
-			if (shadersPath.empty())
-			{
-				shadersPath = this->getDataPath();
-				shadersPath = ofFilePath::addTrailingSlash(shadersPath.append("shaders"));
-			}
-			if (shaderFile.empty())
-			{
-				return shadersPath;
-			}
-			return shadersPath + shaderFile;
+            return GetShadersPath(Module::Canvas) / shaderFile;
 		}
 
 		//--------------------------------------------------------------

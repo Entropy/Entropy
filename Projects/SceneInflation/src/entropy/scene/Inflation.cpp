@@ -19,52 +19,26 @@ namespace entropy
 		void Inflation::setup()
 		{
 			// Marching Cubes
-			gpuMarchingCubes.setup();
+            gpuMarchingCubes.setup(300*1024*1024);
 			
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
+
+            // Renderer
+            renderer.setup();
 
 			this->cameras[render::Layout::Back].setDistance(2);
 			this->cameras[render::Layout::Back].setNearClip(0.01);
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			now = 0;
-
-			/*
-			// Force resize to set FBOs.
-			ofResizeEventArgs args;
-			args.width = GetCanvasWidth(render::Layout::Back);
-			args.height = GetCanvasHeight(render::Layout::Back);
-			this->resizeBack(args);
-
-			// Setup shaders
-			shaderBright.load("shaders/vert_full_quad.glsl", "shaders/frag_bright.glsl");
-
-			ofFile frag_blur("shaders/frag_blur.glsl");
-			auto frag_blur_src = ofBuffer(frag_blur);
-			ofFile vert_blur("shaders/vert_blur.glsl");
-			auto vert_blur_src = ofBuffer(vert_blur);
-
-			blurV.setupShaderFromSource(GL_VERTEX_SHADER,
-				"#version 330\n#define PASS_V\n#define BLUR9\n" +
-				vert_blur_src.getText());
-			blurV.setupShaderFromSource(GL_FRAGMENT_SHADER,
-				"#version 330\n#define PASS_V\n#define BLUR9\n" +
-				frag_blur_src.getText());
-			blurV.bindDefaults();
-			blurV.linkProgram();
-
-			blurH.setupShaderFromSource(GL_VERTEX_SHADER,
-				"#version 330\n#define PASS_H\n#define BLUR9\n" +
-				vert_blur_src.getText());
-			blurH.setupShaderFromSource(GL_FRAGMENT_SHADER,
-				"#version 330\n#define PASS_H\n#define BLUR9\n" +
-				frag_blur_src.getText());
-			blurH.bindDefaults();
-			blurH.linkProgram();
-
-			tonemap.load("shaders/vert_full_quad.glsl", "shaders/frag_tonemap.glsl");
-			*/
+            ofMesh boxMesh = ofMesh::box(1,1,1,1,1,1);
+            boxMesh.getColors().resize(boxMesh.getVertices().size());
+            for(auto & c: boxMesh.getColors()){
+                c = ofFloatColor(1,0,0,1);
+            }
+            box.setMesh(boxMesh, GL_STATIC_DRAW);
+            //noiseField.update(false);
 		}
 
 		//--------------------------------------------------------------
@@ -95,7 +69,8 @@ namespace entropy
 			if (parameters.runSimulation) {
 				now += ofGetElapsedTimef();
 				auto inflation = false;
-				noiseField.update(inflation);
+                noiseField.update(inflation);
+                gpuMarchingCubes.update(noiseField.getTexture());
 				if (inflation) {
 					//parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
 				}
@@ -112,9 +87,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
-		{
-			//ofDisableDepthTest();
-			ofEnableDepthTest();
+        {
 			this->cameras[render::Layout::Back].setNearClip(0.01);
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
@@ -127,21 +100,19 @@ namespace entropy
 				}
 				else {
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-				}
-				if (gpuMarchingCubes.shadeNormals) {
-					ofEnableDepthTest();
-				}
+                }
 
 				//ofScale(parameters.marchingCubes.scale);
 
-				gpuMarchingCubes.draw(noiseField.getTexture());
+                //cout << gpuMarchingCubes.getNumVertices() << " vertices at " << ofGetFrameRate() << "fps" << endl;
+                renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+                //ofSetColor(255);
+                //ofNoFill();
+                //ofDrawBox(1);
+                //renderer.drawElements(box, 0, box.getNumIndices());
 
-				if (gpuMarchingCubes.shadeNormals) {
-					//ofDisableDepthTest();
-				}
-
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-			}
+                ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+            }
 		}
 
 		//--------------------------------------------------------------
@@ -172,26 +143,31 @@ namespace entropy
 				if (ImGui::CollapsingHeader(this->gpuMarchingCubes.parameters.getName().c_str(), nullptr, true, true)) {
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.resolution);
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.isoLevel);
+                    ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.subdivisions);
 				}
 
 				if (ImGui::CollapsingHeader(this->parameters.render.getName().c_str(), nullptr, true, true))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.wireframe);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fill);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
+                    ofxPreset::Gui::AddParameter(this->parameters.render.debug);
+                    ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogEnabled);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogMaxDistance);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogMinDistance);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fogPower);
+                    ofxPreset::Gui::AddParameter(this->renderer.wireframe);
+                    ofxPreset::Gui::AddParameter(this->renderer.fill);
 
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.fillAlpha);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.wireframeAlpha);
+                    ofxPreset::Gui::AddParameter(this->renderer.fogEnabled);
+                    ofxPreset::Gui::AddParameter(this->renderer.fogMaxDistance);
+                    ofxPreset::Gui::AddParameter(this->renderer.fogMinDistance);
+                    ofxPreset::Gui::AddParameter(this->renderer.fogPower);
+
+                    ofxPreset::Gui::AddParameter(this->renderer.fillAlpha);
+                    ofxPreset::Gui::AddParameter(this->renderer.wireframeAlpha);
+
+                    int numVertices = this->gpuMarchingCubes.getNumVertices();
+                    ImGui::SliderInt("num vertices", &numVertices, 0, this->gpuMarchingCubes.getBufferSize()/this->gpuMarchingCubes.getVertexStride());
 
 					auto numPoints = 100;
-					ImGui::PlotLines("Fog funtion", this->gpuMarchingCubes.getFogFunctionPlot(numPoints).data(), numPoints);
+                    ImGui::PlotLines("Fog funtion", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
@@ -204,6 +180,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Serialize(json, this->gpuMarchingCubes.parameters);
+            ofxPreset::Serializer::Serialize(json, this->renderer.parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -211,6 +188,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Deserialize(json, this->gpuMarchingCubes.parameters);
+            ofxPreset::Serializer::Deserialize(json, this->renderer.parameters);
 		}
 	}
 }

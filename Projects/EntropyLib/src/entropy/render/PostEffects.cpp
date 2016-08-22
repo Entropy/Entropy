@@ -207,36 +207,12 @@ namespace entropy
 				this->fboTemp[i].allocate(this->fboSettings);
 				//this->fboTemp[i].getTexture().texData.bFlipTexture = true;
 			}
-		}
+        }
 
 		//--------------------------------------------------------------
-		const string & PostEffects::getDataPath()
+        std::filesystem::path PostEffects::getShaderPath(const string & shaderFile)
 		{
-			static string dataPath;
-			if (dataPath.empty())
-			{
-				dataPath = GetSharedDataPath();
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("entropy"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("render"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("PostEffects"));
-			}
-			return dataPath;
-		}
-
-		//--------------------------------------------------------------
-		string PostEffects::getShaderPath(const string & shaderFile)
-		{
-			static string shadersPath;
-			if (shadersPath.empty())
-			{
-				shadersPath = this->getDataPath();
-				shadersPath = ofFilePath::addTrailingSlash(shadersPath.append("shaders"));
-			}
-			if (shaderFile.empty())
-			{
-				return shadersPath;
-			}
-			return shadersPath + shaderFile;
+            return GetShadersPath(Module::PostEffects) / shaderFile;
 		}
 	}
 }

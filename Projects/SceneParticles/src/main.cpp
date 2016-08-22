@@ -8,7 +8,7 @@ int main( ){
     //settings.windowMode = OF_FULLSCREEN;
     settings.width = 1280;
     settings.height = 720;
-    settings.depthBits = 16;
+    //settings.depthBits = 16;
     
 #ifdef TWO_1080P_SCREENS
     settings.width = 1920 * 2;
