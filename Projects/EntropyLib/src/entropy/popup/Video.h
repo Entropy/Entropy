@@ -3,7 +3,6 @@
 #include "Base.h"
 
 #include "ofxPreset.h"
-#include "ofxWMFVideoPlayer.h"
 
 namespace entropy
 {
@@ -33,7 +32,7 @@ namespace entropy
 			float getContentHeight() const override;
 			void renderContent() override;
 
-			ofxWMFVideoPlayer video;
+            ofVideoPlayer video;
 			string fileName;
 
 		protected:

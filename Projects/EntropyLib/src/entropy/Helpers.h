@@ -72,7 +72,7 @@ namespace entropy
 			static string exportsPathAbs;
 			if (exportsPathAbs.empty())
 			{
-				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
+                auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
 				exportsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return exportsPathAbs;

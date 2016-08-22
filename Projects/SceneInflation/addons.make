@@ -1,0 +1,11 @@
+../EntropyLib
+../../addons/ofxRange
+../../addons/ofxImGui
+../../addons/ofxPreset
+../../addons/ofxSet
+../../addons/ofxTextInputField
+../../addons/ofxTextureRecorder
+../../addons/ofxVolumetrics
+../../addons/ofxTimeline
+ofxWrap
+../../addons/ofxWarp
