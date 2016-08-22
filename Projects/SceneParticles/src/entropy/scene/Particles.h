@@ -65,13 +65,13 @@ namespace entropy
 				return this->parameters;
 			}
 
-            ofParameter<bool> colorsPerType{"color per type", true};
-            ofParameter<bool> additiveBlending{"additive blend", true};
             ofEventListener colorsPerTypeListener;
 
 			struct : BaseParameters
 			{
 				ofParameter<string> stateFile;
+                ofParameter<bool> colorsPerType{"color per type", true};
+                ofParameter<bool> additiveBlending{"additive blend", true};
 
 				PARAM_DECLARE("Particles", stateFile);
 			} parameters;

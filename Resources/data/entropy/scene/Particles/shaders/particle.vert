@@ -12,6 +12,7 @@ uniform float uType;
 
 out vec4 out_position;
 out vec4 out_color;
+out vec4 out_normal;
 
 #define COLOR_PER_TYPE 1
 
@@ -38,4 +39,5 @@ void main( void )
 #else
 	out_color = colors[(int(uType) + gl_VertexID) % 5];
 #endif
+	out_normal = vec4(mat3(modelMatrix) * normal, 1.0);
 }

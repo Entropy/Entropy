@@ -5,6 +5,7 @@
 #include "ofShader.h"
 #include "ofParameter.h"
 #include "ofParameterGroup.h"
+#include "ofMaterial.h"
 
 namespace entropy
 {
@@ -28,6 +29,7 @@ namespace entropy
             ofParameter<float> wireframeAlpha{ "Wireframe alpha", 0.25f, 0.f, 1.f };
             ofParameter<float> fillAlpha{ "Fill alpha", 0.5f, 0.f, 1.f };
             ofParameter<bool> shadeNormals{ "Shade Normals", false };
+            ofParameter<bool> useLights{ "Use lights", false };
 
             ofParameterGroup parameters{
                 "Renderer",
@@ -40,12 +42,14 @@ namespace entropy
                 fogEnabled,
                 wireframeAlpha,
                 fillAlpha,
+                useLights,
             };
 
         private:
             void compileShader();
             ofShader shaderFill, shaderWireframe;
             ofEventListener shadeNormalsListener, fogEnabledListener;
+            ofMaterial material;
         };
     }
 }

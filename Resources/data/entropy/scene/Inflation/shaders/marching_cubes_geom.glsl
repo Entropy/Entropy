@@ -23,7 +23,7 @@ const vec3 vertDecals[8] = {
     vec3(0.0f, 1.0f, 1.0f)/resolution,
 };
 
-#define OUTPUT_NORMALS 1
+#define OUTPUT_NORMALS 0
 #define SUBDIVISIONS 1
 
 out vec4 position;
@@ -89,7 +89,7 @@ void main(void) {
 	cubePoss[7] = cubePos(7);
 
 	int cubeindex=0;
-	vec4 cubeVals[12];
+	vec4 cubeVals[8];
 	cubeVals[0] = cubeVal(cubePoss[0]);
 	cubeVals[1] = cubeVal(cubePoss[1]);
 	cubeVals[2] = cubeVal(cubePoss[2]);

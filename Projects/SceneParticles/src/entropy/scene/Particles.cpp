@@ -4,6 +4,8 @@
 #include "entropy/Helpers.h"
 #include <regex>
 
+#define MAX_LIGHTS 16
+
 //#define _TEAPOT
 
 namespace entropy
@@ -27,13 +29,13 @@ namespace entropy
             ofBuffer vertSource(vertFile);
 
             std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
-            vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(colorsPerType)));
+            vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(this->parameters.colorsPerType)));
 
             // Load shaders.
             ofShader::TransformFeedbackSettings settings;
             settings.bindDefaults = false;
             settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
-            settings.varyingsToCapture = {"out_position", "out_color"};
+            settings.varyingsToCapture = {"out_position", "out_color", "out_normal"};
             settings.sourceDirectoryPath = this->getDataPath("shaders");
             this->shader.setup(settings);
             this->shader.printActiveUniforms();
@@ -81,15 +83,20 @@ namespace entropy
 
             compileShader();
 
-            colorsPerTypeListener = colorsPerType.newListener([&](bool &){
+            colorsPerTypeListener = this->parameters.colorsPerType.newListener([&](bool &){
                 compileShader();
             });
 
              renderer.setup();
              feedbackBuffer.allocate(1024*1024*100, GL_STATIC_DRAW);
-             feedbackVbo.setVertexBuffer(feedbackBuffer, 4, sizeof(glm::vec4) * 2, 0);
-             feedbackVbo.setColorBuffer(feedbackBuffer, sizeof(glm::vec4) * 2, sizeof(glm::vec4));
+             auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
+             feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
+             feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));
+             feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
              glGenQueries(1, &numPrimitivesQuery);
+
+             pointLights.resize(4);
+             ofSetGlobalAmbientColor(ofFloatColor(0.001));
 		}
 
 		//--------------------------------------------------------------
@@ -101,35 +108,62 @@ namespace entropy
 
                 auto & photons = this->photons.getPosnsRef();
                 // Remove extra point lights.
-                if (pointLights.size() > photons.size())
-                {
-                    pointLights.resize(photons.size());
-                    cout << "removing point light " << this->pointLights.size() << endl;
-                }
                 // Update current point lights.
-                for (int i = 0; i < pointLights.size(); ++i)
+                auto lightsEnabled = 0;
+                for (int i = 0; i < photons.size(); ++i)
                 {
-                    pointLights[i].setPosition(photons[i]);
-                    //cout << "updating point light " << i << " " << pointLights[i].position << endl;
-                }
-                // Add new point lights.
-                static const auto radius = 120.0f;
-                for (auto &light: pointLights)
-                {
-                    light.enable();
+                    if(photons[i].x > glm::vec3(-HALF_DIM*2).x  &&
+                       photons[i].y > glm::vec3(-HALF_DIM*2).y  &&
+                       photons[i].z > glm::vec3(-HALF_DIM*2).z  &&
+                       photons[i].x < glm::vec3(HALF_DIM*2).x &&
+                       photons[i].y < glm::vec3(HALF_DIM*2).y &&
+                       photons[i].z < glm::vec3(HALF_DIM*2).z){
+                        lightsEnabled++;
+                        if(lightsEnabled==MAX_LIGHTS){
+                            break;
+                        }
+                    }
                 }
 
 
-                ofShader::TransformFeedbackBinding binding(feedbackBuffer);
-                binding.index = 0;
-                binding.offset = 0;
-                binding.size = feedbackBuffer.size();
+                if (lightsEnabled > pointLights.size())
+                {
+                    pointLights.resize(lightsEnabled);
+                    cout << "resizing point lights " << pointLights.size() << endl;
+                }
+
+                for(auto & light: pointLights){
+                    light.disable();
+                    light.setPosition(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+                }
+
+                for (int i = 0, j=0; i < photons.size() && j < lightsEnabled; ++i)
+                {
+
+                    if(photons[i].x > glm::vec3(-HALF_DIM*2).x  &&
+                       photons[i].y > glm::vec3(-HALF_DIM*2).y  &&
+                       photons[i].z > glm::vec3(-HALF_DIM*2).z  &&
+                       photons[i].x < glm::vec3(HALF_DIM*2).x &&
+                       photons[i].y < glm::vec3(HALF_DIM*2).y &&
+                       photons[i].z < glm::vec3(HALF_DIM*2).z){
+                        auto & light = pointLights[j];
+                        light.enable();
+                        light.setAmbientColor(ofFloatColor::black);
+                        light.setDiffuseColor(ofFloatColor::white);
+                        light.setSpecularColor(ofFloatColor::white);
+                        light.setPointLight();
+                        light.setPosition(photons[i]);
+                        light.setAttenuation(0,0,0.01);
+                        j++;
+                    }
+                }
+
                 glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
-                this->shader.beginTransformFeedback(GL_TRIANGLES, binding);
+                this->shader.beginTransformFeedback(GL_TRIANGLES, feedbackBuffer);
                 {
                     particleSystem.draw(this->shader);
                 }
-                this->shader.endTransformFeedback(binding);
+                this->shader.endTransformFeedback(feedbackBuffer);
                 glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
                 glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
             }
@@ -139,11 +173,26 @@ namespace entropy
 		// Draw 3D elements here.
 		void Particles::drawBackWorld()
 		{
-            if(additiveBlending){
-                ofEnableBlendMode(OF_BLENDMODE_ADD);
-            }
+            if(debug){
+                for (auto &light: pointLights)
+                {
+                    if(light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
+                       light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
+                       light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
+                       light.getPosition().x < glm::vec3(HALF_DIM).x &&
+                       light.getPosition().y < glm::vec3(HALF_DIM).y &&
+                       light.getPosition().z < glm::vec3(HALF_DIM).z){
+                        light.draw();
+                    }
+                }
+            }else{
+                if(this->parameters.additiveBlending){
+                    ofEnableBlendMode(OF_BLENDMODE_ADD);
+                }
 
-            renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+                renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+                //photons.draw();
+            }
 		}
 
 		//--------------------------------------------------------------
@@ -200,8 +249,11 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
             {
                 ofxPreset::Gui::AddGroup(renderer.parameters, settings);
-                ofxPreset::Gui::AddParameter(this->colorsPerType);
-                ofxPreset::Gui::AddParameter(this->additiveBlending);
+                auto numPoints = 100;
+                ImGui::PlotLines("Fog funtion", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
+                ofxPreset::Gui::AddParameter(this->parameters.colorsPerType);
+                ofxPreset::Gui::AddParameter(this->parameters.additiveBlending);
+                ImGui::Checkbox("debug lights", &debug);
             }
 			ofxPreset::Gui::EndWindow(settings);
 

@@ -42,7 +42,7 @@ namespace entropy
             ofVbo vbo, vboFeedback;
             ofShader shader;
 			ofTexture triTableTex;
-            ofEventListener resolutionListener, subdivisionsListener;
+            ofEventListener resolutionListener, subdivisionsListener, shadeNormalsListener;
             GLuint numVerticesQuery;
             GLuint numPrimitives;
             size_t feedbackBufferSize;

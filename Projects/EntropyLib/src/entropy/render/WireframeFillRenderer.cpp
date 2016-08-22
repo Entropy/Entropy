@@ -32,6 +32,8 @@ namespace entropy
             shaderWireframe.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
             shaderWireframe.bindDefaults();
             shaderWireframe.linkProgram();
+
+            material.setColors(ofFloatColor::white, ofFloatColor::white, ofFloatColor::white, ofFloatColor::black);
         }
 
         void WireframeFillRenderer::setup(){
@@ -46,20 +48,33 @@ namespace entropy
                 shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderFill.setUniform1f("fogPower", fogPower);
                 shaderFill.setUniform1f("alpha", fillAlpha);
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                 geometry.draw(GL_TRIANGLES, offset, numVertices);
                 shaderFill.end();
+
+                if(useLights){
+                    material.begin();
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    geometry.draw(GL_TRIANGLES, offset, numVertices);
+                    material.end();
+                }
             }
 
             if (wireframe) {
-                shaderWireframe.begin();
-                shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-                shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-                shaderWireframe.setUniform1f("fogPower", fogPower);
-                shaderWireframe.setUniform1f("alpha", wireframeAlpha);
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                geometry.draw(GL_TRIANGLES, offset, numVertices);
-                shaderWireframe.end();
+
+                if(useLights){
+                    material.begin();
+                    geometry.draw(GL_TRIANGLES, offset, numVertices);
+                    material.end();
+                }else{
+                    shaderWireframe.begin();
+                    shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
+                    shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
+                    shaderWireframe.setUniform1f("fogPower", fogPower);
+                    shaderWireframe.setUniform1f("alpha", wireframeAlpha);
+                    geometry.draw(GL_TRIANGLES, offset, numVertices);
+                    shaderWireframe.end();
+                }
             }
         }
 
@@ -86,6 +101,7 @@ namespace entropy
                 geometry.drawElements(GL_TRIANGLES, numIndices, offset);
                 shaderWireframe.end();
             }
+            material.end();
         }
 
         using namespace glm;

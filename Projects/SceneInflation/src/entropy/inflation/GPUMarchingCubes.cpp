@@ -287,9 +287,9 @@ namespace entropy
             settings.shaderSources[GL_GEOMETRY_SHADER] = geomSource;
             settings.bindDefaults = false;
             if(shadeNormals){
-                settings.varyingsToCapture = {"position", "color"};
-            }else{
                 settings.varyingsToCapture = {"position", "color", "normal"};
+            }else{
+                settings.varyingsToCapture = {"position", "color"};
             }
             shader.setup(settings);
 		}
@@ -329,6 +329,10 @@ namespace entropy
                 compileShader();
             });
 
+            shadeNormalsListener = shadeNormals.newListener([&](bool & subs){
+                compileShader();
+            });
+
 			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);
 			triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
             triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
@@ -343,7 +347,7 @@ namespace entropy
             ofShader::TransformFeedbackBinding binding(bufferFeedback);
             binding.index = 0;
             binding.offset = 0;
-            binding.size = getFeedbackBufferSize();
+            binding.size = bufferFeedback.size();
             //glEnable(GL_RASTERIZER_DISCARD);
             glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numVerticesQuery);
             shader.beginTransformFeedback(GL_TRIANGLES, binding);
@@ -351,7 +355,7 @@ namespace entropy
             shader.setUniformTexture("triTableTex", triTableTex, 1);
             shader.setUniform1f("isolevel", isoLevel);
             vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
-            shader.endTransformFeedback();
+            shader.endTransformFeedback(binding);
             glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
             glGetQueryObjectuiv(numVerticesQuery, GL_QUERY_RESULT, &numPrimitives);
             //glDisable(GL_RASTERIZER_DISCARD);
