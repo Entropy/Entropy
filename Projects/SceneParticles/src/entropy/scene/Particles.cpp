@@ -2,6 +2,7 @@
 #include "glm/gtc/random.hpp"
 
 #include "entropy/Helpers.h"
+#include <regex>
 
 //#define _TEAPOT
 
@@ -20,6 +21,24 @@ namespace entropy
 		//--------------------------------------------------------------
 		Particles::~Particles()
 		{}
+
+        void Particles::compileShader(){
+            ofFile vertFile(this->getDataPath("shaders/particle.vert"));
+            ofBuffer vertSource(vertFile);
+
+            std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
+            vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(colorsPerType)));
+
+            // Load shaders.
+            ofShader::TransformFeedbackSettings settings;
+            settings.bindDefaults = false;
+            settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
+            settings.varyingsToCapture = {"out_position", "out_color"};
+            settings.sourceDirectoryPath = this->getDataPath("shaders");
+            this->shader.setup(settings);
+            this->shader.printActiveUniforms();
+            this->shader.printActiveUniformBlocks();
+        }
 
 		//--------------------------------------------------------------
 		void Particles::setup()
@@ -53,166 +72,84 @@ namespace entropy
 			}
 #endif
 
+            renderer.fogMaxDistance.setMax(HALF_DIM * 10);
+            renderer.fogMinDistance.setMax(HALF_DIM);
+
+
 			// TODO: EZ Look at this stuff
 			 this->debug = false;
-			
-			 // Load shaders.
-			 this->shader.load(this->getDataPath("shaders/particle"));
-			 this->shader.printActiveUniforms();
-			 this->shader.printActiveUniformBlocks();
-			 CheckGLError();
-			
-			 this->skyboxShader.load(this->getDataPath("shaders/skybox"));
-			 glGenVertexArrays(1, &this->defaultVao);
-			 CheckGLError();
-			
-			 // Set up view UBO.
-			 const int viewUboBinding = 1;
-			 this->viewUbo.setup(viewUboBinding);
-			 this->viewUbo.configureShader(this->shader);
-			 this->viewUbo.configureShader(this->skyboxShader);
-			 CheckGLError();
-			
-			 // Set up lighting.
-			 this->lightingSystem.setup(this->getCameraBack());
-			 this->lightingSystem.configureShader(this->shader);
-			 this->lightingSystem.setAmbientIntensity(0.5f);
-			 CheckGLError();
-			
-			 // Set up PBR.
-			 float aperture = 0.5f;
-			 float shutterSpeed = 1.0f / 60.0f;
-			
-			 this->exposure = ofxRTK::util::CalcEVFromCameraSettings(aperture, shutterSpeed);
-			 this->gamma = 2.2f;
-			 CheckGLError();
-			
-			 this->skyboxMap.loadDDSTexture(this->getDataPath("textures/output_skybox.dds"));
-			 this->irradianceMap.loadDDSTexture(this->getDataPath("textures/output_iem.dds"));
-			 this->radianceMap.loadDDSTexture(this->getDataPath("textures/output_pmrem.dds"));
-			 CheckGLError();
-			
-			 glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+            compileShader();
+
+            colorsPerTypeListener = colorsPerType.newListener([&](bool &){
+                compileShader();
+            });
+
+             renderer.setup();
+             feedbackBuffer.allocate(1024*1024*100, GL_STATIC_DRAW);
+             feedbackVbo.setVertexBuffer(feedbackBuffer, 4, sizeof(glm::vec4) * 2, 0);
+             feedbackVbo.setColorBuffer(feedbackBuffer, sizeof(glm::vec4) * 2, sizeof(glm::vec4));
+             glGenQueries(1, &numPrimitivesQuery);
 		}
 
 		//--------------------------------------------------------------
 		void Particles::update(double dt)
 		{
-			photons.update();
-			particleSystem.update();
+            if(ofGetFrameNum()%2==0){
+                photons.update();
+                particleSystem.update();
 
-			auto & pointLights = this->lightingSystem.getPointLights();
-			auto & photons = this->photons.getPosnsRef();
-			// Remove extra point lights.
-			if (pointLights.size() > photons.size())
-			{
-				pointLights.resize(photons.size());
-				cout << "removing point light " << this->lightingSystem.getPointLights().size() << endl;
-			}
-			// Update current point lights.
-			for (int i = 0; i < pointLights.size(); ++i)
-			{
-				pointLights[i].position = glm::vec4(photons[i], 1.0f);
-				//cout << "updating point light " << i << " " << pointLights[i].position << endl;
-			}
-			// Add new point lights.
-			static const auto radius = 120.0f;
-			for (int i = pointLights.size(); i < photons.size(); ++i)
-			{
-				auto light = ofxRTK::lighting::PointLight(photons[i], glm::vec3(1.0f, 1.0f, 1.0f), radius, 60000.0f);
-				//light.color = glm::normalize(glm::vec3(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f)));
-				//cout << "color is " << light.color << endl;
-				this->lightingSystem.addPointLight(light);
-				cout << "adding point light " << this->lightingSystem.getPointLights().size() << endl;
-			}
+                auto & photons = this->photons.getPosnsRef();
+                // Remove extra point lights.
+                if (pointLights.size() > photons.size())
+                {
+                    pointLights.resize(photons.size());
+                    cout << "removing point light " << this->pointLights.size() << endl;
+                }
+                // Update current point lights.
+                for (int i = 0; i < pointLights.size(); ++i)
+                {
+                    pointLights[i].setPosition(photons[i]);
+                    //cout << "updating point light " << i << " " << pointLights[i].position << endl;
+                }
+                // Add new point lights.
+                static const auto radius = 120.0f;
+                for (auto &light: pointLights)
+                {
+                    light.enable();
+                }
+
+
+                ofShader::TransformFeedbackBinding binding(feedbackBuffer);
+                binding.index = 0;
+                binding.offset = 0;
+                binding.size = feedbackBuffer.size();
+                glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
+                this->shader.beginTransformFeedback(GL_TRIANGLES, binding);
+                {
+                    particleSystem.draw(this->shader);
+                }
+                this->shader.endTransformFeedback(binding);
+                glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+                glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
+            }
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
 		void Particles::drawBackWorld()
 		{
-			ofDisableAlphaBlending();
+            if(additiveBlending){
+                ofEnableBlendMode(OF_BLENDMODE_ADD);
+            }
 
-			auto cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
-			GLint cullFaceMode[1];
-			glGetIntegerv(GL_CULL_FACE_MODE, cullFaceMode);
-
-			glEnable(GL_CULL_FACE);
-			glCullFace(GL_FRONT);
-
-			this->viewUbo.bind();
-			{
-				this->skyboxMap.bind(14);
-				this->irradianceMap.bind(2);
-				this->radianceMap.bind(3);
-
-				this->viewUbo.update(this->getCameraBack());
-				this->lightingSystem.update(this->getCameraBack());
-
-				ofSetColor(255, 255, 255, 255);
-
-				if (this->debug)
-				{
-					this->lightingSystem.debugDrawFrustum(this->getCameraBack());
-
-					this->lightingSystem.debugDrawCulledPointLights();
-					this->lightingSystem.debugDrawClusteredPointLights();
-					this->lightingSystem.debugDrawOccupiedClusters(this->getCameraBack());
-
-					for (auto & light : this->lightingSystem.getPointLights())
-					{
-						ofSetColor(light.color.r * 255, light.color.g * 255, light.color.b * 255);
-						ofDrawSphere(light.position.xyz, light.radius);
-					}
-				}
-				else
-				{
-					//this->drawSkybox();
-
-					this->lightingSystem.begin();
-					{
-						this->shader.begin();
-						{
-							this->material.setUniforms(this->shader);
-							this->shader.setUniform1f("uExposure", this->exposure);
-							this->shader.setUniform1f("uGamma", this->gamma);
-							this->shader.setUniform1i("uIrradianceMap", 2);
-							this->shader.setUniform1i("uRadianceMap", 3);
-
-							particleSystem.draw(this->shader, false);
-							particleSystem.draw(this->shader, true);
-						}
-						this->shader.end();
-					}
-					this->lightingSystem.end();
-				}
-
-				this->skyboxMap.unbind(14);
-				this->irradianceMap.unbind(2);
-				this->radianceMap.unbind(3);
-			}
-			this->viewUbo.unbind();
-
-			//particleSystem.drawWalls();
-			glDepthMask(GL_FALSE);
-			photons.draw();
-			glDepthMask(GL_TRUE);
-
-			// Restore state.
-			if (GL_TRUE == cullFaceEnabled)
-			{
-				glCullFace(cullFaceMode[0]);
-			}
-			else
-			{
-				glDisable(GL_CULL_FACE);
-			}
+            renderer.draw(feedbackVbo, 0, numPrimitives * 3);
 		}
 
 		//--------------------------------------------------------------
 		void Particles::drawSkybox()
 		{
-			glDisable(GL_CULL_FACE);
+            /*glDisable(GL_CULL_FACE);
 			ofDisableDepthTest();
 
 			this->skyboxShader.begin();
@@ -227,7 +164,7 @@ namespace entropy
 			this->skyboxShader.end();
 
 			ofEnableDepthTest();
-			glEnable(GL_CULL_FACE);
+            glEnable(GL_CULL_FACE);*/
 		}
 
 		//--------------------------------------------------------------
@@ -261,29 +198,11 @@ namespace entropy
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
-			{
-				ofxPreset::Gui::AddGroup(this->material.parameters, settings);
-				
-				if (ImGui::CollapsingHeader("Camera", nullptr, true, true))
-				{
-					ImGui::SliderFloat("Exposure", &this->exposure, 0.01f, 10.0f);
-					ImGui::SliderFloat("Gamma", &this->gamma, 0.01f, 10.0f);
-				}
-
-				if (ImGui::CollapsingHeader(this->lightingSystem.parameters.getName().c_str(), nullptr, true, true))
-				{
-					ofxPreset::Gui::AddParameter(this->lightingSystem.ambientIntensity);
-					ImGui::Checkbox("Debug", &this->debug);
-
-					ImGui::BeginGroup();
-					ImGui::Text("Stats");
-					ImGui::Text("Visible Lights: %u", this->lightingSystem.getNumVisibleLights());
-					ImGui::Text("Culled Lights: %u", this->lightingSystem.getNumCulledPointLights());
-					ImGui::Text("Num Affected Clusters: %u", this->lightingSystem.getNumAffectedClusters());
-					ImGui::Text("Num Light Indices: %u", this->lightingSystem.getNumPointLightIndices());
-					ImGui::EndGroup();
-				}
-			}
+            {
+                ofxPreset::Gui::AddGroup(renderer.parameters, settings);
+                ofxPreset::Gui::AddParameter(this->colorsPerType);
+                ofxPreset::Gui::AddParameter(this->additiveBlending);
+            }
 			ofxPreset::Gui::EndWindow(settings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
@@ -294,16 +213,14 @@ namespace entropy
 		void Particles::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
-			ofxPreset::Serializer::Serialize(json, this->lightingSystem.parameters);
-			ofxPreset::Serializer::Serialize(json, this->material.parameters);
+            ofxPreset::Serializer::Serialize(json, this->renderer.parameters);
 		}
 
 		//--------------------------------------------------------------
 		void Particles::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
-			ofxPreset::Serializer::Deserialize(json, this->lightingSystem.parameters);
-			ofxPreset::Serializer::Deserialize(json, this->material.parameters);
+            ofxPreset::Serializer::Deserialize(json, this->renderer.parameters);
 
 			if (!this->parameters.stateFile->empty())
 			{

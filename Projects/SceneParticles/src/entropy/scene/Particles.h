@@ -1,12 +1,13 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxRenderToolkit.h"
 
 #include "entropy/scene/Base.h"
+#include "entropy/render/WireframeFillRenderer.h"
 #include "entropy/particles/ParticleSystem.h"
 #include "entropy/particles/Photons.h"
 #include "entropy/particles/Environment.h"
+#include "entropy/particles/ViewUbo.h"
 
 namespace entropy
 {
@@ -43,34 +44,32 @@ namespace entropy
 			bool saveState(const string & path);
 			bool loadState(const string & path);
 
-		protected:
+        private:
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
 			nm::Environment::Ptr environment;
-			
-		protected:
+
+
+            void compileShader();
 			bool debug;
 
-			ofxRTK::util::ViewUbo viewUbo;
-			ofxRTK::lighting::System lightingSystem;
+            entropy::render::WireframeFillRenderer renderer;
 
-			ofxRTK::pbr::CubeMapTexture radianceMap;
-			ofxRTK::pbr::CubeMapTexture irradianceMap;
-			ofxRTK::pbr::CubeMapTexture skyboxMap;
-
-			ofxRTK::pbr::Material material;
-
-			ofShader shader;
-			ofShader skyboxShader;
-			GLuint defaultVao;
-
-			float exposure;
-			float gamma;
+            ofShader shader;
+            ofBufferObject feedbackBuffer;
+            ofVbo feedbackVbo;
+            GLuint numPrimitives, numPrimitivesQuery;
+            ofxRenderToolkit::util::ViewUbo viewUbo;
+            std::vector<ofLight> pointLights;
 
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;
 			}
+
+            ofParameter<bool> colorsPerType{"color per type", true};
+            ofParameter<bool> additiveBlending{"additive blend", true};
+            ofEventListener colorsPerTypeListener;
 
 			struct : BaseParameters
 			{
