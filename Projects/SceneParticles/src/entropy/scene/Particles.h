@@ -7,7 +7,6 @@
 #include "entropy/particles/ParticleSystem.h"
 #include "entropy/particles/Photons.h"
 #include "entropy/particles/Environment.h"
-#include "entropy/particles/ViewUbo.h"
 
 namespace entropy
 {
@@ -59,7 +58,6 @@ namespace entropy
             ofBufferObject feedbackBuffer;
             ofVbo feedbackVbo;
             GLuint numPrimitives, numPrimitivesQuery;
-            ofxRenderToolkit::util::ViewUbo viewUbo;
             std::vector<ofLight> pointLights;
 
 			BaseParameters & getParameters() override
