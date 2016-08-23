@@ -83,6 +83,7 @@ namespace entropy
 				: ofParameterGroup
 			{
 				ofParameter<bool> editing{ "Edit Shape", false };
+				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<float> brightness{ "Brightness", 1.0f, 0.0f, 1.0f };
 
 				struct : ofParameterGroup
@@ -104,7 +105,7 @@ namespace entropy
 					PARAM_DECLARE("Blend", luminance, gamma, exponent, edgeLeft, edgeRight);
 				} blend;
 
-				PARAM_DECLARE("Warp", editing, brightness, mesh, blend);
+				PARAM_DECLARE("Warp", editing, enabled, brightness, mesh, blend);
 			};
 
 			struct : ofParameterGroup

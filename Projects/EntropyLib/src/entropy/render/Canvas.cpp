@@ -107,7 +107,10 @@ namespace entropy
 					// Go through warps and fbo texture subsections and draw the whole thing.
 					for (auto i = 0; i < this->warps.size(); ++i)
 					{
-						this->warps[i]->draw(texture, this->srcAreas[i]);
+						if (this->warpParameters[i].enabled)
+						{
+							this->warps[i]->draw(texture, this->srcAreas[i]);
+						}
 					}
 				}
 				ofPopMatrix();
@@ -485,6 +488,8 @@ namespace entropy
 						{
 							warp->setEditing(paramGroup.editing);
 						}
+
+						ofxPreset::Gui::AddParameter(paramGroup.enabled);
 
 						if (ofxPreset::Gui::AddParameter(paramGroup.brightness))
 						{
