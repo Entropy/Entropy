@@ -226,6 +226,9 @@
     <ClCompile Include="src\entropy\render\PostEffects.cpp">
       <Filter>src\entropy\render</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\render\WireframeFillRenderer.cpp">
+      <Filter>src\entropy\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -675,6 +678,9 @@
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\render\PostEffects.h">
+      <Filter>src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\render\WireframeFillRenderer.h">
       <Filter>src\entropy\render</Filter>
     </ClInclude>
   </ItemGroup>

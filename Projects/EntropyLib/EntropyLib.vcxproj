@@ -252,6 +252,7 @@
     <ClCompile Include="src\entropy\popup\Video.cpp" />
     <ClCompile Include="src\entropy\render\Canvas.cpp" />
     <ClCompile Include="src\entropy\render\PostEffects.cpp" />
+    <ClCompile Include="src\entropy\render\WireframeFillRenderer.cpp" />
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Playlist.cpp" />
     <ClCompile Include="src\entropy\util\App.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\render\PostEffects.h" />
     <ClInclude Include="src\entropy\render\Layout.h" />
+    <ClInclude Include="src\entropy\render\WireframeFillRenderer.h" />
     <ClInclude Include="src\entropy\scene\Base.h" />
     <ClInclude Include="src\entropy\scene\Playlist.h" />
     <ClInclude Include="src\entropy\util\App.h" />
