@@ -208,8 +208,8 @@ namespace entropy
 					}
 					else
 					{
-						this->horizontalMesh.addColor(ofFloatColor::white);
-						this->horizontalMesh.addColor(ofFloatColor::white);
+						this->horizontalMesh.addColor(ofFloatColor::yellow);
+						this->horizontalMesh.addColor(ofFloatColor::yellow);
 					}
 				}
 			}
@@ -230,8 +230,8 @@ namespace entropy
 					}
 					else
 					{
-						this->verticalMesh.addColor(ofFloatColor::white);
-						this->verticalMesh.addColor(ofFloatColor::white);
+						this->verticalMesh.addColor(ofFloatColor::yellow);
+						this->verticalMesh.addColor(ofFloatColor::yellow);
 					}
 				}
 			}
@@ -245,10 +245,10 @@ namespace entropy
 				this->crossMesh.addVertex(glm::vec3(GetCanvasWidth(layout), GetCanvasHeight(layout), 0));
 				this->crossMesh.addVertex(glm::vec3(GetCanvasWidth(layout), 0, 0));
 				this->crossMesh.addVertex(glm::vec3(0, GetCanvasHeight(layout), 0));
-				this->crossMesh.addColor(ofFloatColor::yellow);
-				this->crossMesh.addColor(ofFloatColor::yellow);
-				this->crossMesh.addColor(ofFloatColor::yellow);
-				this->crossMesh.addColor(ofFloatColor::yellow);
+				this->crossMesh.addColor(ofFloatColor::magenta);
+				this->crossMesh.addColor(ofFloatColor::magenta);
+				this->crossMesh.addColor(ofFloatColor::magenta);
+				this->crossMesh.addColor(ofFloatColor::magenta);
 			}
 		}
 
