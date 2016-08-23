@@ -45,8 +45,7 @@ namespace entropy
 
 			void resize(int width, int height);
 
-			const string & getDataPath();
-			string getShaderPath(const string & shaderFile = "");
+            std::filesystem::path getShaderPath(const string & shaderFile = "");
 
 		protected:
 			void updateSize();

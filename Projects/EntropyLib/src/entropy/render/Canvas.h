@@ -54,9 +54,8 @@ namespace entropy
 
 			Layout getLayout() const;
 
-			const string & getDataPath();
-			string getSettingsFilePath();
-			string getShaderPath(const string & shaderFile = "");
+            std::filesystem::path getSettingsFilePath();
+            std::filesystem::path getShaderPath(const string & shaderFile = "");
 			
 			bool loadSettings();
 			bool saveSettings();

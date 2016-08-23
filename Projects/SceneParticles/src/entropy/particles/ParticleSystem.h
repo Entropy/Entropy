@@ -69,7 +69,7 @@ namespace nm
 
 		void update();
 
-		void draw(ofShader & shader, bool wireframe);
+        void draw(ofShader & shader);
 
 		void drawWalls();
 
@@ -91,8 +91,7 @@ namespace nm
 		tbb::atomic<unsigned> totalNumParticles;
 		unsigned* deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
-		ofVboMesh meshesFill[Particle::NUM_TYPES];
-		ofVboMesh meshesWire[Particle::NUM_TYPES];
+        ofVboMesh meshes[Particle::NUM_TYPES];
 		ofShader wallShader;
 
 		// position stuff

@@ -1,0 +1,105 @@
+{
+    "Camera Back": {
+        "aspectRatio": 1.68611109256744,
+        "distance": 1632.24438476562,
+        "drag": 0.899999976158142,
+        "farClip": 9353.07421875,
+        "forceAspectRatio": true,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": false,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 9.3530740737915,
+        "ortho": false,
+        "target": "0, 0, 0",
+        "transform": "0.573616, -0.0298426, -0.82501,        0\n-0.298975, 0.923471, -0.242528,        0\n 0.76923, 0.385303, 0.520683,        0\n 1228.95,  613.041,  882.084,        1",
+        "translationKey": 109
+    },
+    "Camera Front": {
+        "aspectRatio": 1.77777779102325,
+        "distance": 0.0,
+        "drag": 0.899999976158142,
+        "farClip": 0.0,
+        "forceAspectRatio": true,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": false,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 0.0,
+        "ortho": false,
+        "target": "0, 0, 0",
+        "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,        0,        1",
+        "translationKey": 109
+    },
+    "Environment": {
+        "Annihiliation Threshold Max": "0.521",
+        "Annihiliation Threshold Min": "0.402",
+        "Energy": "1",
+        "Force Multiplier Max": "1e+08",
+        "Force Multiplier Min": "1e+07",
+        "Fusion Threshold Exponent Max": "-5.448",
+        "Fusion Threshold Exponent Min": "-5.216",
+        "Pair Production Threshold Max": "0.567",
+        "Pair Production Threshold Min": "0.562"
+    },
+    "Mappings": {
+        "Base::Background": "0",
+        "Base::Camera::Attach Front to Back": "0",
+        "Base::Camera::Relative Y Axis": "0"
+    },
+    "Particles": {
+        "": "",
+        "Base": {
+            "Background": "0, 0, 0, 1",
+            "Camera": {
+                "Attach Front to Back": "1",
+                "Relative Y Axis": "1"
+            }
+        }
+    },
+    "Pop-Ups": null,
+    "Post Effects Back": {
+        "Bloom": {
+            "Brightness Threshold": "0.025",
+            "Debug blur": "0",
+            "Enabled": "1",
+            "Num Passes": "6",
+            "Sigma": "3.567"
+        },
+        "Color": {
+            "Brightness": "0",
+            "Contrast": "1",
+            "Exposure": "4",
+            "Gamma": "2.2",
+            "Tonemapping": "6"
+        }
+    },
+    "Post Effects Front": {
+        "Bloom": {
+            "Brightness Threshold": "1",
+            "Debug blur": "0",
+            "Enabled": "1",
+            "Num Passes": "1",
+            "Sigma": "0.9"
+        },
+        "Color": {
+            "Brightness": "0",
+            "Contrast": "1",
+            "Exposure": "4",
+            "Gamma": "2.2",
+            "Tonemapping": "6"
+        }
+    },
+    "Renderer": {
+        "Fill": "1",
+        "Fill alpha": "0.021",
+        "Fog enabled": "1",
+        "Fog max dist.": "1464.04",
+        "Fog min dist.": "400",
+        "Fog power": "10",
+        "Shade Normals": "0",
+        "Use lights": "1",
+        "Wireframe": "1",
+        "Wireframe alpha": "0.067"
+    }
+}

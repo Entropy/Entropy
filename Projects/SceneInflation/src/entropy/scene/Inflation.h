@@ -6,6 +6,7 @@
 #include "entropy/inflation/NoiseField.h"
 #include "entropy/inflation/GPUMarchingCubes.h"
 #include "entropy/inflation/Constants.h"
+#include "entropy/render/WireframeFillRenderer.h"
 
 namespace entropy
 {
@@ -43,27 +44,16 @@ namespace entropy
 			double now;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
+            entropy::render::WireframeFillRenderer renderer;
 
 			// Noise Field
 			inflation::NoiseField noiseField;
 
-
-			// GUI
-			//bool guiVisible = true;
 			uint64_t timeToSetIso;
-			uint64_t timeToUpdate;
-
-			/*
-			// Post Effects
-			ofFbo fboPost[2];
-
-			ofShader shaderBright;
-			ofShader blurV;
-			ofShader blurH;
-			ofShader tonemap;
-			*/
+            uint64_t timeToUpdate;
 
 		protected:
+            ofVbo box;
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;
