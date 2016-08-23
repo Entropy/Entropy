@@ -1,6 +1,3 @@
-// Filename: main.vert
-//
-// Copyright ? James Acres
 #version 450
 
 #pragma include <inc/ofDefaultUniforms.glsl>
