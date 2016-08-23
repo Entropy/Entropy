@@ -125,7 +125,7 @@ namespace nm
 
 	void Photons::onParticlesDraw(ofShader& shader)
 	{
-		shader.setUniformTexture("tex", particleImage, 4);
+        shader.setUniformTexture("tex", particleImage, 4);
 		shader.setUniform1f("energy", environment->getEnergy());
 	}
 
@@ -161,7 +161,7 @@ namespace nm
 			else scaledPosns[i] = posns[i];
 		}
 		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
-		trailParticles.update();
+        trailParticles.update();
 		if (ofRandomuf() < environment->getPairProductionThresh())
 		{
 			// find a particle

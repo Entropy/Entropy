@@ -4,7 +4,7 @@
 #include "entropy/Helpers.h"
 #include <regex>
 
-#define MAX_LIGHTS 16
+#define MAX_LIGHTS 16u
 
 //#define _TEAPOT
 
@@ -95,8 +95,18 @@ namespace entropy
              feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
              glGenQueries(1, &numPrimitivesQuery);
 
-             pointLights.resize(4);
-             ofSetGlobalAmbientColor(ofFloatColor(0.001));
+             pointLights.resize(MAX_LIGHTS);
+             for(auto & light: pointLights){
+                 light.setup();
+                 light.setAmbientColor(ofFloatColor::black);
+                 light.setSpecularColor(ofFloatColor::white);
+             }
+
+             ambientLightListener = parameters.ambientLight.newListener([&](float & ambient){
+                 ofSetGlobalAmbientColor(ofFloatColor(ambient));
+             });
+
+             ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
 		}
 
 		//--------------------------------------------------------------
@@ -109,7 +119,7 @@ namespace entropy
                 auto & photons = this->photons.getPosnsRef();
                 // Remove extra point lights.
                 // Update current point lights.
-                auto lightsEnabled = 0;
+                /*auto lightsEnabled = 0;
                 for (int i = 0; i < photons.size(); ++i)
                 {
                     if(photons[i].x > glm::vec3(-HALF_DIM*2).x  &&
@@ -130,14 +140,14 @@ namespace entropy
                 {
                     pointLights.resize(lightsEnabled);
                     cout << "resizing point lights " << pointLights.size() << endl;
-                }
+                }*/
 
                 for(auto & light: pointLights){
                     light.disable();
                     light.setPosition(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
                 }
 
-                for (int i = 0, j=0; i < photons.size() && j < lightsEnabled; ++i)
+                for (size_t i = 0, j=0; i < photons.size() && j < MAX_LIGHTS; ++i)
                 {
 
                     if(photons[i].x > glm::vec3(-HALF_DIM*2).x  &&
@@ -148,12 +158,10 @@ namespace entropy
                        photons[i].z < glm::vec3(HALF_DIM*2).z){
                         auto & light = pointLights[j];
                         light.enable();
-                        light.setAmbientColor(ofFloatColor::black);
-                        light.setDiffuseColor(ofFloatColor::white);
-                        light.setSpecularColor(ofFloatColor::white);
+                        light.setDiffuseColor(ofFloatColor::white * parameters.lightStrength);
                         light.setPointLight();
                         light.setPosition(photons[i]);
-                        light.setAttenuation(0,0,0.01);
+                        light.setAttenuation(0,0,parameters.attenuation);
                         j++;
                     }
                 }
@@ -191,7 +199,7 @@ namespace entropy
                 }
 
                 renderer.draw(feedbackVbo, 0, numPrimitives * 3);
-                //photons.draw();
+                photons.draw();
             }
 		}
 
@@ -253,6 +261,9 @@ namespace entropy
                 ImGui::PlotLines("Fog funtion", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
                 ofxPreset::Gui::AddParameter(this->parameters.colorsPerType);
                 ofxPreset::Gui::AddParameter(this->parameters.additiveBlending);
+                ofxPreset::Gui::AddParameter(this->parameters.ambientLight);
+                ofxPreset::Gui::AddParameter(this->parameters.attenuation);
+                ofxPreset::Gui::AddParameter(this->parameters.lightStrength);
                 ImGui::Checkbox("debug lights", &debug);
             }
 			ofxPreset::Gui::EndWindow(settings);

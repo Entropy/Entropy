@@ -22,7 +22,7 @@ void main()
     ageVarying = pos.w;
 	float hueVariation = -0.1 + color.r;
 	float hue = clamp(0.5 * energy + hueVariation, 0.0, 1.0);
-    colorVarying = vec4(hsv(hue, 0.5, 1.0), color.a);
+	colorVarying = vec4(1,1,1,color.a);//vec4(hsv(hue, 0.5, 1.0), color.a);
     gl_PointSize = ageVarying * color.a * 10.0;
     gl_Position = modelViewProjectionMatrix * vec4(pos.xyz, 1.0);
 }
