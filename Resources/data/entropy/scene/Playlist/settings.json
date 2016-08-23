@@ -2,11 +2,7 @@
     "tracks": [
         {
             "preset": "_default",
-            "scene": "Survey"
-        },
-        {
-            "preset": "evolve",
-            "scene": "Video"
+            "scene": "Example"
         }
     ]
 }

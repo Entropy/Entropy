@@ -107,7 +107,10 @@ namespace entropy
 					// Go through warps and fbo texture subsections and draw the whole thing.
 					for (auto i = 0; i < this->warps.size(); ++i)
 					{
-						this->warps[i]->draw(texture, this->srcAreas[i]);
+						if (this->warpParameters[i].enabled)
+						{
+							this->warps[i]->draw(texture, this->srcAreas[i]);
+						}
 					}
 				}
 				ofPopMatrix();
@@ -303,32 +306,28 @@ namespace entropy
 				overlaps.resize(numWarps, 0.0f);
 
 				// Calculate the overlap for each stitch and the total overlap.
-				const auto areaWidth = this->screenWidth / static_cast<float>(numWarps);
+				const auto areaSize = glm::vec2(this->screenWidth / static_cast<float>(numWarps), this->getHeight());
 				auto totalOverlap = 0.0f;
 				for (auto i = 0; i < numWarps - 1; ++i)
 				{
 					auto warp = this->warps[i];
 					auto rightEdge = warp->getEdges().z;
-					overlaps[i] = areaWidth * rightEdge * 0.5f;
+					overlaps[i] = areaSize.x * rightEdge * 0.5f;
 					totalOverlap += overlaps[i];
 				}
-
-				//cout << "Stitches: Total is " << this->getScreenWidth() << " with overlap " << totalOverlap;
 
 				// Adjust the fbo width.
 				this->setWidth(this->screenWidth - totalOverlap);
 
-				//cout << " to new size " << this->getWidth() << endl;
-
 				// Update the areas for each warp.
-				const auto areaSize = glm::vec2(this->getWidth() / static_cast<float>(numWarps), this->getHeight());
-				//cout << " Area width is " << areaSize.x << " for " << numWarps << " warps" << endl;
+				auto accOverlap = 0.0f;
 				for (auto i = 0; i < numWarps; ++i)
 				{
-					auto offsetLeft = (i * areaSize.x) - ((i > 0)? overlaps[i] : 0.0f);
-					auto offsetRight = ((i + 1) * areaSize.x) + ((i < numWarps - 1) ? overlaps[i + 1] : 0.0f);
+					const auto offsetLeft = i * areaSize.x - accOverlap;
+					const auto offsetRight = offsetLeft + areaSize.x;
 					this->srcAreas[i] = ofRectangle(offsetLeft, 0.0f, offsetRight - offsetLeft, areaSize.y);
-					//cout <add< "  Warp " << i << " with area  " << this->srcAreas[i] << endl;
+
+					accOverlap += overlaps[i];
 				}
 			}
 
@@ -486,6 +485,8 @@ namespace entropy
 							warp->setEditing(paramGroup.editing);
 						}
 
+						ofxPreset::Gui::AddParameter(paramGroup.enabled);
+
 						if (ofxPreset::Gui::AddParameter(paramGroup.brightness))
 						{
 							warp->setBrightness(paramGroup.brightness);
@@ -590,16 +591,13 @@ namespace entropy
 						{
 							if (ImGui::CollapsingHeader(paramGroup.blend.getName().c_str(), nullptr, true, true))
 							{
-								glm::vec3 tmpLuminanceRef;
-								glm::vec3 tmpGammaRef;
-
-								tmpLuminanceRef = paramGroup.blend.luminance.get();
+								auto tmpLuminanceRef = paramGroup.blend.luminance.get();
 								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
 								{
 									paramGroup.blend.luminance.set(tmpLuminanceRef);
 									warp->setLuminance(paramGroup.blend.luminance);
 								}
-								tmpGammaRef = paramGroup.blend.gamma.get();
+								auto tmpGammaRef = paramGroup.blend.gamma.get();
 								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(tmpGammaRef)))
 								{
 									paramGroup.blend.gamma.set(tmpGammaRef);
@@ -624,6 +622,10 @@ namespace entropy
 										edgesPrev.z = paramGroup.blend.edgeLeft;
 										warpPrev->setEdges(edgesPrev);
 
+										// Sync previous parameters.
+										auto paramsPrev = this->warpParameters[i - 1];
+										paramsPrev.blend.edgeRight = paramGroup.blend.edgeLeft;
+
 										this->dirtyStitches = true;
 									}
 								}
@@ -641,6 +643,10 @@ namespace entropy
 										auto edgeNext = warpNext->getEdges();
 										edgeNext.x = paramGroup.blend.edgeRight;
 										warpNext->setEdges(edgeNext);
+
+										// Sync next parameters.
+										auto paramsNext = this->warpParameters[i + 1];
+										paramsNext.blend.edgeLeft = paramGroup.blend.edgeRight;
 
 										this->dirtyStitches = true;
 									}
@@ -702,6 +708,12 @@ namespace entropy
 					// Sync warp with corresponding parameter group.
 					auto & warpParams = warpParameters.back();
 					warpParams.brightness = warp->getBrightness();
+
+					warpParams.blend.luminance = warp->getLuminance();
+					warpParams.blend.gamma = warp->getGamma();
+					warpParams.blend.exponent = warp->getExponent();
+					warpParams.blend.edgeLeft = warp->getEdges().x;
+					warpParams.blend.edgeRight = warp->getEdges().z;
 
 					if (warp->getType() != ofxWarp::WarpBase::TYPE_PERSPECTIVE)
 					{
