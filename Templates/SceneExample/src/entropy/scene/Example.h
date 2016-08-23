@@ -46,6 +46,16 @@ namespace entropy
 			ofLight light;
 			ofMaterial material;
 
+			render::Layout getGridLayout();
+			void clearGrid();
+			void updateGrid(render::Layout layout);
+			void drawGrid();
+
+			ofVboMesh pointsMesh;
+			ofVboMesh horizontalMesh;
+			ofVboMesh verticalMesh;
+			ofVboMesh crossMesh;
+
 		protected:
 			BaseParameters & getParameters() override
 			{
@@ -62,7 +72,19 @@ namespace entropy
 					PARAM_DECLARE("Box", color, size);
 				} box;
 
-				PARAM_DECLARE("Example", box);
+				struct : ofParameterGroup
+				{
+					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+					ofParameter<int> size{ "Size", 20, 1, 200 };
+					ofParameter<bool> centerPoints{ "Center Points", true };
+					ofParameter<bool> horizontalLines{ "Horizontal Lines", true };
+					ofParameter<bool> verticalLines{ "Vertical Lines", true };
+					ofParameter<bool> crossLines{ "Cross Lines", false };
+
+					PARAM_DECLARE("Grid", size, centerPoints, horizontalLines, verticalLines, crossLines);
+				} grid;
+
+				PARAM_DECLARE("Example", box, grid);
 			} parameters;
 		};
 	}
