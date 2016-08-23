@@ -110,11 +110,12 @@ namespace entropy
 		void Video::renderContent()
 		{
 #ifdef TARGET_WIN32
-			if (this->video.lockSharedTexture())
+			auto videoPlayer = dynamic_pointer_cast<ofxWMFVideoPlayer>(this->video.getPlayer());
+			if (videoPlayer && videoPlayer->lockSharedTexture())
 			{
 				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
 														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
-				this->video.unlockSharedTexture();
+				videoPlayer->unlockSharedTexture();
             }
 #else
             this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
