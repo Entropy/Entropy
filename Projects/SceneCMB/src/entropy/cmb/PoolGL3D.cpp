@@ -98,7 +98,7 @@ namespace entropy
 			this->fbos[this->tempIdx].begin();
 			{
 				ofDisableAlphaBlending();
-
+				
 				this->rippleShader.begin();
 				{
 					this->rippleShader.setUniform1f("uDamping", this->parameters.base.damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
@@ -149,6 +149,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::draw()
 		{
+			ofEnableAlphaBlending();
+			
 			this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
 			this->volumetrics.setVolumeTextureFilterMode(this->parameters.volumetrics.filterMode);
 			this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->parameters.volumetrics.volumeSize, 0);

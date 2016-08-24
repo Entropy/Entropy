@@ -190,7 +190,9 @@ namespace entropy
 
 					// Draw the content.
 					ofSetColor(255, this->frontAlpha * 255);
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
 					this->renderContent();
+					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
 			}
 			ofPopStyle();

@@ -24,6 +24,10 @@ namespace entropy
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
 
+			// Setup boxes.
+			this->boxes[render::Layout::Back].parameters.setName("Box Back");
+			this->boxes[render::Layout::Front].parameters.setName("Box Front");
+
 			// Setup post processing parameters.
 			this->postEffects[render::Layout::Back].setName("Post Effects Back");
 			this->postEffects[render::Layout::Front].setName("Post Effects Front");
@@ -160,9 +164,9 @@ namespace entropy
 				popUp->update_(dt);
 			}
 
-			if (this->boxGeom.update())
+			for (auto & it : this->boxes)
 			{
-				this->boxLight.setPosition(glm::vec3(this->boxGeom.size) * 2.0f);
+				it.second.update();
 			}
 
 			this->update(dt);
@@ -188,24 +192,29 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 			
+			if (layout == render::Layout::Back)
+			{
+				this->cameras[layout].setNearClip(parameters.base.camera.backClipNear);
+				this->cameras[layout].setFarClip(parameters.base.camera.backClipFar);
+			}
+			else
+			{
+				this->cameras[layout].setNearClip(parameters.base.camera.frontClipNear);
+				this->cameras[layout].setFarClip(parameters.base.camera.frontClipFar);
+			}
 			this->cameras[layout].begin(GetCanvasViewport(layout));
 			ofEnableDepthTest();
 			{
+				this->boxes[layout].draw();
+
 				if (layout == render::Layout::Back)
 				{
 					this->drawBackWorld();
-					if (parameters.base.box.drawBack)
-					{
-						this->drawBox();
-					}
 				}
 				else
 				{
 					this->drawFrontWorld();
-					if (parameters.base.box.drawFront)
-					{
-						this->drawBox();
-					}
+				//	this->boxes[layout].draw();
 				}
 			}
 			ofDisableDepthTest();
@@ -358,9 +367,11 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(parameters.base.camera.relativeYAxis);
 					ofxPreset::Gui::AddParameter(parameters.base.camera.attachFrontToBack);
 
-					ImGui::Text(parameters.base.camera.mouseEnabled.getName().c_str());
 					std::vector<std::string> labels = { "Back", "Front" };
 					ofxPreset::Gui::AddRadio(parameters.base.camera.mouseEnabled, labels, 2);
+
+					ofxPreset::Gui::AddRange("Back Clip", parameters.base.camera.backClipNear, parameters.base.camera.backClipFar);
+					ofxPreset::Gui::AddRange("Front Clip", parameters.base.camera.frontClipNear, parameters.base.camera.frontClipFar);
 
 					if (ImGui::Button("Reset Back"))
 					{
@@ -373,16 +384,18 @@ namespace entropy
 					}
 				}
 
-				if (ImGui::CollapsingHeader(parameters.base.box.getName().c_str(), nullptr, true, true))
+				for (auto & it : this->boxes)
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.box.drawBack);
-					ofxPreset::Gui::AddParameter(parameters.base.box.drawFront);
-					static const vector<string> labels{ "None", "Back", "Front" };
-					ofxPreset::Gui::AddRadio(parameters.base.box.cullFace, labels, 3);
-					ofxPreset::Gui::AddParameter(this->boxGeom.size);
-					ofxPreset::Gui::AddParameter(this->boxGeom.edgeWidth);
-					ofxPreset::Gui::AddParameter(this->boxGeom.subdivisions);
-					ofxPreset::Gui::AddParameter(parameters.base.box.color);
+					if (ImGui::CollapsingHeader(it.second.parameters.getName().c_str(), nullptr, true, true))
+					{
+						ofxPreset::Gui::AddParameter(it.second.enabled);
+						static const vector<string> labels{ "None", "Back", "Front" };
+						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
+						ofxPreset::Gui::AddParameter(it.second.color);
+						ofxPreset::Gui::AddParameter(it.second.size);
+						ofxPreset::Gui::AddParameter(it.second.edgeWidth);
+						ofxPreset::Gui::AddParameter(it.second.subdivisions);
+					}
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
@@ -430,9 +443,8 @@ namespace entropy
 			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Front]);
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.size);
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.edgeWidth);
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.subdivisions);
+			ofxPreset::Serializer::Serialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
+			ofxPreset::Serializer::Serialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
 
 			this->serialize(json);
 
@@ -465,11 +477,13 @@ namespace entropy
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
-			if (json.count("Box"))
+			if (json.count("Box Back"))
 			{
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.size);
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.edgeWidth);
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.subdivisions);
+				ofxPreset::Serializer::Deserialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
+			}
+			if (json.count("Box Front"))
+			{
+				ofxPreset::Serializer::Deserialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
 			}
 
 			this->deserialize(json);
@@ -770,44 +784,6 @@ namespace entropy
 			{
 				this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawBox()
-		{
-			auto & parameters = this->getParameters();
-			
-			ofPushStyle();
-			{
-				this->boxMaterial.setDiffuseColor(parameters.base.box.color);
-				this->boxLight.enable();
-				{
-					ofSetColor(parameters.base.box.color.get());
-					this->boxMaterial.begin();
-					{
-						if (parameters.base.box.cullFace > 0)
-						{
-							glEnable(GL_CULL_FACE);
-							if (parameters.base.box.cullFace == 1)
-							{
-								glCullFace(GL_BACK);
-							}
-							else
-							{
-								glCullFace(GL_FRONT);
-							}
-						}
-						this->boxGeom.getMesh().draw();
-						if (parameters.base.box.cullFace > 0)
-						{
-							glDisable(GL_CULL_FACE);
-						}
-					}
-					this->boxMaterial.end();
-				}
-				this->boxLight.disable();
-			}
-			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------

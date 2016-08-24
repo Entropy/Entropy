@@ -199,8 +199,34 @@ namespace entropy
                 }
 
                 renderer.draw(feedbackVbo, 0, numPrimitives * 3);
-                photons.draw();
+                //photons.draw();
             }
+		}
+
+		//--------------------------------------------------------------
+		void Particles::drawFrontWorld()
+		{
+			if (debug) {
+				for (auto &light : pointLights)
+				{
+					if (light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
+						light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
+						light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
+						light.getPosition().x < glm::vec3(HALF_DIM).x &&
+						light.getPosition().y < glm::vec3(HALF_DIM).y &&
+						light.getPosition().z < glm::vec3(HALF_DIM).z) {
+						light.draw();
+					}
+				}
+			}
+			else {
+				if (this->parameters.additiveBlending) {
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+				}
+
+				renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+				photons.draw();
+			}
 		}
 
 		//--------------------------------------------------------------

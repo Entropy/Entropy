@@ -34,10 +34,13 @@ namespace entropy
 				this->addDrop();
 			}
 
-			this->stepRipple();
-			this->copyResult();
+			if ((ofGetFrameNum() % parameters.base.rippleRate) == 0)
+			{
+				this->stepRipple();
+				this->copyResult();
 
-			std::swap(this->currIdx, this->prevIdx);
+				std::swap(this->currIdx, this->prevIdx);
+			}
 		}
 
 		//--------------------------------------------------------------

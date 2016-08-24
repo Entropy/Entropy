@@ -112,11 +112,7 @@ namespace entropy
 			std::map<render::Layout, ofEasyCam> cameras;
 
 			// Box
-			void drawBox();
-
-			geom::Box boxGeom;
-			ofLight boxLight;
-			ofMaterial boxMaterial;
+			std::map<render::Layout, geom::Box> boxes;
 
 			// Resources
 			void populatePresets();
@@ -136,24 +132,18 @@ namespace entropy
 
 					struct : ofParameterGroup
 					{
-						ofParameter<bool> drawBack{ "Back Draw", false };
-						ofParameter<bool> drawFront{ "Front Draw", false };
-						ofParameter<int> cullFace{ "Cull Face", 1, 0, 2 };
-						ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-
-						PARAM_DECLARE("Box", drawBack, drawFront, cullFace, color);
-					} box;
-					
-					struct : ofParameterGroup
-					{
 						ofParameter<bool> relativeYAxis{ "Relative Y Axis", true };
 						ofParameter<bool> attachFrontToBack{ "Attach Front to Back", true };
 						ofParameter<int> mouseEnabled{ "Mouse Enabled", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+						ofParameter<float> backClipNear{ "Clip Near Back", 0.0f, 0.0f, 1000.0f };
+						ofParameter<float> backClipFar{ "Clip Far Back", 6.0f, 0.0f, 1000.0f };
+						ofParameter<float> frontClipNear{ "Clip Near Front", 0.0f, 0.0f, 1000.0f };
+						ofParameter<float> frontClipFar{ "Clip Far Front", 6.0f, 0.0f, 1000.0f };
 
-						PARAM_DECLARE("Camera", relativeYAxis, attachFrontToBack);
+						PARAM_DECLARE("Camera", relativeYAxis, attachFrontToBack, mouseEnabled, backClipNear, backClipFar, frontClipNear, frontClipFar);
 					} camera;
 
-					PARAM_DECLARE("Base", background, box, camera);
+					PARAM_DECLARE("Base", background, camera);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);

@@ -2,9 +2,9 @@
 
 #include "entropy/Helpers.h"
 
-#ifdef TARGET_WIN32
-#include "ofxWMFVideoPlayer.h"
-#endif
+//#ifdef TARGET_WIN32
+//#include "ofxWMFVideoPlayer.h"
+//#endif
 
 namespace entropy
 {
@@ -14,9 +14,9 @@ namespace entropy
 		Video::Video()
 			: Base(Type::Video)
 		{
-#ifdef TARGET_WIN32
-            this->video.setPlayer(std::make_shared<ofxWMFVideoPlayer>());
-#endif
+//#ifdef TARGET_WIN32
+//            this->video.setPlayer(std::make_shared<ofxWMFVideoPlayer>());
+//#endif
 		}
 
 		//--------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace entropy
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
-				this->video.load(filePath);
+				this->video.loadAsync(filePath);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
 
@@ -109,18 +109,18 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::renderContent()
 		{
-#ifdef TARGET_WIN32
-			auto videoPlayer = dynamic_pointer_cast<ofxWMFVideoPlayer>(this->video.getPlayer());
-			if (videoPlayer && videoPlayer->lockSharedTexture())
-			{
-				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
-				videoPlayer->unlockSharedTexture();
-            }
-#else
+//#ifdef TARGET_WIN32
+//			auto videoPlayer = dynamic_pointer_cast<ofxWMFVideoPlayer>(this->video.getPlayer());
+//			if (videoPlayer && videoPlayer->lockSharedTexture())
+//			{
+//				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
+//														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+//				videoPlayer->unlockSharedTexture();
+//            }
+//#else
             this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
                                                     this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
-#endif
+//#endif
         }
 	}
 }

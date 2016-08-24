@@ -2,11 +2,19 @@
     "tracks": [
         {
             "preset": "_default",
-            "scene": "Example"
+            "scene": "Calibrate"
         },
         {
             "preset": "_default",
             "scene": "Inflation"
+        },
+        {
+            "preset": "_default",
+            "scene": "Particles"
+        },
+        {
+            "preset": "_default",
+            "scene": "CMB"
         }
     ]
 }

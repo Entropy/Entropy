@@ -88,8 +88,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
         {
-			this->cameras[render::Layout::Back].setNearClip(0.01);
-			this->cameras[render::Layout::Back].setFarClip(6.0);
+			//this->cameras[render::Layout::Back].setNearClip(0.01);
+			//this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			if (parameters.render.debug) {
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
@@ -106,10 +106,16 @@ namespace entropy
 
                 //cout << gpuMarchingCubes.getNumVertices() << " vertices at " << ofGetFrameRate() << "fps" << endl;
                 renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+
                 //ofSetColor(255);
                 //ofNoFill();
                 //ofDrawBox(1);
                 //renderer.drawElements(box, 0, box.getNumIndices());
+				this->boxes[render::Layout::Back].draw(renderer);
+				//if (this->boxes[render::Layout::Back].enabled)
+				//{
+				//	renderer.drawElements(this->boxes[render::Layout::Back].getMesh().getVbo(), 0, this->boxes[render::Layout::Back].getMesh().getNumIndices());
+				//}
 
                 ofEnableBlendMode(OF_BLENDMODE_ALPHA);
             }

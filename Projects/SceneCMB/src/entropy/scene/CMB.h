@@ -37,6 +37,8 @@ namespace entropy
 			void drawBackWorld() override;
 			void drawBackOverlay() override;
 
+			void drawFrontWorld() override;
+
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
 		protected:

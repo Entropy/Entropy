@@ -1,8 +1,8 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/scene/Calibrate.h"
 #include "entropy/scene/CMB.h"
-#include "entropy/scene/Example.h"
 #include "entropy/scene/Inflation.h"
 #include "entropy/scene/Particles.h"
 #include "entropy/scene/Survey.h"
@@ -15,8 +15,8 @@ void ofApp::setup()
 
 	// Add all Scenes to the Playlist.
 	auto playlist = entropy::GetPlaylist();
+	playlist->addScene(make_shared<entropy::scene::Calibrate>());
 	playlist->addScene(make_shared<entropy::scene::CMB>());
-	playlist->addScene(make_shared<entropy::scene::Example>());
 	playlist->addScene(make_shared<entropy::scene::Inflation>());
 	playlist->addScene(make_shared<entropy::scene::Particles>());
 	playlist->addScene(make_shared<entropy::scene::Survey>());

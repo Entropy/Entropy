@@ -30,11 +30,13 @@ namespace entropy
 					ofParameter<bool> dropping{ "Dropping", true };
 					ofParameter<int> dropRate{ "Drop Rate", 1, 1, 60 };
 
+					ofParameter<int> rippleRate{ "Ripple Rate", 1, 1, 60 };
+
 					ofParameter<float> damping{ "Damping", 0.995f, 0.0f, 1.0f };
 					ofParameter<float> radius{ "Radius", 30.0f, 1.0f, 60.0f };
 					ofParameter<float> ringSize{ "Ring Size", 1.25f, 0.0f, 5.0f };
 
-					PARAM_DECLARE("Base", dropColor, dropping, dropRate, damping, radius, ringSize);
+					PARAM_DECLARE("Base", dropColor, dropping, dropRate, rippleRate, damping, radius, ringSize);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);

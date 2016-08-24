@@ -1,0 +1,184 @@
+{
+    "Box Back": {
+        "Box Back": {
+            "Color": "0.0509804, 0.0509804, 0.0509804, 1",
+            "Cull Face": "2",
+            "Edge Width": "1",
+            "Enabled": "0",
+            "Size": "1000",
+            "Subdivisions": "1"
+        }
+    },
+    "Box Front": {
+        "Box Front": {
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "1",
+            "Edge Width": "1.784",
+            "Enabled": "0",
+            "Size": "1000",
+            "Subdivisions": "1"
+        }
+    },
+    "Camera Back": {
+        "aspectRatio": 3.1611111164093,
+        "distance": 581.052551269531,
+        "drag": 0.899999976158142,
+        "farClip": 10000.0,
+        "forceAspectRatio": true,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": false,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 400.0,
+        "ortho": false,
+        "target": "0, 0, 0",
+        "transform": "-0.657888, 0.0382283, 0.752145,        0\n-0.230473, 0.940576, -0.249396,        0\n-0.716985, -0.337424, -0.609983,        0\n-416.605, -196.061, -354.432,        1",
+        "translationKey": 109
+    },
+    "Camera Front": {
+        "aspectRatio": 2.89074063301086,
+        "distance": 10.036600112915,
+        "drag": 0.899999976158142,
+        "farClip": 400.0,
+        "forceAspectRatio": true,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": false,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 9.3530740737915,
+        "ortho": false,
+        "target": "0, 0, 0",
+        "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,  10.0366,        1",
+        "translationKey": 109
+    },
+    "Environment": {
+        "Annihiliation Threshold Max": "0.521",
+        "Annihiliation Threshold Min": "0.402",
+        "Energy": "1",
+        "Force Multiplier Max": "1e+08",
+        "Force Multiplier Min": "1e+07",
+        "Fusion Threshold Exponent Max": "-5.448",
+        "Fusion Threshold Exponent Min": "-5.216",
+        "Pair Production Threshold Max": "0.567",
+        "Pair Production Threshold Min": "0.562"
+    },
+    "Mappings": {
+        "Base::Background": "0",
+        "Base::Camera::Attach Front to Back": "0",
+        "Base::Camera::Clip Far Back": "0",
+        "Base::Camera::Clip Far Front": "0",
+        "Base::Camera::Clip Near Back": "0",
+        "Base::Camera::Clip Near Front": "0",
+        "Base::Camera::Mouse Enabled": "0",
+        "Base::Camera::Relative Y Axis": "0",
+        "additive blend": "0",
+        "ambient light": "0",
+        "attenuation": "0",
+        "color per type": "0"
+    },
+    "Particles": {
+        "": "",
+        "Base": {
+            "Background": "0, 0, 0, 1",
+            "Camera": {
+                "Attach Front to Back": "1",
+                "Clip Far Back": "10000",
+                "Clip Far Front": "400",
+                "Clip Near Back": "400",
+                "Clip Near Front": "0",
+                "Mouse Enabled": "0",
+                "Relative Y Axis": "0"
+            }
+        },
+        "additive blend": "1",
+        "ambient light": "0.001",
+        "attenuation": "0.01",
+        "color per type": "1"
+    },
+    "Pop-Ups": [
+        {
+            "Video": {
+                "Base": {
+                    "Background": "0, 0, 0, 0",
+                    "Center": "0.239, 0.5",
+                    "Layout": "1",
+                    "Size": "0.205, 0.409"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Video\\videos\\test front screen\\test graphique 3_1.mov",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Background": "0, 0, 0, 0",
+                    "Center": "0.227, 0.5",
+                    "Layout": "1",
+                    "Size": "0.125, 0.375"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Video\\videos\\test front screen\\test graphique 1_1.mov",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 2
+        }
+    ],
+    "Post Effects Back": {
+        "Bloom": {
+            "Brightness Threshold": "0.01",
+            "Debug blur": "0",
+            "Enabled": "1",
+            "Num Passes": "6",
+            "Sigma": "0.5"
+        },
+        "Color": {
+            "Brightness": "0",
+            "Contrast": "1",
+            "Exposure": "4",
+            "Gamma": "2.2",
+            "Tonemapping": "6"
+        }
+    },
+    "Post Effects Front": {
+        "Bloom": {
+            "Brightness Threshold": "0.01",
+            "Debug blur": "0",
+            "Enabled": "0",
+            "Num Passes": "10",
+            "Sigma": "18"
+        },
+        "Color": {
+            "Brightness": "0",
+            "Contrast": "1",
+            "Exposure": "4",
+            "Gamma": "2.2",
+            "Tonemapping": "6"
+        }
+    },
+    "Renderer": {
+        "Fill": "1",
+        "Fill alpha": "1",
+        "Fog enabled": "1",
+        "Fog max dist.": "247.61",
+        "Fog min dist.": "0",
+        "Fog power": "0.362",
+        "Shade Normals": "0",
+        "Use lights": "1",
+        "Wireframe": "1",
+        "Wireframe alpha": "1"
+    }
+}
