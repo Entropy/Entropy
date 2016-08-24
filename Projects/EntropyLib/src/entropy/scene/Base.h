@@ -4,6 +4,7 @@
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
+#include "entropy/geom/Box.h"
 #include "entropy/popup/Image.h"
 #include "entropy/popup/Video.h"
 #include "entropy/render/Layout.h"
@@ -110,6 +111,13 @@ namespace entropy
 
 			std::map<render::Layout, ofEasyCam> cameras;
 
+			// Box
+			void drawBox();
+
+			geom::Box boxGeom;
+			ofLight boxLight;
+			ofMaterial boxMaterial;
+
 			// Resources
 			void populatePresets();
 
@@ -125,6 +133,16 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+
+					struct : ofParameterGroup
+					{
+						ofParameter<bool> drawBack{ "Back Draw", false };
+						ofParameter<bool> drawFront{ "Front Draw", false };
+						ofParameter<int> cullFace{ "Cull Face", 1, 0, 2 };
+						ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+
+						PARAM_DECLARE("Box", drawBack, drawFront, cullFace, color);
+					} box;
 					
 					struct : ofParameterGroup
 					{
@@ -135,7 +153,7 @@ namespace entropy
 						PARAM_DECLARE("Camera", relativeYAxis, attachFrontToBack);
 					} camera;
 
-					PARAM_DECLARE("Base", background, camera);
+					PARAM_DECLARE("Base", background, box, camera);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);

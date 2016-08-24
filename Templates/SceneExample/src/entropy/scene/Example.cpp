@@ -55,11 +55,6 @@ namespace entropy
 		// Update your data here, once per frame.
 		void Example::update(double dt)
 		{
-			if (this->box.update())
-			{
-				light.setPosition(glm::vec3(this->box.size) * 2);
-			}
-
 			this->updateGrid(this->getGridLayout());
 		}
 
@@ -74,10 +69,7 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawBackWorld()
 		{
-			if (this->parameters.box.drawBack)
-			{
-				this->drawBox();
-			}
+
 		}
 
 		//--------------------------------------------------------------
@@ -106,10 +98,7 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawFrontWorld()
 		{
-			if (this->parameters.box.drawFront)
-			{
-				this->drawBox();
-			}
+
 		}
 
 		//--------------------------------------------------------------
@@ -125,26 +114,6 @@ namespace entropy
 			{
 				this->drawGrid();
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Example::drawBox()
-		{
-			ofPushStyle();
-			{
-				ofEnableDepthTest();
-				material.setDiffuseColor(this->parameters.box.color);
-				light.enable();
-				glEnable(GL_CULL_FACE);
-				ofSetColor(this->parameters.box.color.get());
-				material.begin();
-				this->box.getMesh().draw();
-				glDisable(GL_CULL_FACE);
-				material.end();
-				light.disable();
-				ofDisableDepthTest();
-			}
-			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------
@@ -292,26 +261,6 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				// Add parameters manually.
-				if (ImGui::CollapsingHeader(this->parameters.box.getName().c_str(), nullptr, true, true))
-				{
-					ofxPreset::Gui::AddParameter(this->parameters.box.drawBack);
-					ofxPreset::Gui::AddParameter(this->parameters.box.drawFront);
-					if (ofxPreset::Gui::AddParameter(this->box.size))
-					{
-						//this->boxMesh.clear();
-					}
-					if (ofxPreset::Gui::AddParameter(this->box.edgeWidth))
-					{
-						//this->boxMesh.clear();
-					}
-					if (ofxPreset::Gui::AddParameter(this->box.subdivisions))
-					{
-						//this->boxMesh.clear();
-					}
-					ofxPreset::Gui::AddParameter(this->parameters.box.color);
-				}
-
 				// Add parameters manually.
 				if (ImGui::CollapsingHeader(this->parameters.grid.getName().c_str(), nullptr, true, true))
 				{

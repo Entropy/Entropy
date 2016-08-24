@@ -1,6 +1,5 @@
 #pragma once
 
-#include "entropy/geom/Box.h"
 #include "entropy/scene/Base.h"
 
 namespace entropy
@@ -42,10 +41,6 @@ namespace entropy
 		protected:
 			void drawBox();
 			
-			geom::Box box;
-			ofLight light;
-			ofMaterial material;
-
 			void drawBorder(render::Layout layout);
 
 			render::Layout getGridLayout();
@@ -68,15 +63,6 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<bool> drawBack{ "Back Draw", false };
-					ofParameter<bool> drawFront{ "Front Draw", false };
-					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-
-					PARAM_DECLARE("Box", drawBack, drawFront, color);
-				} box;
-
-				struct : ofParameterGroup
-				{
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 					ofParameter<int> size{ "Size", 20, 1, 200 };
 					ofParameter<bool> centerPoints{ "Center Points", true };
@@ -96,7 +82,7 @@ namespace entropy
 					PARAM_DECLARE("Border", drawBack, drawFront, size);
 				} border;
 
-				PARAM_DECLARE("Example", box, grid, border);
+				PARAM_DECLARE("Example", grid, border);
 			} parameters;
 		};
 	}
