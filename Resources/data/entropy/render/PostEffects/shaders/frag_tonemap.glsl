@@ -1,6 +1,9 @@
 #version 330
 out vec4 fragColor;
 
+#define VIGNETTE 1
+#define DEBUG_VIGNETTE 0
+
 uniform sampler2D tex0;
 uniform sampler2D blurred1;
 uniform float brightness;
@@ -8,6 +11,11 @@ uniform float gamma;
 uniform float contrast;
 uniform float tonemap_type;
 uniform float exposureBias = 2.0f;
+uniform float inner_vigneting;
+uniform float outer_vigneting;
+uniform float vignette_power;
+uniform mat3 vignette_rotation;
+uniform float ratio;
 
 in vec2 f_texcoord;
 
@@ -205,6 +213,20 @@ void main(){
 
     // Apply brightness.
     rgb = max(vec3(0.0), rgb + vec3(brightness));
+
+#if VIGNETTE
+	vec2 pos = vec2((f_texcoord.x - 0.5) * ratio, f_texcoord.y - 0.5);
+	vec3 rotated_pos = vignette_rotation * vec3(pos, 0);
+	float d = (rotated_pos.x * rotated_pos.x) / (ratio*ratio) + (rotated_pos.y * rotated_pos.y);
+	d *= 4.;
+
+	float vignetting = pow(smoothstep(outer_vigneting, inner_vigneting, d), vignette_power);
+#if DEBUG_VIGNETTE
+	rgb = vec3(vignetting);
+#else
+	rgb *= vignetting;
+#endif
+#endif
 
     fragColor = vec4(rgb, 1.0);
 }

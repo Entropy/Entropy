@@ -83,9 +83,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::postProcess(PostParameters & parameters)
+        void Canvas::postProcess(PostParameters & parameters)
 		{
-			this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
+            this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
 			this->postApplied = true;
 		}
 

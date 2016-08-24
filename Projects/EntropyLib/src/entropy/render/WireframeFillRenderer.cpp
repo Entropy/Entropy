@@ -7,6 +7,12 @@ namespace entropy
 {
     namespace render
     {
+        std::string replace(std::string src, std::string find, std::string replacement){
+            auto pos = src.find(find);
+            auto len = find.length();
+            return src.replace(pos, len, replacement);
+        }
+
         void WireframeFillRenderer::compileShader(){
             //fragment shader
             ofFile vertFile(GetShadersPath(Module::Renderers) / "wireframeFillRender.vert");
@@ -32,12 +38,46 @@ namespace entropy
             shaderWireframe.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
             shaderWireframe.bindDefaults();
             shaderWireframe.linkProgram();
+        }
 
+        void WireframeFillRenderer::setMaterial(){
+            std::string postFragmentSource = R"(
+                 float fog(float dist, float minDist, float maxDist, float power) {
+                      dist = pow(dist, power);
+                      minDist = pow(minDist, power);
+                      maxDist = pow(maxDist, power);
+                      float invDistanceToCamera = 1 - clamp((dist - minDist) / maxDist, 0.f, 1.f);
+                      if (dist > minDist) {
+                          return invDistanceToCamera;
+                      }
+                      else {
+                          return 1;
+                      }
+                  }
+                  vec4 postFragment(vec4 localColor){
+                     float distanceToCamera = length(v_eyePosition);
+                     localColor.a *= fog(distanceToCamera, %fogMinDistance%, %fogMaxDistance%, %fogPower%);
+                     return localColor;
+                  })";
+            postFragmentSource = replace(postFragmentSource, "%fogMinDistance%", std::to_string(fogMinDistance));
+            postFragmentSource = replace(postFragmentSource, "%fogMaxDistance%", std::to_string(fogMaxDistance));
+            postFragmentSource = replace(postFragmentSource, "%fogPower%", std::to_string(fogPower));
             material.setColors(ofFloatColor::white, ofFloatColor::white, ofFloatColor::white, ofFloatColor::black);
+            material.setPostFragment(postFragmentSource);
         }
 
         void WireframeFillRenderer::setup(){
             compileShader();
+            setMaterial();
+            listeners.push_back(fogMinDistance.newListener([&](float &){
+                setMaterial();
+            }));
+            listeners.push_back(fogMaxDistance.newListener([&](float &){
+                setMaterial();
+            }));
+            listeners.push_back(fogPower.newListener([&](float &){
+                setMaterial();
+            }));
         }
 
         void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices) const{

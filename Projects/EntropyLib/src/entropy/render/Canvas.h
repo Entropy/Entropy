@@ -24,7 +24,7 @@ namespace entropy
 			void beginDraw();
 			void endDraw();
 
-			void postProcess(PostParameters & parameters);
+            void postProcess(PostParameters & parameters);
 			
 			void render(const ofRectangle & bounds);
 
