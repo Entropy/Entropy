@@ -1,5 +1,6 @@
 #pragma once
 
+#include "entropy/geom/Box.h"
 #include "entropy/scene/Base.h"
 
 namespace entropy
@@ -39,16 +40,9 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			enum class DrawMode
-			{
-				None,
-				Wire,
-				Fill
-			};
-
-			void drawScene(DrawMode drawMode);
+			void drawBox();
 			
-			ofBoxPrimitive box;
+			geom::Box box;
 			ofLight light;
 			ofMaterial material;
 
@@ -74,12 +68,11 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<int> drawModeBack{ "Back Draw", static_cast<int>(DrawMode::Fill), static_cast<int>(DrawMode::None), static_cast<int>(DrawMode::Fill) };
-					ofParameter<int> drawModeFront{ "Front Draw", static_cast<int>(DrawMode::Wire), static_cast<int>(DrawMode::None), static_cast<int>(DrawMode::Fill) };
-					ofParameter<float> size{ "Size", 20.0f, 0.0f, 200.0f };
+					ofParameter<bool> drawBack{ "Back Draw", false };
+					ofParameter<bool> drawFront{ "Front Draw", false };
 					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
 
-					PARAM_DECLARE("Box", drawModeBack, drawModeFront, size, color);
+					PARAM_DECLARE("Box", drawBack, drawFront, color);
 				} box;
 
 				struct : ofParameterGroup

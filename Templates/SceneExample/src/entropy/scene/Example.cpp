@@ -55,10 +55,9 @@ namespace entropy
 		// Update your data here, once per frame.
 		void Example::update(double dt)
 		{
-			if (this->box.getSize().x != this->parameters.box.size)
+			if (this->box.update())
 			{
-				this->box.set(this->parameters.box.size);
-				light.setPosition(this->box.getSize() * 2);
+				light.setPosition(glm::vec3(this->box.size) * 2);
 			}
 
 			this->updateGrid(this->getGridLayout());
@@ -75,8 +74,10 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawBackWorld()
 		{
-			auto mode = static_cast<DrawMode>(this->parameters.box.drawModeBack.get());
-			this->drawScene(mode);
+			if (this->parameters.box.drawBack)
+			{
+				this->drawBox();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -105,8 +106,10 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawFrontWorld()
 		{
-			auto mode = static_cast<DrawMode>(this->parameters.box.drawModeFront.get());
-			this->drawScene(mode);
+			if (this->parameters.box.drawFront)
+			{
+				this->drawBox();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -125,10 +128,8 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::drawScene(DrawMode drawMode)
+		void Example::drawBox()
 		{
-			if (drawMode == DrawMode::None) return;
-
 			ofPushStyle();
 			{
 				ofEnableDepthTest();
@@ -137,7 +138,7 @@ namespace entropy
 				glEnable(GL_CULL_FACE);
 				ofSetColor(this->parameters.box.color.get());
 				material.begin();
-				this->box.draw((drawMode == DrawMode::Fill) ? OF_MESH_FILL : OF_MESH_WIREFRAME);
+				this->box.getMesh().draw();
 				glDisable(GL_CULL_FACE);
 				material.end();
 				light.disable();
@@ -294,10 +295,20 @@ namespace entropy
 				// Add parameters manually.
 				if (ImGui::CollapsingHeader(this->parameters.box.getName().c_str(), nullptr, true, true))
 				{
-					static vector<string> labels{ "None", "Wire", "Fill" };
-					ofxPreset::Gui::AddRadio(this->parameters.box.drawModeBack, labels, 3);
-					ofxPreset::Gui::AddRadio(this->parameters.box.drawModeFront, labels, 3);
-					ofxPreset::Gui::AddParameter(this->parameters.box.size);
+					ofxPreset::Gui::AddParameter(this->parameters.box.drawBack);
+					ofxPreset::Gui::AddParameter(this->parameters.box.drawFront);
+					if (ofxPreset::Gui::AddParameter(this->box.size))
+					{
+						//this->boxMesh.clear();
+					}
+					if (ofxPreset::Gui::AddParameter(this->box.edgeWidth))
+					{
+						//this->boxMesh.clear();
+					}
+					if (ofxPreset::Gui::AddParameter(this->box.subdivisions))
+					{
+						//this->boxMesh.clear();
+					}
 					ofxPreset::Gui::AddParameter(this->parameters.box.color);
 				}
 
