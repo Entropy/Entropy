@@ -28,23 +28,7 @@ namespace entropy
 			for (auto & octave : octaves) {
 				parameters.add(octave.parameters);
 			}
-		}
-
-		//--------------------------------------------------------------
-		void NoiseField::compileComputeShader() {
-			ofFile computeFile("shaders/compute_noise4d.glsl");
-			ofBuffer computeBuff(computeFile);
-			std::string computeSource = computeBuff.getText();
-
-			std::regex re_clip("const[ \t]+bool[ \t]+sphericalClip[ \t]*=.*;");
-			computeSource = std::regex_replace(computeSource, re_clip, std::string("const bool sphericalClip = ") + (sphericalClip ? "true;" : "false;"));
-
-			std::regex re_fill("const[ \t]+bool[ \t]+fillEdges[ \t]*=.*;");
-			computeSource = std::regex_replace(computeSource, re_fill, std::string("const bool fillEdges = ") + (fillEdges ? "true;" : "false;"));
-
-			noiseComputeShader.setupShaderFromSource(GL_COMPUTE_SHADER, computeSource);
-			noiseComputeShader.linkProgram();
-		}
+        }
 
 		//--------------------------------------------------------------
 		void NoiseField::allocateVolumeTexture() {
@@ -60,6 +44,9 @@ namespace entropy
 		void NoiseField::setup(ofParameter<int> & resolution) {
 			this->resolution.makeReferenceTo(resolution);
 
+            noiseComputeShader.loadCompute("shaders/compute_noise4d.glsl");
+            allocateVolumeTexture();
+
 			resolutionListener = resolution.newListener([&](int & resolution) {
 				allocateVolumeTexture();
 			});
@@ -69,21 +56,19 @@ namespace entropy
 					fillEdges = false;
 				}
 				else {
-					compileComputeShader();
+                    noiseComputeShader.setConstantb("sphericalClip", clip);
 				}
 			});
 
 			fillEdgesListener = fillEdges.newListener([&](bool & fill) {
 				if (!fill || !sphericalClip) {
-					compileComputeShader();
+                    noiseComputeShader.setConstantb("fillEdges", fill);
 				}
 				else {
 					fillEdges = false;
 				}
 			});
 
-			allocateVolumeTexture();
-			compileComputeShader();
 		}
 
 		//--------------------------------------------------------------

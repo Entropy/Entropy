@@ -96,8 +96,6 @@ namespace entropy
 			std::vector<ofFloatColor> volumeValues;
 			ofShader volumeShader;
 			ofEventListener sphericalClipListener, fillEdgesListener, resolutionListener;
-
-			void compileComputeShader();
 			void allocateVolumeTexture();
 
 		public:
