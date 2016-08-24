@@ -50,46 +50,46 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneVideo\SceneVideoLib.props" />
-    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
     <Import Project="..\SceneCMB\SceneCMBLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneVideo\SceneVideoLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneVideo\SceneVideoLib.props" />
-    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
     <Import Project="..\SceneCMB\SceneCMBLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneVideo\SceneVideoLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneVideo\SceneVideoLib.props" />
-    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
     <Import Project="..\SceneCMB\SceneCMBLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneVideo\SceneVideoLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\..\Projects\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneVideo\SceneVideoLib.props" />
-    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\..\Templates\SceneExample\SceneExampleLib.props" />
+    <Import Project="..\EntropyLib\EntropyLib.props" />
+    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
     <Import Project="..\SceneCMB\SceneCMBLib.props" />
+    <Import Project="..\SceneInflation\SceneInflationLib.props" />
+    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
+    <Import Project="..\SceneSurvey\SceneSurveyLib.props" />
+    <Import Project="..\SceneVideo\SceneVideoLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -236,7 +236,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ProjectReference Include="..\..\Projects\EntropyLib\EntropyLib.vcxproj">
       <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Templates\SceneExample\SceneExampleLib.vcxproj">
+    <ProjectReference Include="..\SceneCalibrate\SceneCalibrateLib.vcxproj">
       <Project>{68e1cf70-4e98-4685-8a96-589e1073e797}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SceneCMB\SceneCMBLib.vcxproj">
