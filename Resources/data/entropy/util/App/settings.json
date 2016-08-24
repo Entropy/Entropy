@@ -9,7 +9,7 @@
         },
         "Background": "0.15674, 0.188407, 0.192157, 1",
         "Control Screen": {
-            "Enabled": "0",
+            "Enabled": "1",
             "Preview": {
                 "Back Enabled": "1",
                 "Front Enabled": "1",
@@ -19,7 +19,7 @@
             "Screen Width": "1920"
         },
         "Front Screen": {
-            "Enabled": "0",
+            "Enabled": "1",
             "Num Cols": "2",
             "Num Rows": "1",
             "Screen Height": "1080",

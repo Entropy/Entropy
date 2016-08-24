@@ -6,17 +6,17 @@ namespace entropy
 {
 	namespace scene
 	{
-		class Example
+		class Calibrate
 			: public Base
 		{
 		public:
 			string getName() const override 
 			{
-				return "entropy::scene::Example";
+				return "entropy::scene::Calibrate";
 			}
 
-			Example();
-			~Example();
+			Calibrate();
+			~Calibrate();
 
 			void setup() override;
 			void exit() override;
@@ -39,12 +39,9 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			void drawScene(bool filled);
-			void drawOverlay(bool filled, render::Layout layout);
+			void drawBox();
 			
-			ofBoxPrimitive box;
-			ofLight light;
-			ofMaterial material;
+			void drawBorder(render::Layout layout);
 
 			render::Layout getGridLayout();
 			void clearGrid();
@@ -66,14 +63,6 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
-					ofParameter<float> size{ "Size", 20.0f, 0.0f, 200.0f };
-
-					PARAM_DECLARE("Box", color, size);
-				} box;
-
-				struct : ofParameterGroup
-				{
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 					ofParameter<int> size{ "Size", 20, 1, 200 };
 					ofParameter<bool> centerPoints{ "Center Points", true };
@@ -81,10 +70,19 @@ namespace entropy
 					ofParameter<bool> verticalLines{ "Vertical Lines", true };
 					ofParameter<bool> crossLines{ "Cross Lines", false };
 
-					PARAM_DECLARE("Grid", size, centerPoints, horizontalLines, verticalLines, crossLines);
+					PARAM_DECLARE("Grid", layout, size, centerPoints, horizontalLines, verticalLines, crossLines);
 				} grid;
 
-				PARAM_DECLARE("Example", box, grid);
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> drawBack{ "Back Draw", false };
+					ofParameter<bool> drawFront{ "Front Draw", false };
+					ofParameter<int> size{ "Size", 20, 1, 200 };
+
+					PARAM_DECLARE("Border", drawBack, drawFront, size);
+				} border;
+
+				PARAM_DECLARE("Calibrate", grid, border);
 			} parameters;
 		};
 	}

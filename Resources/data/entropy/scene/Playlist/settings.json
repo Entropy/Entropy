@@ -3,6 +3,10 @@
         {
             "preset": "_default",
             "scene": "Example"
+        },
+        {
+            "preset": "_default",
+            "scene": "Inflation"
         }
     ]
 }

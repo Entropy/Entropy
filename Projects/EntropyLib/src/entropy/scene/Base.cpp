@@ -62,7 +62,7 @@ namespace entropy
 			}
 
 			auto & parameters = this->getParameters();
-
+			
 			// List mappings.
 			this->populateMappings(parameters);
 
@@ -160,6 +160,11 @@ namespace entropy
 				popUp->update_(dt);
 			}
 
+			if (this->boxGeom.update())
+			{
+				this->boxLight.setPosition(glm::vec3(this->boxGeom.size) * 2.0f);
+			}
+
 			this->update(dt);
 		}
 
@@ -181,16 +186,26 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::drawWorld_(render::Layout layout)
 		{
+			auto & parameters = this->getParameters();
+			
 			this->cameras[layout].begin(GetCanvasViewport(layout));
 			ofEnableDepthTest();
 			{
 				if (layout == render::Layout::Back)
 				{
 					this->drawBackWorld();
+					if (parameters.base.box.drawBack)
+					{
+						this->drawBox();
+					}
 				}
 				else
 				{
 					this->drawFrontWorld();
+					if (parameters.base.box.drawFront)
+					{
+						this->drawBox();
+					}
 				}
 			}
 			ofDisableDepthTest();
@@ -357,6 +372,18 @@ namespace entropy
 						this->resetCamera(render::Layout::Front);
 					}
 				}
+
+				if (ImGui::CollapsingHeader(parameters.base.box.getName().c_str(), nullptr, true, true))
+				{
+					ofxPreset::Gui::AddParameter(parameters.base.box.drawBack);
+					ofxPreset::Gui::AddParameter(parameters.base.box.drawFront);
+					static const vector<string> labels{ "None", "Back", "Front" };
+					ofxPreset::Gui::AddRadio(parameters.base.box.cullFace, labels, 3);
+					ofxPreset::Gui::AddParameter(this->boxGeom.size);
+					ofxPreset::Gui::AddParameter(this->boxGeom.edgeWidth);
+					ofxPreset::Gui::AddParameter(this->boxGeom.subdivisions);
+					ofxPreset::Gui::AddParameter(parameters.base.box.color);
+				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
@@ -405,7 +432,10 @@ namespace entropy
 			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Front]);
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
-			
+			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.size);
+			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.edgeWidth);
+			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.subdivisions);
+
 			this->serialize(json);
 
 			auto & jsonMappings = json["Mappings"];
@@ -436,6 +466,12 @@ namespace entropy
 			if (json.count("Camera Front"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
+			}
+			if (json.count("Box"))
+			{
+				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.size);
+				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.edgeWidth);
+				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.subdivisions);
 			}
 
 			this->deserialize(json);
@@ -736,6 +772,44 @@ namespace entropy
 			{
 				this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::drawBox()
+		{
+			auto & parameters = this->getParameters();
+			
+			ofPushStyle();
+			{
+				this->boxMaterial.setDiffuseColor(parameters.base.box.color);
+				this->boxLight.enable();
+				{
+					ofSetColor(parameters.base.box.color.get());
+					this->boxMaterial.begin();
+					{
+						if (parameters.base.box.cullFace > 0)
+						{
+							glEnable(GL_CULL_FACE);
+							if (parameters.base.box.cullFace == 1)
+							{
+								glCullFace(GL_BACK);
+							}
+							else
+							{
+								glCullFace(GL_FRONT);
+							}
+						}
+						this->boxGeom.getMesh().draw();
+						if (parameters.base.box.cullFace > 0)
+						{
+							glDisable(GL_CULL_FACE);
+						}
+					}
+					this->boxMaterial.end();
+				}
+				this->boxLight.disable();
+			}
+			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------

@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entropy\scene\Example.h">
+    <ClInclude Include="src\entropy\scene\Calibrate.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\entropy\scene\Example.cpp">
+    <ClCompile Include="src\entropy\scene\Calibrate.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
   </ItemGroup>
