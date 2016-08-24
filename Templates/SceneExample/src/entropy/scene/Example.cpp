@@ -75,14 +75,18 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawBackWorld()
 		{
-			this->drawScene(true);
+			auto mode = static_cast<DrawMode>(this->parameters.box.drawModeBack.get());
+			this->drawScene(mode);
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
 		void Example::drawBackOverlay()
 		{
-			this->drawOverlay(true, render::Layout::Back);
+			if (this->parameters.border.drawBack)
+			{
+				this->drawBorder(render::Layout::Back);
+			}
 
 			if (this->getGridLayout() == render::Layout::Back)
 			{
@@ -101,14 +105,18 @@ namespace entropy
 		// Draw 3D elements here.
 		void Example::drawFrontWorld()
 		{
-			this->drawScene(false);
+			auto mode = static_cast<DrawMode>(this->parameters.box.drawModeFront.get());
+			this->drawScene(mode);
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
 		void Example::drawFrontOverlay()
 		{
-			this->drawOverlay(false, render::Layout::Front);
+			if (this->parameters.border.drawFront)
+			{
+				this->drawBorder(render::Layout::Front);
+			}
 
 			if (this->getGridLayout() == render::Layout::Front)
 			{
@@ -117,8 +125,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::drawScene(bool filled)
+		void Example::drawScene(DrawMode drawMode)
 		{
+			if (drawMode == DrawMode::None) return;
+
 			ofPushStyle();
 			{
 				ofEnableDepthTest();
@@ -127,7 +137,7 @@ namespace entropy
 				glEnable(GL_CULL_FACE);
 				ofSetColor(this->parameters.box.color.get());
 				material.begin();
-				this->box.draw(filled ? OF_MESH_FILL : OF_MESH_WIREFRAME);
+				this->box.draw((drawMode == DrawMode::Fill) ? OF_MESH_FILL : OF_MESH_WIREFRAME);
 				glDisable(GL_CULL_FACE);
 				material.end();
 				light.disable();
@@ -137,24 +147,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::drawOverlay(bool filled, render::Layout layout)
+		void Example::drawBorder(render::Layout layout)
 		{
 			ofPushStyle();
 			{
-				filled ? ofFill() : ofNoFill();
-
-				static const auto kBorderSize = 20.0f;
+				const auto borderSize = this->parameters.border.size;
 				const auto canvasWidth = GetCanvasWidth(layout);
 				const auto canvasHeight = GetCanvasHeight(layout);
 
 				ofSetColor(255, 0, 0, 128);
-				ofDrawRectangle(0.0f, 0.0f, canvasWidth, kBorderSize);
+				ofDrawRectangle(0.0f, 0.0f, canvasWidth, borderSize);
 				ofSetColor(0, 255, 0, 128);
-				ofDrawRectangle(0.0f, canvasHeight - kBorderSize, canvasWidth, kBorderSize);
+				ofDrawRectangle(0.0f, canvasHeight - borderSize, canvasWidth, borderSize);
 				ofSetColor(0, 0, 255, 128);
-				ofDrawRectangle(0.0f, 0.0f, kBorderSize, canvasHeight);
+				ofDrawRectangle(0.0f, 0.0f, borderSize, canvasHeight);
 				ofSetColor(0, 255, 255, 128);
-				ofDrawRectangle(canvasWidth - kBorderSize, 0.0f, kBorderSize, canvasHeight);
+				ofDrawRectangle(canvasWidth - borderSize, 0.0f, borderSize, canvasHeight);
 			}
 			ofPopStyle();
 		}
@@ -283,8 +291,15 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				// Add parameters by group.
-				ofxPreset::Gui::AddGroup(this->parameters.box, settings);
+				// Add parameters manually.
+				if (ImGui::CollapsingHeader(this->parameters.box.getName().c_str(), nullptr, true, true))
+				{
+					static vector<string> labels{ "None", "Wire", "Fill" };
+					ofxPreset::Gui::AddRadio(this->parameters.box.drawModeBack, labels, 3);
+					ofxPreset::Gui::AddRadio(this->parameters.box.drawModeFront, labels, 3);
+					ofxPreset::Gui::AddParameter(this->parameters.box.size);
+					ofxPreset::Gui::AddParameter(this->parameters.box.color);
+				}
 
 				// Add parameters manually.
 				if (ImGui::CollapsingHeader(this->parameters.grid.getName().c_str(), nullptr, true, true))
@@ -303,6 +318,9 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.grid.verticalLines);
 					ofxPreset::Gui::AddParameter(this->parameters.grid.crossLines);
 				}
+
+				// Add parameters by group.
+				ofxPreset::Gui::AddGroup(this->parameters.border, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}

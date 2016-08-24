@@ -39,12 +39,20 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			void drawScene(bool filled);
-			void drawOverlay(bool filled, render::Layout layout);
+			enum class DrawMode
+			{
+				None,
+				Wire,
+				Fill
+			};
+
+			void drawScene(DrawMode drawMode);
 			
 			ofBoxPrimitive box;
 			ofLight light;
 			ofMaterial material;
+
+			void drawBorder(render::Layout layout);
 
 			render::Layout getGridLayout();
 			void clearGrid();
@@ -66,10 +74,12 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+					ofParameter<int> drawModeBack{ "Back Draw", static_cast<int>(DrawMode::Fill), static_cast<int>(DrawMode::None), static_cast<int>(DrawMode::Fill) };
+					ofParameter<int> drawModeFront{ "Front Draw", static_cast<int>(DrawMode::Wire), static_cast<int>(DrawMode::None), static_cast<int>(DrawMode::Fill) };
 					ofParameter<float> size{ "Size", 20.0f, 0.0f, 200.0f };
+					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
 
-					PARAM_DECLARE("Box", color, size);
+					PARAM_DECLARE("Box", drawModeBack, drawModeFront, size, color);
 				} box;
 
 				struct : ofParameterGroup
@@ -81,10 +91,19 @@ namespace entropy
 					ofParameter<bool> verticalLines{ "Vertical Lines", true };
 					ofParameter<bool> crossLines{ "Cross Lines", false };
 
-					PARAM_DECLARE("Grid", size, centerPoints, horizontalLines, verticalLines, crossLines);
+					PARAM_DECLARE("Grid", layout, size, centerPoints, horizontalLines, verticalLines, crossLines);
 				} grid;
 
-				PARAM_DECLARE("Example", box, grid);
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> drawBack{ "Back Draw", false };
+					ofParameter<bool> drawFront{ "Front Draw", false };
+					ofParameter<int> size{ "Size", 20, 1, 200 };
+
+					PARAM_DECLARE("Border", drawBack, drawFront, size);
+				} border;
+
+				PARAM_DECLARE("Example", box, grid, border);
 			} parameters;
 		};
 	}
