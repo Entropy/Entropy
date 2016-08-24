@@ -1,4 +1,4 @@
-#include "Example.h"
+#include "Calibrate.h"
 
 #include "entropy/Helpers.h"
 
@@ -7,24 +7,24 @@ namespace entropy
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		Example::Example()
+		Calibrate::Calibrate()
 			: Base()
 		{}
 		
 		//--------------------------------------------------------------
-		Example::~Example()
+		Calibrate::~Calibrate()
 		{}
 
 		//--------------------------------------------------------------
 		// Set up your crap here!
-		void Example::setup()
+		void Calibrate::setup()
 		{
 			ofEnableLighting();
 		}
 		
 		//--------------------------------------------------------------
 		// Clean up your crap here!
-		void Example::exit()
+		void Calibrate::exit()
 		{
 			
 		}
@@ -32,7 +32,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Resize your content here. 
 		// Note that this is not the window size but the canvas size.
-		void Example::resizeBack(ofResizeEventArgs & args)
+		void Calibrate::resizeBack(ofResizeEventArgs & args)
 		{
 			if (this->getGridLayout() == render::Layout::Back)
 			{
@@ -43,7 +43,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Resize your content here. 
 		// Note that this is not the window size but the canvas size.
-		void Example::resizeFront(ofResizeEventArgs & args)
+		void Calibrate::resizeFront(ofResizeEventArgs & args)
 		{
 			if (this->getGridLayout() == render::Layout::Front)
 			{
@@ -53,28 +53,28 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Update your data here, once per frame.
-		void Example::update(double dt)
+		void Calibrate::update(double dt)
 		{
 			this->updateGrid(this->getGridLayout());
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void Example::drawBackBase()
+		void Calibrate::drawBackBase()
 		{
 
 		}
 		
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Example::drawBackWorld()
+		void Calibrate::drawBackWorld()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
-		void Example::drawBackOverlay()
+		void Calibrate::drawBackOverlay()
 		{
 			if (this->parameters.border.drawBack)
 			{
@@ -89,21 +89,21 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the background here.
-		void Example::drawFrontBase()
+		void Calibrate::drawFrontBase()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Draw 3D elements here.
-		void Example::drawFrontWorld()
+		void Calibrate::drawFrontWorld()
 		{
 
 		}
 
 		//--------------------------------------------------------------
 		// Draw 2D elements in the foreground here.
-		void Example::drawFrontOverlay()
+		void Calibrate::drawFrontOverlay()
 		{
 			if (this->parameters.border.drawFront)
 			{
@@ -117,7 +117,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::drawBorder(render::Layout layout)
+		void Calibrate::drawBorder(render::Layout layout)
 		{
 			ofPushStyle();
 			{
@@ -138,13 +138,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		render::Layout Example::getGridLayout()
+		render::Layout Calibrate::getGridLayout()
 		{
 			return static_cast<render::Layout>(this->parameters.grid.layout.get());
 		}
 
 		//--------------------------------------------------------------
-		void Example::clearGrid()
+		void Calibrate::clearGrid()
 		{
 			this->pointsMesh.clear();
 			this->horizontalMesh.clear();
@@ -153,7 +153,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::updateGrid(render::Layout layout)
+		void Calibrate::updateGrid(render::Layout layout)
 		{
 			if (this->parameters.grid.centerPoints && this->pointsMesh.getNumVertices() == 0)
 			{
@@ -231,7 +231,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Example::drawGrid()
+		void Calibrate::drawGrid()
 		{
 			if (this->parameters.grid.centerPoints)
 			{
@@ -256,7 +256,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		// Add Scene specific GUI windows here.
-		void Example::gui(ofxPreset::Gui::Settings & settings)
+		void Calibrate::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
@@ -288,7 +288,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		// Do something after the parameters are saved.
 		// You can save other stuff to the same json object here too.
-		void Example::serialize(nlohmann::json & json)
+		void Calibrate::serialize(nlohmann::json & json)
 		{
 
 		}
@@ -297,7 +297,7 @@ namespace entropy
 		// Do something after the parameters are loaded.
 		// You can load your other stuff here from that json object.
 		// You can also set any refresh flags if necessary.
-		void Example::deserialize(const nlohmann::json & json)
+		void Calibrate::deserialize(const nlohmann::json & json)
 		{
 
 		}

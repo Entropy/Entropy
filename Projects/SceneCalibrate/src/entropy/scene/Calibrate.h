@@ -6,17 +6,17 @@ namespace entropy
 {
 	namespace scene
 	{
-		class Example
+		class Calibrate
 			: public Base
 		{
 		public:
 			string getName() const override 
 			{
-				return "entropy::scene::Example";
+				return "entropy::scene::Calibrate";
 			}
 
-			Example();
-			~Example();
+			Calibrate();
+			~Calibrate();
 
 			void setup() override;
 			void exit() override;
@@ -82,7 +82,7 @@ namespace entropy
 					PARAM_DECLARE("Border", drawBack, drawFront, size);
 				} border;
 
-				PARAM_DECLARE("Example", grid, border);
+				PARAM_DECLARE("Calibrate", grid, border);
 			} parameters;
 		};
 	}
