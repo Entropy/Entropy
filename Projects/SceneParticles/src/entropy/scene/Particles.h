@@ -72,6 +72,7 @@ namespace entropy
 				ofParameter<string> stateFile;
                 ofParameter<bool> colorsPerType{"color per type", true};
                 ofParameter<bool> additiveBlending{"additive blend", true};
+                ofParameter<bool> drawPhotons{"drawPhotons", true};
                 ofParameter<float> ambientLight{"ambient light", 0.001, 0, 0.02};
                 ofParameter<float> attenuation{"attenuation", 0.01, 0.0000001, 0.05};
                 ofParameter<float> lightStrength{"light strength", 1, 0, 1};

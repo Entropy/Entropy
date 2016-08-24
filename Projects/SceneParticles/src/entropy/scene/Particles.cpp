@@ -199,7 +199,9 @@ namespace entropy
                 }
 
                 renderer.draw(feedbackVbo, 0, numPrimitives * 3);
-                photons.draw();
+                if(parameters.drawPhotons){
+                    photons.draw();
+                }
             }
 		}
 
@@ -264,6 +266,7 @@ namespace entropy
                 ofxPreset::Gui::AddParameter(this->parameters.ambientLight);
                 ofxPreset::Gui::AddParameter(this->parameters.attenuation);
                 ofxPreset::Gui::AddParameter(this->parameters.lightStrength);
+                ofxPreset::Gui::AddParameter(this->parameters.drawPhotons);
                 ImGui::Checkbox("debug lights", &debug);
             }
 			ofxPreset::Gui::EndWindow(settings);
