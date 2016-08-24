@@ -425,8 +425,10 @@ namespace entropy
 						};
 						ofxPreset::Gui::AddRadio(postParameters.color.tonemapping, labels, 3);
 						ofxPreset::Gui::AddParameter(postParameters.color.brightness);
-						ofxPreset::Gui::AddParameter(postParameters.color.contrast);
+                        ofxPreset::Gui::AddParameter(postParameters.color.contrast);
 					}
+
+                    ofxPreset::Gui::AddGroup(postParameters.vignette, settings);
 				}
 				ofxPreset::Gui::EndWindow(settings);
 			}
@@ -864,13 +866,13 @@ namespace entropy
 		void Base::addCameraKeyframe(render::Layout layout)
 		{
 			this->cameraTracks[layout]->addKeyframe();
-		}
+        }
 
-		//--------------------------------------------------------------
-		render::PostParameters & Base::getPostParameters(render::Layout layout)
-		{
-			return this->postEffects[layout];
-		}
+        //--------------------------------------------------------------
+        render::PostParameters & Base::getPostParameters(render::Layout layout)
+        {
+            return this->postEffects[layout];
+        }
 
 		//--------------------------------------------------------------
 		void Base::beginExport()

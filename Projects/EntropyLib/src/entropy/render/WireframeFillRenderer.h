@@ -47,8 +47,9 @@ namespace entropy
 
         private:
             void compileShader();
+            void setMaterial();
             ofShader shaderFill, shaderWireframe;
-            ofEventListener shadeNormalsListener, fogEnabledListener;
+            std::vector<ofEventListener> listeners;
             ofMaterial material;
         };
     }

@@ -96,10 +96,10 @@ namespace entropy
 			void toggleCameraLocked();
 			bool isCameraLocked() const;
 
-			void addCameraKeyframe(render::Layout layout);
+            void addCameraKeyframe(render::Layout layout);
 
-			// Post Effects.
-			render::PostParameters & getPostParameters(render::Layout layout);
+            // Post Effects.
+            render::PostParameters & getPostParameters(render::Layout layout);
 
 			// Export
 			void beginExport();
@@ -149,9 +149,9 @@ namespace entropy
 				PARAM_DECLARE("Parameters", base);
 			};
 
-			virtual BaseParameters & getParameters() = 0;
+            virtual BaseParameters & getParameters() = 0;
 
-			std::map<render::Layout, render::PostParameters> postEffects;
+            std::map<render::Layout, render::PostParameters> postEffects;
 
 			std::vector<ofEventListener> parameterListeners;
 

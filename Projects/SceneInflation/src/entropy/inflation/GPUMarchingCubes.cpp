@@ -265,26 +265,13 @@ static int8_t triTable[256][16] = {
 namespace entropy
 {
 	namespace inflation
-	{
-		//--------------------------------------------------------------
-		void GPUMarchingCubes::compileShader() {
-			// geometry shader
-			ofFile geomFile("shaders/marching_cubes_geom.glsl");
-			ofBuffer geomBuff(geomFile);
-            std::string geomSource = geomBuff.getText();
-
-			std::regex re_out_normals("#define OUTPUT_NORMALS [0-1]");
-            geomSource = std::regex_replace(geomSource, re_out_normals, "#define OUTPUT_NORMALS " + ofToString(shadeNormals));
-
-			std::regex re_resolution("const[ \t]+float[ \t]+resolution[ \t]*=.*;");
-            geomSource = std::regex_replace(geomSource, re_resolution, "const float resolution = " + ofToString(resolution) + ";");
-
-            std::regex re_out_subdivisions("#define SUBDIVISIONS [0-1]");
-            geomSource = std::regex_replace(geomSource, re_out_subdivisions, "#define SUBDIVISIONS " + ofToString(subdivisions));
+    {
+        void GPUMarchingCubes::setup(size_t maxMemorySize) {
+            this->maxMemorySize = maxMemorySize;
 
             ofShader::TransformFeedbackSettings settings;
             settings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthrough_vert.glsl";
-            settings.shaderSources[GL_GEOMETRY_SHADER] = geomSource;
+            settings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/marching_cubes_geom.glsl";
             settings.bindDefaults = false;
             if(shadeNormals){
                 settings.varyingsToCapture = {"position", "color", "normal"};
@@ -292,11 +279,7 @@ namespace entropy
                 settings.varyingsToCapture = {"position", "color"};
             }
             shader.setup(settings);
-		}
 
-
-        void GPUMarchingCubes::setup(size_t maxMemorySize) {
-            this->maxMemorySize = maxMemorySize;
 			resolutionListener = resolution.newListener([&](int & res) {
 				std::vector<glm::vec3> vertices(res*res*res);
 				for (int z = 0, i = 0; z < res; z++) {
@@ -322,23 +305,22 @@ namespace entropy
                 if(shadeNormals){
                     vboFeedback.setNormalBuffer(bufferFeedback, getVertexStride(), offset);
                 }
-                compileShader();
+
+                shader.setConstant1f("resolution", res);
 			});
 
             subdivisionsListener = subdivisions.newListener([&](int & subs){
-                compileShader();
+                shader.setDefineConstant("SUBDIVISIONS", subs);
             });
 
-            shadeNormalsListener = shadeNormals.newListener([&](bool & subs){
-                compileShader();
+            shadeNormalsListener = shadeNormals.newListener([&](bool & normals){
+                shader.setDefineConstant("OUTPUT_NORMALS", normals);
             });
 
 			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);
 			triTableTex.loadData(&triTable[0][0], 16, 256, GL_RED_INTEGER);
             triTableTex.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-
-            compileShader();
             glGenQueries(1, &numVerticesQuery);
 		}
 

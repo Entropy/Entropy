@@ -35,8 +35,7 @@ namespace entropy
                 subdivisions,
 			};
 
-		private:
-			void compileShader();
+        private:
             size_t getFeedbackBufferSize() const;
             ofBufferObject bufferFeedback;
             ofVbo vbo, vboFeedback;

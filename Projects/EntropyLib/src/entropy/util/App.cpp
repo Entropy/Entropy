@@ -210,9 +210,12 @@ namespace entropy
 			auto scene = GetCurrentScene();
 			if (scene)
 			{
+                scene->getPostParameters(render::Layout::Back).screenRatio = this->boundsBack.getAspectRatio();
+                scene->getPostParameters(render::Layout::Front).screenRatio = this->boundsFront.getAspectRatio();
+
 				// Back screen.
 				if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
-				{
+                {
 					// Draw the content.
 					this->canvasBack->beginDraw();
 					{
@@ -224,7 +227,7 @@ namespace entropy
 					const auto postProcessing = this->playlist->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
 					if (!postProcessing)
 					{
-						this->canvasBack->postProcess(scene->getPostParameters(render::Layout::Back));
+                        this->canvasBack->postProcess(scene->getPostParameters(render::Layout::Back));
 					}
 
 					if (this->parameters.backScreen.enabled)
@@ -236,7 +239,7 @@ namespace entropy
 
 				// Front screen.
 				if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
-				{
+                {
 					// Draw the content.
 					this->canvasFront->beginDraw();
 					{
@@ -248,7 +251,7 @@ namespace entropy
 					const auto postProcessing = this->playlist->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
 					if (!postProcessing)
 					{
-						this->canvasFront->postProcess(scene->getPostParameters(render::Layout::Front));
+                        this->canvasFront->postProcess(scene->getPostParameters(render::Layout::Front));
 					}
 
 					if (this->parameters.frontScreen.enabled)

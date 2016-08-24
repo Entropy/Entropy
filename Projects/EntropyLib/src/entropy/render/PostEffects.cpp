@@ -14,6 +14,7 @@ namespace entropy
 {
 	namespace render
 	{
+
 		//--------------------------------------------------------------
 		PostEffects::PostEffects()
 		{
@@ -37,7 +38,7 @@ namespace entropy
 			this->blurVertShader.bindDefaults();
 			this->blurVertShader.linkProgram();
 
-			this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("frag_tonemap.glsl"));
+            this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("frag_tonemap.glsl"));
 		
 			// Build render geometry.
 			this->fullQuad.addVertices({ { -1, -1, 0 },{ -1,1,0 },{ 1,1,0 },{ 1,-1,0 } });
@@ -61,9 +62,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, PostParameters & parameters)
+        void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, const entropy::render::PostParameters & parameters)
 		{
-			ofSetColor(255);
+            ofSetColor(255);
+            if(parameters.vignette.enabled != vignetteEnabled){
+                this->colorCorrectShader.setDefineConstant("ENABLE_VIGNETTE", parameters.vignette.enabled);
+                vignetteEnabled = parameters.vignette.enabled;
+            }
+
+            if(vignetteEnabled && parameters.vignette.debug != debugVignette){
+                this->colorCorrectShader.setDefineConstant("DEBUG_VIGNETTE", parameters.vignette.debug);
+                debugVignette = parameters.vignette.debug;
+            }
 
 			if (parameters.bloom.enabled) 
 			{
@@ -158,6 +168,12 @@ namespace entropy
 				this->colorCorrectShader.setUniform1f("tonemap_type", parameters.color.tonemapping);
 				this->colorCorrectShader.setUniform1f("brightness", parameters.color.brightness);
 				this->colorCorrectShader.setUniform1f("contrast", parameters.color.contrast);
+                this->colorCorrectShader.setUniform1f("inner_vigneting", parameters.vignette.inner);
+                this->colorCorrectShader.setUniform1f("outer_vigneting", parameters.vignette.outter);
+                this->colorCorrectShader.setUniform1f("vignette_power", parameters.vignette.power);
+                this->colorCorrectShader.setUniform1f("ratio", parameters.screenRatio);
+                glm::mat3 rot(glm::rotate(glm::radians((float)-parameters.vignette.rotation), glm::vec3(0,0,1)));
+                this->colorCorrectShader.setUniformMatrix3f("vignette_rotation", rot);
 				if (parameters.bloom.debugBlur)
 				{
 					this->colorCorrectShader.setUniformTexture("tex0", this->fboTemp[0].getTexture(), 0);

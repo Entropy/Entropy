@@ -12,6 +12,12 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
+            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
+            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
+            "../../Resources/data/entropy/render/PostEffects/shaders/frag_tonemap.glsl",
+            "../../Resources/data/entropy/render/PostEffects/shaders/fullscreenTriangle.vert",
+            "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
             "../../Resources/data/entropy/scene/Particles/shaders/inc/clusteredShading.glsl",
