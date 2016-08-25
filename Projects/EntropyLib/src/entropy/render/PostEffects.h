@@ -23,7 +23,7 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ofParameter<float> exposure{ "Exposure", 4.0f, 0.1f, 10.0f };
+				ofParameter<float> exposure{ "Exposure", 4.0f, 0.0f, 10.0f };
 				ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
 				ofParameter<int> tonemapping{ "Tonemapping", 6, 0, 6 };
 				ofParameter<float> contrast{ "Contrast", 1.0f, 0.5f, 1.5f };
