@@ -216,7 +216,10 @@ namespace entropy
 				if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
 				{
 					static vector<string> labels{ "Back", "Front" };
-					ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2);
+					if (ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2))
+					{
+						this->boundsDirty = true;
+					}
 					ofxPreset::Gui::AddParameter(parameters.base.background);
 					if (ofxPreset::Gui::AddParameter(parameters.base.size))
 					{
@@ -326,14 +329,15 @@ namespace entropy
 
 			const auto layout = static_cast<render::Layout>(parameters.base.layout.get());
 			const auto canvasSize = glm::vec2(GetCanvasWidth(layout), GetCanvasHeight(layout));
-			this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), canvasSize.x * parameters.base.size->x, canvasSize.y * parameters.base.size->y);
-			
+			const auto viewportHeight = canvasSize.y * parameters.base.size;
 			if (this->isLoaded())
 			{
 				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
-				const auto viewportRatio = this->viewport.getAspectRatio();
-				
+				const auto viewportWidth = viewportHeight * contentRatio;
+				this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), viewportWidth, viewportHeight);
+
 				// Calculate the source subsection for Aspect Fill.
+				const auto viewportRatio = this->viewport.getAspectRatio();
 				if (this->viewport.getAspectRatio() > contentRatio)
 				{
 					this->roi.width = this->getContentWidth();
@@ -348,6 +352,10 @@ namespace entropy
 					this->roi.y = 0.0f;
 					this->roi.x = (this->getContentWidth() - this->roi.width) * 0.5f;
 				}
+			}
+			else
+			{
+				this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), viewportHeight, viewportHeight);
 			}
 
 			this->borderDirty = true;
