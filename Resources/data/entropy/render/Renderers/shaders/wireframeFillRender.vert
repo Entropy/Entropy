@@ -22,19 +22,6 @@ out float f_distanceToCamera;
 #define FOG_ENABLED 1
 #define WIREFRAME 0
 
-float fog(float dist, float minDist, float maxDist, float power) {
-	dist = pow(dist, power);
-	minDist = pow(minDist, power);
-	maxDist = pow(maxDist, power);
-	float invDistanceToCamera = 1 - clamp((dist - minDist) / maxDist, 0.f, 1.f);
-	if (dist > minDist) {
-		return invDistanceToCamera;
-	}
-	else {
-		return 1;
-	}
-}
-
 float bright(vec3 rgb){
 	return max(max(rgb.r, rgb.g), rgb.b);
 }
