@@ -485,51 +485,39 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onMouseMoved(ofMouseEventArgs & args)
 		{
-			if (this->screenBounds[render::Layout::Back].inside(args))
+			for (auto & it : this->screenBounds)
 			{
-				args.x -= this->screenBounds[render::Layout::Back].getMinX();
-				args.y -= this->screenBounds[render::Layout::Back].getMinY();
-				this->canvas[render::Layout::Back]->cursorMoved(args);
-			}
-			else if (this->screenBounds[render::Layout::Front].inside(args))
-			{
-				args.x -= this->screenBounds[render::Layout::Front].getMinX();
-				args.y -= this->screenBounds[render::Layout::Front].getMinY();
-				this->canvas[render::Layout::Front]->cursorMoved(args);
+				if (it.second.inside(args))
+				{
+					const auto screenPos = glm::vec2(args.x - it.second.getMinX(), args.y - it.second.getMinY());
+					this->canvas[it.first]->cursorMoved(screenPos);
+				}
 			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMousePressed(ofMouseEventArgs & args)
 		{
-			if (this->screenBounds[render::Layout::Back].inside(args))
+			for (auto & it : this->screenBounds)
 			{
-				args.x -= this->screenBounds[render::Layout::Back].getMinX();
-				args.y -= this->screenBounds[render::Layout::Back].getMinY();
-				this->canvas[render::Layout::Back]->cursorDown(args);
-			}
-			else if (this->screenBounds[render::Layout::Front].inside(args))
-			{
-				args.x -= this->screenBounds[render::Layout::Front].getMinX();
-				args.y -= this->screenBounds[render::Layout::Front].getMinY();
-				this->canvas[render::Layout::Front]->cursorDown(args);
+				if (it.second.inside(args))
+				{
+					const auto screenPos = glm::vec2(args.x - it.second.getMinX(), args.y - it.second.getMinY());
+					this->canvas[it.first]->cursorDown(screenPos);
+				}
 			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMouseDragged(ofMouseEventArgs & args)
 		{
-			if (this->screenBounds[render::Layout::Back].inside(args))
+			for (auto & it : this->screenBounds)
 			{
-				args.x -= this->screenBounds[render::Layout::Back].getMinX();
-				args.y -= this->screenBounds[render::Layout::Back].getMinY();
-				this->canvas[render::Layout::Back]->cursorDragged(args);
-			}
-			else if (this->screenBounds[render::Layout::Front].inside(args))
-			{
-				args.x -= this->screenBounds[render::Layout::Front].getMinX();
-				args.y -= this->screenBounds[render::Layout::Front].getMinY();
-				this->canvas[render::Layout::Front]->cursorDragged(args);
+				if (it.second.inside(args))
+				{
+					const auto screenPos = glm::vec2(args.x - it.second.getMinX(), args.y - it.second.getMinY());
+					this->canvas[it.first]->cursorDragged(screenPos);
+				}
 			}
 		}
 
