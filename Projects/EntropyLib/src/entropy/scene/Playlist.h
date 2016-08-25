@@ -39,11 +39,14 @@ namespace entropy
 			bool stopTrack();
 			size_t getCurrentTrack() const;
 
-			void update(double dt);
+			bool update(double dt);
 
-			void drawScene(render::Layout layout);
-			void drawGui(ofxPreset::Gui::Settings & settings);
-			void drawOverlay(ofxPreset::Gui::Settings & settings);
+			bool drawSceneBase(render::Layout layout);
+			bool drawSceneWorld(render::Layout layout);
+			bool drawSceneOverlay(render::Layout layout);
+
+			bool drawGui(ofxPreset::Gui::Settings & settings);
+			bool drawTimeline(ofxPreset::Gui::Settings & settings);
 
 			bool postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const;
 

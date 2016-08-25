@@ -262,27 +262,51 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Playlist::update(double dt)
+		bool Playlist::update(double dt)
 		{
 			if (this->currentScene)
 			{
 				this->currentScene->update_(dt);
+				return true;
 			}
+			return false;
 		}
 
 		//--------------------------------------------------------------
-		void Playlist::drawScene(render::Layout layout)
+		bool Playlist::drawSceneBase(render::Layout layout)
 		{
 			if (this->currentScene)
 			{
 				this->currentScene->drawBase_(layout);
-				this->currentScene->drawWorld_(layout);
-				this->currentScene->drawOverlay_(layout);
+				return true;
 			}
+			return false;
 		}
 
 		//--------------------------------------------------------------
-		void Playlist::drawGui(ofxPreset::Gui::Settings & settings)
+		bool Playlist::drawSceneWorld(render::Layout layout)
+		{
+			if (this->currentScene)
+			{
+				this->currentScene->drawWorld_(layout);
+				return true;
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		bool Playlist::drawSceneOverlay(render::Layout layout)
+		{
+			if (this->currentScene)
+			{
+				this->currentScene->drawOverlay_(layout);
+				return true;
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		bool Playlist::drawGui(ofxPreset::Gui::Settings & settings)
 		{
 			if (this->scenes.size() > 1)
 			{
@@ -380,15 +404,19 @@ namespace entropy
 
 				this->currentScene->gui_(settings);
 			}
+
+			return true;
 		}
 
 		//--------------------------------------------------------------
-		void Playlist::drawOverlay(ofxPreset::Gui::Settings & settings)
+		bool Playlist::drawTimeline(ofxPreset::Gui::Settings & settings)
 		{
 			if (this->currentScene)
 			{
 				this->currentScene->drawTimeline(settings);
+				return true;
 			}
+			return false;
 		}
 
 		//--------------------------------------------------------------

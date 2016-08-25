@@ -73,13 +73,27 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Canvas::beginDraw()
 		{
-			this->fboDraw.begin(ofFboBeginMode::Perspective);
+			if (this->postApplied)
+			{
+				this->fboPost.begin();
+			}
+			else
+			{
+				this->fboDraw.begin(ofFboBeginMode::Perspective);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
-			this->fboDraw.end();
+			if (this->postApplied)
+			{
+				this->fboPost.end();
+			}
+			else
+			{
+				this->fboDraw.end();
+			}
 		}
 
 		//--------------------------------------------------------------

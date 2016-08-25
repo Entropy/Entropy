@@ -13,13 +13,13 @@ namespace entropy
 		App_::App_()
 		{
 			// Instantiate attributes.
-			this->canvasBack = make_shared<render::Canvas>(render::Layout::Back);
-			this->canvasFront = make_shared<render::Canvas>(render::Layout::Front);
+			this->canvas[render::Layout::Back] = make_shared<render::Canvas>(render::Layout::Back);
+			this->canvas[render::Layout::Front] = make_shared<render::Canvas>(render::Layout::Front);
 			this->playlist = make_shared<scene::Playlist>();
 
 			// Setup gui.
 			this->imGui.setup();
-			this->overlayVisible = true;
+			this->controlsVisible = true;
 
 			// Register events listeners.
 			ofAddListener(ofEvents().update, this, &App_::onUpdate);
@@ -33,8 +33,8 @@ namespace entropy
 			ofAddListener(ofEvents().mouseDragged, this, &App_::onMouseDragged);
 			ofAddListener(ofEvents().mouseReleased, this, &App_::onMouseReleased);
 
-			ofAddListener(this->canvasBack->resizeEvent, this, &App_::onCanvasBackResized);
-			ofAddListener(this->canvasFront->resizeEvent, this, &App_::onCanvasFrontResized);
+			ofAddListener(this->canvas[render::Layout::Back]->resizeEvent, this, &App_::onCanvasBackResized);
+			ofAddListener(this->canvas[render::Layout::Front]->resizeEvent, this, &App_::onCanvasFrontResized);
 			ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
 
 			// Set base parameter listeners.
@@ -65,15 +65,18 @@ namespace entropy
 			ofRemoveListener(ofEvents().mouseDragged, this, &App_::onMouseDragged);
 			ofRemoveListener(ofEvents().mouseReleased, this, &App_::onMouseReleased);
 
-			ofRemoveListener(this->canvasBack->resizeEvent, this, &App_::onCanvasBackResized);
-			ofRemoveListener(this->canvasFront->resizeEvent, this, &App_::onCanvasFrontResized);
+			ofRemoveListener(this->canvas[render::Layout::Back]->resizeEvent, this, &App_::onCanvasBackResized);
+			ofRemoveListener(this->canvas[render::Layout::Front]->resizeEvent, this, &App_::onCanvasFrontResized);
 			ofRemoveListener(ofEvents().windowResized, this, &App_::onWindowResized);
 
 			this->imGui.close();
 
 			// Reset pointers.
-			this->canvasBack.reset();
-			this->canvasFront.reset();
+			for (auto & it : this->canvas)
+			{
+				it.second.reset();
+			}
+			this->canvas.clear();
 			this->playlist.reset();
 		}
 
@@ -136,15 +139,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<render::Canvas> App_::getCanvasBack() const
+		shared_ptr<render::Canvas> App_::getCanvas(render::Layout layout)
 		{
-			return this->canvasBack;
-		}
-
-		//--------------------------------------------------------------
-		shared_ptr<render::Canvas> App_::getCanvasFront() const
-		{
-			return this->canvasFront;
+			return this->canvas[layout];
 		}
 
 		//--------------------------------------------------------------
@@ -154,21 +151,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		const ofRectangle & App_::getScreenBounds(render::Layout layout)
+		{
+			return this->screenBounds[layout];
+		}
+
+		//--------------------------------------------------------------
 		const ofRectangle & App_::getBoundsControl() const
 		{
 			return this->boundsControl;
-		}
-
-		//--------------------------------------------------------------
-		const ofRectangle & App_::getBoundsBack() const
-		{
-			return this->boundsBack;
-		}
-
-		//--------------------------------------------------------------
-		const ofRectangle & App_::getBoundsFront() const
-		{
-			return this->boundsFront;
 		}
 
 		//--------------------------------------------------------------
@@ -178,15 +169,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool App_::isOverlayVisible() const
+		bool App_::isControlsVisible() const
 		{
-			return this->overlayVisible;
+			return this->controlsVisible;
 		}
 
 		//--------------------------------------------------------------
 		void App_::onUpdate(ofEventArgs & args)
 		{
-			if (this->overlayVisible || ofGetWindowMode() == OF_WINDOW)
+			if (this->controlsVisible || ofGetWindowMode() == OF_WINDOW)
 			{
 				ofShowCursor();
 			}
@@ -195,8 +186,10 @@ namespace entropy
 				ofHideCursor();
 			}
 
-			this->canvasBack->update();
-			this->canvasFront->update();
+			for (auto & it : this->canvas)
+			{
+				it.second->update();
+			}
 
 			auto dt = ofGetLastFrameTime();
 			this->playlist->update(dt);
@@ -210,55 +203,16 @@ namespace entropy
 			auto scene = GetCurrentScene();
 			if (scene)
 			{
-                scene->getPostParameters(render::Layout::Back).screenRatio = this->boundsBack.getAspectRatio();
-                scene->getPostParameters(render::Layout::Front).screenRatio = this->boundsFront.getAspectRatio();
-
 				// Back screen.
 				if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
-                {
-					// Draw the content.
-					this->canvasBack->beginDraw();
-					{
-						this->playlist->drawScene(render::Layout::Back);
-					}
-					this->canvasBack->endDraw();
-
-					// Post-process the content, either directly in the Scene or in the Canvas.
-					const auto postProcessing = this->playlist->postProcess(render::Layout::Back, this->canvasBack->getDrawTexture(), this->canvasBack->getPostFbo());
-					if (!postProcessing)
-					{
-                        this->canvasBack->postProcess(scene->getPostParameters(render::Layout::Back));
-					}
-
-					if (this->parameters.backScreen.enabled)
-					{
-						// Render the scene.
-						this->canvasBack->render(this->boundsBack);
-					}
+				{
+					this->processCanvas(render::Layout::Back, this->parameters.backScreen.enabled);
 				}
 
 				// Front screen.
 				if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
-                {
-					// Draw the content.
-					this->canvasFront->beginDraw();
-					{
-						this->playlist->drawScene(render::Layout::Front);
-					}
-					this->canvasFront->endDraw();
-
-					// Post-process the content, either directly in the Scene or in the Canvas.
-					const auto postProcessing = this->playlist->postProcess(render::Layout::Front, this->canvasFront->getDrawTexture(), this->canvasFront->getPostFbo());
-					if (!postProcessing)
-					{
-                        this->canvasFront->postProcess(scene->getPostParameters(render::Layout::Front));
-					}
-
-					if (this->parameters.frontScreen.enabled)
-					{
-						// Render the scene.
-						this->canvasFront->render(this->boundsFront);
-					}
+				{
+					this->processCanvas(render::Layout::Front, this->parameters.frontScreen.enabled);
 				}
 
 				// Control screen.
@@ -266,18 +220,18 @@ namespace entropy
 				{
 					if (this->parameters.controlScreen.preview.backEnabled)
 					{
-						this->canvasBack->getRenderTexture().draw(this->previewBoundsBack);
+						this->canvas[render::Layout::Back]->getRenderTexture().draw(this->previewBounds[render::Layout::Back]);
 					}
 					if (this->parameters.controlScreen.preview.frontEnabled)
 					{
-						this->canvasFront->getRenderTexture().draw(this->previewBoundsFront);
+						this->canvas[render::Layout::Front]->getRenderTexture().draw(this->previewBounds[render::Layout::Front]);
 					}
 				}
 			}
 
-			if (!this->overlayVisible) return;
+			if (!this->controlsVisible) return;
 
-			this->guiSettings.mouseOverGui = this->canvasBack->isEditing() || this->canvasFront->isEditing();
+			this->guiSettings.mouseOverGui = this->canvas[render::Layout::Back]->isEditing() || this->canvas[render::Layout::Front]->isEditing();
 			this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
 			this->guiSettings.windowSize = ofVec2f::zero();
 			if (this->parameters.controlScreen.enabled)
@@ -286,11 +240,11 @@ namespace entropy
 			}
 			else if (this->parameters.backScreen.enabled)
 			{
-				this->guiSettings.screenBounds = this->boundsBack;
+				this->guiSettings.screenBounds = this->screenBounds[render::Layout::Back];
 			}
 			else if (this->parameters.frontScreen.enabled)
 			{
-				this->guiSettings.screenBounds = this->boundsFront;
+				this->guiSettings.screenBounds = this->screenBounds[render::Layout::Front];
 			}
 			else
 			{
@@ -302,14 +256,55 @@ namespace entropy
 			{
 				this->drawGui(this->guiSettings);
 
-				this->canvasBack->drawGui(this->guiSettings);
-				this->canvasFront->drawGui(this->guiSettings);
+				for (auto & it : this->canvas)
+				{
+					it.second->drawGui(this->guiSettings);
+				}
+
 				this->playlist->drawGui(this->guiSettings);
 			}
 			this->imGui.end();
 
-			// Draw the non-gui overlay.
-			this->playlist->drawOverlay(this->guiSettings);
+			// Draw the timeline overlay.
+			this->playlist->drawTimeline(this->guiSettings);
+		}
+
+		//--------------------------------------------------------------
+		void App_::processCanvas(render::Layout layout, bool renderEnabled)
+		{
+			auto scene = GetCurrentScene();
+			if (scene)
+			{
+				scene->getPostParameters(layout).screenRatio = this->screenBounds[layout].getAspectRatio();
+
+				// Draw the base and world content.
+				this->canvas[layout]->beginDraw();
+				{
+					this->playlist->drawSceneBase(layout);
+					this->playlist->drawSceneWorld(layout);
+				}
+				this->canvas[layout]->endDraw();
+
+				// Post-process the content, either directly in the Scene or in the Canvas.
+				const auto postProcessing = this->playlist->postProcess(layout, this->canvas[layout]->getDrawTexture(), this->canvas[layout]->getPostFbo());
+				if (!postProcessing)
+				{
+					this->canvas[layout]->postProcess(scene->getPostParameters(layout));
+				}
+
+				// Draw the overlay content.
+				this->canvas[layout]->beginDraw();
+				{
+					this->playlist->drawSceneOverlay(layout);
+				}
+				this->canvas[layout]->endDraw();
+
+				if (renderEnabled)
+				{
+					// Render the scene.
+					this->canvas[layout]->render(this->screenBounds[layout]);
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -404,16 +399,16 @@ namespace entropy
 				totalBounds.growToInclude(this->boundsControl);
 			}
 
-			this->boundsBack = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.backScreen.screenWidth * this->parameters.backScreen.numCols, this->parameters.backScreen.screenHeight * this->parameters.backScreen.numRows);
+			this->screenBounds[render::Layout::Back] = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.backScreen.screenWidth * this->parameters.backScreen.numCols, this->parameters.backScreen.screenHeight * this->parameters.backScreen.numRows);
 			if (this->parameters.backScreen.enabled)
 			{
-				totalBounds.growToInclude(this->boundsBack);
+				totalBounds.growToInclude(this->screenBounds[render::Layout::Back]);
 			}
 
-			this->boundsFront = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.frontScreen.screenWidth * this->parameters.frontScreen.numCols, this->parameters.frontScreen.screenHeight * this->parameters.frontScreen.numRows);
+			this->screenBounds[render::Layout::Front] = ofRectangle(totalBounds.getMaxX(), totalBounds.getMinY(), this->parameters.frontScreen.screenWidth * this->parameters.frontScreen.numCols, this->parameters.frontScreen.screenHeight * this->parameters.frontScreen.numRows);
 			if (this->parameters.frontScreen.enabled)
 			{
-				totalBounds.growToInclude(this->boundsFront);
+				totalBounds.growToInclude(this->screenBounds[render::Layout::Front]);
 			}
 
 			// Resize the window.
@@ -431,27 +426,27 @@ namespace entropy
 			if (this->parameters.controlScreen.enabled)
 			{
 				// Fit the Canvas previews for the Control screen.
-				this->previewBoundsBack.height = this->boundsControl.getHeight() * this->parameters.controlScreen.preview.scale;
-				this->previewBoundsBack.width = this->canvasBack->getWidth() * this->previewBoundsBack.height / this->canvasBack->getHeight();
+				this->previewBounds[render::Layout::Back].height = this->boundsControl.getHeight() * this->parameters.controlScreen.preview.scale;
+				this->previewBounds[render::Layout::Back].width = this->canvas[render::Layout::Back]->getWidth() * this->previewBounds[render::Layout::Back].height / this->canvas[render::Layout::Back]->getHeight();
 
-				this->previewBoundsFront.width = this->previewBoundsBack.width * this->canvasFront->getWidth() / this->canvasBack->getWidth();
-				this->previewBoundsFront.height = (this->canvasFront->getHeight() * this->previewBoundsFront.width) / this->canvasFront->getWidth();
+				this->previewBounds[render::Layout::Front].width = this->previewBounds[render::Layout::Back].width * this->canvas[render::Layout::Front]->getWidth() / this->canvas[render::Layout::Back]->getWidth();
+				this->previewBounds[render::Layout::Front].height = this->canvas[render::Layout::Front]->getHeight() * this->previewBounds[render::Layout::Front].width / this->canvas[render::Layout::Front]->getWidth();
 
-				this->previewBoundsBack.x = (this->boundsControl.getWidth() - this->previewBoundsBack.getWidth()) * 0.5f;
-				this->previewBoundsFront.x = (this->boundsControl.getWidth() - this->previewBoundsFront.getWidth()) * 0.5f;
+				this->previewBounds[render::Layout::Back].x = (this->boundsControl.getWidth() - this->previewBounds[render::Layout::Back].getWidth()) * 0.5f;
+				this->previewBounds[render::Layout::Front].x = (this->boundsControl.getWidth() - this->previewBounds[render::Layout::Front].getWidth()) * 0.5f;
 
-				this->previewBoundsBack.y = this->boundsControl.getMinY() + kGuiMargin;
-				this->previewBoundsFront.y = this->previewBoundsBack.getMaxY() + kGuiMargin;
+				this->previewBounds[render::Layout::Back].y = this->boundsControl.getMinY() + kGuiMargin;
+				this->previewBounds[render::Layout::Front].y = this->previewBounds[render::Layout::Back].getMaxY() + kGuiMargin;
 
 				// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
-				this->playlist->setCameraControlArea(render::Layout::Back, this->previewBoundsBack);
-				this->playlist->setCameraControlArea(render::Layout::Front, this->previewBoundsFront);
+				this->playlist->setCameraControlArea(render::Layout::Back, this->previewBounds[render::Layout::Back]);
+				this->playlist->setCameraControlArea(render::Layout::Front, this->previewBounds[render::Layout::Front]);
 			}
 			else
 			{
 				// Set the Scene cameras to use the Canvas bounds as mouse-enabled areas.
-				this->playlist->setCameraControlArea(render::Layout::Back, this->boundsBack);
-				this->playlist->setCameraControlArea(render::Layout::Front, this->boundsFront);
+				this->playlist->setCameraControlArea(render::Layout::Back, this->screenBounds[render::Layout::Back]);
+				this->playlist->setCameraControlArea(render::Layout::Front, this->screenBounds[render::Layout::Front]);
 			}
 		}
 		
@@ -465,13 +460,13 @@ namespace entropy
 			}
 			if (args.key == '`')
 			{
-				this->overlayVisible ^= 1;
+				this->controlsVisible ^= 1;
 			}
-			if (this->canvasBack->keyPressed(args))
+			if (this->canvas[render::Layout::Back]->keyPressed(args))
 			{
 				return;
 			}
-			if (this->canvasFront->keyPressed(args))
+			if (this->canvas[render::Layout::Front]->keyPressed(args))
 			{
 				return;
 			}
@@ -490,51 +485,51 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::onMouseMoved(ofMouseEventArgs & args)
 		{
-			if (this->boundsBack.inside(args))
+			if (this->screenBounds[render::Layout::Back].inside(args))
 			{
-				args.x -= this->boundsBack.getMinX();
-				args.y -= this->boundsBack.getMinY();
-				this->canvasBack->cursorMoved(args);
+				args.x -= this->screenBounds[render::Layout::Back].getMinX();
+				args.y -= this->screenBounds[render::Layout::Back].getMinY();
+				this->canvas[render::Layout::Back]->cursorMoved(args);
 			}
-			else if (this->boundsFront.inside(args))
+			else if (this->screenBounds[render::Layout::Front].inside(args))
 			{
-				args.x -= this->boundsFront.getMinX();
-				args.y -= this->boundsFront.getMinY();
-				this->canvasFront->cursorMoved(args);
+				args.x -= this->screenBounds[render::Layout::Front].getMinX();
+				args.y -= this->screenBounds[render::Layout::Front].getMinY();
+				this->canvas[render::Layout::Front]->cursorMoved(args);
 			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMousePressed(ofMouseEventArgs & args)
 		{
-			if (this->boundsBack.inside(args))
+			if (this->screenBounds[render::Layout::Back].inside(args))
 			{
-				args.x -= this->boundsBack.getMinX();
-				args.y -= this->boundsBack.getMinY();
-				this->canvasBack->cursorDown(args);
+				args.x -= this->screenBounds[render::Layout::Back].getMinX();
+				args.y -= this->screenBounds[render::Layout::Back].getMinY();
+				this->canvas[render::Layout::Back]->cursorDown(args);
 			}
-			else if (this->boundsFront.inside(args))
+			else if (this->screenBounds[render::Layout::Front].inside(args))
 			{
-				args.x -= this->boundsFront.getMinX();
-				args.y -= this->boundsFront.getMinY();
-				this->canvasFront->cursorDown(args);
+				args.x -= this->screenBounds[render::Layout::Front].getMinX();
+				args.y -= this->screenBounds[render::Layout::Front].getMinY();
+				this->canvas[render::Layout::Front]->cursorDown(args);
 			}
 		}
 
 		//--------------------------------------------------------------
 		void App_::onMouseDragged(ofMouseEventArgs & args)
 		{
-			if (this->boundsBack.inside(args))
+			if (this->screenBounds[render::Layout::Back].inside(args))
 			{
-				args.x -= this->boundsBack.getMinX();
-				args.y -= this->boundsBack.getMinY();
-				this->canvasBack->cursorDragged(args);
+				args.x -= this->screenBounds[render::Layout::Back].getMinX();
+				args.y -= this->screenBounds[render::Layout::Back].getMinY();
+				this->canvas[render::Layout::Back]->cursorDragged(args);
 			}
-			else if (this->boundsFront.inside(args))
+			else if (this->screenBounds[render::Layout::Front].inside(args))
 			{
-				args.x -= this->boundsFront.getMinX();
-				args.y -= this->boundsFront.getMinY();
-				this->canvasFront->cursorDragged(args);
+				args.x -= this->screenBounds[render::Layout::Front].getMinX();
+				args.y -= this->screenBounds[render::Layout::Front].getMinY();
+				this->canvas[render::Layout::Front]->cursorDragged(args);
 			}
 		}
 
@@ -566,11 +561,11 @@ namespace entropy
 			this->updatePreviews();
 
 			// Notify listeners.
-			auto resizeBackArgs = ofResizeEventArgs(this->boundsBack.width, this->boundsBack.height);
-			this->canvasBack->screenResized(resizeBackArgs);
+			auto resizeBackArgs = ofResizeEventArgs(this->screenBounds[render::Layout::Back].width, this->screenBounds[render::Layout::Back].height);
+			this->canvas[render::Layout::Back]->screenResized(resizeBackArgs);
 
-			auto resizeFrontArgs = ofResizeEventArgs(this->boundsFront.width, this->boundsFront.height);
-			this->canvasFront->screenResized(resizeFrontArgs);
+			auto resizeFrontArgs = ofResizeEventArgs(this->screenBounds[render::Layout::Front].width, this->screenBounds[render::Layout::Front].height);
+			this->canvas[render::Layout::Front]->screenResized(resizeFrontArgs);
 		}
 	}
 }

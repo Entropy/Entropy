@@ -84,11 +84,7 @@ namespace entropy
 	//--------------------------------------------------------------
 	inline shared_ptr<render::Canvas> GetCanvas(render::Layout layout)
 	{
-		if (layout == entropy::render::Layout::Back)
-		{
-			return GetApp()->getCanvasBack();
-		}
-		return GetApp()->getCanvasFront();
+		return GetApp()->getCanvas(layout);
 	}
 
 	//--------------------------------------------------------------
