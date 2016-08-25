@@ -87,6 +87,7 @@ namespace entropy
 			if (wasUsingArbTex) ofEnableArbTex();
 
 			this->video.play();
+			this->video.setLoopState(OF_LOOP_NORMAL);
 			// TODO: Time video to ofxTimeline track
 
 			this->fileName = ofFilePath::getFileName(filePath);

@@ -54,7 +54,7 @@ namespace entropy
 			this->timeline.setup(timelineDataPath);
 			this->timeline.setLoopType(OF_LOOP_NONE);
 			this->timeline.setFrameRate(30.0f);
-			this->timeline.setDurationInSeconds(30);
+			this->timeline.setDurationInSeconds(600);
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(this->getParameters().base.getName());
 
@@ -141,7 +141,10 @@ namespace entropy
 			this->cameraTracks.clear();
 
 			// Clear Pop-ups.
-			this->popUps.clear();
+			while (!this->popUps.empty())
+			{
+				this->removePopUp();
+			}
 
 			// Clear parameter listeners.
 			this->parameterListeners.clear();
@@ -526,7 +529,13 @@ namespace entropy
 			}
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 			
-			this->popUps.clear();
+			// Clear previous Pop-ups.
+			while (!this->popUps.empty())
+			{
+				this->removePopUp();
+			}
+
+			// Add new Pop-ups.
 			if (json.count("Pop-Ups"))
 			{
 				for (auto & jsonPopUp : json["Pop-Ups"])
@@ -860,6 +869,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::removePopUp()
 		{
+			auto popUp = this->popUps.back();
+			popUp->removeTrack(this->timeline);
+			popUp->exit_();
 			this->popUps.pop_back();
 		}
 

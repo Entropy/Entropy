@@ -1,11 +1,11 @@
 #pragma once
 
+#include "entropy/render/Layout.h"
+#include "entropy/scene/Base.h"
+
 #ifdef TARGET_WIN32
 #include "ofxWMFVideoPlayer.h"
 #endif
-
-#include "entropy/render/Layout.h"
-#include "entropy/scene/Base.h"
 
 namespace entropy
 {
@@ -15,14 +15,14 @@ namespace entropy
 			: public Base
 		{
 		public:
-            enum class ContentMode
-            {
-                Center,
-                TopLeft,
-                ScaleToFill,
-                ScaleAspectFill,
-                ScaleAspectFit
-            };
+			enum class ContentMode
+			{
+				Center,
+				TopLeft,
+				ScaleToFill,
+				ScaleAspectFill,
+				ScaleAspectFit
+			};
 
 			string getName() const override
 			{
@@ -71,7 +71,7 @@ namespace entropy
 
 			struct : BaseParameters
 			{
-				ofParameter<string> videoPath{"Video Path", ""};
+				ofParameter<string> videoPath{ "Video Path", "" };
 				ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 				ofParameter<int> contentMode{ "Content Mode", (int)ContentMode::Center, (int)ContentMode::Center, (int)ContentMode::ScaleAspectFit };
 		

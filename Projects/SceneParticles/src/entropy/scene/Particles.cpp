@@ -77,6 +77,9 @@ namespace entropy
             renderer.fogMaxDistance.setMax(HALF_DIM * 10);
             renderer.fogMinDistance.setMax(HALF_DIM);
 
+			// Register Environment and Renderer parameters for Mappings and serialization.
+			this->parameters.add(this->environment->parameters);
+			this->parameters.add(this->renderer.parameters);
 
 			// TODO: EZ Look at this stuff
 			 this->debug = false;
@@ -276,18 +279,8 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Particles::serialize(nlohmann::json & json)
-		{
-			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
-            ofxPreset::Serializer::Serialize(json, this->renderer.parameters);
-		}
-
-		//--------------------------------------------------------------
 		void Particles::deserialize(const nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
-            ofxPreset::Serializer::Deserialize(json, this->renderer.parameters);
-
 			if (!this->parameters.stateFile->empty())
 			{
 				this->loadState(this->parameters.stateFile);
