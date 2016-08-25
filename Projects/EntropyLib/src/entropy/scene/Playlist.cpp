@@ -26,6 +26,7 @@ namespace entropy
 		{
 			if (this->scenes.find(scene->getName()) == this->scenes.end())
 			{
+				scene->init_();
 				this->scenes.emplace(scene->getName(), scene);
 				
 				// Get the short name for the gui.
@@ -48,8 +49,10 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::removeScene(const string & name)
 		{
+			// scene->clear_() will be called by the destructor.
+			
 			if (this->scenes.erase(name))
-			{
+			{				
 				string foundKey;
 				for (auto & it : this->shortNames)
 				{
@@ -75,7 +78,10 @@ namespace entropy
 		void Playlist::previewScene()
 		{
 			// Just start the first scene in the map.
-			this->setCurrentScene(this->scenes.begin()->first);
+			if (this->setCurrentScene(this->scenes.begin()->first))
+			{
+				this->setCurrentPreset(kPresetDefaultName);
+			}
 		}
 
 		//--------------------------------------------------------------

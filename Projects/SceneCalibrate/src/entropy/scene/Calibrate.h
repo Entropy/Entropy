@@ -10,16 +10,23 @@ namespace entropy
 			: public Base
 		{
 		public:
+			/// Return the scene name.
 			string getName() const override 
 			{
 				return "entropy::scene::Calibrate";
 			}
 
 			Calibrate();
-			~Calibrate();
+			virtual ~Calibrate();
+
+		protected:
+			// Override methods
+			void init() override;
+			void clear() override;
 
 			void setup() override;
 			void exit() override;
+
 			void resizeBack(ofResizeEventArgs & args) override;
 			void resizeFront(ofResizeEventArgs & args) override;
 
@@ -37,10 +44,8 @@ namespace entropy
 
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
-
-		protected:
-			void drawBox();
 			
+			// Custom methods and attributes
 			void drawBorder(render::Layout layout);
 
 			render::Layout getGridLayout();
@@ -53,7 +58,7 @@ namespace entropy
 			ofVboMesh verticalMesh;
 			ofVboMesh crossMesh;
 
-		protected:
+			// Parameters
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;

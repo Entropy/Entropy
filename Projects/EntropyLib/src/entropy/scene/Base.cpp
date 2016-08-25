@@ -8,24 +8,31 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Base::Base()
+			: initialized(false)
+			, ready(false)
 		{}
 
 		//--------------------------------------------------------------
 		Base::~Base()
-		{}
+		{
+			this->clear_();
+		}
 
 		//--------------------------------------------------------------
-		void Base::setup_()
+		void Base::init_()
 		{
-			// Set data path root for scene.
-			ofSetDataPathRoot(this->getDataPath());
-			
-			// Setup default cameras.
-			this->resetCamera(render::Layout::Back);
-			this->resetCamera(render::Layout::Front);
+			if (this->initialized)
+			{
+				ofLogError(__FUNCTION__) << "Scene is already initialized!";
+				return;
+			}
 
 			auto & parameters = this->getParameters();
-			
+
+			// Build the Back and Front cameras.
+			this->cameras.emplace(render::Layout::Back, ofEasyCam());
+			this->cameras.emplace(render::Layout::Front, ofEasyCam());
+
 			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
 			// that they are taken into account for ofxTimeline mappings and serialization.
 			this->boxes[render::Layout::Back].parameters.setName("Box Back");
@@ -38,13 +45,7 @@ namespace entropy
 			parameters.add(this->postEffects[render::Layout::Back]);
 			parameters.add(this->postEffects[render::Layout::Front]);
 
-			// Setup child Scene.
-			this->setup();
-
-			// List presets.
-			this->populatePresets();
-
-			// Setup timeline.
+			// Create timeline.
 			static string timelineDataPath;
 			if (timelineDataPath.empty())
 			{
@@ -56,8 +57,9 @@ namespace entropy
 			this->timeline.setFrameRate(30.0f);
 			this->timeline.setDurationInSeconds(600);
 			this->timeline.setAutosave(false);
-			this->timeline.setPageName(this->getParameters().base.getName());
+			this->timeline.setPageName(parameters.base.getName());
 
+			// Setup timeline tracks.
 			for (auto & it : this->cameras)
 			{
 				const auto trackName = ((it.first == render::Layout::Back) ? "Camera Back" : "Camera Front");
@@ -70,7 +72,7 @@ namespace entropy
 				track->lockCameraToTrack = false;
 				this->cameraTracks[it.first] = track;
 			}
-			
+
 			// List mappings.
 			this->populateMappings(parameters);
 
@@ -119,18 +121,27 @@ namespace entropy
 				this->cameras[render::Layout::Front].setFarClip(value);
 			}));
 
-			// Load default preset.
-			this->currPreset.clear();
-			this->loadPreset(kPresetDefaultName);
+			this->init();
+
+			this->initialized = true;
 		}
 
 		//--------------------------------------------------------------
-		void Base::exit_()
+		void Base::clear_()
 		{
-			this->exit();
+			if (!this->initialized)
+			{
+				ofLogError(__FUNCTION__) << "Scene is not initialized!";
+				return;
+			}
+			
+			this->clear();
 
-			// Save default preset.
-			this->savePreset(kPresetDefaultName);
+			// Clear parameter listeners.
+			this->parameterListeners.clear();
+
+			// Clear mappings.
+			this->clearMappings();
 
 			// Clear camera tracks.
 			for (auto & it : this->cameraTracks)
@@ -140,14 +151,59 @@ namespace entropy
 			}
 			this->cameraTracks.clear();
 
-			// Clear Pop-ups.
+			// Clear any remaining timeline stuff.
+			this->timeline.clear();
+		}
+
+		//--------------------------------------------------------------
+		void Base::setup_()
+		{
+			if (this->ready)
+			{
+				ofLogError(__FUNCTION__) << "Scene is already set up!";
+				return;
+			}
+
+			// Set data path root for scene.
+			ofSetDataPathRoot(this->getDataPath());
+
+			auto & parameters = this->getParameters();			
+
+			// Setup default cameras.
+			this->resetCamera(render::Layout::Back);
+			this->resetCamera(render::Layout::Front);
+
+			// Setup child Scene.
+			this->setup();
+
+			// List presets.
+			this->populatePresets();
+			this->currPreset.clear();
+
+			this->ready = true;
+		}
+
+		//--------------------------------------------------------------
+		void Base::exit_()
+		{
+			if (!this->ready)
+			{
+				ofLogError(__FUNCTION__) << "Scene is not set up!";
+				return;
+			}
+
+			this->exit();
+
+			// Save default preset.
+			this->savePreset(kPresetDefaultName);
+
+			// Clear pop-ups.
 			while (!this->popUps.empty())
 			{
 				this->removePopUp();
 			}
 
-			// Clear parameter listeners.
-			this->parameterListeners.clear();
+			this->ready = false;
 		}
 
 		//--------------------------------------------------------------
@@ -524,7 +580,6 @@ namespace entropy
 			}
 			if (json.count("Camera Front"))
 			{
-				cout << "Deserializing camera" << endl;
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
@@ -566,6 +621,18 @@ namespace entropy
 				}
 			}
 			this->refreshMappings();
+		}
+
+		//--------------------------------------------------------------
+		bool Base::isInitialized() const
+		{
+			return this->initialized;
+		}
+
+		//--------------------------------------------------------------
+		bool Base::isReady() const
+		{
+			return this->ready;
 		}
 
 		//--------------------------------------------------------------
@@ -678,11 +745,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::loadPreset(const string & presetName)
 		{
+			if (!this->ready)
+			{
+				ofLogError(__FUNCTION__) << "Scene not ready, call setup_() first!";
+				return false;
+			}
+
 			const auto presetPath = this->getPresetPath(presetName);
 			auto presetFile = ofFile(presetPath);
 			if (!presetFile.exists())
 			{
-				ofLogWarning("Base::loadPreset") << "File not found at path " << presetPath;
+				ofLogWarning(__FUNCTION__) << "File not found at path " << presetPath;
 				return false;
 			}
 
@@ -816,6 +889,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::clearMappings()
+		{
+			for (auto & it : this->mappings)
+			{
+				auto mapping = it.second;
+				if (mapping->animated)
+				{
+					mapping->removeTrack(this->timeline);
+				}
+			}
+			this->mappings.clear();
+		}
+
+		//--------------------------------------------------------------
 		void Base::resetCamera(render::Layout layout)
 		{
 			auto & parameters = this->getParameters();
@@ -829,7 +916,7 @@ namespace entropy
 			
 			if (layout == render::Layout::Front)
 			{
-				this->cameras[render::Layout::Front].clearParent();
+				this->cameras[render::Layout::Front].clearParent(true);
 			}
 			
 			this->cameras[layout].reset();

@@ -25,8 +25,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
 		Mapping<ParameterType, TrackType>::Mapping()
+			: track(nullptr)
 		{
-			this->track = nullptr;
 			this->animated.set(false);
 		}
 
@@ -91,6 +91,12 @@ namespace entropy
 		template<typename ParameterType, typename TrackType>
 		void Mapping<ParameterType, TrackType>::addTrack(ofxTimeline & timeline)
 		{
+			if (this->track)
+			{
+				//ofLogNotice(__FUNCTION__) << "Track for ofParameter " << this->trackName << " already exists!";
+				return;
+			}
+			
 			// Add Page if it doesn't already exist.
 			if (!timeline.hasPage(this->pageName))
 			{
@@ -154,7 +160,7 @@ namespace entropy
 		{
 			if (!this->track)
 			{
-				//ofLogWarning("Mapping::removeTrack") << "Track for ofParameter " << this->trackName << " does not exist!";
+				//ofLogNotice(__FUNCTION__) << "Track for ofParameter " << this->trackName << " does not exist!";
 				return;
 			}
 			
