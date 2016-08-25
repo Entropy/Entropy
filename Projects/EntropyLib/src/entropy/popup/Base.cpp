@@ -13,6 +13,7 @@ namespace entropy
 			: type(type)
 			, editing(false)
 			, boundsDirty(false)
+			, track(nullptr)
 		{}
 
 		//--------------------------------------------------------------
@@ -209,7 +210,7 @@ namespace entropy
 
 			// Add a GUI window for the parameters.
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Pop-up: " + parameters.getName(), settings, false, &this->editing))
+			if (ofxPreset::Gui::BeginWindow("Pop-up " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
 			{
 				// Add sections for the base parameters.
 				if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
