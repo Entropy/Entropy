@@ -5,16 +5,20 @@
             "scene": "Calibrate"
         },
         {
-            "preset": "_default",
+            "preset": "aug25_timeline",
             "scene": "Inflation"
         },
         {
-            "preset": "_default",
+            "preset": "aug25_timeline",
             "scene": "Particles"
         },
         {
-            "preset": "_default",
+            "preset": "cmb_amazing",
             "scene": "CMB"
+        },
+        {
+            "preset": "_default",
+            "scene": "Survey"
         }
     ]
 }

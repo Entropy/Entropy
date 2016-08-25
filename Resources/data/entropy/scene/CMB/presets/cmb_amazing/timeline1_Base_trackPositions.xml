@@ -1,25 +1,25 @@
 <positions>
-    <element name="Video_0">
+    <element name="Base_Camera Back">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Video_1">
+    <element name="Base_Camera Front">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Base_Drop Rate">
         <x>0.000000000</x>
         <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="_0">
+    <element name="Base_Dropping">
         <x>0.000000000</x>
         <y>956.000000000</y>
-        <width>1920.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="_1">
-        <x>0.000000000</x>
-        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
