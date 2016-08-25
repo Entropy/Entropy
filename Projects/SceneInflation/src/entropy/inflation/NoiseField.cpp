@@ -44,7 +44,10 @@ namespace entropy
 		void NoiseField::setup(ofParameter<int> & resolution) {
 			this->resolution.makeReferenceTo(resolution);
 
-            noiseComputeShader.loadCompute("shaders/compute_noise4d.glsl");
+            shaderSettings.shaderFiles[GL_COMPUTE_SHADER] = "shaders/compute_noise4d.glsl";
+            shaderSettings.boolDefines["SPHERICAL_CLIP"] = sphericalClip;
+            shaderSettings.boolDefines["FILL_EDGES"] = fillEdges;
+            noiseComputeShader.setup(shaderSettings);
             allocateVolumeTexture();
 
 			resolutionListener = resolution.newListener([&](int & resolution) {
@@ -55,14 +58,16 @@ namespace entropy
 				if (fillEdges) {
 					fillEdges = false;
 				}
-				else {
-                    noiseComputeShader.setConstantb("sphericalClip", clip);
+                else {
+                    shaderSettings.boolDefines["SPHERICAL_CLIP"] = sphericalClip;
+                    noiseComputeShader.setup(shaderSettings);
 				}
 			});
 
 			fillEdgesListener = fillEdges.newListener([&](bool & fill) {
-				if (!fill || !sphericalClip) {
-                    noiseComputeShader.setConstantb("fillEdges", fill);
+                if (!fill || !sphericalClip) {
+                    shaderSettings.boolDefines["FILL_EDGES"] = fillEdges;
+                    noiseComputeShader.setup(shaderSettings);
 				}
 				else {
 					fillEdges = false;

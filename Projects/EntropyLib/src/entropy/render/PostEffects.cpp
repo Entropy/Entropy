@@ -38,7 +38,11 @@ namespace entropy
 			this->blurVertShader.bindDefaults();
 			this->blurVertShader.linkProgram();
 
-            this->colorCorrectShader.load(this->getShaderPath("fullscreenTriangle.vert"), this->getShaderPath("frag_tonemap.glsl"));
+            colorCorrectShaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getShaderPath("fullscreenTriangle.vert");
+            colorCorrectShaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = this->getShaderPath("frag_tonemap.glsl");
+            colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"] = true;
+            colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"] = false;
+            colorCorrectShader.setup(colorCorrectShaderSettings);
 		
 			// Build render geometry.
 			this->fullQuad.addVertices({ { -1, -1, 0 },{ -1,1,0 },{ 1,1,0 },{ 1,-1,0 } });
@@ -65,14 +69,14 @@ namespace entropy
         void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, const entropy::render::PostParameters & parameters)
 		{
             ofSetColor(255);
-            if(parameters.vignette.enabled != vignetteEnabled){
-                this->colorCorrectShader.setDefineConstant("ENABLE_VIGNETTE", parameters.vignette.enabled);
-                vignetteEnabled = parameters.vignette.enabled;
+            if(parameters.vignette.enabled != colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"]){
+                colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"] = parameters.vignette.enabled;
+                colorCorrectShader.setup(colorCorrectShaderSettings);
             }
 
-            if(vignetteEnabled && parameters.vignette.debug != debugVignette){
-                this->colorCorrectShader.setDefineConstant("DEBUG_VIGNETTE", parameters.vignette.debug);
-                debugVignette = parameters.vignette.debug;
+            if(parameters.vignette.enabled && parameters.vignette.debug != colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"]){
+                colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"] = parameters.vignette.debug;
+                colorCorrectShader.setup(colorCorrectShaderSettings);
             }
 
 			if (parameters.bloom.enabled) 
