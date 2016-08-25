@@ -269,16 +269,19 @@ namespace entropy
         void GPUMarchingCubes::setup(size_t maxMemorySize) {
             this->maxMemorySize = maxMemorySize;
 
-            ofShader::TransformFeedbackSettings settings;
-            settings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthrough_vert.glsl";
-            settings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/marching_cubes_geom.glsl";
-            settings.bindDefaults = false;
+            //ofShader::TransformFeedbackSettings settings;
+            shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthrough_vert.glsl";
+            shaderSettings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/marching_cubes_geom.glsl";
+            shaderSettings.bindDefaults = false;
+            shaderSettings.intDefines["SUBDIVISIONS"] = subdivisions;
+            shaderSettings.boolDefines["OUTPUT_NORMALS"] = shadeNormals;
+            shaderSettings.floatDefines["RESOLUTION"] = resolution;
             if(shadeNormals){
-                settings.varyingsToCapture = {"position", "color", "normal"};
+                shaderSettings.varyingsToCapture = {"position", "color", "normal"};
             }else{
-                settings.varyingsToCapture = {"position", "color"};
+                shaderSettings.varyingsToCapture = {"position", "color"};
             }
-            shader.setup(settings);
+            shader.setup(shaderSettings);
 
 			resolutionListener = resolution.newListener([&](int & res) {
 				std::vector<glm::vec3> vertices(res*res*res);
@@ -306,15 +309,20 @@ namespace entropy
                     vboFeedback.setNormalBuffer(bufferFeedback, getVertexStride(), offset);
                 }
 
-                shader.setConstant1f("resolution", res);
+                shaderSettings.floatDefines["RESOLUTION"] = res;
+                shader.setup(shaderSettings);
 			});
 
             subdivisionsListener = subdivisions.newListener([&](int & subs){
-                shader.setDefineConstant("SUBDIVISIONS", subs);
+                shaderSettings.intDefines["SUBDIVISIONS"] = subdivisions;
+                shader.setup(shaderSettings);
+                //shader.setDefineConstant("SUBDIVISIONS", subs);
             });
 
             shadeNormalsListener = shadeNormals.newListener([&](bool & normals){
-                shader.setDefineConstant("OUTPUT_NORMALS", normals);
+                shaderSettings.intDefines["OUTPUT_NORMALS"] = normals;
+                shader.setup(shaderSettings);
+                //shader.setDefineConstant("OUTPUT_NORMALS", normals);
             });
 
 			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);

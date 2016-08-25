@@ -72,10 +72,10 @@ namespace entropy
 			ofShader blurVertShader;
 			ofShader colorCorrectShader;
 
+            ofShader::Settings colorCorrectShaderSettings;
+
 			GLuint defaultVao;
-			ofVboMesh fullQuad;
-            bool debugVignette = false;
-            bool vignetteEnabled = true;
+            ofVboMesh fullQuad;
 		};
 	}
 }

@@ -9,22 +9,22 @@ uniform isampler2D triTableTex;
 //Global iso level
 uniform float isolevel;
 
-const float resolution = 128.f;
+#define RESOLUTION 128.f
+#define OUTPUT_NORMALS 0
+#define SUBDIVISIONS 1
 
 //Marching cubes vertices decal
 const vec3 vertDecals[8] = {
-    vec3(0.0f, 0.0f, 0.0f)/resolution,
-    vec3(1.0f, 0.0f, 0.0f)/resolution,
-    vec3(1.0f, 1.0f, 0.0f)/resolution,
-    vec3(0.0f, 1.0f, 0.0f)/resolution,
-    vec3(0.0f, 0.0f, 1.0f)/resolution,
-    vec3(1.0f, 0.0f, 1.0f)/resolution,
-    vec3(1.0f, 1.0f, 1.0f)/resolution,
-    vec3(0.0f, 1.0f, 1.0f)/resolution,
+    vec3(0.0f, 0.0f, 0.0f)/RESOLUTION,
+    vec3(1.0f, 0.0f, 0.0f)/RESOLUTION,
+    vec3(1.0f, 1.0f, 0.0f)/RESOLUTION,
+    vec3(0.0f, 1.0f, 0.0f)/RESOLUTION,
+    vec3(0.0f, 0.0f, 1.0f)/RESOLUTION,
+    vec3(1.0f, 0.0f, 1.0f)/RESOLUTION,
+    vec3(1.0f, 1.0f, 1.0f)/RESOLUTION,
+    vec3(0.0f, 1.0f, 1.0f)/RESOLUTION,
 };
 
-#define OUTPUT_NORMALS 0
-#define SUBDIVISIONS 1
 
 out vec4 position;
 out vec4 color;

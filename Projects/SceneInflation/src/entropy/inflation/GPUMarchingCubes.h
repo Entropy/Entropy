@@ -40,6 +40,7 @@ namespace entropy
             ofBufferObject bufferFeedback;
             ofVbo vbo, vboFeedback;
             ofShader shader;
+            ofShader::TransformFeedbackSettings shaderSettings;
 			ofTexture triTableTex;
             ofEventListener resolutionListener, subdivisionsListener, shadeNormalsListener;
             GLuint numVerticesQuery;

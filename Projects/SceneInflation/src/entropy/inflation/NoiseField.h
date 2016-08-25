@@ -97,6 +97,7 @@ namespace entropy
 			ofShader volumeShader;
 			ofEventListener sphericalClipListener, fillEdgesListener, resolutionListener;
 			void allocateVolumeTexture();
+            ofShader::Settings shaderSettings;
 
 		public:
 			ofParameter<int> resolution;
