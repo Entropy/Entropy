@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef TARGET_WIN32
 #include "ofxWMFVideoPlayer.h"
+#endif
 
 #include "entropy/render/Layout.h"
 #include "entropy/scene/Base.h"
@@ -49,7 +51,11 @@ namespace entropy
 			bool loadVideo(const string & filePath);
 			void drawVideo();
 
+#ifdef TARGET_WIN32
 			ofxWMFVideoPlayer videoPlayer;
+#else
+			ofVideoPlayer videoPlayer;
+#endif
 			string fileName;
 
 			void updateBounds();
