@@ -24,13 +24,19 @@ namespace entropy
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
 
-			// Setup boxes.
+			auto & parameters = this->getParameters();
+			
+			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
+			// that they are taken into account for ofxTimeline mappings and serialization.
 			this->boxes[render::Layout::Back].parameters.setName("Box Back");
 			this->boxes[render::Layout::Front].parameters.setName("Box Front");
+			parameters.add(this->boxes[render::Layout::Back].parameters);
+			parameters.add(this->boxes[render::Layout::Front].parameters);
 
-			// Setup post processing parameters.
 			this->postEffects[render::Layout::Back].setName("Post Effects Back");
 			this->postEffects[render::Layout::Front].setName("Post Effects Front");
+			parameters.add(this->postEffects[render::Layout::Back]);
+			parameters.add(this->postEffects[render::Layout::Front]);
 
 			// Setup child Scene.
 			this->setup();
@@ -64,8 +70,6 @@ namespace entropy
 				track->lockCameraToTrack = false;
 				this->cameraTracks[it.first] = track;
 			}
-
-			auto & parameters = this->getParameters();
 			
 			// List mappings.
 			this->populateMappings(parameters);
@@ -437,8 +441,9 @@ namespace entropy
 						static const vector<string> labels{ "None", "Back", "Front" };
 						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
 						ofxPreset::Gui::AddParameter(it.second.color);
+						ofxPreset::Gui::AddParameter(it.second.alpha);
 						ofxPreset::Gui::AddParameter(it.second.size);
-						ofxPreset::Gui::AddParameter(it.second.edgeWidth);
+						ofxPreset::Gui::AddParameter(it.second.edgeRatio);
 						ofxPreset::Gui::AddParameter(it.second.subdivisions);
 					}
 				}
@@ -486,13 +491,9 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
-			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Back]);
-			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Front]);
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
-			ofxPreset::Serializer::Serialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
-			ofxPreset::Serializer::Serialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
-
+			
 			this->serialize(json);
 
 			auto & jsonMappings = json["Mappings"];
@@ -513,24 +514,32 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize_(const nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			ofxPreset::Serializer::Deserialize(json, this->postEffects[render::Layout::Back]);
-			ofxPreset::Serializer::Deserialize(json, this->postEffects[render::Layout::Front]);
+			// Deserialize cameras first so that front attachment doesn't interfere with position.
 			if (json.count("Camera Back"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			}
 			if (json.count("Camera Front"))
 			{
+				cout << "Deserializing camera" << endl;
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
-			if (json.count("Box Back"))
+			ofxPreset::Serializer::Deserialize(json, this->getParameters());
+			
+			this->popUps.clear();
+			if (json.count("Pop-Ups"))
 			{
-				ofxPreset::Serializer::Deserialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
-			}
-			if (json.count("Box Front"))
-			{
-				ofxPreset::Serializer::Deserialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
+				for (auto & jsonPopUp : json["Pop-Ups"])
+				{
+					int typeAsInt = jsonPopUp["type"];
+					popup::Type type = static_cast<popup::Type>(typeAsInt);
+
+					auto popUp = this->addPopUp(type);
+					if (popUp)
+					{
+						popUp->deserialize_(jsonPopUp);
+					}
+				}
 			}
 
 			this->deserialize(json);
@@ -548,22 +557,6 @@ namespace entropy
 				}
 			}
 			this->refreshMappings();
-
-			if (json.count("Pop-Ups"))
-			{
-				this->popUps.clear();
-				for (auto & jsonPopUp : json["Pop-Ups"])
-				{
-					int typeAsInt = jsonPopUp["type"];
-					popup::Type type = static_cast<popup::Type>(typeAsInt);
-
-					auto popUp = this->addPopUp(type);
-					if (popUp)
-					{
-						popUp->deserialize_(jsonPopUp);
-					}
-				}
-			}
 		}
 
 		//--------------------------------------------------------------

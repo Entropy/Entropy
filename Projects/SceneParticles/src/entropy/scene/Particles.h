@@ -36,7 +36,6 @@ namespace entropy
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
-			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
 
 			void drawSkybox();

@@ -24,8 +24,9 @@ namespace entropy
 			ofParameter<bool> enabled{ "Enabled", true };
 			ofParameter<int> cullFace{ "Cull Face", static_cast<int>(CullMode::Back), static_cast<int>(CullMode::None), static_cast<int>(CullMode::Front) };
 			ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
-			ofParameter<float> size{ "Size", 1.0f, 0.0f, 2.0f };
-			ofParameter<float> edgeWidth{ "Edge Width", 1.0f, 0.001f, 2.0f };
+			ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
+			ofParameter<float> size{ "Size", 1.0f, 0.0f, 1000.0f };
+			ofParameter<float> edgeRatio{ "Edge Ratio", 0.01f, 0.001f, 1.0f };
 			ofParameter<int> subdivisions{ "Subdivisions", 1, 1, 10 };
 
 			ofParameterGroup parameters
@@ -34,8 +35,9 @@ namespace entropy
 				enabled,
 				cullFace,
 				color,
+				alpha,
 				size,
-				edgeWidth,
+				edgeRatio,
 				subdivisions
 			};
 
