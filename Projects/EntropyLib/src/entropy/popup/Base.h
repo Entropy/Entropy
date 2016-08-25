@@ -106,7 +106,7 @@ namespace entropy
 				{
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
-					ofParameter<glm::vec2> size{ "Size", glm::vec2(0.1f), glm::vec2(0.0f), glm::vec2(1.0f) };
+					ofParameter<float> size{ "Size", 0.1f, 0.0f, 1.0f };
 					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 
 					PARAM_DECLARE("Base", layout, background, size, center);

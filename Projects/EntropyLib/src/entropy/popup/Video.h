@@ -3,6 +3,9 @@
 #include "Base.h"
 
 #include "ofxPreset.h"
+#ifdef TARGET_WIN32
+#include "ofxWMFVideoPlayer.h"
+#endif
 
 namespace entropy
 {
@@ -15,6 +18,7 @@ namespace entropy
 			Video();
 			virtual ~Video();
 
+			void setup() override;
 			void exit() override;
 
 			void update(double dt) override;
@@ -32,8 +36,13 @@ namespace entropy
 			float getContentHeight() const override;
 			void renderContent() override;
 
-            ofVideoPlayer video;
+#ifdef TARGET_WIN32
+			ofxWMFVideoPlayer video;
+#else
+			ofVideoPlayer video;
+#endif
 			string fileName;
+			bool wasLoaded;
 
 		protected:
 			BaseParameters & getParameters() override

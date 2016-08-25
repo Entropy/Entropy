@@ -43,7 +43,10 @@ namespace entropy
 		void CMB::drawBackWorld()
 		{
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+			ofEnableDepthTest();
 			this->drawPool();
+			ofEnableDepthTest();
+			//ofDisableDepthTest();
 #endif
 		}
 
@@ -52,6 +55,17 @@ namespace entropy
 		{
 #if defined(COMPUTE_GL_2D) || defined(COMPUTE_CL_2D)
 			this->drawPool();
+#endif
+		}
+
+		//--------------------------------------------------------------
+		void CMB::drawFrontWorld()
+		{
+#if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
+			ofEnableDepthTest();
+			this->drawPool();
+			ofEnableDepthTest();
+			//ofDisableDepthTest();
 #endif
 		}
 

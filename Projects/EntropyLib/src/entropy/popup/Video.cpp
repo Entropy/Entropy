@@ -2,10 +2,6 @@
 
 #include "entropy/Helpers.h"
 
-#ifdef TARGET_WIN32
-#include "ofxWMFVideoPlayer.h"
-#endif
-
 namespace entropy
 {
 	namespace popup
@@ -13,15 +9,18 @@ namespace entropy
 		//--------------------------------------------------------------
 		Video::Video()
 			: Base(Type::Video)
-		{
-#ifdef TARGET_WIN32
-            this->video.setPlayer(std::make_shared<ofxWMFVideoPlayer>());
-#endif
-		}
+			, wasLoaded(false)
+		{}
 
 		//--------------------------------------------------------------
 		Video::~Video()
 		{}
+
+		//--------------------------------------------------------------
+		void Video::setup()
+		{
+			this->wasLoaded = false;
+		}
 
 		//--------------------------------------------------------------
 		void Video::exit()
@@ -32,6 +31,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::update(double dt)
 		{
+			if (!wasLoaded && this->isLoaded())
+			{
+				// Adjust the bounds once the video is loaded.
+				this->boundsDirty = true;
+				wasLoaded = true;
+			}
+			
 			this->video.update();
 		}
 
@@ -76,7 +82,7 @@ namespace entropy
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
-				this->video.load(filePath);
+				this->video.loadAsync(filePath);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
 
@@ -84,7 +90,8 @@ namespace entropy
 			// TODO: Time video to ofxTimeline track
 
 			this->fileName = ofFilePath::getFileName(filePath);
-			this->boundsDirty = true;
+			this->wasLoaded = false;
+
 			return true;
 		}
 
@@ -110,17 +117,14 @@ namespace entropy
 		void Video::renderContent()
 		{
 #ifdef TARGET_WIN32
-			auto videoPlayer = dynamic_pointer_cast<ofxWMFVideoPlayer>(this->video.getPlayer());
-			if (videoPlayer && videoPlayer->lockSharedTexture())
+			if (video.lockSharedTexture())
 			{
-				this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-														this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
-				videoPlayer->unlockSharedTexture();
-            }
-#else
-            this->video.getTexture().drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-                                                    this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
 #endif
-        }
+				this->video.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
+#ifdef TARGET_WIN32
+				video.unlockSharedTexture();
+			}
+#endif
+		}
 	}
 }

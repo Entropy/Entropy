@@ -112,11 +112,7 @@ namespace entropy
 			std::map<render::Layout, ofEasyCam> cameras;
 
 			// Box
-			void drawBox();
-
-			geom::Box boxGeom;
-			ofLight boxLight;
-			ofMaterial boxMaterial;
+			std::map<render::Layout, geom::Box> boxes;
 
 			// Resources
 			void populatePresets();
@@ -136,24 +132,28 @@ namespace entropy
 
 					struct : ofParameterGroup
 					{
-						ofParameter<bool> drawBack{ "Back Draw", false };
-						ofParameter<bool> drawFront{ "Front Draw", false };
-						ofParameter<int> cullFace{ "Cull Face", 1, 0, 2 };
-						ofParameter<ofFloatColor> color{ "Color", ofFloatColor::crimson };
+						ofParameter<bool> mouseControl{ "Mouse Control", true };
+						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
+						ofParameter<float> fov{ "FOV", 60, 0, 359 };
+						ofParameter<float> nearClip{ "Near Clip", 0.0001f, 0.0001f, 1000.0f };
+						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.0001f, 1000.0f };
 
-						PARAM_DECLARE("Box", drawBack, drawFront, cullFace, color);
-					} box;
-					
+						PARAM_DECLARE("Back Camera", mouseControl, relativeYAxis, fov, nearClip, farClip);
+					} backCamera;
+
 					struct : ofParameterGroup
 					{
-						ofParameter<bool> relativeYAxis{ "Relative Y Axis", true };
-						ofParameter<bool> attachFrontToBack{ "Attach Front to Back", true };
-						ofParameter<int> mouseEnabled{ "Mouse Enabled", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+						ofParameter<bool> mouseControl{ "Mouse Control", false };
+						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
+						ofParameter<bool> attachToBack{ "Attach to Back", true }; 
+						ofParameter<float> fov{ "FOV", 60, 0, 359 };
+						ofParameter<float> nearClip{ "Near Clip", 0.0001f, 0.0001f, 1000.0f };
+						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.0001f, 1000.0f };
 
-						PARAM_DECLARE("Camera", relativeYAxis, attachFrontToBack);
-					} camera;
+						PARAM_DECLARE("Front Camera", mouseControl, relativeYAxis, attachToBack, fov, nearClip, farClip);
+					} frontCamera;
 
-					PARAM_DECLARE("Base", background, box, camera);
+					PARAM_DECLARE("Base", background, backCamera, frontCamera);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);

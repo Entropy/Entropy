@@ -16,16 +16,14 @@ namespace entropy
 			App_();
 			~App_();
 
-			shared_ptr<render::Canvas> getCanvasBack() const;
-			shared_ptr<render::Canvas> getCanvasFront() const;
+			shared_ptr<render::Canvas> getCanvas(render::Layout layout);
 			shared_ptr<scene::Playlist> getPlaylist() const;
 
+			const ofRectangle & getScreenBounds(render::Layout layout);
 			const ofRectangle & getBoundsControl() const;
-			const ofRectangle & getBoundsBack() const;
-			const ofRectangle & getBoundsFront() const;
 
 			bool isMouseOverGui() const;
-			bool isOverlayVisible() const;
+			bool isControlsVisible() const;
 
 		protected:
 			void onUpdate(ofEventArgs & args);
@@ -52,19 +50,20 @@ namespace entropy
 			bool loadSettings();
 			bool saveSettings();
 
+			void processCanvas(render::Layout layout, bool renderEnabled);
+
 			void drawGui(ofxPreset::Gui::Settings & settings);
 
 			void applyConfiguration();
 			void updatePreviews();
 
 		protected:
-			shared_ptr<render::Canvas> canvasBack;
-			shared_ptr<render::Canvas> canvasFront;
+			std::map<render::Layout, shared_ptr<render::Canvas>> canvas;
 			shared_ptr<scene::Playlist> playlist;
 
+			std::map<render::Layout, ofRectangle> screenBounds;
+			std::map<render::Layout, ofRectangle> previewBounds;
 			ofRectangle boundsControl;
-			ofRectangle boundsBack;
-			ofRectangle boundsFront;
 
 			ofxImGui imGui;
 			ofxPreset::Gui::Settings guiSettings;
@@ -116,10 +115,7 @@ namespace entropy
 				PARAM_DECLARE("App", background, controlScreen, backScreen, frontScreen);
 			} parameters;
 
-			ofRectangle previewBoundsBack;
-			ofRectangle previewBoundsFront;
-
-			bool overlayVisible;
+			bool controlsVisible;
 		};
 
 		typedef util::Singleton<App_> App;

@@ -7,7 +7,12 @@ namespace entropy
 		//--------------------------------------------------------------
 		Box::Box()
 			: meshDirty(true)
-		{
+			, colorDirty(true)
+		{			
+			this->paramListeners.push_back(this->color.newListener([this](ofFloatColor &)
+			{
+				this->colorDirty = true;
+			}));
 			this->paramListeners.push_back(this->size.newListener([this](float &)
 			{
 				this->meshDirty = true;
@@ -37,163 +42,275 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Box::update()
 		{
-			if (this->meshDirty)
+			if (this->enabled)
 			{
-				this->clear();
+				bool didUpdate = false;
 
-				float edgeOffset = size / subdivisions;
-				glm::vec3 center;
-				glm::vec3 dimensions;
-
-				// Front.
+				if (this->meshDirty)
 				{
-					// Horizontal.
-					{
-						center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f + size * 0.5f);
-						dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Front);
-							center.y += edgeOffset;
-						}
-					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f + size * 0.5f);
-						dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Front);
-							center.x += edgeOffset;
-						}
-					}
+					this->rebuildMesh();
+					this->light.setPosition(glm::vec3(this->size) * 2.0f);
+
+					didUpdate = true;
 				}
 
-				// Back.
+				if (this->colorDirty)
 				{
-					// Horizontal.
+					this->mesh.getColors().resize(this->mesh.getVertices().size());
+					for (auto & c : this->mesh.getColors()) 
 					{
-						center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Back);
-							center.y += edgeOffset;
-						}
+						c = this->color;
 					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Back);
-							center.x += edgeOffset;
-						}
-					}
+
+					this->colorDirty = false;
+					didUpdate = true;
 				}
 
-				// Left.
-				{
-					// Horizontal.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f - size * 0.5f, 0.0f);
-						dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Left);
-							center.y += edgeOffset;
-						}
-					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Left);
-							center.z += edgeOffset;
-						}
-					}
-				}
-
-				// Right.
-				{
-					// Horizontal.
-					{
-						center = glm::vec3(0.0f + size * 0.5f, 0.0f - size * 0.5f, 0.0f);
-						dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Right);
-							center.y += edgeOffset;
-						}
-					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f + size * 0.5f, 0.0f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Right);
-							center.z += edgeOffset;
-						}
-					}
-				}
-
-				// Top.
-				{
-					// Horizontal.
-					{
-						center = glm::vec3(0.0f, 0.0f + size * 0.5f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Top);
-							center.z += edgeOffset;
-						}
-					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f + size * 0.5f, 0.0f);
-						dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Top);
-							center.x += edgeOffset;
-						}
-					}
-				}
-
-				// Bottom.
-				{
-					// Horizontal.
-					{
-						center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f - size * 0.5f);
-						dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Bottom);
-							center.z += edgeOffset;
-						}
-					}
-					// Vertical.
-					{
-						center = glm::vec3(0.0f - size * 0.5f, 0.0f - size * 0.5f, 0.0f);
-						dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
-						for (int i = 0; i <= subdivisions; ++i)
-						{
-							this->addEdge(center, dimensions, Face::Bottom);
-							center.x += edgeOffset;
-						}
-					}
-				}
-
-				this->meshDirty = false;
-				return true;
-			}			
-
+				return didUpdate;
+			}
 			return false;
+		}
+
+		//--------------------------------------------------------------
+		void Box::draw() const
+		{
+			if (!this->enabled) return;
+
+			ofPushStyle();
+			{
+				//this->material.setDiffuseColor(color);
+				//this->light.enable();
+				{
+					ofSetColor(color.get());
+					//this->material.begin();
+					{
+						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+						if (cullMode != CullMode::None)
+						{
+							glEnable(GL_CULL_FACE);
+							if (cullMode == CullMode::Back)
+							{
+								glCullFace(GL_BACK);
+							}
+							else
+							{
+								glCullFace(GL_FRONT);
+							}
+						}
+						else
+						{
+							glDisable(GL_CULL_FACE);
+						}
+						this->mesh.draw();
+						if (cullMode != CullMode::None)
+						{
+							glDisable(GL_CULL_FACE);
+						}
+					}
+					//this->material.end();
+				}
+				//this->light.disable();
+			}
+			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		void Box::draw(render::WireframeFillRenderer & renderer)
+		{
+			if (!this->enabled) return;
+			
+			ofPushStyle();
+			{
+				//this->material.setDiffuseColor(color);
+				//this->light.enable();
+				{
+					ofSetColor(color.get());
+					//this->material.begin();
+					{
+						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+						if (cullMode != CullMode::None)
+						{
+							glEnable(GL_CULL_FACE);
+							if (cullMode == CullMode::Back)
+							{
+								glCullFace(GL_BACK);
+							}
+							else
+							{
+								glCullFace(GL_FRONT);
+							}
+						}
+						else
+						{
+							glDisable(GL_CULL_FACE);
+						}
+						renderer.drawElements(this->mesh.getVbo(), 0, this->mesh.getNumIndices());
+						if (cullMode != CullMode::None)
+						{
+							glDisable(GL_CULL_FACE);
+						}
+					}
+					//this->material.end();
+				}
+				//this->light.disable();
+			}
+			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		void Box::rebuildMesh()
+		{
+			this->clear();
+
+			float edgeOffset = size / subdivisions;
+			glm::vec3 center;
+			glm::vec3 dimensions;
+
+			// Front.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f + size * 0.5f);
+					dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Front);
+						center.y += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f + size * 0.5f);
+					dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Front);
+						center.x += edgeOffset;
+					}
+				}
+			}
+
+			// Back.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Back);
+						center.y += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Back);
+						center.x += edgeOffset;
+					}
+				}
+			}
+
+			// Left.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f - size * 0.5f, 0.0f);
+					dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Left);
+						center.y += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Left);
+						center.z += edgeOffset;
+					}
+				}
+			}
+
+			// Right.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f + size * 0.5f, 0.0f - size * 0.5f, 0.0f);
+					dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Right);
+						center.y += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f + size * 0.5f, 0.0f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(edgeWidth, size + edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Right);
+						center.z += edgeOffset;
+					}
+				}
+			}
+
+			// Top.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f, 0.0f + size * 0.5f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Top);
+						center.z += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f + size * 0.5f, 0.0f);
+					dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Top);
+						center.x += edgeOffset;
+					}
+				}
+			}
+
+			// Bottom.
+			{
+				// Horizontal.
+				{
+					center = glm::vec3(0.0f, 0.0f - size * 0.5f, 0.0f - size * 0.5f);
+					dimensions = glm::vec3(size + edgeWidth, edgeWidth, edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Bottom);
+						center.z += edgeOffset;
+					}
+				}
+				// Vertical.
+				{
+					center = glm::vec3(0.0f - size * 0.5f, 0.0f - size * 0.5f, 0.0f);
+					dimensions = glm::vec3(edgeWidth, edgeWidth, size + edgeWidth);
+					for (int i = 0; i <= subdivisions; ++i)
+					{
+						this->addEdge(center, dimensions, Face::Bottom);
+						center.x += edgeOffset;
+					}
+				}
+			}
+
+			this->meshDirty = false;
 		}
 
 		//--------------------------------------------------------------

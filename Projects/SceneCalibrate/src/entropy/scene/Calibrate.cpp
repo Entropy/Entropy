@@ -62,7 +62,10 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void Calibrate::drawBackBase()
 		{
-
+			if (this->parameters.border.drawBack)
+			{
+				this->drawBorder(render::Layout::Back);
+			}
 		}
 		
 		//--------------------------------------------------------------
@@ -76,11 +79,6 @@ namespace entropy
 		// Draw 2D elements in the foreground here.
 		void Calibrate::drawBackOverlay()
 		{
-			if (this->parameters.border.drawBack)
-			{
-				this->drawBorder(render::Layout::Back);
-			}
-
 			if (this->getGridLayout() == render::Layout::Back)
 			{
 				this->drawGrid();
@@ -91,7 +89,10 @@ namespace entropy
 		// Draw 2D elements in the background here.
 		void Calibrate::drawFrontBase()
 		{
-
+			if (this->parameters.border.drawFront)
+			{
+				this->drawBorder(render::Layout::Front);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -105,11 +106,6 @@ namespace entropy
 		// Draw 2D elements in the foreground here.
 		void Calibrate::drawFrontOverlay()
 		{
-			if (this->parameters.border.drawFront)
-			{
-				this->drawBorder(render::Layout::Front);
-			}
-
 			if (this->getGridLayout() == render::Layout::Front)
 			{
 				this->drawGrid();

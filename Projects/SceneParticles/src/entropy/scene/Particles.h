@@ -32,6 +32,7 @@ namespace entropy
 			void update(double dt) override;
 
 			void drawBackWorld() override;
+			void drawFrontWorld() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 

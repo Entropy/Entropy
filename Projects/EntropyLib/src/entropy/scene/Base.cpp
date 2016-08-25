@@ -24,6 +24,10 @@ namespace entropy
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
 
+			// Setup boxes.
+			this->boxes[render::Layout::Back].parameters.setName("Box Back");
+			this->boxes[render::Layout::Front].parameters.setName("Box Front");
+
 			// Setup post processing parameters.
 			this->postEffects[render::Layout::Back].setName("Post Effects Back");
 			this->postEffects[render::Layout::Front].setName("Post Effects Front");
@@ -67,14 +71,27 @@ namespace entropy
 			this->populateMappings(parameters);
 
 			// Set base parameter listeners.
-			this->parameterListeners.push_back(parameters.base.camera.relativeYAxis.newListener([this](bool & value)
+			this->parameterListeners.push_back(parameters.base.backCamera.relativeYAxis.newListener([this](bool & value)
 			{
-				for (auto & it : this->cameras)
-				{
-					it.second.setRelativeYAxis(value);
-				}
+				this->cameras[render::Layout::Back].setRelativeYAxis(value);
 			}));
-			this->parameterListeners.push_back(parameters.base.camera.attachFrontToBack.newListener([this](bool & value)
+			this->parameterListeners.push_back(parameters.base.backCamera.fov.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Back].setFov(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.nearClip.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Back].setNearClip(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.farClip.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Back].setFarClip(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.relativeYAxis.newListener([this](bool & value)
+			{
+				this->cameras[render::Layout::Front].setRelativeYAxis(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.attachToBack.newListener([this](bool & value)
 			{
 				if (value)
 				{
@@ -84,6 +101,18 @@ namespace entropy
 				{
 					this->cameras[render::Layout::Front].clearParent(true);
 				}
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.fov.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Front].setFov(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.nearClip.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Front].setNearClip(value);
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.farClip.newListener([this](float & value)
+			{
+				this->cameras[render::Layout::Front].setFarClip(value);
 			}));
 
 			// Load default preset.
@@ -109,6 +138,9 @@ namespace entropy
 
 			// Clear Pop-ups.
 			this->popUps.clear();
+
+			// Clear parameter listeners.
+			this->parameterListeners.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -129,25 +161,21 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
-			if (GetApp()->isMouseOverGui())
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.backCamera.mouseControl)
 			{
-				for (auto & it : this->cameras)
-				{
-					it.second.disableMouseInput();
-				}
+				this->cameras[render::Layout::Back].disableMouseInput();
 			}
 			else
 			{
-				if (this->getParameters().base.camera.mouseEnabled == static_cast<int>(render::Layout::Back))
-				{
-					this->cameras[render::Layout::Back].enableMouseInput();
-					this->cameras[render::Layout::Front].disableMouseInput();
-				}
-				else
-				{
-					this->cameras[render::Layout::Back].disableMouseInput();
-					this->cameras[render::Layout::Front].enableMouseInput();
-				}
+				this->cameras[render::Layout::Back].enableMouseInput();
+			}
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.frontCamera.mouseControl)
+			{
+				this->cameras[render::Layout::Front].disableMouseInput();
+			}
+			else
+			{
+				this->cameras[render::Layout::Front].enableMouseInput();
 			}
 
 			for (auto & it : this->mappings)
@@ -160,9 +188,9 @@ namespace entropy
 				popUp->update_(dt);
 			}
 
-			if (this->boxGeom.update())
+			for (auto & it : this->boxes)
 			{
-				this->boxLight.setPosition(glm::vec3(this->boxGeom.size) * 2.0f);
+				it.second.update();
 			}
 
 			this->update(dt);
@@ -188,24 +216,29 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 			
+			//if (layout == render::Layout::Back)
+			//{
+			//	this->cameras[layout].setNearClip(parameters.base.camera.backClipNear);
+			//	this->cameras[layout].setFarClip(parameters.base.camera.backClipFar);
+			//}
+			//else
+			//{
+			//	this->cameras[layout].setNearClip(parameters.base.camera.frontClipNear);
+			//	this->cameras[layout].setFarClip(parameters.base.camera.frontClipFar);
+			//}
 			this->cameras[layout].begin(GetCanvasViewport(layout));
 			ofEnableDepthTest();
 			{
+				this->boxes[layout].draw();
+
 				if (layout == render::Layout::Back)
 				{
 					this->drawBackWorld();
-					if (parameters.base.box.drawBack)
-					{
-						this->drawBox();
-					}
 				}
 				else
 				{
 					this->drawFrontWorld();
-					if (parameters.base.box.drawFront)
-					{
-						this->drawBox();
-					}
+				//	this->boxes[layout].draw();
 				}
 			}
 			ofDisableDepthTest();
@@ -353,36 +386,61 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(parameters.base.background);
 				
-				if (ImGui::CollapsingHeader(parameters.base.camera.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(parameters.base.backCamera, settings))
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.camera.relativeYAxis);
-					ofxPreset::Gui::AddParameter(parameters.base.camera.attachFrontToBack);
+					if (ofxPreset::Gui::AddParameter(parameters.base.backCamera.mouseControl))
+					{
+						if (parameters.base.backCamera.mouseControl)
+						{
+							parameters.base.frontCamera.mouseControl = false;
+						}
+					}
+					ofxPreset::Gui::AddParameter(parameters.base.backCamera.relativeYAxis);
+					ofxPreset::Gui::AddParameter(parameters.base.backCamera.fov);
+					ofxPreset::Gui::AddRange("Clipping", parameters.base.backCamera.nearClip, parameters.base.backCamera.farClip);
 
-					ImGui::Text(parameters.base.camera.mouseEnabled.getName().c_str());
-					std::vector<std::string> labels = { "Back", "Front" };
-					ofxPreset::Gui::AddRadio(parameters.base.camera.mouseEnabled, labels, 2);
-
-					if (ImGui::Button("Reset Back"))
+					if (ImGui::Button("Reset"))
 					{
 						this->resetCamera(render::Layout::Back);
 					}
-					ImGui::SameLine();
-					if (ImGui::Button("Reset Front"))
+
+					ofxPreset::Gui::EndTree(settings);
+				}
+
+				if (ofxPreset::Gui::BeginTree(parameters.base.frontCamera, settings))
+				{
+					if (ofxPreset::Gui::AddParameter(parameters.base.frontCamera.mouseControl))
+					{
+						if (parameters.base.frontCamera.mouseControl)
+						{
+							parameters.base.backCamera.mouseControl = false;
+						}
+					}
+					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.relativeYAxis);
+					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.attachToBack);
+					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.fov);
+					ofxPreset::Gui::AddRange("Clipping", parameters.base.frontCamera.nearClip, parameters.base.frontCamera.farClip);
+
+					if (ImGui::Button("Reset"))
 					{
 						this->resetCamera(render::Layout::Front);
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-				if (ImGui::CollapsingHeader(parameters.base.box.getName().c_str(), nullptr, true, true))
+				for (auto & it : this->boxes)
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.box.drawBack);
-					ofxPreset::Gui::AddParameter(parameters.base.box.drawFront);
-					static const vector<string> labels{ "None", "Back", "Front" };
-					ofxPreset::Gui::AddRadio(parameters.base.box.cullFace, labels, 3);
-					ofxPreset::Gui::AddParameter(this->boxGeom.size);
-					ofxPreset::Gui::AddParameter(this->boxGeom.edgeWidth);
-					ofxPreset::Gui::AddParameter(this->boxGeom.subdivisions);
-					ofxPreset::Gui::AddParameter(parameters.base.box.color);
+					if (ImGui::CollapsingHeader(it.second.parameters.getName().c_str(), nullptr, true, true))
+					{
+						ofxPreset::Gui::AddParameter(it.second.enabled);
+						static const vector<string> labels{ "None", "Back", "Front" };
+						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
+						ofxPreset::Gui::AddParameter(it.second.color);
+						ofxPreset::Gui::AddParameter(it.second.size);
+						ofxPreset::Gui::AddParameter(it.second.edgeWidth);
+						ofxPreset::Gui::AddParameter(it.second.subdivisions);
+					}
 				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
@@ -432,9 +490,8 @@ namespace entropy
 			ofxPreset::Serializer::Serialize(json, this->postEffects[render::Layout::Front]);
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
 			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.size);
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.edgeWidth);
-			ofxPreset::Serializer::Serialize(json["Box"], this->boxGeom.subdivisions);
+			ofxPreset::Serializer::Serialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
+			ofxPreset::Serializer::Serialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
 
 			this->serialize(json);
 
@@ -467,11 +524,13 @@ namespace entropy
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
-			if (json.count("Box"))
+			if (json.count("Box Back"))
 			{
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.size);
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.edgeWidth);
-				ofxPreset::Serializer::Deserialize(json["Box"], this->boxGeom.subdivisions);
+				ofxPreset::Serializer::Deserialize(json["Box Back"], this->boxes[render::Layout::Back].parameters);
+			}
+			if (json.count("Box Front"))
+			{
+				ofxPreset::Serializer::Deserialize(json["Box Front"], this->boxes[render::Layout::Front].parameters);
 			}
 
 			this->deserialize(json);
@@ -763,53 +822,20 @@ namespace entropy
 			//this->cameras[layout].setVFlip(false);
 			//this->cameras[layout].setNearClip(0.1f);
 			//this->cameras[layout].setFarClip(100000.0f);
-			this->cameras[layout].setFov(60.0f);
+			//this->cameras[layout].setFov(60.0f);
 			this->cameras[layout].setAspectRatio(GetCanvasWidth(layout) / GetCanvasHeight(layout));
-			this->cameras[layout].setRelativeYAxis(parameters.base.camera.relativeYAxis);
+			
+			if (layout == render::Layout::Front)
+			{
+				this->cameras[render::Layout::Front].clearParent();
+			}
+			
 			this->cameras[layout].reset();
 
-			if (layout == render::Layout::Front && parameters.base.camera.attachFrontToBack)
+			if (layout == render::Layout::Front && parameters.base.frontCamera.attachToBack)
 			{
 				this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
 			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawBox()
-		{
-			auto & parameters = this->getParameters();
-			
-			ofPushStyle();
-			{
-				this->boxMaterial.setDiffuseColor(parameters.base.box.color);
-				this->boxLight.enable();
-				{
-					ofSetColor(parameters.base.box.color.get());
-					this->boxMaterial.begin();
-					{
-						if (parameters.base.box.cullFace > 0)
-						{
-							glEnable(GL_CULL_FACE);
-							if (parameters.base.box.cullFace == 1)
-							{
-								glCullFace(GL_BACK);
-							}
-							else
-							{
-								glCullFace(GL_FRONT);
-							}
-						}
-						this->boxGeom.getMesh().draw();
-						if (parameters.base.box.cullFace > 0)
-						{
-							glDisable(GL_CULL_FACE);
-						}
-					}
-					this->boxMaterial.end();
-				}
-				this->boxLight.disable();
-			}
-			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------
