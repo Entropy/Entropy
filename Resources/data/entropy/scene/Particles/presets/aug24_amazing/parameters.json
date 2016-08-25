@@ -1,39 +1,22 @@
 {
-    "Box Back": {
-        "Box Back": {
-            "Color": "0.0509804, 0.0509804, 0.0509804, 1",
-            "Cull Face": "2",
-            "Edge Width": "1",
-            "Enabled": "0",
-            "Size": "1000",
-            "Subdivisions": "1"
-        }
-    },
-    "Box Front": {
-        "Box Front": {
-            "Color": "1, 1, 1, 1",
-            "Cull Face": "1",
-            "Edge Width": "1.784",
-            "Enabled": "0",
-            "Size": "1000",
-            "Subdivisions": "1"
-        }
-    },
     "Camera Back": {
         "aspectRatio": 3.1611111164093,
-        "distance": 581.052551269531,
+        "distance": 581.05224609375,
         "drag": 0.899999976158142,
         "farClip": 10000.0,
         "forceAspectRatio": true,
         "fov": 60.0,
+        "inertiaEnabled": false,
         "lensOffset": "0, 0",
         "mouseInputEnabled": false,
         "mouseMiddleButtonEnabled": true,
         "nearClip": 400.0,
         "ortho": false,
+        "relativeYAxis": false,
         "target": "0, 0, 0",
         "transform": "-0.657888, 0.0382283, 0.752145,        0\n-0.230473, 0.940576, -0.249396,        0\n-0.716985, -0.337424, -0.609983,        0\n-416.605, -196.061, -354.432,        1",
-        "translationKey": 109
+        "translationKey": 109,
+        "upAxis": "0, 1, 0"
     },
     "Camera Front": {
         "aspectRatio": 2.89074063301086,
@@ -42,14 +25,17 @@
         "farClip": 400.0,
         "forceAspectRatio": true,
         "fov": 60.0,
+        "inertiaEnabled": false,
         "lensOffset": "0, 0",
         "mouseInputEnabled": false,
         "mouseMiddleButtonEnabled": true,
         "nearClip": 9.3530740737915,
         "ortho": false,
+        "relativeYAxis": false,
         "target": "0, 0, 0",
         "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,  10.0366,        1",
-        "translationKey": 109
+        "translationKey": 109,
+        "upAxis": "0, 1, 0"
     },
     "Environment": {
         "Annihiliation Threshold Max": "0.521",
@@ -64,13 +50,63 @@
     },
     "Mappings": {
         "Base::Background": "0",
-        "Base::Camera::Attach Front to Back": "0",
-        "Base::Camera::Clip Far Back": "0",
-        "Base::Camera::Clip Far Front": "0",
-        "Base::Camera::Clip Near Back": "0",
-        "Base::Camera::Clip Near Front": "0",
-        "Base::Camera::Mouse Enabled": "0",
-        "Base::Camera::Relative Y Axis": "0",
+        "Base::Camera_Back::FOV": "0",
+        "Base::Camera_Back::Far Clip": "0",
+        "Base::Camera_Back::Mouse Control": "0",
+        "Base::Camera_Back::Near Clip": "0",
+        "Base::Camera_Back::Relative Y Axis": "0",
+        "Base::Camera_Front::Attach to Back": "0",
+        "Base::Camera_Front::FOV": "0",
+        "Base::Camera_Front::Far Clip": "0",
+        "Base::Camera_Front::Mouse Control": "0",
+        "Base::Camera_Front::Near Clip": "0",
+        "Base::Camera_Front::Relative Y Axis": "0",
+        "Box_Back::Alpha": "0",
+        "Box_Back::Color": "0",
+        "Box_Back::Cull Face": "0",
+        "Box_Back::Edge Ratio": "0",
+        "Box_Back::Enabled": "0",
+        "Box_Back::Size": "0",
+        "Box_Back::Subdivisions": "0",
+        "Box_Front::Alpha": "0",
+        "Box_Front::Color": "0",
+        "Box_Front::Cull Face": "0",
+        "Box_Front::Edge Ratio": "0",
+        "Box_Front::Enabled": "0",
+        "Box_Front::Size": "0",
+        "Box_Front::Subdivisions": "0",
+        "Post_Effects_Back::Bloom::Brightness Threshold": "0",
+        "Post_Effects_Back::Bloom::Debug blur": "0",
+        "Post_Effects_Back::Bloom::Enabled": "0",
+        "Post_Effects_Back::Bloom::Num Passes": "0",
+        "Post_Effects_Back::Bloom::Sigma": "0",
+        "Post_Effects_Back::Color::Brightness": "0",
+        "Post_Effects_Back::Color::Contrast": "0",
+        "Post_Effects_Back::Color::Exposure": "0",
+        "Post_Effects_Back::Color::Gamma": "0",
+        "Post_Effects_Back::Color::Tonemapping": "0",
+        "Post_Effects_Back::Vignette::Debug": "0",
+        "Post_Effects_Back::Vignette::Enabled": "0",
+        "Post_Effects_Back::Vignette::Inner": "0",
+        "Post_Effects_Back::Vignette::Outter": "0",
+        "Post_Effects_Back::Vignette::Power": "0",
+        "Post_Effects_Back::Vignette::Rotation": "0",
+        "Post_Effects_Front::Bloom::Brightness Threshold": "0",
+        "Post_Effects_Front::Bloom::Debug blur": "0",
+        "Post_Effects_Front::Bloom::Enabled": "0",
+        "Post_Effects_Front::Bloom::Num Passes": "0",
+        "Post_Effects_Front::Bloom::Sigma": "0",
+        "Post_Effects_Front::Color::Brightness": "0",
+        "Post_Effects_Front::Color::Contrast": "0",
+        "Post_Effects_Front::Color::Exposure": "0",
+        "Post_Effects_Front::Color::Gamma": "0",
+        "Post_Effects_Front::Color::Tonemapping": "0",
+        "Post_Effects_Front::Vignette::Debug": "0",
+        "Post_Effects_Front::Vignette::Enabled": "0",
+        "Post_Effects_Front::Vignette::Inner": "0",
+        "Post_Effects_Front::Vignette::Outter": "0",
+        "Post_Effects_Front::Vignette::Power": "0",
+        "Post_Effects_Front::Vignette::Rotation": "0",
         "additive blend": "0",
         "ambient light": "0",
         "attenuation": "0",
@@ -80,14 +116,86 @@
         "": "",
         "Base": {
             "Background": "0, 0, 0, 1",
-            "Camera": {
-                "Attach Front to Back": "1",
-                "Clip Far Back": "10000",
-                "Clip Far Front": "400",
-                "Clip Near Back": "400",
-                "Clip Near Front": "0",
-                "Mouse Enabled": "0",
+            "Camera Back": {
+                "FOV": "60",
+                "Far Clip": "1000",
+                "Mouse Control": "1",
+                "Near Clip": "0.001",
                 "Relative Y Axis": "0"
+            },
+            "Camera Front": {
+                "Attach to Back": "1",
+                "FOV": "60",
+                "Far Clip": "1000",
+                "Mouse Control": "0",
+                "Near Clip": "0.001",
+                "Relative Y Axis": "0"
+            }
+        },
+        "Box Back": {
+            "Alpha": "1",
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "1",
+            "Edge Ratio": "0.01",
+            "Enabled": "1",
+            "Size": "1",
+            "Subdivisions": "1"
+        },
+        "Box Front": {
+            "Alpha": "1",
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "1",
+            "Edge Ratio": "0.01",
+            "Enabled": "1",
+            "Size": "1",
+            "Subdivisions": "1"
+        },
+        "Post Effects Back": {
+            "Bloom": {
+                "Brightness Threshold": "1",
+                "Debug blur": "0",
+                "Enabled": "1",
+                "Num Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.8",
+                "Outter": "1.1",
+                "Power": "1.1",
+                "Rotation": "0"
+            }
+        },
+        "Post Effects Front": {
+            "Bloom": {
+                "Brightness Threshold": "0.01",
+                "Debug blur": "0",
+                "Enabled": "1",
+                "Num Passes": "7",
+                "Sigma": "16.557"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.8",
+                "Outter": "1.1",
+                "Power": "1.1",
+                "Rotation": "0"
             }
         },
         "additive blend": "1",
@@ -102,7 +210,7 @@
                     "Background": "0, 0, 0, 0",
                     "Center": "0.239, 0.5",
                     "Layout": "1",
-                    "Size": "0.205, 0.409"
+                    "Size": "0.205"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
@@ -122,7 +230,7 @@
                     "Background": "0, 0, 0, 0",
                     "Center": "0.227, 0.5",
                     "Layout": "1",
-                    "Size": "0.125, 0.375"
+                    "Size": "0.125"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
@@ -137,38 +245,6 @@
             "type": 2
         }
     ],
-    "Post Effects Back": {
-        "Bloom": {
-            "Brightness Threshold": "0.01",
-            "Debug blur": "0",
-            "Enabled": "1",
-            "Num Passes": "6",
-            "Sigma": "0.5"
-        },
-        "Color": {
-            "Brightness": "0",
-            "Contrast": "1",
-            "Exposure": "4",
-            "Gamma": "2.2",
-            "Tonemapping": "6"
-        }
-    },
-    "Post Effects Front": {
-        "Bloom": {
-            "Brightness Threshold": "0.01",
-            "Debug blur": "0",
-            "Enabled": "0",
-            "Num Passes": "10",
-            "Sigma": "18"
-        },
-        "Color": {
-            "Brightness": "0",
-            "Contrast": "1",
-            "Exposure": "4",
-            "Gamma": "2.2",
-            "Tonemapping": "6"
-        }
-    },
     "Renderer": {
         "Fill": "1",
         "Fill alpha": "1",

@@ -47,15 +47,15 @@ namespace nm
 	*/
 
 	Particle::Data Particle::DATA[NUM_TYPES] = {
-		{	0x01,	0,		0,		500.f,		-1.f,			{"Electron",		{0.5,0.5,0.5,0.5}},	"sphere_electron_positron.obj"}, // ELECTRON
-		{	~0x01,	0,		0,		500.f,		1.f,			{"Positron",		{0.0,0.1,0.5,0.5}},	"sphere_electron_positron.obj"}, // POSITRON
-		{	0x04,	0,		0,		2300.f,		-2.f / 3.f,		{"Anti up quark",	{0.2,0.2,0.2,0.5}},	"particle_0.obj"              }, // ANTI_UP_QUARK
-		{	~0x04,	~0x01,	0x01,	2300.f,		2.f / 3.f,		{"Up quark",		{0.1,0.1,0.1,0.5}},	"particle_0.obj"              }, // UP_QUARK
-		{	0x02,	0,		0,		4800.f,		1.f / 3.f,		{"Anti down quark", {0.0,0.1,0.5,0.5}}, "particle_1.obj"              }, // ANTI_DOWN_QUARK
-		{	~0x02,	0x01,	0x01,	4800.f,		-1.f / 3.f,		{"Down quark",		{0.5,0.5,0.5,0.5}},	"particle_1.obj"              }, // DOWN_QUARK
-		{	0,		0,		~0x01,	7100.f,		0.f,			{"Up down quark",	{0.0,0.1,0.5,0.5}}, "particle_2.obj"			  }, // UP_DOWN_QUARK
-		{	0,		0,		0,		14000.f,	0.f,			{"Neutron",			{0.2,0.2,0.2,0.5}}, "particle_2.obj"              }, // NEUTRON
-		{	0,		0,		0,		14000.f,	1.f,			{"Proton",			{0.0,0.1,0.5,0.5}}, "particle_2.obj"			  }  // PROTON
+		{	0x01,	0,		0,		500.f,		-1.f,			{"Electron",		{0.5f, 0.5f, 0.5f, 0.5f}},	"sphere_electron_positron.obj"}, // ELECTRON
+		{	~0x01,	0,		0,		500.f,		1.f,			{"Positron",		{0.0f, 0.1f, 0.5f, 0.5f}},	"sphere_electron_positron.obj"}, // POSITRON
+		{	0x04,	0,		0,		2300.f,		-2.f / 3.f,		{"Anti up quark",	{0.2f, 0.2f, 0.2f, 0.5f}},	"particle_0.obj"              }, // ANTI_UP_QUARK
+		{	~0x04,	~0x01,	0x01,	2300.f,		2.f / 3.f,		{"Up quark",		{0.1f, 0.1f, 0.1f, 0.5f}},	"particle_0.obj"              }, // UP_QUARK
+		{	0x02,	0,		0,		4800.f,		1.f / 3.f,		{"Anti down quark", {0.0f, 0.1f, 0.5f, 0.5f}},	"particle_1.obj"              }, // ANTI_DOWN_QUARK
+		{	~0x02,	0x01,	0x01,	4800.f,		-1.f / 3.f,		{"Down quark",		{0.5f, 0.5f, 0.5f, 0.5f}},	"particle_1.obj"              }, // DOWN_QUARK
+		{	0,		0,		~0x01,	7100.f,		0.f,			{"Up down quark",	{0.0f, 0.1f, 0.5f, 0.5f}},	"particle_2.obj"			  }, // UP_DOWN_QUARK
+		{	0,		0,		0,		14000.f,	0.f,			{"Neutron",			{0.2f, 0.2f, 0.2f, 0.5f}},	"particle_2.obj"              }, // NEUTRON
+		{	0,		0,		0,		14000.f,	1.f,			{"Proton",			{0.0f, 0.1f, 0.5f, 0.5f}},	"particle_2.obj"			  }  // PROTON
 	};
 
 	ofParameterGroup Particle::parameters{

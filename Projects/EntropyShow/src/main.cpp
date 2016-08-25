@@ -9,6 +9,7 @@ int main()
 	settings.width = 1920;
 	settings.height = 1080;
 	settings.multiMonitorFullScreen = true;
+	settings.decorated = false;
 	ofCreateWindow(settings);
 
 	ofRunApp(new ofApp());

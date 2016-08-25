@@ -46,6 +46,8 @@ namespace entropy
 		void Base::exit_()
 		{
 			this->exit();
+
+			this->track = nullptr;
 		}
 
 		//--------------------------------------------------------------
@@ -190,8 +192,8 @@ namespace entropy
 					}
 
 					// Draw the content.
-					ofSetColor(255, this->frontAlpha * 255);
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					ofSetColor(255, this->frontAlpha * 255);
 					this->renderContent();
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
@@ -290,6 +292,7 @@ namespace entropy
 
 			auto trackName = "_" + ofToString(this->index);
 			if (this->type == Type::Image) trackName.insert(0, "Image");
+			else if (this->type == Type::Video) trackName.insert(0, "Video");
 
 			if (page->getTrack(trackName))
 			{
@@ -315,6 +318,7 @@ namespace entropy
 			timeline.removeTrack(this->track);
 			this->track = nullptr;
 
+			// TODO: Figure out why this is not working!
 			auto page = timeline.getPage(kTimelinePageName);
 			if (page && page->getTracks().empty())
 			{

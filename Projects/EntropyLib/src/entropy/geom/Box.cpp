@@ -13,11 +13,15 @@ namespace entropy
 			{
 				this->colorDirty = true;
 			}));
+			this->paramListeners.push_back(this->alpha.newListener([this](float &)
+			{
+				this->colorDirty = true;
+			}));
 			this->paramListeners.push_back(this->size.newListener([this](float &)
 			{
 				this->meshDirty = true;
 			}));
-			this->paramListeners.push_back(this->edgeWidth.newListener([this](float &)
+			this->paramListeners.push_back(this->edgeRatio.newListener([this](float &)
 			{
 				this->meshDirty = true;
 			}));
@@ -50,6 +54,7 @@ namespace entropy
 				{
 					this->rebuildMesh();
 					this->light.setPosition(glm::vec3(this->size) * 2.0f);
+					this->colorDirty = true;
 
 					didUpdate = true;
 				}
@@ -57,9 +62,11 @@ namespace entropy
 				if (this->colorDirty)
 				{
 					this->mesh.getColors().resize(this->mesh.getVertices().size());
+					ofFloatColor colorWithAlpha = this->color;
+					colorWithAlpha.a = this->alpha;
 					for (auto & c : this->mesh.getColors()) 
 					{
-						c = this->color;
+						c = colorWithAlpha;
 					}
 
 					this->colorDirty = false;
@@ -162,7 +169,8 @@ namespace entropy
 		{
 			this->clear();
 
-			float edgeOffset = size / subdivisions;
+			const auto edgeOffset = this->size / this->subdivisions;
+			const auto edgeWidth = this->edgeRatio * this->size;
 			glm::vec3 center;
 			glm::vec3 dimensions;
 

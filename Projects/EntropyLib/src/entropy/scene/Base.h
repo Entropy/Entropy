@@ -134,11 +134,11 @@ namespace entropy
 					{
 						ofParameter<bool> mouseControl{ "Mouse Control", true };
 						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
-						ofParameter<float> fov{ "FOV", 60, 0, 359 };
-						ofParameter<float> nearClip{ "Near Clip", 0.0001f, 0.0001f, 1000.0f };
-						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.0001f, 1000.0f };
+						ofParameter<float> fov{ "FOV", 60, 0, 180 };
+						ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
+						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
 
-						PARAM_DECLARE("Back Camera", mouseControl, relativeYAxis, fov, nearClip, farClip);
+						PARAM_DECLARE("Camera Back", mouseControl, relativeYAxis, fov, nearClip, farClip);
 					} backCamera;
 
 					struct : ofParameterGroup
@@ -146,11 +146,11 @@ namespace entropy
 						ofParameter<bool> mouseControl{ "Mouse Control", false };
 						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
 						ofParameter<bool> attachToBack{ "Attach to Back", true }; 
-						ofParameter<float> fov{ "FOV", 60, 0, 359 };
-						ofParameter<float> nearClip{ "Near Clip", 0.0001f, 0.0001f, 1000.0f };
-						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.0001f, 1000.0f };
+						ofParameter<float> fov{ "FOV", 60, 0, 180 };
+						ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
+						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
 
-						PARAM_DECLARE("Front Camera", mouseControl, relativeYAxis, attachToBack, fov, nearClip, farClip);
+						PARAM_DECLARE("Camera Front", mouseControl, relativeYAxis, attachToBack, fov, nearClip, farClip);
 					} frontCamera;
 
 					PARAM_DECLARE("Base", background, backCamera, frontCamera);
