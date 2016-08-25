@@ -13,52 +13,28 @@ namespace entropy
             return src.replace(pos, len, replacement);
         }
 
-        void WireframeFillRenderer::compileShader(){
-            //fragment shader
-            ofFile vertFile(GetShadersPath(Module::Renderers) / "wireframeFillRender.vert");
-            ofBuffer vertBuff(vertFile);
-            std::string vertSource = vertBuff.getText();
+		using namespace glm;
+		float smoothstep(float edge0, float edge1, float x){
+			float t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+			return t * t * (3.0 - 2.0 * t);
+		}
 
-            std::regex re_fog_enabled("#define FOG_ENABLED [0-1]");
-            vertSource = std::regex_replace(vertSource, re_fog_enabled, "#define FOG_ENABLED " + ofToString(fogEnabled));
-
-            std::regex re_shade_normals("#define SHADE_NORMALS [0-1]");
-            vertSource = std::regex_replace(vertSource, re_shade_normals, "#define SHADE_NORMALS " + ofToString(shadeNormals));
-
-            std::regex re_wireframe("#define WIREFRAME [0-1]");
-
-            vertSource = std::regex_replace(vertSource, re_wireframe, "#define WIREFRAME 0");
-            shaderFill.setupShaderFromSource(GL_VERTEX_SHADER, vertSource);
-            shaderFill.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
-            shaderFill.bindDefaults();
-            shaderFill.linkProgram();
-
-            vertSource = std::regex_replace(vertSource, re_wireframe, "#define WIREFRAME 1");
-            shaderWireframe.setupShaderFromSource(GL_VERTEX_SHADER, vertSource);
-            shaderWireframe.setupShaderFromFile(GL_FRAGMENT_SHADER, GetShadersPath(Module::Renderers) / "wireframeFillRender.frag");
-            shaderWireframe.bindDefaults();
-            shaderWireframe.linkProgram();
-        }
+		float fog(float dist, float startDist, float minDist, float maxDist, float power) {
+			return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
+		}
 
         void WireframeFillRenderer::setMaterial(){
             std::string postFragmentSource = R"(
-                 float fog(float dist, float minDist, float maxDist, float power) {
-                      dist = pow(dist, power);
-                      minDist = pow(minDist, power);
-                      maxDist = pow(maxDist, power);
-                      float invDistanceToCamera = 1 - clamp((dist - minDist) / maxDist, 0.f, 1.f);
-                      if (dist > minDist) {
-                          return invDistanceToCamera;
-                      }
-                      else {
-                          return 1;
-                      }
-                  }
-                  vec4 postFragment(vec4 localColor){
-                     float distanceToCamera = length(v_eyePosition);
-                     localColor.a *= fog(distanceToCamera, %fogMinDistance%, %fogMaxDistance%, %fogPower%);
-                     return localColor;
-                  })";
+				float fog(float dist, float startDist, float minDist, float maxDist, float power) {
+					return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
+				}
+
+				vec4 postFragment(vec4 localColor){
+					float distanceToCamera = length(v_eyePosition);
+					localColor.a *= fog(distanceToCamera, %fogStartDistance%, %fogMinDistance%, %fogMaxDistance%, %fogPower%);
+					return localColor;
+				})";
+			postFragmentSource = replace(postFragmentSource, "%fogStartDistance%", std::to_string(fogStartDistance));
             postFragmentSource = replace(postFragmentSource, "%fogMinDistance%", std::to_string(fogMinDistance));
             postFragmentSource = replace(postFragmentSource, "%fogMaxDistance%", std::to_string(fogMaxDistance));
             postFragmentSource = replace(postFragmentSource, "%fogPower%", std::to_string(fogPower));
@@ -66,9 +42,22 @@ namespace entropy
             material.setPostFragment(postFragmentSource);
         }
 
-        void WireframeFillRenderer::setup(){
-            compileShader();
+		void WireframeFillRenderer::setup(){
+			cout << "compiling " << GetShadersPath(Module::Renderers) / "wireframeFillRender.vert" << endl;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.vert";
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.frag";
+			shaderSettings.bindDefaults = true;
+			shaderSettings.intDefines["FOG_ENABLED"] = fogEnabled;
+			shaderSettings.intDefines["SHADE_NORMALS"] = shadeNormals;
+
+			shaderSettings.intDefines["WIREFRAME"] = 0;
+			shaderFill.setup(shaderSettings);
+
+			shaderSettings.intDefines["WIREFRAME"] = 1;
+			shaderWireframe.setup(shaderSettings);
+
             setMaterial();
+
             listeners.push_back(fogMinDistance.newListener([&](float &){
                 setMaterial();
             }));
@@ -78,12 +67,23 @@ namespace entropy
             listeners.push_back(fogPower.newListener([&](float &){
                 setMaterial();
             }));
+			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
+				cout << "recompiling" << endl;
+				shaderSettings.intDefines["FOG_ENABLED"] = enabled;
+
+				shaderSettings.intDefines["WIREFRAME"] = 0;
+				shaderFill.setup(shaderSettings);
+
+				shaderSettings.intDefines["WIREFRAME"] = 1;
+				shaderWireframe.setup(shaderSettings);
+			})));
         }
 
         void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices) const{
             ofDisableDepthTest();
             if (fill) {
                 shaderFill.begin();
+				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
                 shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderFill.setUniform1f("fogPower", fogPower);
@@ -108,6 +108,7 @@ namespace entropy
                     material.end();
                 }else{
                     shaderWireframe.begin();
+					shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
                     shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
                     shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
                     shaderWireframe.setUniform1f("fogPower", fogPower);
@@ -122,6 +123,7 @@ namespace entropy
             ofDisableDepthTest();
             if (fill) {
                 shaderFill.begin();
+				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
                 shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderFill.setUniform1f("fogPower", fogPower);
@@ -133,6 +135,7 @@ namespace entropy
 
             if (wireframe) {
                 shaderWireframe.begin();
+				shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
                 shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderWireframe.setUniform1f("fogPower", fogPower);
@@ -142,27 +145,13 @@ namespace entropy
                 shaderWireframe.end();
             }
             material.end();
-        }
-
-        using namespace glm;
-        float fog(float dist, float minDist, float maxDist, float power) {
-            dist = pow(dist, power);
-            minDist = pow(minDist, power);
-            maxDist = pow(maxDist, power);
-            float invDistanceToCamera = clamp(1 - (dist - minDist) / maxDist, 0.f, 1.f);
-            if (dist > minDist) {
-                return invDistanceToCamera;
-            }
-            else {
-                return 1;
-            }
-        }
+		}
 
         std::vector<float> WireframeFillRenderer::getFogFunctionPlot(size_t numberOfPoints) const {
             std::vector<float> plot(numberOfPoints);
             for (size_t i = 0; i < numberOfPoints; i++) {
                 float distanceToCamera = i/float(numberOfPoints) * 10.;
-                plot[i] = fog(distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
+				plot[i] = fog(distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
             }
             return plot;
         }

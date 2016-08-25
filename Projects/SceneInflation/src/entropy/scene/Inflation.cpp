@@ -38,6 +38,7 @@ namespace entropy
                 c = ofFloatColor(1,0,0,1);
             }
             box.setMesh(boxMesh, GL_STATIC_DRAW);
+			renderer.useLights = false;
             //noiseField.update(false);
 		}
 
@@ -161,10 +162,12 @@ namespace entropy
                     ofxPreset::Gui::AddParameter(this->renderer.wireframe);
                     ofxPreset::Gui::AddParameter(this->renderer.fill);
 
-                    ofxPreset::Gui::AddParameter(this->renderer.fogEnabled);
-                    ofxPreset::Gui::AddParameter(this->renderer.fogMaxDistance);
+					ofxPreset::Gui::AddParameter(this->renderer.fogEnabled);
+					ofxPreset::Gui::AddParameter(this->renderer.fogStartDistance);
                     ofxPreset::Gui::AddParameter(this->renderer.fogMinDistance);
+					ofxPreset::Gui::AddParameter(this->renderer.fogMaxDistance);
                     ofxPreset::Gui::AddParameter(this->renderer.fogPower);
+					ofxPreset::Gui::AddParameter(this->renderer.useLights);
 
                     ofxPreset::Gui::AddParameter(this->renderer.fillAlpha);
                     ofxPreset::Gui::AddParameter(this->renderer.wireframeAlpha);

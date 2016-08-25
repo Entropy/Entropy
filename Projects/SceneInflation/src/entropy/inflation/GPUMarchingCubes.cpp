@@ -275,7 +275,7 @@ namespace entropy
             shaderSettings.bindDefaults = false;
             shaderSettings.intDefines["SUBDIVISIONS"] = subdivisions;
             shaderSettings.boolDefines["OUTPUT_NORMALS"] = shadeNormals;
-            shaderSettings.floatDefines["RESOLUTION"] = resolution;
+			shaderSettings.floatDefines["RESOLUTION"] = resolution;
             if(shadeNormals){
                 shaderSettings.varyingsToCapture = {"position", "color", "normal"};
             }else{
@@ -309,20 +309,18 @@ namespace entropy
                     vboFeedback.setNormalBuffer(bufferFeedback, getVertexStride(), offset);
                 }
 
-                shaderSettings.floatDefines["RESOLUTION"] = res;
-                shader.setup(shaderSettings);
+				shaderSettings.floatDefines["RESOLUTION"] = res;
+				shader.setup(shaderSettings);
 			});
 
-            subdivisionsListener = subdivisions.newListener([&](int & subs){
-                shaderSettings.intDefines["SUBDIVISIONS"] = subdivisions;
-                shader.setup(shaderSettings);
-                //shader.setDefineConstant("SUBDIVISIONS", subs);
+			subdivisionsListener = subdivisions.newListener([&](int & subs){
+				shaderSettings.intDefines["SUBDIVISIONS"] = subs;
+				shader.setup(shaderSettings);
             });
 
             shadeNormalsListener = shadeNormals.newListener([&](bool & normals){
                 shaderSettings.intDefines["OUTPUT_NORMALS"] = normals;
-                shader.setup(shaderSettings);
-                //shader.setDefineConstant("OUTPUT_NORMALS", normals);
+				shader.setup(shaderSettings);
             });
 
 			triTableTex.allocate(16, 256, GL_R8I, false, GL_RED_INTEGER, GL_BYTE);

@@ -5,25 +5,21 @@ in float f_distanceToCamera;
 
 uniform float fogMaxDistance;
 uniform float fogMinDistance;
+uniform float fogStartDistance;
 uniform float fogPower;
 
 out vec4 fragColor;
+#define FOG_ENABLED 0
 
-float fog(float dist, float minDist, float maxDist, float power) {
-	dist = pow(dist, power);
-	minDist = pow(minDist, power);
-	maxDist = pow(maxDist, power);
-	float invDistanceToCamera = 1 - clamp((dist - minDist) / maxDist, 0.f, 1.f);
-	if (dist > minDist) {
-		return invDistanceToCamera;
-	}
-	else {
-		return 1;
-	}
+
+float fog(float dist, float startDist, float minDist, float maxDist, float power) {
+	return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
 }
 
 void main(void)
 {
 	fragColor = f_color;
-	fragColor.a *= fog(f_distanceToCamera, fogMinDistance, fogMaxDistance, fogPower);
+#if FOG_ENABLED
+	fragColor.a *= fog(f_distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+#endif
 }
