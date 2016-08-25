@@ -64,11 +64,12 @@ namespace nm
             char fusion2Flag; // compound particles with up-quarks and down-quarks
 			float mass;
 			float charge;
-			ofFloatColor color;
+			ofParameter<ofFloatColor> color;
 			string meshName;
 		};
 
-		static const Data DATA[NUM_TYPES];
+		static Data DATA[NUM_TYPES];
+		static ofParameterGroup parameters;
 
 		Particle();
 

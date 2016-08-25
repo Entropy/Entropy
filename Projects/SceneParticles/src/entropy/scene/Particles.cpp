@@ -116,31 +116,7 @@ namespace entropy
                 photons.update();
                 particleSystem.update();
 
-                auto & photons = this->photons.getPosnsRef();
-                // Remove extra point lights.
-                // Update current point lights.
-                /*auto lightsEnabled = 0;
-                for (int i = 0; i < photons.size(); ++i)
-                {
-                    if(photons[i].x > glm::vec3(-HALF_DIM*2).x  &&
-                       photons[i].y > glm::vec3(-HALF_DIM*2).y  &&
-                       photons[i].z > glm::vec3(-HALF_DIM*2).z  &&
-                       photons[i].x < glm::vec3(HALF_DIM*2).x &&
-                       photons[i].y < glm::vec3(HALF_DIM*2).y &&
-                       photons[i].z < glm::vec3(HALF_DIM*2).z){
-                        lightsEnabled++;
-                        if(lightsEnabled==MAX_LIGHTS){
-                            break;
-                        }
-                    }
-                }
-
-
-                if (lightsEnabled > pointLights.size())
-                {
-                    pointLights.resize(lightsEnabled);
-                    cout << "resizing point lights " << pointLights.size() << endl;
-                }*/
+				auto & photons = this->photons.getPosnsRef();
 
                 for(auto & light: pointLights){
                     light.disable();
@@ -169,6 +145,11 @@ namespace entropy
                 glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
                 this->shader.beginTransformFeedback(GL_TRIANGLES, feedbackBuffer);
                 {
+					std::array<ofFloatColor, nm::Particle::NUM_TYPES> colors;
+					std::transform(nm::Particle::DATA, nm::Particle::DATA + nm::Particle::NUM_TYPES, colors.begin(), [](const nm::Particle::Data & data){
+						return data.color.get();
+					});
+					this->shader.setUniform4fv("colors", reinterpret_cast<float*>(colors.data()), nm::Particle::NUM_TYPES);
                     particleSystem.draw(this->shader);
                 }
                 this->shader.endTransformFeedback(feedbackBuffer);
@@ -205,10 +186,10 @@ namespace entropy
             }
 		}
 
-        void Particles::drawFrontWorld()
-        {
+		void Particles::drawFrontWorld()
+		{
 
-        }
+		}
 
 		//--------------------------------------------------------------
 		void Particles::drawSkybox()
@@ -274,6 +255,7 @@ namespace entropy
                 ofxPreset::Gui::AddParameter(this->parameters.drawPhotons);
                 ImGui::Checkbox("debug lights", &debug);
             }
+			ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
 			ofxPreset::Gui::EndWindow(settings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
@@ -285,6 +267,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->environment->parameters);
             ofxPreset::Serializer::Serialize(json, this->renderer.parameters);
+			ofxPreset::Serializer::Serialize(json, nm::Particle::parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -292,6 +275,7 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->environment->parameters);
             ofxPreset::Serializer::Deserialize(json, this->renderer.parameters);
+			ofxPreset::Serializer::Deserialize(json, nm::Particle::parameters);
 
 			if (!this->parameters.stateFile->empty())
 			{

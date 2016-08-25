@@ -76,7 +76,7 @@ namespace entropy
                 ofParameter<bool> drawPhotons{"drawPhotons", true};
                 ofParameter<float> ambientLight{"ambient light", 0.001, 0, 0.02};
                 ofParameter<float> attenuation{"attenuation", 0.01, 0.0000001, 0.05};
-                ofParameter<float> lightStrength{"light strength", 1, 0, 1};
+				ofParameter<float> lightStrength{"light strength", 1, 0, 1};
 
                 PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, ambientLight, attenuation);
 			} parameters;
