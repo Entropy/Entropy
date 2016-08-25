@@ -205,6 +205,11 @@ namespace entropy
             }
 		}
 
+        void Particles::drawFrontWorld()
+        {
+
+        }
+
 		//--------------------------------------------------------------
 		void Particles::drawSkybox()
 		{

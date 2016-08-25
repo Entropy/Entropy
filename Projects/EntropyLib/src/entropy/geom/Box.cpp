@@ -85,7 +85,7 @@ namespace entropy
 					//this->material.begin();
 					{
 						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-						if (cullMode != CullMode::None)
+                        if (cullMode != CullMode::No)
 						{
 							glEnable(GL_CULL_FACE);
 							if (cullMode == CullMode::Back)
@@ -102,7 +102,7 @@ namespace entropy
 							glDisable(GL_CULL_FACE);
 						}
 						this->mesh.draw();
-						if (cullMode != CullMode::None)
+                        if (cullMode != CullMode::No)
 						{
 							glDisable(GL_CULL_FACE);
 						}
@@ -128,7 +128,7 @@ namespace entropy
 					//this->material.begin();
 					{
 						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-						if (cullMode != CullMode::None)
+                        if (cullMode != CullMode::No)
 						{
 							glEnable(GL_CULL_FACE);
 							if (cullMode == CullMode::Back)
@@ -145,7 +145,7 @@ namespace entropy
 							glDisable(GL_CULL_FACE);
 						}
 						renderer.drawElements(this->mesh.getVbo(), 0, this->mesh.getNumIndices());
-						if (cullMode != CullMode::None)
+                        if (cullMode != CullMode::No)
 						{
 							glDisable(GL_CULL_FACE);
 						}
