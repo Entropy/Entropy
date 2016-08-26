@@ -233,6 +233,8 @@ void main(){
 	        rgb = vec3(1);
         #endif
     #endif
+#else
+	float vignetting = 1;
 #endif
 
 	fragColor = vec4(rgb, vignetting);
