@@ -24,6 +24,16 @@ namespace entropy
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
+			// Custom parameter listeners.
+			this->parameterListeners.push_back(this->parameters.render.drawBoxInRenderer.newListener([this](bool & value)
+			{
+				// Automatically disable default box drawing when using renderer.
+				if (value)
+				{
+					this->boxes[render::Layout::Back].autoDraw = false;
+				}
+			}));
+
 			//ofMesh boxMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
 			//boxMesh.getColors().resize(boxMesh.getVertices().size());
 			//for (auto & c : boxMesh.getColors()) {
@@ -90,7 +100,10 @@ namespace entropy
                 //ofNoFill();
                 //ofDrawBox(1);
                 //renderer.drawElements(box, 0, box.getNumIndices());
-				this->boxes[render::Layout::Back].draw(renderer);
+				if (this->parameters.render.drawBoxInRenderer)
+				{
+					this->boxes[render::Layout::Back].draw(renderer);
+				}
 
                 ofEnableBlendMode(OF_BLENDMODE_ALPHA);
             }
@@ -124,6 +137,7 @@ namespace entropy
                     ofxPreset::Gui::AddParameter(this->parameters.render.debug);
                     ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
 					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
+					ofxPreset::Gui::AddParameter(this->parameters.render.drawBoxInRenderer);
 
                     ofxPreset::Gui::AddParameter(this->renderer.wireframe);
                     ofxPreset::Gui::AddParameter(this->renderer.fill);

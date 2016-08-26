@@ -64,15 +64,19 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofParameter<bool> debug{ "Debug noise", false };
+					ofParameter<bool> debug{ "Debug Noise", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
+					ofParameter<bool> drawBoxInRenderer{ "Draw Box In Renderer", false };
 
 					PARAM_DECLARE("Render", 
 						debug,
-						additiveBlending );
+						additiveBlending,
+						drawBoxInRenderer);
 				} render;
 
-				PARAM_DECLARE("Inflation", runSimulation, render);
+				PARAM_DECLARE("Inflation", 
+					runSimulation,
+					render);
 			} parameters;
 		};
     }

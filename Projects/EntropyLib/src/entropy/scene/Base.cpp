@@ -299,7 +299,10 @@ namespace entropy
 			this->cameras[layout].begin(GetCanvasViewport(layout));
 			ofEnableDepthTest();
 			{
-				this->boxes[layout].draw();
+				if (this->boxes[layout].autoDraw)
+				{
+					this->boxes[layout].draw();
+				}
 
 				if (layout == render::Layout::Back)
 				{
@@ -501,16 +504,23 @@ namespace entropy
 
 				for (auto & it : this->boxes)
 				{
-					if (ImGui::CollapsingHeader(it.second.parameters.getName().c_str(), nullptr, true, true))
+					if (ofxPreset::Gui::BeginTree(it.second.parameters, settings))
 					{
 						ofxPreset::Gui::AddParameter(it.second.enabled);
+						if (it.second.enabled)
+						{
+							ImGui::SameLine();
+							ofxPreset::Gui::AddParameter(it.second.autoDraw);
+						}
 						static const vector<string> labels{ "None", "Back", "Front" };
 						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
 						ofxPreset::Gui::AddParameter(it.second.color);
 						ofxPreset::Gui::AddParameter(it.second.alpha);
 						ofxPreset::Gui::AddParameter(it.second.size);
 						ofxPreset::Gui::AddParameter(it.second.edgeRatio);
-						ofxPreset::Gui::AddParameter(it.second.subdivisions);
+						ofxPreset::Gui::AddParameter(it.second.subdivisions); 
+						
+						ofxPreset::Gui::EndTree(settings);
 					}
 				}
 			}
