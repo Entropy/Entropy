@@ -42,6 +42,7 @@ namespace entropy
             colorCorrectShaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = this->getShaderPath("frag_tonemap.glsl");
 			colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"] = true;
 			colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"] = false;
+			colorCorrectShaderSettings.intDefines["ONLY_ALPHA"] = false;
             colorCorrectShader.setup(colorCorrectShaderSettings);
 		
 			// Build render geometry.
@@ -78,6 +79,11 @@ namespace entropy
 				colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"] = parameters.vignette.debug;
                 colorCorrectShader.setup(colorCorrectShaderSettings);
             }
+
+			if(parameters.vignette.enabled && parameters.vignette.onlyAlpha != colorCorrectShaderSettings.intDefines["ONLY_ALPHA"]){
+				colorCorrectShaderSettings.intDefines["ONLY_ALPHA"] = parameters.vignette.onlyAlpha;
+				colorCorrectShader.setup(colorCorrectShaderSettings);
+			}
 
 			if (parameters.bloom.enabled) 
 			{
