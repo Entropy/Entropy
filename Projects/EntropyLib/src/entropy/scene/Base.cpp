@@ -77,6 +77,9 @@ namespace entropy
 				this->cameraTracks[it.first] = track;
 			}
 
+			// Initialize child class.
+			this->init();
+
 			// List mappings.
 			this->populateMappings(parameters);
 
@@ -125,8 +128,6 @@ namespace entropy
 				this->cameras[render::Layout::Front].setFarClip(value);
 			}));
 
-			this->init();
-
 			// Restore default data path.
 			ofSetDataPathRoot(prevDataPathRoot);
 
@@ -174,8 +175,6 @@ namespace entropy
 			// Set data path root for scene.
 			ofSetDataPathRoot(this->getDataPath());
 
-			auto & parameters = this->getParameters();			
-
 			// Setup default cameras.
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
@@ -199,6 +198,10 @@ namespace entropy
 				return;
 			}
 
+			// Stop the timeline.
+			this->timeline.stop();
+
+			// Exit child Scene.
 			this->exit();
 
 			// Save default preset.

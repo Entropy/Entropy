@@ -84,32 +84,30 @@ namespace entropy
 
 			ofPushStyle();
 			{
+				ofEnableAlphaBlending();
+				ofSetColor(color.get());
+
+				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+				if (cullMode != CullMode::Disabled)
 				{
-					ofSetColor(color.get());
+					glEnable(GL_CULL_FACE);
+					if (cullMode == CullMode::Back)
 					{
-						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-						if (cullMode != CullMode::Disabled)
-						{
-							glEnable(GL_CULL_FACE);
-							if (cullMode == CullMode::Back)
-							{
-								glCullFace(GL_BACK);
-							}
-							else
-							{
-								glCullFace(GL_FRONT);
-							}
-						}
-						else
-						{
-							glDisable(GL_CULL_FACE);
-						}
-						this->mesh.draw();
-						if (cullMode != CullMode::Disabled)
-						{
-							glDisable(GL_CULL_FACE);
-						}
+						glCullFace(GL_BACK);
 					}
+					else
+					{
+						glCullFace(GL_FRONT);
+					}
+				}
+				else
+				{
+					glDisable(GL_CULL_FACE);
+				}
+				this->mesh.draw();
+				if (cullMode != CullMode::Disabled)
+				{
+					glDisable(GL_CULL_FACE);
 				}
 			}
 			ofPopStyle();

@@ -228,21 +228,26 @@ namespace entropy
 			}
 
 			auto & item = this->tracks[index];
-			auto & sceneName = this->shortNames.at(item.first);
-			if (this->setCurrentScene(sceneName))
+			if (this->shortNames.find(item.first) != this->shortNames.end())
 			{
-				if (this->setCurrentPreset(item.second))
+				auto & sceneName = this->shortNames[item.first];
+				if (this->setCurrentScene(sceneName))
 				{
-					this->currentTrack = index;
-
-					this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
+					if (this->setCurrentPreset(item.second))
 					{
-						this->tracks[this->currentTrack].second = preset;
-					});
+						this->currentTrack = index;
 
-					return true;
+						this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
+						{
+							this->tracks[this->currentTrack].second = preset;
+						});
+
+						return true;
+					}
 				}
 			}
+
+			ofLogError(__FUNCTION__) << "Scene " << item.first << " not loaded!";
 			return false;
 		}
 
