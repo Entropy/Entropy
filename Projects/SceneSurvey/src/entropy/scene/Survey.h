@@ -19,6 +19,9 @@ namespace entropy
 			Survey();
 			~Survey();
 
+			void init() override;
+			void clear() override;
+
 			void setup() override;
 			void exit() override;
 
