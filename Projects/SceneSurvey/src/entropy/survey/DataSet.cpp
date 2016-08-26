@@ -30,9 +30,8 @@ namespace entropy
 			// Load the data one fragment at a time.
 			for (int i = 0; i < count; ++i)
 			{
-				char filename[256];
-				sprintf(filename, format.c_str(), (i + startIdx + 1));
-				const auto filePath = GetCurrentSceneAssetsPath(filename);
+				char filePath[512];
+				sprintf(filePath, format.c_str(), (i + startIdx + 1));
 				this->loadFragment(filePath, this->points);
 			}
 
