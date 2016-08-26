@@ -20,14 +20,14 @@ namespace entropy
 		{
 			// Add the pool parameters to the group.
 			this->parameters.add(this->pool.parameters);
+
+			this->pool.setDimensions(glm::vec3(128.0f));
+			this->pool.setup();
 		}
 
 		//--------------------------------------------------------------
 		void CMB::setup()
-		{
-			this->pool.setDimensions(glm::vec3(128.0f));
-			this->pool.setup();
-		}
+		{}
 
 		//--------------------------------------------------------------
 		void CMB::resizeBack(ofResizeEventArgs & args)
