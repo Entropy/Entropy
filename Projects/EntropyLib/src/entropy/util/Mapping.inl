@@ -151,7 +151,7 @@ namespace entropy
 				this->track = trackColor;
 			}
 
-			this->track->setDisplayName(this->trackName);
+			//this->track->setDisplayName(this->trackName);
 		}
 
 		//--------------------------------------------------------------
