@@ -52,14 +52,12 @@ namespace entropy
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
 			nm::Environment::Ptr environment;
-
-
-            void compileShader();
 			bool debug;
 
             entropy::render::WireframeFillRenderer renderer;
 
             ofShader shader;
+			ofShader::TransformFeedbackSettings shaderSettings;
             ofBufferObject feedbackBuffer;
             ofVbo feedbackVbo;
             GLuint numPrimitives, numPrimitivesQuery;

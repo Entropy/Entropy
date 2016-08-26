@@ -45,47 +45,11 @@ namespace entropy
 			this->parameters.add(this->environment->parameters);
 			this->parameters.add(this->renderer.parameters);
 
-			// Add parameter listeners.
-			this->parameterListeners.push_back(this->parameters.colorsPerType.newListener([&](bool &) 
-			{
-				compileShader();
-			}));
 			this->parameterListeners.push_back(parameters.ambientLight.newListener([&](float & ambient)
 			{
 				ofSetGlobalAmbientColor(ofFloatColor(ambient));
 			}));
-		}
 
-		//--------------------------------------------------------------
-		void Particles::clear()
-		{
-			// Clear transform feedback.
-			glDeleteQueries(1, &numPrimitivesQuery);
-		}
-
-		//--------------------------------------------------------------
-		void Particles::compileShader() 
-		{
-			ofFile vertFile(this->getDataPath("shaders/particle.vert"));
-			ofBuffer vertSource(vertFile);
-
-			std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
-			vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(this->parameters.colorsPerType)));
-
-			// Load shaders.
-			ofShader::TransformFeedbackSettings settings;
-			settings.bindDefaults = false;
-			settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
-			settings.varyingsToCapture = { "out_position", "out_color", "out_normal" };
-			settings.sourceDirectoryPath = this->getDataPath("shaders");
-			this->shader.setup(settings);
-			this->shader.printActiveUniforms();
-			this->shader.printActiveUniformBlocks();
-		}
-
-		//--------------------------------------------------------------
-		void Particles::setup()
-		{
 			for (unsigned i = 0; i < 4000; ++i)
 			{
 				glm::vec3 position = glm::vec3(
@@ -100,22 +64,46 @@ namespace entropy
 				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 			}
 
-            renderer.fogMaxDistance.setMax(HALF_DIM * 10);
-            renderer.fogMinDistance.setMax(HALF_DIM);
+			renderer.fogMaxDistance.setMax(HALF_DIM * 10);
+			renderer.fogMinDistance.setMax(HALF_DIM);
 
 			 this->debug = false;
 
-			 compileShader();
+			// Load shaders.
+			shaderSettings.bindDefaults = false;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getDataPath("shaders/particle.vert");
+			shaderSettings.varyingsToCapture = { "out_position", "out_color", "out_normal" };
+			shaderSettings.sourceDirectoryPath = this->getDataPath("shaders");
+			shaderSettings.intDefines["COLOR_PER_TYPE"] = this->parameters.colorsPerType;
+			this->shader.setup(shaderSettings);
+
+			// Add parameter listeners.
+			this->parameterListeners.push_back(this->parameters.colorsPerType.newListener([&](bool & colorsPerType)
+			{
+				shaderSettings.intDefines["COLOR_PER_TYPE"] = colorsPerType;
+				this->shader.setup(shaderSettings);
+			}));
 
 			 renderer.setup();
 
-             for(auto & light: pointLights){
-                 light.setup();
-                 light.setAmbientColor(ofFloatColor::black);
-                 light.setSpecularColor(ofFloatColor::white);
-             }
+			 for(auto & light: pointLights){
+				 light.setup();
+				 light.setAmbientColor(ofFloatColor::black);
+				 light.setSpecularColor(ofFloatColor::white);
+			 }
+		}
 
-             ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+		//--------------------------------------------------------------
+		void Particles::clear()
+		{
+			// Clear transform feedback.
+			glDeleteQueries(1, &numPrimitivesQuery);
+		}
+
+		//--------------------------------------------------------------
+		void Particles::setup()
+		{
+			ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
 		}
 
 		//--------------------------------------------------------------

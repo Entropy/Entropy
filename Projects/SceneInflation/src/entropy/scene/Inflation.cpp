@@ -34,12 +34,7 @@ namespace entropy
 				}
 			}));
 
-			//ofMesh boxMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
-			//boxMesh.getColors().resize(boxMesh.getVertices().size());
-			//for (auto & c : boxMesh.getColors()) {
-			//	c = ofFloatColor(1, 0, 0, 1);
-			//}
-			//box.setMesh(boxMesh, GL_STATIC_DRAW);
+			renderer.setup();
 		}
 		
 		//--------------------------------------------------------------
@@ -50,11 +45,6 @@ namespace entropy
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			now = 0;
-
-			renderer.setup();
-			renderer.useLights = false;
-
-			//noiseField.update(false);
 		}
 
 		//--------------------------------------------------------------
