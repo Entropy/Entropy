@@ -117,15 +117,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::renderContent()
 		{
-#ifdef TARGET_WIN32
-			if (video.lockSharedTexture())
-			{
-#endif
+//#ifdef TARGET_WIN32
+//			if (video.lockSharedTexture())
+//			{
+//#endif
 				this->video.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
-#ifdef TARGET_WIN32
-				video.unlockSharedTexture();
-			}
-#endif
+//#ifdef TARGET_WIN32
+//				video.unlockSharedTexture();
+//			}
+//#endif
 		}
 	}
 }
