@@ -80,7 +80,7 @@ namespace entropy
                 ofParameter<float> attenuation{"attenuation", 0.01, 0.0000001, 0.05};
 				ofParameter<float> lightStrength{"light strength", 1, 0, 1};
 
-                PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, ambientLight, attenuation);
+                PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, drawPhotons, ambientLight, attenuation);
 			} parameters;
 		};
 	}
