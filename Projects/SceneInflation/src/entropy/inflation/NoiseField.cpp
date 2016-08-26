@@ -45,8 +45,8 @@ namespace entropy
 			this->resolution.makeReferenceTo(resolution);
 
             shaderSettings.shaderFiles[GL_COMPUTE_SHADER] = "shaders/compute_noise4d.glsl";
-            shaderSettings.boolDefines["SPHERICAL_CLIP"] = sphericalClip;
-            shaderSettings.boolDefines["FILL_EDGES"] = fillEdges;
+			shaderSettings.intDefines["SPHERICAL_CLIP"] = sphericalClip;
+			shaderSettings.intDefines["FILL_EDGES"] = fillEdges;
             noiseComputeShader.setup(shaderSettings);
             allocateVolumeTexture();
 
@@ -59,14 +59,14 @@ namespace entropy
 					fillEdges = false;
 				}
                 else {
-                    shaderSettings.boolDefines["SPHERICAL_CLIP"] = sphericalClip;
+					shaderSettings.intDefines["SPHERICAL_CLIP"] = sphericalClip;
                     noiseComputeShader.setup(shaderSettings);
 				}
 			});
 
 			fillEdgesListener = fillEdges.newListener([&](bool & fill) {
                 if (!fill || !sphericalClip) {
-                    shaderSettings.boolDefines["FILL_EDGES"] = fillEdges;
+					shaderSettings.intDefines["FILL_EDGES"] = fillEdges;
                     noiseComputeShader.setup(shaderSettings);
 				}
 				else {
