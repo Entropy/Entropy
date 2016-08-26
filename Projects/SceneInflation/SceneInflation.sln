@@ -1,10 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openframeworksLib", "..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj", "{5837595D-ACA9-485C-8E76-729040CE4B0B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntropyLib", "..\EntropyLib\EntropyLib.vcxproj", "{F6008D6A-6D39-4B68-840E-E7AC8ED855DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5837595D-ACA9-485C-8E76-729040CE4B0B} = {5837595D-ACA9-485C-8E76-729040CE4B0B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationLib", "SceneInflationLib.vcxproj", "{47FAED23-8A9B-48EB-9F1B-92A152F7E070}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -13,6 +16,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationLib", "SceneI
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneInflationApp", "SceneInflationApp.vcxproj", "{7FD42DF7-442E-479A-BA76-D0022F99702A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{47FAED23-8A9B-48EB-9F1B-92A152F7E070} = {47FAED23-8A9B-48EB-9F1B-92A152F7E070}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

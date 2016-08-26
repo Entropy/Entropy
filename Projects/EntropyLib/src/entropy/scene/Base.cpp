@@ -127,6 +127,20 @@ namespace entropy
 			{
 				this->cameras[render::Layout::Front].setFarClip(value);
 			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.mouseControl.newListener([this](bool & enabled){
+				if(enabled){
+					this->cameras[render::Layout::Back].enableMouseInput();
+				}else{
+					this->cameras[render::Layout::Back].disableMouseInput();
+				}
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled){
+				if(enabled){
+					this->cameras[render::Layout::Front].enableMouseInput();
+				}else{
+					this->cameras[render::Layout::Front].disableMouseInput();
+				}
+			}));
 
 			// Restore default data path.
 			ofSetDataPathRoot(prevDataPathRoot);
@@ -234,23 +248,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
-			if (GetApp()->isMouseOverGui() || !this->getParameters().base.backCamera.mouseControl)
-			{
-				this->cameras[render::Layout::Back].disableMouseInput();
-			}
-			else
-			{
-				this->cameras[render::Layout::Back].enableMouseInput();
-			}
-			if (GetApp()->isMouseOverGui() || !this->getParameters().base.frontCamera.mouseControl)
-			{
-				this->cameras[render::Layout::Front].disableMouseInput();
-			}
-			else
-			{
-				this->cameras[render::Layout::Front].enableMouseInput();
-			}
-
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
