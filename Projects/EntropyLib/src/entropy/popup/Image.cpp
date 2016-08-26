@@ -28,12 +28,21 @@ namespace entropy
 			{
 				if (ImGui::Button("Load..."))
 				{
-					auto result = ofSystemLoadDialog("Select an image file.", false, GetCurrentSceneAssetsPath());
+					auto result = ofSystemLoadDialog("Select an image file.", false, GetSharedAssetsPath());
 					if (result.bSuccess)
 					{
 						if (this->loadImage(result.filePath))
 						{
-							this->parameters.filePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
+							auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
+							auto testPath = GetSharedAssetsPath().append(relativePath);
+							if (ofFile::doesFileExist(testPath))
+							{
+								this->parameters.filePath = relativePath;
+							}
+							else
+							{
+								this->parameters.filePath = result.filePath;
+							}
 						}
 					}
 				}
@@ -46,7 +55,15 @@ namespace entropy
 		{
 			if (!this->parameters.filePath->empty())
 			{
-				this->loadImage(GetSharedAssetsPath() + this->parameters.filePath.get());
+				const auto filePath = this->parameters.filePath.get();
+				if (ofFilePath::isAbsolute(filePath))
+				{
+					this->loadImage(filePath);
+				}
+				else
+				{
+					this->loadImage(GetSharedAssetsPath() + filePath);
+				}
 			}
 		}
 
