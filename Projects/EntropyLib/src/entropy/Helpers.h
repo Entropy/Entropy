@@ -118,61 +118,37 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline string GetCurrentSceneDataPath(const string & file = "")
+	enum class Module
 	{
-		auto currentScene = GetCurrentScene();
-		if (currentScene)
-		{
-			return currentScene->getDataPath(file);
-		}
+		Renderers,
+		Canvas,
+		PostEffects,
+	};
 
-		ofLogWarning(__FUNCTION__) << "No active Scene found!";
-		return GetSharedDataPath();
+	//--------------------------------------------------------------
+	inline std::string ToString(Module module)
+	{
+		switch (module)
+		{
+		case Module::Renderers: return "Renderers";
+		case Module::Canvas: return "Canvas";
+		case Module::PostEffects: return "PostEffects";
+		}
 	}
 
 	//--------------------------------------------------------------
-	inline string GetCurrentSceneAssetsPath(const string & file = "")
+	inline std::filesystem::path GetDataPath(Module module)
 	{
-		auto currentScene = GetCurrentScene();
-		if (currentScene)
-		{
-			return currentScene->getAssetsPath(file);
-		}
-
-		ofLogWarning(__FUNCTION__) << "No active Scene found!";
-		return GetSharedAssetsPath();
+		namespace fs = std::filesystem;
+		fs::path dataPath(GetSharedDataPath());
+		dataPath = dataPath / fs::path("entropy") / fs::path("render") / fs::path(ToString(module));
+		return dataPath;
 	}
 
-    //--------------------------------------------------------------
-    enum class Module{
-        Renderers,
-        Canvas,
-        PostEffects,
-    };
-
-    //--------------------------------------------------------------
-    inline std::string ToString(Module module){
-        switch(module){
-        case Module::Renderers: return "Renderers";
-        case Module::Canvas: return "Canvas";
-        case Module::PostEffects: return "PostEffects";
-        }
-    }
-
-    //--------------------------------------------------------------
-    inline std::filesystem::path GetDataPath(Module module)
-    {
-        namespace fs = std::filesystem;
-        fs::path dataPath(GetSharedDataPath());
-        dataPath = dataPath / fs::path("entropy") / fs::path("render") / fs::path(ToString(module));
-        return dataPath;
-    }
-
-    //--------------------------------------------------------------
-    inline std::filesystem::path GetShadersPath(Module module){
-        namespace fs = std::filesystem;
-        fs::path dataPath(GetDataPath(module));
-        return (dataPath / "shaders");
-    }
-
+	//--------------------------------------------------------------
+	inline std::filesystem::path GetShadersPath(Module module) {
+		namespace fs = std::filesystem;
+		fs::path dataPath(GetDataPath(module));
+		return (dataPath / "shaders");
+	}
 }

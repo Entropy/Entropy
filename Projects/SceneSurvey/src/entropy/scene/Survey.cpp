@@ -21,8 +21,8 @@ namespace entropy
 		void Survey::init()
 		{
 			// Load the data.
-			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 10);
-			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
+			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 10);
+			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 20);
 			
 			// Set ofParameterGroup names.
 			this->parameters.setName("Survey");
