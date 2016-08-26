@@ -152,8 +152,10 @@ struct Octave{
 };
 
 #define NUM_OCTAVES 4
-#define SPHERICAL_CLIP false
-#define FILL_EDGES false
+#define SPHERICAL_CLIP 1
+#define FILL_EDGES 1
+const bool sphericalClip = bool(SPHERICAL_CLIP);
+const bool fillEdges = bool(FILL_EDGES);
 uniform float resolution;
 uniform float normalizationFactor;
 uniform float fade;
@@ -164,7 +166,7 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 void main()
 {
 
-	if (FILL_EDGES && !SPHERICAL_CLIP && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
+	if (fillEdges && !sphericalClip && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
 	    gl_GlobalInvocationID.y == 0 || gl_GlobalInvocationID.y == resolution -1 ||
         gl_GlobalInvocationID.z == 0 || gl_GlobalInvocationID.z == resolution -1)){
 		imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(octaves[0].color.rgb, 1.0));
@@ -180,7 +182,7 @@ void main()
 
         // fade out from the fade limit until 1
         float sphere = 1;
-		if(SPHERICAL_CLIP){
+		if(sphericalClip){
             vec3 normPos = pos / (resolution/2.);
             float distance = dot(normPos, normPos);
             float edge = 1.0 - fade;

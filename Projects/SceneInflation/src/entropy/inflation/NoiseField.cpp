@@ -67,6 +67,7 @@ namespace entropy
 			fillEdgesListener = fillEdges.newListener([&](bool & fill) {
                 if (!fill || !sphericalClip) {
 					shaderSettings.intDefines["FILL_EDGES"] = fillEdges;
+					shaderSettings.intDefines["SPHERICAL_CLIP"] = sphericalClip;
                     noiseComputeShader.setup(shaderSettings);
 				}
 				else {
