@@ -162,57 +162,48 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 3D elements here.
 		void Particles::drawBackWorld()
 		{
-            if(debug){
-                for (auto &light: pointLights)
-                {
-                    if(light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
-                       light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
-                       light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
-                       light.getPosition().x < glm::vec3(HALF_DIM).x &&
-                       light.getPosition().y < glm::vec3(HALF_DIM).y &&
-                       light.getPosition().z < glm::vec3(HALF_DIM).z){
-                        light.draw();
-                    }
-                }
-            }else{
-                if(this->parameters.additiveBlending){
-                    ofEnableBlendMode(OF_BLENDMODE_ADD);
-                }
-
-                renderer.draw(feedbackVbo, 0, numPrimitives * 3);
-                if(parameters.drawPhotons){
-                    photons.draw();
-                }
-            }
-		}
-
-		void Particles::drawFrontWorld()
-		{
-
+			this->drawSystem();
 		}
 
 		//--------------------------------------------------------------
-		void Particles::drawSkybox()
+		void Particles::drawFrontWorld()
 		{
-            /*glDisable(GL_CULL_FACE);
-			ofDisableDepthTest();
+			this->drawSystem();
+		}
 
-			this->skyboxShader.begin();
-			this->skyboxShader.setUniform1f("uExposure", this->exposure);
-			this->skyboxShader.setUniform1f("uGamma", this->gamma);
-			this->skyboxShader.setUniform1i("uCubeMap", 3);
+		//--------------------------------------------------------------
+		void Particles::drawSystem()
+		{
+			if (debug)
 			{
-				// Draw full-screen quad.
-				glBindVertexArray(this->defaultVao);
-				glDrawArrays(GL_TRIANGLES, 0, 3);
+				for (auto &light : pointLights)
+				{
+					if (light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
+						light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
+						light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
+						light.getPosition().x < glm::vec3(HALF_DIM).x &&
+						light.getPosition().y < glm::vec3(HALF_DIM).y &&
+						light.getPosition().z < glm::vec3(HALF_DIM).z)
+					{
+						light.draw();
+					}
+				}
 			}
-			this->skyboxShader.end();
+			else
+			{
+				if (this->parameters.additiveBlending)
+				{
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+				}
 
-			ofEnableDepthTest();
-            glEnable(GL_CULL_FACE);*/
+				renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+				if (parameters.drawPhotons)
+				{
+					photons.draw();
+				}
+			}
 		}
 
 		//--------------------------------------------------------------

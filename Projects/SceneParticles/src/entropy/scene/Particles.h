@@ -43,7 +43,7 @@ namespace entropy
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
 
-			void drawSkybox();
+			void drawSystem();
 
 			bool saveState(const string & path);
 			bool loadState(const string & path);
