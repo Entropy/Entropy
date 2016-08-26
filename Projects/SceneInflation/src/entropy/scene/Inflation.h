@@ -24,17 +24,15 @@ namespace entropy
 			Inflation();
 			~Inflation();
 
+			void init() override;
+
 			void setup() override;
 			void exit() override;
-
-			//void resizeBack(ofResizeEventArgs & args) override;
 
 			void update(double dt) override;
 
 			void drawBackWorld() override;
 			void drawFrontOverlay() override;
-
-			//bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
@@ -44,7 +42,7 @@ namespace entropy
 			double now;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
-            entropy::render::WireframeFillRenderer renderer;
+            render::WireframeFillRenderer renderer;
 
 			// Noise Field
 			inflation::NoiseField noiseField;
@@ -53,7 +51,8 @@ namespace entropy
             uint64_t timeToUpdate;
 
 		protected:
-            ofVbo box;
+            //ofVbo box;
+
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;

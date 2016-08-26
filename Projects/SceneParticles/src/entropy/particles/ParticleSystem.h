@@ -66,6 +66,7 @@ namespace nm
 		void init(Environment::Ptr environment);
 
 		void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
+		void clearParticles();
 
 		void update();
 

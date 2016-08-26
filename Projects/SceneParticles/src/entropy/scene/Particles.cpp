@@ -6,8 +6,6 @@
 
 #define MAX_LIGHTS 16u
 
-//#define _TEAPOT
-
 namespace entropy
 {
 	namespace scene
@@ -22,46 +20,75 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		Particles::~Particles()
-		{}
+		{
+			this->clear();
+		}
 
-        void Particles::compileShader(){
-            ofFile vertFile(this->getDataPath("shaders/particle.vert"));
-            ofBuffer vertSource(vertFile);
+		//--------------------------------------------------------------
+		void Particles::init()
+		{
+			// Initialize particle system.
+			environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
+			particleSystem.init(environment);
+			photons.init(environment);
+			pointLights.resize(MAX_LIGHTS);
 
-            std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
-            vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(this->parameters.colorsPerType)));
+			// Initialize transform feedback.
+			feedbackBuffer.allocate(1024 * 1024 * 100, GL_STATIC_DRAW);
+			auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
+			feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
+			feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));
+			feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
+			glGenQueries(1, &numPrimitivesQuery);
 
-            // Load shaders.
-            ofShader::TransformFeedbackSettings settings;
-            settings.bindDefaults = false;
-            settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
-            settings.varyingsToCapture = {"out_position", "out_color", "out_normal"};
-            settings.sourceDirectoryPath = this->getDataPath("shaders");
-            this->shader.setup(settings);
-            this->shader.printActiveUniforms();
-            this->shader.printActiveUniformBlocks();
-        }
+			// Register Environment and Renderer parameters for Mappings and serialization.
+			this->parameters.add(this->environment->parameters);
+			this->parameters.add(this->renderer.parameters);
+
+			// Add parameter listeners.
+			this->parameterListeners.push_back(this->parameters.colorsPerType.newListener([&](bool &) 
+			{
+				compileShader();
+			}));
+			this->parameterListeners.push_back(parameters.ambientLight.newListener([&](float & ambient)
+			{
+				ofSetGlobalAmbientColor(ofFloatColor(ambient));
+			}));
+		}
+
+		//--------------------------------------------------------------
+		void Particles::clear()
+		{
+			// Clear transform feedback.
+			glDeleteQueries(1, &numPrimitivesQuery);
+		}
+
+		//--------------------------------------------------------------
+		void Particles::compileShader() 
+		{
+			ofFile vertFile(this->getDataPath("shaders/particle.vert"));
+			ofBuffer vertSource(vertFile);
+
+			std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
+			vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(this->parameters.colorsPerType)));
+
+			// Load shaders.
+			ofShader::TransformFeedbackSettings settings;
+			settings.bindDefaults = false;
+			settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
+			settings.varyingsToCapture = { "out_position", "out_color", "out_normal" };
+			settings.sourceDirectoryPath = this->getDataPath("shaders");
+			this->shader.setup(settings);
+			this->shader.printActiveUniforms();
+			this->shader.printActiveUniformBlocks();
+		}
 
 		//--------------------------------------------------------------
 		void Particles::setup()
 		{
-			environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
-			particleSystem.init(environment);
-			photons.init(environment);
-
-#ifdef _TEAPOT
-			ofVboMesh mesh;
-			ofxObjLoader::load("teapot.obj", mesh);
-			for (auto& v : mesh.getVertices())
-			{
-				v *= 80.f;
-				v.y -= 80.f;
-				particleSystem.addParticle(v);
-			}
-#else
 			for (unsigned i = 0; i < 4000; ++i)
 			{
-				ofVec3f position(
+				glm::vec3 position = glm::vec3(
 					ofRandom(-HALF_DIM, HALF_DIM),
 					ofRandom(-HALF_DIM, HALF_DIM),
 					ofRandom(-HALF_DIM, HALF_DIM)
@@ -72,44 +99,29 @@ namespace entropy
 
 				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 			}
-#endif
 
             renderer.fogMaxDistance.setMax(HALF_DIM * 10);
             renderer.fogMinDistance.setMax(HALF_DIM);
 
-			// Register Environment and Renderer parameters for Mappings and serialization.
-			this->parameters.add(this->environment->parameters);
-			this->parameters.add(this->renderer.parameters);
-
-			// TODO: EZ Look at this stuff
 			 this->debug = false;
 
-            compileShader();
+			 compileShader();
 
-            colorsPerTypeListener = this->parameters.colorsPerType.newListener([&](bool &){
-                compileShader();
-            });
+			 renderer.setup();
 
-             renderer.setup();
-             feedbackBuffer.allocate(1024*1024*100, GL_STATIC_DRAW);
-             auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
-             feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
-             feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));
-             feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
-             glGenQueries(1, &numPrimitivesQuery);
-
-             pointLights.resize(MAX_LIGHTS);
              for(auto & light: pointLights){
                  light.setup();
                  light.setAmbientColor(ofFloatColor::black);
                  light.setSpecularColor(ofFloatColor::white);
              }
 
-             ambientLightListener = parameters.ambientLight.newListener([&](float & ambient){
-                 ofSetGlobalAmbientColor(ofFloatColor(ambient));
-             });
-
              ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+		}
+
+		//--------------------------------------------------------------
+		void Particles::exit()
+		{
+			particleSystem.clearParticles();
 		}
 
 		//--------------------------------------------------------------

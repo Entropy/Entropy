@@ -14,32 +14,37 @@ namespace entropy
 		//--------------------------------------------------------------
 		Inflation::~Inflation()
 		{}
+
+		//--------------------------------------------------------------
+		void Inflation::init()
+		{
+			// Marching Cubes
+			gpuMarchingCubes.setup(300 * 1024 * 1024);
+
+			// Noise Field
+			noiseField.setup(gpuMarchingCubes.resolution);
+
+			//ofMesh boxMesh = ofMesh::box(1, 1, 1, 1, 1, 1);
+			//boxMesh.getColors().resize(boxMesh.getVertices().size());
+			//for (auto & c : boxMesh.getColors()) {
+			//	c = ofFloatColor(1, 0, 0, 1);
+			//}
+			//box.setMesh(boxMesh, GL_STATIC_DRAW);
+		}
 		
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			// Marching Cubes
-            gpuMarchingCubes.setup(300*1024*1024);
-			
-			// Noise Field
-			noiseField.setup(gpuMarchingCubes.resolution);
-
-            // Renderer
-            renderer.setup();
-
 			this->cameras[render::Layout::Back].setDistance(2);
 			this->cameras[render::Layout::Back].setNearClip(0.01);
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			now = 0;
-            ofMesh boxMesh = ofMesh::box(1,1,1,1,1,1);
-            boxMesh.getColors().resize(boxMesh.getVertices().size());
-            for(auto & c: boxMesh.getColors()){
-                c = ofFloatColor(1,0,0,1);
-            }
-            box.setMesh(boxMesh, GL_STATIC_DRAW);
+
+			renderer.setup();
 			renderer.useLights = false;
-            //noiseField.update(false);
+
+			//noiseField.update(false);
 		}
 
 		//--------------------------------------------------------------
@@ -47,22 +52,6 @@ namespace entropy
 		{
 
 		}
-
-		/*
-		//--------------------------------------------------------------
-		void Inflation::resize(ofResizeEventArgs & args)
-		{
-			ofFbo::Settings settings;
-			settings.width = args.width;
-			settings.height = args.height;
-			settings.textureTarget = GL_TEXTURE_2D;
-			settings.internalformat = GL_RGBA32F;
-
-			for (int i = 0; i < 2; ++i) {
-				fboPost[i].allocate(settings);
-			}
-		}
-		*/
 
 		//--------------------------------------------------------------
 		void Inflation::update(double dt)
@@ -78,20 +67,9 @@ namespace entropy
 			}
 		}
 
-		/*
-		float gaussian(float x, float mu, float sigma) {
-			auto d = x - mu;
-			auto n = 1.0 / (sqrtf(glm::two_pi<float>()) * sigma);
-			return exp(-d * d / (2.0 * sigma * sigma)) * n;
-		}
-		*/
-
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
         {
-			//this->cameras[render::Layout::Back].setNearClip(0.01);
-			//this->cameras[render::Layout::Back].setFarClip(6.0);
-
 			if (parameters.render.debug) {
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
 			}
@@ -113,10 +91,6 @@ namespace entropy
                 //ofDrawBox(1);
                 //renderer.drawElements(box, 0, box.getNumIndices());
 				this->boxes[render::Layout::Back].draw(renderer);
-				//if (this->boxes[render::Layout::Back].enabled)
-				//{
-				//	renderer.drawElements(this->boxes[render::Layout::Back].getMesh().getVbo(), 0, this->boxes[render::Layout::Back].getMesh().getNumIndices());
-				//}
 
                 ofEnableBlendMode(OF_BLENDMODE_ALPHA);
             }
@@ -130,14 +104,6 @@ namespace entropy
 			ofDrawBitmapString(timeToSetIso, ofGetWidth() - 100, 40);
 			ofDrawBitmapString(timeToUpdate, ofGetWidth() - 100, 60);
 		}
-
-		/*
-		//--------------------------------------------------------------
-		bool Inflation::postProcess(const ofTexture & srcTexture, const ofFbo & dstFbo) 
-		{
-			return false;
-		}
-		*/
 
 		//--------------------------------------------------------------
 		void Inflation::gui(ofxPreset::Gui::Settings & settings)
@@ -173,10 +139,10 @@ namespace entropy
                     ofxPreset::Gui::AddParameter(this->renderer.wireframeAlpha);
 
                     int numVertices = this->gpuMarchingCubes.getNumVertices();
-                    ImGui::SliderInt("num vertices", &numVertices, 0, this->gpuMarchingCubes.getBufferSize()/this->gpuMarchingCubes.getVertexStride());
+                    ImGui::SliderInt("Num Vertices", &numVertices, 0, this->gpuMarchingCubes.getBufferSize()/this->gpuMarchingCubes.getVertexStride());
 
 					auto numPoints = 100;
-                    ImGui::PlotLines("Fog funtion", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
+                    ImGui::PlotLines("Fog Function", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);

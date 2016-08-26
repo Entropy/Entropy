@@ -27,6 +27,10 @@ namespace entropy
 				return;
 			}
 
+			// Set data path root for scene.
+			const auto prevDataPathRoot = ofToDataPath("");
+			ofSetDataPathRoot(this->getDataPath());
+
 			auto & parameters = this->getParameters();
 
 			// Build the Back and Front cameras.
@@ -122,6 +126,9 @@ namespace entropy
 			}));
 
 			this->init();
+
+			// Restore default data path.
+			ofSetDataPathRoot(prevDataPathRoot);
 
 			this->initialized = true;
 		}

@@ -27,7 +27,11 @@ namespace entropy
 			Particles();
 			~Particles();
 
+			void init() override;
+			void clear() override;
+
 			void setup() override;
+			void exit() override;
 
 			void update(double dt) override;
 
@@ -65,8 +69,6 @@ namespace entropy
 			{
 				return this->parameters;
 			}
-
-            ofEventListener colorsPerTypeListener, ambientLightListener;
 
 			struct : BaseParameters
 			{
