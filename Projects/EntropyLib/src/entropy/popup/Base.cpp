@@ -2,8 +2,6 @@
 
 #include "entropy/Helpers.h"
 
-static const string kTimelinePageName = "Pop-Ups";
-
 namespace entropy
 {
 	namespace popup
@@ -284,11 +282,11 @@ namespace entropy
 		void Base::addTrack(ofxTimeline & timeline)
 		{
 			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(kTimelinePageName))
+			if (!timeline.hasPage(kPopUpsTimelinePageName))
 			{
-				timeline.addPage(kTimelinePageName);
+				timeline.addPage(kPopUpsTimelinePageName);
 			}
-			auto page = timeline.getPage(kTimelinePageName);
+			auto page = timeline.getPage(kPopUpsTimelinePageName);
 
 			auto trackName = "_" + ofToString(this->index);
 			if (this->type == Type::Image) trackName.insert(0, "Image");
@@ -300,7 +298,7 @@ namespace entropy
 				return;
 			}
 
-			timeline.setCurrentPage(kTimelinePageName);
+			timeline.setCurrentPage(kPopUpsTimelinePageName);
 
 			// Add Track.
 			this->track = timeline.addSwitches(trackName);
@@ -319,11 +317,12 @@ namespace entropy
 			this->track = nullptr;
 
 			// TODO: Figure out why this is not working!
-			auto page = timeline.getPage(kTimelinePageName);
-			if (page && page->getTracks().empty())
-			{
-				timeline.removePage(page);
-			}
+			//auto page = timeline.getPage(kTimelinePageName);
+			//if (page && page->getTracks().empty())
+			//{
+			//	cout << "Removing page " << page->getName() << endl;
+			//	timeline.removePage(page);
+			//}
 		}
 
 		//--------------------------------------------------------------

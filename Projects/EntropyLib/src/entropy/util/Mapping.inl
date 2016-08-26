@@ -11,10 +11,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & AbstractMapping::getPageName() const
-		{
-			return this->pageName;
-		}
+		//const string & AbstractMapping::getPageName() const
+		//{
+		//	return kMappingsTimelinePageName;
+		//}
 
 		//--------------------------------------------------------------
 		const string & AbstractMapping::getTrackName() const
@@ -98,11 +98,11 @@ namespace entropy
 			}
 			
 			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(this->pageName))
+			if (!timeline.hasPage(kMappingsTimelinePageName))
 			{
-				timeline.addPage(this->pageName);
+				timeline.addPage(kMappingsTimelinePageName);
 			}
-			auto page = timeline.getPage(this->pageName);
+			auto page = timeline.getPage(kMappingsTimelinePageName);
 
 			const auto pageTrackName = this->pageName + "_" + this->trackName;
 
@@ -112,7 +112,7 @@ namespace entropy
 				return;
 			}
 
-			timeline.setCurrentPage(this->pageName);
+			timeline.setCurrentPage(kMappingsTimelinePageName);
 
 			// Add Track and set default value and range where necessary.
 			const auto & trackInfo = typeid(TrackType);
@@ -167,11 +167,12 @@ namespace entropy
 			timeline.removeTrack(this->track);
 			this->track = nullptr;
 
-			auto page = timeline.getPage(this->pageName);
-			if (page && page->getTracks().empty())
-			{
-				timeline.removePage(page);
-			}
+			// EZ: This is broken
+			//auto page = timeline.getPage(this->pageName);
+			//if (page && page->getTracks().empty())
+			//{
+			//	timeline.removePage(page);
+			//}
 		}
 	}
 }

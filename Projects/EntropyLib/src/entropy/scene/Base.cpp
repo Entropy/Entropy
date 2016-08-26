@@ -608,10 +608,10 @@ namespace entropy
 
 			this->deserialize(json);
 
-			for (auto & it : this->mappings)
-			{
-				it.second->animated.set(false);
-			}
+			// Clear previous mappings.
+			this->clearMappings();
+
+			// Load new mappings.
 			if (json.count("Mappings"))
 			{
 				auto & jsonGroup = json["Mappings"];
@@ -897,9 +897,10 @@ namespace entropy
 				if (mapping->animated)
 				{
 					mapping->removeTrack(this->timeline);
+					mapping->animated = false;
 				}
 			}
-			this->mappings.clear();
+			//this->mappings.clear();
 		}
 
 		//--------------------------------------------------------------
