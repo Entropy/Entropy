@@ -28,11 +28,19 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ofParameter<float> minDistance{ "Min Distance", 0.0f, 0.0f, 1.0f };
-				ofParameter<float> maxDistance{ "Max Distance", 0.5f, 0.0f, 1.0f };
+				ofParameter<float> minRadius{ "Min Radius", 0.0f, 0.0f, 1.0f };
+				ofParameter<float> maxRadius{ "Max Radius", 0.5f, 0.0f, 1.0f };
+				ofParameter<float> minLatitude{ "Min Latitude", 0.0f, 0.0f, 1.0f };
+				ofParameter<float> maxLatitude{ "Max Latitude", 0.5f, 0.0f, 1.0f };
+				ofParameter<float> minLongitude{ "Min Longitude", 0.0f, 0.0f, 1.0f };
+				ofParameter<float> maxLongitude{ "Max Longitude", 0.5f, 0.0f, 1.0f };
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
-				PARAM_DECLARE("DataSet", minDistance, maxDistance, color);
+				PARAM_DECLARE("DataSet", 
+					minRadius, maxRadius, 
+					minLatitude, maxLatitude,
+					minLongitude, maxLongitude, 
+					color);
 			} parameters;
 
 		protected:

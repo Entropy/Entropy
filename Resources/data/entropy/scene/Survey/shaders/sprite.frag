@@ -4,9 +4,13 @@ uniform vec4 globalColor;
 
 uniform sampler2D uTex0;
 
+in float vEnabled;
+
 out vec4 fragColor;
 
 void main(void)
 {
-    fragColor = texture(uTex0, gl_PointCoord) * globalColor;
+    if (vEnabled < 0.5) discard;
+	
+	fragColor = texture(uTex0, gl_PointCoord) * globalColor;
 }
