@@ -32,6 +32,7 @@ namespace entropy
 			void update(double dt) override;
 
 			void drawBackWorld() override;
+			void drawFrontWorld() override;
 			void drawFrontOverlay() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
@@ -39,10 +40,14 @@ namespace entropy
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
 
+		protected:
+			void drawScene(render::Layout layout);
+
 			double now;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
-            render::WireframeFillRenderer renderer;
+            
+			std::map<render::Layout, render::WireframeFillRenderer> renderers;
 
 			// Noise Field
 			inflation::NoiseField noiseField;
@@ -50,7 +55,6 @@ namespace entropy
 			uint64_t timeToSetIso;
             uint64_t timeToUpdate;
 
-		protected:
             //ofVbo box;
 
 			BaseParameters & getParameters() override
@@ -67,11 +71,15 @@ namespace entropy
 					ofParameter<bool> debug{ "Debug Noise", false };
 					ofParameter<bool> additiveBlending{ "Additive Blending", false };
 					ofParameter<bool> drawBoxInRenderer{ "Draw Box In Renderer", false };
+					ofParameter<bool> renderBack{ "Render Back", true };
+					ofParameter<bool> renderFront{ "Render Front", false };
 
 					PARAM_DECLARE("Render", 
 						debug,
 						additiveBlending,
-						drawBoxInRenderer);
+						drawBoxInRenderer,
+						renderBack,
+						renderFront);
 				} render;
 
 				PARAM_DECLARE("Inflation", 
