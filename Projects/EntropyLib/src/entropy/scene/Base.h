@@ -84,7 +84,7 @@ namespace entropy
 
 			void setCameraLocked(bool cameraLocked);
 			void toggleCameraLocked();
-			bool isCameraLocked() const;
+			bool isCameraLocked(render::Layout layout) const;
 
             void addCameraKeyframe(render::Layout layout);
 
@@ -159,7 +159,7 @@ namespace entropy
 					{
 						ofParameter<bool> mouseControl{ "Mouse Control", false };
 						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
-						ofParameter<bool> attachToBack{ "Attach to Back", true };
+						ofParameter<bool> attachToBack{ "Attach to Back", false };
 						ofParameter<float> fov{ "FOV", 60, 0, 180 };
 						ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
 						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };

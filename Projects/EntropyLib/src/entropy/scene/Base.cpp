@@ -1022,23 +1022,29 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setCameraLocked(bool cameraLocked)
 		{
-			for (auto & it : this->cameraTracks)
+			this->cameraTracks[render::Layout::Back]->lockCameraToTrack = cameraLocked;
+
+			if (this->getParameters().base.frontCamera.attachToBack)
 			{
-				it.second->lockCameraToTrack = cameraLocked;
+				// Don't lock the Front camera, let it follow the Back.
+				this->cameraTracks[render::Layout::Front]->lockCameraToTrack = false;
+			}
+			else
+			{
+				this->cameraTracks[render::Layout::Front]->lockCameraToTrack = cameraLocked;
 			}
 		}
 
 		//--------------------------------------------------------------
 		void Base::toggleCameraLocked()
 		{
-			for (auto & it : this->cameraTracks)
-			{
-				it.second->lockCameraToTrack ^= 1;
-			}
+			// Back camera takes the lead.
+			const auto backLocked = this->isCameraLocked(render::Layout::Back);
+			this->setCameraLocked(!backLocked);
 		}
 
 		//--------------------------------------------------------------
-		bool Base::isCameraLocked() const
+		bool Base::isCameraLocked(render::Layout layout) const
 		{
 			return this->cameraTracks.at(render::Layout::Back)->lockCameraToTrack;
 		}
