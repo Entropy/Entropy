@@ -32,6 +32,8 @@ namespace entropy
 			Video();
 			~Video();
 
+			void clear() override;
+
 			void setup() override;
 			void exit() override;
 

@@ -43,7 +43,6 @@ namespace entropy
         }
 
 		void WireframeFillRenderer::setup(){
-			cout << "compiling " << GetShadersPath(Module::Renderers) / "wireframeFillRender.vert" << endl;
 			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.vert";
 			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.frag";
 			shaderSettings.bindDefaults = true;
@@ -68,7 +67,6 @@ namespace entropy
                 setMaterial();
             }));
 			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
-				cout << "recompiling" << endl;
 				shaderSettings.intDefines["FOG_ENABLED"] = enabled;
 
 				shaderSettings.intDefines["WIREFRAME"] = 0;

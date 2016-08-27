@@ -40,8 +40,9 @@ namespace entropy
 
             colorCorrectShaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getShaderPath("fullscreenTriangle.vert");
             colorCorrectShaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = this->getShaderPath("frag_tonemap.glsl");
-            colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"] = true;
-            colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"] = false;
+			colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"] = true;
+			colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"] = false;
+			colorCorrectShaderSettings.intDefines["ONLY_ALPHA"] = false;
             colorCorrectShader.setup(colorCorrectShaderSettings);
 		
 			// Build render geometry.
@@ -69,15 +70,20 @@ namespace entropy
         void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, const entropy::render::PostParameters & parameters)
 		{
             ofSetColor(255);
-            if(parameters.vignette.enabled != colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"]){
-                colorCorrectShaderSettings.boolDefines["ENABLE_VIGNETTE"] = parameters.vignette.enabled;
+			if(parameters.vignette.enabled != colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"]){
+				colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"] = parameters.vignette.enabled;
                 colorCorrectShader.setup(colorCorrectShaderSettings);
             }
 
-            if(parameters.vignette.enabled && parameters.vignette.debug != colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"]){
-                colorCorrectShaderSettings.boolDefines["DEBUG_VIGNETTE"] = parameters.vignette.debug;
+			if(parameters.vignette.enabled && parameters.vignette.debug != colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"]){
+				colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"] = parameters.vignette.debug;
                 colorCorrectShader.setup(colorCorrectShaderSettings);
             }
+
+			if(parameters.vignette.enabled && parameters.vignette.onlyAlpha != colorCorrectShaderSettings.intDefines["ONLY_ALPHA"]){
+				colorCorrectShaderSettings.intDefines["ONLY_ALPHA"] = parameters.vignette.onlyAlpha;
+				colorCorrectShader.setup(colorCorrectShaderSettings);
+			}
 
 			if (parameters.bloom.enabled) 
 			{

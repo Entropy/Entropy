@@ -34,6 +34,8 @@ namespace entropy
 
 			this->copyBuffer.allocate(this->dimensions.x * this->dimensions.y * this->dimensions.z * 2 * 4, GL_STATIC_DRAW);
 
+			this->volumetrics.setup(&this->textures[0], glm::vec3(1.0f));
+
 			// Build a mesh to render a quad.
 			const auto origin = glm::vec3(0.0f, GetCanvasHeight(render::Layout::Back) - this->dimensions.y, 0.0f);
 
@@ -143,7 +145,7 @@ namespace entropy
 			//this->textures[this->tempIdx].copyTo(this->copyBuffer);
 			//this->textures[this->currIdx].loadData(this->copyBuffer, GL_RGBA);
 
-			this->volumetrics.setup(&this->textures[this->currIdx], ofVec3f(1, 1, 1));
+			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------

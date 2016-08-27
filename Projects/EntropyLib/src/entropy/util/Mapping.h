@@ -8,6 +8,8 @@ namespace entropy
 {
 	namespace util
 	{
+		static string kMappingsTimelinePageName = "Mappings";
+
 		class AbstractMapping
 		{
 		public:
@@ -17,7 +19,7 @@ namespace entropy
 			virtual void removeTrack(ofxTimeline & timeline) = 0;
 
 			const inline string & getName() const;
-			const inline string & getPageName() const;
+			//const inline string & getPageName() const;
 			const inline string & getTrackName() const;
 
 			ofParameter<bool> animated;

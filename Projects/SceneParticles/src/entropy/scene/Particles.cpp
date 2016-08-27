@@ -6,8 +6,6 @@
 
 #define MAX_LIGHTS 16u
 
-//#define _TEAPOT
-
 namespace entropy
 {
 	namespace scene
@@ -22,46 +20,39 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		Particles::~Particles()
-		{}
-
-        void Particles::compileShader(){
-            ofFile vertFile(this->getDataPath("shaders/particle.vert"));
-            ofBuffer vertSource(vertFile);
-
-            std::regex re_color_per_type("#define COLOR_PER_TYPE [0-1]");
-            vertSource.set(std::regex_replace(vertSource.getText(), re_color_per_type, "#define COLOR_PER_TYPE " + ofToString(this->parameters.colorsPerType)));
-
-            // Load shaders.
-            ofShader::TransformFeedbackSettings settings;
-            settings.bindDefaults = false;
-            settings.shaderSources[GL_VERTEX_SHADER] = vertSource.getText();
-            settings.varyingsToCapture = {"out_position", "out_color", "out_normal"};
-            settings.sourceDirectoryPath = this->getDataPath("shaders");
-            this->shader.setup(settings);
-            this->shader.printActiveUniforms();
-            this->shader.printActiveUniformBlocks();
-        }
+		{
+			this->clear();
+		}
 
 		//--------------------------------------------------------------
-		void Particles::setup()
+		void Particles::init()
 		{
+			// Initialize particle system.
 			environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-HALF_DIM), glm::vec3(HALF_DIM)));
 			particleSystem.init(environment);
 			photons.init(environment);
+			pointLights.resize(MAX_LIGHTS);
 
-#ifdef _TEAPOT
-			ofVboMesh mesh;
-			ofxObjLoader::load("teapot.obj", mesh);
-			for (auto& v : mesh.getVertices())
+			// Initialize transform feedback.
+			feedbackBuffer.allocate(1024 * 1024 * 100, GL_STATIC_DRAW);
+			auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
+			feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
+			feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));
+			feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
+			glGenQueries(1, &numPrimitivesQuery);
+
+			// Register Environment and Renderer parameters for Mappings and serialization.
+			this->parameters.add(this->environment->parameters);
+			this->parameters.add(this->renderer.parameters);
+
+			this->parameterListeners.push_back(parameters.ambientLight.newListener([&](float & ambient)
 			{
-				v *= 80.f;
-				v.y -= 80.f;
-				particleSystem.addParticle(v);
-			}
-#else
+				ofSetGlobalAmbientColor(ofFloatColor(ambient));
+			}));
+
 			for (unsigned i = 0; i < 4000; ++i)
 			{
-				ofVec3f position(
+				glm::vec3 position = glm::vec3(
 					ofRandom(-HALF_DIM, HALF_DIM),
 					ofRandom(-HALF_DIM, HALF_DIM),
 					ofRandom(-HALF_DIM, HALF_DIM)
@@ -72,44 +63,53 @@ namespace entropy
 
 				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 			}
-#endif
 
-            renderer.fogMaxDistance.setMax(HALF_DIM * 10);
-            renderer.fogMinDistance.setMax(HALF_DIM);
+			renderer.fogMaxDistance.setMax(HALF_DIM * 10);
+			renderer.fogMinDistance.setMax(HALF_DIM);
 
-			// Register Environment and Renderer parameters for Mappings and serialization.
-			this->parameters.add(this->environment->parameters);
-			this->parameters.add(this->renderer.parameters);
-
-			// TODO: EZ Look at this stuff
 			 this->debug = false;
 
-            compileShader();
+			// Load shaders.
+			shaderSettings.bindDefaults = false;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getDataPath("shaders/particle.vert");
+			shaderSettings.varyingsToCapture = { "out_position", "out_color", "out_normal" };
+			shaderSettings.sourceDirectoryPath = this->getDataPath("shaders");
+			shaderSettings.intDefines["COLOR_PER_TYPE"] = this->parameters.colorsPerType;
+			this->shader.setup(shaderSettings);
 
-            colorsPerTypeListener = this->parameters.colorsPerType.newListener([&](bool &){
-                compileShader();
-            });
+			// Add parameter listeners.
+			this->parameterListeners.push_back(this->parameters.colorsPerType.newListener([&](bool & colorsPerType)
+			{
+				shaderSettings.intDefines["COLOR_PER_TYPE"] = colorsPerType;
+				this->shader.setup(shaderSettings);
+			}));
 
-             renderer.setup();
-             feedbackBuffer.allocate(1024*1024*100, GL_STATIC_DRAW);
-             auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
-             feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
-             feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));
-             feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
-             glGenQueries(1, &numPrimitivesQuery);
+			 renderer.setup();
 
-             pointLights.resize(MAX_LIGHTS);
-             for(auto & light: pointLights){
-                 light.setup();
-                 light.setAmbientColor(ofFloatColor::black);
-                 light.setSpecularColor(ofFloatColor::white);
-             }
+			 for(auto & light: pointLights){
+				 light.setup();
+				 light.setAmbientColor(ofFloatColor::black);
+				 light.setSpecularColor(ofFloatColor::white);
+			 }
+		}
 
-             ambientLightListener = parameters.ambientLight.newListener([&](float & ambient){
-                 ofSetGlobalAmbientColor(ofFloatColor(ambient));
-             });
+		//--------------------------------------------------------------
+		void Particles::clear()
+		{
+			// Clear transform feedback.
+			glDeleteQueries(1, &numPrimitivesQuery);
+		}
 
-             ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+		//--------------------------------------------------------------
+		void Particles::setup()
+		{
+			ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+		}
+
+		//--------------------------------------------------------------
+		void Particles::exit()
+		{
+			particleSystem.clearParticles();
 		}
 
 		//--------------------------------------------------------------
@@ -162,57 +162,48 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 3D elements here.
 		void Particles::drawBackWorld()
 		{
-            if(debug){
-                for (auto &light: pointLights)
-                {
-                    if(light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
-                       light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
-                       light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
-                       light.getPosition().x < glm::vec3(HALF_DIM).x &&
-                       light.getPosition().y < glm::vec3(HALF_DIM).y &&
-                       light.getPosition().z < glm::vec3(HALF_DIM).z){
-                        light.draw();
-                    }
-                }
-            }else{
-                if(this->parameters.additiveBlending){
-                    ofEnableBlendMode(OF_BLENDMODE_ADD);
-                }
-
-                renderer.draw(feedbackVbo, 0, numPrimitives * 3);
-                if(parameters.drawPhotons){
-                    photons.draw();
-                }
-            }
-		}
-
-		void Particles::drawFrontWorld()
-		{
-
+			this->drawSystem();
 		}
 
 		//--------------------------------------------------------------
-		void Particles::drawSkybox()
+		void Particles::drawFrontWorld()
 		{
-            /*glDisable(GL_CULL_FACE);
-			ofDisableDepthTest();
+			this->drawSystem();
+		}
 
-			this->skyboxShader.begin();
-			this->skyboxShader.setUniform1f("uExposure", this->exposure);
-			this->skyboxShader.setUniform1f("uGamma", this->gamma);
-			this->skyboxShader.setUniform1i("uCubeMap", 3);
+		//--------------------------------------------------------------
+		void Particles::drawSystem()
+		{
+			if (debug)
 			{
-				// Draw full-screen quad.
-				glBindVertexArray(this->defaultVao);
-				glDrawArrays(GL_TRIANGLES, 0, 3);
+				for (auto &light : pointLights)
+				{
+					if (light.getPosition().x > glm::vec3(-HALF_DIM).x  &&
+						light.getPosition().y > glm::vec3(-HALF_DIM).y  &&
+						light.getPosition().z > glm::vec3(-HALF_DIM).z  &&
+						light.getPosition().x < glm::vec3(HALF_DIM).x &&
+						light.getPosition().y < glm::vec3(HALF_DIM).y &&
+						light.getPosition().z < glm::vec3(HALF_DIM).z)
+					{
+						light.draw();
+					}
+				}
 			}
-			this->skyboxShader.end();
+			else
+			{
+				if (this->parameters.additiveBlending)
+				{
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+				}
 
-			ofEnableDepthTest();
-            glEnable(GL_CULL_FACE);*/
+				renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+				if (parameters.drawPhotons)
+				{
+					photons.draw();
+				}
+			}
 		}
 
 		//--------------------------------------------------------------

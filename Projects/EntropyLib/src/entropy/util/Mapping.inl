@@ -11,10 +11,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & AbstractMapping::getPageName() const
-		{
-			return this->pageName;
-		}
+		//const string & AbstractMapping::getPageName() const
+		//{
+		//	return kMappingsTimelinePageName;
+		//}
 
 		//--------------------------------------------------------------
 		const string & AbstractMapping::getTrackName() const
@@ -25,8 +25,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
 		Mapping<ParameterType, TrackType>::Mapping()
+			: track(nullptr)
 		{
-			this->track = nullptr;
 			this->animated.set(false);
 		}
 
@@ -91,12 +91,18 @@ namespace entropy
 		template<typename ParameterType, typename TrackType>
 		void Mapping<ParameterType, TrackType>::addTrack(ofxTimeline & timeline)
 		{
-			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(this->pageName))
+			if (this->track)
 			{
-				timeline.addPage(this->pageName);
+				//ofLogNotice(__FUNCTION__) << "Track for ofParameter " << this->trackName << " already exists!";
+				return;
 			}
-			auto page = timeline.getPage(this->pageName);
+			
+			// Add Page if it doesn't already exist.
+			if (!timeline.hasPage(kMappingsTimelinePageName))
+			{
+				timeline.addPage(kMappingsTimelinePageName);
+			}
+			auto page = timeline.getPage(kMappingsTimelinePageName);
 
 			const auto pageTrackName = this->pageName + "_" + this->trackName;
 
@@ -106,7 +112,7 @@ namespace entropy
 				return;
 			}
 
-			timeline.setCurrentPage(this->pageName);
+			timeline.setCurrentPage(kMappingsTimelinePageName);
 
 			// Add Track and set default value and range where necessary.
 			const auto & trackInfo = typeid(TrackType);
@@ -145,7 +151,7 @@ namespace entropy
 				this->track = trackColor;
 			}
 
-			this->track->setDisplayName(this->trackName);
+			//this->track->setDisplayName(this->trackName);
 		}
 
 		//--------------------------------------------------------------
@@ -154,18 +160,19 @@ namespace entropy
 		{
 			if (!this->track)
 			{
-				//ofLogWarning("Mapping::removeTrack") << "Track for ofParameter " << this->trackName << " does not exist!";
+				//ofLogNotice(__FUNCTION__) << "Track for ofParameter " << this->trackName << " does not exist!";
 				return;
 			}
 			
 			timeline.removeTrack(this->track);
 			this->track = nullptr;
 
-			auto page = timeline.getPage(this->pageName);
-			if (page && page->getTracks().empty())
-			{
-				timeline.removePage(page);
-			}
+			// EZ: This is broken
+			//auto page = timeline.getPage(this->pageName);
+			//if (page && page->getTracks().empty())
+			//{
+			//	timeline.removePage(page);
+			//}
 		}
 	}
 }

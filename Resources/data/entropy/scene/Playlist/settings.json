@@ -5,20 +5,24 @@
             "scene": "Calibrate"
         },
         {
-            "preset": "aug25_timeline",
+            "preset": "paris_aug26",
             "scene": "Inflation"
         },
         {
-            "preset": "aug25_timeline",
+            "preset": "paris_aug26",
             "scene": "Particles"
         },
         {
-            "preset": "cmb_amazing",
+            "preset": "paris_aug26",
             "scene": "CMB"
         },
         {
             "preset": "_default",
             "scene": "Survey"
+        },
+        {
+            "preset": "paris_aug26",
+            "scene": "Video"
         }
     ]
 }

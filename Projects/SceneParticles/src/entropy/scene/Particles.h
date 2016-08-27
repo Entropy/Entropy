@@ -27,7 +27,11 @@ namespace entropy
 			Particles();
 			~Particles();
 
+			void init() override;
+			void clear() override;
+
 			void setup() override;
+			void exit() override;
 
 			void update(double dt) override;
 
@@ -39,7 +43,7 @@ namespace entropy
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
 
-			void drawSkybox();
+			void drawSystem();
 
 			bool saveState(const string & path);
 			bool loadState(const string & path);
@@ -48,14 +52,12 @@ namespace entropy
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
 			nm::Environment::Ptr environment;
-
-
-            void compileShader();
 			bool debug;
 
             entropy::render::WireframeFillRenderer renderer;
 
             ofShader shader;
+			ofShader::TransformFeedbackSettings shaderSettings;
             ofBufferObject feedbackBuffer;
             ofVbo feedbackVbo;
             GLuint numPrimitives, numPrimitivesQuery;
@@ -65,8 +67,6 @@ namespace entropy
 			{
 				return this->parameters;
 			}
-
-            ofEventListener colorsPerTypeListener, ambientLightListener;
 
 			struct : BaseParameters
 			{
@@ -78,7 +78,7 @@ namespace entropy
                 ofParameter<float> attenuation{"attenuation", 0.01, 0.0000001, 0.05};
 				ofParameter<float> lightStrength{"light strength", 1, 0, 1};
 
-                PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, ambientLight, attenuation);
+                PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, drawPhotons, ambientLight, attenuation);
 			} parameters;
 		};
 	}

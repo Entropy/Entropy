@@ -13,21 +13,23 @@ namespace entropy
 		
 		//--------------------------------------------------------------
 		Survey::~Survey()
-		{}
+		{
+			this->clear();
+		}
 
 		//--------------------------------------------------------------
-		void Survey::setup()
+		void Survey::init()
 		{
-			// Load data.
-			this->dataSetBoss.setup("BOSS", "particles/boss_fragment-batch-%iof10.hdf5", 0, 10);
-			this->dataSetDes.setup("DES", "particles/des_fragment-batch-%iof20.hdf5", 0, 20);
-
+			// Load the data.
+			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 10);
+			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 20);
+			
 			// Set ofParameterGroup names.
 			this->parameters.setName("Survey");
 			this->backParameters.setName("Back");
 			this->frontParameters.setName("Front");
-			
-			// Add extra parameters to the group (for serialization and ofxTimeline mappings).
+
+			// Add extra parameters to the group (for serialization and timeline mappings).
 			this->parameters.add(this->backParameters);
 			this->parameters.add(this->frontParameters);
 			this->parameters.add(this->dataSetBoss.parameters);
@@ -39,15 +41,25 @@ namespace entropy
 			// Load the shader.
 			this->spriteShader.load("shaders/sprite");
 		}
-		
+
 		//--------------------------------------------------------------
-		void Survey::exit()
+		void Survey::clear()
 		{
+			// Clear the data.
 			this->dataSetBoss.clear();
 			this->dataSetDes.clear();
 
+			// Clear the texture.
 			texture.clear();
 		}
+
+		//--------------------------------------------------------------
+		void Survey::setup()
+		{}
+		
+		//--------------------------------------------------------------
+		void Survey::exit()
+		{}
 		
 		//--------------------------------------------------------------
 		void Survey::drawBackWorld()

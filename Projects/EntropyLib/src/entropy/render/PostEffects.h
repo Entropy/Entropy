@@ -35,13 +35,14 @@ namespace entropy
             struct : ofParameterGroup
             {
                 ofParameter<bool> enabled{ "Enabled", true };
+				ofParameter<bool> onlyAlpha{ "Only alpha", true };
                 ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f };
-                ofParameter<float> outter{ "Outter", 1.1f, 0.5f, 3.0f };
-                ofParameter<float> power{ "Power", 1.1f, 0.1f, 10.0f };
+				ofParameter<float> outter{ "Outter", 1.1f, 0.5f, 6.0f };
+				ofParameter<float> power{ "Power", 1.1f, 0.1f, 20.0f };
                 ofParameter<float> rotation{ "Rotation", 0.f, -90.f, 90.f };
                 ofParameter<bool> debug{ "Debug", false };
 
-                PARAM_DECLARE("Vignette", enabled, inner, outter, power, rotation, debug);
+				PARAM_DECLARE("Vignette", enabled, onlyAlpha, inner, outter, power, rotation, debug);
             } vignette;
 
             ofParameter<float> screenRatio{ "Ratio", 0.f, 0.f, 2.f };

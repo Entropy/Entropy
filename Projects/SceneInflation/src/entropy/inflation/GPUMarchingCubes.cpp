@@ -274,7 +274,7 @@ namespace entropy
             shaderSettings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/marching_cubes_geom.glsl";
             shaderSettings.bindDefaults = false;
             shaderSettings.intDefines["SUBDIVISIONS"] = subdivisions;
-            shaderSettings.boolDefines["OUTPUT_NORMALS"] = shadeNormals;
+			shaderSettings.intDefines["OUTPUT_NORMALS"] = shadeNormals;
 			shaderSettings.floatDefines["RESOLUTION"] = resolution;
             if(shadeNormals){
                 shaderSettings.varyingsToCapture = {"position", "color", "normal"};

@@ -26,6 +26,9 @@ namespace entropy
 			virtual ~Base();
 
 			// Base methods
+			void init_();
+			void clear_();
+
 			void setup_();
 			void exit_();
 
@@ -42,22 +45,9 @@ namespace entropy
 			void serialize_(nlohmann::json & json);
 			void deserialize_(const nlohmann::json & json);
 
-			// Override methods
-			virtual void setup() {}
-			virtual void exit() {}
-
-			virtual void resizeBack(ofResizeEventArgs & args) {}
-			virtual void resizeFront(ofResizeEventArgs & args) {}
-
-			virtual void update(double dt) {}
-
-			virtual void drawBackBase() {}
-			virtual void drawBackWorld() {}
-			virtual void drawBackOverlay() {}
-
-			virtual void drawFrontBase() {}
-			virtual void drawFrontWorld() {}
-			virtual void drawFrontOverlay() {}
+			// State
+			bool isInitialized() const;
+			bool isReady() const;
 
 			// No post-processing by default, return true to override!
 			virtual bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; }
@@ -106,6 +96,30 @@ namespace entropy
 			void endExport();
 
 		protected:
+			// Override methods
+			virtual void init() {}
+			virtual void clear() {}
+
+			virtual void setup() {}
+			virtual void exit() {}
+
+			virtual void resizeBack(ofResizeEventArgs & args) {}
+			virtual void resizeFront(ofResizeEventArgs & args) {}
+
+			virtual void update(double dt) {}
+
+			virtual void drawBackBase() {}
+			virtual void drawBackWorld() {}
+			virtual void drawBackOverlay() {}
+
+			virtual void drawFrontBase() {}
+			virtual void drawFrontWorld() {}
+			virtual void drawFrontOverlay() {}
+
+			// State
+			bool initialized;
+			bool ready;
+
 			// Camera
 			virtual void resetCamera(render::Layout layout);
 
@@ -180,6 +194,7 @@ namespace entropy
 			// Timeline
 			void populateMappings(const ofParameterGroup & group, string name = "");
 			void refreshMappings();
+			void clearMappings();
 		};
 	}
 }

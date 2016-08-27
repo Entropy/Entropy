@@ -47,14 +47,15 @@ namespace nm
 		newPhotons(NULL),
 		numNewPhotons(0)
 	{
-		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
-		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
+		this->clearParticles();
 	}
 
 	ParticleSystem::~ParticleSystem()
 	{
 		if (particles) delete[] particles;
 		if (deadParticles) delete[] deadParticles;
+		if (newPhotons) delete[] newPhotons;
+
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
 			if (positions[i]) delete[] positions[i];
@@ -145,6 +146,13 @@ namespace nm
 			numParticles[type]++;
 		}
 		else ofLogError() << "Cannot add more particles";
+	}
+
+	void ParticleSystem::clearParticles()
+	{
+		totalNumParticles = 0;
+		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
+		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
 	}
 
 	void ParticleSystem::update()

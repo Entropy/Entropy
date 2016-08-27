@@ -53,7 +53,6 @@ namespace entropy
 				if (this->meshDirty)
 				{
 					this->rebuildMesh();
-					this->light.setPosition(glm::vec3(this->size) * 2.0f);
 					this->colorDirty = true;
 
 					didUpdate = true;
@@ -85,38 +84,31 @@ namespace entropy
 
 			ofPushStyle();
 			{
-				//this->material.setDiffuseColor(color);
-				//this->light.enable();
+				ofEnableAlphaBlending();
+				ofSetColor(color.get());
+
+				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+				if (cullMode != CullMode::Disabled)
 				{
-					ofSetColor(color.get());
-					//this->material.begin();
+					glEnable(GL_CULL_FACE);
+					if (cullMode == CullMode::Back)
 					{
-						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-                        if (cullMode != CullMode::No)
-						{
-							glEnable(GL_CULL_FACE);
-							if (cullMode == CullMode::Back)
-							{
-								glCullFace(GL_BACK);
-							}
-							else
-							{
-								glCullFace(GL_FRONT);
-							}
-						}
-						else
-						{
-							glDisable(GL_CULL_FACE);
-						}
-						this->mesh.draw();
-                        if (cullMode != CullMode::No)
-						{
-							glDisable(GL_CULL_FACE);
-						}
+						glCullFace(GL_BACK);
 					}
-					//this->material.end();
+					else
+					{
+						glCullFace(GL_FRONT);
+					}
 				}
-				//this->light.disable();
+				else
+				{
+					glDisable(GL_CULL_FACE);
+				}
+				this->mesh.draw();
+				if (cullMode != CullMode::Disabled)
+				{
+					glDisable(GL_CULL_FACE);
+				}
 			}
 			ofPopStyle();
 		}
@@ -128,14 +120,11 @@ namespace entropy
 			
 			ofPushStyle();
 			{
-				//this->material.setDiffuseColor(color);
-				//this->light.enable();
 				{
 					ofSetColor(color.get());
-					//this->material.begin();
 					{
 						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-                        if (cullMode != CullMode::No)
+						if (cullMode != CullMode::Disabled)
 						{
 							glEnable(GL_CULL_FACE);
 							if (cullMode == CullMode::Back)
@@ -152,14 +141,12 @@ namespace entropy
 							glDisable(GL_CULL_FACE);
 						}
 						renderer.drawElements(this->mesh.getVbo(), 0, this->mesh.getNumIndices());
-                        if (cullMode != CullMode::No)
+						if (cullMode != CullMode::Disabled)
 						{
 							glDisable(GL_CULL_FACE);
 						}
 					}
-					//this->material.end();
 				}
-				//this->light.disable();
 			}
 			ofPopStyle();
 		}

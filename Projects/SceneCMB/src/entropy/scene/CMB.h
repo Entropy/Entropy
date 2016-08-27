@@ -29,6 +29,8 @@ namespace entropy
 			CMB();
 			~CMB();
 
+			void init() override;
+
 			void setup() override;
 			void resizeBack(ofResizeEventArgs & args) override;
 

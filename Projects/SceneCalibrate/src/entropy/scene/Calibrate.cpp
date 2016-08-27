@@ -16,22 +16,32 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		// Set up your crap here!
+		/// Initialize and preload persistent stuff here.
+		void Calibrate::init()
+		{}
+
+		//--------------------------------------------------------------
+		/// Delete any persistent stuff initialized in the constructor.
+		void Calibrate::clear()
+		{}
+
+		//--------------------------------------------------------------
+		/// Wake up your scene for pre-roll. You can set preset specific settings in deserialize().
 		void Calibrate::setup()
 		{
 			ofEnableLighting();
 		}
 		
 		//--------------------------------------------------------------
-		// Clean up your crap here!
+		/// Clean up your scene to go idle.
 		void Calibrate::exit()
 		{
 			
 		}
 
 		//--------------------------------------------------------------
-		// Resize your content here. 
-		// Note that this is not the window size but the canvas size.
+		/// Resize your content here. 
+		/// Note that this is not the window size but the canvas size.
 		void Calibrate::resizeBack(ofResizeEventArgs & args)
 		{
 			if (this->getGridLayout() == render::Layout::Back)
@@ -41,8 +51,8 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Resize your content here. 
-		// Note that this is not the window size but the canvas size.
+		/// Resize your content here. 
+		/// Note that this is not the window size but the canvas size.
 		void Calibrate::resizeFront(ofResizeEventArgs & args)
 		{
 			if (this->getGridLayout() == render::Layout::Front)
@@ -52,14 +62,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Update your data here, once per frame.
+		/// Update your data here, once per frame.
 		void Calibrate::update(double dt)
 		{
 			this->updateGrid(this->getGridLayout());
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the background here.
+		/// Draw 2D elements in the background here.
 		void Calibrate::drawBackBase()
 		{
 			if (this->parameters.border.drawBack)
@@ -69,14 +79,14 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		// Draw 3D elements here.
+		/// Draw 3D elements here.
 		void Calibrate::drawBackWorld()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the foreground here.
+		/// Draw 2D elements in the foreground here. Note that these won't be post-processed.
 		void Calibrate::drawBackOverlay()
 		{
 			if (this->getGridLayout() == render::Layout::Back)
@@ -86,7 +96,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the background here.
+		/// Draw 2D elements in the background here.
 		void Calibrate::drawFrontBase()
 		{
 			if (this->parameters.border.drawFront)
@@ -96,14 +106,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Draw 3D elements here.
+		/// Draw 3D elements here.
 		void Calibrate::drawFrontWorld()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		// Draw 2D elements in the foreground here.
+		/// Draw 2D elements in the foreground here. Note that these won't be post-processed.
 		void Calibrate::drawFrontOverlay()
 		{
 			if (this->getGridLayout() == render::Layout::Front)
@@ -251,7 +261,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Add Scene specific GUI windows here.
+		/// Add Scene specific gui windows here.
 		void Calibrate::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
@@ -282,17 +292,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		// Do something after the parameters are saved.
-		// You can save other stuff to the same json object here too.
+		/// Do something after the parameters are saved.
+		/// You can save other stuff to the same json object here too.
 		void Calibrate::serialize(nlohmann::json & json)
 		{
 
 		}
 		
 		//--------------------------------------------------------------
-		// Do something after the parameters are loaded.
-		// You can load your other stuff here from that json object.
-		// You can also set any refresh flags if necessary.
+		/// Do something after the parameters are loaded.
+		/// You can load your other stuff here from that json object.
+		/// You can also set any refresh flags if necessary.
 		void Calibrate::deserialize(const nlohmann::json & json)
 		{
 
