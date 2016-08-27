@@ -251,6 +251,9 @@ namespace entropy
 				this->guiSettings.screenBounds = ofRectangle(0.0f, 0.0f, ofGetWidth(), ofGetHeight());
 			}
 
+			// Draw the timeline overlay.
+			this->playlist->drawTimeline(this->guiSettings);
+
 			// Draw the gui overlay.
 			this->imGui.begin();
 			{
@@ -264,9 +267,6 @@ namespace entropy
 				this->playlist->drawGui(this->guiSettings);
 			}
 			this->imGui.end();
-
-			// Draw the timeline overlay.
-			this->playlist->drawTimeline(this->guiSettings);
 		}
 
 		//--------------------------------------------------------------
