@@ -40,6 +40,9 @@ namespace entropy
 			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
 			this->renderers[render::Layout::Front].setup();
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
+
+			now = 0;
+			t_bigbang = 0;
 		}
 		
 		//--------------------------------------------------------------
@@ -50,6 +53,26 @@ namespace entropy
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
 			now = 0;
+			t_bigbang = 0;
+			state = PreBigBang;
+			resetWavelengths();
+		}
+
+		//--------------------------------------------------------------
+		void Inflation::resetWavelengths()
+		{
+			auto wl = noiseField.resolution/4;
+			targetWavelengths[0] = wl;
+			noiseField.octaves[0].wavelength = wl;
+			wl /= 2;
+			targetWavelengths[1] = wl;
+			noiseField.octaves[1].wavelength = wl;
+			wl /= 2;
+			targetWavelengths[2] = wl;
+			noiseField.octaves[2].wavelength = wl;
+			wl /= 2;
+			targetWavelengths[3] = wl;
+			noiseField.octaves[3].wavelength = wl;
 		}
 
 		//--------------------------------------------------------------
@@ -62,13 +85,26 @@ namespace entropy
 		void Inflation::update(double dt)
 		{
 			if (parameters.runSimulation) {
-				now += ofGetElapsedTimef();
-				auto inflation = false;
-                noiseField.update(inflation);
-                gpuMarchingCubes.update(noiseField.getTexture());
-				if (inflation) {
-					//parameters.marchingCubes.scale += ofGetElapsedTimef() * 0.1f;
+				now += dt;
+				switch(state){
+					case PreBigBang:
+					break;
+					case BigBang:
+						t_from_bigbang = now - t_bigbang;
+						scale = t_from_bigbang/parameters.bigBangDuration;
+						if(t_from_bigbang > parameters.bigBangDuration){
+							state = Expansion;
+						}
+						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
+					break;
+					case Expansion:
+						t_from_bigbang = now - t_bigbang;
+						scale = t_from_bigbang/parameters.bigBangDuration;
+					break;
 				}
+
+				noiseField.update();
+				gpuMarchingCubes.update(noiseField.getTexture());
 			}
 		}
 
@@ -110,15 +146,35 @@ namespace entropy
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 
-			//ofScale(parameters.marchingCubes.scale);
+			switch (state) {
+			case PreBigBang:
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				renderers[layout].sphericalClip = true;
+				renderers[layout].fadeEdge0 = 0.0;
+				renderers[layout].fadeEdge1 = 0.5;
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				break;
+			case BigBang:
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				renderers[layout].fadeEdge0 = 0.0;
+				renderers[layout].fadeEdge1 = 0.5;
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 
-			//cout << gpuMarchingCubes.getNumVertices() << " vertices at " << ofGetFrameRate() << "fps" << endl;
-			renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+				renderers[layout].fadeEdge0 = scale*scale;
+				renderers[layout].fadeEdge1 = scale;
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				break;
+			case Expansion:
+				ofScale(scale);
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 
-			//ofSetColor(255);
-			//ofNoFill();
-			//ofDrawBox(1);
-			//renderer.drawElements(box, 0, box.getNumIndices());
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				break;
+			}
+
 			if (this->parameters.render.drawBoxInRenderer)
 			{
 				this->boxes[layout].draw(renderers[layout]);
@@ -134,6 +190,8 @@ namespace entropy
 
 			ofDrawBitmapString(timeToSetIso, ofGetWidth() - 100, 40);
 			ofDrawBitmapString(timeToUpdate, ofGetWidth() - 100, 60);
+
+			ofDrawBox(1);
 		}
 
 		//--------------------------------------------------------------
@@ -143,6 +201,14 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
+				ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
+				if(ImGui::Button("Trigger bigbang")){
+					if(state == PreBigBang){
+						state = BigBang;
+						t_bigbang = now;
+						cout << "settings bigbang time at " << now << endl;
+					}
+				}
 
 				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
 				{
@@ -176,6 +242,10 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogMinDistance);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogMaxDistance);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogPower);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadeEdge0);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadeEdge1);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadePower);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].sphericalClip);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].useLights);
 
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fillAlpha);
@@ -201,6 +271,10 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogMinDistance);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogMaxDistance);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogPower);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadeEdge0);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadeEdge1);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadePower);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].sphericalClip);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].useLights);
 																						 
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fillAlpha);
@@ -241,6 +315,8 @@ namespace entropy
 			{
 				ofxPreset::Serializer::Deserialize(json, it.second.parameters);
 			}
+
+			resetWavelengths();
 		}
 	}
 }

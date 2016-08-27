@@ -152,13 +152,10 @@ struct Octave{
 };
 
 #define NUM_OCTAVES 4
-#define SPHERICAL_CLIP 1
 #define FILL_EDGES 1
-const bool sphericalClip = bool(SPHERICAL_CLIP);
 const bool fillEdges = bool(FILL_EDGES);
 uniform float resolution;
 uniform float normalizationFactor;
-uniform float fade;
 uniform Octave octaves[NUM_OCTAVES];
 
 
@@ -166,7 +163,7 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 void main()
 {
 
-	if (fillEdges && !sphericalClip && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
+	if (fillEdges && (gl_GlobalInvocationID.x == 0 || gl_GlobalInvocationID.x == resolution -1 ||
 	    gl_GlobalInvocationID.y == 0 || gl_GlobalInvocationID.y == resolution -1 ||
         gl_GlobalInvocationID.z == 0 || gl_GlobalInvocationID.z == resolution -1)){
 		imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(octaves[0].color.rgb, 1.0));
@@ -178,18 +175,7 @@ void main()
 		float x = gl_GlobalInvocationID.x;
 		float y = gl_GlobalInvocationID.y;
 		float z = gl_GlobalInvocationID.z;
-        vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
-
-        // fade out from the fade limit until 1
-        float sphere = 1;
-		if(sphericalClip){
-            vec3 normPos = pos / (resolution/2.);
-            float distance = dot(normPos, normPos);
-            float edge = 1.0 - fade;
-            float curveStart = int(distance+edge);
-            float fadeOut = clamp((1 - (distance - fade) / edge), 0, 1);
-            sphere = clamp(1.0 - curveStart + curveStart * fadeOut * fadeOut, 0, 1);
-        }
+		vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
 
         for(int i=0;i<NUM_OCTAVES;i++){
 			float freqD = octaves[i].frequency;
@@ -200,9 +186,9 @@ void main()
             maxRGB += noise;
             maxValue += amplitude;
         }
-        float normalizationValue = (maxValue * normalizationFactor);
-        totalRGB = totalRGB / maxRGB * sphere;
-		total = total / normalizationValue /* * sphere*/;
+		float normalizationValue = (maxValue * normalizationFactor);
+		totalRGB = totalRGB / maxRGB;
+		total = total / normalizationValue;
         imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(totalRGB, total));
 	}
 }

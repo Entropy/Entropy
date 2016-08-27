@@ -27,6 +27,10 @@ namespace entropy
 			ofParameter<float> fogStartDistance{ "Fog start dist.", 0.1f, 0.0f, 5.f };
             ofParameter<float> fogPower{ "Fog power", 1.f, 0.001f, 10.f };
             ofParameter<bool> fogEnabled{ "Fog enabled", true };
+			ofParameter<float> fadeEdge0{ "Fade From", 0.8f, 0.0f, 1.0f };
+			ofParameter<float> fadeEdge1{ "Fade To", 1.0f, 0.0f, 1.0f };
+			ofParameter<float> fadePower{ "Fade power", 2.f, 1.0f, 10.0f };
+			ofParameter<bool> sphericalClip{ "Spherical Clip", false };
             ofParameter<float> wireframeAlpha{ "Wireframe alpha", 0.25f, 0.f, 1.f };
             ofParameter<float> fillAlpha{ "Fill alpha", 0.5f, 0.f, 1.f };
             ofParameter<bool> shadeNormals{ "Shade Normals", false };
@@ -42,6 +46,10 @@ namespace entropy
 				fogMaxDistance,
                 fogPower,
                 fogEnabled,
+				fadeEdge0,
+				fadeEdge1,
+				fadePower,
+				sphericalClip,
                 wireframeAlpha,
                 fillAlpha,
                 useLights,
@@ -50,6 +58,7 @@ namespace entropy
 		private:
             void setMaterial();
             ofShader shaderFill, shaderWireframe;
+			ofShader shaderFillSphere, shaderWireframeSphere;
 			ofShader::Settings shaderSettings;
             std::vector<ofEventListener> listeners;
             ofMaterial material;

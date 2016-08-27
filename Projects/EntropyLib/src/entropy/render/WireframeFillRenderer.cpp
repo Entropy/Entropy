@@ -11,7 +11,7 @@ namespace entropy
             auto pos = src.find(find);
             auto len = find.length();
             return src.replace(pos, len, replacement);
-        }
+		}
 
 		using namespace glm;
 		float smoothstep(float edge0, float edge1, float x){
@@ -19,8 +19,16 @@ namespace entropy
 			return t * t * (3.0 - 2.0 * t);
 		}
 
+		float smootherstep(float edge0, float edge1, float x){
+			// Scale, and clamp x to 0..1 range
+			x = clamp((x - edge0)/(edge1 - edge0), 0.0f, 1.0f);
+			// Evaluate polynomial
+			return x*x*x*(x*(x*6 - 15) + 10);
+		}
+
+
 		float fog(float dist, float startDist, float minDist, float maxDist, float power) {
-			return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
+			return pow(smootherstep(startDist, minDist, dist), 1./power) * pow(1-smootherstep(minDist, maxDist, dist), 1./power);
 		}
 
         void WireframeFillRenderer::setMaterial(){
@@ -49,11 +57,21 @@ namespace entropy
 			shaderSettings.intDefines["FOG_ENABLED"] = fogEnabled;
 			shaderSettings.intDefines["SHADE_NORMALS"] = shadeNormals;
 
+			shaderSettings.intDefines["SPHERICAL_CLIP"] = 0;
+
 			shaderSettings.intDefines["WIREFRAME"] = 0;
 			shaderFill.setup(shaderSettings);
 
 			shaderSettings.intDefines["WIREFRAME"] = 1;
 			shaderWireframe.setup(shaderSettings);
+
+			shaderSettings.intDefines["SPHERICAL_CLIP"] = 1;
+
+			shaderSettings.intDefines["WIREFRAME"] = 0;
+			shaderFillSphere.setup(shaderSettings);
+
+			shaderSettings.intDefines["WIREFRAME"] = 1;
+			shaderWireframeSphere.setup(shaderSettings);
 
             setMaterial();
 
@@ -68,23 +86,44 @@ namespace entropy
             }));
 			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
 				shaderSettings.intDefines["FOG_ENABLED"] = enabled;
+				shaderSettings.intDefines["SPHERICAL_CLIP"] = 0;
 
 				shaderSettings.intDefines["WIREFRAME"] = 0;
 				shaderFill.setup(shaderSettings);
 
 				shaderSettings.intDefines["WIREFRAME"] = 1;
 				shaderWireframe.setup(shaderSettings);
+
+				shaderSettings.intDefines["SPHERICAL_CLIP"] = 1;
+
+				shaderSettings.intDefines["WIREFRAME"] = 0;
+				shaderFillSphere.setup(shaderSettings);
+
+				shaderSettings.intDefines["WIREFRAME"] = 1;
+				shaderWireframeSphere.setup(shaderSettings);
 			})));
         }
 
         void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices) const{
             ofDisableDepthTest();
+			ofShader shaderFill;
+			ofShader shaderWireframe;
+			if(sphericalClip){
+				shaderFill = this->shaderFillSphere;
+				shaderWireframe = this->shaderWireframeSphere;
+			}else{
+				shaderFill = this->shaderFill;
+				shaderWireframe = this->shaderWireframe;
+			}
             if (fill) {
                 shaderFill.begin();
 				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
                 shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderFill.setUniform1f("fogPower", fogPower);
+				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
+				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
+				shaderFill.setUniform1f("fadePower", fadePower);
                 shaderFill.setUniform1f("alpha", fillAlpha);
                 geometry.draw(GL_TRIANGLES, offset, numVertices);
                 shaderFill.end();
@@ -110,6 +149,9 @@ namespace entropy
                     shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
                     shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
                     shaderWireframe.setUniform1f("fogPower", fogPower);
+					shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
+					shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
+					shaderWireframe.setUniform1f("fadePower", fadePower);
                     shaderWireframe.setUniform1f("alpha", wireframeAlpha);
                     geometry.draw(GL_TRIANGLES, offset, numVertices);
                     shaderWireframe.end();
@@ -119,12 +161,24 @@ namespace entropy
 
         void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices) const{
             ofDisableDepthTest();
+			ofShader shaderFill;
+			ofShader shaderWireframe;
+			if(sphericalClip){
+				shaderFill = this->shaderFillSphere;
+				shaderWireframe = this->shaderWireframeSphere;
+			}else{
+				shaderFill = this->shaderFill;
+				shaderWireframe = this->shaderWireframe;
+			}
             if (fill) {
                 shaderFill.begin();
 				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
                 shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderFill.setUniform1f("fogPower", fogPower);
+				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
+				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
+				shaderFill.setUniform1f("fadePower", fadePower);
                 shaderFill.setUniform1f("alpha", fillAlpha);
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                 geometry.drawElements(GL_TRIANGLES, numIndices, offset);
@@ -137,6 +191,9 @@ namespace entropy
                 shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
                 shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
                 shaderWireframe.setUniform1f("fogPower", fogPower);
+				shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
+				shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
+				shaderWireframe.setUniform1f("fadePower", fadePower);
                 shaderWireframe.setUniform1f("alpha", wireframeAlpha);
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
                 geometry.drawElements(GL_TRIANGLES, numIndices, offset);
