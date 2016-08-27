@@ -69,7 +69,7 @@ namespace entropy
 		public:
 			NoiseField();
 			void setup(ofParameter<int> & resolution);
-			void update(bool inflation);
+			void update();
 			void draw(float threshold);
 
 			int getNumScales();
@@ -80,14 +80,12 @@ namespace entropy
 				return volumeTex;
 			}
 
-
-		private:
 			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
 			ofParameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
-			ofParameter<float> fadeAt{ "Fade At", 0.8f, 0.0f, 1.0f };
-			ofParameter<bool> sphericalClip{ "Spherical Clip", false };
 			ofParameter<bool> fillEdges{ "Fill Edges", false };
 			std::vector<Octave> octaves;
+
+		private:
 
 			float noiseSeed;
 			ofShader noiseComputeShader;
@@ -105,8 +103,6 @@ namespace entropy
 				"Noise Field",
 				noiseSpeed,
 				normalizationFactor,
-				fadeAt,
-				sphericalClip,
 				fillEdges,
 			};
 		};

@@ -33,7 +33,6 @@ Project{
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_vertex.glsl",
             "addons.make",
-            "src/entropy/inflation/Constants.h",
             "src/entropy/inflation/GPUMarchingCubes.cpp",
             "src/entropy/inflation/GPUMarchingCubes.h",
             "src/entropy/inflation/NoiseField.cpp",

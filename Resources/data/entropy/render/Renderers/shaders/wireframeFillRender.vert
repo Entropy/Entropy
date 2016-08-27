@@ -6,9 +6,6 @@ uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 normalMatrix;
 
-uniform float fogMaxDistance;
-uniform float fogMinDistance;
-uniform float fogPower;
 uniform float alpha;
 
 in vec4 position;
@@ -17,10 +14,12 @@ in vec3 normal;
 
 out vec4 f_color;
 out float f_distanceToCamera;
+out float f_distanceToCenter;
 
 #define SHADE_NORMALS 1
 #define FOG_ENABLED 1
 #define WIREFRAME 0
+#define SPHERICAL_CLIP 0
 
 float bright(vec3 rgb){
 	return max(max(rgb.r, rgb.g), rgb.b);
@@ -41,6 +40,10 @@ void main()
 	        f_color = color;
 			f_color.a *= alpha;
 		#endif
+    #endif
+
+    #if SPHERICAL_CLIP
+		f_distanceToCenter = length(position.xyz);
     #endif
 
     #if FOG_ENABLED
