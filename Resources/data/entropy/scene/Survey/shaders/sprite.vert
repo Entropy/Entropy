@@ -15,11 +15,6 @@ out float vEnabled;
 
 void main()
 {
-	if (uMinLongitude <= position.x && position.x <= uMaxLongitude &&
-		uMinLatitude <= position.y && position.y <= uMaxLatitidue)
-	{
-		vEnabled = 1.0;
-		
 		// Convert position from spherical to Cartesian coordinates.
 		vec4 vertex = vec4(position.z * cos(position.y) * cos(position.x),
 						   position.z * cos(position.y) * sin(position.x),
@@ -33,6 +28,11 @@ void main()
 		float attenuation = 600.0 / dist;
 
 		gl_PointSize = uPointSize * position.w * attenuation;
+		
+	if (uMinLongitude <= position.x && position.x <= uMaxLongitude &&
+		uMinLatitude <= position.y && position.y <= uMaxLatitude)
+	{
+		vEnabled = 1.0;
 	}
 	else
 	{
