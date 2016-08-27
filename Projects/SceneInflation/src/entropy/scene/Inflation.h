@@ -45,7 +45,7 @@ namespace entropy
 			void drawScene(render::Layout layout);
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
-            
+
 			std::map<render::Layout, render::WireframeFillRenderer> renderers;
 
 			// Noise Field

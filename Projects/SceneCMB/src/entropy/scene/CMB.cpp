@@ -21,8 +21,28 @@ namespace entropy
 			// Add the pool parameters to the group.
 			this->parameters.add(this->pool.parameters);
 
+			// Add the sphere parameters to the group.
+			this->parameters.add(this->sphereGeom.parameters);
+
 			this->pool.setDimensions(glm::vec3(128.0f));
 			this->pool.setup();
+
+			const auto filePath = this->getAssetsPath("images/Planck-CMB-SMICA.tif");
+			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
+			ofPixels pixels;
+			ofLoadImage(pixels, filePath);
+			if (!pixels.isAllocated())
+			{
+				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
+			}
+
+			bool wasUsingArbTex = ofGetUsingArbTex();
+			ofDisableArbTex();
+			{
+				this->sphereTexture.enableMipmap();
+				this->sphereTexture.loadData(pixels);
+			}
+			if (wasUsingArbTex) ofEnableArbTex();
 		}
 
 		//--------------------------------------------------------------
@@ -52,6 +72,15 @@ namespace entropy
 			ofEnableDepthTest();
 			//ofDisableDepthTest();
 #endif
+			
+			//glEnable(GL_CULL_FACE);
+			//glCullFace(GL_BACK);
+			this->sphereTexture.bind();
+			{
+				this->sphereGeom.draw();
+			}
+			this->sphereTexture.unbind();
+			//glDisable(GL_CULL_FACE);
 		}
 
 		//--------------------------------------------------------------
@@ -81,6 +110,7 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
 				ofxPreset::Gui::AddGroup(this->pool.parameters, settings);
+				ofxPreset::Gui::AddGroup(this->sphereGeom.parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}

@@ -2,6 +2,7 @@
 
 #include "entropy/scene/Base.h"
 #include "entropy/cmb/Constants.h"
+#include "entropy/geom/Sphere.h"
 
 #ifdef COMPUTE_GL_2D
 #include "CmbSceneGL2D.h"
@@ -56,7 +57,9 @@ namespace entropy
 			entropy::cmb::PoolCL3D pool;
 #endif
 
-		protected:
+			geom::Sphere sphereGeom;
+			ofTexture sphereTexture;
+
 			BaseParameters & getParameters() override
 			{
 				return this->parameters;

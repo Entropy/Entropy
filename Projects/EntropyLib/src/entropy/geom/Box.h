@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+
 #include "entropy/render/WireframeFillRenderer.h"
 
 namespace entropy
@@ -30,9 +31,7 @@ namespace entropy
 			ofParameter<float> edgeRatio{ "Edge Ratio", 0.01f, 0.001f, 1.0f };
 			ofParameter<int> subdivisions{ "Subdivisions", 1, 1, 10 };
 
-			ofParameterGroup parameters
-			{
-				"Box",
+			ofParameterGroup parameters{ "Box",
 				enabled,
 				autoDraw,
 				cullFace,

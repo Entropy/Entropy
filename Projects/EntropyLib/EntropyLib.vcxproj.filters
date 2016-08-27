@@ -253,6 +253,9 @@
     <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\geom\Sphere.cpp">
+      <Filter>src\entropy\geom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -745,6 +748,9 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
       <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\geom\Sphere.h">
+      <Filter>src\entropy\geom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

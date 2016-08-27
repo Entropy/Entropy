@@ -85,7 +85,7 @@ namespace entropy
 			ofPushStyle();
 			{
 				ofEnableAlphaBlending();
-				ofSetColor(color.get());
+				ofSetColor(this->color.get());
 
 				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
 				if (cullMode != CullMode::Disabled)
@@ -121,7 +121,7 @@ namespace entropy
 			ofPushStyle();
 			{
 				{
-					ofSetColor(color.get());
+					ofSetColor(this->color.get());
 					{
 						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
 						if (cullMode != CullMode::Disabled)
@@ -348,7 +348,7 @@ namespace entropy
 
 				for (int y = 0; y < resY - 1; y++) {
 					for (int x = 0; x < resX - 1; x++) {
-						// first triangle //
+						// first triangle
 						this->mesh.addIndex((y)*resX + x + vertOffset);
 						this->mesh.addIndex((y)*resX + x + 1 + vertOffset);
 						this->mesh.addIndex((y + 1)*resX + x + vertOffset);
