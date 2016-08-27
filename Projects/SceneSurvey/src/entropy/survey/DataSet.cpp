@@ -90,27 +90,6 @@ namespace entropy
 			}
 
 			return coordsData.size();
-
-			//// Sort the data points by radius.
-			//std::sort(points.begin(), points.end(), [](const glm::vec4 & a, const glm::vec4 & b) -> bool
-			//{
-			//	return (a.z < b.z);
-			//});
-
-			//// Convert the position data to Cartesian coordinates and store all data in the passed vectors.
-			//int startIdx = vertices.size();
-			//vertices.resize(startIdx + points.size());
-			//masses.resize(startIdx + massesData.size());
-			//for (int i = 0; i < points.size(); ++i)
-			//{
-			//	int idx = startIdx + i;
-			//	vertices[idx].x = points[i].radius * cos(ofDegToRad(points[i].latitude)) * cos(ofDegToRad(points[i].longitude));
-			//	vertices[idx].y = points[i].radius * cos(ofDegToRad(points[i].latitude)) * sin(ofDegToRad(points[i].longitude));
-			//	vertices[idx].z = points[i].radius * sin(ofDegToRad(points[i].latitude));
-			//	masses[idx] = massesData[i];
-			//}
-
-			//return points.size();
 		}
 
 		//--------------------------------------------------------------
@@ -127,8 +106,8 @@ namespace entropy
 		{
 			ofSetColor(this->parameters.color.get());
 
-			int startIdx = ofMap(this->parameters.minDistance, 0.0f, 1.0f, 0, this->points.size(), true);
-			int endIdx = ofMap(this->parameters.maxDistance, 0.0f, 1.0f, 0, this->points.size(), true);
+			int startIdx = ofMap(this->parameters.minRadius, 0.0f, 1.0f, 0, this->points.size(), true);
+			int endIdx = ofMap(this->parameters.maxRadius, 0.0f, 1.0f, 0, this->points.size(), true);
 
 			this->vbo.draw(GL_POINTS, startIdx, endIdx - startIdx + 1);
 		}
@@ -138,7 +117,10 @@ namespace entropy
 		{
 			if (ImGui::CollapsingHeader(this->parameters.getName().c_str(), nullptr, true, true))
 			{
-				ofxPreset::Gui::AddRange("Distance", this->parameters.minDistance, this->parameters.maxDistance);
+				ofxPreset::Gui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
+				ofxPreset::Gui::AddRange("Latitude", this->parameters.minRadius, this->parameters.maxRadius);
+				ofxPreset::Gui::AddRange("Longitude", this->parameters.minRadius, this->parameters.maxRadius);
+				ofxPreset::Gui::AddParameter(this->parameters.color);
 			}
 		}
 
