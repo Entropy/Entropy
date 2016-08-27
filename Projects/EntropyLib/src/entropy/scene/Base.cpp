@@ -34,8 +34,10 @@ namespace entropy
 			auto & parameters = this->getParameters();
 
 			// Build the Back and Front cameras.
-			this->cameras.emplace(render::Layout::Back, ofEasyCam());
-			this->cameras.emplace(render::Layout::Front, ofEasyCam());
+			this->cameras[render::Layout::Back].begin();
+			this->cameras[render::Layout::Back].end();
+			this->cameras[render::Layout::Front].begin();
+			this->cameras[render::Layout::Front].end();
 
 			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
 			// that they are taken into account for ofxTimeline mappings and serialization.
@@ -84,30 +86,61 @@ namespace entropy
 			this->populateMappings(parameters);
 
 			// Set base parameter listeners.
-			this->parameterListeners.push_back(parameters.base.backCamera.relativeYAxis.newListener([this](bool & value)
+			this->parameterListeners.push_back(parameters.base.backCamera.mouseControl.newListener([this](bool & enabled)
 			{
-				this->cameras[render::Layout::Back].setRelativeYAxis(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.fov.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Back].setFov(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.nearClip.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Back].setNearClip(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.farClip.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Back].setFarClip(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.relativeYAxis.newListener([this](bool & value)
-			{
-				this->cameras[render::Layout::Front].setRelativeYAxis(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.attachToBack.newListener([this](bool & value)
-			{
-				if (value)
+				if (enabled)
 				{
+					this->getParameters().base.frontCamera.mouseControl = false;
+
+					this->cameras[render::Layout::Back].enableMouseInput();
+				}
+				else
+				{
+					this->cameras[render::Layout::Back].disableMouseInput();
+				}
+			})); 
+			this->parameterListeners.push_back(parameters.base.backCamera.relativeYAxis.newListener([this](bool & enabled)
+			{
+				this->cameras[render::Layout::Back].setRelativeYAxis(enabled);
+			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.fov.newListener([this](float & enabled)
+			{
+				this->cameras[render::Layout::Back].setFov(enabled);
+			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.nearClip.newListener([this](float & enabled)
+			{
+				this->cameras[render::Layout::Back].setNearClip(enabled);
+			}));
+			this->parameterListeners.push_back(parameters.base.backCamera.farClip.newListener([this](float & enabled)
+			{
+				this->cameras[render::Layout::Back].setFarClip(enabled);
+			}));
+
+
+			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->getParameters().base.frontCamera.attachToBack = false;
+					this->getParameters().base.backCamera.mouseControl = false;
+
+					this->cameras[render::Layout::Front].enableMouseInput();
+				}
+				else
+				{
+					this->cameras[render::Layout::Front].disableMouseInput();
+				}
+			})); 
+			this->parameterListeners.push_back(parameters.base.frontCamera.relativeYAxis.newListener([this](bool & enabled)
+			{
+				this->cameras[render::Layout::Front].setRelativeYAxis(enabled);
+			}));
+			this->parameterListeners.push_back(parameters.base.frontCamera.attachToBack.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->getParameters().base.frontCamera.mouseControl = false;
+
 					this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
 				}
 				else
@@ -126,20 +159,6 @@ namespace entropy
 			this->parameterListeners.push_back(parameters.base.frontCamera.farClip.newListener([this](float & value)
 			{
 				this->cameras[render::Layout::Front].setFarClip(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.mouseControl.newListener([this](bool & enabled){
-				if(enabled){
-					this->cameras[render::Layout::Back].enableMouseInput();
-				}else{
-					this->cameras[render::Layout::Back].disableMouseInput();
-				}
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled){
-				if(enabled){
-					this->cameras[render::Layout::Front].enableMouseInput();
-				}else{
-					this->cameras[render::Layout::Front].disableMouseInput();
-				}
 			}));
 
 			// Restore default data path.
@@ -461,13 +480,7 @@ namespace entropy
 				
 				if (ofxPreset::Gui::BeginTree(parameters.base.backCamera, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(parameters.base.backCamera.mouseControl))
-					{
-						if (parameters.base.backCamera.mouseControl)
-						{
-							parameters.base.frontCamera.mouseControl = false;
-						}
-					}
+					ofxPreset::Gui::AddParameter(parameters.base.backCamera.mouseControl);
 					ofxPreset::Gui::AddParameter(parameters.base.backCamera.relativeYAxis);
 					ofxPreset::Gui::AddParameter(parameters.base.backCamera.fov);
 					ofxPreset::Gui::AddRange("Clipping", parameters.base.backCamera.nearClip, parameters.base.backCamera.farClip);
@@ -482,13 +495,7 @@ namespace entropy
 
 				if (ofxPreset::Gui::BeginTree(parameters.base.frontCamera, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(parameters.base.frontCamera.mouseControl))
-					{
-						if (parameters.base.frontCamera.mouseControl)
-						{
-							parameters.base.backCamera.mouseControl = false;
-						}
-					}
+					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.mouseControl);
 					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.relativeYAxis);
 					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.attachToBack);
 					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.fov);
@@ -497,6 +504,20 @@ namespace entropy
 					if (ImGui::Button("Reset"))
 					{
 						this->resetCamera(render::Layout::Front);
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Copy from Back"))
+					{
+						const bool wasAttachToBack = parameters.base.frontCamera.attachToBack;
+						if (wasAttachToBack)
+						{
+							parameters.base.frontCamera.attachToBack = false;
+						}
+						this->cameras[render::Layout::Front].setTransformMatrix(this->cameras[render::Layout::Back].getGlobalTransformMatrix());
+						if (wasAttachToBack)
+						{
+							parameters.base.frontCamera.attachToBack = true;
+						}
 					}
 
 					ofxPreset::Gui::EndTree(settings);
@@ -590,7 +611,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize_(const nlohmann::json & json)
 		{
-			// Deserialize cameras first so that front attachment doesn't interfere with position.
+			// Deserialize cameras first so that the saved parameters overwrite any duplicate settings.
 			if (json.count("Camera Back"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
