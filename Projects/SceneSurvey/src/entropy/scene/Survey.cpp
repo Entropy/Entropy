@@ -87,21 +87,25 @@ namespace entropy
 				this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
 				ofEnablePointSprites();
 				{
+					static const auto kLatitudeMin = -HALF_PI;
+					static const auto kLatitudeMax = HALF_PI;
+					static const auto kLongitudeMin = 0;
+					static const auto kLongitudeMax = TWO_PI;
 
 					if (parameters.renderBoss)
 					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetBoss.parameters.minLatitude, 0.0f, 1.0f, -PI, PI));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetBoss.parameters.maxLatitude, 0.0f, 1.0f, -PI, PI));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetBoss.parameters.minLongitude, 0.0f, 1.0f, -TWO_PI, TWO_PI));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetBoss.parameters.maxLongitude, 0.0f, 1.0f, -TWO_PI, TWO_PI));
+						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetBoss.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetBoss.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetBoss.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetBoss.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
 						this->dataSetBoss.draw();
 					}
 					if (parameters.renderDes)
 					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetDes.parameters.minLatitude, 0.0f, 1.0f, -PI, PI));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetDes.parameters.maxLatitude, 0.0f, 1.0f, -PI, PI));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetDes.parameters.minLongitude, 0.0f, 1.0f, -TWO_PI, TWO_PI));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetDes.parameters.maxLongitude, 0.0f, 1.0f, -TWO_PI, TWO_PI));
+						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetDes.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetDes.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetDes.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetDes.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
 						this->dataSetDes.draw();
 					}
 				}
