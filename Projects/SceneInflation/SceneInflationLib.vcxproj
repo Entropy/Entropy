@@ -184,26 +184,11 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
     <ClCompile Include="src\entropy\inflation\GPUMarchingCubes.cpp" />
     <ClCompile Include="src\entropy\inflation\NoiseField.cpp" />
     <ClCompile Include="src\entropy\scene\Inflation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
     <ClInclude Include="src\entropy\inflation\Constants.h" />
     <ClInclude Include="src\entropy\inflation\GPUMarchingCubes.h" />
     <ClInclude Include="src\entropy\inflation\NoiseField.h" />

@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxXmlSettings\src;..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxMSATimer\src;..\..\addons\ofxPreset\src;..\..\addons\ofxRange\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTimeline\src;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxWarp\src;..\..\addons\ofxWMFVideoPlayer\src;..\..\addons\ofxWMFVideoPlayer\src\presenter;..\..\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Projects\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxXmlSettings\src;..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxMSATimer\src;..\..\addons\ofxPreset\src;..\..\addons\ofxRange\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTimeline\src;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWMFVideoPlayer\src;..\..\addons\ofxWMFVideoPlayer\src\presenter;..\..\addons\ofxWMFVideoPlayer\src\presenter\common;..\..\Projects\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
