@@ -277,11 +277,6 @@ namespace entropy
 				popUp->update_(dt);
 			}
 
-			for (auto & it : this->boxes)
-			{
-				it.second.update();
-			}
-
 			this->update(dt);
 		}
 

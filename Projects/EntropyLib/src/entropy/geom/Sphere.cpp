@@ -6,8 +6,13 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Sphere::Sphere()
-			: meshDirty(true)
+			: Shape()
 		{
+			// Update parameter group.
+			this->parameters.setName("Sphere");
+			this->parameters.add(this->radius, this->resolution, this->arcHorz, this->arcVert);
+			
+			// Add parameter listeners.
 			this->paramListeners.push_back(this->radius.newListener([this](float &)
 			{
 				this->meshDirty = true;
@@ -16,7 +21,11 @@ namespace entropy
 			{
 				this->meshDirty = true;
 			}));
-			this->paramListeners.push_back(this->arcLength.newListener([this](float &)
+			this->paramListeners.push_back(this->arcHorz.newListener([this](float &)
+			{
+				this->meshDirty = true;
+			}));
+			this->paramListeners.push_back(this->arcVert.newListener([this](float &)
 			{
 				this->meshDirty = true;
 			}));
@@ -29,117 +38,76 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Sphere::clear()
-		{
-			this->mesh.clear();
-		}
-
-		//--------------------------------------------------------------
-		bool Sphere::update()
-		{
-			if (this->enabled)
-			{
-				if (this->meshDirty)
-				{
-					this->rebuildMesh();
-					return true;
-				}
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		void Sphere::draw() const
-		{
-			if (!this->enabled) return;
-
-			ofPushStyle();
-			{
-				ofEnableAlphaBlending();
-				ofSetColor(ofColor::white);
-
-				this->mesh.draw();
-			}
-			ofPopStyle();
-		}
-
-		//--------------------------------------------------------------
 		void Sphere::rebuildMesh()
 		{
 			this->clear();
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
-			const auto arcResolution = static_cast<int>(ofMap(this->arcLength, 0.0f, 1.0f, 0, this->resolution));
-			const auto doubleResolution = this->resolution * 2.0f;
+			const int doubleResolution = this->resolution * 2;
+			const int vertResolution = static_cast<int>(ofMap(this->arcVert, 0.0f, 1.0f, 0, this->resolution));
+			const int horzResolution = static_cast<int>(ofMap(this->arcHorz, 0.0f, 1.0f, 0, doubleResolution));
 
-			const auto polarInc = PI / (this->resolution);
-			const auto azimInc = TWO_PI / (doubleResolution);
+			const float polarInc = PI / this->resolution;
+			const float azimInc = TWO_PI / doubleResolution;
 
 			glm::vec3 vertex;
 			glm::vec2 texcoord;
 
-			for (float i = 0; i < arcResolution + 1; ++i)
+			for (int i = 0; i < vertResolution + 1; ++i)
 			{
 				float tr = sin(PI - i * polarInc);
 				float ny = cos(PI - i * polarInc);
 
-				texcoord.y = i / this->resolution;
+				texcoord.y = i / static_cast<float>(this->resolution);
 
-				for (float j = 0; j <= doubleResolution; ++j) 
+				for (int j = 0; j <= horzResolution; ++j)
 				{
 					float nx = tr * sin(j * azimInc);
 					float nz = tr * cos(j * azimInc);
 
-					texcoord.x = j / (doubleResolution);
+					texcoord.x = j / static_cast<float>(doubleResolution);
 
 					vertex = glm::vec3(nx, ny, nz);
-					mesh.addNormal(vertex);
+					this->mesh.addNormal(vertex);
 					vertex *= radius;
-					mesh.addVertex(vertex);
-					mesh.addTexCoord(texcoord);
+					this->mesh.addVertex(vertex);
+					this->mesh.addTexCoord(texcoord);
 				}
 			}
 
-			int nr = doubleResolution + 1;
+			int nr = horzResolution + 1;
 			ofIndexType i0, i1, i2;
-			for (float y = 0; y < arcResolution; ++y)
+			for (int y = 0; y < vertResolution; ++y)
 			{
-				for (float x = 0; x < doubleResolution; ++x)
+				for (int x = 0; x < horzResolution; ++x)
 				{
-					// first tri //
-					if (y > 0) 
+					// First triangle.
+					if (y > 0 && (this->arcVert == 1.0f || y < vertResolution - 1)) 
 					{
 						i0 = (y + 0) * nr + (x + 0);
 						i1 = (y + 0) * nr + (x + 1);
 						i2 = (y + 1) * nr + (x + 0);
 
-						mesh.addIndex(i0);
-						mesh.addIndex(i1);
-						mesh.addIndex(i2);
+						this->mesh.addIndex(i0);
+						this->mesh.addIndex(i1);
+						this->mesh.addIndex(i2);
 					}
 
-					if (y < arcResolution - 1) 
+					if (y < vertResolution - 1)
 					{
-						// second tri //
+						// Second triangle.
 						i0 = (y + 0) * nr + (x + 1);
 						i1 = (y + 1) * nr + (x + 1);
 						i2 = (y + 1) * nr + (x + 0);
 
-						mesh.addIndex(i0);
-						mesh.addIndex(i1);
-						mesh.addIndex(i2);
-
+						this->mesh.addIndex(i0);
+						this->mesh.addIndex(i1);
+						this->mesh.addIndex(i2);
 					}
 				}
 			}
 
 			this->meshDirty = false;
-		}
-
-		//--------------------------------------------------------------
-		const ofVboMesh & Sphere::getMesh()
-		{
-			return this->mesh;
 		}
 	}
 }

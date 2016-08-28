@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofMain.h"
+#include "Shape.h"
 
 #include "entropy/render/WireframeFillRenderer.h"
 
@@ -9,47 +9,20 @@ namespace entropy
 	namespace geom
 	{
 		class Box
+			: public Shape
 		{
 		public:
 			Box();
 			~Box();
 
-			void clear();
-			bool update();
-
-			void draw() const;
 			void draw(render::WireframeFillRenderer & renderer);
+			using Shape::draw;
 
-			const ofVboMesh & getMesh();
-
-			ofParameter<bool> enabled{ "Enabled", true };
-			ofParameter<bool> autoDraw{ "Auto Draw", true };
-			ofParameter<int> cullFace{ "Cull Face", static_cast<int>(CullMode::Back), static_cast<int>(CullMode::Disabled), static_cast<int>(CullMode::Front) };
-			ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
-			ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
 			ofParameter<float> size{ "Size", 1.0f, 0.0f, 1000.0f };
 			ofParameter<float> edgeRatio{ "Edge Ratio", 0.01f, 0.001f, 1.0f };
 			ofParameter<int> subdivisions{ "Subdivisions", 1, 1, 10 };
 
-			ofParameterGroup parameters{ "Box",
-				enabled,
-				autoDraw,
-				cullFace,
-				color,
-				alpha,
-				size,
-				edgeRatio,
-				subdivisions
-			};
-
 		protected:
-			enum class CullMode
-			{
-				Disabled,
-				Back,
-				Front
-			};
-
 			typedef enum
 			{
 				Front  = 0x000001,
@@ -62,14 +35,8 @@ namespace entropy
 				All    = 0x111111
 			} Face;
 
-			void rebuildMesh();
+			void rebuildMesh() override;
 			void addEdge(const glm::vec3 & center, const glm::vec3 & dimensions, int faces);
-
-			ofVboMesh mesh;
-			bool meshDirty;
-			bool colorDirty;
-
-			vector<ofEventListener> paramListeners;
 		};
 	}
 }

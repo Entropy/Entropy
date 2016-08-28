@@ -73,14 +73,11 @@ namespace entropy
 			//ofDisableDepthTest();
 #endif
 			
-			//glEnable(GL_CULL_FACE);
-			//glCullFace(GL_BACK);
 			this->sphereTexture.bind();
 			{
 				this->sphereGeom.draw();
 			}
 			this->sphereTexture.unbind();
-			//glDisable(GL_CULL_FACE);
 		}
 
 		//--------------------------------------------------------------
@@ -109,8 +106,28 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
+
 				ofxPreset::Gui::AddGroup(this->pool.parameters, settings);
-				ofxPreset::Gui::AddGroup(this->sphereGeom.parameters, settings);
+
+				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
+				{
+					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
+					if (this->sphereGeom.enabled)
+					{
+						ImGui::SameLine();
+						ofxPreset::Gui::AddParameter(this->sphereGeom.autoDraw);
+					}
+					static const vector<string> labels{ "None", "Back", "Front" };
+					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, labels, 3);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.radius);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}

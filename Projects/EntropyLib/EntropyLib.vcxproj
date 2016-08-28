@@ -255,6 +255,7 @@
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
     <ClCompile Include="src\entropy\geom\Box.cpp" />
+    <ClCompile Include="src\entropy\geom\Shape.cpp" />
     <ClCompile Include="src\entropy\geom\Sphere.cpp" />
     <ClCompile Include="src\entropy\popup\Base.cpp" />
     <ClCompile Include="src\entropy\popup\Image.cpp" />
@@ -367,6 +368,7 @@
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
     <ClInclude Include="src\entropy\geom\Box.h" />
+    <ClInclude Include="src\entropy\geom\Shape.h" />
     <ClInclude Include="src\entropy\geom\Sphere.h" />
     <ClInclude Include="src\entropy\Helpers.h" />
     <ClInclude Include="src\entropy\popup\Base.h" />

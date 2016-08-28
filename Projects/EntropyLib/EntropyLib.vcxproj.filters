@@ -256,6 +256,9 @@
     <ClCompile Include="src\entropy\geom\Sphere.cpp">
       <Filter>src\entropy\geom</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\geom\Shape.cpp">
+      <Filter>src\entropy\geom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -750,6 +753,9 @@
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\geom\Sphere.h">
+      <Filter>src\entropy\geom</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\geom\Shape.h">
       <Filter>src\entropy\geom</Filter>
     </ClInclude>
   </ItemGroup>
