@@ -47,7 +47,9 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		void CMB::setup()
-		{}
+		{
+			this->pool.reset();
+		}
 
 		//--------------------------------------------------------------
 		void CMB::resizeBack(ofResizeEventArgs & args)

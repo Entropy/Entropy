@@ -82,6 +82,10 @@ namespace entropy
 			// Initialize child class.
 			this->init();
 
+			// List presets.
+			this->populatePresets();
+			this->currPreset.clear();
+
 			// List mappings.
 			this->populateMappings(parameters);
 
@@ -115,7 +119,6 @@ namespace entropy
 			{
 				this->cameras[render::Layout::Back].setFarClip(enabled);
 			}));
-
 
 			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled)
 			{
@@ -214,10 +217,6 @@ namespace entropy
 
 			// Setup child Scene.
 			this->setup();
-
-			// List presets.
-			this->populatePresets();
-			this->currPreset.clear();
 
 			this->ready = true;
 		}
@@ -778,12 +777,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::loadPreset(const string & presetName)
 		{
-			if (!this->ready)
+			if (!this->initialized)
 			{
-				ofLogError(__FUNCTION__) << "Scene not ready, call setup_() first!";
+				ofLogError(__FUNCTION__) << "Scene not initialized, call init_() first!";
 				return false;
 			}
 
+			// Make sure file exists.
 			const auto presetPath = this->getPresetPath(presetName);
 			auto presetFile = ofFile(presetPath);
 			if (!presetFile.exists())
@@ -792,6 +792,10 @@ namespace entropy
 				return false;
 			}
 
+			// Clean up scene.
+			this->exit_();
+
+			// Load parameters from the preset.
 			auto paramsPath = presetPath;
 			paramsPath.append("parameters.json");
 			auto paramsFile = ofFile(paramsPath);
@@ -807,6 +811,10 @@ namespace entropy
 
 			this->currPreset = presetName;
 
+			// Setup scene with the new parameters.
+			this->setup_();
+
+			// Notify listeners.
 			this->presetLoadedEvent.notify(this->currPreset);
 
 			return true;
