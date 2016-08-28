@@ -12,9 +12,9 @@
             "adaptive": true,
             "blend": {
                 "edges": "0, 0, 0.1625, 0",
-                "exponent": 1.22800004482269,
+                "exponent": 0.408000022172928,
                 "gamma": "1, 1, 1",
-                "luminance": "0.956863, 0.956863, 0.956863"
+                "luminance": "0.952941, 0.952941, 0.952941"
             },
             "brightness": 1.0,
             "corners": [
@@ -82,9 +82,9 @@
             "adaptive": true,
             "blend": {
                 "edges": "0.157, 0, 0, 0",
-                "exponent": 2.0,
+                "exponent": 0.510000050067902,
                 "gamma": "1, 1, 1",
-                "luminance": "0.831373, 0.831373, 0.831373"
+                "luminance": "0.996078, 0.996078, 0.996078"
             },
             "brightness": 1.0,
             "corners": [
