@@ -72,6 +72,8 @@ namespace entropy
 
 			ofEvent<string> presetLoadedEvent;
 
+			void setShowtime();
+			
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);
 			int getCurrentTimelineFrame();

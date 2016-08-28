@@ -687,6 +687,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::setShowtime()
+		{
+			this->timeline.setCurrentTimeToInPoint();
+			this->setCameraLocked(true);
+			this->timeline.play();
+		}
+
+		//--------------------------------------------------------------
 		void Base::drawTimeline(ofxPreset::Gui::Settings & settings)
 		{
 			// Disable mouse events if it's already been captured.

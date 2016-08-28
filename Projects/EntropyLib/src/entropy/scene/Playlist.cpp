@@ -80,7 +80,7 @@ namespace entropy
 			// Just start the first scene in the map.
 			if (this->setCurrentScene(this->scenes.begin()->first))
 			{
-				this->setCurrentPreset(kPresetDefaultName);
+				this->setCurrentPreset(kPresetDefaultName, false);
 			}
 		}
 
@@ -188,11 +188,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::setCurrentPreset(const string & name)
+		bool Playlist::setCurrentPreset(const string & name, bool showtime)
 		{
 			if (this->currentScene)
 			{
-				return this->currentScene->loadPreset(name);
+				if (this->currentScene->loadPreset(name))
+				{
+					if (showtime)
+					{
+						this->currentScene->setShowtime();
+					}
+					return true;
+				}
 			}
 			return false;
 		}
@@ -233,7 +240,7 @@ namespace entropy
 				auto & sceneName = this->shortNames[item.first];
 				if (this->setCurrentScene(sceneName))
 				{
-					if (this->setCurrentPreset(item.second))
+					if (this->setCurrentPreset(item.second, true))
 					{
 						this->currentTrack = index;
 
