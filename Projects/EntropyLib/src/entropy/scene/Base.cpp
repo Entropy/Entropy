@@ -266,6 +266,25 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
+			// TODO: Figure out a better way to do this, with event consumption or something.
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.backCamera.mouseControl)
+			{
+				this->cameras[render::Layout::Back].disableMouseInput();
+			}
+			else
+			{
+				this->cameras[render::Layout::Back].enableMouseInput();
+			}
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.frontCamera.mouseControl)
+			{
+				this->cameras[render::Layout::Front].disableMouseInput();
+			}
+			else
+			{
+				this->cameras[render::Layout::Front].enableMouseInput();
+			}
+			// TODO: End
+
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
