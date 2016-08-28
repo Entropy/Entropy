@@ -107,7 +107,32 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
 
-				ofxPreset::Gui::AddGroup(this->pool.parameters, settings);
+				if (ofxPreset::Gui::BeginTree(this->pool.parameters, settings))
+				{
+					ofxPreset::Gui::AddParameter(this->pool.runSimulation);
+					if (ImGui::Button("Reset Simulation"))
+					{
+						this->pool.resetSimulation = true;
+					}
+
+					ofxPreset::Gui::AddParameter(this->pool.dropColor);
+					ofxPreset::Gui::AddParameter(this->pool.dropping);
+					ofxPreset::Gui::AddParameter(this->pool.dropRate);
+
+					ofxPreset::Gui::AddParameter(this->pool.rippleRate);
+
+					ofxPreset::Gui::AddParameter(this->pool.damping);
+					ofxPreset::Gui::AddParameter(this->pool.radius);
+					ofxPreset::Gui::AddParameter(this->pool.ringSize);
+
+#if defined(COMPUTE_GL_3D)
+					static const vector<string> labels{ "Nearest", "Linear" };
+					ofxPreset::Gui::AddRadio(this->pool.filterMode, labels, 2);
+					ofxPreset::Gui::AddParameter(this->pool.volumeSize);
+#endif
+
+					ofxPreset::Gui::EndTree(settings);
+				}
 
 				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
 				{

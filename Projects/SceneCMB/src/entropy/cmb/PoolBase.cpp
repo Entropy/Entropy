@@ -6,40 +6,47 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		PoolBase::PoolBase()
-			: restartSimulation(false)
+			: resetSimulation(false)
 		{}
 
 		//--------------------------------------------------------------
 		void PoolBase::setup()
 		{
+			this->resetSimulation = true;
+		}
+
+		//--------------------------------------------------------------
+		void PoolBase::reset()
+		{
 			this->prevIdx = 0;
 			this->currIdx = 1;
 			this->tempIdx = 2;
 
-			this->restartSimulation = true;
+			this->resetSimulation = false;
 		}
 
 		//--------------------------------------------------------------
 		void PoolBase::update()
 		{
-			if (this->restartSimulation)
+			if (this->resetSimulation)
 			{
-				this->setup();
-				this->restartSimulation = false;
+				this->reset();
 			}
 
-			auto & parameters = this->getParameters();
-			if (parameters.base.dropping && (ofGetFrameNum() % parameters.base.dropRate) == 0)
+			if (this->runSimulation)
 			{
-				this->addDrop();
-			}
+				if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
+				{
+					this->addDrop();
+				}
 
-			if ((ofGetFrameNum() % parameters.base.rippleRate) == 0)
-			{
-				this->stepRipple();
-				this->copyResult();
+				if ((ofGetFrameNum() % this->rippleRate) == 0)
+				{
+					this->stepRipple();
+					this->copyResult();
 
-				std::swap(this->currIdx, this->prevIdx);
+					std::swap(this->currIdx, this->prevIdx);
+				}
 			}
 		}
 
@@ -59,7 +66,7 @@ namespace entropy
 		void PoolBase::setDimensions(const glm::vec3 & dimensions)
 		{
 			this->dimensions = dimensions;
-			this->restartSimulation = true;
+			this->setup();
 		}
 	}
 }

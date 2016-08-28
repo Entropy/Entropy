@@ -19,25 +19,12 @@ namespace entropy
 			PoolGL3D();
 
 			void setup() override;
+
+			void reset() override;
 			void draw() override;
 
-			struct : BaseParameters
-			{
-				struct : ofParameterGroup
-				{
-					ofParameter<int> filterMode{ "Filter Mode", GL_LINEAR, GL_NEAREST, GL_LINEAR };
-					ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
-
-					PARAM_DECLARE("Volumetrics", filterMode, volumeSize);
-				} volumetrics;
-
-				PARAM_DECLARE("Pool GL 3D", volumetrics);
-			} parameters;
-
-			BaseParameters & getParameters() override
-			{
-				return this->parameters;
-			}
+			ofParameter<int> filterMode{ "Filter Mode", GL_LINEAR, GL_NEAREST, GL_LINEAR };
+			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
 
 		protected:
 			void addDrop() override;
