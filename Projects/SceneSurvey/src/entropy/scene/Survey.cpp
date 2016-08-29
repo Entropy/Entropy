@@ -35,8 +35,35 @@ namespace entropy
 			this->parameters.add(this->dataSetBoss.parameters);
 			this->parameters.add(this->dataSetDes.parameters);
 
+			// Build the galaxy quad.
+			this->galaxyQuad.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+			this->galaxyQuad.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
+			this->galaxyQuad.addVertex(glm::vec3(-1.0f,  1.0f, 0.0f));
+			this->galaxyQuad.addVertex(glm::vec3( 1.0f, -1.0f, 0.0f));
+			this->galaxyQuad.addVertex(glm::vec3( 1.0f,  1.0f, 0.0f));
+			this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 1.0f));
+			this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 0.0f));
+			this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 1.0f));
+			this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 0.0f));
+
 			// Build the texture.
-			entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
+			//entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
+			const auto filePath = this->getAssetsPath("images/spiral-galaxy.jpg");
+			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
+			ofPixels pixels;
+			ofLoadImage(pixels, filePath);
+			if (!pixels.isAllocated())
+			{
+				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
+			}
+
+			bool wasUsingArbTex = ofGetUsingArbTex();
+			ofDisableArbTex();
+			{
+				this->texture.enableMipmap();
+				this->texture.loadData(pixels);
+			}
+			if (wasUsingArbTex) ofEnableArbTex();
 
 			// Load the shader.
 			this->spriteShader.load("shaders/sprite");
@@ -76,6 +103,26 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Survey::drawDataSet(LayoutParameters & parameters)
 		{
+			// Draw the galaxy in the center.
+			ofPushMatrix();
+			{
+				ofScale(this->parameters.galaxy.scale);
+				ofRotateX(this->parameters.galaxy.orientation.get().x);
+				ofRotateY(this->parameters.galaxy.orientation.get().y);
+				ofRotateZ(this->parameters.galaxy.orientation.get().z);
+
+				ofPushStyle();
+				{
+					ofSetColor(255, this->parameters.galaxy.alpha * 255);
+
+					this->texture.bind();
+					this->galaxyQuad.draw();
+					this->texture.unbind();
+				}
+				ofPopStyle();
+			}
+			ofPopMatrix();
+
 			ofPushMatrix();
 			ofScale(parameters.scale);
 			{
@@ -123,6 +170,8 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
+				ofxPreset::Gui::AddGroup(this->parameters.galaxy, settings);
+				
 				this->dataSetBoss.gui(settings);
 				this->dataSetDes.gui(settings);
 

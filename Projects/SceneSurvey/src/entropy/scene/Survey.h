@@ -47,6 +47,8 @@ namespace entropy
 			survey::DataSet dataSetBoss;
 			survey::DataSet dataSetDes;
 
+			ofVboMesh galaxyQuad;
+
 			ofShader spriteShader;
 			ofTexture texture;
 
@@ -58,7 +60,19 @@ namespace entropy
 				return this->parameters;
 			}
 
-			BaseParameters parameters;
+			struct : BaseParameters
+			{
+				struct : ofParameterGroup
+				{
+					ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
+					ofParameter<float> scale{ "Scale", 1.0f, 0.0f, 10000.0f };
+					ofParameter<glm::vec3> orientation{ "Orientation", glm::vec3(0.0f), glm::vec3(-180.0f), glm::vec3(180.0f) };
+
+					PARAM_DECLARE("Galaxy", alpha, scale, orientation);
+				} galaxy;
+
+				PARAM_DECLARE("Survey", galaxy);
+			} parameters;
 		};
 	}
 }
