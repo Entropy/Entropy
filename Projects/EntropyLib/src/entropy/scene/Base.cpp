@@ -211,10 +211,6 @@ namespace entropy
 			// Set data path root for scene.
 			ofSetDataPathRoot(this->getDataPath());
 
-			// Setup default cameras.
-			this->resetCamera(render::Layout::Back);
-			this->resetCamera(render::Layout::Front);
-
 			// Setup child Scene.
 			this->setup();
 
@@ -238,6 +234,10 @@ namespace entropy
 
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
+
+			// Reset cameras.
+			this->resetCamera(render::Layout::Back);
+			this->resetCamera(render::Layout::Front);
 
 			// Clear pop-ups.
 			while (!this->popUps.empty())
@@ -623,7 +623,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize_(const nlohmann::json & json)
 		{
-			// Deserialize cameras first so that the saved parameters overwrite any duplicate settings.
+			ofxPreset::Serializer::Deserialize(json, this->getParameters());
+
 			if (json.count("Camera Back"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
@@ -632,8 +633,7 @@ namespace entropy
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
-			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			
+
 			// Clear previous Pop-ups.
 			while (!this->popUps.empty())
 			{
