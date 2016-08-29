@@ -9,7 +9,7 @@
             "scene": "Inflation"
         },
         {
-            "preset": "paris_aug26",
+            "preset": "paris_28",
             "scene": "Particles"
         },
         {
@@ -17,11 +17,11 @@
             "scene": "CMB"
         },
         {
-            "preset": "_default",
+            "preset": "paris_29",
             "scene": "Survey"
         },
         {
-            "preset": "paris_aug26",
+            "preset": "paris_29",
             "scene": "Video"
         }
     ]

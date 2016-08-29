@@ -1,26 +1,26 @@
 {
     "Camera Back": {
-        "aspectRatio": 3.1611111164093,
-        "distance": 0.64876401424408,
+        "aspectRatio": 3.17685174942017,
+        "distance": 0.638015806674957,
         "drag": 0.899999976158142,
-        "farClip": 1000.0,
+        "farClip": 6.0,
         "forceAspectRatio": true,
         "fov": 60.0,
         "inertiaEnabled": false,
         "lensOffset": "0, 0",
-        "mouseInputEnabled": true,
+        "mouseInputEnabled": false,
         "mouseMiddleButtonEnabled": true,
-        "nearClip": 0.00100000004749745,
+        "nearClip": 0.00999999977648258,
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "0.804661, -0.0564695, -0.590457,        0\n-0.438374, -0.724602, -0.52687,        0\n-0.399592, 0.683084, -0.607407,        0\n-0.328516, 0.282241, -0.483024,        1",
+        "transform": "0.0547509, 0.0604177, -0.996669,        0\n-0.537107, 0.843237, 0.021612,        0\n0.841734, 0.534135, 0.078619,        0\n 0.49257,  0.36648, 0.173584,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
     "Camera Front": {
-        "aspectRatio": 2.89074063301086,
-        "distance": 0.192770332098007,
+        "aspectRatio": 2.82592582702637,
+        "distance": 0.411817073822021,
         "drag": 0.899999976158142,
         "farClip": 1000.0,
         "forceAspectRatio": true,
@@ -33,7 +33,7 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": " 0.99996, 1.6205e-07, 2.23517e-08,        0\n-1.28523e-07, 0.999959, 5.96046e-08,        0\n-1.86265e-08, -8.9407e-08, 0.999995,        0\n4.23752e-08, 2.98023e-08, -0.19277,        1",
+        "transform": "0.0547581, 0.0604194, -0.996666,        0\n-0.537105, 0.843238, 0.0216103,        0\n0.841732, 0.534132, 0.0786262,        0\n 0.83921, 0.586446, 0.205964,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
@@ -43,7 +43,7 @@
             "Camera Back": {
                 "FOV": "60",
                 "Far Clip": "1000",
-                "Mouse Control": "1",
+                "Mouse Control": "0",
                 "Near Clip": "0.001",
                 "Relative Y Axis": "0"
             },
@@ -57,7 +57,7 @@
             }
         },
         "Box Back": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Color": "0.0196078, 0.0196078, 0.0196078, 1",
             "Cull Face": "2",
@@ -67,11 +67,11 @@
             "Subdivisions": "4"
         },
         "Box Front": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
-            "Edge Ratio": "0.0005",
+            "Edge Ratio": "0.0012",
             "Enabled": "1",
             "Size": "1",
             "Subdivisions": "4"
@@ -105,7 +105,7 @@
             "Bloom": {
                 "Brightness Threshold": "0.303",
                 "Debug blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num Passes": "7",
                 "Sigma": "9.16"
             },
@@ -131,7 +131,7 @@
             "Debug Noise": "0",
             "Draw Box In Renderer": "0",
             "Render Back": "1",
-            "Render Front": "1"
+            "Render Front": "0"
         },
         "Run Simulation": "1"
     },
@@ -258,7 +258,7 @@
         "Fade To": "0.5",
         "Fade power": "2",
         "Fill": "1",
-        "Fill alpha": "0.546",
+        "Fill alpha": "0.268",
         "Fog enabled": "1",
         "Fog max dist.": "4.342",
         "Fog min dist.": "1.392",
