@@ -6,6 +6,8 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	//ofEnableGLDebugLog();
+
 	// Add Scene to the Playlist.
 	auto playlist = entropy::GetPlaylist();
 	playlist->addScene(make_shared<entropy::scene::CMB>());

@@ -343,7 +343,6 @@ namespace entropy
 				else
 				{
 					this->drawFrontWorld();
-				//	this->boxes[layout].draw();
 				}
 			}
 			ofDisableDepthTest();
