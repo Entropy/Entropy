@@ -67,7 +67,7 @@ namespace entropy
 
 		protected:
 			bool setCurrentScene(const string & name);
-			bool setCurrentPreset(const string & name);
+			bool setCurrentPreset(const string & name, bool showtime);
 			void unsetCurrent();
 
 			map<string, shared_ptr<Base>> scenes;

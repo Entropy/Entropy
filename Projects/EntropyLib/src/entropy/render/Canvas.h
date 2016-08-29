@@ -24,7 +24,7 @@ namespace entropy
 			void beginDraw();
 			void endDraw();
 
-            void postProcess(PostParameters & parameters);
+			void postProcess(PostParameters & parameters);
 			
 			void render(const ofRectangle & bounds);
 
@@ -54,9 +54,9 @@ namespace entropy
 
 			Layout getLayout() const;
 
-            std::filesystem::path getSettingsFilePath();
-            std::filesystem::path getShaderPath(const string & shaderFile = "");
-			
+			std::filesystem::path getSettingsFilePath();
+			std::filesystem::path getShaderPath(const string & shaderFile = "");
+
 			bool loadSettings();
 			bool saveSettings();
 

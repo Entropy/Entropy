@@ -343,7 +343,6 @@ namespace entropy
 				else
 				{
 					this->drawFrontWorld();
-				//	this->boxes[layout].draw();
 				}
 			}
 			ofDisableDepthTest();
@@ -684,6 +683,14 @@ namespace entropy
 		bool Base::isReady() const
 		{
 			return this->ready;
+		}
+
+		//--------------------------------------------------------------
+		void Base::setShowtime()
+		{
+			this->timeline.setCurrentTimeToInPoint();
+			this->setCameraLocked(true);
+			this->timeline.play();
 		}
 
 		//--------------------------------------------------------------
