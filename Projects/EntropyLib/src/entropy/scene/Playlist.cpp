@@ -153,6 +153,11 @@ namespace entropy
 			{
 				this->currentScene = scene;
 
+				this->presetCuedListener = this->currentScene->presetCuedEvent.newListener([this](string & preset)
+				{
+					this->nextPreset = preset;
+				});
+
 				for (auto & it : this->cameraControlAreas)
 				{
 					this->currentScene->setCameraControlArea(it.first, it.second);
@@ -172,6 +177,9 @@ namespace entropy
 				this->currentScene->exit_();
 			}
 			this->currentScene.reset();
+
+			this->presetCuedListener.unsubscribe();
+			this->nextPreset.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -283,6 +291,13 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
+				if (!this->nextPreset.empty())
+				{
+					this->setCurrentPreset(this->nextPreset, false);
+					this->nextPreset.clear();
+					return true;
+				}
+				
 				this->currentScene->update_(dt);
 				return true;
 			}

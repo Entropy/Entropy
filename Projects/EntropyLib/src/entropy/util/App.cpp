@@ -72,12 +72,12 @@ namespace entropy
 			this->imGui.close();
 
 			// Reset pointers.
+			this->playlist.reset();
 			for (auto & it : this->canvas)
 			{
 				it.second.reset();
 			}
 			this->canvas.clear();
-			this->playlist.reset();
 		}
 
 		//--------------------------------------------------------------
