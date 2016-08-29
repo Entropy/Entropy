@@ -152,7 +152,6 @@ namespace entropy
 			if (scene)
 			{
 				this->currentScene = scene;
-				this->currentScene->setup_();
 
 				for (auto & it : this->cameraControlAreas)
 				{
