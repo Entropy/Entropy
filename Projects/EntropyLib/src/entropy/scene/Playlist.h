@@ -77,7 +77,9 @@ namespace entropy
 			vector<pair<string, string>> tracks;
 			size_t currentTrack;
 
+			ofEventListener presetCuedListener;
 			ofEventListener presetLoadedListener;
+			string nextPreset;
 
 			map<render::Layout, ofRectangle> cameraControlAreas;
 		};

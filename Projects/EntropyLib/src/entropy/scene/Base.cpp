@@ -235,10 +235,6 @@ namespace entropy
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
 
-			// Reset cameras.
-			this->resetCamera(render::Layout::Back);
-			this->resetCamera(render::Layout::Front);
-
 			// Clear pop-ups.
 			while (!this->popUps.empty())
 			{
@@ -397,7 +393,8 @@ namespace entropy
 				{
 					if (ImGui::Selectable(name.c_str(), (name == this->currPreset)))
 					{
-						this->loadPreset(name);
+						// Don't load right away, notify Playlist which will take action when ready.
+						this->presetCuedEvent.notify(name);
 					}
 				}
 				ImGui::ListBoxFooter();
@@ -821,6 +818,10 @@ namespace entropy
 			// Clean up scene.
 			this->exit_();
 
+			// Reset cameras.
+			this->resetCamera(render::Layout::Back);
+			this->resetCamera(render::Layout::Front);
+
 			// Load parameters from the preset.
 			auto paramsPath = presetPath;
 			paramsPath.append("parameters.json");
@@ -981,7 +982,7 @@ namespace entropy
 			//this->cameras[layout].setFarClip(100000.0f);
 			//this->cameras[layout].setFov(60.0f);
 			this->cameras[layout].setAspectRatio(GetCanvasWidth(layout) / GetCanvasHeight(layout));
-			
+
 			if (layout == render::Layout::Front)
 			{
 				this->cameras[render::Layout::Front].clearParent(true);
