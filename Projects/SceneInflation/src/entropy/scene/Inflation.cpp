@@ -6,6 +6,19 @@ namespace entropy
 {
 	namespace scene
 	{
+		using namespace glm;
+		float smoothstep(float edge0, float edge1, float x){
+			float t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+			return t * t * (3.0 - 2.0 * t);
+		}
+
+		float smootherstep(float edge0, float edge1, float x){
+			// Scale, and clamp x to 0..1 range
+			x = clamp((x - edge0)/(edge1 - edge0), 0.0f, 1.0f);
+			// Evaluate polynomial
+			return x*x*x*(x*(x*6 - 15) + 10);
+		}
+
 		//--------------------------------------------------------------
 		Inflation::Inflation()
 			: Base()
@@ -48,7 +61,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			this->cameras[render::Layout::Back].setDistance(2);
+			cameraDistanceBeforeBB = 2;
+			this->cameras[render::Layout::Back].setDistance(cameraDistanceBeforeBB);
 			this->cameras[render::Layout::Back].setNearClip(0.01);
 			this->cameras[render::Layout::Back].setFarClip(6.0);
 
@@ -89,17 +103,40 @@ namespace entropy
 				switch(state){
 					case PreBigBang:
 					break;
-					case BigBang:
+					case PreBigBangWobble:{
 						t_from_bigbang = now - t_bigbang;
-						scale = t_from_bigbang/parameters.bigBangDuration;
+						float pct = t_from_bigbang/parameters.preBigBangWobbleDuration;
+						pct *= pct;
+						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
+							noiseField.octaves[i].wavelength = targetWavelengths[i] * ofMap(pct, 0, 1, 1, 0.4);
+						}
+					}break;
+					case BigBang:{
+						t_from_bigbang = now - t_bigbang;
+						auto pct = t_from_bigbang/parameters.bigBangDuration;
+						cameras[render::Layout::Back].setDistance(ofMap(pct,0,1,cameraDistanceBeforeBB,0.5));
 						if(t_from_bigbang > parameters.bigBangDuration){
+							//resetWavelengths();
 							state = Expansion;
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
-					break;
+					}break;
 					case Expansion:
 						t_from_bigbang = now - t_bigbang;
-						scale = t_from_bigbang/parameters.bigBangDuration;
+						scale  += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
+						noiseField.scale = scale;
+					break;
+					case ExpansionTransition:
+						scale  += dt * parameters.Ht;
+						noiseField.scale = scale;
+						float t_EndIn = t_transition + parameters.bbTransitionIn;
+						float t_EndPlateau = t_EndIn + parameters.bbTransitionPlateau;
+						float t_EndOut = t_EndPlateau + parameters.bbTransitionOut;
+
+						if(now > t_EndPlateau && now < t_EndOut){
+							auto pct = ofxTween::map(now,t_EndPlateau,t_EndOut,0,1,false,ofxEasingSine(),ofxTween::easeOut);
+							cameras[render::Layout::Back].setDistance(ofMap(pct, 0, 1, 1, 0.5));
+						}
 					break;
 				}
 
@@ -148,6 +185,7 @@ namespace entropy
 
 			switch (state) {
 			case PreBigBang:
+			case PreBigBangWobble:
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				renderers[layout].sphericalClip = true;
 				renderers[layout].fadeEdge0 = 0.0;
@@ -166,10 +204,8 @@ namespace entropy
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 				break;
 			case Expansion:
-				ofScale(scale);
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
-
+			case ExpansionTransition:
+				//ofScale(scale);
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 				break;
@@ -183,6 +219,75 @@ namespace entropy
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		}
 
+		void Inflation::drawBackOverlay(){
+			ofEnableAlphaBlending();
+			switch(state){
+				case PreBigBangWobble:
+					if(t_from_bigbang > parameters.preBigBangWobbleDuration){
+						t_bigbang = now;
+						state = BigBang;
+					}
+				break;
+				case BigBang:
+				case Expansion:{
+					float pct = t_from_bigbang / parameters.bigBangDuration;
+					float pctIn = parameters.bbFlashStart + parameters.bbFlashIn / parameters.bigBangDuration;
+					float pctPlateau = pctIn + parameters.bbFlashPlateau / parameters.bigBangDuration;
+					float pctOut = pctPlateau + parameters.bbFlashOut / parameters.bigBangDuration;
+					if(pct>parameters.bbFlashStart && pct<pctIn){
+						auto gray = ofMap(pct, parameters.bbFlashStart, pctIn, 0, 1, true);
+						gray *= gray;
+						ofSetColor(ofFloatColor(gray,gray));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}else if(pct>pctIn && pct<pctPlateau){
+						ofSetColor(ofFloatColor(1));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}else if(pct>pctPlateau && pct<pctOut){
+						auto gray = ofMap(pct, pctPlateau, pctOut, 1, 0, true);
+						gray = sqrt(gray);
+						ofSetColor(ofFloatColor(gray,gray));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}
+
+					if(scale > parameters.bbTransitionFlash){
+						state = ExpansionTransition;
+						t_transition = now;
+						octavesResetDuringTransition = false;
+					}
+				}break;
+				case ExpansionTransition:{
+					float t_EndIn = t_transition + parameters.bbTransitionIn;
+					float t_EndPlateau = t_EndIn + parameters.bbTransitionPlateau;
+					float t_EndOut = t_EndPlateau + parameters.bbTransitionOut;
+					if(now<t_EndIn){
+						auto gray = ofMap(now, t_transition, t_EndIn, 0, 1, true);
+						gray *= gray;
+						ofSetColor(ofFloatColor(ofFloatColor(parameters.bbTransitionColor)*gray, gray));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+						cout << gray << endl;
+					}else if(now<t_EndPlateau){
+						if(!octavesResetDuringTransition){
+							resetWavelengths();
+							parameters.Ht /= 100;
+							octavesResetDuringTransition = true;
+							scale = 1;
+							t_from_bigbang = now;
+							cameras[render::Layout::Back].setDistance(1);
+						}
+						ofSetColor(ofFloatColor(parameters.bbTransitionColor));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}else if(now<t_EndOut){
+						auto gray = ofMap(now, t_EndPlateau, t_EndOut, 1, 0, true);
+						gray = sqrt(gray);
+						ofSetColor(ofFloatColor(ofFloatColor(parameters.bbTransitionColor)*gray, gray));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}else{
+						state = Expansion;
+					}
+
+				}
+			}
+		}
 		//--------------------------------------------------------------
 		void Inflation::drawFrontOverlay()
 		{
@@ -202,11 +307,21 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
 				ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
+				ofxPreset::Gui::AddParameter(this->parameters.preBigBangWobbleDuration);
+				ofxPreset::Gui::AddParameter(this->parameters.Ht);
+				ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
+				ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
+				ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
+				ofxPreset::Gui::AddParameter(this->parameters.bbFlashOut);
+				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionIn);
+				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionOut);
+				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
+				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
+				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
 				if(ImGui::Button("Trigger bigbang")){
 					if(state == PreBigBang){
-						state = BigBang;
 						t_bigbang = now;
-						cout << "settings bigbang time at " << now << endl;
+						state = PreBigBangWobble;
 					}
 				}
 

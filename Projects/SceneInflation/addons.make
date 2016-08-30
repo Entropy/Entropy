@@ -11,4 +11,5 @@
 ../../addons/ofxTween
 ../../addons/ofxMSATimer
 ../../addons/ofxWarp
+../../addons/ofxEasing
 ofxXmlSettings

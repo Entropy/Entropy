@@ -32,6 +32,7 @@ namespace entropy
 
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
+			void drawBackOverlay() override;
 			void drawFrontOverlay() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
@@ -58,15 +59,19 @@ namespace entropy
 
 			enum State{
 				PreBigBang,
+				PreBigBangWobble,
 				BigBang,
 				Expansion,
+				ExpansionTransition,
 			}state;
 
 			double now = 0.0;
 			double t_bigbang = 0.0;
 			double t_from_bigbang = 0.0;
+			double t_transition = 0.0;
 			float scale = 1;
-			float Ht = 60.f; // rate of expansion
+			float cameraDistanceBeforeBB;
+			bool octavesResetDuringTransition=false;
 
 			std::array<float,4> targetWavelengths;
 
@@ -78,7 +83,18 @@ namespace entropy
 			struct : BaseParameters
 			{
 				ofParameter<bool> runSimulation{ "Run Simulation", true };
-				ofParameter<float> bigBangDuration{ "BigBang duration", 0.8f, 0.0f, 2.f};
+				ofParameter<float> bigBangDuration{ "BigBang duration", 0.25f, 0.0f, 2.f};
+				ofParameter<float> preBigBangWobbleDuration{ "Pre BigBang wobble duration", 3.f, 0.0f, 5.f};
+				ofParameter<float> bbFlashStart{"bigbang flash start %", 0.9, 0.f, 1.f};
+				ofParameter<float> bbFlashIn{"bigbang flash in, duration sec.", 0.1, 0.f, 1.f};
+				ofParameter<float> bbFlashPlateau{"bigbang flash plateau, sec.", 0.1, 0.f, 1.f};
+				ofParameter<float> bbFlashOut{"bigbang flash out, duration sec.", 0.1, 0.f, 1.f};
+				ofParameter<float> bbTransitionFlash{"inflation transition flash at scale.", 10.f, 2.f, 20.f};
+				ofParameter<float> bbTransitionIn{"inflation transition in, duration sec.", 0.5, 0.f, 1.f};
+				ofParameter<float> bbTransitionPlateau{"inflation transition plateau, sec.", 0.3, 0.f, 1.f};
+				ofParameter<float> bbTransitionOut{"inflation transition out, sec.", 2, 0.f, 3.f};
+				ofParameter<ofFloatColor> bbTransitionColor{"inflation transition bg color", ofFloatColor::fromHex(0x91a5a3,1)};
+				ofParameter<float> Ht{ "Rate of expansion", 5.f, 1.f, 100.f}; // rate of expansion
 
 				struct : ofParameterGroup
 				{

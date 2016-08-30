@@ -165,7 +165,7 @@ namespace entropy
 			}));
 
 			// Restore default data path.
-			ofSetDataPathRoot(prevDataPathRoot);
+			//ofSetDataPathRoot(prevDataPathRoot);
 
 			this->initialized = true;
 		}
