@@ -153,6 +153,13 @@ namespace entropy
 						float t_EndOut = t_EndPlateau + parameters.bbTransitionOut;
 
 						if(now < t_EndIn){
+							auto pct = ofMap(now,t_transition,t_EndIn,0,1);
+							pct = sqrt(sqrt(sqrt(pct)));
+							if(firstCycle){
+								parameters.Ht = ofMap(pct, 0, 1, parameters.HtBB, parameters.HtBB * 2);
+							}else{
+								parameters.Ht = ofMap(pct, 0, 1, parameters.HtPostBB, parameters.HtBB);
+							}
 							scale  += dt * parameters.Ht;
 						}else if(now < t_EndPlateau){
 							auto pct = ofMap(now,t_transition,t_EndOut,0,1);
