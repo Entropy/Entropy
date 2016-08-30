@@ -76,6 +76,13 @@ namespace entropy
 			bool firstCycle;
 
 			std::array<float,4> targetWavelengths;
+			std::array<ofFloatColor,4> preBigbangColors{{
+				ofColor{117.f,118.f,118.f},
+				ofColor{200.,200.,200.},
+				ofColor(240.,127.,19.),
+				ofColor(128.,9.,9.),
+			}};
+			std::array<ofFloatColor,4> postBigBangColors;
 
 			BaseParameters & getParameters() override
 			{
@@ -97,8 +104,8 @@ namespace entropy
 				ofParameter<float> bbTransitionOut{"inflation transition out, sec.", 2, 0.f, 3.f};
 				ofParameter<ofFloatColor> bbTransitionColor{"inflation transition bg color", ofFloatColor::fromHex(0x91a5a3,1)};
 				ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
-				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 1.f, 100.f}; // rate of expansion
-				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 1.f, 100.f}; // rate of expansion
+				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
+				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
 				ofParameter<float> hubbleWavelength{ "Min wavelength for any octave", 4.f, 0.01f, 4.f };
 
 				struct : ofParameterGroup

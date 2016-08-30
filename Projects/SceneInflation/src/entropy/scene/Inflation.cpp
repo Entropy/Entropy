@@ -54,6 +54,10 @@ namespace entropy
 			this->renderers[render::Layout::Front].setup();
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 
+			for(size_t i=0;i<postBigBangColors.size();i++){
+				postBigBangColors[i] = noiseField.octaves[i].color;
+			}
+
 			now = 0;
 			t_bigbang = 0;
 		}
@@ -69,6 +73,9 @@ namespace entropy
 			now = 0;
 			t_bigbang = 0;
 			state = PreBigBang;
+			for(size_t i=0;i<postBigBangColors.size();i++){
+				noiseField.octaves[i].color = preBigbangColors[i];
+			}
 			resetWavelengths();
 		}
 
@@ -78,15 +85,19 @@ namespace entropy
 			auto wl = noiseField.resolution/4;
 			targetWavelengths[0] = wl;
 			noiseField.octaves[0].wavelength = wl;
+			noiseField.octaves[0].advanceTime = true;
 			wl /= 2;
 			targetWavelengths[1] = wl;
 			noiseField.octaves[1].wavelength = wl;
+			noiseField.octaves[1].advanceTime = true;
 			wl /= 2;
 			targetWavelengths[2] = wl;
 			noiseField.octaves[2].wavelength = wl;
+			noiseField.octaves[2].advanceTime = true;
 			wl /= 2;
 			targetWavelengths[3] = wl;
 			noiseField.octaves[3].wavelength = wl;
+			noiseField.octaves[3].advanceTime = true;
 		}
 
 		void Inflation::resetWavelength(size_t octave){
@@ -95,6 +106,7 @@ namespace entropy
 				wl /= 2;
 			}
 			noiseField.octaves[octave].wavelength = wl / scale;
+			noiseField.octaves[octave].advanceTime = true;
 		}
 
 		//--------------------------------------------------------------
@@ -117,6 +129,7 @@ namespace entropy
 						pct *= pct;
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 							noiseField.octaves[i].wavelength = targetWavelengths[i] * ofMap(pct, 0, 1, 1, 0.4);
+							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], pct * 0.5);
 						}
 					}break;
 					case BigBang:{
@@ -125,7 +138,11 @@ namespace entropy
 						cameras[render::Layout::Back].setDistance(ofMap(pct,0,1,cameraDistanceBeforeBB,0.5));
 						if(t_from_bigbang > parameters.bigBangDuration){
 							//resetWavelengths();
+							firstCycle = true;
 							state = Expansion;
+						}
+						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
+							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], 0.5 + pct * 0.5);
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					}break;
@@ -140,9 +157,12 @@ namespace entropy
 						}
 						/*if(!firstCycle){
 							for(size_t i=0;i<noiseField.octaves.size()/2;i++){
-								noiseField.octaves[i].wavelength -= dt * parameters.Ht;
-								if(noiseField.octaves[i].wavelength < parameters.hubbleWavelength / scale){
-									resetWavelength(i);
+								if(noiseField.octaves[i].advanceTime){
+									noiseField.octaves[i].wavelength -= dt * parameters.Ht;
+									if(noiseField.octaves[i].wavelength < parameters.hubbleWavelength){
+										noiseField.octaves[i].advanceTime = false;
+										//resetWavelength(i);
+									}
 								}
 							}
 						}*/
@@ -344,6 +364,8 @@ namespace entropy
 				ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
 				ofxPreset::Gui::AddParameter(this->parameters.preBigBangWobbleDuration);
 				ofxPreset::Gui::AddParameter(this->parameters.Ht);
+				ofxPreset::Gui::AddParameter(this->parameters.HtBB);
+				ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
 				ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
 				ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
 				ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
