@@ -324,6 +324,11 @@ namespace entropy
 						state = PreBigBangWobble;
 					}
 				}
+				if(ImGui::Button("Trigger transition")){
+					state = ExpansionTransition;
+					t_transition = now;
+					octavesResetDuringTransition = false;
+				}
 
 				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
 				{
