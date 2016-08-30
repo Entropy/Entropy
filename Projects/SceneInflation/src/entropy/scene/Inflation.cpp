@@ -65,7 +65,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			cameraDistanceBeforeBB = 2;
+			cameraDistanceBeforeBB = 1;
 			this->cameras[render::Layout::Back].setDistance(cameraDistanceBeforeBB);
 			this->cameras[render::Layout::Back].setNearClip(0.01);
 			this->cameras[render::Layout::Back].setFarClip(6.0);
@@ -155,7 +155,7 @@ namespace entropy
 							d -= dt * parameters.Ht;
 							cameras[render::Layout::Back].setDistance(d);
 						}
-						/*if(!firstCycle){
+						if(!firstCycle){
 							for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 								if(noiseField.octaves[i].advanceTime){
 									noiseField.octaves[i].wavelength -= dt * parameters.Ht;
@@ -165,7 +165,7 @@ namespace entropy
 									}
 								}
 							}
-						}*/
+						}
 					break;
 					case ExpansionTransition:
 						float t_EndIn = t_transition + parameters.bbTransitionIn;
