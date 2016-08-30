@@ -6,6 +6,11 @@ namespace entropy
 {
 	namespace scene
 	{
+		using namespace glm;
+		float smoothstep(float edge0, float edge1, float x){
+			float t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+			return t * t * (3.0 - 2.0 * t);
+		}
 		//--------------------------------------------------------------
 		Inflation::Inflation()
 			: Base()
@@ -33,10 +38,14 @@ namespace entropy
 					this->boxes[render::Layout::Back].autoDraw = false;
 				}
 			}));
+			for(size_t i = 0; i < targetWavelengths.size(); i++){
+				targetAmplitudes[i] = noiseField.octaves[i].amplitude;
+			}
 
 			renderer.setup();
 			now = 0;
 			t_bigbang = 0;
+
 		}
 		
 		//--------------------------------------------------------------
@@ -49,22 +58,78 @@ namespace entropy
 			now = 0;
 			t_bigbang = 0;
 			state = PreBigBang;
+			parameters.Ht = parameters.Ht1;
+			parameters.currentFractalFadeScale = parameters.expansionFractalFade;
+			parameters.scale = 1;
 			resetWavelengths();
 		}
 
 		void Inflation::resetWavelengths(){
 			auto wl = noiseField.resolution/4;
-			targetWavelengths[0] = wl;
-			noiseField.octaves[0].wavelength = wl;
-			wl /= 2;
-			targetWavelengths[1] = wl;
-			noiseField.octaves[1].wavelength = wl;
-			wl /= 2;
-			targetWavelengths[2] = wl;
-			noiseField.octaves[2].wavelength = wl;
-			wl /= 2;
-			targetWavelengths[3] = wl;
-			noiseField.octaves[3].wavelength = wl;
+			for(size_t i = 0; i < targetWavelengths.size(); i++){
+				if(i<noiseField.octaves.size()/2){
+					targetWavelengths[i] = wl;
+					noiseField.octaves[i].wavelength = wl;
+					noiseField.octaves[i].amplitude = targetAmplitudes[i];
+					noiseField.octaves[i].advanceTime = true;
+					noiseField.octaves[i].enabled = true;
+					wl /= 2.;
+				}else{
+					noiseField.octaves[i].enabled = false;
+				}
+			}
+			parameters.hubbleFreq =  8. / noiseField.resolution;
+			parameters.Ht = parameters.Ht1;
+			parameters.currentFractalFadeScale = parameters.expansionFractalFade;
+			parameters.scale = 1;
+			noiseField.noiseSpeed = 2;
+		}
+
+		float wavelength(size_t idx, float resolution){
+			auto wl = resolution/4.;
+			if(idx>=4){
+				idx-=4;
+			}
+
+			for(size_t i=0;i<idx;i++){
+				wl/=2;
+			}
+			return wl;
+		}
+
+		void Inflation::updateOctaves(double dt){
+			for(size_t i=0; i<noiseField.octaves.size(); i++){
+				if(noiseField.octaves[i].enabled && noiseField.octaves[i].frequency > parameters.hubbleFreq){
+					//noiseField.octaves[i].amplitude -= sqrt(parameters.Ht * dt);
+					noiseField.octaves[i].wavelength += 0.001;//sqrt(parameters.Ht * dt);
+					//cout << i << " " << noiseField.octaves[i].wavelength << " " << 1. / hubbleFreq << endl;
+				}else if(i<noiseField.octaves.size()/2 && noiseField.octaves[i].advanceTime){
+					auto wl = wavelength(i, noiseField.resolution) / parameters.scale;
+					cout << "next wl " << wl << endl;
+					auto idx = i + noiseField.octaves.size()/2;
+					noiseField.octaves[idx].wavelength = wl;
+					noiseField.octaves[idx].amplitude = targetAmplitudes[i];
+					noiseField.octaves[idx].advanceTime = true;
+					noiseField.octaves[idx].enabled = true;
+					noiseField.octaves[i].advanceTime = false;
+				}else if(i>=noiseField.octaves.size()/2 && noiseField.octaves[i].advanceTime && noiseField.octaves[i].frequency < parameters.hubbleFreq){
+					auto wl = wavelength(i, noiseField.resolution) / parameters.scale;
+					cout << "next wl " << wl << endl;
+					auto idx = i - noiseField.octaves.size()/2;
+					noiseField.octaves[idx].wavelength = wl;
+					noiseField.octaves[idx].amplitude = targetAmplitudes[idx];
+					noiseField.octaves[idx].advanceTime = true;
+					noiseField.octaves[i].advanceTime = false;
+				}
+
+				if(noiseField.octaves[i].enabled){
+					timeSeries[i].push_back(noiseField.octaves[i].wavelength);
+					if(timeSeries[i].size()>100){
+						timeSeries[i].pop_front();
+					}
+				}
+
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -80,21 +145,82 @@ namespace entropy
 				now += dt;
 				switch(state){
 					case PreBigBang:
+						resetWavelengths();
+					break;
+					case PreBigBangWobbly:{
+						t_from_bigbang = now - t_bigbang;
+						float pct = t_from_bigbang / parameters.wobblyDuration;
+						pct *= pct;
+						for(size_t i=0; i<noiseField.octaves.size(); i++){
+							noiseField.octaves[i].wavelength = targetWavelengths[i] * glm::clamp(1 - pct, 0.4f, 1.f);
+						}
+					}
 					break;
 					case BigBang:
 						t_from_bigbang = now - t_bigbang;
-						scale = t_from_bigbang/parameters.bigBangDuration;
+						parameters.scale = t_from_bigbang/parameters.bigBangDuration;
 						if(t_from_bigbang > parameters.bigBangDuration){
 							state = Expansion;
 						}
-						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					break;
 					case Expansion:
 						t_from_bigbang = now - t_bigbang;
-						scale = t_from_bigbang/parameters.bigBangDuration;
+						parameters.scale += dt * parameters.Ht;//t_from_bigbang/parameters.bigBangDuration;
+						if(cycle != 0 && parameters.Ht>parameters.Ht3){
+							parameters.Ht *= 0.99;
+						}
+						if(cycle != 0 && noiseField.noiseSpeed > 1){
+							noiseField.noiseSpeed * 0.99;
+						}
+						updateOctaves(dt);
+						if(cycle == 0 && parameters.scale>parameters.currentFractalFadeScale){
+							t_fade_out = now;
+							state = ExpansionFadeOut;
+							originalFillAlpha = renderer.fillAlpha;
+							originalWireframeAlpha = renderer.wireframeAlpha;
+						}
+					break;
+					case ExpansionFadeOut:
+						t_from_bigbang = now - t_bigbang;
+						parameters.blobsFade = ofMap(now - t_fade_out, 0, parameters.expansionFractalFadeDuration, 0, 1, true);
+						updateOctaves(dt);
+						if(ofIsFloatEqual((float)parameters.blobsFade, 1.f)){
+							state = ExpansionFadeIn;
+							this->cameras[render::Layout::Back].setDistance(1);
+							resetWavelengths();
+							parameters.scale = 1;
+							parameters.Ht = parameters.Ht2;
+							t_fade_out = now;
+						}
+					break;
+					case ExpansionFadeIn:
+						t_from_bigbang = now - t_bigbang;
+						parameters.scale += dt * parameters.Ht;//t_from_bigbang/parameters.bigBangDuration;
+						updateOctaves(dt);
+						parameters.blobsFade = ofMap(now - t_fade_out, 0, parameters.expansionFractalFadeDuration, 1, 0, true);
+						this->cameras[render::Layout::Back].setDistance(ofMap(parameters.blobsFade, 1, 0, 1, 0.5));
+						if(ofIsFloatEqual((float)parameters.blobsFade, 0.f)){
+							state = Expansion;
+							t_bigbang = now;
+							renderer.fillAlpha = originalFillAlpha;
+							renderer.wireframeAlpha = originalWireframeAlpha;
+							renderer.sphericalClip = true;
+							cycle += 1;
+							if(cycle < 2){
+								parameters.currentFractalFadeScale/=2;
+							}
+						}
 					break;
 				}
 
+				auto topLeftFront = glm::vec3{-0.5, 0.5, 0.5} * (float)parameters.scale;
+				auto bottomRightFront = glm::vec3{-0.5, 0.5, 0.5} * (float)parameters.scale;
+				auto projTopLeftFront = this->cameras[render::Layout::Back].worldToScreen(topLeftFront);
+				auto projBottomRightFront = this->cameras[render::Layout::Back].worldToScreen(bottomRightFront);
+				//cout << projTopLeftFront << endl;
+
+				//this->cameras[render::Layout::Back].setFarClip(6.0 * parameters.scale);
+				//noiseField.scale = parameters.scale;
 				noiseField.update();
 				gpuMarchingCubes.update(noiseField.getTexture());
 			}
@@ -115,31 +241,38 @@ namespace entropy
 				}
 				switch(state){
 					case PreBigBang:
+					case PreBigBangWobbly:{
 						ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 						renderer.sphericalClip = true;
 						renderer.fadeEdge0 = 0.0;
 						renderer.fadeEdge1 = 0.5;
 						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
-					break;
+					}break;
 					case BigBang:
-						ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-						renderer.fadeEdge0 = 0.0;
-						renderer.fadeEdge1 = 0.5;
-						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
-
 						ofEnableBlendMode(OF_BLENDMODE_ADD);
-						renderer.fadeEdge0 = scale*scale;
-						renderer.fadeEdge1 = scale;
+						renderer.sphericalClip = true;
+						renderer.fadeEdge0 = parameters.scale*parameters.scale;
+						renderer.fadeEdge1 = parameters.scale;
 						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 					break;
 					case Expansion:
-						ofScale(scale);
-						ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
-
+						//ofScale(parameters.scale);
 						ofEnableBlendMode(OF_BLENDMODE_ADD);
+						renderer.sphericalClip = true;
 						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
 					break;
+					case ExpansionFadeOut:
+					case ExpansionFadeIn:{
+						//ofScale(parameters.scale);
+						ofEnableBlendMode(OF_BLENDMODE_ADD);
+						auto blobsAlpha = (1-parameters.blobsFade);
+						blobsAlpha = sqrt(blobsAlpha);
+						renderer.sphericalClip = true;
+						renderer.fillAlpha = originalFillAlpha * blobsAlpha;
+						renderer.wireframeAlpha = originalWireframeAlpha * blobsAlpha;
+						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+					}break;
+
 				}
 
 				if (this->parameters.render.drawBoxInRenderer)
@@ -149,6 +282,40 @@ namespace entropy
 
                 ofEnableBlendMode(OF_BLENDMODE_ALPHA);
             }
+		}
+
+		void Inflation::drawBackOverlay(){
+			switch(state){
+				case PreBigBangWobbly:{
+					float pct = t_from_bigbang / parameters.wobblyDuration;
+					if(pct>0.75){
+						state = BigBang;
+						t_bigbang = now;
+					}
+				}break;
+				case BigBang:{
+					auto flashBegin = 0.5;
+					auto flashEnd = 0.6;
+					float pct = t_from_bigbang / parameters.bigBangDuration;
+					if(pct<flashBegin){
+						ofSetColor(ofFloatColor(1));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}else if(pct<flashEnd){
+						ofSetColor(ofFloatColor(1, ofMap(pct, flashBegin, flashEnd, 1, 0)));
+						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+					}
+				}break;
+				case ExpansionFadeOut:{
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					ofSetColor((ofFloatColor)parameters.fadeOutBgColor * parameters.blobsFade);
+					ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+				}
+				case ExpansionFadeIn:{
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					ofSetColor((ofFloatColor)parameters.fadeOutBgColor * parameters.blobsFade);
+					ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -168,15 +335,13 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
-				ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
 				if(ImGui::Button("Trigger bigbang")){
 					if(state == PreBigBang){
-						state = BigBang;
+						state = PreBigBangWobbly;
 						t_bigbang = now;
-						cout << "settings bigbang time at " << now << endl;
 					}
 				}
+				ofxPreset::Gui::AddGroup(this->parameters.parameters, settings);
 
 				if (ImGui::CollapsingHeader(this->gpuMarchingCubes.parameters.getName().c_str(), nullptr, true, true)) {
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.resolution);
@@ -216,6 +381,18 @@ namespace entropy
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
+			}
+			ofxPreset::Gui::EndWindow(settings);
+
+			ofxPreset::Gui::SetNextWindow(settings);
+			if (ofxPreset::Gui::BeginWindow("frequency graphs", settings)){
+				for(auto & series: timeSeries){
+					if(!series.empty()){
+						std::vector<float> values(series.begin(), series.end());
+						ImGui::PlotLines("", values.data(), values.size(), 0, 0);
+						ImGui::LabelText(std::to_string(values.back()).c_str(),"");
+					}
+				}
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}
