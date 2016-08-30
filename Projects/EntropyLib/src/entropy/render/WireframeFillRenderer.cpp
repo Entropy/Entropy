@@ -31,25 +31,6 @@ namespace entropy
 			return pow(smootherstep(startDist, minDist, dist), 1./power) * pow(1-smootherstep(minDist, maxDist, dist), 1./power);
 		}
 
-        void WireframeFillRenderer::setMaterial(){
-            std::string postFragmentSource = R"(
-				float fog(float dist, float startDist, float minDist, float maxDist, float power) {
-					return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
-				}
-
-				vec4 postFragment(vec4 localColor){
-					float distanceToCamera = length(v_eyePosition);
-					localColor.a *= fog(distanceToCamera, %fogStartDistance%, %fogMinDistance%, %fogMaxDistance%, %fogPower%);
-					return localColor;
-				})";
-			postFragmentSource = replace(postFragmentSource, "%fogStartDistance%", std::to_string(fogStartDistance));
-            postFragmentSource = replace(postFragmentSource, "%fogMinDistance%", std::to_string(fogMinDistance));
-            postFragmentSource = replace(postFragmentSource, "%fogMaxDistance%", std::to_string(fogMaxDistance));
-            postFragmentSource = replace(postFragmentSource, "%fogPower%", std::to_string(fogPower));
-            material.setColors(ofFloatColor::white, ofFloatColor::white, ofFloatColor::white, ofFloatColor::black);
-            material.setPostFragment(postFragmentSource);
-        }
-
 		void WireframeFillRenderer::setup(){
 			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.vert";
 			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.frag";
@@ -64,26 +45,30 @@ namespace entropy
 
 			shaderSettings.intDefines["WIREFRAME"] = 1;
 			shaderWireframe.setup(shaderSettings);
+			std::string postFragmentSource = R"(
+				float fog(float dist, float startDist, float minDist, float maxDist, float power) {
+					return pow(smoothstep(startDist, minDist, dist), 1./power) * pow(1-smoothstep(minDist, maxDist, dist), 1./power);
+				}
 
-			shaderSettings.intDefines["SPHERICAL_CLIP"] = 1;
+				vec4 postFragment(vec4 localColor){
+					float distanceToCamera = length(v_eyePosition);
+					localColor.a *= fog(distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+					return localColor;
+				})";
+			ofMaterial::Settings settings;
+			settings.ambient = ofFloatColor::white;
+			settings.diffuse = ofFloatColor::white;
+			settings.specular = ofFloatColor::white;
+			settings.emissive = ofFloatColor::black;
+			settings.postFragment = postFragmentSource;
+			settings.customUniforms = R"(
+        		uniform float fogStartDistance;
+        		uniform float fogMinDistance;
+        		uniform float fogMaxDistance;
+        		uniform float fogPower;
+        	)";
+			material.setup(settings);
 
-			shaderSettings.intDefines["WIREFRAME"] = 0;
-			shaderFillSphere.setup(shaderSettings);
-
-			shaderSettings.intDefines["WIREFRAME"] = 1;
-			shaderWireframeSphere.setup(shaderSettings);
-
-            setMaterial();
-
-            listeners.push_back(fogMinDistance.newListener([&](float &){
-                setMaterial();
-            }));
-            listeners.push_back(fogMaxDistance.newListener([&](float &){
-                setMaterial();
-            }));
-            listeners.push_back(fogPower.newListener([&](float &){
-                setMaterial();
-            }));
 			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
 				shaderSettings.intDefines["FOG_ENABLED"] = enabled;
 				shaderSettings.intDefines["SPHERICAL_CLIP"] = 0;
@@ -141,6 +126,10 @@ namespace entropy
 
                 if(useLights){
                     material.begin();
+					material.setCustomUniform1f("fogStartDistance", fogStartDistance);
+					material.setCustomUniform1f("fogMinDistance", fogMinDistance);
+					material.setCustomUniform1f("fogMaxDistance", fogMaxDistance);
+					material.setCustomUniform1f("fogPower", fogPower);
                     geometry.draw(GL_TRIANGLES, offset, numVertices);
                     material.end();
                 }else{
