@@ -1,0 +1,62 @@
+<positions>
+    <element name="Bloom_Enabled">
+        <x>0.000000000</x>
+        <y>390.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Back_Alpha">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Back_Edge Ratio">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Front_Alpha">
+        <x>0.000000000</x>
+        <y>262.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera_Back_FOV">
+        <x>0.000000000</x>
+        <y>70.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Color_Exposure">
+        <x>0.000000000</x>
+        <y>454.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Environment_Energy">
+        <x>0.000000000</x>
+        <y>326.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Fill alpha">
+        <x>0.000000000</x>
+        <y>518.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Wireframe alpha">
+        <x>0.000000000</x>
+        <y>582.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="_ambient light">
+        <x>0.000000000</x>
+        <y>646.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

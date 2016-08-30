@@ -5,7 +5,7 @@
             "scene": "Calibrate"
         },
         {
-            "preset": "paris_27",
+            "preset": "paris_30",
             "scene": "Inflation"
         },
         {
@@ -17,12 +17,16 @@
             "scene": "CMB"
         },
         {
+            "preset": "paris_29",
+            "scene": "Video"
+        },
+        {
             "preset": "paris_29_2",
             "scene": "Survey"
         },
         {
-            "preset": "paris_29",
-            "scene": "Video"
+            "preset": "outro_30",
+            "scene": "Inflation"
         }
     ]
 }

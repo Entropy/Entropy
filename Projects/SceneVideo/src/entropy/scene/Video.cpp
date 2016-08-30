@@ -65,13 +65,16 @@ namespace entropy
 
 			this->videoPlayer.update();
 
-			if (this->videoTrack->getPlayer() == nullptr && this->videoPlayer.isLoaded())
+			if (this->videoTrack)
 			{
-				this->videoTrack->setPlayer(this->videoPlayer);
-				this->timeline.setTimecontrolTrack(this->videoTrack);
+				if (this->videoTrack->getPlayer() == nullptr && this->videoPlayer.isLoaded())
+				{
+					this->videoTrack->setPlayer(this->videoPlayer);
+					this->timeline.setTimecontrolTrack(this->videoTrack);
 #ifdef USE_WMFVIDEOPLAYER
-				this->timeline.setFrameRate(this->videoPlayer.getFrameRate());
+					this->timeline.setFrameRate(this->videoPlayer.getFrameRate());
 #endif
+				}
 			}
 
 			if (!this->videoPlayer.isPlaying() && this->parameters.playback.play)
@@ -121,7 +124,6 @@ namespace entropy
 					ImGui::Text("File: %s", this->fileName.c_str());
 				}
 
-				ImGui::Text("Layout");
 				static vector<string> layouts
 				{ 
 					"Back", 
@@ -229,21 +231,21 @@ namespace entropy
 				this->videoPlayer.setLoopState(OF_LOOP_NONE);
 			}
 
-			if (!this->videoTrack)
-			{
-				const auto trackName = "Video";
-				const auto trackIdentifier = trackName;
-#ifdef USE_WMFVIDEOPLAYER
-				this->videoTrack = new ofxTLWMFVideoTrack();
-#else
-				this->videoTrack = new ofxTLVideoTrack();
-				this->videoTrack->toggleThumbs();
-#endif
-				this->videoTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
-				this->timeline.addTrack(trackIdentifier, this->videoTrack);
-				this->videoTrack->setDisplayName(trackName);
-				//this->videoTrack->setDrawVideoPreview(false);
-			}
+//			if (!this->videoTrack)
+//			{
+//				const auto trackName = "Video";
+//				const auto trackIdentifier = trackName;
+//#ifdef USE_WMFVIDEOPLAYER
+//				this->videoTrack = new ofxTLWMFVideoTrack();
+//#else
+//				this->videoTrack = new ofxTLVideoTrack();
+//				this->videoTrack->toggleThumbs();
+//#endif
+//				this->videoTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
+//				this->timeline.addTrack(trackIdentifier, this->videoTrack);
+//				this->videoTrack->setDisplayName(trackName);
+//				//this->videoTrack->setDrawVideoPreview(false);
+//			}
 
 			this->parameters.videoPath = ofFilePath::makeRelative(this->getAssetsPath("videos"), filePath);
 			this->dirtyBounds = true;

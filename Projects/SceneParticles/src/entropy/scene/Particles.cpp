@@ -34,7 +34,7 @@ namespace entropy
 			pointLights.resize(MAX_LIGHTS);
 
 			// Initialize transform feedback.
-			feedbackBuffer.allocate(1024 * 1024 * 100, GL_STATIC_DRAW);
+			feedbackBuffer.allocate(1024 * 1024 * 300, GL_STATIC_DRAW);
 			auto stride = sizeof(glm::vec4) * 3;// + sizeof(glm::vec3);
 			feedbackVbo.setVertexBuffer(feedbackBuffer, 4, stride, 0);
 			feedbackVbo.setColorBuffer(feedbackBuffer, stride, sizeof(glm::vec4));

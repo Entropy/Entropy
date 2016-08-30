@@ -39,19 +39,16 @@
             "Subdivisions": "1"
         },
         "Pool GL 3D": {
-            "Base": {
-                "Damping": "0.99",
-                "Drop Color": "0.388235, 0.388235, 0.388235, 1",
-                "Drop Rate": "60",
-                "Dropping": "0",
-                "Radius": "30",
-                "Ring Size": "1.25",
-                "Ripple Rate": "2"
-            },
-            "Volumetrics": {
-                "Filter Mode": "9729",
-                "Volume Size": "800"
-            }
+            "Damping": "0.99",
+            "Drop Color": "0.988235, 0.988235, 0.882353, 1",
+            "Drop Rate": "57",
+            "Dropping": "0",
+            "Filter Mode": "9729",
+            "Radius": "30",
+            "Ring Size": "1.25",
+            "Ripple Rate": "2",
+            "Run Simulation": "1",
+            "Volume Size": "800"
         },
         "Post Effects Back": {
             "Bloom": {
@@ -103,11 +100,22 @@
                 "Rotation": "0"
             }
         },
+        "Sphere": {
+            "Alpha": "1",
+            "Arc Horizontal": "1",
+            "Arc Vertical": "0.5",
+            "Auto Draw": "1",
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "1",
+            "Enabled": "1",
+            "Radius": "0.1",
+            "Resolution": "16"
+        },
         "Tint Color": "1, 1, 1, 1"
     },
     "Camera Back": {
-        "aspectRatio": 3.1611111164093,
-        "distance": 2669.43872070313,
+        "aspectRatio": 3.17685174942017,
+        "distance": 686.957275390625,
         "drag": 0.899999976158142,
         "farClip": 10000.0,
         "forceAspectRatio": true,
@@ -120,13 +128,13 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "0.785628, 0.0143024, -0.618532,        0\n-0.23037, 0.934607, -0.270992,        0\n0.574209,  0.35539, 0.737549,        0\n  1402.2,  1162.93,  1951.24,        1",
+        "transform": "0.932647, 0.270952, -0.238231,        0\n-0.320622,  0.92522, -0.202902,        0\n0.165439, 0.265619, 0.949777,        0\n-119.424,  168.611,  655.148,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
     "Camera Front": {
-        "aspectRatio": 2.89074063301086,
-        "distance": 532.222351074219,
+        "aspectRatio": 2.82592582702637,
+        "distance": 532.221984863281,
         "drag": 0.899999976158142,
         "farClip": 1000.0,
         "forceAspectRatio": true,
@@ -139,7 +147,7 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "  -0.989, -0.0722441, -0.129028,        0\n-0.0539988, 0.988721, -0.139692,        0\n0.137664, -0.131189, -0.981746,        0\n 23.0052, -34.7501, -530.588,        1",
+        "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,  532.222,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
@@ -172,15 +180,16 @@
         "Box_Front::Enabled": "0",
         "Box_Front::Size": "0",
         "Box_Front::Subdivisions": "0",
-        "Pool_GL_3D::Base::Damping": "0",
-        "Pool_GL_3D::Base::Drop Color": "0",
-        "Pool_GL_3D::Base::Drop Rate": "1",
-        "Pool_GL_3D::Base::Dropping": "1",
-        "Pool_GL_3D::Base::Radius": "0",
-        "Pool_GL_3D::Base::Ring Size": "0",
-        "Pool_GL_3D::Base::Ripple Rate": "0",
-        "Pool_GL_3D::Volumetrics::Filter Mode": "0",
-        "Pool_GL_3D::Volumetrics::Volume Size": "0",
+        "Pool_GL_3D::Damping": "0",
+        "Pool_GL_3D::Drop Color": "1",
+        "Pool_GL_3D::Drop Rate": "1",
+        "Pool_GL_3D::Dropping": "1",
+        "Pool_GL_3D::Filter Mode": "0",
+        "Pool_GL_3D::Radius": "0",
+        "Pool_GL_3D::Ring Size": "0",
+        "Pool_GL_3D::Ripple Rate": "0",
+        "Pool_GL_3D::Run Simulation": "0",
+        "Pool_GL_3D::Volume Size": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -215,6 +224,15 @@
         "Post_Effects_Front::Vignette::Outter": "0",
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0",
+        "Sphere::Alpha": "0",
+        "Sphere::Arc Horizontal": "0",
+        "Sphere::Arc Vertical": "0",
+        "Sphere::Auto Draw": "0",
+        "Sphere::Color": "0",
+        "Sphere::Cull Face": "0",
+        "Sphere::Enabled": "0",
+        "Sphere::Radius": "0",
+        "Sphere::Resolution": "0",
         "Tint Color": "0"
     },
     "Pop-Ups": null
