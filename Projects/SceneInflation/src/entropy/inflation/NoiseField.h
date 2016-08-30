@@ -18,14 +18,14 @@ namespace entropy
 	namespace inflation
 	{
 		struct Octave {
-			Octave(size_t idx, float frequency_, float amplitude_)
-				:frequency("Freq. Hz", frequency_, 0.0f, 200.0f)
-				, wavelength("Wavelength", 1.f / frequency_, 0.0f, 128.0f)
+			Octave(size_t idx, float wavelength_, float amplitude_, const ofFloatColor & color, bool enabled = true)
+				:frequency("Freq. Hz", 1/wavelength_, 0.0f, 200.0f)
+				, wavelength("Wavelength", wavelength_, 0.0f, 128.0f)
 				, amplitude("Amplitude", amplitude_, 0.0f, 1.0f)
 				, radius("Radius", 1.0f, 0.0f, 1.0f)
-				, color("Color", ofFloatColor::white)
 				, advanceTime("Advance Time", true)
-				, enabled("Enabled", true)
+				, color("Color", color)
+				, enabled("Enabled", enabled)
 				, parameters("Octave " + ofToString(idx),
 					this->frequency,
 					this->wavelength,
@@ -83,6 +83,7 @@ namespace entropy
 			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
 			ofParameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
 			ofParameter<bool> fillEdges{ "Fill Edges", false };
+			ofParameter<float> scale{"Scale", 1.f, 0.0f, 1000.f};
 			std::vector<Octave> octaves;
 
 		private:

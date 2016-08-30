@@ -16,14 +16,18 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		NoiseField::NoiseField() {
-			octaves.emplace_back(0, 20, 1.f);
-			octaves.emplace_back(1, 40, 0.5f);
-			octaves.emplace_back(2, 80, 0.25f);
-			octaves.emplace_back(3, 160, 0.125f);
+			octaves.emplace_back(0, 32, 1.f, ofFloatColor{0.886275f, 0.784314f, 0.443137f, 1.f});
+			octaves.emplace_back(1, 16, 0.5f, ofFloatColor{0.905882f, 1, 1, 1});
+			octaves.emplace_back(2, 8, 0.25f, ofFloatColor{0.419608f, 0.631373f, 0.733333f, 1});
+			octaves.emplace_back(3, 4, 0.125f, ofFloatColor{0.121569f, 0.870588f, 1, 1});
+			octaves.emplace_back(4, 32, 1.f, ofFloatColor{0.886275f, 0.784314f, 0.443137f, 1.f}, false);
+			octaves.emplace_back(5, 16, 0.5f, ofFloatColor{0.905882f, 1, 1, 1}, false);
+			octaves.emplace_back(6, 8, 0.25f, ofFloatColor{0.419608f, 0.631373f, 0.733333f, 1}, false);
+			octaves.emplace_back(7, 4, 0.125f, ofFloatColor{0.121569f, 0.870588f, 1, 1}, false);
 
-			for (auto & octave : octaves) {
+			/*for (auto & octave : octaves) {
 				parameters.add(octave.parameters);
-			}
+			}*/
         }
 
 		//--------------------------------------------------------------
@@ -42,6 +46,7 @@ namespace entropy
 
 			shaderSettings.shaderFiles[GL_COMPUTE_SHADER] = "shaders/compute_noise4d.glsl";
 			shaderSettings.intDefines["FILL_EDGES"] = fillEdges;
+			shaderSettings.intDefines["NUM_OCTAVES"] = octaves.size();
             noiseComputeShader.setup(shaderSettings);
             allocateVolumeTexture();
 
@@ -78,6 +83,7 @@ namespace entropy
 			}
 			noiseComputeShader.setUniform1f("resolution", resolution);
 			noiseComputeShader.setUniform1f("normalizationFactor", normalizationFactor);
+			noiseComputeShader.setUniform1f("scale", scale);
 			noiseComputeShader.dispatchCompute(resolution / 8, resolution / 8, resolution / 8);
 			noiseComputeShader.end();
 			glBindImageTexture(0, 0, 0, 0, 0, GL_READ_WRITE, GL_R16F);
