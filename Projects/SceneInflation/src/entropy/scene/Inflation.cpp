@@ -89,6 +89,14 @@ namespace entropy
 			noiseField.octaves[3].wavelength = wl;
 		}
 
+		void Inflation::resetWavelength(size_t octave){
+			auto wl = noiseField.resolution/4;
+			for(size_t i=0;i<octave;i++){
+				wl /= 2;
+			}
+			noiseField.octaves[octave].wavelength = wl / scale;
+		}
+
 		//--------------------------------------------------------------
 		void Inflation::exit()
 		{
@@ -123,20 +131,41 @@ namespace entropy
 					}break;
 					case Expansion:
 						t_from_bigbang = now - t_bigbang;
-						scale  += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
+						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						noiseField.scale = scale;
+						if(cameras[render::Layout::Back].getDistance()>0.5){
+							auto d = cameras[render::Layout::Back].getDistance();
+							d -= dt * parameters.Ht;
+							cameras[render::Layout::Back].setDistance(d);
+						}
+						/*if(!firstCycle){
+							for(size_t i=0;i<noiseField.octaves.size()/2;i++){
+								noiseField.octaves[i].wavelength -= dt * parameters.Ht;
+								if(noiseField.octaves[i].wavelength < parameters.hubbleWavelength / scale){
+									resetWavelength(i);
+								}
+							}
+						}*/
 					break;
 					case ExpansionTransition:
-						scale  += dt * parameters.Ht;
-						noiseField.scale = scale;
 						float t_EndIn = t_transition + parameters.bbTransitionIn;
 						float t_EndPlateau = t_EndIn + parameters.bbTransitionPlateau;
 						float t_EndOut = t_EndPlateau + parameters.bbTransitionOut;
 
-						if(now > t_EndPlateau && now < t_EndOut){
-							auto pct = ofxTween::map(now,t_EndPlateau,t_EndOut,0,1,false,ofxEasingSine(),ofxTween::easeOut);
-							cameras[render::Layout::Back].setDistance(ofMap(pct, 0, 1, 1, 0.5));
+						if(now < t_EndIn){
+							scale  += dt * parameters.Ht;
+						}else if(now < t_EndPlateau){
+							auto pct = ofMap(now,t_transition,t_EndOut,0,1);
+							pct = sqrt(sqrt(sqrt(pct)));
+							parameters.Ht = ofMap(pct, 0, 1, parameters.HtBB, parameters.HtPostBB);
+							scale  += dt * parameters.Ht;
+						}else if(now < t_EndOut){
+							auto pct = ofMap(now,t_transition,t_EndOut,0,1);
+							pct = sqrt(sqrt(sqrt(pct)));
+							parameters.Ht = ofMap(pct, 0, 1, parameters.HtBB, parameters.HtPostBB);
+							scale  += dt * parameters.Ht;
 						}
+						noiseField.scale = scale;
 					break;
 				}
 
@@ -220,7 +249,7 @@ namespace entropy
 		}
 
 		void Inflation::drawBackOverlay(){
-			ofEnableAlphaBlending();
+			ofEnableBlendMode(OF_BLENDMODE_ADD);
 			switch(state){
 				case PreBigBangWobble:
 					if(t_from_bigbang > parameters.preBigBangWobbleDuration){
@@ -264,15 +293,13 @@ namespace entropy
 						gray *= gray;
 						ofSetColor(ofFloatColor(ofFloatColor(parameters.bbTransitionColor)*gray, gray));
 						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
-						cout << gray << endl;
 					}else if(now<t_EndPlateau){
 						if(!octavesResetDuringTransition){
 							resetWavelengths();
-							parameters.Ht /= 100;
 							octavesResetDuringTransition = true;
 							scale = 1;
 							t_from_bigbang = now;
-							cameras[render::Layout::Back].setDistance(1);
+							//cameras[render::Layout::Back].setDistance(1);
 						}
 						ofSetColor(ofFloatColor(parameters.bbTransitionColor));
 						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
@@ -283,6 +310,7 @@ namespace entropy
 						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
 					}else{
 						state = Expansion;
+						firstCycle = false;
 					}
 
 				}
