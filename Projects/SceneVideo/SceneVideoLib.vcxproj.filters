@@ -4,6 +4,9 @@
     <ClCompile Include="src\entropy\scene\Video.cpp">
       <Filter>src\entropy\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\video\ofxTLWMFVideoTrack.cpp">
+      <Filter>src\entropy\video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -18,10 +21,16 @@
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy\video">
+      <UniqueIdentifier>{54d28356-f8f0-4983-9723-b1b363c711cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Video.h">
       <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\video\ofxTLWMFVideoTrack.h">
+      <Filter>src\entropy\video</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
