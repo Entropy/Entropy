@@ -80,7 +80,7 @@ namespace entropy
 			// Just start the first scene in the map.
 			if (this->setCurrentScene(this->scenes.begin()->first))
 			{
-				this->setCurrentPreset(kPresetDefaultName);
+				this->setCurrentPreset(kPresetDefaultName, false);
 			}
 		}
 
@@ -152,7 +152,11 @@ namespace entropy
 			if (scene)
 			{
 				this->currentScene = scene;
-				this->currentScene->setup_();
+
+				this->presetCuedListener = this->currentScene->presetCuedEvent.newListener([this](string & preset)
+				{
+					this->nextPreset = preset;
+				});
 
 				for (auto & it : this->cameraControlAreas)
 				{
@@ -173,6 +177,9 @@ namespace entropy
 				this->currentScene->exit_();
 			}
 			this->currentScene.reset();
+
+			this->presetCuedListener.unsubscribe();
+			this->nextPreset.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -188,11 +195,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::setCurrentPreset(const string & name)
+		bool Playlist::setCurrentPreset(const string & name, bool showtime)
 		{
 			if (this->currentScene)
 			{
-				return this->currentScene->loadPreset(name);
+				if (this->currentScene->loadPreset(name))
+				{
+					if (showtime)
+					{
+						this->currentScene->setShowtime();
+					}
+					return true;
+				}
 			}
 			return false;
 		}
@@ -233,7 +247,7 @@ namespace entropy
 				auto & sceneName = this->shortNames[item.first];
 				if (this->setCurrentScene(sceneName))
 				{
-					if (this->setCurrentPreset(item.second))
+					if (this->setCurrentPreset(item.second, true))
 					{
 						this->currentTrack = index;
 
@@ -277,6 +291,13 @@ namespace entropy
 		{
 			if (this->currentScene)
 			{
+				if (!this->nextPreset.empty())
+				{
+					this->setCurrentPreset(this->nextPreset, false);
+					this->nextPreset.clear();
+					return true;
+				}
+				
 				this->currentScene->update_(dt);
 				return true;
 			}

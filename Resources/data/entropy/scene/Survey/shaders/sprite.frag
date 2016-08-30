@@ -10,7 +10,7 @@ out vec4 fragColor;
 
 void main(void)
 {
-    if (vEnabled < 0.5) discard;
-	
+	if (vEnabled < 0.5) discard;
+
 	fragColor = texture(uTex0, gl_PointCoord) * globalColor;
 }

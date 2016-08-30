@@ -1,27 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\entropy\cmb\CmbSceneGL2D.cpp">
       <Filter>src\entropy\cmb</Filter>
     </ClCompile>
@@ -51,12 +30,6 @@
     <Filter Include="src\entropy\scene">
       <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxVolumetrics">
-      <UniqueIdentifier>{de11ba03-5f3b-4564-bd03-f117881dc9b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxVolumetrics\src">
-      <UniqueIdentifier>{3db7d1e6-2ff0-4b96-935f-f88854c61308}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\entropy\cmb">
       <UniqueIdentifier>{72321b90-1b36-4f8c-9794-01156dec304b}</UniqueIdentifier>
     </Filter>
@@ -66,35 +39,8 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{c8a239c3-1059-4256-beaf-4615545cdb49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxVolumetrics\src\shaders">
-      <UniqueIdentifier>{825661b5-2453-41e8-8df7-c944f7db4f38}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\cmb\CmbSceneGL2D.h">
       <Filter>src\entropy\cmb</Filter>
     </ClInclude>
@@ -135,18 +81,6 @@
     </None>
     <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple3D.frag">
       <Filter>shaders</Filter>
-    </None>
-    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag.glsl">
-      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
-    </None>
-    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag_array.glsl">
-      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
-    </None>
-    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert.glsl">
-      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
-    </None>
-    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert_array.glsl">
-      <Filter>addons\ofxVolumetrics\src\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

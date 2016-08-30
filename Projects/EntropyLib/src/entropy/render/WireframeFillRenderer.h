@@ -56,12 +56,11 @@ namespace entropy
             };
 
 		private:
-            void setMaterial();
             ofShader shaderFill, shaderWireframe;
 			ofShader shaderFillSphere, shaderWireframeSphere;
 			ofShader::Settings shaderSettings;
             std::vector<ofEventListener> listeners;
-            ofMaterial material;
+            mutable ofMaterial material;
         };
     }
 }

@@ -50,20 +50,6 @@ namespace entropy
 				ofSetGlobalAmbientColor(ofFloatColor(ambient));
 			}));
 
-			for (unsigned i = 0; i < 4000; ++i)
-			{
-				glm::vec3 position = glm::vec3(
-					ofRandom(-HALF_DIM, HALF_DIM),
-					ofRandom(-HALF_DIM, HALF_DIM),
-					ofRandom(-HALF_DIM, HALF_DIM)
-				);
-
-				float speed = glm::gaussRand(60.f, 20.f);
-				glm::vec3 velocity = glm::sphericalRand(speed);
-
-				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
-			}
-
 			renderer.fogMaxDistance.setMax(HALF_DIM * 10);
 			renderer.fogMinDistance.setMax(HALF_DIM);
 
@@ -104,6 +90,20 @@ namespace entropy
 		void Particles::setup()
 		{
 			ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+
+			for (unsigned i = 0; i < 4000; ++i)
+			{
+				glm::vec3 position = glm::vec3(
+					ofRandom(-HALF_DIM, HALF_DIM),
+					ofRandom(-HALF_DIM, HALF_DIM),
+					ofRandom(-HALF_DIM, HALF_DIM)
+				);
+
+				float speed = glm::gaussRand(60.f, 20.f);
+				glm::vec3 velocity = glm::sphericalRand(speed);
+
+				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
+			}
 		}
 
 		//--------------------------------------------------------------

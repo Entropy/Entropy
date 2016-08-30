@@ -11,7 +11,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		PoolGL3D::PoolGL3D()
 			: PoolBase()
-		{}
+		{
+			// Update parameter group.
+			this->parameters.setName("Pool GL 3D");
+			this->parameters.add(filterMode, volumeSize);
+		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::setup()
@@ -19,7 +23,8 @@ namespace entropy
 			PoolBase::setup();
 
 			// Allocate the textures and buffers.
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 3; ++i) 
+			{
 				this->textures[i].allocate(this->dimensions.x, this->dimensions.y, this->dimensions.z, GL_RGBA16F);
 
 				this->fbos[i].allocate();
@@ -39,6 +44,7 @@ namespace entropy
 			// Build a mesh to render a quad.
 			const auto origin = glm::vec3(0.0f, GetCanvasHeight(render::Layout::Back) - this->dimensions.y, 0.0f);
 
+			this->mesh.clear();
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
 			this->mesh.addVertex(origin + glm::vec3(0.0f, 0.0f, 0.0f));
@@ -64,12 +70,24 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void PoolGL3D::reset()
+		{
+			PoolBase::reset();
+
+			// Clear the textures and buffers.
+			for (int i = 0; i < 3; ++i)
+			{
+				this->textures[i].clearData();
+			}
+		}
+
+		//--------------------------------------------------------------
 		void PoolGL3D::addDrop()
 		{
 			this->fbos[this->prevIdx].begin();
 			{
 				ofEnableAlphaBlending();
-				ofSetColor(this->parameters.base.dropColor.get());
+				ofSetColor(this->dropColor.get());
 
 				const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
 				const auto burstThickness = 1.0f;
@@ -77,12 +95,12 @@ namespace entropy
 				this->dropShader.begin();
 				{
 					this->dropShader.setUniform3f("uBurst.pos", burstPos);
-					this->dropShader.setUniform1f("uBurst.radius", this->parameters.base.radius);
+					this->dropShader.setUniform1f("uBurst.radius", this->radius);
 					this->dropShader.setUniform1f("uBurst.thickness", burstThickness);
 					//this->dropShader.printActiveUniforms();
 
-					int minLayer = static_cast<int>(max(0.0f, burstPos.z - this->parameters.base.radius - burstThickness));
-					int maxLayer = static_cast<int>(min(this->dimensions.z - 1, burstPos.z + this->parameters.base.radius + burstThickness));
+					int minLayer = static_cast<int>(std::max(0.0f, burstPos.z - this->radius - burstThickness));
+					int maxLayer = static_cast<int>(std::min(this->dimensions.z - 1, burstPos.z + this->radius + burstThickness));
 					for (int i = minLayer; i <= maxLayer; ++i) {
 					//for (int i = 0; i < this->dimensions.z; ++i) {
 						this->dropShader.setUniform1i("uLayer", i);
@@ -103,7 +121,7 @@ namespace entropy
 				
 				this->rippleShader.begin();
 				{
-					this->rippleShader.setUniform1f("uDamping", this->parameters.base.damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+					this->rippleShader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 1);
 					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx].texData.textureTarget, this->textures[this->currIdx].texData.textureID, 2);
 					this->rippleShader.setUniform3f("uDims", this->dimensions);
@@ -154,8 +172,8 @@ namespace entropy
 			ofEnableAlphaBlending();
 			
 			this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-			this->volumetrics.setVolumeTextureFilterMode(this->parameters.volumetrics.filterMode);
-			this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->parameters.volumetrics.volumeSize, 0);
+			this->volumetrics.setVolumeTextureFilterMode(this->filterMode);
+			this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
 		}
 	}
 }

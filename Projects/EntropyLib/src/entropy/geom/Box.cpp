@@ -1,22 +1,20 @@
 #include "Box.h"
 
+#include "ofGraphics.h"
+
 namespace entropy
 {
 	namespace geom
 	{
 		//--------------------------------------------------------------
 		Box::Box()
-			: meshDirty(true)
-			, colorDirty(true)
+			: Shape()
 		{			
-			this->paramListeners.push_back(this->color.newListener([this](ofFloatColor &)
-			{
-				this->colorDirty = true;
-			}));
-			this->paramListeners.push_back(this->alpha.newListener([this](float &)
-			{
-				this->colorDirty = true;
-			}));
+			// Update parameter group.
+			this->parameters.setName("Box");
+			this->parameters.add(this->size, this->edgeRatio, this->subdivisions);
+
+			// Add parameter listeners.
 			this->paramListeners.push_back(this->size.newListener([this](float &)
 			{
 				this->meshDirty = true;
@@ -38,55 +36,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Box::clear()
-		{
-			this->mesh.clear();
-		}
-
-		//--------------------------------------------------------------
-		bool Box::update()
-		{
-			if (this->enabled)
-			{
-				bool didUpdate = false;
-
-				if (this->meshDirty)
-				{
-					this->rebuildMesh();
-					this->colorDirty = true;
-
-					didUpdate = true;
-				}
-
-				if (this->colorDirty)
-				{
-					this->mesh.getColors().resize(this->mesh.getVertices().size());
-					ofFloatColor colorWithAlpha = this->color;
-					colorWithAlpha.a = this->alpha;
-					for (auto & c : this->mesh.getColors()) 
-					{
-						c = colorWithAlpha;
-					}
-
-					this->colorDirty = false;
-					didUpdate = true;
-				}
-
-				return didUpdate;
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		void Box::draw() const
+		void Box::draw(render::WireframeFillRenderer & renderer)
 		{
 			if (!this->enabled) return;
-
+			
 			ofPushStyle();
 			{
-				ofEnableAlphaBlending();
-				ofSetColor(color.get());
-
+				ofSetColor(this->color.get());
+			
 				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
 				if (cullMode != CullMode::Disabled)
 				{
@@ -104,7 +61,7 @@ namespace entropy
 				{
 					glDisable(GL_CULL_FACE);
 				}
-				this->mesh.draw();
+				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices());
 				if (cullMode != CullMode::Disabled)
 				{
 					glDisable(GL_CULL_FACE);
@@ -114,47 +71,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Box::draw(render::WireframeFillRenderer & renderer)
-		{
-			if (!this->enabled) return;
-			
-			ofPushStyle();
-			{
-				{
-					ofSetColor(color.get());
-					{
-						const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-						if (cullMode != CullMode::Disabled)
-						{
-							glEnable(GL_CULL_FACE);
-							if (cullMode == CullMode::Back)
-							{
-								glCullFace(GL_BACK);
-							}
-							else
-							{
-								glCullFace(GL_FRONT);
-							}
-						}
-						else
-						{
-							glDisable(GL_CULL_FACE);
-						}
-						renderer.drawElements(this->mesh.getVbo(), 0, this->mesh.getNumIndices());
-						if (cullMode != CullMode::Disabled)
-						{
-							glDisable(GL_CULL_FACE);
-						}
-					}
-				}
-			}
-			ofPopStyle();
-		}
-
-		//--------------------------------------------------------------
 		void Box::rebuildMesh()
 		{
 			this->clear();
+			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
 			const auto edgeOffset = this->size / this->subdivisions;
 			const auto edgeWidth = this->edgeRatio * this->size;
@@ -348,7 +268,7 @@ namespace entropy
 
 				for (int y = 0; y < resY - 1; y++) {
 					for (int x = 0; x < resX - 1; x++) {
-						// first triangle //
+						// first triangle
 						this->mesh.addIndex((y)*resX + x + vertOffset);
 						this->mesh.addIndex((y)*resX + x + 1 + vertOffset);
 						this->mesh.addIndex((y + 1)*resX + x + vertOffset);
@@ -559,12 +479,6 @@ namespace entropy
 					}
 				}
 			}
-		}
-
-		//--------------------------------------------------------------
-		const ofVboMesh & Box::getMesh()
-		{
-			return this->mesh;
 		}
 	}
 }

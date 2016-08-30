@@ -67,7 +67,7 @@ namespace entropy
 
 		protected:
 			bool setCurrentScene(const string & name);
-			bool setCurrentPreset(const string & name);
+			bool setCurrentPreset(const string & name, bool showtime);
 			void unsetCurrent();
 
 			map<string, shared_ptr<Base>> scenes;
@@ -77,7 +77,9 @@ namespace entropy
 			vector<pair<string, string>> tracks;
 			size_t currentTrack;
 
+			ofEventListener presetCuedListener;
 			ofEventListener presetLoadedListener;
+			string nextPreset;
 
 			map<render::Layout, ofRectangle> cameraControlAreas;
 		};

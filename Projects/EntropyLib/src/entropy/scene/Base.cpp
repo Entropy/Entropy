@@ -82,6 +82,10 @@ namespace entropy
 			// Initialize child class.
 			this->init();
 
+			// List presets.
+			this->populatePresets();
+			this->currPreset.clear();
+
 			// List mappings.
 			this->populateMappings(parameters);
 
@@ -115,7 +119,6 @@ namespace entropy
 			{
 				this->cameras[render::Layout::Back].setFarClip(enabled);
 			}));
-
 
 			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled)
 			{
@@ -208,16 +211,8 @@ namespace entropy
 			// Set data path root for scene.
 			ofSetDataPathRoot(this->getDataPath());
 
-			// Setup default cameras.
-			this->resetCamera(render::Layout::Back);
-			this->resetCamera(render::Layout::Front);
-
 			// Setup child Scene.
 			this->setup();
-
-			// List presets.
-			this->populatePresets();
-			this->currPreset.clear();
 
 			this->ready = true;
 		}
@@ -267,6 +262,25 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
+			// TODO: Figure out a better way to do this, with event consumption or something.
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.backCamera.mouseControl)
+			{
+				this->cameras[render::Layout::Back].disableMouseInput();
+			}
+			else
+			{
+				this->cameras[render::Layout::Back].enableMouseInput();
+			}
+			if (GetApp()->isMouseOverGui() || !this->getParameters().base.frontCamera.mouseControl)
+			{
+				this->cameras[render::Layout::Front].disableMouseInput();
+			}
+			else
+			{
+				this->cameras[render::Layout::Front].enableMouseInput();
+			}
+			// TODO: End
+
 			for (auto & it : this->mappings)
 			{
 				it.second->update();
@@ -275,11 +289,6 @@ namespace entropy
 			for (auto popUp : this->popUps)
 			{
 				popUp->update_(dt);
-			}
-
-			for (auto & it : this->boxes)
-			{
-				it.second.update();
 			}
 
 			this->update(dt);
@@ -330,7 +339,6 @@ namespace entropy
 				else
 				{
 					this->drawFrontWorld();
-				//	this->boxes[layout].draw();
 				}
 			}
 			ofDisableDepthTest();
@@ -385,7 +393,8 @@ namespace entropy
 				{
 					if (ImGui::Selectable(name.c_str(), (name == this->currPreset)))
 					{
-						this->loadPreset(name);
+						// Don't load right away, notify Playlist which will take action when ready.
+						this->presetCuedEvent.notify(name);
 					}
 				}
 				ImGui::ListBoxFooter();
@@ -611,7 +620,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize_(const nlohmann::json & json)
 		{
-			// Deserialize cameras first so that the saved parameters overwrite any duplicate settings.
+			ofxPreset::Serializer::Deserialize(json, this->getParameters());
+
 			if (json.count("Camera Back"))
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
@@ -620,8 +630,7 @@ namespace entropy
 			{
 				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			}
-			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-			
+
 			// Clear previous Pop-ups.
 			while (!this->popUps.empty())
 			{
@@ -671,6 +680,14 @@ namespace entropy
 		bool Base::isReady() const
 		{
 			return this->ready;
+		}
+
+		//--------------------------------------------------------------
+		void Base::setShowtime()
+		{
+			this->timeline.setCurrentTimeToInPoint();
+			this->setCameraLocked(true);
+			this->timeline.play();
 		}
 
 		//--------------------------------------------------------------
@@ -783,35 +800,55 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::loadPreset(const string & presetName)
 		{
-			if (!this->ready)
+			if (!this->initialized)
 			{
-				ofLogError(__FUNCTION__) << "Scene not ready, call setup_() first!";
+				ofLogError(__FUNCTION__) << "Scene not initialized, call init_() first!";
 				return false;
 			}
 
+			// Clean up scene.
+			this->exit_();
+
+			// Reset cameras.
+			this->resetCamera(render::Layout::Back);
+			this->resetCamera(render::Layout::Front);
+
+			// Make sure file exists.
 			const auto presetPath = this->getPresetPath(presetName);
 			auto presetFile = ofFile(presetPath);
-			if (!presetFile.exists())
+			if (presetFile.exists())
+			{
+				// Load parameters from the preset.
+				auto paramsPath = presetPath;
+				paramsPath.append("parameters.json");
+				auto paramsFile = ofFile(paramsPath);
+				if (paramsFile.exists())
+				{
+					nlohmann::json json;
+					paramsFile >> json;
+
+					this->deserialize_(json);
+				}
+
+				this->timeline.loadTracksFromFolder(presetPath);
+
+				this->currPreset = presetName;
+			}
+			else
 			{
 				ofLogWarning(__FUNCTION__) << "File not found at path " << presetPath;
+				this->currPreset.clear();
+			}
+
+			// Setup scene with the new parameters.
+			this->setup_();
+
+			if (this->currPreset.empty())
+			{
 				return false;
 			}
-
-			auto paramsPath = presetPath;
-			paramsPath.append("parameters.json");
-			auto paramsFile = ofFile(paramsPath);
-			if (paramsFile.exists())
-			{
-				nlohmann::json json;
-				paramsFile >> json;
-
-				this->deserialize_(json);
-			}
-
-			this->timeline.loadTracksFromFolder(presetPath);
-
-			this->currPreset = presetName;
-
+			
+			// Notify listeners.
 			this->presetLoadedEvent.notify(this->currPreset);
 
 			return true;
@@ -952,7 +989,7 @@ namespace entropy
 			//this->cameras[layout].setFarClip(100000.0f);
 			//this->cameras[layout].setFov(60.0f);
 			this->cameras[layout].setAspectRatio(GetCanvasWidth(layout) / GetCanvasHeight(layout));
-			
+
 			if (layout == render::Layout::Front)
 			{
 				this->cameras[render::Layout::Front].clearParent(true);

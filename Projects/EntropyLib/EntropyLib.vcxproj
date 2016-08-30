@@ -236,6 +236,13 @@
     <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp" />
     <ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp" />
     <ClCompile Include="..\..\addons\ofxTween\src\ofxTween.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
+    <ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp" />
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp" />
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp" />
@@ -248,6 +255,8 @@
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.cpp" />
     <ClCompile Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.cpp" />
     <ClCompile Include="src\entropy\geom\Box.cpp" />
+    <ClCompile Include="src\entropy\geom\Shape.cpp" />
+    <ClCompile Include="src\entropy\geom\Sphere.cpp" />
     <ClCompile Include="src\entropy\popup\Base.cpp" />
     <ClCompile Include="src\entropy\popup\Image.cpp" />
     <ClCompile Include="src\entropy\popup\Video.cpp" />
@@ -321,6 +330,14 @@
     <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h" />
     <ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.h" />
     <ClInclude Include="..\..\addons\ofxTween\src\ofxTween.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
+    <ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp.h" />
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.h" />
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h" />
@@ -351,6 +368,8 @@
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\Presenter.h" />
     <ClInclude Include="..\..\addons\ofxWMFVideoPlayer\src\presenter\scheduler.h" />
     <ClInclude Include="src\entropy\geom\Box.h" />
+    <ClInclude Include="src\entropy\geom\Shape.h" />
+    <ClInclude Include="src\entropy\geom\Sphere.h" />
     <ClInclude Include="src\entropy\Helpers.h" />
     <ClInclude Include="src\entropy\popup\Base.h" />
     <ClInclude Include="src\entropy\popup\Image.h" />
@@ -369,6 +388,10 @@
   <ItemGroup>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag_array.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert.glsl" />
+    <None Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert_array.glsl" />
     <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\brightnessThreshold.frag" />
     <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\directionalBlur.frag" />
     <None Include="..\..\Resources\data\entropy\render\PostEffects\shaders\directionalBlur.vert" />

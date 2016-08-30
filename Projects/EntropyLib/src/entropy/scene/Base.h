@@ -15,7 +15,7 @@ namespace entropy
 {
 	namespace scene
 	{
-		static const string kPresetDefaultName = "_default";
+		static const string kPresetDefaultName = "_autosave";
 		
 		class Base
 		{
@@ -70,8 +70,11 @@ namespace entropy
 			bool loadPreset(const string & presetName);
 			bool savePreset(const string & presetName);
 
+			ofEvent<string> presetCuedEvent;
 			ofEvent<string> presetLoadedEvent;
 
+			void setShowtime();
+			
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);
 			int getCurrentTimelineFrame();

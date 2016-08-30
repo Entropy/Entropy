@@ -107,6 +107,7 @@ Desktop.ini
 
 # Default preset
 _default
+_autosave
 # Project data folders (everything should be in Shared/data or Shared/assets)
 */*/bin/*
 !*/*/bin/data/

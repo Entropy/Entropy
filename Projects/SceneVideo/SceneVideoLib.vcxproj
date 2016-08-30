@@ -185,8 +185,10 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="src\entropy\scene\Video.cpp" />
+    <ClCompile Include="src\entropy\video\ofxTLWMFVideoTrack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\scene\Video.h" />
+    <ClInclude Include="src\entropy\video\ofxTLWMFVideoTrack.h" />
   </ItemGroup>
 </Project>
