@@ -4,7 +4,14 @@
 #include "entropy/scene/Base.h"
 
 #ifdef TARGET_WIN32
+//#define USE_WMFVIDEOPLAYER 1
+#endif
+
+#ifdef USE_WMFVIDEOPLAYER
 #include "ofxWMFVideoPlayer.h"
+#include "entropy/video/ofxTLWMFVideoTrack.h"
+#else
+#include "ofxTLVideoTrack.h"
 #endif
 
 namespace entropy
@@ -53,12 +60,15 @@ namespace entropy
 			bool loadVideo(const string & filePath);
 			void drawVideo();
 
-#ifdef TARGET_WIN32
+			string fileName;
+
+#ifdef USE_WMFVIDEOPLAYER
 			ofxWMFVideoPlayer videoPlayer;
+			ofxTLWMFVideoTrack * videoTrack;
 #else
 			ofVideoPlayer videoPlayer;
+			ofxTLVideoTrack * videoTrack;
 #endif
-			string fileName;
 
 			void updateBounds();
 			ofRectangle drawBounds;
@@ -76,14 +86,15 @@ namespace entropy
 				ofParameter<string> videoPath{ "Video Path", "" };
 				ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 				ofParameter<int> contentMode{ "Content Mode", (int)ContentMode::Center, (int)ContentMode::Center, (int)ContentMode::ScaleAspectFit };
-		
-                struct : ofParameterGroup
-                {
-                    ofParameter<bool> play{ "Play", true };
-                    ofParameter<bool> loop{ "Loop", false };
 
-                    PARAM_DECLARE("Playback", play, loop);
-                } playback;
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> play{ "Play", true };
+					ofParameter<bool> pause{ "Pause", false };
+					ofParameter<bool> loop{ "Loop", false };
+
+					PARAM_DECLARE("Playback", play, pause, loop);
+				} playback;
 
 				PARAM_DECLARE("Video", videoPath, contentMode, playback);
 			} parameters;

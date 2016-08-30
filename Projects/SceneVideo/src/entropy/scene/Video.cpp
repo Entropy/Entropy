@@ -9,6 +9,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		Video::Video()
 			: Base()
+			, videoTrack(nullptr)
 		{}
 		
 		//--------------------------------------------------------------
@@ -21,6 +22,11 @@ namespace entropy
 		void Video::clear()
 		{
 			this->videoPlayer.close();
+			if (this->videoTrack)
+			{
+				this->timeline.removeTrack(this->videoTrack);
+				this->videoTrack = nullptr;
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -58,9 +64,23 @@ namespace entropy
 			}
 
 			this->videoPlayer.update();
-			if (this->videoPlayer.isStopped() && this->parameters.playback.play)
+
+			if (this->videoTrack->getPlayer() == nullptr && this->videoPlayer.isLoaded())
+			{
+				this->videoTrack->setPlayer(this->videoPlayer);
+				this->timeline.setTimecontrolTrack(this->videoTrack);
+#ifdef USE_WMFVIDEOPLAYER
+				this->timeline.setFrameRate(this->videoPlayer.getFrameRate());
+#endif
+			}
+
+			if (!this->videoPlayer.isPlaying() && this->parameters.playback.play)
 			{
 				this->parameters.playback.play.set(false);
+			}
+			else if (this->videoPlayer.isPlaying() && !this->parameters.playback.play)
+			{
+				this->parameters.playback.play.set(true);
 			}
 		}
 
@@ -154,6 +174,11 @@ namespace entropy
 						}
 					}
 
+					if (ofxPreset::Gui::AddParameter(this->parameters.playback.pause))
+					{
+						this->videoPlayer.setPaused(this->parameters.playback.pause);
+					}
+
 					if (ofxPreset::Gui::AddParameter(this->parameters.playback.loop))
 					{
 						if (this->parameters.playback.loop)
@@ -202,6 +227,22 @@ namespace entropy
 			else
 			{
 				this->videoPlayer.setLoopState(OF_LOOP_NONE);
+			}
+
+			if (!this->videoTrack)
+			{
+				const auto trackName = "Video";
+				const auto trackIdentifier = trackName;
+#ifdef USE_WMFVIDEOPLAYER
+				this->videoTrack = new ofxTLWMFVideoTrack();
+#else
+				this->videoTrack = new ofxTLVideoTrack();
+				this->videoTrack->toggleThumbs();
+#endif
+				this->videoTrack->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
+				this->timeline.addTrack(trackIdentifier, this->videoTrack);
+				this->videoTrack->setDisplayName(trackName);
+				//this->videoTrack->setDrawVideoPreview(false);
 			}
 
 			this->parameters.videoPath = ofFilePath::makeRelative(this->getAssetsPath("videos"), filePath);

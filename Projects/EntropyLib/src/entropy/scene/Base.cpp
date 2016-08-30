@@ -806,15 +806,6 @@ namespace entropy
 				return false;
 			}
 
-			// Make sure file exists.
-			const auto presetPath = this->getPresetPath(presetName);
-			auto presetFile = ofFile(presetPath);
-			if (!presetFile.exists())
-			{
-				ofLogWarning(__FUNCTION__) << "File not found at path " << presetPath;
-				return false;
-			}
-
 			// Clean up scene.
 			this->exit_();
 
@@ -822,25 +813,41 @@ namespace entropy
 			this->resetCamera(render::Layout::Back);
 			this->resetCamera(render::Layout::Front);
 
-			// Load parameters from the preset.
-			auto paramsPath = presetPath;
-			paramsPath.append("parameters.json");
-			auto paramsFile = ofFile(paramsPath);
-			if (paramsFile.exists())
+			// Make sure file exists.
+			const auto presetPath = this->getPresetPath(presetName);
+			auto presetFile = ofFile(presetPath);
+			if (presetFile.exists())
 			{
-				nlohmann::json json;
-				paramsFile >> json;
+				// Load parameters from the preset.
+				auto paramsPath = presetPath;
+				paramsPath.append("parameters.json");
+				auto paramsFile = ofFile(paramsPath);
+				if (paramsFile.exists())
+				{
+					nlohmann::json json;
+					paramsFile >> json;
 
-				this->deserialize_(json);
+					this->deserialize_(json);
+				}
+
+				this->timeline.loadTracksFromFolder(presetPath);
+
+				this->currPreset = presetName;
 			}
-
-			this->timeline.loadTracksFromFolder(presetPath);
-
-			this->currPreset = presetName;
+			else
+			{
+				ofLogWarning(__FUNCTION__) << "File not found at path " << presetPath;
+				this->currPreset.clear();
+			}
 
 			// Setup scene with the new parameters.
 			this->setup_();
 
+			if (this->currPreset.empty())
+			{
+				return false;
+			}
+			
 			// Notify listeners.
 			this->presetLoadedEvent.notify(this->currPreset);
 
