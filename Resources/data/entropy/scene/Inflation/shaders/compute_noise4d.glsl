@@ -156,6 +156,7 @@ struct Octave{
 const bool fillEdges = bool(FILL_EDGES);
 uniform float resolution;
 uniform float normalizationFactor;
+uniform float scale;
 uniform Octave octaves[NUM_OCTAVES];
 
 
@@ -175,7 +176,7 @@ void main()
 		float x = gl_GlobalInvocationID.x;
 		float y = gl_GlobalInvocationID.y;
 		float z = gl_GlobalInvocationID.z;
-		vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.);
+		vec3 pos = vec3(x - resolution/2., y - resolution/2., z - resolution/2.) / scale;
 
         for(int i=0;i<NUM_OCTAVES;i++){
 			float freqD = octaves[i].frequency;

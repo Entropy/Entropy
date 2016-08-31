@@ -20,7 +20,7 @@ Project{
             "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
-            "../../Resources/data/entropy/scene/Inflation/presets/_default/parameters.json",
+            "../../Resources/data/entropy/scene/Inflation/presets/_autosave/parameters.json",
             "../../Resources/data/entropy/scene/Inflation/presets/cool/parameters.json",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/frag_blur.glsl",
@@ -58,6 +58,7 @@ Project{
             '../../addons/ofxTween',
             '../../addons/ofxMSATimer',
             '../../addons/ofxWarp',
+            '../../addons/ofxEasing',
             'ofxXmlSettings',
         ]
 

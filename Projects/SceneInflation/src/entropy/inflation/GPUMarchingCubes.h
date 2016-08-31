@@ -22,14 +22,14 @@ namespace entropy
             size_t getVertexStride() const;
 
 
-            ofParameter<int> resolution{ "Resolution", 64, 1, 512 };
+			ofParameter<int> resolution{ "Resolution", 128, 1, 512 };
             ofParameter<int> subdivisions{ "subdivisions", 0, 0, 4 };
             ofParameter<float> isoLevel{ "IsoLevel", 0.3f, 0.0f, 1.0f };
             ofParameter<bool> shadeNormals{ "Shade Normals", false };
 
 			ofParameterGroup parameters{
 				"Marching Cubes",
-                resolution,
+				resolution,
                 isoLevel,
                 shadeNormals,
                 subdivisions,
