@@ -4,7 +4,7 @@
             "Background": "0, 0, 0, 1",
             "Camera Back": {
                 "FOV": "38.969",
-                "Far Clip": "1000",
+                "Far Clip": "10000",
                 "Mouse Control": "1",
                 "Near Clip": "0.001",
                 "Relative Y Axis": "0"
@@ -20,15 +20,17 @@
         },
         "Box Back": {
             "Alpha": "1",
+            "Auto Draw": "1",
             "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
-            "Edge Ratio": "0.00300819",
+            "Edge Ratio": "0.003997",
             "Enabled": "1",
             "Size": "800",
             "Subdivisions": "5"
         },
         "Box Front": {
             "Alpha": "1",
+            "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
             "Edge Ratio": "0.01",
@@ -70,6 +72,7 @@
                 "Debug": "0",
                 "Enabled": "1",
                 "Inner": "1",
+                "Only alpha": "1",
                 "Outter": "3",
                 "Power": "1.1",
                 "Rotation": "0"
@@ -94,6 +97,7 @@
                 "Debug": "0",
                 "Enabled": "1",
                 "Inner": "1",
+                "Only alpha": "1",
                 "Outter": "3",
                 "Power": "1.1",
                 "Rotation": "0"
@@ -103,7 +107,7 @@
     },
     "Camera Back": {
         "aspectRatio": 3.1611111164093,
-        "distance": 1950.4150390625,
+        "distance": 2949.49780273438,
         "drag": 0.899999976158142,
         "farClip": 10000.0,
         "forceAspectRatio": true,
@@ -112,26 +116,26 @@
         "lensOffset": "0, 0",
         "mouseInputEnabled": false,
         "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
+        "nearClip": 0.00100000004749745,
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "0.709602, 0.0433802, -0.703266,        0\n-0.309313, 0.915966, -0.255599,        0\n 0.63308, 0.398903, 0.663389,        0\n 671.929,  850.299,  1621.61,        1",
+        "transform": " 0.75415, -0.124597, -0.644773,        0\n-0.174546, 0.908488, -0.379713,        0\n 0.63308, 0.398903, 0.663389,        0\n 984.145,  1300.77,  2457.44,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
     "Camera Front": {
         "aspectRatio": 2.89074063301086,
-        "distance": 492.330688476563,
+        "distance": 492.330993652344,
         "drag": 0.899999976158142,
-        "farClip": 10000.0,
+        "farClip": 1000.0,
         "forceAspectRatio": true,
         "fov": 60.0,
         "inertiaEnabled": false,
         "lensOffset": "0, 0",
         "mouseInputEnabled": false,
         "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
+        "nearClip": 0.00100000004749745,
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
@@ -153,6 +157,7 @@
         "Base::Camera_Front::Near Clip": "0",
         "Base::Camera_Front::Relative Y Axis": "0",
         "Box_Back::Alpha": "0",
+        "Box_Back::Auto Draw": "0",
         "Box_Back::Color": "0",
         "Box_Back::Cull Face": "0",
         "Box_Back::Edge Ratio": "1",
@@ -160,21 +165,13 @@
         "Box_Back::Size": "0",
         "Box_Back::Subdivisions": "0",
         "Box_Front::Alpha": "0",
+        "Box_Front::Auto Draw": "0",
         "Box_Front::Color": "0",
         "Box_Front::Cull Face": "0",
         "Box_Front::Edge Ratio": "0",
         "Box_Front::Enabled": "0",
         "Box_Front::Size": "0",
         "Box_Front::Subdivisions": "0",
-        "Pool_GL_3D::Base::Damping": "0",
-        "Pool_GL_3D::Base::Drop Color": "0",
-        "Pool_GL_3D::Base::Drop Rate": "1",
-        "Pool_GL_3D::Base::Dropping": "1",
-        "Pool_GL_3D::Base::Radius": "0",
-        "Pool_GL_3D::Base::Ring Size": "0",
-        "Pool_GL_3D::Base::Ripple Rate": "0",
-        "Pool_GL_3D::Volumetrics::Filter Mode": "0",
-        "Pool_GL_3D::Volumetrics::Volume Size": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -188,6 +185,7 @@
         "Post_Effects_Back::Vignette::Debug": "0",
         "Post_Effects_Back::Vignette::Enabled": "0",
         "Post_Effects_Back::Vignette::Inner": "0",
+        "Post_Effects_Back::Vignette::Only alpha": "0",
         "Post_Effects_Back::Vignette::Outter": "0",
         "Post_Effects_Back::Vignette::Power": "0",
         "Post_Effects_Back::Vignette::Rotation": "0",
@@ -204,31 +202,11 @@
         "Post_Effects_Front::Vignette::Debug": "0",
         "Post_Effects_Front::Vignette::Enabled": "0",
         "Post_Effects_Front::Vignette::Inner": "0",
+        "Post_Effects_Front::Vignette::Only alpha": "0",
         "Post_Effects_Front::Vignette::Outter": "0",
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0",
         "Tint Color": "0"
     },
-    "Pop-Ups": [
-        {
-            "Video": {
-                "Base": {
-                    "Background": "0, 0, 0, 1",
-                    "Center": "0.398, 0.602",
-                    "Layout": "0",
-                    "Size": "0.294"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\Video\\videos\\test front screen\\test graphique 3_1.mov",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 2
-        }
-    ]
+    "Pop-Ups": null
 }

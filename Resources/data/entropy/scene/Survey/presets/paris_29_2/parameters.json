@@ -1,7 +1,7 @@
 {
     "Camera Back": {
         "aspectRatio": 3.17685174942017,
-        "distance": 571.878662109375,
+        "distance": 19354.85546875,
         "drag": 0.899999976158142,
         "farClip": 100000.0,
         "forceAspectRatio": true,
@@ -14,17 +14,17 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": " 0.83068, -0.000934132, 0.556749,        0\n-0.016405, -0.999598, 0.0227993,        0\n0.556508, -0.0280724, -0.83036,        0\n 347.517, -69.0357,   -448.9,        1",
+        "transform": "0.830831, -0.000931199, 0.556523,        0\n0.0039795, -0.99995, -0.00761411,        0\n0.556506, 0.00854073, -0.830785,        0\n 11131.4, -1132.27, -15793.1,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
     "Camera Front": {
         "aspectRatio": 2.82592582702637,
-        "distance": 1367356.125,
+        "distance": 0.000172633488546126,
         "drag": 0.899999976158142,
-        "farClip": 1000.0,
+        "farClip": 900.0,
         "forceAspectRatio": true,
-        "fov": 60.0,
+        "fov": 130.0,
         "inertiaEnabled": false,
         "lensOffset": "0, 0",
         "mouseInputEnabled": false,
@@ -33,7 +33,7 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": " 0.83068, -0.000934132, 0.556749,        0\n-0.016405, -0.999598, 0.0227993,        0\n0.556508, -0.0280724, -0.83036,        0\n  761292, -38453.9, -1.13585e+06,        1",
+        "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n-2.98023e-08, 9.31323e-10,        1,        0\n-0.00012207, 0.00012207,        0,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
@@ -48,6 +48,7 @@
         "Back::Point Size": "0",
         "Back::Render BOSS": "0",
         "Back::Render DES": "0",
+        "Back::Render ViziR": "0",
         "Back::Scale": "0",
         "Base::Background": "0",
         "Base::Camera_Back::FOV": "0",
@@ -87,6 +88,7 @@
         "Front::Point Size": "0",
         "Front::Render BOSS": "0",
         "Front::Render DES": "0",
+        "Front::Render ViziR": "0",
         "Front::Scale": "0",
         "Galaxy::Alpha": "1",
         "Galaxy::Scale": "0",
@@ -125,28 +127,7 @@
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
-    "Pop-Ups": [
-        {
-            "Image": {
-                "Base": {
-                    "Background": "0, 0, 0, 1",
-                    "Center": "0.295, 0.386",
-                    "Layout": "1",
-                    "Size": "0.598"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "C:\\Users\\Elias\\Downloads\\cmbnew.jpg",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "2"
-                }
-            },
-            "type": 1
-        }
-    ],
+    "Pop-Ups": null,
     "Survey": {
         "BOSS": {
             "Color": "1, 1, 1, 1",
@@ -161,6 +142,7 @@
             "Point Size": "0.937",
             "Render BOSS": "1",
             "Render DES": "1",
+            "Render ViziR": "0",
             "Scale": "0.525"
         },
         "Base": {
@@ -174,8 +156,8 @@
             },
             "Camera Front": {
                 "Attach to Back": "1",
-                "FOV": "60",
-                "Far Clip": "1000",
+                "FOV": "130",
+                "Far Clip": "900",
                 "Mouse Control": "0",
                 "Near Clip": "0.001",
                 "Relative Y Axis": "0"
@@ -211,10 +193,11 @@
             "Min Radius": "0"
         },
         "Front": {
-            "Point Size": "0.01",
+            "Point Size": "2.327",
             "Render BOSS": "0",
-            "Render DES": "0",
-            "Scale": "0.01"
+            "Render DES": "1",
+            "Render ViziR": "0",
+            "Scale": "0.525"
         },
         "Galaxy": {
             "Alpha": "0",
@@ -250,7 +233,7 @@
             "Bloom": {
                 "Brightness Threshold": "1",
                 "Debug blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num Passes": "1",
                 "Sigma": "0.9"
             },
@@ -263,7 +246,7 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Inner": "1",
                 "Only alpha": "1",
                 "Outter": "3",

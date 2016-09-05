@@ -23,7 +23,7 @@ namespace entropy
 			// Load the data.
 			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 10, "PartType6");
 			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 20, "PartType6");
-			this->dataSetVizir.setup("ViziR", this->getAssetsPath("particles/Hipparchos-Tycho-stars-fromViziR.hdf5"), 0, 1, "PartType4");
+			//this->dataSetVizir.setup("ViziR", this->getAssetsPath("particles/Hipparchos-Tycho-stars-fromViziR.hdf5"), 0, 1, "PartType4");
 
 			// Set ofParameterGroup names.
 			this->parameters.setName("Survey");
@@ -35,7 +35,7 @@ namespace entropy
 			this->parameters.add(this->frontParameters);
 			this->parameters.add(this->dataSetBoss.parameters);
 			this->parameters.add(this->dataSetDes.parameters);
-			this->parameters.add(this->dataSetVizir.parameters);
+			//this->parameters.add(this->dataSetVizir.parameters);
 
 			// Build the galaxy quad.
 			this->galaxyQuad.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
@@ -158,14 +158,14 @@ namespace entropy
 						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetDes.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
 						this->dataSetDes.draw();
 					}
-					if (parameters.renderVizir)
-					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetVizir.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetVizir.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetVizir.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetVizir.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->dataSetVizir.draw();
-					}
+					//if (parameters.renderVizir)
+					//{
+					//	this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetVizir.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+					//	this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetVizir.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+					//	this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetVizir.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+					//	this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetVizir.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+					//	this->dataSetVizir.draw();
+					//}
 				}
 				ofDisablePointSprites();
 				this->spriteShader.end();

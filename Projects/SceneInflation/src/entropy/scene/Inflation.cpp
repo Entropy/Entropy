@@ -37,6 +37,14 @@ namespace entropy
 			// Noise Field
 			noiseField.setup(gpuMarchingCubes.resolution);
 
+			// Setup renderers.
+			this->renderers[render::Layout::Back].setup();
+			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
+			this->parameters.add(this->renderers[render::Layout::Back].parameters);
+			this->renderers[render::Layout::Front].setup();
+			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
+			this->parameters.add(this->renderers[render::Layout::Front].parameters);
+
 			// Custom parameter listeners.
 			this->parameterListeners.push_back(this->parameters.render.drawBoxInRenderer.newListener([this](bool & value)
 			{
@@ -48,18 +56,10 @@ namespace entropy
 				}
 			}));
 
-			// Setup renderers.
-			this->renderers[render::Layout::Back].setup();
-			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
-			this->renderers[render::Layout::Front].setup();
-			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
-
+			// Setup big bang.
 			for(size_t i=0;i<postBigBangColors.size();i++){
 				postBigBangColors[i] = noiseField.octaves[i].color;
 			}
-
-			now = 0;
-			t_bigbang = 0;
 		}
 		
 		//--------------------------------------------------------------
@@ -477,10 +477,10 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Serialize(json, this->gpuMarchingCubes.parameters);
-			for (auto & it : this->renderers)
-			{
-				ofxPreset::Serializer::Serialize(json, it.second.parameters);
-			}
+			//for (auto & it : this->renderers)
+			//{
+			//	ofxPreset::Serializer::Serialize(json, it.second.parameters);
+			//}
 		}
 
 		//--------------------------------------------------------------
@@ -488,10 +488,10 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Deserialize(json, this->gpuMarchingCubes.parameters);
-			for (auto & it : this->renderers)
-			{
-				ofxPreset::Serializer::Deserialize(json, it.second.parameters);
-			}
+			//for (auto & it : this->renderers)
+			//{
+			//	ofxPreset::Serializer::Deserialize(json, it.second.parameters);
+			//}
 
 			resetWavelengths();
 		}

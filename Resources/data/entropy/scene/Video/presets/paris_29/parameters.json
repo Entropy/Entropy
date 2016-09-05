@@ -1,7 +1,7 @@
 {
     "Camera Back": {
         "aspectRatio": 3.17685174942017,
-        "distance": 692.905883789063,
+        "distance": 692.813171386719,
         "drag": 0.899999976158142,
         "farClip": 1000.0,
         "forceAspectRatio": true,
@@ -14,13 +14,13 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "0.977674, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439973,        0\n-0.0420351, -0.0133354, 0.999027,        0\n-443.411,   7.8815,  532.394,        1",
+        "transform": "0.977674, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439974,        0\n-0.0420351, -0.0133354, 0.999027,        0\n-443.257,  7.90512,  532.401,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
     "Camera Front": {
         "aspectRatio": 2.82592582702637,
-        "distance": 3.41196900990326e-05,
+        "distance": 6.86646017129533e-05,
         "drag": 0.899999976158142,
         "farClip": 1000.0,
         "forceAspectRatio": true,
@@ -33,7 +33,7 @@
         "ortho": false,
         "relativeYAxis": false,
         "target": "0, 0, 0",
-        "transform": "0.977675, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439973,        0\n-0.0420351, -0.0133354, 0.999027,        0\n-443.411,  7.88149,  532.394,        1",
+        "transform": "       1, -1.57888e-08, 3.72529e-09,        0\n1.42318e-08,        1, 4.65661e-10,        0\n       0,        0,        1,        0\n3.05176e-05, -7.62939e-06, 6.10352e-05,        1",
         "translationKey": 109,
         "upAxis": "0, 1, 0"
     },
@@ -68,6 +68,7 @@
         "Box_Front::Subdivisions": "0",
         "Content Mode": "0",
         "Playback::Loop": "0",
+        "Playback::Pause": "0",
         "Playback::Play": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug blur": "0",
@@ -125,7 +126,7 @@
             }
         },
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0.0252386",
             "Auto Draw": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "1",
@@ -135,7 +136,7 @@
             "Subdivisions": "80"
         },
         "Box Front": {
-            "Alpha": "1",
+            "Alpha": "0.00230644",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
@@ -147,6 +148,7 @@
         "Content Mode": "3",
         "Playback": {
             "Loop": "0",
+            "Pause": "0",
             "Play": "0"
         },
         "Post Effects Back": {
