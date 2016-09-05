@@ -450,6 +450,7 @@ namespace entropy
 					}
 				}
 			}
+			ofxPreset::Gui::EndWindow(settings);
 
 			// Let the child class handle its child parameters.
 			this->gui(settings);
