@@ -491,6 +491,11 @@ namespace entropy
 					this->currentScene->addCameraKeyframe(render::Layout::Front);
 					return true;
 				}
+				if (args.key == ' ')
+				{
+					this->currentScene->goToNextTimelineFlag();
+					return true;
+				}
 			}
 			return false;
 		}

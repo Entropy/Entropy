@@ -10,6 +10,7 @@ namespace entropy
 		Base::Base()
 			: initialized(false)
 			, ready(false)
+			, cuesTrack(nullptr)
 		{}
 
 		//--------------------------------------------------------------
@@ -41,11 +42,17 @@ namespace entropy
 				timelineDataPath.append(ofFilePath::addTrailingSlash("ofxTimeline"));
 			}
 			this->timeline.setup(timelineDataPath);
+			this->timeline.setSpacebarTogglePlay(false);
 			this->timeline.setLoopType(OF_LOOP_NONE);
 			this->timeline.setFrameRate(30.0f);
 			this->timeline.setDurationInSeconds(600);
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(parameters.getName());
+
+			// Add the cues track and listener.
+			this->cuesTrack = this->timeline.addFlags("Cues");
+
+			ofAddListener(this->timeline.events().bangFired, this, &Base::timelineBangFired);
 
 			// Build the Back and Front cameras.
 			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
@@ -78,8 +85,7 @@ namespace entropy
 			this->populateMappings(parameters);
 
 			// Restore default data path.
-			// TODO: Figure out why this doesn't work.
-			//ofSetDataPathRoot(prevDataPathRoot);
+			ofSetDataPathRoot(prevDataPathRoot);
 
 			this->initialized = true;
 		}
@@ -109,6 +115,7 @@ namespace entropy
 			this->cameras.clear();
 
 			// Clear any remaining timeline stuff.
+			ofRemoveListener(this->timeline.events().bangFired, this, &Base::timelineBangFired);
 			this->timeline.clear();
 		}
 
@@ -581,6 +588,38 @@ namespace entropy
 		int Base::getCurrentTimelineFrame()
 		{
 			return this->timeline.getCurrentFrame();
+		}
+
+		//--------------------------------------------------------------
+		bool Base::goToNextTimelineFlag()
+		{
+			if (!this->cuesTrack) return false;
+
+			for (auto keyframe : this->cuesTrack->getKeyframes())
+			{
+				if (keyframe->time > this->timeline.getCurrentTimeMillis())
+				{
+					this->timeline.setCurrentTimeMillis(keyframe->time);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		void Base::timelineBangFired(ofxTLBangEventArgs & args)
+		{
+			static const string kPauseFlag = "pause";
+			static const string kPlayFlag = "play";
+			if (args.flag.compare(0, kPauseFlag.size(), kPauseFlag) == 0)
+			{
+				this->timeline.stop();
+			}
+			else if (args.flag.compare(0, kPlayFlag.size(), kPlayFlag) == 0)
+			{
+				this->timeline.play();
+			}
 		}
 
 		//--------------------------------------------------------------

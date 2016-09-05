@@ -79,6 +79,7 @@ namespace entropy
 			// Timeline
 			void drawTimeline(ofxPreset::Gui::Settings & settings);
 			int getCurrentTimelineFrame();
+			bool goToNextTimelineFlag();
 
 			// Camera
 			std::shared_ptr<world::Camera> getCamera(render::Layout layout);
@@ -89,10 +90,10 @@ namespace entropy
 			void toggleCameraLocked();
 			bool isCameraLocked(render::Layout layout) const;
 
-            void addCameraKeyframe(render::Layout layout);
+			void addCameraKeyframe(render::Layout layout);
 
-            // Post Effects.
-            render::PostParameters & getPostParameters(render::Layout layout);
+			// Post Effects.
+			render::PostParameters & getPostParameters(render::Layout layout);
 
 			// Export
 			void beginExport();
@@ -146,7 +147,10 @@ namespace entropy
 			std::vector<ofEventListener> parameterListeners;
 
 			// Timeline
+			void timelineBangFired(ofxTLBangEventArgs & args);
+
 			ofxTimeline timeline;
+			ofxTLFlags * cuesTrack;
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 			// Popups
