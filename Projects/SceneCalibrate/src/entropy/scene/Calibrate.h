@@ -59,12 +59,12 @@ namespace entropy
 			ofVboMesh crossMesh;
 
 			// Parameters
-			BaseParameters & getParameters() override
+			ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				struct : ofParameterGroup
 				{

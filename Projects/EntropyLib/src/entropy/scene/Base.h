@@ -129,6 +129,9 @@ namespace entropy
 			// Box
 			std::map<render::Layout, geom::Box> boxes;
 
+			// Post Effects
+			std::map<render::Layout, render::PostParameters> postEffects;
+
 			// Resources
 			void populatePresets();
 
@@ -138,23 +141,7 @@ namespace entropy
 			vector<string> presets;
 
 			// Parameters
-			struct BaseParameters
-				: ofParameterGroup
-			{
-				struct : ofParameterGroup
-				{
-					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
-
-					PARAM_DECLARE("Base", 
-						background);
-				} base;
-
-				PARAM_DECLARE("Parameters", base);
-			};
-
-            virtual BaseParameters & getParameters() = 0;
-
-            std::map<render::Layout, render::PostParameters> postEffects;
+			virtual ofParameterGroup & getParameters() = 0;
 
 			std::vector<ofEventListener> parameterListeners;
 

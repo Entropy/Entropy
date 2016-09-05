@@ -1,8 +1,5 @@
 {
     "Calibrate": {
-        "Base": {
-            "Background": "0, 0, 0, 1"
-        },
         "Border": {
             "Back Draw": "0",
             "Front Draw": "0",
@@ -63,11 +60,11 @@
         },
         "Post Effects Front": {
             "Bloom": {
-                "Brightness Threshold": "1",
+                "Brightness Threshold": "0.5",
                 "Debug blur": "0",
                 "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
+                "Num Passes": "3",
+                "Sigma": "6"
             },
             "Color": {
                 "Brightness": "0",
@@ -110,7 +107,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.671414, -0.0747061, 0.737308,        0\n0.0991916, 0.995013, 0.0104908,        0\n-0.734415, 0.0660911, 0.675476,        0\n-1106.95,  92.5594,   143.34,        1",
+                "transform": "0.671414, -0.0747061, 0.737308,        0\n0.0991917, 0.995014, 0.0104909,        0\n-0.734414, 0.066091, 0.675475,        0\n-1106.95,  92.5594,   143.34,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -124,7 +121,7 @@
             "Relative Y Axis": "0",
             "ofEasyCam": {
                 "aspectRatio": 2.82592582702637,
-                "distance": 3.05179419228807e-05,
+                "distance": 3.05179637507536e-05,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -144,7 +141,6 @@
         }
     },
     "Mappings": {
-        "Base::Background": "0",
         "Border::Back Draw": "0",
         "Border::Front Draw": "0",
         "Border::Size": "0",
