@@ -39,7 +39,12 @@ namespace entropy
 				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 20.0f };
 				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
 
-				PARAM_DECLARE("Back", renderBoss, renderDes, renderVizir, scale, pointSize);
+				PARAM_DECLARE("Back", 
+					renderBoss, 
+					renderDes, 
+					renderVizir, 
+					scale, 
+					pointSize);
 			};
 
 			LayoutParameters backParameters;
@@ -70,7 +75,10 @@ namespace entropy
 					ofParameter<float> scale{ "Scale", 1.0f, 0.0f, 10000.0f };
 					ofParameter<glm::vec3> orientation{ "Orientation", glm::vec3(0.0f), glm::vec3(-180.0f), glm::vec3(180.0f) };
 
-					PARAM_DECLARE("Galaxy", alpha, scale, orientation);
+					PARAM_DECLARE("Galaxy", 
+						alpha, 
+						scale, 
+						orientation);
 				} galaxy;
 
 				PARAM_DECLARE("Survey", galaxy);
