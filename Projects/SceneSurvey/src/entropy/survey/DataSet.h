@@ -13,7 +13,7 @@ namespace entropy
 			DataSet();
 			~DataSet();
 
-			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx);
+			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
 			void update();
@@ -44,7 +44,7 @@ namespace entropy
 			} parameters;
 
 		protected:
-			size_t loadFragment(const string & filePath, std::vector<glm::vec4> & points);
+			size_t loadFragment(const std::string & filePath, const std::string & particleType, std::vector<glm::vec4> & points);
 
 			std::vector<glm::vec4> points;
 

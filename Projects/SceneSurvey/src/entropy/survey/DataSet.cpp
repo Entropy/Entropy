@@ -21,7 +21,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::setup(const std::string & name, const std::string & format, size_t startIdx, size_t count)
+		void DataSet::setup(const std::string & name, const std::string & format, size_t startIdx, size_t count, const std::string & particleType)
 		{
 			this->parameters.setName(name);
 
@@ -32,7 +32,7 @@ namespace entropy
 			{
 				char filePath[512];
 				sprintf(filePath, format.c_str(), (i + startIdx + 1));
-				this->loadFragment(filePath, this->points);
+				this->loadFragment(filePath, particleType, this->points);
 			}
 
 			// Sort the data points by radius.
@@ -55,13 +55,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::loadFragment(const string & filePath, vector<glm::vec4> & points)
+		size_t DataSet::loadFragment(const std::string & filePath, const std::string & particleType, std::vector<glm::vec4> & points)
 		{
 			static const int stride = 1;
 
 			ofxHDF5File h5File;
 			h5File.open(filePath, true);
-			ofxHDF5GroupPtr h5Group = h5File.loadGroup("PartType6");
+			ofxHDF5GroupPtr h5Group = h5File.loadGroup(particleType);
 
 			// Load the coordinate data.
 			auto coordsDataSet = h5Group->loadDataSet("Coordinates");
