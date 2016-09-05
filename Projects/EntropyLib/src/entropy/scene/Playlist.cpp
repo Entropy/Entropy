@@ -26,12 +26,18 @@ namespace entropy
 		{
 			if (this->scenes.find(scene->getName()) == this->scenes.end())
 			{
+				ofLogNotice(__FUNCTION__) << "Initializing scene " << scene->getName() << "...";
+				auto startTime = ofGetElapsedTimef();
+
 				scene->init_();
 				this->scenes.emplace(scene->getName(), scene);
 				
 				// Get the short name for the gui.
 				auto tokens = ofSplitString(scene->getName(), "::", true, true);
 				this->shortNames.emplace(tokens.back(), scene->getName());
+
+				auto duration = ofGetElapsedTimef() - startTime;
+				ofLogNotice(__FUNCTION__) << "Scene " << scene->getName() << " initialized in " << duration << " seconds.";
 				
 				return true;
 			}

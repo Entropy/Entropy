@@ -11,6 +11,7 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofSetLogLevel(OF_LOG_NOTICE);
 	ofBackground(ofColor::black);
 
 	// Add all Scenes to the Playlist.
