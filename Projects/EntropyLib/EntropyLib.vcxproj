@@ -266,6 +266,7 @@
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Playlist.cpp" />
     <ClCompile Include="src\entropy\util\App.cpp" />
+    <ClCompile Include="src\entropy\world\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
@@ -384,6 +385,7 @@
     <ClInclude Include="src\entropy\util\GLError.h" />
     <ClInclude Include="src\entropy\util\Mapping.h" />
     <ClInclude Include="src\entropy\util\Singleton.h" />
+    <ClInclude Include="src\entropy\world\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />

@@ -33,24 +33,6 @@ namespace entropy
 
 			auto & parameters = this->getParameters();
 
-			// Build the Back and Front cameras.
-			this->cameras[render::Layout::Back].begin();
-			this->cameras[render::Layout::Back].end();
-			this->cameras[render::Layout::Front].begin();
-			this->cameras[render::Layout::Front].end();
-
-			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
-			// that they are taken into account for ofxTimeline mappings and serialization.
-			this->boxes[render::Layout::Back].parameters.setName("Box Back");
-			this->boxes[render::Layout::Front].parameters.setName("Box Front");
-			parameters.add(this->boxes[render::Layout::Back].parameters);
-			parameters.add(this->boxes[render::Layout::Front].parameters);
-
-			this->postEffects[render::Layout::Back].setName("Post Effects Back");
-			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			parameters.add(this->postEffects[render::Layout::Back]);
-			parameters.add(this->postEffects[render::Layout::Front]);
-
 			// Create timeline.
 			static string timelineDataPath;
 			if (timelineDataPath.empty())
@@ -65,19 +47,25 @@ namespace entropy
 			this->timeline.setAutosave(false);
 			this->timeline.setPageName(parameters.base.getName());
 
-			// Setup timeline tracks.
-			for (auto & it : this->cameras)
-			{
-				const auto trackName = ((it.first == render::Layout::Back) ? "Camera Back" : "Camera Front");
-				const auto trackIdentifier = this->getParameters().base.getName() + "_" + trackName;
-				auto track = new ofxTLCameraTrack();
-				track->setCamera(it.second);
-				track->setXMLFileName(this->timeline.nameToXMLName(trackIdentifier));
-				this->timeline.addTrack(trackIdentifier, track);
-				track->setDisplayName(trackName);
-				track->lockCameraToTrack = false;
-				this->cameraTracks[it.first] = track;
-			}
+			// Build the Back and Front cameras.
+			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
+			this->cameras[render::Layout::Back]->setup(render::Layout::Back, this->timeline);
+
+			this->cameras.emplace(render::Layout::Front, std::make_shared<world::Camera>());
+			this->cameras[render::Layout::Front]->setup(render::Layout::Front, this->timeline);
+			this->cameras[render::Layout::Front]->setParentNode(this->cameras[render::Layout::Back]->getEasyCam());
+
+			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
+			// that they are taken into account for ofxTimeline mappings and serialization.
+			this->boxes[render::Layout::Back].parameters.setName("Box Back");
+			this->boxes[render::Layout::Front].parameters.setName("Box Front");
+			parameters.add(this->boxes[render::Layout::Back].parameters);
+			parameters.add(this->boxes[render::Layout::Front].parameters);
+
+			this->postEffects[render::Layout::Back].setName("Post Effects Back");
+			this->postEffects[render::Layout::Front].setName("Post Effects Front");
+			parameters.add(this->postEffects[render::Layout::Back]);
+			parameters.add(this->postEffects[render::Layout::Front]);
 
 			// Initialize child class.
 			this->init();
@@ -89,82 +77,8 @@ namespace entropy
 			// List mappings.
 			this->populateMappings(parameters);
 
-			// Set base parameter listeners.
-			this->parameterListeners.push_back(parameters.base.backCamera.mouseControl.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->getParameters().base.frontCamera.mouseControl = false;
-
-					this->cameras[render::Layout::Back].enableMouseInput();
-				}
-				else
-				{
-					this->cameras[render::Layout::Back].disableMouseInput();
-				}
-			})); 
-			this->parameterListeners.push_back(parameters.base.backCamera.relativeYAxis.newListener([this](bool & enabled)
-			{
-				this->cameras[render::Layout::Back].setRelativeYAxis(enabled);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.fov.newListener([this](float & enabled)
-			{
-				this->cameras[render::Layout::Back].setFov(enabled);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.nearClip.newListener([this](float & enabled)
-			{
-				this->cameras[render::Layout::Back].setNearClip(enabled);
-			}));
-			this->parameterListeners.push_back(parameters.base.backCamera.farClip.newListener([this](float & enabled)
-			{
-				this->cameras[render::Layout::Back].setFarClip(enabled);
-			}));
-
-			this->parameterListeners.push_back(parameters.base.frontCamera.mouseControl.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->getParameters().base.frontCamera.attachToBack = false;
-					this->getParameters().base.backCamera.mouseControl = false;
-
-					this->cameras[render::Layout::Front].enableMouseInput();
-				}
-				else
-				{
-					this->cameras[render::Layout::Front].disableMouseInput();
-				}
-			})); 
-			this->parameterListeners.push_back(parameters.base.frontCamera.relativeYAxis.newListener([this](bool & enabled)
-			{
-				this->cameras[render::Layout::Front].setRelativeYAxis(enabled);
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.attachToBack.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->getParameters().base.frontCamera.mouseControl = false;
-
-					this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
-				}
-				else
-				{
-					this->cameras[render::Layout::Front].clearParent(true);
-				}
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.fov.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Front].setFov(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.nearClip.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Front].setNearClip(value);
-			}));
-			this->parameterListeners.push_back(parameters.base.frontCamera.farClip.newListener([this](float & value)
-			{
-				this->cameras[render::Layout::Front].setFarClip(value);
-			}));
-
 			// Restore default data path.
+			// TODO: Figure out why this doesn't work.
 			//ofSetDataPathRoot(prevDataPathRoot);
 
 			this->initialized = true;
@@ -187,13 +101,12 @@ namespace entropy
 			// Clear mappings.
 			this->clearMappings();
 
-			// Clear camera tracks.
-			for (auto & it : this->cameraTracks)
+			// Clear cameras.
+			for (auto & it : this->cameras)
 			{
-				this->timeline.removeTrack(it.second);
-				delete it.second;
+				it.second->clear(this->timeline);
 			}
-			this->cameraTracks.clear();
+			this->cameras.clear();
 
 			// Clear any remaining timeline stuff.
 			this->timeline.clear();
@@ -247,7 +160,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize_(render::Layout layout, ofResizeEventArgs & args)
 		{
-			this->cameras[layout].setAspectRatio(args.width / static_cast<float>(args.height));
+			this->cameras[layout]->resize(args);
 
 			if (layout == render::Layout::Back)
 			{
@@ -262,24 +175,10 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
-			// TODO: Figure out a better way to do this, with event consumption or something.
-			if (GetApp()->isMouseOverGui() || !this->getParameters().base.backCamera.mouseControl)
+			for (auto & it : this->cameras)
 			{
-				this->cameras[render::Layout::Back].disableMouseInput();
+				it.second->update(GetApp()->isMouseOverGui());
 			}
-			else
-			{
-				this->cameras[render::Layout::Back].enableMouseInput();
-			}
-			if (GetApp()->isMouseOverGui() || !this->getParameters().base.frontCamera.mouseControl)
-			{
-				this->cameras[render::Layout::Front].disableMouseInput();
-			}
-			else
-			{
-				this->cameras[render::Layout::Front].enableMouseInput();
-			}
-			// TODO: End
 
 			for (auto & it : this->mappings)
 			{
@@ -314,17 +213,7 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 			
-			//if (layout == render::Layout::Back)
-			//{
-			//	this->cameras[layout].setNearClip(parameters.base.camera.backClipNear);
-			//	this->cameras[layout].setFarClip(parameters.base.camera.backClipFar);
-			//}
-			//else
-			//{
-			//	this->cameras[layout].setNearClip(parameters.base.camera.frontClipNear);
-			//	this->cameras[layout].setFarClip(parameters.base.camera.frontClipFar);
-			//}
-			this->cameras[layout].begin(GetCanvasViewport(layout));
+			this->cameras[layout]->begin();
 			ofEnableDepthTest();
 			{
 				if (this->boxes[layout].autoDraw)
@@ -342,7 +231,7 @@ namespace entropy
 				}
 			}
 			ofDisableDepthTest();
-			this->cameras[layout].end();
+			this->cameras[layout]->end();
 		}
 
 		//--------------------------------------------------------------
@@ -486,50 +375,10 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(parameters.base.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(parameters.base.background);
-				
-				if (ofxPreset::Gui::BeginTree(parameters.base.backCamera, settings))
+
+				for (auto & it : this->cameras)
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.backCamera.mouseControl);
-					ofxPreset::Gui::AddParameter(parameters.base.backCamera.relativeYAxis);
-					ofxPreset::Gui::AddParameter(parameters.base.backCamera.fov);
-					ofxPreset::Gui::AddRange("Clipping", parameters.base.backCamera.nearClip, parameters.base.backCamera.farClip);
-
-					if (ImGui::Button("Reset"))
-					{
-						this->resetCamera(render::Layout::Back);
-					}
-
-					ofxPreset::Gui::EndTree(settings);
-				}
-
-				if (ofxPreset::Gui::BeginTree(parameters.base.frontCamera, settings))
-				{
-					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.mouseControl);
-					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.relativeYAxis);
-					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.attachToBack);
-					ofxPreset::Gui::AddParameter(parameters.base.frontCamera.fov);
-					ofxPreset::Gui::AddRange("Clipping", parameters.base.frontCamera.nearClip, parameters.base.frontCamera.farClip);
-
-					if (ImGui::Button("Reset"))
-					{
-						this->resetCamera(render::Layout::Front);
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Copy from Back"))
-					{
-						const bool wasAttachToBack = parameters.base.frontCamera.attachToBack;
-						if (wasAttachToBack)
-						{
-							parameters.base.frontCamera.attachToBack = false;
-						}
-						this->cameras[render::Layout::Front].setTransformMatrix(this->cameras[render::Layout::Back].getGlobalTransformMatrix());
-						if (wasAttachToBack)
-						{
-							parameters.base.frontCamera.attachToBack = true;
-						}
-					}
-
-					ofxPreset::Gui::EndTree(settings);
+					it.second->gui(settings);
 				}
 
 				for (auto & it : this->boxes)
@@ -597,9 +446,13 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
-			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Back], "Camera Back");
-			ofxPreset::Serializer::Serialize(json, this->cameras[render::Layout::Front], "Camera Front");
 			
+			auto & jsonCameras = json["Cameras"];
+			for (auto & it : this->cameras)
+			{
+				it.second->serialize(jsonCameras);
+			}
+
 			this->serialize(json);
 
 			auto & jsonMappings = json["Mappings"];
@@ -622,13 +475,14 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
-			if (json.count("Camera Back"))
+			// Restore camera settings.
+			if (json.count("Cameras"))
 			{
-				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Back], "Camera Back");
-			}
-			if (json.count("Camera Front"))
-			{
-				ofxPreset::Serializer::Deserialize(json, this->cameras[render::Layout::Front], "Camera Front");
+				auto & jsonCameras = json["Cameras"];
+				for (auto & it : this->cameras)
+				{
+					it.second->deserialize(jsonCameras);
+				}
 			}
 
 			// Clear previous Pop-ups.
@@ -810,8 +664,10 @@ namespace entropy
 			this->exit_();
 
 			// Reset cameras.
-			this->resetCamera(render::Layout::Back);
-			this->resetCamera(render::Layout::Front);
+			for (auto & it : this->cameras)
+			{
+				it.second->reset();
+			}
 
 			// Make sure file exists.
 			const auto presetPath = this->getPresetPath(presetName);
@@ -979,31 +835,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::resetCamera(render::Layout layout)
-		{
-			auto & parameters = this->getParameters();
-			
-			//this->cameras[layout].setupPerspective(false, 60.0f, 0.1f, 100000.0f);
-			//this->cameras[layout].setVFlip(false);
-			//this->cameras[layout].setNearClip(0.1f);
-			//this->cameras[layout].setFarClip(100000.0f);
-			//this->cameras[layout].setFov(60.0f);
-			this->cameras[layout].setAspectRatio(GetCanvasWidth(layout) / GetCanvasHeight(layout));
-
-			if (layout == render::Layout::Front)
-			{
-				this->cameras[render::Layout::Front].clearParent(true);
-			}
-			
-			this->cameras[layout].reset();
-
-			if (layout == render::Layout::Front && parameters.base.frontCamera.attachToBack)
-			{
-				this->cameras[render::Layout::Front].setParent(this->cameras[render::Layout::Back], true);
-			}
-		}
-
-		//--------------------------------------------------------------
 		shared_ptr<popup::Base> Base::addPopUp(popup::Type type)
 		{
 			shared_ptr<popup::Base> popUp;
@@ -1039,36 +870,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		ofEasyCam & Base::getCameraBack()
+		std::shared_ptr<world::Camera> Base::getCamera(render::Layout layout)
 		{
-			return this->cameras[render::Layout::Back];
-		}
-		
-		//--------------------------------------------------------------
-		ofEasyCam & Base::getCameraFront()
-		{
-			return this->cameras[render::Layout::Front];
+			return this->cameras[layout];
 		}
 
 		//--------------------------------------------------------------
 		void Base::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
 		{
-			this->cameras[layout].setControlArea(controlArea);
+			this->cameras[layout]->setControlArea(controlArea);
 		}
 
 		//--------------------------------------------------------------
 		void Base::setCameraLocked(bool cameraLocked)
 		{
-			this->cameraTracks[render::Layout::Back]->lockCameraToTrack = cameraLocked;
-
-			if (this->getParameters().base.frontCamera.attachToBack)
+			for (auto & it : this->cameras)
 			{
-				// Don't lock the Front camera, let it follow the Back.
-				this->cameraTracks[render::Layout::Front]->lockCameraToTrack = false;
-			}
-			else
-			{
-				this->cameraTracks[render::Layout::Front]->lockCameraToTrack = cameraLocked;
+				it.second->setLockedToTrack(cameraLocked);
 			}
 		}
 
@@ -1083,29 +901,26 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::isCameraLocked(render::Layout layout) const
 		{
-			return this->cameraTracks.at(render::Layout::Back)->lockCameraToTrack;
+			return this->cameras.at(layout)->isLockedToTrack();
 		}
 
 		//--------------------------------------------------------------
 		void Base::addCameraKeyframe(render::Layout layout)
 		{
-			this->cameraTracks[layout]->addKeyframe();
-        }
+			this->cameras[layout]->addKeyframe();
+		}
 
-        //--------------------------------------------------------------
-        render::PostParameters & Base::getPostParameters(render::Layout layout)
-        {
-            return this->postEffects[layout];
-        }
+		//--------------------------------------------------------------
+		render::PostParameters & Base::getPostParameters(render::Layout layout)
+		{
+			return this->postEffects[layout];
+		}
 
 		//--------------------------------------------------------------
 		void Base::beginExport()
 		{
 			this->timeline.setFrameBased(true);
-			for (auto & it : this->cameraTracks)
-			{
-				it.second->lockCameraToTrack = true;
-			}
+			this->setCameraLocked(true);
 			this->timeline.setCurrentTimeToInPoint();
 			this->timeline.play();
 		}
@@ -1115,10 +930,7 @@ namespace entropy
 		{
 			this->timeline.stop();
 			this->timeline.setFrameBased(false);
-			for (auto & it : this->cameraTracks)
-			{
-				it.second->lockCameraToTrack = false;
-			}
+			this->setCameraLocked(false);
 		}
 	}
 }

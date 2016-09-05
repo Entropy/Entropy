@@ -259,6 +259,9 @@
     <ClCompile Include="src\entropy\geom\Shape.cpp">
       <Filter>src\entropy\geom</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\world\Camera.cpp">
+      <Filter>src\entropy\world</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -407,6 +410,9 @@
     </Filter>
     <Filter Include="addons\ofxVolumetrics\src\shaders">
       <UniqueIdentifier>{9dcd63d0-86cf-4892-8a68-d33772c769ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\world">
+      <UniqueIdentifier>{337981ee-3209-4164-a92b-de9ccaa2f1a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +763,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\geom\Shape.h">
       <Filter>src\entropy\geom</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\world\Camera.h">
+      <Filter>src\entropy\world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include "entropy/render/Layout.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"
+#include "entropy/world/Camera.h"
 
 namespace entropy
 {
@@ -80,8 +81,7 @@ namespace entropy
 			int getCurrentTimelineFrame();
 
 			// Camera
-			ofEasyCam & getCameraBack();
-			ofEasyCam & getCameraFront();
+			std::shared_ptr<world::Camera> getCamera(render::Layout layout);
 
 			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
 
@@ -124,9 +124,7 @@ namespace entropy
 			bool ready;
 
 			// Camera
-			virtual void resetCamera(render::Layout layout);
-
-			std::map<render::Layout, ofEasyCam> cameras;
+			std::map<render::Layout, std::shared_ptr<world::Camera>> cameras;
 
 			// Box
 			std::map<render::Layout, geom::Box> boxes;
@@ -147,30 +145,8 @@ namespace entropy
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 
-					struct : ofParameterGroup
-					{
-						ofParameter<bool> mouseControl{ "Mouse Control", true };
-						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
-						ofParameter<float> fov{ "FOV", 60, 0, 180 };
-						ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
-						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
-
-						PARAM_DECLARE("Camera Back", mouseControl, relativeYAxis, fov, nearClip, farClip);
-					} backCamera;
-
-					struct : ofParameterGroup
-					{
-						ofParameter<bool> mouseControl{ "Mouse Control", false };
-						ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
-						ofParameter<bool> attachToBack{ "Attach to Back", false };
-						ofParameter<float> fov{ "FOV", 60, 0, 180 };
-						ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
-						ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
-
-						PARAM_DECLARE("Camera Front", mouseControl, relativeYAxis, attachToBack, fov, nearClip, farClip);
-					} frontCamera;
-
-					PARAM_DECLARE("Base", background, backCamera, frontCamera);
+					PARAM_DECLARE("Base", 
+						background);
 				} base;
 
 				PARAM_DECLARE("Parameters", base);
@@ -184,7 +160,6 @@ namespace entropy
 
 			// Timeline
 			ofxTimeline timeline;
-			map<render::Layout, ofxTLCameraTrack *> cameraTracks;
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
 			// Popups

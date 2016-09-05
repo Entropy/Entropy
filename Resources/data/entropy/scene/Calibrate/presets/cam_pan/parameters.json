@@ -1,22 +1,7 @@
 {
     "Calibrate": {
         "Base": {
-            "Background": "0, 0, 0, 1",
-            "Camera Back": {
-                "FOV": "60",
-                "Far Clip": "1000",
-                "Mouse Control": "1",
-                "Near Clip": "0.001",
-                "Relative Y Axis": "0"
-            },
-            "Camera Front": {
-                "Attach to Back": "1",
-                "FOV": "45",
-                "Far Clip": "1000",
-                "Mouse Control": "0",
-                "Near Clip": "0.001",
-                "Relative Y Axis": "0"
-            }
+            "Background": "0, 0, 0, 1"
         },
         "Border": {
             "Back Draw": "0",
@@ -102,57 +87,64 @@
             }
         }
     },
-    "Camera Back": {
-        "aspectRatio": 1.58796298503876,
-        "distance": 1038.65246582031,
-        "drag": 0.899999976158142,
-        "farClip": 9353.07421875,
-        "forceAspectRatio": true,
-        "fov": 60.0,
-        "inertiaEnabled": false,
-        "lensOffset": "0, 0",
-        "mouseInputEnabled": false,
-        "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
-        "ortho": false,
-        "relativeYAxis": false,
-        "target": "0, 0, 0",
-        "transform": "0.718362, -1.95895e-08, -0.69567,        0\n5.31403e-08,        1, 2.67144e-08,        0\n 0.69567, -5.61587e-08, 0.718362,        0\n 285.291, -0.212931,  998.703,        1",
-        "translationKey": 109,
-        "upAxis": "0, 1, 0"
-    },
-    "Camera Front": {
-        "aspectRatio": 1.41296291351318,
-        "distance": 212.033569335938,
-        "drag": 0.899999976158142,
-        "farClip": 9353.07421875,
-        "forceAspectRatio": true,
-        "fov": 45.0,
-        "inertiaEnabled": false,
-        "lensOffset": "0, 0",
-        "mouseInputEnabled": false,
-        "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
-        "ortho": false,
-        "relativeYAxis": false,
-        "target": "0, 0, 0",
-        "transform": "       1, -3.72529e-09, 5.06639e-07,        0\n1.76951e-08,        1, -1.95578e-08,        0\n5.06639e-07, -3.3062e-08,        1,        0\n-0.000122149, 7.00103e-06, -212.034,        1",
-        "translationKey": 109,
-        "upAxis": "0, 1, 0"
+    "Cameras": {
+        "Camera Back": {
+            "Attach to Parent": "0",
+            "FOV": "60",
+            "Far Clip": "1000",
+            "Mouse Control": "1",
+            "Near Clip": "0.001",
+            "Relative Y Axis": "0",
+            "ofEasyCam": {
+                "aspectRatio": 3.17685174942017,
+                "distance": 1120.02209472656,
+                "drag": 0.899999976158142,
+                "farClip": 9353.07421875,
+                "forceAspectRatio": true,
+                "fov": 60.0,
+                "inertiaEnabled": false,
+                "lensOffset": "0, 0",
+                "mouseInputEnabled": false,
+                "mouseMiddleButtonEnabled": true,
+                "nearClip": 9.3530740737915,
+                "ortho": false,
+                "relativeYAxis": false,
+                "target": "0, 0, 0",
+                "transform": "0.671414, -0.0747061, 0.737308,        0\n0.0991916, 0.995013, 0.0104908,        0\n-0.734415, 0.0660911, 0.675476,        0\n-1106.95,  92.5594,   143.34,        1",
+                "translationKey": 109,
+                "upAxis": "0, 1, 0"
+            }
+        },
+        "Camera Front": {
+            "Attach to Parent": "1",
+            "FOV": "45",
+            "Far Clip": "1000",
+            "Mouse Control": "0",
+            "Near Clip": "0.001",
+            "Relative Y Axis": "0",
+            "ofEasyCam": {
+                "aspectRatio": 2.82592582702637,
+                "distance": 3.05179419228807e-05,
+                "drag": 0.899999976158142,
+                "farClip": 9353.07421875,
+                "forceAspectRatio": true,
+                "fov": 45.0,
+                "inertiaEnabled": false,
+                "lensOffset": "0, 0",
+                "mouseInputEnabled": false,
+                "mouseMiddleButtonEnabled": true,
+                "nearClip": 9.3530740737915,
+                "ortho": false,
+                "relativeYAxis": false,
+                "target": "0, 0, 0",
+                "transform": "       1,        0, 2.98023e-08,        0\n       0,        1, 1.86265e-09,        0\n       0,        0,        1,        0\n3.05176e-05, -1.49012e-07,        0,        1",
+                "translationKey": 109,
+                "upAxis": "0, 1, 0"
+            }
+        }
     },
     "Mappings": {
         "Base::Background": "0",
-        "Base::Camera_Back::FOV": "0",
-        "Base::Camera_Back::Far Clip": "0",
-        "Base::Camera_Back::Mouse Control": "0",
-        "Base::Camera_Back::Near Clip": "0",
-        "Base::Camera_Back::Relative Y Axis": "0",
-        "Base::Camera_Front::Attach to Back": "0",
-        "Base::Camera_Front::FOV": "0",
-        "Base::Camera_Front::Far Clip": "0",
-        "Base::Camera_Front::Mouse Control": "0",
-        "Base::Camera_Front::Near Clip": "0",
-        "Base::Camera_Front::Relative Y Axis": "0",
         "Border::Back Draw": "0",
         "Border::Front Draw": "0",
         "Border::Size": "0",
