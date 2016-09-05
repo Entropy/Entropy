@@ -35,6 +35,9 @@ namespace entropy
 			void setControlArea(const ofRectangle & controlArea);
 			void setMouseInputEnabled(bool mouseInputEnabled);
 
+			void setDistanceToTarget(float distanceToTarget);
+			float getDistanceToTarget() const;
+
 			void setParentNode(std::shared_ptr<ofNode> parentNode);
 			void clearParentNode();
 			bool hasParentNode() const;

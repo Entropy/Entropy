@@ -84,12 +84,12 @@ namespace entropy
 			}};
 			std::array<ofFloatColor,4> postBigBangColors;
 
-			BaseParameters & getParameters() override
+			ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				ofParameter<bool> runSimulation{ "Run Simulation", true };
 				ofParameter<float> bigBangDuration{ "BigBang duration", 0.25f, 0.0f, 2.f};

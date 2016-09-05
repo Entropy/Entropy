@@ -62,12 +62,12 @@ namespace entropy
 			void drawDataSet(LayoutParameters & parameters);
 
 		protected:
-			BaseParameters & getParameters() override
+			ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				struct : ofParameterGroup
 				{

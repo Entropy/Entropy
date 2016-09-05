@@ -39,12 +39,12 @@ namespace nm
 	const float ParticleSystem::MAX_SPEED_SQUARED = MAX_SPEED * MAX_SPEED;
 
 	ParticleSystem::ParticleSystem() :
-		particles(NULL),
+		particles(nullptr),
 		totalNumParticles(0),
 		roughness(.1f),
-		deadParticles(NULL),
+		deadParticles(nullptr),
 		numDeadParticles(0),
-		newPhotons(NULL),
+		newPhotons(nullptr),
 		numNewPhotons(0)
 	{
 		this->clearParticles();
@@ -53,8 +53,11 @@ namespace nm
 	ParticleSystem::~ParticleSystem()
 	{
 		if (particles) delete[] particles;
+		particles = nullptr;
 		if (deadParticles) delete[] deadParticles;
+		deadParticles = nullptr;
 		if (newPhotons) delete[] newPhotons;
+		newPhotons = nullptr;
 
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{

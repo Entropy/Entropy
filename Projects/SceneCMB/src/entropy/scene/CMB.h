@@ -60,12 +60,12 @@ namespace entropy
 			geom::Sphere sphereGeom;
 			ofTexture sphereTexture;
 
-			BaseParameters & getParameters() override
+			ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
 				

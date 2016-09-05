@@ -63,12 +63,12 @@ namespace entropy
             GLuint numPrimitives, numPrimitivesQuery;
             std::vector<ofLight> pointLights;
 
-			BaseParameters & getParameters() override
+			ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				ofParameter<string> stateFile;
                 ofParameter<bool> colorsPerType{"color per type", true};

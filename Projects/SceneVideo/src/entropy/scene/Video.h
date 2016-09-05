@@ -76,12 +76,12 @@ namespace entropy
 
 			render::Layout layout;
 
-			virtual BaseParameters & getParameters() override
+			virtual ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			struct : BaseParameters
+			struct : ofParameterGroup
 			{
 				ofParameter<string> videoPath{ "Video Path", "" };
 				ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };

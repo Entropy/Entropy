@@ -149,6 +149,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Camera::setDistanceToTarget(float distanceToTarget)
+		{
+			this->easyCam->setDistance(distanceToTarget);
+		}
+		
+		//--------------------------------------------------------------
+		float Camera::getDistanceToTarget() const
+		{
+			return this->easyCam->getDistance();
+		}
+
+		//--------------------------------------------------------------
 		void Camera::setParentNode(std::shared_ptr<ofNode> parentNode)
 		{
 			this->parentNode = parentNode;
