@@ -1,5 +1,7 @@
 #include "Video.h"
 
+#include "ofGstVideoPlayer.h"
+
 #include "entropy/Helpers.h"
 
 namespace entropy
@@ -10,11 +12,22 @@ namespace entropy
 		Video::Video()
 			: Base(Type::Video)
 			, wasLoaded(false)
-		{}
+		{
+			this->videoPlayer.setPlayer(std::shared_ptr<ofGstVideoPlayer>(new ofGstVideoPlayer()));
+		}
 
 		//--------------------------------------------------------------
 		Video::~Video()
 		{}
+
+		//--------------------------------------------------------------
+		void Video::init()
+		{
+			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
+			{
+				this->videoPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+			}));
+		}
 
 		//--------------------------------------------------------------
 		void Video::setup()
@@ -25,7 +38,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Video::exit()
 		{
-			this->video.close();
+			this->videoPlayer.close();
 		}
 
 		//--------------------------------------------------------------
@@ -38,13 +51,55 @@ namespace entropy
 				wasLoaded = true;
 			}
 			
-			this->video.update();
+			this->videoPlayer.update();
+
+			if (this->switchMillis >= 0.0f)
+			{
+				float durationMillis = this->videoPlayer.getDuration() * 1000.0f;
+				bool shouldPlay = (this->parameters.loop || (durationMillis >= this->switchMillis));
+				
+				if (this->timeline->getIsPlaying())
+				{
+					if (shouldPlay && this->videoPlayer.isPaused())
+					{
+						// Set the starting position.
+						float positionMillis = this->switchMillis;
+						while (positionMillis > durationMillis)
+						{
+							positionMillis -= durationMillis;
+						}
+
+						this->videoPlayer.setPosition(positionMillis / durationMillis);
+						this->videoPlayer.setPaused(false);
+					}
+					else if (!shouldPlay && !this->videoPlayer.isPaused())
+					{
+						this->videoPlayer.setPaused(true);
+					}
+				}
+				else if (shouldPlay)
+				{
+					// Scrub the video.
+					float positionMillis = this->switchMillis;
+					while (positionMillis > durationMillis)
+					{
+						positionMillis -= durationMillis;
+					}
+
+					this->videoPlayer.setPosition(positionMillis / durationMillis);
+					this->videoPlayer.setPaused(false);
+				}
+			}
+			else if (this->switchMillis < 0.0f && !this->videoPlayer.isPaused())
+			{
+				this->videoPlayer.setPaused(true);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Video::gui(ofxPreset::Gui::Settings & settings)
 		{
-			if (ImGui::CollapsingHeader("File", nullptr, true, true))
+			if (ofxPreset::Gui::BeginTree("File", settings))
 			{
 				if (ImGui::Button("Load..."))
 				{
@@ -67,7 +122,11 @@ namespace entropy
 					}
 				}
 				ImGui::Text("Filename: %s", this->fileName.c_str());
+
+				ofxPreset::Gui::EndTree(settings);
 			}
+
+			ofxPreset::Gui::AddParameter(this->parameters.loop);
 		}
 
 		//--------------------------------------------------------------
@@ -99,13 +158,12 @@ namespace entropy
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
-				this->video.loadAsync(filePath);
+				this->videoPlayer.loadAsync(filePath);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
 
-			this->video.play();
-			this->video.setLoopState(OF_LOOP_NORMAL);
-			// TODO: Time video to ofxTimeline track
+			this->videoPlayer.play();
+			this->videoPlayer.setLoopState(this->parameters.loop ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 
 			this->fileName = ofFilePath::getFileName(filePath);
 			this->wasLoaded = false;
@@ -116,33 +174,28 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Video::isLoaded() const
 		{
-			return this->video.isLoaded();
+			return (this->videoPlayer.isLoaded() && this->getContentWidth() > 0.0f && this->getContentHeight() > 0.0f);
 		}
 
 		//--------------------------------------------------------------
 		float Video::getContentWidth() const
 		{
-			return this->video.getWidth();
+			return this->videoPlayer.getWidth();
 		}
 
 		//--------------------------------------------------------------
 		float Video::getContentHeight() const
 		{
-			return this->video.getHeight();
+			return this->videoPlayer.getHeight();
 		}
 
 		//--------------------------------------------------------------
 		void Video::renderContent()
 		{
-//#ifdef TARGET_WIN32
-//			if (video.lockSharedTexture())
-//			{
-//#endif
-				this->video.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
-//#ifdef TARGET_WIN32
-//				video.unlockSharedTexture();
-//			}
-//#endif
+			if (this->isLoaded() && !this->videoPlayer.isPaused())
+			{
+				this->videoPlayer.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
+			}
 		}
 	}
 }

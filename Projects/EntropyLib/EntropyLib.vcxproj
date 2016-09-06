@@ -184,6 +184,9 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstUtils.cpp" />
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.cpp" />
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
@@ -271,6 +274,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstUtils.h" />
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.h" />
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.h" />
     <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
     <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
     <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />

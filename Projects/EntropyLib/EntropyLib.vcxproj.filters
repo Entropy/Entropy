@@ -262,6 +262,15 @@
     <ClCompile Include="src\entropy\world\Camera.cpp">
       <Filter>src\entropy\world</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstUtils.cpp">
+      <Filter>addons\ofxGStreamer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.cpp">
+      <Filter>addons\ofxGStreamer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.cpp">
+      <Filter>addons\ofxGStreamer\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -413,6 +422,12 @@
     </Filter>
     <Filter Include="src\entropy\world">
       <UniqueIdentifier>{337981ee-3209-4164-a92b-de9ccaa2f1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGStreamer">
+      <UniqueIdentifier>{56209b37-eeff-4ee3-8b72-58623e69e69f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGStreamer\src">
+      <UniqueIdentifier>{e16930f0-21ff-40d1-a5fd-6b325403b42b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -766,6 +781,15 @@
     </ClInclude>
     <ClInclude Include="src\entropy\world\Camera.h">
       <Filter>src\entropy\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstUtils.h">
+      <Filter>addons\ofxGStreamer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.h">
+      <Filter>addons\ofxGStreamer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.h">
+      <Filter>addons\ofxGStreamer\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
