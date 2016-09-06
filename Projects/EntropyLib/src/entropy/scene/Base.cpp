@@ -307,17 +307,17 @@ namespace entropy
 				ImGui::ListBoxHeader("List", 3);
 				for (auto i = 0; i < this->popUps.size(); ++i)
 				{
-					auto name = "Pop-Up " + ofToString(i);
+					auto name = "Pop-up " + ofToString(i);
 					ImGui::Checkbox(name.c_str(), &this->popUps[i]->editing);
 				}
 				ImGui::ListBoxFooter();
 
-				if (ImGui::Button("Add Pop-Up..."))
+				if (ImGui::Button("Add Pop-up..."))
 				{
-					ImGui::OpenPopup("Pop-Ups");
+					ImGui::OpenPopup("Pop-ups");
 					ImGui::SameLine();
 				}
-				if (ImGui::BeginPopup("Pop-Ups"))
+				if (ImGui::BeginPopup("Pop-ups"))
 				{
 					static vector<string> popUpNames{ "Image", "Video", "Sound" };
 					for (auto i = 0; i < popUpNames.size(); ++i)
@@ -344,7 +344,7 @@ namespace entropy
 				if (!this->popUps.empty())
 				{
 					ImGui::SameLine();
-					if (ImGui::Button("Remove Pop-Up"))
+					if (ImGui::Button("Remove Pop-up"))
 					{
 						this->removePopUp();
 					}
@@ -488,7 +488,7 @@ namespace entropy
 				ofxPreset::Serializer::Serialize(jsonMappings, it.second->animated);
 			}
 
-			auto & jsonPopUps = json["Pop-Ups"];
+			auto & jsonPopUps = json["Pop-ups"];
 			for (auto popUp : this->popUps)
 			{
 				nlohmann::json jsonPopUp;
@@ -519,9 +519,9 @@ namespace entropy
 			}
 
 			// Add new Pop-ups.
-			if (json.count("Pop-Ups"))
+			if (json.count("Pop-ups"))
 			{
-				for (auto & jsonPopUp : json["Pop-Ups"])
+				for (auto & jsonPopUp : json["Pop-ups"])
 				{
 					int typeAsInt = jsonPopUp["type"];
 					popup::Type type = static_cast<popup::Type>(typeAsInt);

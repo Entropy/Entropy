@@ -342,7 +342,7 @@ namespace entropy
 
 			if (page->getTrack(trackName))
 			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " already exists!";
+				//ofLogWarning(__FUNCTION__) << "Track for Pop-up " << this->index << " already exists!";
 				return;
 			}
 
