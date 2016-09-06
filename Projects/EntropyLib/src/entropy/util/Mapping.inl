@@ -5,16 +5,10 @@ namespace entropy
 	namespace util
 	{
 		//--------------------------------------------------------------
-		const std::string & AbstractMapping::getName() const
+		const std::string & AbstractMapping::getGroupName() const
 		{
-			return this->name;
+			return this->groupName;
 		}
-
-		//--------------------------------------------------------------
-		//const std::string & AbstractMapping::getPageName() const
-		//{
-		//	return kMappingsTimelinePageName;
-		//}
 
 		//--------------------------------------------------------------
 		const std::string & AbstractMapping::getTrackName() const
@@ -45,15 +39,12 @@ namespace entropy
 
 			const auto groupNames = parameter->getGroupHierarchyNames();
 
-			// Use the last group name for the Page name.
-			if (groupNames.size() > 2)
-			{
-				this->pageName = groupNames.at(groupNames.size() - 2);
-			}
+			// Use the top-level for the Group name.
+			this->groupName = groupNames.front();
 
-			// Skip first parent (which should be the Scene) for the GUI name.
+			// Cascade through the hierarchy for the GUI name.
 			this->name = "";
-			for (auto i = 1; i < groupNames.size() - 1; ++i)
+			for (auto i = 0; i < groupNames.size() - 1; ++i)
 			{
 				this->name.append(groupNames[i] + "::");
 			}
@@ -104,7 +95,7 @@ namespace entropy
 			}
 			auto page = timeline->getPage(kMappingsTimelinePageName);
 
-			const auto pageTrackName = this->pageName + "_" + this->trackName;
+			const auto pageTrackName = this->groupName + "_" + this->trackName;
 
 			if (page->getTrack(pageTrackName))
 			{

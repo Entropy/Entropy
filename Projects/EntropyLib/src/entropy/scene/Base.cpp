@@ -63,27 +63,25 @@ namespace entropy
 			this->cameras[render::Layout::Front]->setup(render::Layout::Front, this->timeline);
 			this->cameras[render::Layout::Front]->setParentNode(this->cameras[render::Layout::Back]->getEasyCam());
 
-			// Add geom::Box and render::PostEffects parameters to the ofParameterGroup so 
-			// that they are taken into account for ofxTimeline mappings and serialization.
+			// Configure and register parameters.
+			this->populateMappings(parameters);
+
 			this->boxes[render::Layout::Back].parameters.setName("Box Back");
 			this->boxes[render::Layout::Front].parameters.setName("Box Front");
-			parameters.add(this->boxes[render::Layout::Back].parameters);
-			parameters.add(this->boxes[render::Layout::Front].parameters);
+			this->populateMappings(this->boxes[render::Layout::Back].parameters);
+			this->populateMappings(this->boxes[render::Layout::Front].parameters);
 
 			this->postEffects[render::Layout::Back].setName("Post Effects Back");
 			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			parameters.add(this->postEffects[render::Layout::Back]);
-			parameters.add(this->postEffects[render::Layout::Front]);
-
-			// Initialize child class.
-			this->init();
+			this->populateMappings(this->postEffects[render::Layout::Back]);
+			this->populateMappings(this->postEffects[render::Layout::Front]);
 
 			// List presets.
 			this->populatePresets();
 			this->currPreset.clear();
 
-			// List mappings.
-			this->populateMappings(parameters);
+			// Initialize child class.
+			this->init();
 
 			// Restore default data path.
 			ofSetDataPathRoot(prevDataPathRoot);
@@ -107,6 +105,7 @@ namespace entropy
 
 			// Clear mappings.
 			this->clearMappings();
+			this->mappings.clear();
 
 			// Clear cameras.
 			for (auto & it : this->cameras)
@@ -194,7 +193,10 @@ namespace entropy
 
 			for (auto & it : this->mappings)
 			{
-				it.second->update();
+				for (auto mapping : it.second)
+				{
+					mapping->update();
+				}
 			}
 
 			for (auto popUp : this->popUps)
@@ -381,17 +383,24 @@ namespace entropy
 			{
 				for (auto & it : this->mappings)
 				{
-					auto mapping = it.second;
-					if (ofxPreset::Gui::AddParameter(mapping->animated))
+					if (ofxPreset::Gui::BeginTree(it.first, settings))
 					{
-						if (mapping->animated)
+						for (auto mapping : it.second)
 						{
-							mapping->addTrack(this->timeline);
+							if (ofxPreset::Gui::AddParameter(mapping->animated))
+							{
+								if (mapping->animated)
+								{
+									mapping->addTrack(this->timeline);
+								}
+								else
+								{
+									mapping->removeTrack(this->timeline);
+								}
+							}
 						}
-						else
-						{
-							mapping->removeTrack(this->timeline);
-						}
+
+						ofxPreset::Gui::EndTree(settings);
 					}
 				}
 			}
@@ -485,20 +494,38 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
 			
+			// Save Camera settings.
 			auto & jsonCameras = json["Cameras"];
 			for (auto & it : this->cameras)
 			{
 				it.second->serialize(jsonCameras);
 			}
 
-			this->serialize(json);
+			// Save Box settings.
+			auto & jsonBoxes = json["Boxes"];
+			for (auto & it : this->boxes)
+			{
+				ofxPreset::Serializer::Serialize(jsonBoxes, it.second.parameters);
+			}
 
+			// Save PostEffects settings.
+			auto & jsonPostEffects = json["Post Effects"];
+			for (auto & it : this->postEffects)
+			{
+				ofxPreset::Serializer::Serialize(jsonPostEffects, it.second);
+			}
+
+			// Save Mappings.
 			auto & jsonMappings = json["Mappings"];
 			for (auto & it : this->mappings)
 			{
-				ofxPreset::Serializer::Serialize(jsonMappings, it.second->animated);
+				for (auto mapping : it.second)
+				{
+					ofxPreset::Serializer::Serialize(jsonMappings, mapping->animated);
+				}
 			}
 
+			// Save Pop-ups.
 			auto & jsonPopUps = json["Pop-ups"];
 			for (auto popUp : this->popUps)
 			{
@@ -506,6 +533,9 @@ namespace entropy
 				popUp->serialize_(jsonPopUp);
 				jsonPopUps.push_back(jsonPopUp);
 			}
+
+			// Save child scene settings.
+			this->serialize(json);
 		}
 
 		//--------------------------------------------------------------
@@ -513,13 +543,33 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
 
-			// Restore camera settings.
+			// Restore Camera settings.
 			if (json.count("Cameras"))
 			{
 				auto & jsonCameras = json["Cameras"];
 				for (auto & it : this->cameras)
 				{
 					it.second->deserialize(jsonCameras);
+				}
+			}
+
+			// Restore Box settings.
+			if (json.count("Boxes"))
+			{
+				auto & jsonBoxes = json["Boxes"];
+				for (auto & it : this->boxes)
+				{
+					ofxPreset::Serializer::Deserialize(jsonBoxes, it.second.parameters);
+				}
+			}
+
+			// Restore PostEffects settings.
+			if (json.count("Post Effects"))
+			{
+				auto & jsonPostEffects = json["Post Effects"];
+				for (auto & it : this->postEffects)
+				{
+					ofxPreset::Serializer::Deserialize(jsonPostEffects, it.second);
 				}
 			}
 
@@ -556,7 +606,10 @@ namespace entropy
 				auto & jsonGroup = json["Mappings"];
 				for (auto & it : this->mappings)
 				{
-					ofxPreset::Serializer::Deserialize(jsonGroup, it.second->animated);
+					for (auto mapping : it.second)
+					{
+						ofxPreset::Serializer::Deserialize(jsonGroup, mapping->animated);
+					}
 				}
 			}
 			this->refreshMappings();
@@ -818,7 +871,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::populateMappings(const ofParameterGroup & group, string name)
+		void Base::populateMappings(const ofParameterGroup & group)
 		{
 			for (const auto & parameter : group)
 			{
@@ -827,7 +880,7 @@ namespace entropy
 				if (parameterGroup)
 				{
 					// Recurse through contents.
-					this->populateMappings(*parameterGroup, name);
+					this->populateMappings(*parameterGroup);
 					continue;
 				}
 
@@ -838,7 +891,7 @@ namespace entropy
 					{
 						auto mapping = make_shared<util::Mapping<float, ofxTLCurves>>();
 						mapping->setup(parameterFloat);
-						this->mappings.emplace(mapping->getName(), mapping);
+						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
 
@@ -847,7 +900,7 @@ namespace entropy
 					{
 						auto mapping = make_shared<util::Mapping<int, ofxTLCurves>>();
 						mapping->setup(parameterInt);
-						this->mappings.emplace(mapping->getName(), mapping);
+						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
 
@@ -856,7 +909,7 @@ namespace entropy
 					{
 						auto mapping = make_shared<util::Mapping<bool, ofxTLSwitches>>();
 						mapping->setup(parameterBool);
-						this->mappings.emplace(mapping->getName(), mapping);
+						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
 
@@ -865,7 +918,7 @@ namespace entropy
 					{
 						auto mapping = make_shared<util::Mapping<ofFloatColor, ofxTLColorTrack>>();
 						mapping->setup(parameterColor);
-						this->mappings.emplace(mapping->getName(), mapping);
+						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
 				}
@@ -877,14 +930,16 @@ namespace entropy
 		{
 			for (auto & it : this->mappings)
 			{
-				auto mapping = it.second;
-				if (mapping->animated) 
+				for (auto mapping : it.second)
 				{
-					mapping->addTrack(this->timeline);
-				}
-				else
-				{
-					mapping->removeTrack(this->timeline);
+					if (mapping->animated)
+					{
+						mapping->addTrack(this->timeline);
+					}
+					else
+					{
+						mapping->removeTrack(this->timeline);
+					}
 				}
 			}
 		}
@@ -894,11 +949,13 @@ namespace entropy
 		{
 			for (auto & it : this->mappings)
 			{
-				auto mapping = it.second;
-				if (mapping->animated)
+				for (auto mapping : it.second)
 				{
-					mapping->removeTrack(this->timeline);
-					mapping->animated = false;
+					if (mapping->animated)
+					{
+						mapping->removeTrack(this->timeline);
+						mapping->animated = false;
+					}
 				}
 			}
 			//this->mappings.clear();

@@ -18,15 +18,14 @@ namespace entropy
 			virtual void addTrack(std::shared_ptr<ofxTimeline> timeline) = 0;
 			virtual void removeTrack(std::shared_ptr<ofxTimeline> timeline) = 0;
 
-			const inline std::string & getName() const;
-			//const inline std::string & getPageName() const;
+			const inline std::string & getGroupName() const;
 			const inline std::string & getTrackName() const;
 
 			ofParameter<bool> animated;
 
 		protected:
 			std::string name;
-			std::string pageName;
+			std::string groupName;
 			std::string trackName;
 		};
 		

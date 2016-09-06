@@ -152,19 +152,19 @@ namespace entropy
 
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLFlags * cuesTrack;
-			map<string, shared_ptr<util::AbstractMapping>> mappings;
 
-			// Popups
-			shared_ptr<popup::Base> addPopUp(popup::Type type);
-			void removePopUp();
-
-			vector<shared_ptr<popup::Base>> popUps;
-
-		private:
-			// Timeline
-			void populateMappings(const ofParameterGroup & group, string name = "");
+			// Mappings
+			void populateMappings(const ofParameterGroup & group);
 			void refreshMappings();
 			void clearMappings();
+
+			std::map<std::string, std::vector<std::shared_ptr<util::AbstractMapping>>> mappings;
+
+			// Popups
+			std::shared_ptr<popup::Base> addPopUp(popup::Type type);
+			void removePopUp();
+
+			std::vector<std::shared_ptr<popup::Base>> popUps;
 		};
 	}
 }
