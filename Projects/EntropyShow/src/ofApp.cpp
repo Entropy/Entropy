@@ -1,12 +1,12 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/scene/Bubbles.h"
 #include "entropy/scene/Calibrate.h"
-#include "entropy/scene/CMB.h"
 #include "entropy/scene/Inflation.h"
+#include "entropy/scene/Interlude.h"
 #include "entropy/scene/Particles.h"
-#include "entropy/scene/Survey.h"
-#include "entropy/scene/Video.h"
+#include "entropy/scene/Surveys.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -16,12 +16,12 @@ void ofApp::setup()
 
 	// Add all Scenes to the Playlist.
 	auto playlist = entropy::GetPlaylist();
+	playlist->addScene(make_shared<entropy::scene::Bubbles>());
 	playlist->addScene(make_shared<entropy::scene::Calibrate>());
-	playlist->addScene(make_shared<entropy::scene::CMB>());
 	playlist->addScene(make_shared<entropy::scene::Inflation>());
+	playlist->addScene(make_shared<entropy::scene::Interlude>());
 	playlist->addScene(make_shared<entropy::scene::Particles>());
-	playlist->addScene(make_shared<entropy::scene::Survey>());
-	playlist->addScene(make_shared<entropy::scene::Video>());
+	playlist->addScene(make_shared<entropy::scene::Surveys>());
 }
 
 //--------------------------------------------------------------
@@ -92,6 +92,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
