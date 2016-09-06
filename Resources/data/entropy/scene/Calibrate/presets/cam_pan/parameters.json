@@ -13,7 +13,7 @@
             "Edge Ratio": "0.01",
             "Enabled": "1",
             "Size": "500",
-            "Subdivisions": "4"
+            "Subdivisions": "3"
         },
         "Box Front": {
             "Alpha": "1",
@@ -23,7 +23,7 @@
             "Edge Ratio": "0.01",
             "Enabled": "1",
             "Size": "500",
-            "Subdivisions": "4"
+            "Subdivisions": "3"
         },
         "Grid": {
             "Center Points": "1",
@@ -60,11 +60,11 @@
         },
         "Post Effects Front": {
             "Bloom": {
-                "Brightness Threshold": "0.5",
+                "Brightness Threshold": "1",
                 "Debug blur": "0",
                 "Enabled": "1",
-                "Num Passes": "3",
-                "Sigma": "6"
+                "Num Passes": "1",
+                "Sigma": "0.9"
             },
             "Color": {
                 "Brightness": "0",
@@ -87,14 +87,21 @@
     "Cameras": {
         "Camera Back": {
             "Attach to Parent": "0",
+            "Boom Speed": "0",
+            "Dolly Speed": "0",
             "FOV": "60",
             "Far Clip": "1000",
             "Mouse Control": "1",
             "Near Clip": "0.001",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
+            "Roll Speed": "0",
+            "Tilt Speed": "0",
+            "Truck Speed": "0",
+            "Use Timeline Track": "1",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 1120.02209472656,
+                "distance": 1152.82055664063,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -107,21 +114,28 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.671414, -0.0747061, 0.737308,        0\n0.0991917, 0.995014, 0.0104909,        0\n-0.734414, 0.066091, 0.675475,        0\n-1106.95,  92.5594,   143.34,        1",
+                "transform": "0.713132, -1.65779e-05, -0.701028,        0\n2.81511e-05,        1, 4.98915e-06,        0\n0.701028, -2.32927e-05, 0.713132,        0\n 175.123, -1.93344,  1139.44,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
         },
         "Camera Front": {
             "Attach to Parent": "1",
+            "Boom Speed": "0",
+            "Dolly Speed": "0",
             "FOV": "45",
             "Far Clip": "1000",
             "Mouse Control": "0",
             "Near Clip": "0.001",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
+            "Roll Speed": "0",
+            "Tilt Speed": "0",
+            "Truck Speed": "0",
+            "Use Timeline Track": "0",
             "ofEasyCam": {
                 "aspectRatio": 2.82592582702637,
-                "distance": 3.05179637507536e-05,
+                "distance": 0.0,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -134,7 +148,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "       1,        0, 2.98023e-08,        0\n       0,        1, 1.86265e-09,        0\n       0,        0,        1,        0\n3.05176e-05, -1.49012e-07,        0,        1",
+                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,        0,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
