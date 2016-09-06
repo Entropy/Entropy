@@ -1,13 +1,13 @@
 #pragma once
 
-#include "entropy/scene/Base.h"
-#include "entropy/cmb/Constants.h"
+#include "entropy/bubbles/Constants.h"
 #include "entropy/geom/Sphere.h"
+#include "entropy/scene/Base.h"
 
 #ifdef COMPUTE_GL_2D
 #include "CmbSceneGL2D.h"
 #elif defined(COMPUTE_GL_3D)
-#include "entropy/cmb/PoolGL3D.h"
+#include "entropy/bubbles/PoolGL3D.h"
 #elif defined(COMPUTE_CL_2D)
 #include "CmbSceneCL2D.h"
 #elif defined(COMPUTE_CL_3D)
@@ -18,17 +18,17 @@ namespace entropy
 {
 	namespace scene
 	{
-		class CMB
+		class Bubbles
 			: public Base
 		{
 		public:
 			string getName() const override 
 			{
-				return "entropy::scene::CMB";
+				return "entropy::scene::Bubbles";
 			}
 
-			CMB();
-			~CMB();
+			Bubbles();
+			~Bubbles();
 
 			void init() override;
 
@@ -48,13 +48,13 @@ namespace entropy
 			void drawPool();
 
 #ifdef COMPUTE_GL_2D
-			entropy::cmb::PoolGL2D pool;
+			entropy::bubbles::PoolGL2D pool;
 #elif defined(COMPUTE_GL_3D)
-			entropy::cmb::PoolGL3D pool;
+			entropy::bubbles::PoolGL3D pool;
 #elif defined(COMPUTE_CL_2D)
-			entropy::cmb::PoolCL2D pool;
+			entropy::bubbles::PoolCL2D pool;
 #elif defined(COMPUTE_CL_3D)
-			entropy::cmb::PoolCL3D pool;
+			entropy::bubbles::PoolCL3D pool;
 #endif
 
 			geom::Sphere sphereGeom;
@@ -69,7 +69,7 @@ namespace entropy
 			{
 				ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
 				
-				PARAM_DECLARE("CMB", tintColor);
+				PARAM_DECLARE("Bubbles", tintColor);
 			} parameters;
 		};
 	}

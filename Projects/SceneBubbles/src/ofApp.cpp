@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/CMB.h"
+#include "entropy/scene/Bubbles.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -10,7 +10,7 @@ void ofApp::setup()
 
 	// Add Scene to the Playlist.
 	auto playlist = entropy::GetPlaylist();
-	playlist->addScene(make_shared<entropy::scene::CMB>());
+	playlist->addScene(make_shared<entropy::scene::Bubbles>());
 	playlist->previewScene();
 }
 

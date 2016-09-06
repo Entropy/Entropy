@@ -1,27 +1,20 @@
 #pragma once
 
-#include "entropy/cmb/Constants.h"
-#ifdef COMPUTE_CL_3D
+#include "entropy/bubbles/Constants.h"
+#ifdef COMPUTE_CL_2D
 
 #include "MSAOpenCL.h"
-#include "ofxVolumetrics3D.h"
 
 #include "CmbScene.h"
-#include "OpenCLImage3D.h"
 
 namespace ent
 {
-	class CmbSceneCL3D
+	class CmbSceneCL2D
 		: public CmbScene
 	{
 	public:
-		CmbSceneCL3D();
-
 		void setup() override;
 		void draw() override;
-
-		GLint m_filterMode;
-		float m_volumeSize;
 
 	protected:
 		void addDrop() override;
@@ -33,9 +26,8 @@ namespace ent
 		msa::OpenCLKernelPtr m_rippleKernel;
 		msa::OpenCLKernelPtr m_copyKernel;
 
-		OpenCLImage3D m_clImages[3];
-		ofxVolumetrics3D m_volumetrics;
+		msa::OpenCLImage m_clImages[3];
 	};
 }
 
-#endif // COMPUTE_CL_3D
+#endif // COMPUTE_CL_2D

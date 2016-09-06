@@ -2,7 +2,7 @@
 
 namespace entropy
 {
-	namespace cmb
+	namespace bubbles
 	{
 		//--------------------------------------------------------------
 		PoolBase::PoolBase()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entropy/cmb/Constants.h"
+#include "entropy/bubbles/Constants.h"
 #ifdef COMPUTE_GL_2D
 
 #include "ofxFbo.h"

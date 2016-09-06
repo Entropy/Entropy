@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entropy/cmb/Constants.h"
+#include "entropy/bubbles/Constants.h"
 #ifdef COMPUTE_GL_3D
 
 #include "ofxFbo.h"
@@ -10,7 +10,7 @@
 
 namespace entropy
 {
-	namespace cmb
+	namespace bubbles
 	{
 		class PoolGL3D
 			: public PoolBase

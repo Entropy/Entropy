@@ -1,22 +1,22 @@
-#include "CMB.h"
+#include "Bubbles.h"
 
 namespace entropy
 {
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		CMB::CMB()
+		Bubbles::Bubbles()
 			: Base()
 		{}
 		
 		//--------------------------------------------------------------
-		CMB::~CMB()
+		Bubbles::~Bubbles()
 		{
 
 		}
 
 		//--------------------------------------------------------------
-		void CMB::init()
+		void Bubbles::init()
 		{
 			// Add the pool parameters to the group.
 			this->parameters.add(this->pool.parameters);
@@ -27,7 +27,7 @@ namespace entropy
 			this->pool.setDimensions(glm::vec3(128.0f));
 			this->pool.setup();
 
-			const auto filePath = this->getAssetsPath("images/Planck-CMB-SMICA.tif");
+			const auto filePath = this->getAssetsPath("images/Planck-Bubbles-SMICA.tif");
 			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
 			ofPixels pixels;
 			ofLoadImage(pixels, filePath);
@@ -46,13 +46,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::setup()
+		void Bubbles::setup()
 		{
 			this->pool.reset();
 		}
 
 		//--------------------------------------------------------------
-		void CMB::resizeBack(ofResizeEventArgs & args)
+		void Bubbles::resizeBack(ofResizeEventArgs & args)
 		{
 #if defined(COMPUTE_GL_2D) || defined(COMPUTE_CL_2D)
 			this->pool.restartSimulation = true;
@@ -60,13 +60,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::update(double dt)
+		void Bubbles::update(double dt)
 		{
 			this->pool.update();
 		}
 		
 		//--------------------------------------------------------------
-		void CMB::drawBackWorld()
+		void Bubbles::drawBackWorld()
 		{
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			ofEnableDepthTest();
@@ -83,7 +83,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::drawBackOverlay()
+		void Bubbles::drawBackOverlay()
 		{
 #if defined(COMPUTE_GL_2D) || defined(COMPUTE_CL_2D)
 			this->drawPool();
@@ -91,7 +91,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::drawFrontWorld()
+		void Bubbles::drawFrontWorld()
 		{
 #if defined(COMPUTE_GL_3D) || defined(COMPUTE_CL_3D)
 			ofEnableDepthTest();
@@ -102,7 +102,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::gui(ofxPreset::Gui::Settings & settings)
+		void Bubbles::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
@@ -160,7 +160,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void CMB::drawPool()
+		void Bubbles::drawPool()
 		{
 			ofPushStyle();
 			{

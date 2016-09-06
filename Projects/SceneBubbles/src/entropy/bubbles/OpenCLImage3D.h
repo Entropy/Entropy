@@ -1,6 +1,6 @@
 //
 //  OpenCLImage3D.h
-//  CMBTest
+//  BubblesTest
 //
 //  Created by Elias Zananiri on 2016-03-03.
 //

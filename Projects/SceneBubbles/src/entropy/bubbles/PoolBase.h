@@ -4,7 +4,7 @@
 
 namespace entropy
 {
-	namespace cmb
+	namespace bubbles
 	{
 		class PoolBase
 		{

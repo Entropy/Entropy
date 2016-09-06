@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\entropy\scene\Bubbles.cpp">
+      <Filter>src\entropy\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\bubbles\ofxFbo.cpp">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\bubbles\PoolBase.cpp">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\bubbles\PoolGL3D.cpp">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{fef411dc-7870-41fd-a413-d132922439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{e0a4ff83-1a13-4f2e-8421-cb35e578d0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\scene">
+      <UniqueIdentifier>{52e7fd66-bbe3-4c68-9999-25e4c0f6ff92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{c8a239c3-1059-4256-beaf-4615545cdb49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\bubbles">
+      <UniqueIdentifier>{72321b90-1b36-4f8c-9794-01156dec304b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\entropy\scene\Bubbles.h">
+      <Filter>src\entropy\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\Constants.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\ofxFbo.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\PoolBase.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\PoolGL3D.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\copy3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\drop3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\layer.geom">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\passthru.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.frag">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

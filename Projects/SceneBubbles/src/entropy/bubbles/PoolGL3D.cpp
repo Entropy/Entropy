@@ -6,7 +6,7 @@
 
 namespace entropy
 {
-	namespace cmb
+	namespace bubbles
 	{
 		//--------------------------------------------------------------
 		PoolGL3D::PoolGL3D()

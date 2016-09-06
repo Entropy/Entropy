@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{426A8CA4-2C29-46C3-B14A-EA1DF58EB707}</ProjectGuid>
-    <RootNamespace>SceneCMBLib</RootNamespace>
+    <RootNamespace>SceneBubblesLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -57,25 +57,25 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneCMBLib.props" />
+    <Import Project="SceneBubblesLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneCMBLib.props" />
+    <Import Project="SceneBubblesLib.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneCMBLib.props" />
+    <Import Project="SceneBubblesLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneCMBLib.props" />
+    <Import Project="SceneBubblesLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -184,27 +184,24 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="src\entropy\cmb\CmbSceneGL2D.cpp" />
-    <ClCompile Include="src\entropy\cmb\ofxFbo.cpp" />
-    <ClCompile Include="src\entropy\cmb\PoolBase.cpp" />
-    <ClCompile Include="src\entropy\cmb\PoolGL3D.cpp" />
-    <ClCompile Include="src\entropy\scene\CMB.cpp" />
+    <ClCompile Include="src\entropy\bubbles\ofxFbo.cpp" />
+    <ClCompile Include="src\entropy\bubbles\PoolBase.cpp" />
+    <ClCompile Include="src\entropy\bubbles\PoolGL3D.cpp" />
+    <ClCompile Include="src\entropy\scene\Bubbles.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entropy\cmb\CmbSceneGL2D.h" />
-    <ClInclude Include="src\entropy\cmb\Constants.h" />
-    <ClInclude Include="src\entropy\cmb\ofxFbo.h" />
-    <ClInclude Include="src\entropy\cmb\PoolBase.h" />
-    <ClInclude Include="src\entropy\cmb\PoolGL3D.h" />
-    <ClInclude Include="src\entropy\scene\CMB.h" />
+    <ClInclude Include="src\entropy\bubbles\Constants.h" />
+    <ClInclude Include="src\entropy\bubbles\ofxFbo.h" />
+    <ClInclude Include="src\entropy\bubbles\PoolBase.h" />
+    <ClInclude Include="src\entropy\bubbles\PoolGL3D.h" />
+    <ClInclude Include="src\entropy\scene\Bubbles.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\data\entropy\scene\CMB\cl\cmb.cl" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\copy3D.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\drop3D.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\layer.geom" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\passthru.vert" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\CMB\shaders\ripple3D.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\copy3D.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\drop3D.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\layer.geom" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\passthru.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.frag" />
   </ItemGroup>
 </Project>
