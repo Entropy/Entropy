@@ -133,6 +133,9 @@ namespace entropy
 			// Set data path root for scene.
 			ofSetDataPathRoot(this->getDataPath());
 
+			// Reset the timeline.
+			this->timeline->setCurrentFrame(0);
+
 			// Setup child Scene.
 			this->setup();
 
@@ -215,6 +218,14 @@ namespace entropy
 			{
 				this->drawFrontBase();
 			}
+
+			for (auto popUp : this->popUps)
+			{
+				if (popUp->getLayout() == layout && popUp->getSurface() == popup::Surface::Base)
+				{
+					popUp->draw_();
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -257,7 +268,7 @@ namespace entropy
 
 			for (auto popUp : this->popUps)
 			{
-				if (popUp->getLayout() == layout)
+				if (popUp->getLayout() == layout && popUp->getSurface() == popup::Surface::Overlay)
 				{
 					popUp->draw_();
 				}

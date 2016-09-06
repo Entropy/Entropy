@@ -9,8 +9,8 @@
         <ow>0.994392931</ow>
         <easein>0</easein>
         <easeout>1</easeout>
-        <time>00:00:00:000</time>
-        <value>0.296000063</value>
+        <time>00:00:05:000</time>
+        <value>0.345999122</value>
     </key>
     <key>
         <px>395.073944092</px>
@@ -22,7 +22,7 @@
         <ow>0.994392931</ow>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:02:45:624</time>
-        <value>0.550000012</value>
+        <time>00:02:50:624</time>
+        <value>0.600000024</value>
     </key>
 </keyframes>

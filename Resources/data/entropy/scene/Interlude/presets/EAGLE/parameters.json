@@ -13,7 +13,7 @@
             "Use Timeline Track": "1",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 594.927978515625,
+                "distance": 692.753723144531,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -26,7 +26,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.977674, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439973,        0\n-0.0420351, -0.0133354, 0.999027,        0\n -244.05,  38.6015,  541.192,        1",
+                "transform": "0.977674, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439973,        0\n-0.0420351, -0.0133354, 0.999027,        0\n-443.159,   7.9203,  532.405,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -65,7 +65,7 @@
     },
     "Interlude": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0.6599",
             "Auto Draw": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "1",
@@ -75,7 +75,7 @@
             "Subdivisions": "80"
         },
         "Box Front": {
-            "Alpha": "1",
+            "Alpha": "0.735314",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
@@ -196,7 +196,8 @@
                     "Background": "0, 0, 0, 1",
                     "Center": "0.5, 0.5",
                     "Layout": "0",
-                    "Size": "1"
+                    "Size": "1",
+                    "Surface": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",

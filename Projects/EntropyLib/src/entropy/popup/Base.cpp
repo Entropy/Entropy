@@ -36,6 +36,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		Surface Base::getSurface()
+		{
+			return static_cast<Surface>(this->getParameters().base.surface.get());
+		}
+
+		//--------------------------------------------------------------
 		void Base::init_(int index, std::shared_ptr<ofxTimeline> timeline)
 		{
 			this->index = index;
@@ -239,13 +245,15 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow("Pop-up " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
 			{
 				// Add sections for the base parameters.
-				if (ImGui::CollapsingHeader(parameters.base.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(parameters.base, settings))
 				{
-					static vector<string> labels{ "Back", "Front" };
-					if (ofxPreset::Gui::AddRadio(parameters.base.layout, labels, 2))
+					static std::vector<std::string> layoutLabels{ "Back", "Front" };
+					if (ofxPreset::Gui::AddRadio(parameters.base.layout, layoutLabels, 2))
 					{
 						this->boundsDirty = true;
 					}
+					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
+					ofxPreset::Gui::AddRadio(parameters.base.surface, surfaceLabels, 2);
 					ofxPreset::Gui::AddParameter(parameters.base.background);
 					if (ofxPreset::Gui::AddParameter(parameters.base.size))
 					{
@@ -255,9 +263,11 @@ namespace entropy
 					{
 						this->boundsDirty = true;
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-				if (ImGui::CollapsingHeader(parameters.border.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(parameters.border, settings))
 				{
 					if (ofxPreset::Gui::AddParameter(parameters.border.width))
 					{
@@ -265,9 +275,11 @@ namespace entropy
 					}
 
 					ofxPreset::Gui::AddParameter(parameters.border.color);
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-				if (ImGui::CollapsingHeader(parameters.transition.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(parameters.transition, settings))
 				{
 					static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
 					ofxPreset::Gui::AddRadio(parameters.transition.type, labels, 2);
@@ -276,6 +288,8 @@ namespace entropy
 					{
 						ofxPreset::Gui::AddParameter(parameters.transition.duration);
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
 				// Let the child class handle its child parameters.

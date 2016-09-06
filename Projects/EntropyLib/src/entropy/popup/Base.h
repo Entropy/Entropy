@@ -20,6 +20,12 @@ namespace entropy
 			Sound
 		};
 
+		enum class Surface
+		{
+			Base,
+			Overlay
+		};
+
 		enum class Transition
 		{
 			Cut,
@@ -36,6 +42,7 @@ namespace entropy
 
 			Type getType() const;
 			render::Layout getLayout();
+			Surface getSurface();
 
 			bool editing;
 
@@ -116,14 +123,16 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 					ofParameter<float> size{ "Size", 0.1f, 0.0f, 1.0f };
 					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 
-					PARAM_DECLARE("Base", 
-						layout, 
-						background, 
-						size, 
+					PARAM_DECLARE("Base",
+						layout,
+						surface,
+						background,
+						size,
 						center);
 				} base;
 
@@ -139,7 +148,7 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofParameter<int> type{ "Type", 0, 0, 2 };
+					ofParameter<int> type{ "Type", static_cast<int>(Type::Unknown), static_cast<int>(Type::Unknown), static_cast<int>(Type::Sound) };
 					ofParameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
 
 					PARAM_DECLARE("Transition", 
