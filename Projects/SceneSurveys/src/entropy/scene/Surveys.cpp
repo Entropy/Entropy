@@ -1,32 +1,32 @@
-#include "Survey.h"
+#include "Surveys.h"
 
-#include "entropy/survey/GaussianMapTexture.h"
+#include "entropy/surveys/GaussianMapTexture.h"
 
 namespace entropy
 {
 	namespace scene
 	{
 		//--------------------------------------------------------------
-		Survey::Survey()
+		Surveys::Surveys()
 			: Base()
 		{}
 		
 		//--------------------------------------------------------------
-		Survey::~Survey()
+		Surveys::~Surveys()
 		{
 			this->clear();
 		}
 
 		//--------------------------------------------------------------
-		void Survey::init()
+		void Surveys::init()
 		{
 			// Load the data.
-			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 10, "PartType6");
-			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 20, "PartType6");
+			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 1, "PartType6");
+			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 2, "PartType6");
 			this->dataSetVizir.setup("ViziR", this->getAssetsPath("particles/Hipparchos-Tycho-stars-fromViziR.hdf5"), 0, 1, "PartType4");
 
 			// Set ofParameterGroup names.
-			this->parameters.setName("Survey");
+			this->parameters.setName("Surveys");
 			this->backParameters.setName("Back");
 			this->frontParameters.setName("Front");
 
@@ -72,7 +72,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Survey::clear()
+		void Surveys::clear()
 		{
 			// Clear the data.
 			this->dataSetBoss.clear();
@@ -84,27 +84,27 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Survey::setup()
+		void Surveys::setup()
 		{}
 		
 		//--------------------------------------------------------------
-		void Survey::exit()
+		void Surveys::exit()
 		{}
 		
 		//--------------------------------------------------------------
-		void Survey::drawBackWorld()
+		void Surveys::drawBackWorld()
 		{
 			this->drawDataSet(this->backParameters);
 		}
 
 		//--------------------------------------------------------------
-		void Survey::drawFrontWorld()
+		void Surveys::drawFrontWorld()
 		{
 			this->drawDataSet(this->frontParameters);
 		}
 
 		//--------------------------------------------------------------
-		void Survey::drawDataSet(LayoutParameters & parameters)
+		void Surveys::drawDataSet(LayoutParameters & parameters)
 		{
 			// Draw the galaxy in the center.
 			ofPushMatrix();
@@ -176,7 +176,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Survey::gui(ofxPreset::Gui::Settings & settings)
+		void Surveys::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))

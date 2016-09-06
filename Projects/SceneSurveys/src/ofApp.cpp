@@ -1,14 +1,14 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Survey.h"
+#include "entropy/scene/Surveys.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
 	// Add Scene to the Playlist.
 	auto playlist = entropy::GetPlaylist();
-	playlist->addScene(make_shared<entropy::scene::Survey>());
+	playlist->addScene(make_shared<entropy::scene::Surveys>());
 	playlist->previewScene();
 }
 

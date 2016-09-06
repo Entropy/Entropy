@@ -1,23 +1,23 @@
 #pragma once
 
 #include "entropy/scene/Base.h"
-#include "entropy/survey/DataSet.h"
+#include "entropy/surveys/DataSet.h"
 
 namespace entropy
 {
 	namespace scene
 	{
-		class Survey
+		class Surveys
 			: public Base
 		{
 		public:
 			string getName() const override
 			{
-				return "entropy::scene::Survey";
+				return "entropy::scene::Surveys";
 			}
 
-			Survey();
-			~Survey();
+			Surveys();
+			~Surveys();
 
 			void init() override;
 			void clear() override;
@@ -50,9 +50,9 @@ namespace entropy
 			LayoutParameters backParameters;
 			LayoutParameters frontParameters;
 
-			survey::DataSet dataSetBoss;
-			survey::DataSet dataSetDes;
-			survey::DataSet dataSetVizir;
+			surveys::DataSet dataSetBoss;
+			surveys::DataSet dataSetDes;
+			surveys::DataSet dataSetVizir;
 
 			ofVboMesh galaxyQuad;
 
@@ -81,7 +81,7 @@ namespace entropy
 						orientation);
 				} galaxy;
 
-				PARAM_DECLARE("Survey", galaxy);
+				PARAM_DECLARE("Surveys", galaxy);
 			} parameters;
 		};
 	}

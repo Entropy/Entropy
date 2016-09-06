@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
-    <RootNamespace>SceneSurveyLib</RootNamespace>
+    <RootNamespace>SceneSurveysLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -57,25 +57,25 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneSurveyLib.props" />
+    <Import Project="SceneSurveysLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneSurveyLib.props" />
+    <Import Project="SceneSurveysLib.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneSurveyLib.props" />
+    <Import Project="SceneSurveysLib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
     <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="SceneSurveyLib.props" />
+    <Import Project="SceneSurveysLib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -188,9 +188,9 @@
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp" />
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5File.cpp" />
     <ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp" />
-    <ClCompile Include="src\entropy\survey\DataSet.cpp" />
-    <ClCompile Include="src\entropy\survey\GaussianMapTexture.cpp" />
-    <ClCompile Include="src\entropy\scene\Survey.cpp" />
+    <ClCompile Include="src\entropy\scene\Surveys.cpp" />
+    <ClCompile Include="src\entropy\surveys\DataSet.cpp" />
+    <ClCompile Include="src\entropy\surveys\GaussianMapTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5.h" />
@@ -198,12 +198,12 @@
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h" />
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5File.h" />
     <ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h" />
-    <ClInclude Include="src\entropy\survey\DataSet.h" />
-    <ClInclude Include="src\entropy\survey\GaussianMapTexture.h" />
-    <ClInclude Include="src\entropy\scene\Survey.h" />
+    <ClInclude Include="src\entropy\scene\Surveys.h" />
+    <ClInclude Include="src\entropy\surveys\DataSet.h" />
+    <ClInclude Include="src\entropy\surveys\GaussianMapTexture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\data\entropy\scene\Survey\shaders\sprite.frag" />
-    <None Include="..\..\Resources\data\entropy\scene\Survey\shaders\sprite.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.vert" />
   </ItemGroup>
 </Project>

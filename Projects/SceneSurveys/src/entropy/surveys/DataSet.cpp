@@ -6,7 +6,7 @@
 
 namespace entropy
 {
-	namespace survey
+	namespace surveys
 	{
 		//--------------------------------------------------------------
 		DataSet::DataSet()

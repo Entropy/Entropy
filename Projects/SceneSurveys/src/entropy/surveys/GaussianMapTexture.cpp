@@ -10,7 +10,7 @@
 
 namespace entropy
 {
-	namespace survey
+	namespace surveys
 	{
 		//--------------------------------------------------------------
 		inline float evalHermite(float pA, float pB, float vA, float vB, float u)
