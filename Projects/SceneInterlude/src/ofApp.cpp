@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Video.h"
+#include "entropy/scene/Interlude.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -10,7 +10,7 @@ void ofApp::setup()
 
 	// Add Scene to the Playlist.
 	auto playlist = entropy::GetPlaylist();
-	playlist->addScene(make_shared<entropy::scene::Video>());
+	playlist->addScene(make_shared<entropy::scene::Interlude>());
 	playlist->previewScene();
 }
 
