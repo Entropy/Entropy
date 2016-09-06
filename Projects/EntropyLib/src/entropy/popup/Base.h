@@ -95,6 +95,7 @@ namespace entropy
 			ofRectangle roi;
 			bool boundsDirty;
 
+			void updateBorder();
 			bool borderDirty;
 
 			float transitionPct;

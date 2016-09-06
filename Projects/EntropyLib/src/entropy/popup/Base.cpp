@@ -49,6 +49,24 @@ namespace entropy
 
 			this->addTimelineTrack();
 
+			auto & parameters = this->getParameters();
+			this->parameterListeners.push_back(parameters.base.layout.newListener([this](int &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.base.size.newListener([this](float &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.base.center.newListener([this](glm::vec2 &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.border.width.newListener([this](float &)
+			{
+				this->borderDirty = true;
+			}));
+
 			this->init();
 		}
 
@@ -165,34 +183,9 @@ namespace entropy
 					this->srcBounds.y = this->roi.y + (1.0f - this->transitionPct) * this->roi.height * 0.5f;
 				}
 
-				if (this->borderDirty && parameters.border.width > 0.0f)
+				if (this->borderDirty)
 				{
-					// Rebuild the border mesh.
-					this->borderMesh.clear();
-					this->borderMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-
-					const auto borderBounds = ofRectangle(dstBounds.x - parameters.border.width, dstBounds.y - parameters.border.width, dstBounds.width + 2 * parameters.border.width, dstBounds.height + 2 * parameters.border.width);
-					this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMinY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMinY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMinY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMinY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMaxY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMaxY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMaxY(), 0.0f));
-					this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMaxY(), 0.0f));
-					
-					this->borderMesh.addIndex(0);
-					this->borderMesh.addIndex(1);
-					this->borderMesh.addIndex(2);
-					this->borderMesh.addIndex(3);
-					this->borderMesh.addIndex(4);
-					this->borderMesh.addIndex(5);
-					this->borderMesh.addIndex(6);
-					this->borderMesh.addIndex(7);
-					this->borderMesh.addIndex(0);
-					this->borderMesh.addIndex(1);
-
-					this->borderDirty = false;
+					this->updateBorder();
 				}
 			}
 
@@ -248,32 +241,19 @@ namespace entropy
 				if (ofxPreset::Gui::BeginTree(parameters.base, settings))
 				{
 					static std::vector<std::string> layoutLabels{ "Back", "Front" };
-					if (ofxPreset::Gui::AddRadio(parameters.base.layout, layoutLabels, 2))
-					{
-						this->boundsDirty = true;
-					}
+					ofxPreset::Gui::AddRadio(parameters.base.layout, layoutLabels, 2);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
 					ofxPreset::Gui::AddRadio(parameters.base.surface, surfaceLabels, 2);
 					ofxPreset::Gui::AddParameter(parameters.base.background);
-					if (ofxPreset::Gui::AddParameter(parameters.base.size))
-					{
-						this->boundsDirty = true;
-					}
-					if (ofxPreset::Gui::AddParameter(parameters.base.center))
-					{
-						this->boundsDirty = true;
-					}
+					ofxPreset::Gui::AddParameter(parameters.base.size);
+					ofxPreset::Gui::AddParameter(parameters.base.center);
 
 					ofxPreset::Gui::EndTree(settings);
 				}
 
 				if (ofxPreset::Gui::BeginTree(parameters.border, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(parameters.border.width))
-					{
-						this->borderDirty = true;
-					}
-
+					ofxPreset::Gui::AddParameter(parameters.border.width);
 					ofxPreset::Gui::AddParameter(parameters.border.color);
 
 					ofxPreset::Gui::EndTree(settings);
@@ -432,6 +412,42 @@ namespace entropy
 			this->borderDirty = true;
 
 			this->boundsDirty = false;
+		}
+
+		//--------------------------------------------------------------
+		void Base::updateBorder()
+		{
+			this->borderMesh.clear();
+			
+			float borderWidth = this->getParameters().border.width;
+			if (borderWidth > 0.0f)
+			{
+				// Rebuild the border mesh.
+				this->borderMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+
+				const auto borderBounds = ofRectangle(dstBounds.x - borderWidth, dstBounds.y - borderWidth, dstBounds.width + 2.0f * borderWidth, dstBounds.height + 2.0f * borderWidth);
+				this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMinY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMinY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMinY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMinY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(borderBounds.getMaxX(), borderBounds.getMaxY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMaxX(), this->dstBounds.getMaxY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(borderBounds.getMinX(), borderBounds.getMaxY(), 0.0f));
+				this->borderMesh.addVertex(glm::vec3(this->dstBounds.getMinX(), this->dstBounds.getMaxY(), 0.0f));
+
+				this->borderMesh.addIndex(0);
+				this->borderMesh.addIndex(1);
+				this->borderMesh.addIndex(2);
+				this->borderMesh.addIndex(3);
+				this->borderMesh.addIndex(4);
+				this->borderMesh.addIndex(5);
+				this->borderMesh.addIndex(6);
+				this->borderMesh.addIndex(7);
+				this->borderMesh.addIndex(0);
+				this->borderMesh.addIndex(1);
+			}
+
+			this->borderDirty = false;
 		}
 	}
 }
