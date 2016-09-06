@@ -271,6 +271,9 @@
     <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.cpp">
       <Filter>addons\ofxGStreamer\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\popup\Sound.cpp">
+      <Filter>src\entropy\popup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -790,6 +793,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoPlayer.h">
       <Filter>addons\ofxGStreamer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\popup\Sound.h">
+      <Filter>src\entropy\popup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

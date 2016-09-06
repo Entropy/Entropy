@@ -6,6 +6,7 @@
 
 #include "entropy/geom/Box.h"
 #include "entropy/popup/Image.h"
+#include "entropy/popup/Sound.h"
 #include "entropy/popup/Video.h"
 #include "entropy/render/Layout.h"
 #include "entropy/render/PostEffects.h"

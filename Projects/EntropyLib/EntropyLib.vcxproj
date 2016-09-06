@@ -260,6 +260,7 @@
     <ClCompile Include="src\entropy\geom\Box.cpp" />
     <ClCompile Include="src\entropy\geom\Shape.cpp" />
     <ClCompile Include="src\entropy\geom\Sphere.cpp" />
+    <ClCompile Include="src\entropy\popup\Sound.cpp" />
     <ClCompile Include="src\entropy\popup\Base.cpp" />
     <ClCompile Include="src\entropy\popup\Image.cpp" />
     <ClCompile Include="src\entropy\popup\Video.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="src\entropy\geom\Shape.h" />
     <ClInclude Include="src\entropy\geom\Sphere.h" />
     <ClInclude Include="src\entropy\Helpers.h" />
+    <ClInclude Include="src\entropy\popup\Sound.h" />
     <ClInclude Include="src\entropy\popup\Base.h" />
     <ClInclude Include="src\entropy\popup\Image.h" />
     <ClInclude Include="src\entropy\popup\Video.h" />

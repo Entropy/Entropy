@@ -327,8 +327,18 @@ namespace entropy
 			auto page = this->timeline->getPage(kPopUpsTimelinePageName);
 
 			auto trackName = "_" + ofToString(this->index);
-			if (this->type == Type::Image) trackName.insert(0, "Image");
-			else if (this->type == Type::Video) trackName.insert(0, "Video");
+			if (this->type == Type::Image)
+			{
+				trackName.insert(0, "Image");
+			}
+			else if (this->type == Type::Video)
+			{
+				trackName.insert(0, "Video");
+			}
+			else if (this->type == Type::Sound)
+			{
+				trackName.insert(0, "Sound");
+			}
 
 			if (page->getTrack(trackName))
 			{

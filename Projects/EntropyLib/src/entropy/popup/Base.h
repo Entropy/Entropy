@@ -16,7 +16,8 @@ namespace entropy
 		{
 			Unknown,
 			Image,
-			Video
+			Video,
+			Sound
 		};
 
 		enum class Transition

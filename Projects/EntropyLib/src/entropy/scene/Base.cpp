@@ -319,7 +319,7 @@ namespace entropy
 				}
 				if (ImGui::BeginPopup("Pop-Ups"))
 				{
-					static vector<string> popUpNames{ "Image", "Video" };
+					static vector<string> popUpNames{ "Image", "Video", "Sound" };
 					for (auto i = 0; i < popUpNames.size(); ++i)
 					{
 						if (ImGui::Selectable(popUpNames[i].c_str()))
@@ -331,6 +331,10 @@ namespace entropy
 							else if (i == 1)
 							{
 								this->addPopUp(popup::Type::Video);
+							}
+							else // if (i == 2)
+							{
+								this->addPopUp(popup::Type::Sound);
 							}
 						}
 					}
@@ -900,6 +904,10 @@ namespace entropy
 			else if (type == popup::Type::Video)
 			{
 				popUp = make_shared<popup::Video>();
+			}
+			else if (type == popup::Type::Sound)
+			{
+				popUp = make_shared<popup::Sound>();
 			}
 			else
 			{
