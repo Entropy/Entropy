@@ -149,7 +149,7 @@ namespace entropy
 			// Timeline
 			void timelineBangFired(ofxTLBangEventArgs & args);
 
-			ofxTimeline timeline;
+			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLFlags * cuesTrack;
 			map<string, shared_ptr<util::AbstractMapping>> mappings;
 

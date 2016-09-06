@@ -41,18 +41,19 @@ namespace entropy
 				timelineDataPath = ofFilePath::addTrailingSlash(GetSharedDataPath());
 				timelineDataPath.append(ofFilePath::addTrailingSlash("ofxTimeline"));
 			}
-			this->timeline.setup(timelineDataPath);
-			this->timeline.setSpacebarTogglePlay(false);
-			this->timeline.setLoopType(OF_LOOP_NONE);
-			this->timeline.setFrameRate(30.0f);
-			this->timeline.setDurationInSeconds(600);
-			this->timeline.setAutosave(false);
-			this->timeline.setPageName(parameters.getName());
+			this->timeline = std::make_shared<ofxTimeline>();
+			this->timeline->setup(timelineDataPath);
+			this->timeline->setSpacebarTogglePlay(false);
+			this->timeline->setLoopType(OF_LOOP_NONE);
+			this->timeline->setFrameRate(30.0f);
+			this->timeline->setDurationInSeconds(600);
+			this->timeline->setAutosave(false);
+			this->timeline->setPageName(parameters.getName());
 
 			// Add the cues track and listener.
-			this->cuesTrack = this->timeline.addFlags("Cues");
+			this->cuesTrack = this->timeline->addFlags("Cues");
 
-			ofAddListener(this->timeline.events().bangFired, this, &Base::timelineBangFired);
+			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired);
 
 			// Build the Back and Front cameras.
 			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
@@ -110,13 +111,14 @@ namespace entropy
 			// Clear cameras.
 			for (auto & it : this->cameras)
 			{
-				it.second->clear(this->timeline);
+				it.second->clear();
 			}
 			this->cameras.clear();
 
 			// Clear any remaining timeline stuff.
-			ofRemoveListener(this->timeline.events().bangFired, this, &Base::timelineBangFired);
-			this->timeline.clear();
+			ofRemoveListener(this->timeline->events().bangFired, this, &Base::timelineBangFired);
+			this->timeline->clear();
+			this->timeline.reset();
 		}
 
 		//--------------------------------------------------------------
@@ -147,7 +149,7 @@ namespace entropy
 			}
 
 			// Stop the timeline.
-			this->timeline.stop();
+			this->timeline->stop();
 
 			// Exit child Scene.
 			this->exit();
@@ -560,9 +562,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::setShowtime()
 		{
-			this->timeline.setCurrentTimeToInPoint();
+			this->timeline->setCurrentTimeToInPoint();
 			this->setCameraLocked(true);
-			this->timeline.play();
+			this->timeline->play();
 		}
 
 		//--------------------------------------------------------------
@@ -571,23 +573,23 @@ namespace entropy
 			// Disable mouse events if it's already been captured.
 			if (settings.mouseOverGui)
 			{
-				this->timeline.disableEvents();
+				this->timeline->disableEvents();
 			}
 			else
 			{
-				this->timeline.enableEvents();
+				this->timeline->enableEvents();
 			}
 
-			this->timeline.setWidth(settings.screenBounds.getWidth());
-			this->timeline.setOffset(glm::vec2(settings.screenBounds.getMinY(), settings.screenBounds.getMaxY() - this->timeline.getHeight()));
-			this->timeline.draw();
-			settings.mouseOverGui |= this->timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+			this->timeline->setWidth(settings.screenBounds.getWidth());
+			this->timeline->setOffset(glm::vec2(settings.screenBounds.getMinY(), settings.screenBounds.getMaxY() - this->timeline->getHeight()));
+			this->timeline->draw();
+			settings.mouseOverGui |= this->timeline->getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
 		}
 
 		//--------------------------------------------------------------
 		int Base::getCurrentTimelineFrame()
 		{
-			return this->timeline.getCurrentFrame();
+			return this->timeline->getCurrentFrame();
 		}
 
 		//--------------------------------------------------------------
@@ -597,9 +599,9 @@ namespace entropy
 
 			for (auto keyframe : this->cuesTrack->getKeyframes())
 			{
-				if (keyframe->time > this->timeline.getCurrentTimeMillis())
+				if (keyframe->time > this->timeline->getCurrentTimeMillis())
 				{
-					this->timeline.setCurrentTimeMillis(keyframe->time);
+					this->timeline->setCurrentTimeMillis(keyframe->time);
 					return true;
 				}
 			}
@@ -614,11 +616,11 @@ namespace entropy
 			static const string kPlayFlag = "play";
 			if (args.flag.compare(0, kPauseFlag.size(), kPauseFlag) == 0)
 			{
-				this->timeline.stop();
+				this->timeline->stop();
 			}
 			else if (args.flag.compare(0, kPlayFlag.size(), kPlayFlag) == 0)
 			{
-				this->timeline.play();
+				this->timeline->play();
 			}
 		}
 
@@ -739,7 +741,7 @@ namespace entropy
 					this->deserialize_(json);
 				}
 
-				this->timeline.loadTracksFromFolder(presetPath);
+				this->timeline->loadTracksFromFolder(presetPath);
 
 				this->currPreset = presetName;
 			}
@@ -775,7 +777,7 @@ namespace entropy
 			this->serialize_(json);
 			paramsFile << json.dump(4);
 
-			this->timeline.saveTracksToFolder(presetPath);
+			this->timeline->saveTracksToFolder(presetPath);
 
 			this->populatePresets();
 
@@ -906,8 +908,7 @@ namespace entropy
 			}
 
 			auto idx = this->popUps.size();
-			popUp->setup_(idx);
-			popUp->addTrack(this->timeline);
+			popUp->init_(idx, this->timeline);
 			this->popUps.push_back(popUp);
 
 			return popUp;
@@ -917,8 +918,7 @@ namespace entropy
 		void Base::removePopUp()
 		{
 			auto popUp = this->popUps.back();
-			popUp->removeTrack(this->timeline);
-			popUp->exit_();
+			popUp->clear_();
 			this->popUps.pop_back();
 		}
 
@@ -972,17 +972,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::beginExport()
 		{
-			this->timeline.setFrameBased(true);
+			this->timeline->setFrameBased(true);
 			this->setCameraLocked(true);
-			this->timeline.setCurrentTimeToInPoint();
-			this->timeline.play();
+			this->timeline->setCurrentTimeToInPoint();
+			this->timeline->play();
 		}
 
 		//--------------------------------------------------------------
 		void Base::endExport()
 		{
-			this->timeline.stop();
-			this->timeline.setFrameBased(false);
+			this->timeline->stop();
+			this->timeline->setFrameBased(false);
 			this->setCameraLocked(false);
 		}
 	}

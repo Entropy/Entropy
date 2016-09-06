@@ -11,12 +11,17 @@ namespace entropy
 			: type(type)
 			, editing(false)
 			, boundsDirty(false)
-			, track(nullptr)
+			, borderDirty(false)
+			, transitionPct(0.0f)
+			, switchMillis(-1.0f)
+			, switchesTrack(nullptr)
 		{}
 
 		//--------------------------------------------------------------
 		Base::~Base()
-		{}
+		{
+			this->clear_();
+		}
 
 		//--------------------------------------------------------------
 		Type Base::getType() const
@@ -31,10 +36,30 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::setup_(int index)
+		void Base::init_(int index, std::shared_ptr<ofxTimeline> timeline)
 		{
 			this->index = index;
+			this->timeline = timeline;
 
+			this->addTimelineTrack();
+
+			this->init();
+		}
+
+		//--------------------------------------------------------------
+		void Base::clear_()
+		{
+			this->clear();
+
+			this->parameterListeners.clear();
+
+			this->removeTimelineTrack();
+			this->timeline.reset();
+		}
+
+		//--------------------------------------------------------------
+		void Base::setup_()
+		{
 			this->setup();
 
 			this->boundsDirty = true;
@@ -44,8 +69,6 @@ namespace entropy
 		void Base::exit_()
 		{
 			this->exit();
-
-			this->track = nullptr;
 		}
 
 		//--------------------------------------------------------------
@@ -65,31 +88,34 @@ namespace entropy
 				this->updateBounds();
 			}
 
-			this->enabled = this->track->isOn();
+			this->switchMillis = -1.0f;
+			this->enabled = this->switchesTrack->isOn();
 			if (this->enabled)
 			{
 				// Update the transition if any switch is currently active.
-				auto trackTime = this->track->currentTrackTime();
-				auto activeSwitch = this->track->getActiveSwitchAtMillis(trackTime);
+				auto trackTime = this->switchesTrack->currentTrackTime();
+				auto activeSwitch = this->switchesTrack->getActiveSwitchAtMillis(trackTime);
 				if (activeSwitch)
 				{
+					this->switchMillis = trackTime - activeSwitch->timeRange.min;
+
 					static const ofxEasingQuad kEasingFunction;
 					long transitionDuration = this->getParameters().transition.duration * 1000; 
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
-						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
+						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
 						this->borderDirty = true;
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
 					{
 						// Transitioning out.
-						this->transitionAmount = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeIn);
+						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeIn);
 						this->borderDirty = true;
 					}
-					else if (this->transitionAmount != 1.0f)
+					else if (this->transitionPct != 1.0f)
 					{
-						this->transitionAmount = 1.0f;
+						this->transitionPct = 1.0f;
 						this->borderDirty = true;
 					}
 				}
@@ -105,11 +131,11 @@ namespace entropy
 				{
 					if (transition == Transition::Mix)
 					{
-						this->frontAlpha = this->transitionAmount;
+						this->frontAlpha = this->transitionPct;
 					}
 					else if (transition == Transition::Strobe)
 					{
-						this->frontAlpha = (ofRandomuf() < this->transitionAmount) ? 1.0f : 0.0f;
+						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? 1.0f : 0.0f;
 					}
 					else
 					{
@@ -124,13 +150,13 @@ namespace entropy
 				// Set subsection bounds.
 				this->dstBounds = this->viewport;
 				this->srcBounds = this->roi;
-				if (this->enabled && transition == Transition::Wipe && this->transitionAmount < 1.0f)
+				if (this->enabled && transition == Transition::Wipe && this->transitionPct < 1.0f)
 				{
-					this->dstBounds.height = this->transitionAmount * this->viewport.height;
-					this->dstBounds.y = this->viewport.y + (1.0f - this->transitionAmount) * this->viewport.height * 0.5f;
+					this->dstBounds.height = this->transitionPct * this->viewport.height;
+					this->dstBounds.y = this->viewport.y + (1.0f - this->transitionPct) * this->viewport.height * 0.5f;
 
-					this->srcBounds.height = this->transitionAmount * this->roi.height;
-					this->srcBounds.y = this->roi.y + (1.0f - this->transitionAmount) * this->roi.height * 0.5f;
+					this->srcBounds.height = this->transitionPct * this->roi.height;
+					this->srcBounds.y = this->roi.y + (1.0f - this->transitionPct) * this->roi.height * 0.5f;
 				}
 
 				if (this->borderDirty && parameters.border.width > 0.0f)
@@ -279,14 +305,26 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addTrack(ofxTimeline & timeline)
+		void Base::addTimelineTrack()
 		{
-			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(kPopUpsTimelinePageName))
+			if (!this->timeline)
 			{
-				timeline.addPage(kPopUpsTimelinePageName);
+				ofLogError(__FUNCTION__) << "No timeline set, call init_() first!";
+				return;
 			}
-			auto page = timeline.getPage(kPopUpsTimelinePageName);
+
+			if (this->switchesTrack)
+			{
+				ofLogWarning(__FUNCTION__) << "Switches track already exists.";
+				return;
+			}
+			
+			// Add Page if it doesn't already exist.
+			if (!this->timeline->hasPage(kPopUpsTimelinePageName))
+			{
+				this->timeline->addPage(kPopUpsTimelinePageName);
+			}
+			auto page = this->timeline->getPage(kPopUpsTimelinePageName);
 
 			auto trackName = "_" + ofToString(this->index);
 			if (this->type == Type::Image) trackName.insert(0, "Image");
@@ -298,30 +336,36 @@ namespace entropy
 				return;
 			}
 
-			timeline.setCurrentPage(kPopUpsTimelinePageName);
+			this->timeline->setCurrentPage(kPopUpsTimelinePageName);
 
 			// Add Track.
-			this->track = timeline.addSwitches(trackName);
+			this->switchesTrack = this->timeline->addSwitches(trackName);
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeTrack(ofxTimeline & timeline)
+		void Base::removeTimelineTrack()
 		{
-			if (!this->track)
+			if (!this->timeline)
 			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-Up " << this->index << " does not exist!";
+				//ofLogWarning(__FUNCTION__) << "No timeline set.";
 				return;
 			}
 
-			timeline.removeTrack(this->track);
-			this->track = nullptr;
+			if (!this->switchesTrack)
+			{
+				//ofLogWarning(__FUNCTION__) << "Switches track for Pop-up " << this->index << " does not exist.";
+				return;
+			}
+
+			this->timeline->removeTrack(this->switchesTrack);
+			this->switchesTrack = nullptr;
 
 			// TODO: Figure out why this is not working!
-			//auto page = timeline.getPage(kTimelinePageName);
+			//auto page = this->timeline->getPage(kTimelinePageName);
 			//if (page && page->getTracks().empty())
 			//{
 			//	cout << "Removing page " << page->getName() << endl;
-			//	timeline.removePage(page);
+			//	this->timeline->removePage(page);
 			//}
 		}
 

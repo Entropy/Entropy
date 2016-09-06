@@ -5,19 +5,19 @@ namespace entropy
 	namespace util
 	{
 		//--------------------------------------------------------------
-		const string & AbstractMapping::getName() const
+		const std::string & AbstractMapping::getName() const
 		{
 			return this->name;
 		}
 
 		//--------------------------------------------------------------
-		//const string & AbstractMapping::getPageName() const
+		//const std::string & AbstractMapping::getPageName() const
 		//{
 		//	return kMappingsTimelinePageName;
 		//}
 
 		//--------------------------------------------------------------
-		const string & AbstractMapping::getTrackName() const
+		const std::string & AbstractMapping::getTrackName() const
 		{
 			return this->trackName;
 		}
@@ -37,7 +37,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
-		void Mapping<ParameterType, TrackType>::setup(shared_ptr<ofParameter<ParameterType>> parameter)
+		void Mapping<ParameterType, TrackType>::setup(std::shared_ptr<ofParameter<ParameterType>> parameter)
 		{
 			this->parameter = parameter;
 
@@ -89,7 +89,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
-		void Mapping<ParameterType, TrackType>::addTrack(ofxTimeline & timeline)
+		void Mapping<ParameterType, TrackType>::addTrack(std::shared_ptr<ofxTimeline> timeline)
 		{
 			if (this->track)
 			{
@@ -98,11 +98,11 @@ namespace entropy
 			}
 			
 			// Add Page if it doesn't already exist.
-			if (!timeline.hasPage(kMappingsTimelinePageName))
+			if (!timeline->hasPage(kMappingsTimelinePageName))
 			{
-				timeline.addPage(kMappingsTimelinePageName);
+				timeline->addPage(kMappingsTimelinePageName);
 			}
-			auto page = timeline.getPage(kMappingsTimelinePageName);
+			auto page = timeline->getPage(kMappingsTimelinePageName);
 
 			const auto pageTrackName = this->pageName + "_" + this->trackName;
 
@@ -112,13 +112,13 @@ namespace entropy
 				return;
 			}
 
-			timeline.setCurrentPage(kMappingsTimelinePageName);
+			timeline->setCurrentPage(kMappingsTimelinePageName);
 
 			// Add Track and set default value and range where necessary.
 			const auto & trackInfo = typeid(TrackType);
 			if (trackInfo == typeid(ofxTLCurves))
 			{
-				this->track = timeline.addCurves(pageTrackName);
+				this->track = timeline->addCurves(pageTrackName);
 
 				const auto & paramInfo = typeid(ParameterType);
 				if (paramInfo == typeid(float))
@@ -136,14 +136,14 @@ namespace entropy
 			}
 			else if (trackInfo == typeid(ofxTLSwitches))
 			{
-				this->track = timeline.addSwitches(pageTrackName);
+				this->track = timeline->addSwitches(pageTrackName);
 
 				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(this->parameter);
 				this->track->setDefaultValue(parameterBool->get());
 			}
 			else if (trackInfo == typeid(ofxTLColorTrack))
 			{
-				auto trackColor = timeline.addColors(pageTrackName);
+				auto trackColor = timeline->addColors(pageTrackName);
 
 				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(this->parameter);
 				trackColor->setDefaultColor(parameterColor->get());
@@ -156,7 +156,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
-		void Mapping<ParameterType, TrackType>::removeTrack(ofxTimeline & timeline)
+		void Mapping<ParameterType, TrackType>::removeTrack(std::shared_ptr<ofxTimeline> timeline)
 		{
 			if (!this->track)
 			{
@@ -164,14 +164,14 @@ namespace entropy
 				return;
 			}
 			
-			timeline.removeTrack(this->track);
+			timeline->removeTrack(this->track);
 			this->track = nullptr;
 
 			// EZ: This is broken
-			//auto page = timeline.getPage(this->pageName);
+			//auto page = timeline->getPage(this->pageName);
 			//if (page && page->getTracks().empty())
 			//{
-			//	timeline.removePage(page);
+			//	timeline->removePage(page);
 			//}
 		}
 	}

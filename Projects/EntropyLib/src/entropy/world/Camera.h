@@ -13,14 +13,16 @@ namespace entropy
 {
 	namespace world
 	{
+		static const string kCamerasTimelinePageName = "Cameras";
+		
 		class Camera
 		{
 		public:
 			Camera();
 			~Camera();
 
-			void setup(render::Layout layout, ofxTimeline & timeline);
-			void clear(ofxTimeline & timeline);
+			void setup(render::Layout layout, std::shared_ptr<ofxTimeline> timeline);
+			void clear();
 
 			void reset();
 
@@ -45,6 +47,10 @@ namespace entropy
 			void setAttachedToParent(bool attachedToParent);
 			bool isAttachedToParent() const;
 
+			void addTimelineTrack();
+			void removeTimelineTrack();
+			bool hasTimelineTrack() const;
+
 			void setLockedToTrack(bool lockedToTrack);
 			bool isLockedToTrack() const;
 
@@ -57,20 +63,27 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
-			ofParameter<bool> attachToParent{ "Attach to Parent", false };
-			ofParameter<bool> mouseControl{ "Mouse Control", true };
-			ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
 			ofParameter<float> fov{ "FOV", 60, 0, 180 };
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
 
+			ofParameter<bool> attachToParent{ "Attach to Parent", false };
+			ofParameter<bool> mouseControl{ "Mouse Control", true };
+			ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
+
+			ofParameter<bool> useTimelineTrack{ "Use Timeline Track", false };
+
+			ofParameter<float> longitudeSpeed{ "Longitude Speed", 0.0f, -2.0f, 2.0f };
+			ofParameter<float> latitudeSpeed{ "Latitude Speed", 0.0f, -2.0f, 2.0f };
+			ofParameter<float> radiusSpeed{ "Radius Speed", 0.0f, -2.0f, 2.0f };
+
 			ofParameterGroup parameters{ "Camera",
-				attachToParent,
-				mouseControl,
-				relativeYAxis,
 				fov,
-				nearClip,
-				farClip
+				nearClip, farClip,
+				attachToParent,
+				mouseControl, relativeYAxis,
+				useTimelineTrack,
+				longitudeSpeed, latitudeSpeed, radiusSpeed
 			};
 
 		protected:
@@ -78,7 +91,8 @@ namespace entropy
 
 			std::shared_ptr<ofEasyCam> easyCam;
 			std::shared_ptr<ofNode> parentNode;
-			
+
+			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLCameraTrack * cameraTrack;
 
 			std::vector<ofEventListener> parameterListeners;

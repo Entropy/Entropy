@@ -36,8 +36,13 @@ namespace entropy
 			Type getType() const;
 			render::Layout getLayout();
 
+			bool editing;
+
 			// Base methods
-			void setup_(int index);
+			void init_(int index, std::shared_ptr<ofxTimeline> timeline);
+			void clear_();
+
+			void setup_();
 			void exit_();
 			void resize_(ofResizeEventArgs & args);
 
@@ -50,6 +55,9 @@ namespace entropy
 			void deserialize_(const nlohmann::json & json);
 
 			// Override methods
+			virtual void init() {}
+			virtual void clear() {}
+
 			virtual void setup() {}
 			virtual void exit() {}
 
@@ -63,12 +71,6 @@ namespace entropy
 
 			virtual void serialize(nlohmann::json & json) {}
 			virtual void deserialize(const nlohmann::json & json) {}
-
-			// Timeline
-			void addTrack(ofxTimeline & timeline);
-			void removeTrack(ofxTimeline & timeline);
-
-			bool editing;
 
 		protected:
 			virtual bool isLoaded() const = 0;
@@ -87,7 +89,12 @@ namespace entropy
 
 			bool borderDirty;
 
-			float transitionAmount;
+			float transitionPct;
+			float switchMillis;
+
+			// Timeline
+			void addTimelineTrack();
+			void removeTimelineTrack();
 
 			// Per-frame attributes.
 			float frontAlpha;
@@ -97,7 +104,8 @@ namespace entropy
 	
 		protected:
 			// Timeline
-			ofxTLSwitches * track;
+			std::shared_ptr<ofxTimeline> timeline;
+			ofxTLSwitches * switchesTrack;
 			bool enabled;
 
 			// Parameters
@@ -111,15 +119,21 @@ namespace entropy
 					ofParameter<float> size{ "Size", 0.1f, 0.0f, 1.0f };
 					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 
-					PARAM_DECLARE("Base", layout, background, size, center);
+					PARAM_DECLARE("Base", 
+						layout, 
+						background, 
+						size, 
+						center);
 				} base;
 
 				struct : ofParameterGroup
 				{
-					ofParameter<float> width{ "Width", 2.0f, 0.0f, 5.0f };
+					ofParameter<float> width{ "Width", 0.0f, 0.0f, 5.0f };
 					ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
-					PARAM_DECLARE("Border", width, color);
+					PARAM_DECLARE("Border", 
+						width, 
+						color);
 				} border;
 
 				struct : ofParameterGroup
@@ -127,13 +141,20 @@ namespace entropy
 					ofParameter<int> type{ "Type", 0, 0, 2 };
 					ofParameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
 
-					PARAM_DECLARE("Transition", type, duration);
+					PARAM_DECLARE("Transition", 
+						type, 
+						duration);
 				} transition;
 
-				PARAM_DECLARE("Parameters", base, border, transition);
+				PARAM_DECLARE("Pop-up", 
+					base, 
+					border, 
+					transition);
 			};
 
 			virtual BaseParameters & getParameters() = 0;
+
+			std::vector<ofEventListener> parameterListeners;
 		};
 	}
 }
