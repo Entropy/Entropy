@@ -30,10 +30,11 @@ namespace entropy
 
 			void update(double dt) override;
 
+			void timelineBangFired(ofxTLBangEventArgs & args) override;
+
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
 			void drawBackOverlay() override;
-			void drawFrontOverlay() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
@@ -43,6 +44,9 @@ namespace entropy
 		protected:
 			void resetWavelengths();
 			void resetWavelength(size_t octave);
+
+			bool triggerBigBang();
+			bool triggerTransition();
 
 			void drawScene(render::Layout layout);
 
@@ -92,6 +96,7 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<bool> runSimulation{ "Run Simulation", true };
+
 				ofParameter<float> bigBangDuration{ "BigBang duration", 0.25f, 0.0f, 2.f};
 				ofParameter<float> preBigBangWobbleDuration{ "Pre BigBang wobble duration", 3.f, 0.0f, 5.f};
 				ofParameter<float> bbFlashStart{"bigbang flash start %", 0.9, 0.f, 1.f};
@@ -126,6 +131,21 @@ namespace entropy
 
 				PARAM_DECLARE("Inflation", 
 					runSimulation,
+					bigBangDuration,
+					preBigBangWobbleDuration,
+					bbFlashStart,
+					bbFlashIn,
+					bbFlashPlateau,
+					bbFlashOut,
+					bbTransitionFlash,
+					bbTransitionIn,
+					bbTransitionPlateau,
+					bbTransitionOut,
+					bbTransitionColor,
+					HtBB,
+					HtPostBB,
+					Ht,
+					hubbleWavelength,
 					render);
 			} parameters;
 		};

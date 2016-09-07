@@ -1,5 +1,27 @@
 {
-    "Cameras": {
+  "Boxes": {
+    "Box Back": {
+        "Alpha": "0",
+        "Auto Draw": "1",
+        "Color": "0.0196078, 0.0196078, 0.0196078, 1",
+        "Cull Face": "2",
+        "Edge Ratio": "0.0015",
+        "Enabled": "1",
+        "Size": "1",
+        "Subdivisions": "4"
+    },
+    "Box Front": {
+        "Alpha": "0",
+        "Auto Draw": "1",
+        "Color": "1, 1, 1, 1",
+        "Cull Face": "1",
+        "Edge Ratio": "0.0012",
+        "Enabled": "1",
+        "Size": "1",
+        "Subdivisions": "4"
+    }
+  },
+  "Cameras": {
         "Camera Back": {
             "Attach to Parent": "0",
             "FOV": "60",
@@ -56,76 +78,6 @@
         }
     },
     "Inflation": {
-        "Box Back": {
-            "Alpha": "0",
-            "Auto Draw": "1",
-            "Color": "0.0196078, 0.0196078, 0.0196078, 1",
-            "Cull Face": "2",
-            "Edge Ratio": "0.0015",
-            "Enabled": "1",
-            "Size": "1",
-            "Subdivisions": "4"
-        },
-        "Box Front": {
-            "Alpha": "0",
-            "Auto Draw": "1",
-            "Color": "1, 1, 1, 1",
-            "Cull Face": "1",
-            "Edge Ratio": "0.0012",
-            "Enabled": "1",
-            "Size": "1",
-            "Subdivisions": "4"
-        },
-        "Post Effects Back": {
-            "Bloom": {
-                "Brightness Threshold": "0.149",
-                "Debug blur": "0",
-                "Enabled": "1",
-                "Num Passes": "3",
-                "Sigma": "3.387"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "0",
-                "Inner": "1",
-                "Only alpha": "1",
-                "Outter": "10",
-                "Power": "0.1",
-                "Rotation": "0"
-            }
-        },
-        "Post Effects Front": {
-            "Bloom": {
-                "Brightness Threshold": "0.303",
-                "Debug blur": "0",
-                "Enabled": "0",
-                "Num Passes": "7",
-                "Sigma": "9.16"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0",
-                "Only alpha": "1",
-                "Outter": "6",
-                "Power": "1.1",
-                "Rotation": "0"
-            }
-        },
         "Render": {
             "Additive Blending": "1",
             "Debug Noise": "0",
@@ -268,5 +220,57 @@
         "Noise Speed": "5",
         "Norm. Factor": "1.181"
     },
-    "Pop-Ups": null
+    "Pop-Ups": null,
+    "Post Effects": {
+      "Post Effects Back": {
+          "Bloom": {
+              "Brightness Threshold": "0.149",
+              "Debug blur": "0",
+              "Enabled": "1",
+              "Num Passes": "3",
+              "Sigma": "3.387"
+          },
+          "Color": {
+              "Brightness": "0",
+              "Contrast": "1",
+              "Exposure": "4",
+              "Gamma": "2.2",
+              "Tonemapping": "6"
+          },
+          "Vignette": {
+              "Debug": "0",
+              "Enabled": "0",
+              "Inner": "1",
+              "Only alpha": "1",
+              "Outter": "10",
+              "Power": "0.1",
+              "Rotation": "0"
+          }
+      },
+      "Post Effects Front": {
+          "Bloom": {
+              "Brightness Threshold": "0.303",
+              "Debug blur": "0",
+              "Enabled": "0",
+              "Num Passes": "7",
+              "Sigma": "9.16"
+          },
+          "Color": {
+              "Brightness": "0",
+              "Contrast": "1",
+              "Exposure": "4",
+              "Gamma": "2.2",
+              "Tonemapping": "6"
+          },
+          "Vignette": {
+              "Debug": "0",
+              "Enabled": "0",
+              "Inner": "0",
+              "Only alpha": "1",
+              "Outter": "6",
+              "Power": "1.1",
+              "Rotation": "0"
+          }
+      }
+    }
 }

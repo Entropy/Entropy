@@ -202,6 +202,21 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Inflation::timelineBangFired(ofxTLBangEventArgs & args)
+		{
+			static const string kBigBangFlag = "bigbang";
+			static const string kTransitionFlag = "transition";
+			if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
+			{
+				triggerBigBang();
+			}
+			else if (args.flag.compare(0, kTransitionFlag.size(), kTransitionFlag) == 0)
+			{
+				triggerTransition();
+			}
+		}
+
+		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
         {
 			if (parameters.render.debug) 
@@ -225,6 +240,28 @@ namespace entropy
 			{
 				this->drawScene(render::Layout::Front);
 			}
+		}
+
+		//--------------------------------------------------------------
+		bool Inflation::triggerBigBang()
+		{
+			if (state == PreBigBang)
+			{
+				t_bigbang = now;
+				state = PreBigBangWobble;
+				return true;
+			}
+
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		bool Inflation::triggerTransition()
+		{
+			state = ExpansionTransition;
+			t_transition = now;
+			octavesResetDuringTransition = false;
+			return true;
 		}
 
 		//--------------------------------------------------------------
@@ -343,16 +380,6 @@ namespace entropy
 				}
 			}
 		}
-		//--------------------------------------------------------------
-		void Inflation::drawFrontOverlay()
-		{
-			ofDrawBitmapString(ofGetFrameRate(), ofGetWidth() - 100, 20);
-
-			ofDrawBitmapString(timeToSetIso, ofGetWidth() - 100, 40);
-			ofDrawBitmapString(timeToUpdate, ofGetWidth() - 100, 60);
-
-			ofDrawBox(1);
-		}
 
 		//--------------------------------------------------------------
 		void Inflation::gui(ofxPreset::Gui::Settings & settings)
@@ -376,15 +403,10 @@ namespace entropy
 				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
 				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
 				if(ImGui::Button("Trigger bigbang")){
-					if(state == PreBigBang){
-						t_bigbang = now;
-						state = PreBigBangWobble;
-					}
+					this->triggerBigBang();
 				}
 				if(ImGui::Button("Trigger transition")){
-					state = ExpansionTransition;
-					t_transition = now;
-					octavesResetDuringTransition = false;
+					this->triggerTransition();
 				}
 
 				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
