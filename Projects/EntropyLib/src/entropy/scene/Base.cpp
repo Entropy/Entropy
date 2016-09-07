@@ -132,9 +132,6 @@ namespace entropy
 				return;
 			}
 
-			// Set data path root for scene.
-			ofSetDataPathRoot(this->getDataPath());
-
 			// Reset the timeline.
 			this->timeline->setCurrentFrame(0);
 
@@ -789,6 +786,9 @@ namespace entropy
 				ofLogError(__FUNCTION__) << "Scene not initialized, call init_() first!";
 				return false;
 			}
+
+			// Set data path root for scene.
+			ofSetDataPathRoot(this->getDataPath());
 
 			// Clean up scene.
 			this->exit_();
