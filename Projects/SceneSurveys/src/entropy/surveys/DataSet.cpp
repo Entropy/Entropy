@@ -32,30 +32,30 @@ namespace entropy
 			{
 				char filePath[512];
 				sprintf(filePath, format.c_str(), (i + startIdx + 1));
-				this->loadFragment(filePath, particleType, this->points);
+				this->loadFragment(filePath, particleType);
 			}
 
-			// Sort the data points by radius.
-			std::sort(this->points.begin(), this->points.end(), [](const glm::vec4 & a, const glm::vec4 & b) -> bool
-			{
-				return (a.z < b.z);
-			});
-
 			// Upload everything to the vbo.
-			this->vbo.setVertexData((float *)(this->points.data()), 4, this->points.size(), GL_STATIC_DRAW, sizeof(glm::vec4));
+			this->vbo.setVertexData(this->coordinates.data(), this->coordinates.size(), GL_STATIC_DRAW);
+			this->vbo.setAttributeData(ExtraAttribute::Mass, this->masses.data(), 1, this->masses.size(), GL_STATIC_DRAW, 0);
+			this->vbo.setAttributeData(ExtraAttribute::StarFormationRate, this->starFormationRates.data(), 1, this->starFormationRates.size(), GL_STATIC_DRAW, 0);
 		}
 		
 		//--------------------------------------------------------------
 		void DataSet::clear()
 		{
-			this->points.clear();
+			this->coordinates.clear();
+			this->masses.clear();
+			this->starFormationRates.clear();
+
+			this->minRadius = std::numeric_limits<float>::max();
+			this->maxRadius = std::numeric_limits<float>::min();
 
 			this->vbo.clear();
-			this->vboDirty = false;
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::loadFragment(const std::string & filePath, const std::string & particleType, std::vector<glm::vec4> & points)
+		size_t DataSet::loadFragment(const std::string & filePath, const std::string & particleType)
 		{
 			static const int stride = 1;
 
@@ -63,53 +63,82 @@ namespace entropy
 			h5File.open(filePath, true);
 			ofxHDF5GroupPtr h5Group = h5File.loadGroup(particleType);
 
-			// Load the coordinate data.
-			auto coordsDataSet = h5Group->loadDataSet("Coordinates");
-			int coordsCount = coordsDataSet->getDimensionSize(0) / stride;
-			coordsDataSet->setHyperslab(0, coordsCount, stride);
+			size_t total = 0;
 
-			vector<glm::vec3> coordsData(coordsCount);
-			coordsDataSet->read(coordsData.data());
-
-			// Load the mass data.
-			auto massesDataSet = h5Group->loadDataSet("Masses");
-			int massesCount = massesDataSet->getDimensionSize(0) / stride;
-			massesDataSet->setHyperslab(0, massesCount, stride);
-
-			vector<float> massesData(massesCount);
-			massesDataSet->read(massesData.data());
-
-			// Combine the data into a single struct.
-			// x == longitude
-			// y == latitude
-			// z == radius
-			// w == mass
-			for (int i = 0; i < coordsData.size(); ++i)
+			// Load the coordinate data and convert angles to radians.
 			{
-				points.push_back(glm::vec4(ofDegToRad(coordsData[i].x), ofDegToRad(coordsData[i].y), coordsData[i].z, massesData[i]));
+				auto dataSet = h5Group->loadDataSet("Coordinates");
+				int count = dataSet->getDimensionSize(0) / stride;
+				dataSet->setHyperslab(0, count, stride);
+
+				vector<glm::vec3> coordsData(count);
+				dataSet->read(coordsData.data());
+
+				for (int i = 0; i < coordsData.size(); ++i)
+				{
+					this->coordinates.push_back(glm::vec3(ofDegToRad(coordsData[i].x), ofDegToRad(coordsData[i].y), coordsData[i].z));
+					this->minRadius = std::min(this->minRadius, coordsData[i].z);
+					this->maxRadius = std::max(this->maxRadius, coordsData[i].z);
+				}
+
+				total = count;
 			}
 
-			return coordsData.size();
-		}
-
-		//--------------------------------------------------------------
-		void DataSet::update()
-		{
-			if (this->vboDirty)
+			// Load the mass data in place.
 			{
-				this->vboDirty = false;
+				auto dataSet = h5Group->loadDataSet("Masses");
+				int count = dataSet->getDimensionSize(0) / stride;
+				dataSet->setHyperslab(0, count, stride);
+
+				int firstIdx = this->masses.size();
+				this->masses.resize(firstIdx + count);
+				dataSet->read(&this->masses[firstIdx]);
 			}
+
+			if (particleType == "PartType6")
+			{
+				// Load the star formation rate data in place.
+				auto dataSet = h5Group->loadDataSet("StarFormationRate");
+				int count = dataSet->getDimensionSize(0) / stride;
+				dataSet->setHyperslab(0, count, stride);
+
+				int firstIdx = this->starFormationRates.size();
+				this->starFormationRates.resize(firstIdx + count);
+				dataSet->read(&this->starFormationRates[firstIdx]);
+			}
+			else
+			{
+				// These aren't galaxies so just fill with dummy data.
+				int firstIdx = this->starFormationRates.size();
+				this->starFormationRates.resize(firstIdx + total);
+
+				for (int i = firstIdx; i < this->starFormationRates.size(); ++i)
+				{
+					this->starFormationRates[i] = -1.0f;
+				}
+			}
+
+			return total;
 		}
 		
 		//--------------------------------------------------------------
-		void DataSet::draw()
+		void DataSet::draw(ofShader & shader)
 		{
+			static const auto kLatitudeMin = -HALF_PI;
+			static const auto kLatitudeMax = HALF_PI;
+			static const auto kLongitudeMin = 0;
+			static const auto kLongitudeMax = TWO_PI;
+
+			shader.setUniform1f("uMinRadius", ofMap(parameters.minRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
+			shader.setUniform1f("uMaxRadius", ofMap(parameters.maxRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
+			shader.setUniform1f("uMinLatitude", ofMap(parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+			shader.setUniform1f("uMaxLatitude", ofMap(parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+			shader.setUniform1f("uMinLongitude", ofMap(parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+			shader.setUniform1f("uMaxLongitude", ofMap(parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+			
 			ofSetColor(this->parameters.color.get());
 
-			int startIdx = ofMap(this->parameters.minRadius, 0.0f, 1.0f, 0, this->points.size(), true);
-			int endIdx = ofMap(this->parameters.maxRadius, 0.0f, 1.0f, 0, this->points.size(), true);
-
-			this->vbo.draw(GL_POINTS, startIdx, endIdx - startIdx + 1);
+			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
 		}
 
 		//--------------------------------------------------------------

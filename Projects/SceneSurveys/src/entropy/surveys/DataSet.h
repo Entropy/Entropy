@@ -7,6 +7,12 @@ namespace entropy
 {
 	namespace surveys
 	{
+		enum ExtraAttribute
+		{
+			Mass = 5,
+			StarFormationRate = 6
+		}; 
+		
 		class DataSet
 		{
 		public:
@@ -16,15 +22,12 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
-			void update();
-			void draw();
+			void draw(ofShader & shader);
 
 			void gui(ofxPreset::Gui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
-
-			static const size_t MAX_FRAGMENTS = 20;
 
 			struct : ofParameterGroup
 			{
@@ -44,12 +47,16 @@ namespace entropy
 			} parameters;
 
 		protected:
-			size_t loadFragment(const std::string & filePath, const std::string & particleType, std::vector<glm::vec4> & points);
+			size_t loadFragment(const std::string & filePath, const std::string & particleType);
 
-			std::vector<glm::vec4> points;
+			std::vector<glm::vec3> coordinates;
+			std::vector<float> masses;
+			std::vector<float> starFormationRates;
+
+			float minRadius;
+			float maxRadius;
 
 			ofVbo vbo;
-			bool vboDirty;
 		};
 	}
 }

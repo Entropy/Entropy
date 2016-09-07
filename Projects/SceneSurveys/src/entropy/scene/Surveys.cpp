@@ -21,8 +21,8 @@ namespace entropy
 		void Surveys::init()
 		{
 			// Load the data.
-			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 1, "PartType6");
-			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 2, "PartType6");
+			this->dataSetBoss.setup("BOSS", this->getAssetsPath("particles/boss_fragment-batch-%iof10.hdf5"), 0, 10, "PartType6");
+			this->dataSetDes.setup("DES", this->getAssetsPath("particles/des_fragment-batch-%iof20.hdf5"), 0, 20, "PartType6");
 			this->dataSetVizir.setup("ViziR", this->getAssetsPath("particles/Hipparchos-Tycho-stars-fromViziR.hdf5"), 0, 1, "PartType4");
 
 			// Set ofParameterGroup names.
@@ -50,7 +50,7 @@ namespace entropy
 
 			// Build the texture.
 			//entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
-			const auto filePath = this->getAssetsPath("images/spiral-galaxy.jpg");
+			const auto filePath = this->getAssetsPath("images/sprites.png");
 			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
 			ofPixels pixels;
 			ofLoadImage(pixels, filePath);
@@ -68,7 +68,12 @@ namespace entropy
 			if (wasUsingArbTex) ofEnableArbTex();
 
 			// Load the shader.
-			this->spriteShader.load("shaders/sprite");
+			this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
+			this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
+			this->spriteShader.bindAttribute(surveys::ExtraAttribute::Mass, "mass");
+			this->spriteShader.bindAttribute(surveys::ExtraAttribute::StarFormationRate, "starFormationRate");
+			this->spriteShader.bindDefaults();
+			this->spriteShader.linkProgram();
 		}
 
 		//--------------------------------------------------------------
@@ -137,34 +142,17 @@ namespace entropy
 				this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
 				ofEnablePointSprites();
 				{
-					static const auto kLatitudeMin = -HALF_PI;
-					static const auto kLatitudeMax = HALF_PI;
-					static const auto kLongitudeMin = 0;
-					static const auto kLongitudeMax = TWO_PI;
-
 					if (parameters.renderBoss)
 					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetBoss.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetBoss.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetBoss.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetBoss.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->dataSetBoss.draw();
+						this->dataSetBoss.draw(this->spriteShader);
 					}
 					if (parameters.renderDes)
 					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetDes.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetDes.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetDes.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetDes.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->dataSetDes.draw();
+						this->dataSetDes.draw(this->spriteShader);
 					}
 					if (parameters.renderVizir)
 					{
-						this->spriteShader.setUniform1f("uMinLatitude", ofMap(this->dataSetVizir.parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMaxLatitude", ofMap(this->dataSetVizir.parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-						this->spriteShader.setUniform1f("uMinLongitude", ofMap(this->dataSetVizir.parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->spriteShader.setUniform1f("uMaxLongitude", ofMap(this->dataSetVizir.parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-						this->dataSetVizir.draw();
+						this->dataSetVizir.draw(this->spriteShader);
 					}
 				}
 				ofDisablePointSprites();
