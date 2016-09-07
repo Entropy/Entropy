@@ -66,6 +66,9 @@ namespace entropy
 			// Configure and register parameters.
 			this->populateMappings(parameters);
 
+			this->populateMappings(this->cameras[render::Layout::Back]->parameters);
+			this->populateMappings(this->cameras[render::Layout::Front]->parameters);
+
 			this->boxes[render::Layout::Back].parameters.setName("Box Back");
 			this->boxes[render::Layout::Front].parameters.setName("Box Front");
 			this->populateMappings(this->boxes[render::Layout::Back].parameters);
