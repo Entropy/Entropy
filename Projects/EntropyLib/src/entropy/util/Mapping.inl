@@ -87,29 +87,22 @@ namespace entropy
 				//ofLogNotice(__FUNCTION__) << "Track for ofParameter " << this->trackName << " already exists!";
 				return;
 			}
+
+			// Set timeline to main page.
+			timeline->setCurrentPage(0);
 			
-			// Add Page if it doesn't already exist.
-			if (!timeline->hasPage(kMappingsTimelinePageName))
-			{
-				timeline->addPage(kMappingsTimelinePageName);
-			}
-			auto page = timeline->getPage(kMappingsTimelinePageName);
-
-			const auto pageTrackName = this->groupName + "_" + this->trackName;
-
-			if (page->getTrack(pageTrackName))
+			const auto groupTrackName = this->groupName + "_" + this->trackName;
+			if (timeline->getTrack(groupTrackName))
 			{
 				//ofLogWarning("Mapping::addTrack") << "Track for ofParameter " << this->trackName << " already exists!";
 				return;
 			}
 
-			timeline->setCurrentPage(kMappingsTimelinePageName);
-
 			// Add Track and set default value and range where necessary.
 			const auto & trackInfo = typeid(TrackType);
 			if (trackInfo == typeid(ofxTLCurves))
 			{
-				this->track = timeline->addCurves(pageTrackName);
+				this->track = timeline->addCurves(groupTrackName);
 
 				const auto & paramInfo = typeid(ParameterType);
 				if (paramInfo == typeid(float))
@@ -127,14 +120,14 @@ namespace entropy
 			}
 			else if (trackInfo == typeid(ofxTLSwitches))
 			{
-				this->track = timeline->addSwitches(pageTrackName);
+				this->track = timeline->addSwitches(groupTrackName);
 
 				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(this->parameter);
 				this->track->setDefaultValue(parameterBool->get());
 			}
 			else if (trackInfo == typeid(ofxTLColorTrack))
 			{
-				auto trackColor = timeline->addColors(pageTrackName);
+				auto trackColor = timeline->addColors(groupTrackName);
 
 				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(this->parameter);
 				trackColor->setDefaultColor(parameterColor->get());

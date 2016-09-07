@@ -8,8 +8,6 @@ namespace entropy
 {
 	namespace util
 	{
-		static string kMappingsTimelinePageName = "Mappings";
-
 		class AbstractMapping
 		{
 		public:
