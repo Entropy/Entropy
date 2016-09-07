@@ -1,37 +1,14 @@
 {
-    "Calibrate": {
-        "Base": {
-            "Background": "0, 0, 0, 1",
-            "Camera Back": {
-                "FOV": "60",
-                "Far Clip": "1000",
-                "Mouse Control": "1",
-                "Near Clip": "0.001",
-                "Relative Y Axis": "0"
-            },
-            "Camera Front": {
-                "Attach to Back": "1",
-                "FOV": "60",
-                "Far Clip": "1000",
-                "Mouse Control": "0",
-                "Near Clip": "0.001",
-                "Relative Y Axis": "0"
-            }
-        },
-        "Border": {
-            "Back Draw": "0",
-            "Front Draw": "0",
-            "Size": "20"
-        },
+    "Boxes": {
         "Box Back": {
             "Alpha": "1",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
-            "Cull Face": "1",
+            "Cull Face": "2",
             "Edge Ratio": "0.01",
             "Enabled": "1",
-            "Size": "536.082",
-            "Subdivisions": "4"
+            "Size": "500",
+            "Subdivisions": "3"
         },
         "Box Front": {
             "Alpha": "1",
@@ -40,8 +17,15 @@
             "Cull Face": "1",
             "Edge Ratio": "0.01",
             "Enabled": "1",
-            "Size": "530.928",
-            "Subdivisions": "4"
+            "Size": "500",
+            "Subdivisions": "3"
+        }
+    },
+    "Calibrate": {
+        "Border": {
+            "Back Draw": "0",
+            "Front Draw": "0",
+            "Size": "20"
         },
         "Grid": {
             "Center Points": "1",
@@ -50,112 +34,73 @@
             "Layout": "1",
             "Size": "20",
             "Vertical Lines": "1"
-        },
-        "Post Effects Back": {
-            "Bloom": {
-                "Brightness Threshold": "1",
-                "Debug blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
-                "Power": "1.1",
-                "Rotation": "0"
+        }
+    },
+    "Cameras": {
+        "Camera Back": {
+            "Attach to Parent": "0",
+            "Dolly Speed": "0",
+            "FOV": "60",
+            "Far Clip": "1000",
+            "Mouse Control": "1",
+            "Near Clip": "0.001",
+            "Pan Speed": "0",
+            "Relative Y Axis": "0",
+            "Roll Speed": "0",
+            "Tilt Speed": "0",
+            "ofEasyCam": {
+                "aspectRatio": 3.17685174942017,
+                "distance": 1021.65197753906,
+                "drag": 0.899999976158142,
+                "farClip": 9353.07421875,
+                "forceAspectRatio": true,
+                "fov": 60.0,
+                "inertiaEnabled": false,
+                "lensOffset": "0, 0",
+                "mouseInputEnabled": false,
+                "mouseMiddleButtonEnabled": true,
+                "nearClip": 9.3530740737915,
+                "ortho": false,
+                "relativeYAxis": false,
+                "target": "0, 0, 0",
+                "transform": "0.692399,        0, 0.721515,        0\n0.326081, 0.892049, -0.312922,        0\n-0.643626, 0.451939, 0.617654,        0\n-684.316,  389.344,  651.073,        1",
+                "translationKey": 109,
+                "upAxis": "0, 1, 0"
             }
         },
-        "Post Effects Front": {
-            "Bloom": {
-                "Brightness Threshold": "1",
-                "Debug blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
-                "Power": "1.1",
-                "Rotation": "0"
+        "Camera Front": {
+            "Attach to Parent": "1",
+            "Dolly Speed": "0",
+            "FOV": "45",
+            "Far Clip": "1000",
+            "Mouse Control": "0",
+            "Near Clip": "0.001",
+            "Pan Speed": "0",
+            "Relative Y Axis": "0",
+            "Roll Speed": "0",
+            "Tilt Speed": "0",
+            "ofEasyCam": {
+                "aspectRatio": 2.82592582702637,
+                "distance": 0.0,
+                "drag": 0.899999976158142,
+                "farClip": 9353.07421875,
+                "forceAspectRatio": true,
+                "fov": 45.0,
+                "inertiaEnabled": false,
+                "lensOffset": "0, 0",
+                "mouseInputEnabled": false,
+                "mouseMiddleButtonEnabled": true,
+                "nearClip": 9.3530740737915,
+                "ortho": false,
+                "relativeYAxis": false,
+                "target": "0, 0, 0",
+                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,        0,        1",
+                "translationKey": 109,
+                "upAxis": "0, 1, 0"
             }
         }
     },
-    "Camera Back": {
-        "aspectRatio": 1.58796298503876,
-        "distance": 915.898986816406,
-        "drag": 0.899999976158142,
-        "farClip": 9353.07421875,
-        "forceAspectRatio": true,
-        "fov": 60.0,
-        "inertiaEnabled": false,
-        "lensOffset": "0, 0",
-        "mouseInputEnabled": false,
-        "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
-        "ortho": false,
-        "relativeYAxis": false,
-        "target": "0, 0, 0",
-        "transform": "  0.6924, -1.08033e-07, -0.721515,        0\n-0.0211437, 0.999571, -0.0202906,        0\n0.721205, 0.0293046, 0.692101,        0\n 660.551,  26.8398,  633.895,        1",
-        "translationKey": 109,
-        "upAxis": "0, 1, 0"
-    },
-    "Camera Front": {
-        "aspectRatio": 1.41296291351318,
-        "distance": 1.526560140519e-06,
-        "drag": 0.899999976158142,
-        "farClip": 9353.07421875,
-        "forceAspectRatio": true,
-        "fov": 60.0,
-        "inertiaEnabled": false,
-        "lensOffset": "0, 0",
-        "mouseInputEnabled": false,
-        "mouseMiddleButtonEnabled": true,
-        "nearClip": 9.3530740737915,
-        "ortho": false,
-        "relativeYAxis": false,
-        "target": "0, 0, 0",
-        "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n1.86265e-09,        0,        1,        0\n1.5147e-06, -1.89921e-07,        0,        1",
-        "translationKey": 109,
-        "upAxis": "0, 1, 0"
-    },
     "Mappings": {
-        "Base::Background": "0",
-        "Base::Camera_Back::FOV": "0",
-        "Base::Camera_Back::Far Clip": "0",
-        "Base::Camera_Back::Mouse Control": "0",
-        "Base::Camera_Back::Near Clip": "0",
-        "Base::Camera_Back::Relative Y Axis": "0",
-        "Base::Camera_Front::Attach to Back": "0",
-        "Base::Camera_Front::FOV": "0",
-        "Base::Camera_Front::Far Clip": "0",
-        "Base::Camera_Front::Mouse Control": "0",
-        "Base::Camera_Front::Near Clip": "0",
-        "Base::Camera_Front::Relative Y Axis": "0",
-        "Border::Back Draw": "0",
-        "Border::Front Draw": "0",
-        "Border::Size": "0",
         "Box_Back::Alpha": "0",
         "Box_Back::Auto Draw": "0",
         "Box_Back::Color": "0",
@@ -172,12 +117,35 @@
         "Box_Front::Enabled": "0",
         "Box_Front::Size": "0",
         "Box_Front::Subdivisions": "0",
-        "Grid::Center Points": "0",
-        "Grid::Cross Lines": "0",
-        "Grid::Horizontal Lines": "0",
-        "Grid::Layout": "0",
-        "Grid::Size": "0",
-        "Grid::Vertical Lines": "0",
+        "Calibrate::Border::Back Draw": "0",
+        "Calibrate::Border::Front Draw": "0",
+        "Calibrate::Border::Size": "0",
+        "Calibrate::Grid::Center Points": "0",
+        "Calibrate::Grid::Cross Lines": "0",
+        "Calibrate::Grid::Horizontal Lines": "0",
+        "Calibrate::Grid::Layout": "0",
+        "Calibrate::Grid::Size": "0",
+        "Calibrate::Grid::Vertical Lines": "0",
+        "Camera_Back::Attach to Parent": "0",
+        "Camera_Back::Dolly Speed": "1",
+        "Camera_Back::FOV": "0",
+        "Camera_Back::Far Clip": "0",
+        "Camera_Back::Mouse Control": "0",
+        "Camera_Back::Near Clip": "0",
+        "Camera_Back::Pan Speed": "1",
+        "Camera_Back::Relative Y Axis": "0",
+        "Camera_Back::Roll Speed": "1",
+        "Camera_Back::Tilt Speed": "0",
+        "Camera_Front::Attach to Parent": "0",
+        "Camera_Front::Dolly Speed": "0",
+        "Camera_Front::FOV": "0",
+        "Camera_Front::Far Clip": "0",
+        "Camera_Front::Mouse Control": "0",
+        "Camera_Front::Near Clip": "0",
+        "Camera_Front::Pan Speed": "0",
+        "Camera_Front::Relative Y Axis": "0",
+        "Camera_Front::Roll Speed": "0",
+        "Camera_Front::Tilt Speed": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -213,5 +181,57 @@
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
-    "Pop-Ups": null
+    "Pop-ups": null,
+    "Post Effects": {
+        "Post Effects Back": {
+            "Bloom": {
+                "Brightness Threshold": "1",
+                "Debug blur": "0",
+                "Enabled": "1",
+                "Num Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "0",
+                "Inner": "0.8",
+                "Only alpha": "1",
+                "Outter": "1.1",
+                "Power": "1.1",
+                "Rotation": "0"
+            }
+        },
+        "Post Effects Front": {
+            "Bloom": {
+                "Brightness Threshold": "1",
+                "Debug blur": "0",
+                "Enabled": "1",
+                "Num Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "0",
+                "Inner": "0.8",
+                "Only alpha": "1",
+                "Outter": "1.1",
+                "Power": "1.1",
+                "Rotation": "0"
+            }
+        }
+    }
 }

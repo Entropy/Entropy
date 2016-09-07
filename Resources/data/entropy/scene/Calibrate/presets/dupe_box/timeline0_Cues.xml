@@ -1,0 +1,32 @@
+<keyframes>
+    <key>
+        <flag>play tumble</flag>
+        <time>00:00:05:000</time>
+        <value>0.500000000</value>
+    </key>
+    <key>
+        <flag>stop tumble</flag>
+        <time>00:00:09:999</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>play dolly</flag>
+        <time>00:00:15:033</time>
+        <value>0.574999988</value>
+    </key>
+    <key>
+        <flag>stop dolly</flag>
+        <time>00:00:20:062</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>play idle</flag>
+        <time>00:00:25:039</time>
+        <value>0.850000024</value>
+    </key>
+    <key>
+        <flag>stop idle</flag>
+        <time>00:00:30:016</time>
+        <value>0.125000000</value>
+    </key>
+</keyframes>

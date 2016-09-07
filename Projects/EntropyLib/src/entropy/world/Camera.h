@@ -33,8 +33,8 @@ namespace entropy
 			void end();
 
 			ofEasyCam & getEasyCam();
-			const glm::vec3 & getTumbleOffset() const;
-			const float getDollyOffset() const;
+
+			glm::mat4 getTransform() const;
 			
 			void setControlArea(const ofRectangle & controlArea);
 			void setMouseInputEnabled(bool mouseInputEnabled);

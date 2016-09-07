@@ -122,22 +122,11 @@ namespace entropy
 			
 			if (this->attachToParent)
 			{
-				// Apply the dolly and tumble offset from the parent.
-				ofTranslate(0.0f, 0.0f, this->parent->getDollyOffset());
-
-				const auto & parentTumbleOffset = this->parent->getTumbleOffset();
-				ofRotateXDeg(parentTumbleOffset.x);
-				ofRotateYDeg(parentTumbleOffset.y);
-				ofRotateZDeg(parentTumbleOffset.z);
+				ofMultMatrix(this->parent->getTransform());
 			}
 			else
 			{
-				// Apply the local dolly and tumble offset.
-				ofTranslate(0.0f, 0.0f, this->dollyOffset);
-				
-				ofRotateXDeg(this->tumbleOffset.x);
-				ofRotateYDeg(this->tumbleOffset.y);
-				ofRotateZDeg(this->tumbleOffset.z);
+				ofMultMatrix(this->getTransform());
 			}
 		}
 
@@ -156,15 +145,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const glm::vec3 & Camera::getTumbleOffset() const
+		glm::mat4 Camera::getTransform() const
 		{
-			return this->tumbleOffset;
-		}
+			static const auto xAxis = glm::vec3(1.0f, 0.0f, 0.0f);
+			static const auto yAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+			static const auto zAxis = glm::vec3(0.0f, 0.0f, 1.0f);
 
-		//--------------------------------------------------------------
-		const float Camera::getDollyOffset() const
-		{
-			return this->dollyOffset;
+			glm::mat4 transform;
+
+			// Dolly.
+			transform = glm::translate(transform, this->easyCam.getZAxis() * this->dollyOffset);
+
+			// Tumble.
+			transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.x), xAxis);
+			transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.y), yAxis);
+			transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.z), zAxis);
+
+			return transform;
 		}
 
 		//--------------------------------------------------------------
