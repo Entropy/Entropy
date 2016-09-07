@@ -666,16 +666,20 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::goToNextTimelineFlag()
 		{
-			if (!this->cuesTrack) return false;
-
-			for (auto keyframe : this->cuesTrack->getKeyframes())
+			if (this->cuesTrack)
 			{
-				if (keyframe->time > this->timeline->getCurrentTimeMillis())
+				for (auto keyframe : this->cuesTrack->getKeyframes())
 				{
-					this->timeline->setCurrentTimeMillis(keyframe->time);
-					return true;
+					if (keyframe->time > this->timeline->getCurrentTimeMillis())
+					{
+						this->timeline->setCurrentTimeMillis(keyframe->time);
+						return true;
+					}
 				}
 			}
+
+			// No keyframe found, toggle playback.
+			this->timeline->togglePlay();
 
 			return false;
 		}
@@ -683,9 +687,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::timelineBangFired(ofxTLBangEventArgs & args)
 		{
-			static const string kPauseFlag = "pause";
+			static const string kStopFlag = "stop";
 			static const string kPlayFlag = "play";
-			if (args.flag.compare(0, kPauseFlag.size(), kPauseFlag) == 0)
+			if (args.flag.compare(0, kStopFlag.size(), kStopFlag) == 0)
 			{
 				this->timeline->stop();
 			}
