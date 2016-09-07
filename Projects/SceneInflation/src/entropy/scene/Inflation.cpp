@@ -40,10 +40,11 @@ namespace entropy
 			// Setup renderers.
 			this->renderers[render::Layout::Back].setup();
 			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
-			this->parameters.add(this->renderers[render::Layout::Back].parameters);
+			this->populateMappings(this->renderers[render::Layout::Back].parameters);
+
 			this->renderers[render::Layout::Front].setup();
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
-			this->parameters.add(this->renderers[render::Layout::Front].parameters);
+			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
 			// Custom parameter listeners.
 			this->parameterListeners.push_back(this->parameters.render.drawBoxInRenderer.newListener([this](bool & value)
@@ -499,10 +500,13 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Serialize(json, this->gpuMarchingCubes.parameters);
-			//for (auto & it : this->renderers)
-			//{
-			//	ofxPreset::Serializer::Serialize(json, it.second.parameters);
-			//}
+
+			// Save Renderer settings.
+			auto & jsonRenderers = json["Renderers"];
+			for (auto & it : this->renderers)
+			{
+				ofxPreset::Serializer::Serialize(jsonRenderers, it.second.parameters);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -510,10 +514,16 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Deserialize(json, this->noiseField.parameters);
 			ofxPreset::Serializer::Deserialize(json, this->gpuMarchingCubes.parameters);
-			//for (auto & it : this->renderers)
-			//{
-			//	ofxPreset::Serializer::Deserialize(json, it.second.parameters);
-			//}
+
+			// Restore Renderer settings.
+			if (json.count("Renderers"))
+			{
+				auto & jsonRenderers = json["Renderers"];
+				for (auto & it : this->renderers)
+				{
+					ofxPreset::Serializer::Deserialize(jsonRenderers, it.second.parameters);
+				}
+			}
 
 			resetWavelengths();
 		}
