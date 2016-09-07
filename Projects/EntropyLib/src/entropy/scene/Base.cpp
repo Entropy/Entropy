@@ -53,7 +53,7 @@ namespace entropy
 			// Add the cues track and listener.
 			this->cuesTrack = this->timeline->addFlags("Cues");
 
-			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired);
+			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
 
 			// Build the Back and Front cameras.
 			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
@@ -118,7 +118,7 @@ namespace entropy
 			this->cameras.clear();
 
 			// Clear any remaining timeline stuff.
-			ofRemoveListener(this->timeline->events().bangFired, this, &Base::timelineBangFired);
+			ofRemoveListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
 			this->timeline->clear();
 			this->timeline.reset();
 		}
@@ -682,7 +682,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::timelineBangFired(ofxTLBangEventArgs & args)
+		void Base::timelineBangFired_(ofxTLBangEventArgs & args)
 		{
 			static const string kStopFlag = "stop";
 			static const string kPlayFlag = "play";
@@ -693,6 +693,11 @@ namespace entropy
 			else if (args.flag.compare(0, kPlayFlag.size(), kPlayFlag) == 0)
 			{
 				this->timeline->play();
+			}
+			else
+			{
+				// Cascade to child scene.
+				this->timelineBangFired(args);
 			}
 		}
 

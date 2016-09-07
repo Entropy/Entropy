@@ -55,11 +55,6 @@ namespace entropy
 			virtual bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; }
 			virtual bool postProcessFront(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; };
 
-			virtual void gui(ofxPreset::Gui::Settings & settings) {}
-
-			virtual void serialize(nlohmann::json & json) {}
-			virtual void deserialize(const nlohmann::json & json) {}
-
 			// Resources
 			string getAssetsPath(const string & file = "");
 			string getDataPath(const string & file = "");
@@ -121,6 +116,13 @@ namespace entropy
 			virtual void drawFrontWorld() {}
 			virtual void drawFrontOverlay() {}
 
+			virtual void gui(ofxPreset::Gui::Settings & settings) {}
+
+			virtual void serialize(nlohmann::json & json) {}
+			virtual void deserialize(const nlohmann::json & json) {}
+
+			virtual void timelineBangFired(ofxTLBangEventArgs & args) {}
+
 			// State
 			bool initialized;
 			bool ready;
@@ -148,7 +150,7 @@ namespace entropy
 			std::vector<ofEventListener> parameterListeners;
 
 			// Timeline
-			void timelineBangFired(ofxTLBangEventArgs & args);
+			void timelineBangFired_(ofxTLBangEventArgs & args);
 
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLFlags * cuesTrack;
