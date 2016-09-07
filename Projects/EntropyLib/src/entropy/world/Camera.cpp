@@ -10,21 +10,18 @@ namespace entropy
 		Camera::Camera()
 			: cameraTrack(nullptr)
 		{
-			// Build ofEasyCam.
-			this->easyCam = std::make_shared<ofEasyCam>();
-
 			// Set parameter listeners.
 			this->parameterListeners.push_back(fov.newListener([this](float & enabled)
 			{
-				this->easyCam->setFov(enabled);
+				this->easyCam.setFov(enabled);
 			}));
 			this->parameterListeners.push_back(nearClip.newListener([this](float & enabled)
 			{
-				this->easyCam->setNearClip(enabled);
+				this->easyCam.setNearClip(enabled);
 			}));
 			this->parameterListeners.push_back(farClip.newListener([this](float & enabled)
 			{
-				this->easyCam->setFarClip(enabled);
+				this->easyCam.setFarClip(enabled);
 			})); 
 			
 			this->parameterListeners.push_back(attachToParent.newListener([this](bool & enabled)
@@ -41,19 +38,7 @@ namespace entropy
 			}));
 			this->parameterListeners.push_back(relativeYAxis.newListener([this](bool & enabled)
 			{
-				this->easyCam->setRelativeYAxis(enabled);
-			}));
-
-			this->parameterListeners.push_back(useTimelineTrack.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->addTimelineTrack();
-				}
-				else
-				{
-					this->removeTimelineTrack();
-				}
+				this->easyCam.setRelativeYAxis(enabled);
 			}));
 		}
 		
@@ -68,21 +53,22 @@ namespace entropy
 		{
 			this->clear();
 
-			this->timeline = timeline;
-
 			this->layout = layout;
 			const auto name = (this->layout == render::Layout::Back ? "Camera Back" : "Camera Front");
 			this->parameters.setName(name);
 
+			this->timeline = timeline;
+			this->addTimelineTrack();
+
 			// Make sure the ofEasyCam is up to date.
-			this->easyCam->begin();
-			this->easyCam->end();
+			this->easyCam.begin();
+			this->easyCam.end();
 		}
 		
 		//--------------------------------------------------------------
 		void Camera::clear()
 		{
-			this->parentNode.reset();
+			this->parent.reset();
 
 			this->removeTimelineTrack();
 			this->timeline.reset();
@@ -91,8 +77,11 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Camera::reset()
 		{
-			this->easyCam->setAspectRatio(GetCanvasWidth(this->layout) / GetCanvasHeight(this->layout));
-			this->easyCam->reset();
+			this->easyCam.setAspectRatio(GetCanvasWidth(this->layout) / GetCanvasHeight(this->layout));
+			this->easyCam.reset();
+
+			this->tumbleOffset = glm::vec3(0.0f);
+			this->dollyOffset = 0.0f;
 		}
 
 		//--------------------------------------------------------------
@@ -101,60 +90,87 @@ namespace entropy
 			// TODO: Figure out a better way to do this, with event consumption or something.
 			if (mouseOverGui || !this->mouseControl)
 			{
-				this->easyCam->disableMouseInput();
+				this->easyCam.disableMouseInput();
 			}
 			else
 			{
-				this->easyCam->enableMouseInput();
+				this->easyCam.enableMouseInput();
 			}
 
-			if (!this->attachToParent && !this->useTimelineTrack && !this->easyCam->isInMotion())
+			if (!this->attachToParent && !this->easyCam.isMoving())
 			{
-				// Get current values.
-				const auto position = this->easyCam->getPosition();
-				glm::vec3 polarCoordinates;
-				polarCoordinates.z = glm::length(position);
-				polarCoordinates.y = acosf(position.y / polarCoordinates.z) - glm::half_pi<float>();
-				polarCoordinates.x = atan2f(position.x, position.z);
-
-				// Calculate offsets.
-				polarCoordinates.x += this->longitudeSpeed;
-				polarCoordinates.y += this->latitudeSpeed;
-				polarCoordinates.z += this->radiusSpeed;
-
-				// Apply new orientation.
-				this->easyCam->orbitRad(polarCoordinates.x, polarCoordinates.y, polarCoordinates.z);
+				this->tumbleOffset.x += this->tiltSpeed;
+				this->tumbleOffset.y += this->panSpeed;
+				this->tumbleOffset.z += this->rollSpeed;
+				
+				this->dollyOffset += this->dollySpeed;
 			}
 		}
 
 		//--------------------------------------------------------------
 		void Camera::resize(ofResizeEventArgs & args)
 		{
-			this->easyCam->setAspectRatio(args.width / static_cast<float>(args.height));
+			this->easyCam.setAspectRatio(args.width / static_cast<float>(args.height));
 		}
 
 		//--------------------------------------------------------------
 		void Camera::begin()
 		{
-			this->easyCam->begin(GetCanvasViewport(this->layout));
+			this->easyCam.begin(GetCanvasViewport(this->layout));
+			
+			ofPushMatrix();
+			
+			if (this->attachToParent)
+			{
+				// Apply the dolly and tumble offset from the parent.
+				ofTranslate(0.0f, 0.0f, this->parent->getDollyOffset());
+
+				const auto & parentTumbleOffset = this->parent->getTumbleOffset();
+				ofRotateXDeg(parentTumbleOffset.x);
+				ofRotateYDeg(parentTumbleOffset.y);
+				ofRotateZDeg(parentTumbleOffset.z);
+			}
+			else
+			{
+				// Apply the local dolly and tumble offset.
+				ofTranslate(0.0f, 0.0f, this->dollyOffset);
+				
+				ofRotateXDeg(this->tumbleOffset.x);
+				ofRotateYDeg(this->tumbleOffset.y);
+				ofRotateZDeg(this->tumbleOffset.z);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Camera::end()
 		{
-			this->easyCam->end();
+			ofPopMatrix();
+
+			this->easyCam.end();
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<ofEasyCam> Camera::getEasyCam()
+		ofEasyCam & Camera::getEasyCam()
 		{
 			return this->easyCam;
 		}
 
 		//--------------------------------------------------------------
+		const glm::vec3 & Camera::getTumbleOffset() const
+		{
+			return this->tumbleOffset;
+		}
+
+		//--------------------------------------------------------------
+		const float Camera::getDollyOffset() const
+		{
+			return this->dollyOffset;
+		}
+
+		//--------------------------------------------------------------
 		void Camera::setControlArea(const ofRectangle & controlArea)
 		{
-			this->easyCam->setControlArea(controlArea);
+			this->easyCam.setControlArea(controlArea);
 		}
 		
 		//--------------------------------------------------------------
@@ -162,63 +178,85 @@ namespace entropy
 		{
 			if (mouseInputEnabled)
 			{
-				this->easyCam->enableMouseInput();
+				this->easyCam.enableMouseInput();
 			}
 			else
 			{
-				this->easyCam->disableMouseInput();
+				this->easyCam.disableMouseInput();
 			}
 		}
 
 		//--------------------------------------------------------------
 		void Camera::setDistanceToTarget(float distanceToTarget)
 		{
-			this->easyCam->setDistance(distanceToTarget);
+			this->easyCam.setDistance(distanceToTarget);
 		}
 		
 		//--------------------------------------------------------------
 		float Camera::getDistanceToTarget() const
 		{
-			return this->easyCam->getDistance();
+			return this->easyCam.getDistance();
 		}
 
 		//--------------------------------------------------------------
-		void Camera::setParentNode(std::shared_ptr<ofNode> parentNode)
+		void Camera::setParent(std::shared_ptr<Camera> parent)
 		{
-			this->parentNode = parentNode;
+			this->parent = parent;
 		}
 
 		//--------------------------------------------------------------
-		void Camera::clearParentNode()
+		void Camera::clearParent()
 		{
-			this->parentNode.reset();
+			this->parent.reset();
 		}
 
 		//--------------------------------------------------------------
-		bool Camera::hasParentNode() const
+		bool Camera::hasParent() const
 		{
-			return (this->parentNode != nullptr);
+			return (this->parent != nullptr);
 		}
 
 		//--------------------------------------------------------------
 		void Camera::setAttachedToParent(bool attachedToParent)
 		{
-			if (attachedToParent && this->parentNode)
+			if (attachedToParent && this->parent)
 			{
 				this->mouseControl = false;
-				this->useTimelineTrack = false;
-				this->easyCam->setParent(*this->parentNode.get(), true);
+				this->removeTimelineTrack();
+				this->easyCam.setParent(this->parent->getEasyCam(), true);
 			}
 			else
 			{
-				this->easyCam->clearParent(true);
+				this->addTimelineTrack();
+				this->easyCam.clearParent(true);
 			}
 		}
 
 		//--------------------------------------------------------------
 		bool Camera::isAttachedToParent() const
 		{
-			return (this->easyCam->getParent() != nullptr);
+			return (this->easyCam.getParent() != nullptr);
+		}
+
+		//--------------------------------------------------------------
+		void Camera::copyTransformFromParent()
+		{
+			if (!this->hasParent())
+			{
+				ofLogError(__FUNCTION__) << "No parent node!";
+				return;
+			}
+
+			const bool wasAttached = this->isAttachedToParent();
+			if (wasAttached)
+			{
+				this->setAttachedToParent(false);
+			}
+			this->easyCam.setTransformMatrix(this->parent->getEasyCam().getGlobalTransformMatrix());
+			if (wasAttached)
+			{
+				this->setAttachedToParent(true);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -246,7 +284,8 @@ namespace entropy
 			const auto trackName = this->parameters.getName();
 
 			this->cameraTrack = new ofxTLCameraTrack();
-			this->cameraTrack->setCamera(*this->easyCam.get());
+			this->cameraTrack->setDampening(1.0f);
+			this->cameraTrack->setCamera(this->easyCam);
 			this->cameraTrack->setXMLFileName(this->timeline->nameToXMLName(trackName));
 			this->timeline->addTrack(trackName, this->cameraTrack);
 			this->cameraTrack->setDisplayName(trackName);
@@ -304,27 +343,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Camera::copyTransformFromParentNode()
-		{
-			if (!this->hasParentNode())
-			{
-				ofLogError(__FUNCTION__) << "No parent node!";
-				return;
-			}
-
-			const bool wasAttached = this->isAttachedToParent();
-			if (wasAttached)
-			{
-				this->setAttachedToParent(false);
-			}
-			this->easyCam->setTransformMatrix(this->parentNode->getGlobalTransformMatrix());
-			if (wasAttached)
-			{
-				this->setAttachedToParent(true);
-			}
-		}
-
-		//--------------------------------------------------------------
 		void Camera::addKeyframe()
 		{
 			this->cameraTrack->addKeyframe();
@@ -338,7 +356,7 @@ namespace entropy
 				ofxPreset::Gui::AddParameter(this->fov);
 				ofxPreset::Gui::AddRange("Clipping", this->nearClip, this->farClip);
 				
-				if (this->hasParentNode())
+				if (this->hasParent())
 				{
 					ofxPreset::Gui::AddParameter(this->attachToParent);
 				}
@@ -355,28 +373,23 @@ namespace entropy
 				ImGui::SameLine();
 				if (ImGui::Button("Set to Origin"))
 				{
-					this->easyCam->setPosition(glm::vec3(0.0f));
+					this->easyCam.setPosition(glm::vec3(0.0f));
 				}
-				if (this->hasParentNode())
+				if (this->hasParent())
 				{
 					ImGui::SameLine();
 					if (ImGui::Button("Copy from Parent"))
 					{
-						this->copyTransformFromParentNode();
+						this->copyTransformFromParent();
 					}
 				}
 
 				if (!this->isAttachedToParent())
 				{
-					ofxPreset::Gui::AddParameter(this->useTimelineTrack);
-
-					if (!this->hasTimelineTrack())
-					{
-						ImGui::Text("Orbit");
-						ofxPreset::Gui::AddParameter(this->longitudeSpeed);
-						ofxPreset::Gui::AddParameter(this->latitudeSpeed);
-						ofxPreset::Gui::AddParameter(this->radiusSpeed);
-					}
+					ofxPreset::Gui::AddParameter(this->tiltSpeed);
+					ofxPreset::Gui::AddParameter(this->panSpeed);
+					ofxPreset::Gui::AddParameter(this->rollSpeed);
+					ofxPreset::Gui::AddParameter(this->dollySpeed);
 				}
 
 				ofxPreset::Gui::EndTree(settings);
@@ -392,7 +405,7 @@ namespace entropy
 		{
 			auto & jsonGroup = ofxPreset::Serializer::Serialize(json, this->parameters);
 			
-			ofxPreset::Serializer::Serialize(jsonGroup, *this->easyCam.get(), "ofEasyCam");
+			ofxPreset::Serializer::Serialize(jsonGroup, this->easyCam, "ofEasyCam");
 		}
 
 		//--------------------------------------------------------------
@@ -400,7 +413,7 @@ namespace entropy
 		{
 			auto & jsonGroup = ofxPreset::Serializer::Deserialize(json, this->parameters);
 
-			ofxPreset::Serializer::Deserialize(jsonGroup, *this->easyCam.get(), "ofEasyCam");
+			ofxPreset::Serializer::Deserialize(jsonGroup, this->easyCam, "ofEasyCam");
 		}
 	}
 }

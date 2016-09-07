@@ -32,7 +32,9 @@ namespace entropy
 			void begin();
 			void end();
 
-			std::shared_ptr<ofEasyCam> getEasyCam();
+			ofEasyCam & getEasyCam();
+			const glm::vec3 & getTumbleOffset() const;
+			const float getDollyOffset() const;
 			
 			void setControlArea(const ofRectangle & controlArea);
 			void setMouseInputEnabled(bool mouseInputEnabled);
@@ -40,12 +42,14 @@ namespace entropy
 			void setDistanceToTarget(float distanceToTarget);
 			float getDistanceToTarget() const;
 
-			void setParentNode(std::shared_ptr<ofNode> parentNode);
-			void clearParentNode();
-			bool hasParentNode() const;
+			void setParent(std::shared_ptr<Camera> parent);
+			void clearParent();
+			bool hasParent() const;
 
 			void setAttachedToParent(bool attachedToParent);
 			bool isAttachedToParent() const;
+
+			void copyTransformFromParent();
 
 			void addTimelineTrack();
 			void removeTimelineTrack();
@@ -53,8 +57,6 @@ namespace entropy
 
 			void setLockedToTrack(bool lockedToTrack);
 			bool isLockedToTrack() const;
-
-			void copyTransformFromParentNode();
 
 			void addKeyframe();
 
@@ -71,26 +73,28 @@ namespace entropy
 			ofParameter<bool> mouseControl{ "Mouse Control", true };
 			ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
 
-			ofParameter<bool> useTimelineTrack{ "Use Timeline Track", false };
-
-			ofParameter<float> longitudeSpeed{ "Longitude Speed", 0.0f, -2.0f, 2.0f };
-			ofParameter<float> latitudeSpeed{ "Latitude Speed", 0.0f, -2.0f, 2.0f };
-			ofParameter<float> radiusSpeed{ "Radius Speed", 0.0f, -2.0f, 2.0f };
+			ofParameter<float> tiltSpeed{ "Tilt Speed", 0.0f, -1.0f, 1.0f };
+			ofParameter<float> panSpeed{ "Pan Speed", 0.0f, -1.0f, 1.0f };
+			ofParameter<float> rollSpeed{ "Roll Speed", 0.0f, -1.0f, 1.0f };
+			ofParameter<float> dollySpeed{ "Dolly Speed", 0.0f, -10.0f, 10.0f };
 
 			ofParameterGroup parameters{ "Camera",
 				fov,
 				nearClip, farClip,
 				attachToParent,
 				mouseControl, relativeYAxis,
-				useTimelineTrack,
-				longitudeSpeed, latitudeSpeed, radiusSpeed
+				tiltSpeed, panSpeed, rollSpeed, dollySpeed
 			};
 
 		protected:
 			render::Layout layout;
 
-			std::shared_ptr<ofEasyCam> easyCam;
-			std::shared_ptr<ofNode> parentNode;
+			ofEasyCam easyCam;
+
+			glm::vec3 tumbleOffset;
+			float dollyOffset;
+
+			std::shared_ptr<Camera> parent;
 
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLCameraTrack * cameraTrack;

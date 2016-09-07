@@ -61,7 +61,7 @@ namespace entropy
 
 			this->cameras.emplace(render::Layout::Front, std::make_shared<world::Camera>());
 			this->cameras[render::Layout::Front]->setup(render::Layout::Front, this->timeline);
-			this->cameras[render::Layout::Front]->setParentNode(this->cameras[render::Layout::Back]->getEasyCam());
+			this->cameras[render::Layout::Front]->setParent(this->cameras[render::Layout::Back]);
 
 			// Configure and register parameters.
 			this->populateMappings(parameters);
