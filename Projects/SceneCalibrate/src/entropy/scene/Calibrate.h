@@ -51,6 +51,7 @@ namespace entropy
 			render::Layout getGridLayout();
 			void clearGrid();
 			void updateGrid(render::Layout layout);
+			void addQuad(const glm::vec3 & center, const glm::vec3 & dimensions, const ofFloatColor & color, ofVboMesh & mesh);
 			void drawGrid();
 
 			ofVboMesh pointsMesh;
@@ -69,13 +70,21 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
-					ofParameter<int> size{ "Size", 20, 1, 200 };
+					ofParameter<int> resolution { "Resolution", 20, 1, 200 };
+					ofParameter<float> lineWidth{ "Line Width", 1.0f, 1.0f, 10.0f };
 					ofParameter<bool> centerPoints{ "Center Points", true };
 					ofParameter<bool> horizontalLines{ "Horizontal Lines", true };
 					ofParameter<bool> verticalLines{ "Vertical Lines", true };
 					ofParameter<bool> crossLines{ "Cross Lines", false };
 
-					PARAM_DECLARE("Grid", layout, size, centerPoints, horizontalLines, verticalLines, crossLines);
+					PARAM_DECLARE("Grid", 
+						layout, 
+						resolution, 
+						lineWidth,
+						centerPoints, 
+						horizontalLines, 
+						verticalLines, 
+						crossLines);
 				} grid;
 
 				struct : ofParameterGroup
@@ -84,10 +93,15 @@ namespace entropy
 					ofParameter<bool> drawFront{ "Front Draw", false };
 					ofParameter<int> size{ "Size", 20, 1, 200 };
 
-					PARAM_DECLARE("Border", drawBack, drawFront, size);
+					PARAM_DECLARE("Border", 
+						drawBack, 
+						drawFront, 
+						size);
 				} border;
 
-				PARAM_DECLARE("Calibrate", grid, border);
+				PARAM_DECLARE("Calibrate", 
+					grid, 
+					border);
 			} parameters;
 		};
 	}

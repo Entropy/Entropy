@@ -25,6 +25,8 @@ namespace entropy
 			void setup() override;
 			void exit() override;
 
+			void timelineBangFired(ofxTLBangEventArgs & args) override;
+
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
 
@@ -36,7 +38,7 @@ namespace entropy
 				ofParameter<bool> renderBoss{ "Render BOSS", true };
 				ofParameter<bool> renderDes{ "Render DES", false };
 				ofParameter<bool> renderVizir{ "Render ViziR", false };
-				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 20.0f };
+				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 100.0f };
 				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
 
 				PARAM_DECLARE("Back", 

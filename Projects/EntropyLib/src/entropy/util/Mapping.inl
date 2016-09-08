@@ -5,6 +5,12 @@ namespace entropy
 	namespace util
 	{
 		//--------------------------------------------------------------
+		const std::string & AbstractMapping::getShortName() const
+		{
+			return this->shortName;
+		}
+
+		//--------------------------------------------------------------
 		const std::string & AbstractMapping::getGroupName() const
 		{
 			return this->groupName;
@@ -35,7 +41,7 @@ namespace entropy
 		{
 			this->parameter = parameter;
 
-			this->trackName = parameter->getName();
+			this->shortName = parameter->getName();
 
 			const auto groupNames = parameter->getGroupHierarchyNames();
 
@@ -43,14 +49,17 @@ namespace entropy
 			this->groupName = groupNames.front();
 
 			// Cascade through the hierarchy for the GUI name.
-			this->name = "";
+			string paramName = "";
+			this->trackName = "";
 			for (auto i = 0; i < groupNames.size() - 1; ++i)
 			{
-				this->name.append(groupNames[i] + "::");
+				paramName.append(groupNames[i] + "::");
+				this->trackName.append(groupNames[i] + "_");
 			}
-			this->name.append(this->trackName);
+			paramName.append(this->shortName);
+			this->trackName.append(this->shortName);
 
-			this->animated.setName(this->name);
+			this->animated.setName(paramName);
 		}
 
 		//--------------------------------------------------------------
@@ -91,8 +100,7 @@ namespace entropy
 			// Set timeline to main page.
 			timeline->setCurrentPage(0);
 			
-			const auto groupTrackName = this->groupName + "_" + this->trackName;
-			if (timeline->getTrack(groupTrackName))
+			if (timeline->getTrack(this->trackName))
 			{
 				//ofLogWarning("Mapping::addTrack") << "Track for ofParameter " << this->trackName << " already exists!";
 				return;
@@ -102,7 +110,7 @@ namespace entropy
 			const auto & trackInfo = typeid(TrackType);
 			if (trackInfo == typeid(ofxTLCurves))
 			{
-				this->track = timeline->addCurves(groupTrackName);
+				this->track = timeline->addCurves(this->trackName);
 
 				const auto & paramInfo = typeid(ParameterType);
 				if (paramInfo == typeid(float))
@@ -120,14 +128,14 @@ namespace entropy
 			}
 			else if (trackInfo == typeid(ofxTLSwitches))
 			{
-				this->track = timeline->addSwitches(groupTrackName);
+				this->track = timeline->addSwitches(this->trackName);
 
 				auto parameterBool = dynamic_pointer_cast<ofParameter<bool>>(this->parameter);
 				this->track->setDefaultValue(parameterBool->get());
 			}
 			else if (trackInfo == typeid(ofxTLColorTrack))
 			{
-				auto trackColor = timeline->addColors(groupTrackName);
+				auto trackColor = timeline->addColors(this->trackName);
 
 				auto parameterColor = dynamic_pointer_cast<ofParameter<ofFloatColor>>(this->parameter);
 				trackColor->setDefaultColor(parameterColor->get());
@@ -135,7 +143,7 @@ namespace entropy
 				this->track = trackColor;
 			}
 
-			//this->track->setDisplayName(this->trackName);
+			//this->track->setDisplayName(this->shortName);
 		}
 
 		//--------------------------------------------------------------

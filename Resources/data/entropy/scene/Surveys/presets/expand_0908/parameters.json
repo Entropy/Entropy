@@ -35,7 +35,7 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 53511.80078125,
+                "distance": 91336.5625,
                 "drag": 0.899999976158142,
                 "farClip": 100000.0,
                 "forceAspectRatio": true,
@@ -48,7 +48,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,  53511.8,        1",
+                "transform": "-0.412688, -0.600548, -0.684711,        0\n-0.884215, 0.444486, 0.143237,        0\n0.218291, 0.664601, -0.71443,        0\n 25656.8,  49806.1, -72134.9,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -56,8 +56,8 @@
         "Camera Front": {
             "Attach to Parent": "1",
             "Dolly Speed": "0",
-            "FOV": "60",
-            "Far Clip": "1e+06",
+            "FOV": "135",
+            "Far Clip": "1000",
             "Mouse Control": "0",
             "Near Clip": "0.001",
             "Pan Speed": "0",
@@ -66,11 +66,11 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 2.82592582702637,
-                "distance": 0.010253899730742,
+                "distance": 0.00415555667132139,
                 "drag": 0.899999976158142,
-                "farClip": 1000000.0,
+                "farClip": 1000.0,
                 "forceAspectRatio": true,
-                "fov": 60.0,
+                "fov": 135.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
@@ -79,7 +79,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0, 0.0102539,        1",
+                "transform": "       1, 7.45058e-09,        0,        0\n-3.72529e-08,        1, -1.49012e-08,        0\n-2.98023e-08, -4.47035e-08,        1,        0\n-0.00267792, -0.00317764,        0,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -111,7 +111,7 @@
         "Camera_Back::Pan Speed": "0",
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
-        "Camera_Back::Tilt Speed": "0",
+        "Camera_Back::Tilt Speed": "1",
         "Camera_Front::Attach to Parent": "0",
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
@@ -163,14 +163,14 @@
         "Surveys::BOSS::Min Latitude": "0",
         "Surveys::BOSS::Min Longitude": "0",
         "Surveys::BOSS::Min Radius": "0",
-        "Surveys::Back::Point Size": "0",
+        "Surveys::Back::Point Size": "1",
         "Surveys::Back::Render BOSS": "0",
         "Surveys::Back::Render DES": "0",
         "Surveys::Back::Render ViziR": "0",
-        "Surveys::Back::Scale": "0",
+        "Surveys::Back::Scale": "1",
         "Surveys::DES::Color": "0",
         "Surveys::DES::Max Latitude": "0",
-        "Surveys::DES::Max Longitude": "0",
+        "Surveys::DES::Max Longitude": "1",
         "Surveys::DES::Max Radius": "1",
         "Surveys::DES::Min Latitude": "0",
         "Surveys::DES::Min Longitude": "1",
@@ -179,13 +179,13 @@
         "Surveys::Front::Render BOSS": "0",
         "Surveys::Front::Render DES": "0",
         "Surveys::Front::Render ViziR": "0",
-        "Surveys::Front::Scale": "0",
+        "Surveys::Front::Scale": "1",
         "Surveys::Galaxy::Alpha": "0",
         "Surveys::Galaxy::Scale": "0",
         "Surveys::ViziR::Color": "0",
         "Surveys::ViziR::Max Latitude": "0",
         "Surveys::ViziR::Max Longitude": "0",
-        "Surveys::ViziR::Max Radius": "0",
+        "Surveys::ViziR::Max Radius": "1",
         "Surveys::ViziR::Min Latitude": "0",
         "Surveys::ViziR::Min Longitude": "0",
         "Surveys::ViziR::Min Radius": "0"
@@ -245,7 +245,7 @@
     },
     "Surveys": {
         "BOSS": {
-            "Color": "0, 0.894118, 1, 1",
+            "Color": "1, 1, 1, 1",
             "Max Latitude": "1",
             "Max Longitude": "1",
             "Max Radius": "1",
@@ -254,14 +254,14 @@
             "Min Radius": "0"
         },
         "Back": {
-            "Point Size": "10",
+            "Point Size": "4.59541",
             "Render BOSS": "1",
             "Render DES": "1",
-            "Render ViziR": "0",
-            "Scale": "0.628"
+            "Render ViziR": "1",
+            "Scale": "3.10969"
         },
         "DES": {
-            "Color": "1, 0, 0, 1",
+            "Color": "1, 1, 1, 1",
             "Max Latitude": "1",
             "Max Longitude": "1",
             "Max Radius": "1",
@@ -270,22 +270,22 @@
             "Min Radius": "0"
         },
         "Front": {
-            "Point Size": "10",
-            "Render BOSS": "1",
+            "Point Size": "5",
+            "Render BOSS": "0",
             "Render DES": "1",
             "Render ViziR": "0",
-            "Scale": "20000"
+            "Scale": "3.10969"
         },
         "Galaxy": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Orientation": "0, 0, 0",
             "Scale": "1"
         },
         "ViziR": {
-            "Color": "0.611765, 1, 0, 1",
+            "Color": "1, 1, 1, 1",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "1",
+            "Max Radius": "0",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0"

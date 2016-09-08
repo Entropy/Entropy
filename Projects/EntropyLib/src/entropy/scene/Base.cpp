@@ -63,6 +63,9 @@ namespace entropy
 			this->cameras[render::Layout::Front]->setup(render::Layout::Front, this->timeline);
 			this->cameras[render::Layout::Front]->setParent(this->cameras[render::Layout::Back]);
 
+			// Initialize child class.
+			this->init();
+
 			// Configure and register parameters.
 			this->populateMappings(parameters);
 
@@ -82,9 +85,6 @@ namespace entropy
 			// List presets.
 			this->populatePresets();
 			this->currPreset.clear();
-
-			// Initialize child class.
-			this->init();
 
 			// Restore default data path.
 			ofSetDataPathRoot(prevDataPathRoot);

@@ -1,0 +1,47 @@
+<keyframes>
+    <key>
+        <flag>play stars</flag>
+        <time>00:00:30:000</time>
+        <value>0.675000012</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:35:313</time>
+        <value>0.399999976</value>
+    </key>
+    <key>
+        <flag>play god</flag>
+        <time>00:02:14:688</time>
+        <value>0.250000000</value>
+    </key>
+    <key>
+        <flag>reset</flag>
+        <time>00:02:25:461</time>
+        <value>0.500000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:02:29:525</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>play galaxies</flag>
+        <time>00:03:00:000</time>
+        <value>0.975000024</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:03:30:312</time>
+        <value>0.024999976</value>
+    </key>
+    <key>
+        <flag>play expansion</flag>
+        <time>00:04:30:001</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:07:59:688</time>
+        <value>0.149999976</value>
+    </key>
+</keyframes>
