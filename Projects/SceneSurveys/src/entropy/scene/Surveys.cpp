@@ -95,6 +95,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Surveys::exit()
 		{}
+
+		//--------------------------------------------------------------
+		void Surveys::timelineBangFired(ofxTLBangEventArgs & args)
+		{
+			static const string kResetFlag = "reset";
+			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+			{
+				// Reset the camera tumble.
+				this->cameras[render::Layout::Back]->reset();
+			}
+		}
 		
 		//--------------------------------------------------------------
 		void Surveys::drawBackWorld()

@@ -25,6 +25,8 @@ namespace entropy
 			void setup() override;
 			void exit() override;
 
+			void timelineBangFired(ofxTLBangEventArgs & args) override;
+
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
 

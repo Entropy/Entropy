@@ -15,8 +15,13 @@
         <value>0.250000000</value>
     </key>
     <key>
+        <flag>reset</flag>
+        <time>00:02:25:461</time>
+        <value>0.500000000</value>
+    </key>
+    <key>
         <flag>stop</flag>
-        <time>00:02:26:400</time>
+        <time>00:02:29:525</time>
         <value>0.000000000</value>
     </key>
     <key>
