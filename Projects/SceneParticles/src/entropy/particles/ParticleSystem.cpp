@@ -39,30 +39,12 @@ namespace nm
 	const float ParticleSystem::MAX_SPEED_SQUARED = MAX_SPEED * MAX_SPEED;
 
 	ParticleSystem::ParticleSystem() :
-		particles(nullptr),
 		totalNumParticles(0),
 		roughness(.1f),
-		deadParticles(nullptr),
 		numDeadParticles(0),
-		newPhotons(nullptr),
 		numNewPhotons(0)
 	{
 		this->clearParticles();
-	}
-
-	ParticleSystem::~ParticleSystem()
-	{
-		if (particles) delete[] particles;
-		particles = nullptr;
-		if (deadParticles) delete[] deadParticles;
-		deadParticles = nullptr;
-		if (newPhotons) delete[] newPhotons;
-		newPhotons = nullptr;
-
-		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
-		{
-			if (positions[i]) delete[] positions[i];
-		}
 	}
 
 	void ParticleSystem::init(Environment::Ptr universe)
@@ -72,9 +54,9 @@ namespace nm
 		octree.init(universe->getMin(), universe->getMax());
 		octree.addChildren(true);
 
-		particles = new nm::Particle[MAX_PARTICLES]();
-		deadParticles = new unsigned[MAX_PARTICLES];
-		newPhotons = new glm::vec3[MAX_PARTICLES]();
+		particles.fill(Particle());
+		deadParticles.fill(0);
+		newPhotons.fill(glm::vec3(0));
 
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
@@ -96,9 +78,9 @@ namespace nm
 		// position stuff
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
-			positions[i] = new ParticleGpuData[MAX_PARTICLES]();
+			positions[i].fill(ParticleGpuData());
 			tbo[i].allocate();
-			tbo[i].setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions, GL_DYNAMIC_DRAW);
+			tbo[i].setData(sizeof(ParticleGpuData) * MAX_PARTICLES, positions.data(), GL_DYNAMIC_DRAW);
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 
@@ -154,8 +136,10 @@ namespace nm
 	void ParticleSystem::clearParticles()
 	{
 		totalNumParticles = 0;
-		memset(positions, 0, Particle::NUM_TYPES * sizeof(positions[0]));
-		memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
+		for(auto & pos: positions){
+			pos.fill(ParticleGpuData());
+		}
+		numParticles.fill(0);
 	}
 
 	void ParticleSystem::update()
@@ -163,7 +147,7 @@ namespace nm
 		numDeadParticles = 0;
 		numNewPhotons = 0;
 		octree.clear();
-		octree.addPoints(particles, totalNumParticles);
+		octree.addPoints(particles.data(), totalNumParticles);
 		octree.updateCenterOfCharge();
 
 		const float dt = ofGetLastFrameTime();
@@ -276,7 +260,7 @@ namespace nm
 
 						// kill partner (idx of partner is potentialInteractionPartner - particles)
 						deadIdx = numDeadParticles.fetch_and_increment();
-						deadParticles[deadIdx] = potentialInteractionPartner - particles;
+						deadParticles[deadIdx] = potentialInteractionPartner - particles.data();
 					}
 				}
 			}
@@ -284,7 +268,7 @@ namespace nm
 
 		// start deleting particles at the end first so we don't swap out a particle
 		// that is actually dead and would be swapped out later in the iteration
-		std::sort(deadParticles, deadParticles + numDeadParticles, std::greater<float>());
+		std::sort(deadParticles.begin(), deadParticles.begin() + numDeadParticles, std::greater<float>());
 
 		//cout << "Num dead particles is " << numDeadParticles << " / " << totalNumParticles << endl;
 		if (numDeadParticles)
@@ -307,7 +291,7 @@ namespace nm
 		{
 			// notify photon listeners
 			PhotonEventArgs photonEventArgs;
-			photonEventArgs.photons = newPhotons;
+			photonEventArgs.photons = newPhotons.data();
 			photonEventArgs.numPhotons = numNewPhotons;
 			ofNotifyEvent(environment->photonEvent, photonEventArgs, this);
 		}
@@ -316,7 +300,7 @@ namespace nm
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i)
 		{
 			//cout << "Updating " << i << " w/ " << numParticles[i] << " particles" << endl;
-			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i]);
+			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i].data());
 		}
 	}
 
@@ -412,7 +396,7 @@ namespace nm
 		{
 			// Reset counts.
 			totalNumParticles = 0;
-			memset(numParticles, 0, Particle::NUM_TYPES * sizeof(numParticles[0]));
+			numParticles.fill(0);
 
 			auto & jsonGroup = json["particles"];
 			for (int i = 0; i < jsonGroup.size(); ++i)

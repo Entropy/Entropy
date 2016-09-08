@@ -61,7 +61,6 @@ namespace nm
 		static const float MAX_SPEED_SQUARED;
 
 		ParticleSystem();
-		~ParticleSystem();
 
 		void init(Environment::Ptr environment);
 
@@ -87,20 +86,23 @@ namespace nm
 
 		Environment::Ptr environment;
 		Octree<Particle> octree;
-		nm::Particle* particles;
-		tbb::atomic<unsigned> numParticles[Particle::NUM_TYPES];
+
+		std::array<nm::Particle, MAX_PARTICLES> particles;
+		std::array<tbb::atomic<unsigned>, Particle::NUM_TYPES> numParticles;
 		tbb::atomic<unsigned> totalNumParticles;
-		unsigned* deadParticles;
+
+		std::array<unsigned, MAX_PARTICLES> deadParticles;
 		tbb::atomic<unsigned> numDeadParticles;
-        ofVboMesh meshes[Particle::NUM_TYPES];
+
+		std::array<ofVboMesh, Particle::NUM_TYPES> meshes;
 		ofShader wallShader;
 
 		// position stuff
-		ofBufferObject tbo[Particle::NUM_TYPES];
-		ParticleGpuData* positions[Particle::NUM_TYPES];
-		ofTexture positionsTex[Particle::NUM_TYPES];
+		std::array<ofBufferObject, Particle::NUM_TYPES> tbo;
+		std::array<std::array<ParticleGpuData, MAX_PARTICLES>, Particle::NUM_TYPES> positions;
+		std::array<ofTexture, Particle::NUM_TYPES> positionsTex;
 
-		glm::vec3* newPhotons;
+		std::array<glm::vec3, MAX_PARTICLES> newPhotons;
 		tbb::atomic<unsigned> numNewPhotons;
 	};
 }
