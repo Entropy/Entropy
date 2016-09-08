@@ -178,4 +178,4 @@ namespace entropy
 	}
 }
 
-#endif COMPUTE_GL_3D
+#endif // COMPUTE_GL_3D

@@ -23,6 +23,9 @@ namespace entropy
 
 			ofParameter<bool> runSimulation{ "Run Simulation", true };
 
+			ofParameter<bool> drawBack{ "Draw Back", true }; 
+			ofParameter<bool> drawFront{ "Draw Front", true };
+
 			ofParameter<ofFloatColor> dropColor{ "Drop Color", ofFloatColor(0.29f, 0.56f, 1.0f, 1.0f) };
 			ofParameter<bool> dropping{ "Dropping", true };
 			ofParameter<int> dropRate{ "Drop Rate", 1, 1, 60 };
@@ -35,6 +38,7 @@ namespace entropy
 
 			ofParameterGroup parameters{ "Pool",
 				runSimulation,
+				drawFront, drawBack,
 				dropColor, dropping, dropRate,
 				rippleRate,
 				damping, radius, ringSize

@@ -33,7 +33,7 @@ namespace entropy
 				this->reset();
 			}
 
-			if (this->runSimulation)
+			if (this->runSimulation && (this->drawBack || this->drawFront))
 			{
 				if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
 				{
@@ -59,7 +59,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolBase::setDimensions(const glm::vec2 & dimensions)
 		{
-			setDimensions(glm::vec3(dimensions, 0.0f));
+			this->setDimensions(glm::vec3(dimensions, 0.0f));
 		}
 
 		//--------------------------------------------------------------

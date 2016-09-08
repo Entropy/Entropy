@@ -13,6 +13,9 @@
     <ClCompile Include="src\entropy\bubbles\PoolGL3D.cpp">
       <Filter>src\entropy\bubbles</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\bubbles\PoolGL2D.cpp">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -48,6 +51,9 @@
       <Filter>src\entropy\bubbles</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\bubbles\PoolGL3D.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\PoolGL2D.h">
       <Filter>src\entropy\bubbles</Filter>
     </ClInclude>
   </ItemGroup>
