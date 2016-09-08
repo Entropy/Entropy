@@ -63,58 +63,56 @@ namespace entropy
 			h5File.open(filePath, true);
 			ofxHDF5GroupPtr h5Group = h5File.loadGroup(particleType);
 
-			size_t total = 0;
-
 			// Load the coordinate data and convert angles to radians.
+			auto coordDataSet = h5Group->loadDataSet("Coordinates");
+			int coordCount = coordDataSet->getDimensionSize(0) / stride;
+			coordDataSet->setHyperslab(0, coordCount, stride);
+
+			vector<glm::vec3> coordData(coordCount);
+			coordDataSet->read(coordData.data());
+
+			for (int i = 0; i < coordData.size(); ++i)
 			{
-				auto dataSet = h5Group->loadDataSet("Coordinates");
-				int count = dataSet->getDimensionSize(0) / stride;
-				dataSet->setHyperslab(0, count, stride);
+				this->coordinates.push_back(glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
+				this->minRadius = std::min(this->minRadius, coordData[i].z);
+				this->maxRadius = std::max(this->maxRadius, coordData[i].z);
+			}
 
-				vector<glm::vec3> coordsData(count);
-				dataSet->read(coordsData.data());
+			// Load the mass data.
+			auto massDataSet = h5Group->loadDataSet("Masses");
+			int massCount = massDataSet->getDimensionSize(0) / stride;
+			massDataSet->setHyperslab(0, massCount, stride);
 
-				for (int i = 0; i < coordsData.size(); ++i)
+			vector<float> massData(massCount);
+			massDataSet->read(massData.data());
+
+			// Load the star formation rate data.
+			auto sfrDataSet = h5Group->loadDataSet("StarFormationRate");
+			int sfrCount = sfrDataSet->getDimensionSize(0) / stride;
+			sfrDataSet->setHyperslab(0, sfrCount, stride);
+
+			vector<float> sfrData(sfrCount);
+			sfrDataSet->read(sfrData.data());
+
+			// Add valid points to the data set.
+			size_t total = 0;
+			for (int i = 0; i < coordData.size(); ++i)
+			{
+				if (coordData[i].z > 0.0f)
 				{
-					this->coordinates.push_back(glm::vec3(ofDegToRad(coordsData[i].x), ofDegToRad(coordsData[i].y), coordsData[i].z));
-					this->minRadius = std::min(this->minRadius, coordsData[i].z);
-					this->maxRadius = std::max(this->maxRadius, coordsData[i].z);
-				}
+					this->coordinates.push_back(coordData[i]);
+					this->masses.push_back(massData[i]);
+					if (particleType == "PartType6")
+					{
+						this->starFormationRates.push_back(sfrData[i]);
+					}
+					else
+					{
+						// These are stars so just put in dummy data.
+						this->starFormationRates.push_back(-1.0f);
+					}
 
-				total = count;
-			}
-
-			// Load the mass data in place.
-			{
-				auto dataSet = h5Group->loadDataSet("Masses");
-				int count = dataSet->getDimensionSize(0) / stride;
-				dataSet->setHyperslab(0, count, stride);
-
-				int firstIdx = this->masses.size();
-				this->masses.resize(firstIdx + count);
-				dataSet->read(&this->masses[firstIdx]);
-			}
-
-			if (particleType == "PartType6")
-			{
-				// Load the star formation rate data in place.
-				auto dataSet = h5Group->loadDataSet("StarFormationRate");
-				int count = dataSet->getDimensionSize(0) / stride;
-				dataSet->setHyperslab(0, count, stride);
-
-				int firstIdx = this->starFormationRates.size();
-				this->starFormationRates.resize(firstIdx + count);
-				dataSet->read(&this->starFormationRates[firstIdx]);
-			}
-			else
-			{
-				// These aren't galaxies so just fill with dummy data.
-				int firstIdx = this->starFormationRates.size();
-				this->starFormationRates.resize(firstIdx + total);
-
-				for (int i = firstIdx; i < this->starFormationRates.size(); ++i)
-				{
-					this->starFormationRates[i] = -1.0f;
+					++total;
 				}
 			}
 
