@@ -5,8 +5,10 @@ uniform vec4 globalColor;
 uniform sampler2D uTex0;
 
 flat in int vEnabled;
-flat in int vIdentifier;
-flat in float vStarFormationRate;
+flat in int vID;
+flat in int vCell;
+
+in float vAlpha;
 
 out vec4 fragColor;
 
@@ -16,39 +18,35 @@ void main(void)
 
 	vec2 texCoord = gl_PointCoord;
 
-	if (vIdentifier % 3 == 0)
+	if (vCell == 0)
 	{
-		texCoord.x = 1.0 - texCoord.x;
+		// Star, cell 0.
+		texCoord *= 0.25;
 	}
-	if (vIdentifier % 5 == 0)
+	else
 	{
-		texCoord.y = 1.0 - texCoord.y;
+		// Galaxy, cells 1-15.
+		int col = vCell % 4;
+		int row = vCell / 4;
+
+		// Flip the texture for fun.
+		if (vID % 3 == 0)
+		{
+			texCoord.x = (1.0 - texCoord.x + col) * 0.25;
+		}
+		else
+		{
+			texCoord.x = (texCoord.x + col) * 0.25;
+		}
+		if (vID % 5 == 0)
+		{
+			texCoord.y = (1.0 - texCoord.y + row) * 0.25;
+		}
+		else
+		{
+			texCoord.y = (texCoord.y + row) * 0.25;
+		}
 	}
 
-	texCoord *= 0.25;
-
-	if (vStarFormationRate == 0.0)
-	{
-		// Elliptical, boxes 1-7.
-		int idx = vIdentifier % 7 + 1;
-		int col = idx % 4;
-		texCoord.x += col * 0.25;
-		if (idx > 4) texCoord.y += 0.25;
-	}
-	else if (vStarFormationRate > 0.0)
-	{
-		// Spiral, boxes 8-15.
-		texCoord.y += 0.5;
-
-		int idx = vIdentifier % 8;
-		int col = idx % 4;
-		texCoord.x += col * 0.25;
-		if (idx > 4) texCoord.y += 0.25;
-	}
-	//else // (vStarFormationRate < 0.0)
-	//{
-		// Star, box 1.
-	//}
-
-	fragColor = texture(uTex0, texCoord) * globalColor;
+	fragColor = vec4((texture(uTex0, texCoord) * globalColor).rgb, vAlpha);
 }
