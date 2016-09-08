@@ -9,7 +9,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		Box::Box()
 			: Shape()
-		{			
+		{
 			// Update parameter group.
 			this->parameters.setName("Box");
 			this->parameters.add(this->size, this->edgeRatio, this->subdivisions);
@@ -36,14 +36,14 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Box::draw(render::WireframeFillRenderer & renderer)
+		void Box::draw(render::WireframeFillRenderer & renderer, ofCamera & camera)
 		{
 			if (!this->enabled) return;
-			
+
 			ofPushStyle();
 			{
 				ofSetColor(this->color.get());
-			
+
 				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
 				if (cullMode != CullMode::Disabled)
 				{
@@ -61,7 +61,7 @@ namespace entropy
 				{
 					glDisable(GL_CULL_FACE);
 				}
-				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices());
+				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices(), camera);
 				if (cullMode != CullMode::Disabled)
 				{
 					glDisable(GL_CULL_FACE);

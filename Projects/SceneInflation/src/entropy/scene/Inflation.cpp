@@ -62,7 +62,15 @@ namespace entropy
 				postBigBangColors[i] = noiseField.octaves[i].color;
 			}
 		}
-		
+
+		void Inflation::resizeBack(ofResizeEventArgs & args){
+			this->renderers[render::Layout::Back].resize(GetCanvas(render::Layout::Back)->getWidth(), GetCanvas(render::Layout::Back)->getHeight());
+		}
+
+		void Inflation::resizeFront(ofResizeEventArgs & args){
+			this->renderers[render::Layout::Front].resize(GetCanvas(render::Layout::Front)->getWidth(), GetCanvas(render::Layout::Front)->getHeight());
+		}
+
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
@@ -99,6 +107,9 @@ namespace entropy
 			targetWavelengths[3] = wl;
 			noiseField.octaves[3].wavelength = wl;
 			noiseField.octaves[3].advanceTime = true;
+			for(int i=4;i<noiseField.octaves.size();i++){
+				noiseField.octaves[i].enabled = false;
+			}
 		}
 
 		void Inflation::resetWavelength(size_t octave){
@@ -135,6 +146,7 @@ namespace entropy
 					}break;
 					case BigBang:{
 						t_from_bigbang = now - t_bigbang;
+						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						auto pct = t_from_bigbang/parameters.bigBangDuration;
 						cameras[render::Layout::Back]->setDistanceToTarget(ofMap(pct,0,1,cameraDistanceBeforeBB,0.5));
 						if(t_from_bigbang > parameters.bigBangDuration){
@@ -219,8 +231,8 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
-        {
-			if (parameters.render.debug) 
+		{
+			if (parameters.render.debug)
 			{
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
 			}
@@ -268,58 +280,56 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::drawScene(render::Layout layout)
 		{
-			if (parameters.render.additiveBlending) 
-			{
-				ofEnableBlendMode(OF_BLENDMODE_ADD);
-			}
-			else 
-			{
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-			}
+			auto & camera = this->getCamera(layout)->getEasyCam();
+			renderers[layout].update(camera);
 
 			switch (state) {
 			case PreBigBang:
 			case PreBigBangWobble:
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-				renderers[layout].sphericalClip = true;
+				renderers[layout].clip = true;
 				renderers[layout].fadeEdge0 = 0.0;
 				renderers[layout].fadeEdge1 = 0.5;
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
 				break;
 			case BigBang:
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				renderers[layout].fadeEdge0 = 0.0;
 				renderers[layout].fadeEdge1 = 0.5;
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
 
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].fadeEdge0 = scale*scale;
 				renderers[layout].fadeEdge1 = scale;
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
 				break;
 			case Expansion:
 			case ExpansionTransition:
-				//ofScale(scale);
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices());
+				renderers[layout].clip = false;
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
 				break;
 			}
 
 			if (this->parameters.render.drawBoxInRenderer)
 			{
-				this->boxes[layout].draw(renderers[layout]);
+				renderers[layout].clip = false;
+				this->boxes[layout].draw(renderers[layout], camera);
 			}
 
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		}
 
 		void Inflation::drawBackOverlay(){
+			//renderers[render::Layout::Back].drawDebug();
+			//return;
 			ofEnableBlendMode(OF_BLENDMODE_ADD);
 			switch(state){
 				case PreBigBangWobble:
 					if(t_from_bigbang > parameters.preBigBangWobbleDuration){
 						t_bigbang = now;
 						state = BigBang;
+						parameters.Ht = parameters.HtBB;
 					}
 				break;
 				case BigBang:
@@ -426,7 +436,6 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
-					ofxPreset::Gui::AddParameter(this->parameters.render.additiveBlending);
 					ofxPreset::Gui::AddParameter(this->parameters.render.drawBoxInRenderer);
 
 					ofxPreset::Gui::AddParameter(this->parameters.render.renderBack);
@@ -446,6 +455,7 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadeEdge1);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadePower);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].sphericalClip);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].wobblyClip);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].useLights);
 
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fillAlpha);
@@ -465,7 +475,7 @@ namespace entropy
 						{
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wireframe);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fill);
-																						 
+
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogEnabled);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogStartDistance);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogMinDistance);
@@ -475,8 +485,9 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadeEdge1);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadePower);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].sphericalClip);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wobblyClip);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].useLights);
-																						 
+
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fillAlpha);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wireframeAlpha);
 

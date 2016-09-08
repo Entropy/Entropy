@@ -336,17 +336,17 @@ namespace entropy
             binding.index = 0;
             binding.offset = 0;
             binding.size = bufferFeedback.size();
-            //glEnable(GL_RASTERIZER_DISCARD);
-            glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numVerticesQuery);
+			//glEnable(GL_RASTERIZER_DISCARD);
+			glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numVerticesQuery);
             shader.beginTransformFeedback(GL_TRIANGLES, binding);
             shader.setUniformTexture("dataFieldTex", isoLevels.texData.textureTarget, isoLevels.texData.textureID, 0);
             shader.setUniformTexture("triTableTex", triTableTex, 1);
             shader.setUniform1f("isolevel", isoLevel);
             vbo.draw(GL_POINTS, 0, resolution*resolution*resolution);
             shader.endTransformFeedback(binding);
-            glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
-            glGetQueryObjectuiv(numVerticesQuery, GL_QUERY_RESULT, &numPrimitives);
-            //glDisable(GL_RASTERIZER_DISCARD);
+			glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+			glGetQueryObjectuiv(numVerticesQuery, GL_QUERY_RESULT, &numPrimitives);
+			//glDisable(GL_RASTERIZER_DISCARD);
         }
 
         const ofVbo & GPUMarchingCubes::getGeometry(){

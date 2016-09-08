@@ -49,6 +49,8 @@ namespace entropy
 			bool triggerTransition();
 
 			void drawScene(render::Layout layout);
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
 
@@ -116,14 +118,12 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> debug{ "Debug Noise", false };
-					ofParameter<bool> additiveBlending{ "Additive Blending", false };
 					ofParameter<bool> drawBoxInRenderer{ "Draw Box In Renderer", false };
 					ofParameter<bool> renderBack{ "Render Back", true };
 					ofParameter<bool> renderFront{ "Render Front", false };
 
 					PARAM_DECLARE("Render", 
 						debug,
-						additiveBlending,
 						drawBoxInRenderer,
 						renderBack,
 						renderFront);

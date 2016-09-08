@@ -43,18 +43,21 @@ namespace entropy
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
 
-			void drawSystem();
+			void drawSystem(entropy::render::Layout layout);
 
 			bool saveState(const string & path);
 			bool loadState(const string & path);
 
-        private:
+		private:
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
+
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;
 			nm::Environment::Ptr environment;
 			bool debug;
 
-            entropy::render::WireframeFillRenderer renderer;
+			std::map<entropy::render::Layout, entropy::render::WireframeFillRenderer> renderers;
 
             ofShader shader;
 			ofShader::TransformFeedbackSettings shaderSettings;

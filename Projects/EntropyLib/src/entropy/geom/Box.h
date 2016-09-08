@@ -15,7 +15,7 @@ namespace entropy
 			Box();
 			~Box();
 
-			void draw(render::WireframeFillRenderer & renderer);
+			void draw(render::WireframeFillRenderer & renderer, ofCamera & camera);
 			using Shape::draw;
 
 			ofParameter<float> size{ "Size", 1.0f, 0.0f, 1000.0f };
@@ -26,7 +26,7 @@ namespace entropy
 			typedef enum
 			{
 				Front  = 0x000001,
-				Back   = 0x000010, 
+				Back   = 0x000010,
 				Right  = 0x000100,
 				Left   = 0x001000,
 				Top    = 0x010000,

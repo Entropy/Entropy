@@ -5,12 +5,12 @@
 
 namespace entropy
 {
-    namespace render
-    {
-        std::string replace(std::string src, std::string find, std::string replacement){
-            auto pos = src.find(find);
-            auto len = find.length();
-            return src.replace(pos, len, replacement);
+	namespace render
+	{
+		std::string replace(std::string src, std::string find, std::string replacement){
+			auto pos = src.find(find);
+			auto len = find.length();
+			return src.replace(pos, len, replacement);
 		}
 
 		using namespace glm;
@@ -62,11 +62,11 @@ namespace entropy
 			settings.emissive = ofFloatColor::black;
 			settings.postFragment = postFragmentSource;
 			settings.customUniforms = R"(
-        		uniform float fogStartDistance;
-        		uniform float fogMinDistance;
-        		uniform float fogMaxDistance;
-        		uniform float fogPower;
-        	)";
+				uniform float fogStartDistance;
+				uniform float fogMinDistance;
+				uniform float fogMaxDistance;
+				uniform float fogPower;
+			)";
 			material.setup(settings);
 
 			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
@@ -87,117 +87,153 @@ namespace entropy
 				shaderSettings.intDefines["WIREFRAME"] = 1;
 				shaderWireframeSphere.setup(shaderSettings);
 			})));
-        }
+		}
 
-        void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices) const{
-            ofDisableDepthTest();
+		void WireframeFillRenderer::resize(float width, float height){
+			this->blobMask.setup(width, height, 0.25f);
+		}
+
+		void WireframeFillRenderer::update(ofCamera & camera){
+			if(wobblyClip){
+				this->blobMask.updateWith(camera);
+			}
+		}
+
+		void WireframeFillRenderer::drawDebug(){
+			this->blobMask.getMaxDepthMask().draw(0,0);
+		}
+
+		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, ofCamera & camera) const{
+			ofDisableDepthTest();
 			ofShader shaderFill;
 			ofShader shaderWireframe;
-			if(sphericalClip){
+			if(sphericalClip && clip){
 				shaderFill = this->shaderFillSphere;
 				shaderWireframe = this->shaderWireframeSphere;
 			}else{
 				shaderFill = this->shaderFill;
 				shaderWireframe = this->shaderWireframe;
 			}
-            if (fill) {
-                shaderFill.begin();
+			if (fill) {
+				shaderFill.begin();
 				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
-                shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
-                shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
-                shaderFill.setUniform1f("fogPower", fogPower);
+				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
+				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
+				shaderFill.setUniform1f("fogPower", fogPower);
 				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
 				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
 				shaderFill.setUniform1f("fadePower", fadePower);
-                shaderFill.setUniform1f("alpha", fillAlpha);
-                geometry.draw(GL_TRIANGLES, offset, numVertices);
-                shaderFill.end();
+				shaderFill.setUniform1f("alpha", fillAlpha);
+				shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
+				shaderFill.setUniform1f("screenW", ofGetViewportWidth());
+				shaderFill.setUniform1f("screenH", ofGetViewportHeight());
+				shaderFill.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
+				shaderFill.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
+				geometry.draw(GL_TRIANGLES, offset, numVertices);
+				shaderFill.end();
 
-                if(useLights){
-                    material.begin();
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                    geometry.draw(GL_TRIANGLES, offset, numVertices);
-                    material.end();
-                }
-            }
+				if(useLights){
+					material.begin();
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+					geometry.draw(GL_TRIANGLES, offset, numVertices);
+					material.end();
+				}
+			}
 
-            if (wireframe) {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			if (wireframe) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-                if(useLights){
-                    material.begin();
+				if(useLights){
+					material.begin();
 					material.setCustomUniform1f("fogStartDistance", fogStartDistance);
 					material.setCustomUniform1f("fogMinDistance", fogMinDistance);
 					material.setCustomUniform1f("fogMaxDistance", fogMaxDistance);
 					material.setCustomUniform1f("fogPower", fogPower);
-                    geometry.draw(GL_TRIANGLES, offset, numVertices);
-                    material.end();
-                }else{
-                    shaderWireframe.begin();
+					geometry.draw(GL_TRIANGLES, offset, numVertices);
+					material.end();
+				}else{
+					shaderWireframe.begin();
 					shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
-                    shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-                    shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-                    shaderWireframe.setUniform1f("fogPower", fogPower);
+					shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
+					shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
+					shaderWireframe.setUniform1f("fogPower", fogPower);
 					shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
 					shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
 					shaderWireframe.setUniform1f("fadePower", fadePower);
-                    shaderWireframe.setUniform1f("alpha", wireframeAlpha);
-                    geometry.draw(GL_TRIANGLES, offset, numVertices);
-                    shaderWireframe.end();
-                }
-            }
-        }
+					shaderWireframe.setUniform1f("alpha", wireframeAlpha);
+					shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
+					shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
+					shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
+					shaderWireframe.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
+					shaderWireframe.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
+					geometry.draw(GL_TRIANGLES, offset, numVertices);
+					shaderWireframe.end();
+				}
+			}
+		}
 
-        void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices) const{
-            ofDisableDepthTest();
+		void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, ofCamera & camera) const{
+			this->blobMask.updateWith(camera);
+
+			ofDisableDepthTest();
 			ofShader shaderFill;
 			ofShader shaderWireframe;
-			if(sphericalClip){
+			if(sphericalClip && clip){
 				shaderFill = this->shaderFillSphere;
 				shaderWireframe = this->shaderWireframeSphere;
 			}else{
 				shaderFill = this->shaderFill;
 				shaderWireframe = this->shaderWireframe;
 			}
-            if (fill) {
-                shaderFill.begin();
+			if (fill) {
+				shaderFill.begin();
 				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
-                shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
-                shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
-                shaderFill.setUniform1f("fogPower", fogPower);
+				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
+				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
+				shaderFill.setUniform1f("fogPower", fogPower);
 				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
 				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
 				shaderFill.setUniform1f("fadePower", fadePower);
-                shaderFill.setUniform1f("alpha", fillAlpha);
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                geometry.drawElements(GL_TRIANGLES, numIndices, offset);
-                shaderFill.end();
-            }
+				shaderFill.setUniform1f("alpha", fillAlpha);
+				shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
+				shaderFill.setUniform1f("screenW", ofGetViewportWidth());
+				shaderFill.setUniform1f("screenH", ofGetViewportHeight());
+				shaderFill.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
+				shaderFill.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				geometry.drawElements(GL_TRIANGLES, numIndices, offset);
+				shaderFill.end();
+			}
 
-            if (wireframe) {
-                shaderWireframe.begin();
+			if (wireframe) {
+				shaderWireframe.begin();
 				shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
-                shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-                shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-                shaderWireframe.setUniform1f("fogPower", fogPower);
+				shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
+				shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
+				shaderWireframe.setUniform1f("fogPower", fogPower);
 				shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
 				shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
 				shaderWireframe.setUniform1f("fadePower", fadePower);
-                shaderWireframe.setUniform1f("alpha", wireframeAlpha);
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                geometry.drawElements(GL_TRIANGLES, numIndices, offset);
-                shaderWireframe.end();
-            }
-            material.end();
+				shaderWireframe.setUniform1f("alpha", wireframeAlpha);
+				shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
+				shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
+				shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
+				shaderWireframe.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
+				shaderWireframe.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				geometry.drawElements(GL_TRIANGLES, numIndices, offset);
+				shaderWireframe.end();
+			}
+			material.end();
 		}
 
-        std::vector<float> WireframeFillRenderer::getFogFunctionPlot(size_t numberOfPoints) const {
-            std::vector<float> plot(numberOfPoints);
-            for (size_t i = 0; i < numberOfPoints; i++) {
-                float distanceToCamera = i/float(numberOfPoints) * 10.;
+		std::vector<float> WireframeFillRenderer::getFogFunctionPlot(size_t numberOfPoints) const {
+			std::vector<float> plot(numberOfPoints);
+			for (size_t i = 0; i < numberOfPoints; i++) {
+				float distanceToCamera = i/float(numberOfPoints) * 10.;
 				plot[i] = fog(distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
-            }
-            return plot;
-        }
-    }
+			}
+			return plot;
+		}
+	}
 }

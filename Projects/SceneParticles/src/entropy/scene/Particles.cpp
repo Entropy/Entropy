@@ -43,15 +43,19 @@ namespace entropy
 
 			// Register Environment and Renderer parameters for Mappings and serialization.
 			this->parameters.add(this->environment->parameters);
-			this->parameters.add(this->renderer.parameters);
+			this->parameters.add(this->renderers[entropy::render::Layout::Back].parameters);
+			this->parameters.add(this->renderers[entropy::render::Layout::Front].parameters);
 
 			this->parameterListeners.push_back(parameters.ambientLight.newListener([&](float & ambient)
 			{
 				ofSetGlobalAmbientColor(ofFloatColor(ambient));
 			}));
 
-			renderer.fogMaxDistance.setMax(HALF_DIM * 10);
-			renderer.fogMinDistance.setMax(HALF_DIM);
+			this->renderers[entropy::render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[entropy::render::Layout::Back].fogMinDistance.setMax(HALF_DIM);
+
+			this->renderers[entropy::render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[entropy::render::Layout::Front].fogMinDistance.setMax(HALF_DIM);
 
 			 this->debug = false;
 
@@ -70,7 +74,8 @@ namespace entropy
 				this->shader.setup(shaderSettings);
 			}));
 
-			 renderer.setup();
+			this->renderers[entropy::render::Layout::Back].setup();
+			this->renderers[entropy::render::Layout::Front].setup();
 
 			 for(auto & light: pointLights){
 				 light.setup();
@@ -104,6 +109,16 @@ namespace entropy
 
 				particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Particles::resizeBack(ofResizeEventArgs & args){
+			this->renderers[render::Layout::Back].resize(GetCanvas(render::Layout::Back)->getWidth(), GetCanvas(render::Layout::Back)->getHeight());
+		}
+
+		//--------------------------------------------------------------
+		void Particles::resizeFront(ofResizeEventArgs & args){
+			this->renderers[render::Layout::Front].resize(GetCanvas(render::Layout::Front)->getWidth(), GetCanvas(render::Layout::Front)->getHeight());
 		}
 
 		//--------------------------------------------------------------
@@ -164,17 +179,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Particles::drawBackWorld()
 		{
-			this->drawSystem();
+			this->drawSystem(entropy::render::Layout::Back);
 		}
 
 		//--------------------------------------------------------------
 		void Particles::drawFrontWorld()
 		{
-			this->drawSystem();
+			this->drawSystem(entropy::render::Layout::Front);
 		}
 
 		//--------------------------------------------------------------
-		void Particles::drawSystem()
+		void Particles::drawSystem(entropy::render::Layout layout)
 		{
 			if (debug)
 			{
@@ -198,7 +213,8 @@ namespace entropy
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
 				}
 
-				renderer.draw(feedbackVbo, 0, numPrimitives * 3);
+				auto & camera = getCamera(layout)->getEasyCam();
+				this->renderers[layout].draw(feedbackVbo, 0, numPrimitives * 3, camera);
 				if (parameters.drawPhotons)
 				{
 					photons.draw();
@@ -238,9 +254,13 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
             {
-                ofxPreset::Gui::AddGroup(renderer.parameters, settings);
+				ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
                 auto numPoints = 100;
-                ImGui::PlotLines("Fog funtion", this->renderer.getFogFunctionPlot(numPoints).data(), numPoints);
+				ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPoints).data(), numPoints);
+
+				ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
+				ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPoints).data(), numPoints);
+
                 ofxPreset::Gui::AddParameter(this->parameters.colorsPerType);
                 ofxPreset::Gui::AddParameter(this->parameters.additiveBlending);
                 ofxPreset::Gui::AddParameter(this->parameters.ambientLight);
