@@ -172,9 +172,10 @@ namespace entropy
 			this->fbos[this->currIdx].end();
 
 			//this->textures[this->tempIdx].copyTo(this->copyBuffer);
-			//this->textures[this->currIdx].loadData(this->copyBuffer, GL_RGBA);
+			//this->textures[this->currIdx].loadData(this->copyBuffer, ofGetGLFormatFromInternal(this->textures[this->tempIdx].texData.glInternalFormat));
 
 			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
+			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------
