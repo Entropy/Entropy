@@ -1,13 +1,17 @@
-#version 150
+#version 430
+
+#define USE_TEX_ARRAY 1
 
 // App uniforms and attributes
 uniform sampler2D uTexColor;
 
-//uniform sampler2DRect uTexMask;
-//uniform vec2 uMaskDims;
-
+#if USE_TEX_ARRAY
 uniform sampler2DArray uTexMask;
+#else
+uniform sampler3D uTexMask;
+#endif
 uniform vec3 uMaskDims;
+uniform float uVolSize;
 
 uniform float uAlphaBase;
 uniform float uMaskMix;
@@ -26,8 +30,11 @@ void main()
 {
 	vec4 texColor = texture(uTexColor, vTexCoord);
 
-	//vec4 maskColor = texture(uTexMask, vTexCoord * uMaskDims);
-	vec3 maskCoord = vPosition_ws.xyz / vec3(800.0) + vec3(0.5);
+	const vec3 halfVec = vec3(0.5);
+	vec3 maskCoord = vPosition_ws.xyz / vec3(uVolSize) + vec3(0.5);
+#if USE_TEX_ARRAY
+	maskCoord.z *= uMaskDims.z;
+#endif
 	maskCoord.y = 1.0 - maskCoord.y;
 	vec4 maskColor = texture(uTexMask, maskCoord);
 	

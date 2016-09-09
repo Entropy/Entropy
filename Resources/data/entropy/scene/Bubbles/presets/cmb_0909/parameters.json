@@ -7,7 +7,7 @@
             "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.003997",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
             "Size": "800",
             "Subdivisions": "5"
@@ -27,13 +27,13 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "0.924874",
+            "Alpha": "1",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
             "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "1",
+            "Drop Rate": "30",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -41,7 +41,7 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "1",
+            "Alpha": "0.000231206",
             "Damping": "0.995",
             "Draw Back": "1",
             "Draw Front": "0",
@@ -57,7 +57,7 @@
             "Volume Size": "800"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Alpha Blend": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
@@ -82,13 +82,13 @@
             "Far Clip": "10000",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0320002",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.00599992",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 2786.50366210938,
+                "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
                 "farClip": 10000.0,
                 "forceAspectRatio": true,
@@ -101,7 +101,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": " 0.76917, -0.00358281, -0.639033,        0\n -0.2255, 0.934135, -0.27666,        0\n0.597935, 0.356901, 0.717701,        0\n 1481.61,  1216.06,  2022.53,        1",
+                "transform": "0.959384, 0.281067, 0.0241764,        0\n-0.27366, 0.948052, -0.162202,        0\n-0.0685096, 0.148998, 0.986462,        0\n 21.8806,  22.6618,  74.4039,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }

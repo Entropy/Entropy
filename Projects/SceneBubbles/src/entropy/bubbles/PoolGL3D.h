@@ -31,6 +31,8 @@ namespace entropy
 			ofParameter<int> filterMode{ "Filter Mode", GL_LINEAR, GL_NEAREST, GL_LINEAR };
 			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
 
+			const ofxTexture & getTexture() const;
+
 		protected:
 			void addDrop() override;
 			void stepRipple() override;

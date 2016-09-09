@@ -110,8 +110,9 @@ namespace entropy
 				this->sphereShader.begin();
 				{
 					this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
-					this->sphereShader.setUniformTexture("uTexMask", this->pool2D.getTexture(), 2);
-					this->sphereShader.setUniform2f("uMaskDims", glm::vec2(this->pool2D.getTexture().getWidth(), this->pool2D.getTexture().getHeight()));
+					this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
+					this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
+					this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
 					this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
 					this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
 

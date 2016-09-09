@@ -68,5 +68,11 @@ namespace entropy
 			this->dimensions = dimensions;
 			this->setup();
 		}
+
+		//--------------------------------------------------------------
+		const glm::vec3 & PoolBase::getDimensions() const
+		{
+			return this->dimensions;
+		}
 	}
 }

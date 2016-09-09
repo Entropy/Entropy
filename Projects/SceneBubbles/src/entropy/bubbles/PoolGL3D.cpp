@@ -101,7 +101,7 @@ namespace entropy
 				ofSetColor((ofRandomuf() < 0.5 ? this->dropColor1.get() : this->dropColor2.get()));
 
 				const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
-				const auto burstThickness = 1.0f;
+				static const auto burstThickness = 1.0f;
 
 				this->dropShader.begin();
 				{
@@ -191,6 +191,12 @@ namespace entropy
 				this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
 			}
 			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		const ofxTexture & PoolGL3D::getTexture() const
+		{
+			return this->textures[this->prevIdx];
 		}
 	}
 }

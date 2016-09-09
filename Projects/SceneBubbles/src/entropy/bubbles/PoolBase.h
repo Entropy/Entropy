@@ -21,6 +21,8 @@ namespace entropy
 			void setDimensions(const glm::vec2 & dimensions);
 			void setDimensions(const glm::vec3 & dimensions);
 
+			const glm::vec3 & getDimensions() const;
+
 			ofParameter<bool> runSimulation{ "Run Simulation", true };
 
 			ofParameter<bool> drawBack{ "Draw Back", true }; 
