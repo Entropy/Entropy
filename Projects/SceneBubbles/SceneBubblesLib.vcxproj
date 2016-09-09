@@ -186,6 +186,7 @@
   <ItemGroup>
     <ClCompile Include="src\entropy\bubbles\ofxFbo.cpp" />
     <ClCompile Include="src\entropy\bubbles\PoolBase.cpp" />
+    <ClCompile Include="src\entropy\bubbles\PoolGL2D.cpp" />
     <ClCompile Include="src\entropy\bubbles\PoolGL3D.cpp" />
     <ClCompile Include="src\entropy\scene\Bubbles.cpp" />
   </ItemGroup>
@@ -193,6 +194,7 @@
     <ClInclude Include="src\entropy\bubbles\Constants.h" />
     <ClInclude Include="src\entropy\bubbles\ofxFbo.h" />
     <ClInclude Include="src\entropy\bubbles\PoolBase.h" />
+    <ClInclude Include="src\entropy\bubbles\PoolGL2D.h" />
     <ClInclude Include="src\entropy\bubbles\PoolGL3D.h" />
     <ClInclude Include="src\entropy\scene\Bubbles.h" />
   </ItemGroup>
