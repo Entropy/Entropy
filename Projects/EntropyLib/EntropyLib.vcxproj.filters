@@ -274,6 +274,9 @@
     <ClCompile Include="src\entropy\popup\Sound.cpp">
       <Filter>src\entropy\popup</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\render\BlobMask.cpp">
+      <Filter>src\entropy\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -796,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\popup\Sound.h">
       <Filter>src\entropy\popup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\render\BlobMask.h">
+      <Filter>src\entropy\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
