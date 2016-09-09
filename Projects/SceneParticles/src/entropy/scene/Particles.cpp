@@ -74,8 +74,8 @@ namespace entropy
 				this->shader.setup(shaderSettings);
 			}));
 
-			this->renderers[entropy::render::Layout::Back].setup();
-			this->renderers[entropy::render::Layout::Front].setup();
+			this->renderers[entropy::render::Layout::Back].setup(400);
+			this->renderers[entropy::render::Layout::Front].setup(400);
 
 			 for(auto & light: pointLights){
 				 light.setup();
@@ -253,13 +253,24 @@ namespace entropy
 
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
-            {
-				ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
-                auto numPoints = 100;
-				ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPoints).data(), numPoints);
+			{
+				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
+				{
+					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
+					auto numPoints = 100;
+					ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPoints).data(), numPoints);
+					this->renderers[entropy::render::Layout::Back].clip = this->renderers[entropy::render::Layout::Back].sphericalClip ||
+																		  this->renderers[entropy::render::Layout::Back].wobblyClip;
+				}
 
-				ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
-				ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPoints).data(), numPoints);
+				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
+				{
+					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
+					auto numPoints = 100;
+					ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPoints).data(), numPoints);
+					this->renderers[entropy::render::Layout::Front].clip = this->renderers[entropy::render::Layout::Front].sphericalClip ||
+																		   this->renderers[entropy::render::Layout::Front].wobblyClip;
+				}
 
                 ofxPreset::Gui::AddParameter(this->parameters.colorsPerType);
                 ofxPreset::Gui::AddParameter(this->parameters.additiveBlending);
