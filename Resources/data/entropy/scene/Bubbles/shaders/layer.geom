@@ -7,6 +7,7 @@ layout(triangle_strip, max_vertices = 3) out;
 uniform int uLayer;
 
 in vec2 vTexCoord[3];
+
 out vec2 gTexCoord;
 
 void main() 

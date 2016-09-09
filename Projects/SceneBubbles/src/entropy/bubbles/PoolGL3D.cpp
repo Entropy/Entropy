@@ -12,7 +12,7 @@ namespace entropy
 		PoolGL3D::PoolGL3D()
 			: PoolBase()
 		{
-			// Update parameter group.
+			// Init parameters.
 			this->parameters.setName("Pool GL 3D");
 			this->parameters.add(filterMode, volumeSize);
 		}
@@ -64,9 +64,20 @@ namespace entropy
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 
 			// Load the shaders.
-			this->dropShader.load("shaders/passthru.vert", "shaders/drop3D.frag", "shaders/layer.geom");
-			this->rippleShader.load("shaders/passthru.vert", "shaders/ripple3D.frag", "shaders/layer.geom");
-			this->copyShader.load("shaders/passthru.vert", "shaders/copy3D.frag", "shaders/layer.geom");
+			auto shaderSettings = ofShader::Settings();
+			shaderSettings.bindDefaults = true;
+			shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthru.vert";
+			shaderSettings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/layer.geom";
+
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/drop3D.frag";
+			this->dropShader.setup(shaderSettings);
+			
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/ripple3D.frag";
+			this->rippleShader.setup(shaderSettings);
+
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/copy3D.frag";
+			this->copyShader.setup(shaderSettings);
 		}
 
 		//--------------------------------------------------------------
@@ -97,8 +108,8 @@ namespace entropy
 					this->dropShader.setUniform3f("uBurst.pos", burstPos);
 					this->dropShader.setUniform1f("uBurst.radius", this->radius);
 					this->dropShader.setUniform1f("uBurst.thickness", burstThickness);
-					//this->dropShader.printActiveUniforms();
-
+					this->dropShader.setUniform3f("uDims", this->dimensions);
+					
 					int minLayer = static_cast<int>(std::max(0.0f, burstPos.z - this->radius - burstThickness));
 					int maxLayer = static_cast<int>(std::min(this->dimensions.z - 1, burstPos.z + this->radius + burstThickness));
 					for (int i = minLayer; i <= maxLayer; ++i) {
