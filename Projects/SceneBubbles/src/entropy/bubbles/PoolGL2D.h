@@ -22,6 +22,8 @@ namespace entropy
 			void reset() override;
 			void draw() override;
 
+			const ofTexture & getTexture() const;
+
 		protected:
 			void addDrop() override;
 			void stepRipple() override;

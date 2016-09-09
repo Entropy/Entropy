@@ -24,7 +24,7 @@ namespace entropy
 			this->pool2D.setDimensions(glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front)));
 			this->pool2D.setup();
 
-			this->pool3D.setDimensions(glm::vec3(128.0f));
+			this->pool3D.setDimensions(glm::vec3(256.0f));
 			this->pool3D.setup();
 
 			// Init the sphere.
@@ -46,6 +46,9 @@ namespace entropy
 				this->sphereTexture.loadData(pixels);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
+
+			//this->sphereShader.load("shaders/passthru.vert", "shaders/reveal.frag");
+			this->sphereShader.load("shaders/reveal.vert", "shaders/reveal.frag");
 
 			// Init the parameters.
 			this->parameters.add(this->pool2D.parameters);
@@ -73,6 +76,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Bubbles::timelineBangFired(ofxTLBangEventArgs & args)
+		{
+			static const string kResetFlag = "reset";
+			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+			{
+				this->getCamera(render::Layout::Back)->reset();
+				this->getCamera(render::Layout::Front)->reset();
+
+				this->pool2D.resetSimulation = true;
+				this->pool3D.resetSimulation = true;
+
+				this->timeline->stop();
+			}
+		}
+
+		//--------------------------------------------------------------
 		void Bubbles::drawBackBase()
 		{
 			if (this->pool2D.drawBack)
@@ -88,11 +107,17 @@ namespace entropy
 			{
 				ofRotateYDeg(this->parameters.sphere.orientation);
 
-				this->sphereTexture.bind();
+				this->sphereShader.begin();
 				{
+					this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
+					this->sphereShader.setUniformTexture("uTexMask", this->pool2D.getTexture(), 2);
+					this->sphereShader.setUniform2f("uMaskDims", glm::vec2(this->pool2D.getTexture().getWidth(), this->pool2D.getTexture().getHeight()));
+					this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+					this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
+
 					this->sphereGeom.draw();
 				}
-				this->sphereTexture.unbind();
+				this->sphereShader.end();
 			}
 			ofPopMatrix();
 
@@ -139,6 +164,8 @@ namespace entropy
 					ImGui::SameLine();
 					ofxPreset::Gui::AddParameter(this->pool2D.drawFront);
 
+					ofxPreset::Gui::AddParameter(this->pool2D.alpha);
+
 					ofxPreset::Gui::AddParameter(this->pool2D.dropColor1);
 					ofxPreset::Gui::AddParameter(this->pool2D.dropColor2);
 					ofxPreset::Gui::AddParameter(this->pool2D.dropping);
@@ -165,6 +192,8 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->pool3D.drawBack);
 					ImGui::SameLine();
 					ofxPreset::Gui::AddParameter(this->pool3D.drawFront);
+
+					ofxPreset::Gui::AddParameter(this->pool3D.alpha);
 
 					ofxPreset::Gui::AddParameter(this->pool3D.dropColor1);
 					ofxPreset::Gui::AddParameter(this->pool3D.dropColor2);
@@ -198,6 +227,7 @@ namespace entropy
 					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, labels, 3);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.maskMix);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.radius);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);

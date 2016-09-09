@@ -39,6 +39,7 @@ namespace entropy
 			void resizeFront(ofResizeEventArgs & args) override;
 
 			void update(double dt) override;
+			void timelineBangFired(ofxTLBangEventArgs & args) override;
 
 			void drawBackBase() override;
 			void drawBackWorld() override;
@@ -64,6 +65,7 @@ namespace entropy
 
 			geom::Sphere sphereGeom;
 			ofTexture sphereTexture;
+			ofShader sphereShader;
 
 			ofParameterGroup & getParameters() override
 			{
@@ -75,8 +77,9 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<float> orientation{ "Orientation", 0.0f, 0.0f, 360.0f };
+					ofParameter<float> maskMix{ "Mask Mix", 1.0f, 0.0f, 1.0f };
 
-					PARAM_DECLARE("Sphere", orientation);
+					PARAM_DECLARE("SphereExtra", orientation, maskMix);
 				} sphere;
 				
 				PARAM_DECLARE("Bubbles", sphere);

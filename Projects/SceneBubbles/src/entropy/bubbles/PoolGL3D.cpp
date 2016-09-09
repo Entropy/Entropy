@@ -180,11 +180,16 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::draw()
 		{
-			ofEnableAlphaBlending();
-			
-			this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-			this->volumetrics.setVolumeTextureFilterMode(this->filterMode);
-			this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
+			ofPushStyle();
+			{
+				ofEnableAlphaBlending();
+				ofSetColor(255, this->alpha * 255);
+
+				this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
+				this->volumetrics.setVolumeTextureFilterMode(this->filterMode);
+				this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
+			}
+			ofPopStyle();
 		}
 	}
 }

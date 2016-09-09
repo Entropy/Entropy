@@ -128,7 +128,20 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL2D::draw()
 		{
-			this->textures[this->prevIdx].draw(0, 0);
+			ofPushStyle();
+			{
+				ofEnableAlphaBlending();
+				ofSetColor(255, this->alpha * 255);
+
+				this->textures[this->prevIdx].draw(0, 0);
+			}
+			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
+		const ofTexture & PoolGL2D::getTexture() const
+		{
+			return this->textures[this->prevIdx];
 		}
 	}
 }
