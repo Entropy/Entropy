@@ -264,6 +264,7 @@
     <ClCompile Include="src\entropy\popup\Base.cpp" />
     <ClCompile Include="src\entropy\popup\Image.cpp" />
     <ClCompile Include="src\entropy\popup\Video.cpp" />
+    <ClCompile Include="src\entropy\render\BlobMask.cpp" />
     <ClCompile Include="src\entropy\render\Canvas.cpp" />
     <ClCompile Include="src\entropy\render\PostEffects.cpp" />
     <ClCompile Include="src\entropy\render\WireframeFillRenderer.cpp" />
@@ -383,6 +384,7 @@
     <ClInclude Include="src\entropy\popup\Base.h" />
     <ClInclude Include="src\entropy\popup\Image.h" />
     <ClInclude Include="src\entropy\popup\Video.h" />
+    <ClInclude Include="src\entropy\render\BlobMask.h" />
     <ClInclude Include="src\entropy\render\Canvas.h" />
     <ClInclude Include="src\entropy\render\PostEffects.h" />
     <ClInclude Include="src\entropy\render\Layout.h" />
