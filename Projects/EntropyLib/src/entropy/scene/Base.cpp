@@ -431,6 +431,8 @@ namespace entropy
 							ImGui::SameLine();
 							ofxPreset::Gui::AddParameter(it.second.autoDraw);
 						}
+						ofxPreset::Gui::AddParameter(it.second.alphaBlend);
+						ofxPreset::Gui::AddParameter(it.second.depthTest);
 						static const vector<string> labels{ "None", "Back", "Front" };
 						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
 						ofxPreset::Gui::AddParameter(it.second.color);

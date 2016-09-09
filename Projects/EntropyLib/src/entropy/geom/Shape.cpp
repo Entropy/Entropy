@@ -11,6 +11,20 @@ namespace entropy
 			: meshDirty(true)
 			, colorDirty(true)
 		{
+			this->paramListeners.push_back(this->alphaBlend.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->depthTest = false;
+				}
+			}));
+			this->paramListeners.push_back(this->depthTest.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->alphaBlend = false;
+				}
+			}));
 			this->paramListeners.push_back(this->color.newListener([this](ofFloatColor &)
 			{
 				this->colorDirty = true;
@@ -41,7 +55,9 @@ namespace entropy
 
 			ofPushStyle();
 			{
-				ofEnableAlphaBlending();
+				this->alphaBlend ? ofEnableAlphaBlending() : ofDisableAlphaBlending();
+				this->depthTest ? ofEnableDepthTest() : ofDisableDepthTest();
+
 				ofSetColor(this->color.get());
 
 				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
@@ -61,7 +77,9 @@ namespace entropy
 				{
 					glDisable(GL_CULL_FACE);
 				}
+
 				this->getMesh().draw();
+
 				if (cullMode != CullMode::Disabled)
 				{
 					glDisable(GL_CULL_FACE);

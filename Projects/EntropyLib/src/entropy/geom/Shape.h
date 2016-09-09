@@ -27,6 +27,8 @@ namespace entropy
 
 			ofParameter<bool> enabled{ "Enabled", true };
 			ofParameter<bool> autoDraw{ "Auto Draw", true };
+			ofParameter<bool> alphaBlend{ "Alpha Blend", true };
+			ofParameter<bool> depthTest{ "Depth Test", true };
 			ofParameter<int> cullFace{ "Cull Face", static_cast<int>(CullMode::Back), static_cast<int>(CullMode::Disabled), static_cast<int>(CullMode::Front) };
 			ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 			ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
@@ -34,6 +36,8 @@ namespace entropy
 			ofParameterGroup parameters{ "Shape",
 				enabled,
 				autoDraw,
+				alphaBlend,
+				depthTest,
 				cullFace,
 				color,
 				alpha
