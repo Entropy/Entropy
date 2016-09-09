@@ -38,11 +38,11 @@ namespace entropy
 			noiseField.setup(gpuMarchingCubes.resolution);
 
 			// Setup renderers.
-			this->renderers[render::Layout::Back].setup();
+			this->renderers[render::Layout::Back].setup(1);
 			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
 			this->populateMappings(this->renderers[render::Layout::Back].parameters);
 
-			this->renderers[render::Layout::Front].setup();
+			this->renderers[render::Layout::Front].setup(1);
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
@@ -281,8 +281,6 @@ namespace entropy
 		void Inflation::drawScene(render::Layout layout)
 		{
 			auto & camera = this->getCamera(layout)->getEasyCam();
-			renderers[layout].update(camera);
-
 			switch (state) {
 			case PreBigBang:
 			case PreBigBangWobble:
@@ -321,8 +319,6 @@ namespace entropy
 		}
 
 		void Inflation::drawBackOverlay(){
-			//renderers[render::Layout::Back].drawDebug();
-			//return;
 			ofEnableBlendMode(OF_BLENDMODE_ADD);
 			switch(state){
 				case PreBigBangWobble:
