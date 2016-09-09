@@ -38,15 +38,15 @@ namespace entropy
 			this->mesh.clear();
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
 
-			this->mesh.addVertex(ofVec3f(0, 0));
-			this->mesh.addVertex(ofVec3f(this->dimensions.x, 0));
-			this->mesh.addVertex(ofVec3f(this->dimensions.x, this->dimensions.y));
-			this->mesh.addVertex(ofVec3f(0, this->dimensions.y));
+			this->mesh.addVertex(glm::vec3(0, 0, 0));
+			this->mesh.addVertex(glm::vec3(this->dimensions.x, 0, 0));
+			this->mesh.addVertex(glm::vec3(this->dimensions.x, this->dimensions.y, 0));
+			this->mesh.addVertex(glm::vec3(0, this->dimensions.y, 0));
 
-			this->mesh.addTexCoord(ofVec2f(0, 0));
-			this->mesh.addTexCoord(ofVec2f(this->dimensions.x, 0));
-			this->mesh.addTexCoord(ofVec2f(this->dimensions.x, this->dimensions.y));
-			this->mesh.addTexCoord(ofVec2f(0, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(0, 0));
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0));
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(0, this->dimensions.y));
 
 			// Load the shader.
 			this->shader.load("shaders/passthru.vert", "shaders/ripple.frag");
@@ -82,7 +82,7 @@ namespace entropy
 
 					ofPushStyle();
 					{
-						ofSetColor(this->dropColor.get());
+						ofSetColor((ofRandomuf() < 0.5 ? this->dropColor1.get() : this->dropColor2.get()));
 						ofNoFill();
 
 						ofDrawCircle(ofRandom(0.0f, this->dimensions.x), ofRandom(0.0f, this->dimensions.y), this->radius);

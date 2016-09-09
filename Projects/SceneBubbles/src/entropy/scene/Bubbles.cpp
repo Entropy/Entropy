@@ -21,9 +21,6 @@ namespace entropy
 		void Bubbles::init()
 		{
 			// Init the pools.
-			this->parameters.add(this->pool2D.parameters);
-			this->parameters.add(this->pool3D.parameters);
-
 			this->pool2D.setDimensions(glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front)));
 			this->pool2D.setup();
 
@@ -33,7 +30,7 @@ namespace entropy
 			// Init the sphere.
 			this->parameters.add(this->sphereGeom.parameters);
 
-			const auto filePath = this->getAssetsPath("images/Planck-Bubbles-SMICA.tif");
+			const auto filePath = this->getAssetsPath("images/Planck-CMB-SMICA.tif");
 			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
 			ofPixels pixels;
 			ofLoadImage(pixels, filePath);
@@ -49,6 +46,10 @@ namespace entropy
 				this->sphereTexture.loadData(pixels);
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
+
+			// Init the parameters.
+			this->parameters.add(this->pool2D.parameters);
+			this->parameters.add(this->pool3D.parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -70,26 +71,41 @@ namespace entropy
 			this->pool2D.update();
 			this->pool3D.update();
 		}
+
+		//--------------------------------------------------------------
+		void Bubbles::drawBackBase()
+		{
+			if (this->pool2D.drawBack)
+			{
+				this->pool2D.draw();
+			}
+		}
 		
 		//--------------------------------------------------------------
 		void Bubbles::drawBackWorld()
 		{
+			ofPushMatrix();
+			{
+				ofRotateYDeg(this->parameters.sphere.orientation);
+
+				this->sphereTexture.bind();
+				{
+					this->sphereGeom.draw();
+				}
+				this->sphereTexture.unbind();
+			}
+			ofPopMatrix();
+
 			if (this->pool3D.drawBack)
 			{
-				this->drawPool3D();
+				this->pool3D.draw();
 			}
-
-			this->sphereTexture.bind();
-			{
-				this->sphereGeom.draw();
-			}
-			this->sphereTexture.unbind();
 		}
 
 		//--------------------------------------------------------------
-		void Bubbles::drawBackOverlay()
+		void Bubbles::drawFrontBase()
 		{
-			if (this->pool2D.drawBack)
+			if (this->pool2D.drawFront)
 			{
 				this->pool2D.draw();
 			}
@@ -100,41 +116,8 @@ namespace entropy
 		{
 			if (this->pool3D.drawFront)
 			{
-				this->drawPool3D();
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Bubbles::drawFrontOverlay()
-		{
-			if (this->pool2D.drawFront)
-			{
-				this->pool2D.draw();
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Bubbles::drawPool2D()
-		{
-			ofPushStyle();
-			{
-				ofSetColor(this->parameters.tintColor.get());
-
-				this->pool2D.draw();
-			}
-			ofPopStyle();
-		}
-
-		//--------------------------------------------------------------
-		void Bubbles::drawPool3D()
-		{
-			ofPushStyle();
-			{
-				ofSetColor(this->parameters.tintColor.get());
-
 				this->pool3D.draw();
 			}
-			ofPopStyle();
 		}
 
 		//--------------------------------------------------------------
@@ -143,12 +126,10 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.tintColor);
-
-#if defined(COMPUTE_GL_2D)
 				if (ofxPreset::Gui::BeginTree(this->pool2D.parameters, settings))
 				{
 					ofxPreset::Gui::AddParameter(this->pool2D.runSimulation);
+					ImGui::SameLine();
 					if (ImGui::Button("Reset Simulation"))
 					{
 						this->pool2D.resetSimulation = true;
@@ -158,7 +139,8 @@ namespace entropy
 					ImGui::SameLine();
 					ofxPreset::Gui::AddParameter(this->pool2D.drawFront);
 
-					ofxPreset::Gui::AddParameter(this->pool2D.dropColor);
+					ofxPreset::Gui::AddParameter(this->pool2D.dropColor1);
+					ofxPreset::Gui::AddParameter(this->pool2D.dropColor2);
 					ofxPreset::Gui::AddParameter(this->pool2D.dropping);
 					ofxPreset::Gui::AddParameter(this->pool2D.dropRate);
 
@@ -170,12 +152,11 @@ namespace entropy
 
 					ofxPreset::Gui::EndTree(settings);
 				}
-#endif
 
-#if defined(COMPUTE_GL_3D)
 				if (ofxPreset::Gui::BeginTree(this->pool3D.parameters, settings))
 				{
 					ofxPreset::Gui::AddParameter(this->pool3D.runSimulation);
+					ImGui::SameLine();
 					if (ImGui::Button("Reset Simulation"))
 					{
 						this->pool3D.resetSimulation = true;
@@ -185,7 +166,8 @@ namespace entropy
 					ImGui::SameLine();
 					ofxPreset::Gui::AddParameter(this->pool3D.drawFront);
 
-					ofxPreset::Gui::AddParameter(this->pool3D.dropColor);
+					ofxPreset::Gui::AddParameter(this->pool3D.dropColor1);
+					ofxPreset::Gui::AddParameter(this->pool3D.dropColor2);
 					ofxPreset::Gui::AddParameter(this->pool3D.dropping);
 					ofxPreset::Gui::AddParameter(this->pool3D.dropRate);
 
@@ -201,7 +183,6 @@ namespace entropy
 
 					ofxPreset::Gui::EndTree(settings);
 				}
-#endif
 
 				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
 				{
@@ -211,6 +192,8 @@ namespace entropy
 						ImGui::SameLine();
 						ofxPreset::Gui::AddParameter(this->sphereGeom.autoDraw);
 					}
+					ofxPreset::Gui::AddParameter(this->sphereGeom.alphaBlend);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
 					static const vector<string> labels{ "None", "Back", "Front" };
 					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, labels, 3);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
@@ -219,6 +202,7 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.orientation);
 
 					ofxPreset::Gui::EndTree(settings);
 				}

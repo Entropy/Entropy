@@ -87,7 +87,7 @@ namespace entropy
 			this->fbos[this->prevIdx].begin();
 			{
 				ofEnableAlphaBlending();
-				ofSetColor(this->dropColor.get());
+				ofSetColor((ofRandomuf() < 0.5 ? this->dropColor1.get() : this->dropColor2.get()));
 
 				const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
 				const auto burstThickness = 1.0f;

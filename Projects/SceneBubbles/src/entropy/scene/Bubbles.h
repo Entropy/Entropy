@@ -40,18 +40,15 @@ namespace entropy
 
 			void update(double dt) override;
 
+			void drawBackBase() override;
 			void drawBackWorld() override;
-			void drawBackOverlay() override;
 
+			void drawFrontBase() override;
 			void drawFrontWorld() override;
-			void drawFrontOverlay() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
 		protected:
-			void drawPool2D();
-			void drawPool3D();
-
 #ifdef COMPUTE_GL_2D
 			entropy::bubbles::PoolGL2D pool2D;
 #endif
@@ -75,9 +72,14 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
-				ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
+				struct : ofParameterGroup
+				{
+					ofParameter<float> orientation{ "Orientation", 0.0f, 0.0f, 360.0f };
+
+					PARAM_DECLARE("Sphere", orientation);
+				} sphere;
 				
-				PARAM_DECLARE("Bubbles", tintColor);
+				PARAM_DECLARE("Bubbles", sphere);
 			} parameters;
 		};
 	}
