@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxPreset.h"
 
 namespace entropy
 {
@@ -14,8 +15,10 @@ namespace entropy
 			virtual void setup() = 0;
 
 			virtual void reset();
-			virtual void update();
+			virtual void update(double dt);
 			virtual void draw() = 0;
+
+			virtual void gui(ofxPreset::Gui::Settings & settings);
 
 			void setDimensions(int size);
 			void setDimensions(const glm::vec2 & dimensions);

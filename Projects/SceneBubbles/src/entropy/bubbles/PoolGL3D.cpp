@@ -11,11 +11,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		PoolGL3D::PoolGL3D()
 			: PoolBase()
-		{
-			// Init parameters.
-			this->parameters.setName("Pool GL 3D");
-			this->parameters.add(filterMode, volumeSize);
-		}
+		{}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::setup()
@@ -78,6 +74,14 @@ namespace entropy
 
 			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/copy3D.frag";
 			this->copyShader.setup(shaderSettings);
+
+			// Init bursts.
+			this->bursts.init();
+
+			// Init parameters.
+			this->parameters.setName("Pool GL 3D");
+			this->parameters.add(filterMode, volumeSize);
+			this->parameters.add(this->bursts.parameters);
 		}
 
 		//--------------------------------------------------------------
@@ -90,18 +94,31 @@ namespace entropy
 			{
 				this->textures[i].clearData();
 			}
+
+			this->bursts.reset();
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::update(double dt)
+		{
+			PoolBase::update(dt);
+
+			if (this->bursts.enabled)
+			{
+				this->bursts.update(dt);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::addDrop()
 		{
+			const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
+			static const auto burstThickness = 1.0f;
+			
 			this->fbos[this->prevIdx].begin();
 			{
 				ofEnableAlphaBlending();
 				ofSetColor((ofRandomuf() < 0.5 ? this->dropColor1.get() : this->dropColor2.get()));
-
-				const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
-				static const auto burstThickness = 1.0f;
 
 				this->dropShader.begin();
 				{
@@ -121,6 +138,15 @@ namespace entropy
 				this->dropShader.end();
 			}
 			this->fbos[this->prevIdx].end();
+
+			if (this->bursts.enabled)
+			{
+				static const auto halfVec = glm::vec3(0.5f);
+				auto worldPos = burstPos / this->dimensions;
+				worldPos.y = 1.0f - worldPos.y;
+				worldPos = (worldPos - halfVec) * this->volumeSize.get();
+				this->bursts.addDrop(worldPos, this->radius);
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -191,6 +217,63 @@ namespace entropy
 				this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
 			}
 			ofPopStyle();
+
+			if (this->bursts.enabled)
+			{
+				this->bursts.draw(this->alpha);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::gui(ofxPreset::Gui::Settings & settings)
+		{
+			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
+			{
+				ofxPreset::Gui::AddParameter(this->runSimulation);
+				ImGui::SameLine();
+				if (ImGui::Button("Reset Simulation"))
+				{
+					this->resetSimulation = true;
+				}
+
+				ofxPreset::Gui::AddParameter(this->drawBack);
+				ImGui::SameLine();
+				ofxPreset::Gui::AddParameter(this->drawFront);
+
+				ofxPreset::Gui::AddParameter(this->alpha);
+
+				ofxPreset::Gui::AddParameter(this->dropColor1);
+				ofxPreset::Gui::AddParameter(this->dropColor2);
+				ofxPreset::Gui::AddParameter(this->dropping);
+				ofxPreset::Gui::AddParameter(this->dropRate);
+
+				ofxPreset::Gui::AddParameter(this->rippleRate);
+
+				ofxPreset::Gui::AddParameter(this->damping);
+				ofxPreset::Gui::AddParameter(this->radius);
+				ofxPreset::Gui::AddParameter(this->ringSize);
+
+				static const vector<string> labels{ "Nearest", "Linear" };
+				ofxPreset::Gui::AddRadio(this->filterMode, labels, 2);
+				ofxPreset::Gui::AddParameter(this->volumeSize);
+
+				if (ofxPreset::Gui::BeginTree(this->bursts.parameters, settings))
+				{
+					ofxPreset::Gui::AddParameter(this->bursts.enabled);
+					ofxPreset::Gui::AddParameter(this->bursts.resolution);
+					ofxPreset::Gui::AddParameter(this->bursts.color);
+					ofxPreset::Gui::AddParameter(this->bursts.maxAge);
+					ofxPreset::Gui::AddParameter(this->bursts.forceMultiplier);
+					ofxPreset::Gui::AddParameter(this->bursts.forceRandom);
+					ofxPreset::Gui::AddParameter(this->bursts.worldBounds);
+					ofxPreset::Gui::AddRange("Distance", this->bursts.minDistance, this->bursts.maxDistance);
+					ofxPreset::Gui::AddParameter(this->bursts.maxLinks);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
+
+				ofxPreset::Gui::EndTree(settings);
+			}
 		}
 
 		//--------------------------------------------------------------

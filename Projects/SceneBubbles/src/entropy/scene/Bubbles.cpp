@@ -71,8 +71,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Bubbles::update(double dt)
 		{
-			this->pool2D.update();
-			this->pool3D.update();
+			this->pool2D.update(dt);
+			this->pool3D.update(dt);
 		}
 
 		//--------------------------------------------------------------
@@ -152,67 +152,8 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				if (ofxPreset::Gui::BeginTree(this->pool2D.parameters, settings))
-				{
-					ofxPreset::Gui::AddParameter(this->pool2D.runSimulation);
-					ImGui::SameLine();
-					if (ImGui::Button("Reset Simulation"))
-					{
-						this->pool2D.resetSimulation = true;
-					}
-
-					ofxPreset::Gui::AddParameter(this->pool2D.drawBack);
-					ImGui::SameLine();
-					ofxPreset::Gui::AddParameter(this->pool2D.drawFront);
-
-					ofxPreset::Gui::AddParameter(this->pool2D.alpha);
-
-					ofxPreset::Gui::AddParameter(this->pool2D.dropColor1);
-					ofxPreset::Gui::AddParameter(this->pool2D.dropColor2);
-					ofxPreset::Gui::AddParameter(this->pool2D.dropping);
-					ofxPreset::Gui::AddParameter(this->pool2D.dropRate);
-
-					ofxPreset::Gui::AddParameter(this->pool2D.rippleRate);
-
-					ofxPreset::Gui::AddParameter(this->pool2D.damping);
-					ofxPreset::Gui::AddParameter(this->pool2D.radius);
-					ofxPreset::Gui::AddParameter(this->pool2D.ringSize);
-
-					ofxPreset::Gui::EndTree(settings);
-				}
-
-				if (ofxPreset::Gui::BeginTree(this->pool3D.parameters, settings))
-				{
-					ofxPreset::Gui::AddParameter(this->pool3D.runSimulation);
-					ImGui::SameLine();
-					if (ImGui::Button("Reset Simulation"))
-					{
-						this->pool3D.resetSimulation = true;
-					}
-
-					ofxPreset::Gui::AddParameter(this->pool3D.drawBack);
-					ImGui::SameLine();
-					ofxPreset::Gui::AddParameter(this->pool3D.drawFront);
-
-					ofxPreset::Gui::AddParameter(this->pool3D.alpha);
-
-					ofxPreset::Gui::AddParameter(this->pool3D.dropColor1);
-					ofxPreset::Gui::AddParameter(this->pool3D.dropColor2);
-					ofxPreset::Gui::AddParameter(this->pool3D.dropping);
-					ofxPreset::Gui::AddParameter(this->pool3D.dropRate);
-
-					ofxPreset::Gui::AddParameter(this->pool3D.rippleRate);
-
-					ofxPreset::Gui::AddParameter(this->pool3D.damping);
-					ofxPreset::Gui::AddParameter(this->pool3D.radius);
-					ofxPreset::Gui::AddParameter(this->pool3D.ringSize);
-
-					static const vector<string> labels{ "Nearest", "Linear" };
-					ofxPreset::Gui::AddRadio(this->pool3D.filterMode, labels, 2);
-					ofxPreset::Gui::AddParameter(this->pool3D.volumeSize);
-
-					ofxPreset::Gui::EndTree(settings);
-				}
+				this->pool2D.gui(settings);
+				this->pool3D.gui(settings);
 
 				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
 				{

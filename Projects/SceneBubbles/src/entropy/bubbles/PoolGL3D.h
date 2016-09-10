@@ -12,6 +12,7 @@
 #endif
 
 #include "PoolBase.h"
+#include "Bursts.h"
 
 namespace entropy
 {
@@ -26,7 +27,10 @@ namespace entropy
 			void setup() override;
 
 			void reset() override;
+			void update(double dt) override;
 			void draw() override;
+
+			void gui(ofxPreset::Gui::Settings & settings) override;
 
 			ofParameter<int> filterMode{ "Filter Mode", GL_LINEAR, GL_NEAREST, GL_LINEAR };
 			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
@@ -54,6 +58,8 @@ namespace entropy
 			ofxVolumetrics3D volumetrics;
 #endif
 			ofxFbo fbos[3];
+
+			Bursts bursts;
 		};
 	}
 }

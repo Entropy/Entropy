@@ -184,6 +184,7 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <ClCompile Include="src\entropy\bubbles\Bursts.cpp" />
     <ClCompile Include="src\entropy\bubbles\ofxFbo.cpp" />
     <ClCompile Include="src\entropy\bubbles\PoolBase.cpp" />
     <ClCompile Include="src\entropy\bubbles\PoolGL2D.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="src\entropy\scene\Bubbles.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entropy\bubbles\Bursts.h" />
     <ClInclude Include="src\entropy\bubbles\Constants.h" />
     <ClInclude Include="src\entropy\bubbles\ofxFbo.h" />
     <ClInclude Include="src\entropy\bubbles\PoolBase.h" />
@@ -199,6 +201,8 @@
     <ClInclude Include="src\entropy\scene\Bubbles.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\copy3D.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\drop3D.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\layer.geom" />

@@ -16,6 +16,9 @@
     <ClCompile Include="src\entropy\bubbles\PoolGL2D.cpp">
       <Filter>src\entropy\bubbles</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\bubbles\Bursts.cpp">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -56,6 +59,9 @@
     <ClInclude Include="src\entropy\bubbles\PoolGL2D.h">
       <Filter>src\entropy\bubbles</Filter>
     </ClInclude>
+    <ClInclude Include="src\entropy\bubbles\Bursts.h">
+      <Filter>src\entropy\bubbles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\copy3D.frag">
@@ -80,6 +86,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\reveal.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.frag">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
