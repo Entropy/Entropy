@@ -79,13 +79,12 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
-			ofParameter<bool> inheritsSettings{ "Inherits Settings", false };
-
 			ofParameter<float> fov{ "FOV", 60, 0, 180 };
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
 
 			ofParameter<bool> attachToParent{ "Attach to Parent", false };
+			ofParameter<bool> inheritsSettings{ "Inherits Settings", false };
 			ofParameter<bool> mouseControl{ "Mouse Control", true };
 			ofParameter<bool> relativeYAxis{ "Relative Y Axis", false };
 
@@ -95,10 +94,10 @@ namespace entropy
 			ofParameter<float> dollySpeed{ "Dolly Speed", 0.0f, -10.0f, 10.0f };
 
 			ofParameterGroup parameters{ "Camera",
-				inheritsSettings,
 				fov,
 				nearClip, farClip,
 				attachToParent,
+				inheritsSettings,
 				mouseControl, relativeYAxis,
 				tiltSpeed, panSpeed, rollSpeed, dollySpeed
 			};

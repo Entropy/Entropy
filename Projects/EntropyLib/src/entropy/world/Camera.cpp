@@ -259,6 +259,7 @@ namespace entropy
 		{
 			if (attachedToParent && this->parent)
 			{
+				this->inheritsSettings = false;
 				this->mouseControl = false;
 				this->removeTimelineTrack();
 				this->easyCam.setParent(this->parent->getEasyCam(), true);
@@ -390,9 +391,7 @@ namespace entropy
 		bool Camera::gui(ofxPreset::Gui::Settings & settings)
 		{
 			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
-			{
-				ofxPreset::Gui::AddParameter(this->inheritsSettings);
-				
+			{				
 				ofxPreset::Gui::AddParameter(this->fov);
 				ofxPreset::Gui::AddRange("Clipping", this->nearClip, this->farClip);
 				
@@ -402,6 +401,7 @@ namespace entropy
 				}
 				if (!this->isAttachedToParent())
 				{
+					ofxPreset::Gui::AddParameter(this->inheritsSettings);
 					ofxPreset::Gui::AddParameter(this->mouseControl);
 					ofxPreset::Gui::AddParameter(this->relativeYAxis);
 				}
