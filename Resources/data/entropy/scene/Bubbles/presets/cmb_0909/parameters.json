@@ -27,7 +27,7 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "1",
+            "Alpha": "0.987278",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
@@ -41,14 +41,26 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "0.000231206",
+            "Alpha": "0",
+            "Bursts": {
+                "Color": "0.498039, 0.498039, 0.498039, 1",
+                "Enabled": "1",
+                "Force Multiplier": "0.8",
+                "Force Random": "0.2",
+                "Max Age": "5",
+                "Max Distance": "0.15",
+                "Max Links": "3",
+                "Min Distance": "0.01",
+                "Resolution": "8",
+                "World Bounds": "800"
+            },
             "Damping": "0.995",
             "Draw Back": "1",
             "Draw Front": "0",
-            "Drop Color 1": "0.937255, 0.530873, 0.00367551, 1",
-            "Drop Color 2": "0.658824, 0.227419, 0.0155017, 1",
+            "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
+            "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
             "Drop Rate": "60",
-            "Dropping": "0",
+            "Dropping": "1",
             "Filter Mode": "0",
             "Radius": "20",
             "Ring Size": "1.25",
@@ -70,7 +82,7 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0",
+            "Mask Mix": "0.707701",
             "Orientation": "75"
         }
     },
@@ -172,6 +184,16 @@
         "Bubbles::Pool_GL_2D::Ripple Rate": "0",
         "Bubbles::Pool_GL_2D::Run Simulation": "0",
         "Bubbles::Pool_GL_3D::Alpha": "1",
+        "Bubbles::Pool_GL_3D::Bursts::Color": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Enabled": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Force Multiplier": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Force Random": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Max Age": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Max Distance": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Max Links": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Min Distance": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Resolution": "0",
+        "Bubbles::Pool_GL_3D::Bursts::World Bounds": "0",
         "Bubbles::Pool_GL_3D::Damping": "0",
         "Bubbles::Pool_GL_3D::Draw Back": "0",
         "Bubbles::Pool_GL_3D::Draw Front": "0",
