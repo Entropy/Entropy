@@ -35,7 +35,7 @@ namespace entropy
 
 			ofAddListener(this->canvas[render::Layout::Back]->resizeEvent, this, &App_::onCanvasBackResized);
 			ofAddListener(this->canvas[render::Layout::Front]->resizeEvent, this, &App_::onCanvasFrontResized);
-			ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
+			//ofAddListener(ofEvents().windowResized, this, &App_::onWindowResized);
 
 			// Set base parameter listeners.
 			this->parameterListeners.push_back(parameters.controlScreen.preview.scale.newListener([this](float & value)
@@ -67,7 +67,7 @@ namespace entropy
 
 			ofRemoveListener(this->canvas[render::Layout::Back]->resizeEvent, this, &App_::onCanvasBackResized);
 			ofRemoveListener(this->canvas[render::Layout::Front]->resizeEvent, this, &App_::onCanvasFrontResized);
-			ofRemoveListener(ofEvents().windowResized, this, &App_::onWindowResized);
+			//ofRemoveListener(ofEvents().windowResized, this, &App_::onWindowResized);
 
 			this->imGui.close();
 
@@ -416,8 +416,8 @@ namespace entropy
 
 			// Force call the callback, in case the actual application window doesn't resize.
 			// This happens if there aren't enough screens connected to span the whole thing.
-			auto dummyArgs = ofResizeEventArgs();
-			this->onWindowResized(dummyArgs);
+			auto resizeArgs = ofResizeEventArgs(totalBounds.width, totalBounds.height);
+			this->onWindowResized(resizeArgs);
 		}
 
 		//--------------------------------------------------------------
