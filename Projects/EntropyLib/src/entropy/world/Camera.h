@@ -14,10 +14,21 @@ namespace entropy
 	namespace world
 	{
 		static const string kCamerasTimelinePageName = "Cameras";
-		
+
 		class Camera
 		{
 		public:
+			struct Settings
+			{				
+				Settings();
+				
+				float fov;
+				float nearClip;
+				float farClip;
+				glm::vec3 position;
+				glm::quat orientation;
+			};
+
 			Camera();
 			~Camera();
 
@@ -31,6 +42,9 @@ namespace entropy
 
 			void begin();
 			void end();
+
+			void applySettings(const Settings & settings);
+			Settings fetchSettings();
 
 			ofEasyCam & getEasyCam();
 
@@ -65,6 +79,8 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			ofParameter<bool> inheritsSettings{ "Inherits Settings", false };
+
 			ofParameter<float> fov{ "FOV", 60, 0, 180 };
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.001f, 1000.0f };
@@ -79,6 +95,7 @@ namespace entropy
 			ofParameter<float> dollySpeed{ "Dolly Speed", 0.0f, -10.0f, 10.0f };
 
 			ofParameterGroup parameters{ "Camera",
+				inheritsSettings,
 				fov,
 				nearClip, farClip,
 				attachToParent,

@@ -163,6 +163,11 @@ namespace entropy
 				{
 					this->nextPreset = preset;
 				});
+				this->presetSavedListener = this->currentScene->presetSavedEvent.newListener([this](string & preset)
+				{
+					this->cameraSettings[render::Layout::Back] = this->currentScene->getCamera(render::Layout::Back)->fetchSettings();
+					this->cameraSettings[render::Layout::Front] = this->currentScene->getCamera(render::Layout::Front)->fetchSettings();
+				});
 
 				for (auto & it : this->cameraControlAreas)
 				{
@@ -185,6 +190,7 @@ namespace entropy
 			this->currentScene.reset();
 
 			this->presetCuedListener.unsubscribe();
+			this->presetSavedListener.unsubscribe();
 			this->nextPreset.clear();
 		}
 
@@ -509,6 +515,12 @@ namespace entropy
 			{
 				this->currentScene->setCameraControlArea(layout, controlArea);
 			}
+		}
+
+		//--------------------------------------------------------------
+		const world::Camera::Settings & Playlist::getCameraSettings(render::Layout layout)
+		{
+			return this->cameraSettings[layout];
 		}
 
 		//--------------------------------------------------------------

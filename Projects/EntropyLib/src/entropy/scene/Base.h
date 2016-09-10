@@ -69,6 +69,7 @@ namespace entropy
 
 			ofEvent<string> presetCuedEvent;
 			ofEvent<string> presetLoadedEvent;
+			ofEvent<string> presetSavedEvent;
 
 			void setShowtime();
 			

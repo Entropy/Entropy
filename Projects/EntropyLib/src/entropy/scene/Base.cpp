@@ -135,6 +135,19 @@ namespace entropy
 			// Reset the timeline.
 			this->timeline->setCurrentFrame(0);
 
+			// Inherit the camera settings if necessary.
+			for (auto & it : this->cameras)
+			{
+				if (it.second->inheritsSettings)
+				{
+					const auto & cameraSettings = GetSavedCameraSettings(it.first);
+					if (cameraSettings.fov != 0.0f)
+					{
+						it.second->applySettings(cameraSettings);
+					}
+				}
+			}
+
 			// Setup child Scene.
 			this->setup();
 
@@ -860,6 +873,11 @@ namespace entropy
 			paramsFile << json.dump(4);
 
 			this->timeline->saveTracksToFolder(presetPath);
+
+			// Notify listeners.
+			// TODO: This parameter should be presetName but it's volatile
+			// and I'm not using it so whatever...
+			this->presetSavedEvent.notify(this->currPreset);
 
 			this->populatePresets();
 

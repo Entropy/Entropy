@@ -112,6 +112,12 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
+	inline const world::Camera::Settings & GetSavedCameraSettings(render::Layout layout)
+	{
+		return GetPlaylist()->getCameraSettings(layout);
+	}
+
+	//--------------------------------------------------------------
 	inline shared_ptr<scene::Base> GetCurrentScene()
 	{
 		return GetPlaylist()->getCurrentScene();

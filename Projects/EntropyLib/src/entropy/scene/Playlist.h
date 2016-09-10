@@ -3,6 +3,7 @@
 #include "ofMain.h"
 
 #include "entropy/render/Layout.h"
+#include "entropy/world/Camera.h"
 
 #include "Base.h"
 
@@ -54,6 +55,8 @@ namespace entropy
 
 			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
 
+			const world::Camera::Settings & getCameraSettings(render::Layout layout);
+
 			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
 			const string & getDataPath();
@@ -79,9 +82,11 @@ namespace entropy
 
 			ofEventListener presetCuedListener;
 			ofEventListener presetLoadedListener;
+			ofEventListener presetSavedListener;
 			string nextPreset;
 
 			map<render::Layout, ofRectangle> cameraControlAreas;
+			map<render::Layout, world::Camera::Settings> cameraSettings;
 		};
 	}
 }

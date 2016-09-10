@@ -7,6 +7,13 @@ namespace entropy
 	namespace world
 	{
 		//--------------------------------------------------------------
+		Camera::Settings::Settings()
+			: fov(0.0f)
+			, nearClip(0.0f)
+			, farClip(0.0f)
+		{}
+
+		//--------------------------------------------------------------
 		Camera::Camera()
 			: cameraTrack(nullptr)
 		{
@@ -136,6 +143,40 @@ namespace entropy
 			ofPopMatrix();
 
 			this->easyCam.end();
+		}
+
+		//--------------------------------------------------------------
+		void Camera::applySettings(const Camera::Settings & settings)
+		{
+			this->fov = settings.fov;
+			this->nearClip = settings.nearClip;
+			this->farClip = settings.farClip;
+			this->easyCam.setPosition(settings.position);
+			this->easyCam.setOrientation(settings.orientation);
+
+			if (this->hasTimelineTrack())
+			{
+				// Find the first keyframe and force its transform.
+				auto & keyframes = this->cameraTrack->getKeyframes();
+				if (!keyframes.empty())
+				{
+					auto keyframe = static_cast<ofxTLCameraFrame *>(keyframes.front());
+					keyframe->position = settings.position;
+					keyframe->orientation = settings.orientation;
+				}
+			}
+		}
+		
+		//--------------------------------------------------------------
+		Camera::Settings Camera::fetchSettings()
+		{
+			auto settings = Camera::Settings();
+			settings.fov = this->fov;
+			settings.nearClip = this->nearClip;
+			settings.farClip = this->farClip;
+			settings.position = this->easyCam.getPosition();
+			settings.orientation = this->easyCam.getOrientationQuat();
+			return settings;
 		}
 
 		//--------------------------------------------------------------
@@ -350,6 +391,8 @@ namespace entropy
 		{
 			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
 			{
+				ofxPreset::Gui::AddParameter(this->inheritsSettings);
+				
 				ofxPreset::Gui::AddParameter(this->fov);
 				ofxPreset::Gui::AddRange("Clipping", this->nearClip, this->farClip);
 				
