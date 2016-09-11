@@ -142,12 +142,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		void DataSet::gui(ofxPreset::Gui::Settings & settings)
 		{
-			if (ImGui::CollapsingHeader(this->parameters.getName().c_str(), nullptr, true, true))
+			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
 			{
 				ofxPreset::Gui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
 				ofxPreset::Gui::AddRange("Latitude", this->parameters.minLatitude, this->parameters.maxLatitude);
 				ofxPreset::Gui::AddRange("Longitude", this->parameters.minLongitude, this->parameters.maxLongitude);
 				ofxPreset::Gui::AddParameter(this->parameters.color);
+
+				ofxPreset::Gui::EndTree(settings);
 			}
 		}
 

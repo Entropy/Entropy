@@ -391,7 +391,7 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
 				// Add parameters manually.
-				if (ImGui::CollapsingHeader(this->parameters.grid.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(this->parameters.grid, settings))
 				{
 					static vector<string> labels{ "Back", "Front" };
 					ofxPreset::Gui::AddRadio(this->parameters.grid.layout, labels, 2);
@@ -401,6 +401,8 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.grid.horizontalLines);
 					ofxPreset::Gui::AddParameter(this->parameters.grid.verticalLines);
 					ofxPreset::Gui::AddParameter(this->parameters.grid.crossLines);
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
 				// Add parameters by group.

@@ -392,7 +392,7 @@ namespace entropy
 						}
 					}
 
-					if (ImGui::CollapsingHeader("Tracks", nullptr, true, true))
+					if (ofxPreset::Gui::BeginTree("Tracks", settings))
 					{
 						for (int i = 0; i < this->tracks.size(); ++i)
 						{
@@ -432,6 +432,8 @@ namespace entropy
 							ImGui::PopItemWidth();
 							ImGui::PopID();
 						}
+
+						ofxPreset::Gui::EndTree(settings);
 					}
 				}
 				ofxPreset::Gui::EndWindow(settings);

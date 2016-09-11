@@ -327,7 +327,7 @@ namespace entropy
 
 				ofxPreset::Gui::AddParameter(this->parameters.background);
 
-				if (ImGui::CollapsingHeader(this->parameters.controlScreen.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(this->parameters.controlScreen, settings))
 				{
 					if (ofxPreset::Gui::AddParameter(this->parameters.controlScreen.enabled))
 					{
@@ -335,24 +335,25 @@ namespace entropy
 					}
 					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenWidth);
 					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenHeight);
-					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
 
-					ImGui::SetNextTreeNodeOpen(true);
-					if (ImGui::TreeNode(this->parameters.controlScreen.preview.getName().c_str()))
+					if (ofxPreset::Gui::BeginTree(this->parameters.controlScreen.preview, settings))
 					{
 						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.backEnabled);
 						ImGui::SameLine();
 						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.frontEnabled);
 						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.scale);
 
-						ImGui::TreePop();
+						ofxPreset::Gui::EndTree(settings);
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-				if (ImGui::CollapsingHeader(this->parameters.backScreen.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(this->parameters.backScreen, settings))
 				{
 					if (ofxPreset::Gui::AddParameter(this->parameters.backScreen.enabled))
 					{
@@ -362,13 +363,15 @@ namespace entropy
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenHeight);
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numRows);
 					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numCols);
-					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-				if (ImGui::CollapsingHeader(this->parameters.frontScreen.getName().c_str(), nullptr, true, true))
+				if (ofxPreset::Gui::BeginTree(this->parameters.frontScreen, settings))
 				{
 					if (ofxPreset::Gui::AddParameter(this->parameters.frontScreen.enabled))
 					{
@@ -378,10 +381,12 @@ namespace entropy
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenHeight);
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numRows);
 					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numCols);
-					if (ImGui::Button(ofxPreset::Gui::GetUniqueName("Apply")))
+					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 			}
 			ofxPreset::Gui::EndWindow(this->guiSettings);
