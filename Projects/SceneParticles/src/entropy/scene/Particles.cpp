@@ -41,47 +41,55 @@ namespace entropy
 			feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
 			glGenQueries(1, &numPrimitivesQuery);
 
-			// Register Environment and Renderer parameters for Mappings and serialization.
+			// Setup renderers.
+			this->renderers[render::Layout::Back].setup(HALF_DIM);
+			this->renderers[render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[render::Layout::Back].fogMinDistance.setMax(HALF_DIM);
+			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
+			this->populateMappings(this->renderers[render::Layout::Back].parameters);
+
+			this->renderers[render::Layout::Front].setup(HALF_DIM);
+			this->renderers[render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[render::Layout::Front].fogMinDistance.setMax(HALF_DIM);
+			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
+			this->populateMappings(this->renderers[render::Layout::Front].parameters);
+
+			// Register Environment parameters for Mappings and serialization.
 			this->parameters.add(this->environment->parameters);
-			this->parameters.add(this->renderers[entropy::render::Layout::Back].parameters);
-			this->parameters.add(this->renderers[entropy::render::Layout::Front].parameters);
-
-			this->parameterListeners.push_back(parameters.ambientLight.newListener([&](float & ambient)
-			{
-				ofSetGlobalAmbientColor(ofFloatColor(ambient));
-			}));
-
-			this->renderers[entropy::render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 10);
-			this->renderers[entropy::render::Layout::Back].fogMinDistance.setMax(HALF_DIM);
-
-			this->renderers[entropy::render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 10);
-			this->renderers[entropy::render::Layout::Front].fogMinDistance.setMax(HALF_DIM);
-
-			 this->debug = false;
-
+			
 			// Load shaders.
 			shaderSettings.bindDefaults = false;
 			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getDataPath("shaders/particle.vert");
 			shaderSettings.varyingsToCapture = { "out_position", "out_color", "out_normal" };
 			shaderSettings.sourceDirectoryPath = this->getDataPath("shaders");
-			shaderSettings.intDefines["COLOR_PER_TYPE"] = this->parameters.colorsPerType;
+			shaderSettings.intDefines["COLOR_PER_TYPE"] = this->parameters.rendering.colorsPerType;
 			this->shader.setup(shaderSettings);
 
+			// Setup lights.
+			for (auto & light : pointLights)
+			{
+				light.setup();
+				light.setAmbientColor(ofFloatColor::black);
+				light.setSpecularColor(ofFloatColor::white);
+			}
+
 			// Add parameter listeners.
-			this->parameterListeners.push_back(this->parameters.colorsPerType.newListener([&](bool & colorsPerType)
+			this->parameterListeners.push_back(parameters.rendering.ambientLight.newListener([&](float & ambient)
+			{
+				ofSetGlobalAmbientColor(ofFloatColor(ambient));
+			}));
+			this->parameterListeners.push_back(this->parameters.rendering.colorsPerType.newListener([&](bool & colorsPerType)
+			{
+				shaderSettings.intDefines["COLOR_PER_TYPE"] = colorsPerType;
+				this->shader.setup(shaderSettings);
+			}));
+			this->parameterListeners.push_back(this->parameters.rendering.colorsPerType.newListener([&](bool & colorsPerType)
 			{
 				shaderSettings.intDefines["COLOR_PER_TYPE"] = colorsPerType;
 				this->shader.setup(shaderSettings);
 			}));
 
-			this->renderers[entropy::render::Layout::Back].setup(400);
-			this->renderers[entropy::render::Layout::Front].setup(400);
-
-			 for(auto & light: pointLights){
-				 light.setup();
-				 light.setAmbientColor(ofFloatColor::black);
-				 light.setSpecularColor(ofFloatColor::white);
-			 }
+			this->debug = false;
 		}
 
 		//--------------------------------------------------------------
@@ -94,7 +102,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Particles::setup()
 		{
-			ofSetGlobalAmbientColor(ofFloatColor(parameters.ambientLight));
+			ofSetGlobalAmbientColor(ofFloatColor(parameters.rendering.ambientLight));
 
 			for (unsigned i = 0; i < 4000; ++i)
 			{
@@ -112,6 +120,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Particles::exit()
+		{
+			particleSystem.clearParticles();
+		}
+
+		//--------------------------------------------------------------
 		void Particles::resizeBack(ofResizeEventArgs & args){
 			this->renderers[render::Layout::Back].resize(GetCanvas(render::Layout::Back)->getWidth(), GetCanvas(render::Layout::Back)->getHeight());
 		}
@@ -119,12 +133,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Particles::resizeFront(ofResizeEventArgs & args){
 			this->renderers[render::Layout::Front].resize(GetCanvas(render::Layout::Front)->getWidth(), GetCanvas(render::Layout::Front)->getHeight());
-		}
-
-		//--------------------------------------------------------------
-		void Particles::exit()
-		{
-			particleSystem.clearParticles();
 		}
 
 		//--------------------------------------------------------------
@@ -152,10 +160,10 @@ namespace entropy
                        photons[i].z < glm::vec3(HALF_DIM*2).z){
                         auto & light = pointLights[j];
                         light.enable();
-                        light.setDiffuseColor(ofFloatColor::white * parameters.lightStrength);
+                        light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength);
                         light.setPointLight();
                         light.setPosition(photons[i]);
-                        light.setAttenuation(0,0,parameters.attenuation);
+                        light.setAttenuation(0,0,parameters.rendering.attenuation);
                         j++;
                     }
                 }
@@ -208,14 +216,14 @@ namespace entropy
 			}
 			else
 			{
-				if (this->parameters.additiveBlending)
+				if (this->parameters.rendering.additiveBlending)
 				{
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
 				}
 
 				auto & camera = getCamera(layout)->getEasyCam();
 				this->renderers[layout].draw(feedbackVbo, 0, numPrimitives * 3, camera);
-				if (parameters.drawPhotons)
+				if (parameters.rendering.drawPhotons)
 				{
 					photons.draw();
 				}
@@ -226,77 +234,104 @@ namespace entropy
 		void Particles::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("State", settings))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
-				if (ImGui::Button("Save"))
+				if (ofxPreset::Gui::BeginTree("State", settings))
 				{
-					static const string & filename = "state.json";
-					if (this->saveState(this->getCurrentPresetPath(filename)))
+					if (ImGui::Button("Save"))
 					{
-						this->parameters.stateFile = filename;
-					}
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Load..."))
-				{
-					auto result = ofSystemLoadDialog("Load State", false, this->getPresetPath());
-					if (result.bSuccess)
-					{
-						if (this->loadState(result.filePath))
+						static const string & filename = "state.json";
+						if (this->saveState(this->getCurrentPresetPath(filename)))
 						{
-							this->parameters.stateFile = result.fileName;
+							this->parameters.stateFile = filename;
 						}
 					}
+					ImGui::SameLine();
+					if (ImGui::Button("Load..."))
+					{
+						auto result = ofSystemLoadDialog("Load State", false, this->getPresetPath());
+						if (result.bSuccess)
+						{
+							if (this->loadState(result.filePath))
+							{
+								this->parameters.stateFile = result.fileName;
+							}
+						}
+					}
+
+					ofxPreset::Gui::EndTree(settings);
 				}
+
+				ofxPreset::Gui::AddGroup(this->environment->parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Rendering", settings))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.rendering.getName(), settings))
 			{
+				static const auto numPlotPoints = 100;
+				
 				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
 				{
 					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
-					auto numPoints = 100;
-					ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPoints).data(), numPoints);
+					ImGui::PlotLines("Fog Function", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPlotPoints).data(), numPlotPoints);
 					this->renderers[entropy::render::Layout::Back].clip = this->renderers[entropy::render::Layout::Back].sphericalClip ||
 																		  this->renderers[entropy::render::Layout::Back].wobblyClip;
+
+					ofxPreset::Gui::EndTree(settings);
 				}
 
 				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
 				{
 					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
-					auto numPoints = 100;
-					ImGui::PlotLines("Fog funtion", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPoints).data(), numPoints);
+					ImGui::PlotLines("Fog Function", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPlotPoints).data(), numPlotPoints);
 					this->renderers[entropy::render::Layout::Front].clip = this->renderers[entropy::render::Layout::Front].sphericalClip ||
 																		   this->renderers[entropy::render::Layout::Front].wobblyClip;
+				
+					ofxPreset::Gui::EndTree(settings);
 				}
 
-                ofxPreset::Gui::AddParameter(this->parameters.colorsPerType);
-                ofxPreset::Gui::AddParameter(this->parameters.additiveBlending);
-                ofxPreset::Gui::AddParameter(this->parameters.ambientLight);
-                ofxPreset::Gui::AddParameter(this->parameters.attenuation);
-                ofxPreset::Gui::AddParameter(this->parameters.lightStrength);
-                ofxPreset::Gui::AddParameter(this->parameters.drawPhotons);
-                ImGui::Checkbox("debug lights", &debug);
-            }
-			ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
-			ofxPreset::Gui::EndWindow(settings);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.colorsPerType);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.additiveBlending);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.ambientLight);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.attenuation);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.lightStrength);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.drawPhotons);
 
-			ofxPreset::Gui::SetNextWindow(settings);
-			ofxPreset::Gui::AddGroup(this->environment->parameters, settings);
+				ImGui::Checkbox("Debug Lights", &debug);
+
+				ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
+			}
+			ofxPreset::Gui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------
 		void Particles::serialize(nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Serialize(json, nm::Particle::parameters);
+
+			// Save Renderer settings.
+			auto & jsonRenderers = json["Renderers"];
+			for (auto & it : this->renderers)
+			{
+				ofxPreset::Serializer::Serialize(jsonRenderers, it.second.parameters);
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Particles::deserialize(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, nm::Particle::parameters);
+
+			// Restore Renderer settings.
+			if (json.count("Renderers"))
+			{
+				auto & jsonRenderers = json["Renderers"];
+				for (auto & it : this->renderers)
+				{
+					ofxPreset::Serializer::Deserialize(jsonRenderers, it.second.parameters);
+				}
+			}
 
 			if (!this->parameters.stateFile->empty())
 			{

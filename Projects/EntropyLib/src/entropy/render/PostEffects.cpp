@@ -179,7 +179,7 @@ namespace entropy
 				this->colorCorrectShader.setUniform1f("brightness", parameters.color.brightness);
 				this->colorCorrectShader.setUniform1f("contrast", parameters.color.contrast);
                 this->colorCorrectShader.setUniform1f("inner_vigneting", parameters.vignette.inner);
-                this->colorCorrectShader.setUniform1f("outer_vigneting", parameters.vignette.outter);
+                this->colorCorrectShader.setUniform1f("outer_vigneting", parameters.vignette.outer);
                 this->colorCorrectShader.setUniform1f("vignette_power", parameters.vignette.power);
                 this->colorCorrectShader.setUniform1f("ratio", parameters.screenRatio);
                 glm::mat3 rot(glm::rotate(glm::radians((float)-parameters.vignette.rotation), glm::vec3(0,0,1)));

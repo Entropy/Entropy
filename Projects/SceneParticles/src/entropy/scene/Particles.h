@@ -74,14 +74,27 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<string> stateFile;
-                ofParameter<bool> colorsPerType{"color per type", true};
-                ofParameter<bool> additiveBlending{"additive blend", true};
-                ofParameter<bool> drawPhotons{"drawPhotons", true};
-                ofParameter<float> ambientLight{"ambient light", 0.001, 0, 0.02};
-                ofParameter<float> attenuation{"attenuation", 0.01, 0.0000001, 0.05};
-				ofParameter<float> lightStrength{"light strength", 1, 0, 1};
 
-                PARAM_DECLARE("Particles", stateFile, colorsPerType, additiveBlending, drawPhotons, ambientLight, attenuation);
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> colorsPerType{ "Color per Type", true };
+					ofParameter<bool> additiveBlending{ "Additive Blend", true };
+					ofParameter<bool> drawPhotons{ "Draw Photons", true };
+					ofParameter<float> ambientLight{ "Ambient Light", 0.001, 0, 0.02 };
+					ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.05 };
+					ofParameter<float> lightStrength{ "Light Strength", 1, 0, 1 };
+					
+					PARAM_DECLARE("Rendering", 
+						colorsPerType, 
+						additiveBlending, 
+						drawPhotons, 
+						ambientLight, 
+						attenuation);
+				} rendering;
+
+				PARAM_DECLARE("Particles",
+					stateFile,
+					rendering);
 			} parameters;
 		};
 	}
