@@ -314,11 +314,11 @@ namespace entropy
 			}
 			
 			// Add Page if it doesn't already exist.
-			if (!this->timeline->hasPage(kPopUpsTimelinePageName))
+			if (!this->timeline->hasPage(PopUpsTimelinePageName))
 			{
-				this->timeline->addPage(kPopUpsTimelinePageName);
+				this->timeline->addPage(PopUpsTimelinePageName);
 			}
-			auto page = this->timeline->getPage(kPopUpsTimelinePageName);
+			auto page = this->timeline->getPage(PopUpsTimelinePageName);
 
 			auto trackName = "_" + ofToString(this->index);
 			if (this->type == Type::Image)
@@ -340,7 +340,7 @@ namespace entropy
 				return;
 			}
 
-			this->timeline->setCurrentPage(kPopUpsTimelinePageName);
+			this->timeline->setCurrentPage(PopUpsTimelinePageName);
 
 			// Add Track.
 			this->switchesTrack = this->timeline->addSwitches(trackName);

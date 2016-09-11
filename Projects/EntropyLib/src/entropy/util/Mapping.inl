@@ -37,7 +37,7 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
-		void Mapping<ParameterType, TrackType>::setup(std::shared_ptr<ofParameter<ParameterType>> parameter)
+		void Mapping<ParameterType, TrackType>::setup(std::shared_ptr<ofParameter<ParameterType>> parameter, const std::string & pageName)
 		{
 			this->parameter = parameter;
 
@@ -60,6 +60,8 @@ namespace entropy
 			this->trackName.append(this->shortName);
 
 			this->animated.setName(paramName);
+
+			this->pageName = pageName;
 		}
 
 		//--------------------------------------------------------------
@@ -97,8 +99,12 @@ namespace entropy
 				return;
 			}
 
-			// Set timeline to main page.
-			timeline->setCurrentPage(0);
+			// Add Page if it doesn't already exist.
+			if (!timeline->hasPage(pageName))
+			{
+				timeline->addPage(pageName);
+			}
+			timeline->setCurrentPage(pageName);
 			
 			if (timeline->getTrack(this->trackName))
 			{

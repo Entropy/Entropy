@@ -157,7 +157,7 @@ namespace entropy
 			ofxTLFlags * cuesTrack;
 
 			// Mappings
-			void populateMappings(const ofParameterGroup & group);
+			void populateMappings(const ofParameterGroup & group, const std::string & timelinePageName = util::kMappingTimelinePageName);
 			void refreshMappings();
 			void clearMappings();
 

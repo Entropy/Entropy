@@ -8,6 +8,8 @@ namespace entropy
 {
 	namespace util
 	{
+		static const string kMappingTimelinePageName = "Mappings";
+		
 		class AbstractMapping
 		{
 		public:
@@ -19,6 +21,7 @@ namespace entropy
 			const inline std::string & getShortName() const;
 			const inline std::string & getGroupName() const;
 			const inline std::string & getTrackName() const;
+			const inline std::string & getPageName() const;
 
 			ofParameter<bool> animated;
 
@@ -26,6 +29,7 @@ namespace entropy
 			std::string shortName;
 			std::string groupName;
 			std::string trackName;
+			std::string pageName;
 		};
 		
 		template<typename ParameterType, typename TrackType>
@@ -36,7 +40,7 @@ namespace entropy
 			Mapping();
 			~Mapping();
 
-			void setup(std::shared_ptr<ofParameter<ParameterType>> parameter);
+			void setup(std::shared_ptr<ofParameter<ParameterType>> parameter, const std::string & pageName);
 			void update() override;
 
 			void addTrack(std::shared_ptr<ofxTimeline> timeline) override;

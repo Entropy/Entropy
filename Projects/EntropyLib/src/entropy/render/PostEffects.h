@@ -7,6 +7,8 @@ namespace entropy
 {
 	namespace render
 	{
+		static const string PostEffectsTimelinePageName = "PostEffects";
+		
 		struct PostParameters
 			: ofParameterGroup
 		{

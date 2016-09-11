@@ -13,8 +13,8 @@ namespace entropy
 {
 	namespace world
 	{
-		static const string kCamerasTimelinePageName = "Cameras";
-
+		static const string CameraTimelinePageName = "Cameras";
+		
 		class Camera
 		{
 		public:

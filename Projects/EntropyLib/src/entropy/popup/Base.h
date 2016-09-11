@@ -10,7 +10,7 @@ namespace entropy
 {
 	namespace popup
 	{
-		static const string kPopUpsTimelinePageName = "Pop-ups";
+		static const string PopUpsTimelinePageName = "Pop-ups";
 		
 		enum class Type
 		{

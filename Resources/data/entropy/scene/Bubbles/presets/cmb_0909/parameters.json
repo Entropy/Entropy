@@ -7,7 +7,7 @@
             "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.001",
+            "Edge Ratio": "0.00116294",
             "Enabled": "1",
             "Size": "800",
             "Subdivisions": "5"
@@ -27,7 +27,7 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "0.987278",
+            "Alpha": "1",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
@@ -41,7 +41,7 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
                 "Enabled": "1",
@@ -54,13 +54,13 @@
                 "Resolution": "8",
                 "World Bounds": "800"
             },
-            "Damping": "0.995",
+            "Damping": "0.999",
             "Draw Back": "1",
             "Draw Front": "0",
             "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
             "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
             "Drop Rate": "60",
-            "Dropping": "1",
+            "Dropping": "0",
             "Filter Mode": "0",
             "Radius": "20",
             "Ring Size": "1.25",
@@ -69,7 +69,7 @@
             "Volume Size": "800"
         },
         "Sphere": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Alpha Blend": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
@@ -82,7 +82,7 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0.707701",
+            "Mask Mix": "0",
             "Orientation": "75"
         }
     },
@@ -92,15 +92,16 @@
             "Dolly Speed": "0",
             "FOV": "40",
             "Far Clip": "10000",
+            "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0.0320002",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0.00599992",
+            "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 80.7975845336914,
+                "distance": 111.824851989746,
                 "drag": 0.899999976158142,
                 "farClip": 10000.0,
                 "forceAspectRatio": true,
@@ -113,7 +114,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.959384, 0.281067, 0.0241764,        0\n-0.27366, 0.948052, -0.162202,        0\n-0.0685096, 0.148998, 0.986462,        0\n 21.8806,  22.6618,  74.4039,        1",
+                "transform": "0.959577, 0.281446, 0.00070687,        0\n-0.277411, 0.946239, -0.166362,        0\n-0.0474902, 0.159441, 0.986065,        0\n 14.0487,   30.751,  106.592,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -123,6 +124,7 @@
             "Dolly Speed": "0",
             "FOV": "60",
             "Far Clip": "1000",
+            "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.001",
             "Pan Speed": "0",
@@ -224,6 +226,7 @@
         "Camera_Back::Dolly Speed": "0",
         "Camera_Back::FOV": "0",
         "Camera_Back::Far Clip": "0",
+        "Camera_Back::Inherits Settings": "0",
         "Camera_Back::Mouse Control": "0",
         "Camera_Back::Near Clip": "0",
         "Camera_Back::Pan Speed": "1",
@@ -234,6 +237,7 @@
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
         "Camera_Front::Far Clip": "0",
+        "Camera_Front::Inherits Settings": "0",
         "Camera_Front::Mouse Control": "0",
         "Camera_Front::Near Clip": "0",
         "Camera_Front::Pan Speed": "0",

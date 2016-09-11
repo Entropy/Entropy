@@ -28,16 +28,16 @@
     "Calibrate": {
         "Border": {
             "Back Draw": "0",
-            "Front Draw": "0",
+            "Front Draw": "1",
             "Size": "20"
         },
         "Grid": {
             "Center Points": "1",
-            "Cross Lines": "0",
+            "Cross Lines": "1",
             "Horizontal Lines": "1",
             "Layout": "1",
             "Line Width": "4",
-            "Resolution": "128",
+            "Resolution": "109",
             "Vertical Lines": "1"
         }
     },
@@ -56,7 +56,7 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 1021.65197753906,
+                "distance": 1219.75402832031,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -69,7 +69,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.692399,        0, 0.721515,        0\n0.326081, 0.892049, -0.312922,        0\n-0.643626, 0.451939, 0.617654,        0\n-684.316,  389.344,  651.073,        1",
+                "transform": "0.708091, -3.27826e-07, 0.706122,        0\n0.516587, 0.681752, -0.518027,        0\n -0.4814, 0.731583, 0.482742,        0\n-594.063,  883.638,  595.041,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }

@@ -69,8 +69,8 @@ namespace entropy
 			// Configure and register parameters.
 			this->populateMappings(parameters);
 
-			this->populateMappings(this->cameras[render::Layout::Back]->parameters);
-			this->populateMappings(this->cameras[render::Layout::Front]->parameters);
+			this->populateMappings(this->cameras[render::Layout::Back]->parameters, world::CameraTimelinePageName);
+			this->populateMappings(this->cameras[render::Layout::Front]->parameters, world::CameraTimelinePageName);
 
 			this->boxes[render::Layout::Back].parameters.setName("Box Back");
 			this->boxes[render::Layout::Front].parameters.setName("Box Front");
@@ -79,8 +79,8 @@ namespace entropy
 
 			this->postEffects[render::Layout::Back].setName("Post Effects Back");
 			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			this->populateMappings(this->postEffects[render::Layout::Back]);
-			this->populateMappings(this->postEffects[render::Layout::Front]);
+			this->populateMappings(this->postEffects[render::Layout::Back], render::PostEffectsTimelinePageName);
+			this->populateMappings(this->postEffects[render::Layout::Front], render::PostEffectsTimelinePageName);
 
 			// List presets.
 			this->populatePresets();
@@ -646,6 +646,7 @@ namespace entropy
 		void Base::setShowtime()
 		{
 			this->timeline->setCurrentTimeToInPoint();
+			this->timeline->setCurrentPage(0);
 			this->setCameraLocked(true);
 			this->timeline->play();
 		}
@@ -903,7 +904,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::populateMappings(const ofParameterGroup & group)
+		void Base::populateMappings(const ofParameterGroup & group, const std::string & timelinePageName)
 		{
 			for (const auto & parameter : group)
 			{
@@ -922,7 +923,7 @@ namespace entropy
 					if (parameterFloat)
 					{
 						auto mapping = make_shared<util::Mapping<float, ofxTLCurves>>();
-						mapping->setup(parameterFloat);
+						mapping->setup(parameterFloat, timelinePageName);
 						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
@@ -931,7 +932,7 @@ namespace entropy
 					if (parameterInt)
 					{
 						auto mapping = make_shared<util::Mapping<int, ofxTLCurves>>();
-						mapping->setup(parameterInt);
+						mapping->setup(parameterInt, timelinePageName);
 						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
@@ -940,7 +941,7 @@ namespace entropy
 					if (parameterBool)
 					{
 						auto mapping = make_shared<util::Mapping<bool, ofxTLSwitches>>();
-						mapping->setup(parameterBool);
+						mapping->setup(parameterBool, timelinePageName);
 						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}
@@ -949,7 +950,7 @@ namespace entropy
 					if (parameterColor)
 					{
 						auto mapping = make_shared<util::Mapping<ofFloatColor, ofxTLColorTrack>>();
-						mapping->setup(parameterColor);
+						mapping->setup(parameterColor, timelinePageName);
 						this->mappings[mapping->getGroupName()].push_back(mapping);
 						continue;
 					}

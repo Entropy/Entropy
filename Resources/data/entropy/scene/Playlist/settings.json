@@ -1,32 +1,24 @@
 {
     "tracks": [
         {
-            "preset": "_default",
+            "preset": "Dupe_Box",
             "scene": "Calibrate"
         },
         {
-            "preset": "paris_30",
+            "preset": "_autosave",
             "scene": "Inflation"
         },
         {
-            "preset": "paris_28",
+            "preset": "_autosave",
             "scene": "Particles"
         },
         {
-            "preset": "paris_aug26",
-            "scene": "CMB"
+            "preset": "CMB_0909",
+            "scene": "Bubbles"
         },
         {
-            "preset": "paris_29",
-            "scene": "Video"
-        },
-        {
-            "preset": "paris_29_2",
-            "scene": "Survey"
-        },
-        {
-            "preset": "outro_30",
-            "scene": "Inflation"
+            "preset": "EAGLE",
+            "scene": "Interlude"
         }
     ]
 }

@@ -314,11 +314,11 @@ namespace entropy
 			}
 
 			// Add Page if it doesn't already exist.
-			if (!this->timeline->hasPage(kCamerasTimelinePageName))
+			if (!this->timeline->hasPage(CameraTimelinePageName))
 			{
-				this->timeline->addPage(kCamerasTimelinePageName);
+				this->timeline->addPage(CameraTimelinePageName);
 			}
-			this->timeline->setCurrentPage(kCamerasTimelinePageName);
+			this->timeline->setCurrentPage(CameraTimelinePageName);
 
 			const auto trackName = this->parameters.getName();
 
