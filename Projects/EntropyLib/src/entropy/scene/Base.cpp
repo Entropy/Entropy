@@ -381,7 +381,8 @@ namespace entropy
 			// Add individual gui windows for each Pop-up.
 			{
 				auto popUpSettings = ofxPreset::Gui::Settings();
-				popUpSettings.windowPos.x = (settings.windowSize.x + kGuiMargin) * 2.0f;
+				//popUpSettings.windowPos.x = (settings.totalBounds.getMaxX() + kGuiMargin);
+				popUpSettings.windowPos.x = (800.0f + kGuiMargin);
 				popUpSettings.windowPos.y = 0.0f;
 				for (auto i = 0; i < this->popUps.size(); ++i)
 				{

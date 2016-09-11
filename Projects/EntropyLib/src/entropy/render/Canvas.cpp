@@ -483,7 +483,8 @@ namespace entropy
 
 			// Move to the next column for the Warp gui windows.
 			auto warpSettings = ofxPreset::Gui::Settings();
-			warpSettings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
+			//warpSettings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
+			warpSettings.windowPos = glm::vec2(800.0f + kGuiMargin, 0.0f);
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
