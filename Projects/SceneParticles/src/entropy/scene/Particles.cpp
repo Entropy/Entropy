@@ -43,13 +43,13 @@ namespace entropy
 
 			// Setup renderers.
 			this->renderers[render::Layout::Back].setup(HALF_DIM);
-			this->renderers[render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 20);
 			this->renderers[render::Layout::Back].fogMinDistance.setMax(HALF_DIM);
 			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
 			this->populateMappings(this->renderers[render::Layout::Back].parameters);
 
 			this->renderers[render::Layout::Front].setup(HALF_DIM);
-			this->renderers[render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 10);
+			this->renderers[render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 20);
 			this->renderers[render::Layout::Front].fogMinDistance.setMax(HALF_DIM);
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
@@ -136,6 +136,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Particles::reset()
+		{
+			this->exit();
+			this->setup();
+		}
+
+		//--------------------------------------------------------------
 		void Particles::update(double dt)
 		{
             if(ofGetFrameNum()%2==0){
@@ -182,6 +189,18 @@ namespace entropy
                 glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
                 glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
             }
+		}
+
+		//--------------------------------------------------------------
+		void Particles::timelineBangFired(ofxTLBangEventArgs & args)
+		{
+			static const string kResetFlag = "reset";
+			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+			{
+				this->reset();
+
+				this->timeline->stop();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -236,6 +255,11 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
+				if (ImGui::Button("Reset"))
+				{
+					this->reset();
+				}
+				
 				if (ofxPreset::Gui::BeginTree("State", settings))
 				{
 					if (ImGui::Button("Save"))
@@ -269,6 +293,17 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.rendering.getName(), settings))
 			{
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.colorsPerType);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.additiveBlending);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.ambientLight);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.attenuation);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.lightStrength);
+				ofxPreset::Gui::AddParameter(this->parameters.rendering.drawPhotons);
+
+				ImGui::Checkbox("Debug Lights", &debug);
+
+				ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
+				
 				static const auto numPlotPoints = 100;
 				
 				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
@@ -290,17 +325,6 @@ namespace entropy
 				
 					ofxPreset::Gui::EndTree(settings);
 				}
-
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.colorsPerType);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.additiveBlending);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.ambientLight);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.attenuation);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.lightStrength);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.drawPhotons);
-
-				ImGui::Checkbox("Debug Lights", &debug);
-
-				ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}

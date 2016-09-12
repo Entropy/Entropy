@@ -33,7 +33,11 @@ namespace entropy
 			void setup() override;
 			void exit() override;
 
+			void resizeBack(ofResizeEventArgs & args) override;
+			void resizeFront(ofResizeEventArgs & args) override;
+			
 			void update(double dt) override;
+			void timelineBangFired(ofxTLBangEventArgs & args) override;
 
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
@@ -49,8 +53,7 @@ namespace entropy
 			bool loadState(const string & path);
 
 		private:
-			void resizeBack(ofResizeEventArgs & args) override;
-			void resizeFront(ofResizeEventArgs & args) override;
+			void reset();
 
 			nm::ParticleSystem particleSystem;
 			nm::Photons photons;

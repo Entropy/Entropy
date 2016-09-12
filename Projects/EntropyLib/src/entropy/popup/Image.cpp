@@ -119,8 +119,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Image::renderContent()
 		{
-			this->image.drawSubsection(this->dstBounds.x, this->dstBounds.y, this->dstBounds.width, this->dstBounds.height,
-									   this->srcBounds.x, this->srcBounds.y, this->srcBounds.width, this->srcBounds.height);
+			this->image.drawSubsection(this->dstBounds, this->srcBounds);
 		}
 	}
 }
