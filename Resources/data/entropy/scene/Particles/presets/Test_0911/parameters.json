@@ -1,24 +1,24 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0",
-            "Alpha Blend": "0",
+            "Alpha": "1",
+            "Alpha Blend": "1",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "2",
-            "Depth Test": "1",
-            "Edge Ratio": "0.001",
+            "Depth Test": "0",
+            "Edge Ratio": "0.003998",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
         },
         "Box Front": {
-            "Alpha": "0.25",
-            "Alpha Blend": "0",
+            "Alpha": "0",
+            "Alpha Blend": "1",
             "Auto Draw": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
-            "Depth Test": "1",
+            "Depth Test": "0",
             "Edge Ratio": "0.002",
             "Enabled": "1",
             "Size": "6000",
@@ -29,7 +29,7 @@
         "Camera Back": {
             "Attach to Parent": "0",
             "Dolly Speed": "0",
-            "FOV": "59.94",
+            "FOV": "45",
             "Far Clip": "200000",
             "Inherits Settings": "0",
             "Mouse Control": "1",
@@ -40,11 +40,11 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 4.76527786254883,
-                "distance": 486.11865234375,
+                "distance": 15244.3447265625,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
-                "fov": 59.9400444030762,
+                "fov": 45.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
@@ -53,18 +53,18 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.766193, -0.641438, -0.0387943,        0\n0.641835, 0.766836, -0.0028023,        0\n0.0315464, -0.0227524, 0.999243,        0\n 85.0797,  57.3922,  475.162,        1",
+                "transform": "0.896807, 0.00482505, 0.442394,        0\n0.107473, 0.967612, -0.22842,        0\n-0.429168, 0.252394, 0.867243,        0\n-8070.36,  4679.05,  12056.8,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
         },
         "Camera Front": {
-            "Attach to Parent": "0",
+            "Attach to Parent": "1",
             "Dolly Speed": "0",
-            "FOV": "60",
+            "FOV": "45",
             "Far Clip": "200000",
             "Inherits Settings": "0",
-            "Mouse Control": "1",
+            "Mouse Control": "0",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
@@ -72,11 +72,11 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 4.23888874053955,
-                "distance": 641.235778808594,
+                "distance": 3.05324974760879e-05,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
-                "fov": 60.0,
+                "fov": 45.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
@@ -85,7 +85,7 @@
                 "ortho": false,
                 "relativeYAxis": false,
                 "target": "0, 0, 0",
-                "transform": "0.766687, -0.640887, -0.0381361,        0\n0.641266, 0.767312, -0.00288184,        0\n0.0311092, -0.022246, 0.999268,        0\n 451.192,  -148.48,  -430.77,        1",
+                "transform": "       1, 5.22996e-08,        0,        0\n-3.53102e-08,        1, -6.98492e-10,        0\n       0, 2.09548e-09,        1,        0\n-9.53674e-07,        0, -3.05176e-05,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -114,7 +114,7 @@
         "Box_Front::Subdivisions": "0",
         "Camera_Back::Attach to Parent": "0",
         "Camera_Back::Dolly Speed": "0",
-        "Camera_Back::FOV": "1",
+        "Camera_Back::FOV": "0",
         "Camera_Back::Far Clip": "0",
         "Camera_Back::Inherits Settings": "0",
         "Camera_Back::Mouse Control": "0",
@@ -186,9 +186,9 @@
         "Renderer_Back::Fade To": "0",
         "Renderer_Back::Fade power": "0",
         "Renderer_Back::Fill": "0",
-        "Renderer_Back::Fill alpha": "1",
+        "Renderer_Back::Fill alpha": "0",
         "Renderer_Back::Fog enabled": "0",
-        "Renderer_Back::Fog max dist.": "0",
+        "Renderer_Back::Fog max dist.": "1",
         "Renderer_Back::Fog min dist.": "0",
         "Renderer_Back::Fog power": "0",
         "Renderer_Back::Fog start dist.": "0",
@@ -196,7 +196,7 @@
         "Renderer_Back::Spherical clip": "0",
         "Renderer_Back::Use lights": "0",
         "Renderer_Back::Wireframe": "0",
-        "Renderer_Back::Wireframe alpha": "1",
+        "Renderer_Back::Wireframe alpha": "0",
         "Renderer_Back::Wobbly clip": "0",
         "Renderer_Front::Fade From": "0",
         "Renderer_Front::Fade To": "0",
@@ -204,7 +204,7 @@
         "Renderer_Front::Fill": "0",
         "Renderer_Front::Fill alpha": "0",
         "Renderer_Front::Fog enabled": "0",
-        "Renderer_Front::Fog max dist.": "0",
+        "Renderer_Front::Fog max dist.": "1",
         "Renderer_Front::Fog min dist.": "0",
         "Renderer_Front::Fog power": "0",
         "Renderer_Front::Fog start dist.": "0",
@@ -231,7 +231,7 @@
         "Environment": {
             "Annihiliation Threshold Max": "0.521",
             "Annihiliation Threshold Min": "0.402",
-            "Energy": "0.975",
+            "Energy": "0",
             "Force Multiplier Max": "1e+08",
             "Force Multiplier Min": "1e+07",
             "Fusion Threshold Exponent Max": "-5.448",
@@ -241,19 +241,85 @@
         },
         "Rendering": {
             "Additive Blend": "1",
-            "Ambient Light": "0",
+            "Ambient Light": "0.01",
             "Attenuation": "0.002",
             "Color per Type": "1",
-            "Draw Photons": "1"
+            "Draw Photons": "0"
         }
     },
-    "Pop-ups": null,
+    "Pop-ups": [
+        {
+            "Image": {
+                "Base": {
+                    "Background": "0, 0, 0, 0",
+                    "Center": "0.25, 0.5",
+                    "Layout": "1",
+                    "Size": "0.25",
+                    "Surface": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Particles\\videos\\inflaton.jpg",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "2"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Background": "0, 0, 0, 0",
+                    "Center": "0.75, 0.5",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Particles\\videos\\test motion design.mov",
+                "Loop": "0",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Background": "0, 0, 0, 0",
+                    "Center": "0.35, 0.5",
+                    "Layout": "1",
+                    "Size": "0.6",
+                    "Surface": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Particles\\videos\\test graphique 1_1.mov",
+                "Loop": "1",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "2"
+                }
+            },
+            "type": 2
+        }
+    ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
                 "Brightness Threshold": "1",
                 "Debug Blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num Passes": "1",
                 "Sigma": "0.9"
             },
@@ -285,7 +351,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "1.02",
+                "Exposure": "3.85577",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -308,7 +374,7 @@
             "Fill": "1",
             "Fill alpha": "0",
             "Fog enabled": "1",
-            "Fog max dist.": "1567.13",
+            "Fog max dist.": "8000",
             "Fog min dist.": "92.784",
             "Fog power": "2.166",
             "Fog start dist.": "1.881",
@@ -326,7 +392,7 @@
             "Fill": "1",
             "Fill alpha": "0.0439999",
             "Fog enabled": "1",
-            "Fog max dist.": "1567.13",
+            "Fog max dist.": "7800.01",
             "Fog min dist.": "92.784",
             "Fog power": "2.166",
             "Fog start dist.": "1.881",
