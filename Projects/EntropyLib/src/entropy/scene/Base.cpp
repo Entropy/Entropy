@@ -42,6 +42,7 @@ namespace entropy
 				timelineDataPath.append(ofFilePath::addTrailingSlash("ofxTimeline"));
 			}
 			this->timeline = std::make_shared<ofxTimeline>();
+			this->timeline->setName("timeline");
 			this->timeline->setup(timelineDataPath);
 			this->timeline->setSpacebarTogglePlay(false);
 			this->timeline->setLoopType(OF_LOOP_NONE);

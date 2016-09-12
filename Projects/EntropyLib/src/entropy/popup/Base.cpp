@@ -321,19 +321,21 @@ namespace entropy
 			}
 			auto page = this->timeline->getPage(PopUpsTimelinePageName);
 
-			auto trackName = "_" + ofToString(this->index);
+			std:ostringstream oss;
+			oss << "Pop-up_" << this->index << "_";
 			if (this->type == Type::Image)
 			{
-				trackName.insert(0, "Image");
+				oss << "Image";
 			}
 			else if (this->type == Type::Video)
 			{
-				trackName.insert(0, "Video");
+				oss << "Video";
 			}
 			else if (this->type == Type::Sound)
 			{
-				trackName.insert(0, "Sound");
+				oss << "Sound";
 			}
+			auto trackName = oss.str();
 
 			if (page->getTrack(trackName))
 			{

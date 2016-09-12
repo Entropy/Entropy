@@ -59,15 +59,33 @@
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Renderer_Back_Fill Alpha">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Renderer_Back_Fill alpha">
         <x>0.000000000</x>
         <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Renderer_Back_Fog Max Distance">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Renderer_Back_Fog max dist.">
         <x>0.000000000</x>
         <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Wireframe Alpha">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -80,6 +98,12 @@
     <element name="Renderer_Fill alpha">
         <x>0.000000000</x>
         <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Front_Fog Max Distance">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
