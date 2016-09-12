@@ -199,14 +199,15 @@ namespace entropy
 
 			ofPushStyle();
 			{
-				if (parameters.base.background->a > 0)
-				{
-					ofSetColor(parameters.base.background.get());
-					ofDrawRectangle(this->viewport);
-				}
-		
 				if (this->isLoaded() && (this->enabled || this->editing))
 				{
+					// Draw the background.
+					if (parameters.base.background->a > 0)
+					{
+						ofSetColor(parameters.base.background.get());
+						ofDrawRectangle(this->dstBounds);
+					}
+
 					// Draw the border.
 					if (parameters.border.width > 0.0f)
 					{
