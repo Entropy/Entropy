@@ -163,8 +163,8 @@ namespace entropy
 				if (!keyframes.empty())
 				{
 					auto keyframe = static_cast<ofxTLCameraFrame *>(keyframes.front());
-					keyframe->position = settings.position;
-					keyframe->orientation = settings.orientation;
+					keyframe->position = this->easyCam.getPosition();
+					keyframe->orientation = this->easyCam.getOrientationQuat();
 				}
 			}
 		}
@@ -261,7 +261,6 @@ namespace entropy
 		{
 			if (attachedToParent && this->parent)
 			{
-				this->inheritsSettings = false;
 				this->mouseControl = false;
 				this->removeTimelineTrack();
 				this->easyCam.setParent(this->parent->getEasyCam(), true);
@@ -394,6 +393,8 @@ namespace entropy
 		{
 			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
 			{				
+				ofxPreset::Gui::AddParameter(this->inheritsSettings);
+
 				ofxPreset::Gui::AddParameter(this->fov);
 				ofxPreset::Gui::AddRange("Clipping", this->nearClip, this->farClip);
 				
@@ -403,7 +404,6 @@ namespace entropy
 				}
 				if (!this->isAttachedToParent())
 				{
-					ofxPreset::Gui::AddParameter(this->inheritsSettings);
 					ofxPreset::Gui::AddParameter(this->mouseControl);
 					ofxPreset::Gui::AddParameter(this->relativeYAxis);
 				}
