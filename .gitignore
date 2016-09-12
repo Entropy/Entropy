@@ -129,5 +129,4 @@ Resources/exports/
 imgui.ini
 
 # ofxTimeline garbage
-Resources/data/*/*/*/_Page_One_trackPositions.xml
-Resources/data/*/*/*/timeline0_Base_trackPositions.xml
+Resources/data/entropy/scene/*/*.xml
