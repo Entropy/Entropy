@@ -82,11 +82,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Camera::reset()
+		void Camera::reset(bool transform)
 		{
 			this->easyCam.setAspectRatio(GetCanvasWidth(this->layout) / GetCanvasHeight(this->layout));
-			this->easyCam.reset();
-
+			if (transform)
+			{
+				this->easyCam.reset();
+			}
 			this->tumbleOffset = glm::vec3(0.0f);
 			this->dollyOffset = 0.0f;
 		}
@@ -408,7 +410,7 @@ namespace entropy
 				
 				if (ImGui::Button("Reset"))
 				{
-					this->reset();
+					this->reset(true);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Set to Origin"))

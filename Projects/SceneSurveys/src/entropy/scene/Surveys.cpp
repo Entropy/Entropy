@@ -103,7 +103,7 @@ namespace entropy
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
 				// Reset the camera tumble.
-				this->cameras[render::Layout::Back]->reset();
+				this->cameras[render::Layout::Back]->reset(false);
 			}
 		}
 		

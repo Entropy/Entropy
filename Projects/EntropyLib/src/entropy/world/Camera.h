@@ -35,7 +35,7 @@ namespace entropy
 			void setup(render::Layout layout, std::shared_ptr<ofxTimeline> timeline);
 			void clear();
 
-			void reset();
+			void reset(bool transform);
 
 			void update(bool mouseOverGui);
 			void resize(ofResizeEventArgs & args);

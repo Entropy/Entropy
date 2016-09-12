@@ -81,8 +81,8 @@ namespace entropy
 			static const string kResetFlag = "reset";
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
-				this->getCamera(render::Layout::Back)->reset();
-				this->getCamera(render::Layout::Front)->reset();
+				this->getCamera(render::Layout::Back)->reset(false);
+				this->getCamera(render::Layout::Front)->reset(false);
 
 				this->pool2D.resetSimulation = true;
 				this->pool3D.resetSimulation = true;

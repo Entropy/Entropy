@@ -136,6 +136,12 @@ namespace entropy
 			// Reset the timeline.
 			this->timeline->setCurrentFrame(0);
 
+			// Reset cameras (but keep transform intact).
+			for (auto & it : this->cameras)
+			{
+				it.second->reset(false);
+			}
+
 			// Inherit the camera settings if necessary.
 			for (auto & it : this->cameras)
 			{
@@ -815,12 +821,6 @@ namespace entropy
 
 			// Clean up scene.
 			this->exit_();
-
-			// Reset cameras.
-			for (auto & it : this->cameras)
-			{
-				it.second->reset();
-			}
 
 			// Make sure file exists.
 			const auto presetPath = this->getPresetPath(presetName);
