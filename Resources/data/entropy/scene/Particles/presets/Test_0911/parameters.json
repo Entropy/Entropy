@@ -4,7 +4,7 @@
             "Alpha": "1",
             "Alpha Blend": "1",
             "Auto Draw": "1",
-            "Color": "1, 1, 1, 1",
+            "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
             "Edge Ratio": "0.003998",
@@ -39,7 +39,7 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 4.76527786254883,
+                "aspectRatio": 3.17685174942017,
                 "distance": 15244.3447265625,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
@@ -50,10 +50,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
                 "ortho": false,
+                "position": "-8070.36, 4679.05, 12056.8",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "0.896807, 0.00482505, 0.442394,        0\n0.107473, 0.967613, -0.22842,        0\n-0.429168, 0.252394, 0.867244,        0\n-8070.36,  4679.05,  12056.8,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -71,8 +73,8 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 4.23888874053955,
-                "distance": 3.05324974760879e-05,
+                "aspectRatio": 2.82592582702637,
+                "distance": 3.05325011140667e-05,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -82,10 +84,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
+                "position": "0, 0, 3.05325e-05",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "       1, 5.22996e-08,        0,        0\n-3.53102e-08,        1, -6.98492e-10,        0\n       0, 2.09548e-09,        1,        0\n-9.53674e-07,        0, -3.05176e-05,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -349,7 +353,7 @@
                 "Sigma": "14.121"
             },
             "Color": {
-                "Brightness": "0",
+                "Brightness": "-0.75",
                 "Contrast": "1",
                 "Exposure": "3.85577",
                 "Gamma": "2.2",
@@ -357,10 +361,10 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Inner": "0.8",
                 "Only Alpha": "1",
-                "Outer": "3",
+                "Outer": "0.982",
                 "Power": "0.1",
                 "Rotation": "0"
             }

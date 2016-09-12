@@ -4,12 +4,12 @@
             "Alpha": "1",
             "Alpha Blend": "1",
             "Auto Draw": "1",
-            "Color": "0.176471, 0.176471, 0.176471, 1",
+            "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.00116294",
+            "Edge Ratio": "0.003997",
             "Enabled": "1",
-            "Size": "800",
+            "Size": "6000",
             "Subdivisions": "5"
         },
         "Box Front": {
@@ -27,13 +27,13 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
             "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "30",
+            "Drop Rate": "1",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -59,14 +59,14 @@
             "Draw Front": "0",
             "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
             "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
-            "Drop Rate": "60",
+            "Drop Rate": "1",
             "Dropping": "0",
             "Filter Mode": "0",
             "Radius": "20",
             "Ring Size": "1.25",
             "Ripple Rate": "2",
             "Run Simulation": "1",
-            "Volume Size": "800"
+            "Volume Size": "6000"
         },
         "Sphere": {
             "Alpha": "0",
@@ -90,9 +90,9 @@
         "Camera Back": {
             "Attach to Parent": "0",
             "Dolly Speed": "0",
-            "FOV": "40",
-            "Far Clip": "10000",
-            "Inherits Settings": "0",
+            "FOV": "45",
+            "Far Clip": "200000",
+            "Inherits Settings": "1",
             "Mouse Control": "1",
             "Near Clip": "0.001",
             "Pan Speed": "0",
@@ -101,20 +101,22 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 111.824851989746,
+                "distance": 15244.3447265625,
                 "drag": 0.899999976158142,
-                "farClip": 10000.0,
+                "farClip": 200000.0,
                 "forceAspectRatio": true,
-                "fov": 38.9690017700195,
+                "fov": 45.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
                 "ortho": false,
+                "position": "-8070.36, 4679.05, 12056.8",
                 "relativeYAxis": false,
+                "scale": "1, 1, 0.999999",
                 "target": "0, 0, 0",
-                "transform": "0.959577, 0.281446, 0.00070687,        0\n-0.277411, 0.946239, -0.166362,        0\n-0.0474902, 0.159441, 0.986065,        0\n 14.0487,   30.751,  106.592,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -143,10 +145,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
+                "position": "0, 0, 485.361",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,  485.361,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -245,7 +249,7 @@
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Back::Bloom::Debug blur": "0",
+        "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
         "Post_Effects_Back::Bloom::Num Passes": "0",
         "Post_Effects_Back::Bloom::Sigma": "0",
@@ -257,12 +261,12 @@
         "Post_Effects_Back::Vignette::Debug": "0",
         "Post_Effects_Back::Vignette::Enabled": "0",
         "Post_Effects_Back::Vignette::Inner": "0",
-        "Post_Effects_Back::Vignette::Only alpha": "0",
-        "Post_Effects_Back::Vignette::Outter": "0",
+        "Post_Effects_Back::Vignette::Only Alpha": "0",
+        "Post_Effects_Back::Vignette::Outer": "0",
         "Post_Effects_Back::Vignette::Power": "0",
         "Post_Effects_Back::Vignette::Rotation": "0",
         "Post_Effects_Front::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Front::Bloom::Debug blur": "0",
+        "Post_Effects_Front::Bloom::Debug Blur": "0",
         "Post_Effects_Front::Bloom::Enabled": "0",
         "Post_Effects_Front::Bloom::Num Passes": "0",
         "Post_Effects_Front::Bloom::Sigma": "0",
@@ -274,8 +278,8 @@
         "Post_Effects_Front::Vignette::Debug": "0",
         "Post_Effects_Front::Vignette::Enabled": "0",
         "Post_Effects_Front::Vignette::Inner": "0",
-        "Post_Effects_Front::Vignette::Only alpha": "0",
-        "Post_Effects_Front::Vignette::Outter": "0",
+        "Post_Effects_Front::Vignette::Only Alpha": "0",
+        "Post_Effects_Front::Vignette::Outer": "0",
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
@@ -284,7 +288,7 @@
         "Post Effects Back": {
             "Bloom": {
                 "Brightness Threshold": "0.01",
-                "Debug blur": "0",
+                "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "0.951"
@@ -300,8 +304,8 @@
                 "Debug": "0",
                 "Enabled": "0",
                 "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
+                "Only Alpha": "1",
+                "Outer": "1.1",
                 "Power": "1.1",
                 "Rotation": "0"
             }
@@ -309,7 +313,7 @@
         "Post Effects Front": {
             "Bloom": {
                 "Brightness Threshold": "1",
-                "Debug blur": "0",
+                "Debug Blur": "0",
                 "Enabled": "0",
                 "Num Passes": "1",
                 "Sigma": "0.9"
@@ -325,8 +329,8 @@
                 "Debug": "0",
                 "Enabled": "0",
                 "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
+                "Only Alpha": "1",
+                "Outer": "1.1",
                 "Power": "1.1",
                 "Rotation": "0"
             }
