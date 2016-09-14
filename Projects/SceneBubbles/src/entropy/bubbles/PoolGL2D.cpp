@@ -15,10 +15,17 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void PoolGL2D::setup()
+		void PoolGL2D::init()
 		{
-			PoolBase::setup();
+			PoolBase::init();
 
+			// Load the shader.
+			this->shader.load("shaders/passthru.vert", "shaders/ripple.frag");
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL2D::resize()
+		{
 			// Allocate the textures and buffers.
 			for (int i = 0; i < 3; ++i) {
 				this->textures[i].setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
@@ -47,9 +54,6 @@ namespace entropy
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(0, this->dimensions.y));
-
-			// Load the shader.
-			this->shader.load("shaders/passthru.vert", "shaders/ripple.frag");
 		}
 
 		//--------------------------------------------------------------

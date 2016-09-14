@@ -12,7 +12,8 @@ namespace entropy
 		public:
 			PoolBase();
 
-			virtual void setup() = 0;
+			virtual void init();
+			virtual void resize() = 0;
 
 			virtual void reset();
 			virtual void update(double dt);

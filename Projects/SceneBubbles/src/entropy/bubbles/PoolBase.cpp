@@ -10,8 +10,9 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		void PoolBase::setup()
+		void PoolBase::init()
 		{
+			this->resize();
 			this->resetSimulation = true;
 		}
 
@@ -99,7 +100,7 @@ namespace entropy
 		void PoolBase::setDimensions(const glm::vec3 & dimensions)
 		{
 			this->dimensions = dimensions;
-			this->setup();
+			this->resize();
 		}
 
 		//--------------------------------------------------------------

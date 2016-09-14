@@ -129,7 +129,7 @@ namespace entropy
 		{
 			if (this->ready)
 			{
-				ofLogError(__FUNCTION__) << "Scene is already set up!";
+				//ofLogNotice(__FUNCTION__) << "Scene is already set up!";
 				return;
 			}
 
@@ -166,7 +166,7 @@ namespace entropy
 		{
 			if (!this->ready)
 			{
-				ofLogError(__FUNCTION__) << "Scene is not set up!";
+				//ofLogNotice(__FUNCTION__) << "Scene is not set up!";
 				return;
 			}
 

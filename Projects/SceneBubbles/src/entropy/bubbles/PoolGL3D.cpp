@@ -14,12 +14,40 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		void PoolGL3D::setup()
+		void PoolGL3D::init()
 		{
-			PoolBase::setup();
+			PoolBase::init();
 
+			// Load the shaders.
+			auto shaderSettings = ofShader::Settings();
+			shaderSettings.bindDefaults = true;
+			shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthru.vert";
+			shaderSettings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/layer.geom";
+
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/drop3D.frag";
+			this->dropShader.setup(shaderSettings);
+			
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/ripple3D.frag";
+			this->rippleShader.setup(shaderSettings);
+
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/copy3D.frag";
+			this->copyShader.setup(shaderSettings);
+
+			// Init bursts.
+			this->bursts.init();
+
+			// Init parameters.
+			this->parameters.setName("Pool GL 3D");
+			this->parameters.add(filterMode, volumeSize);
+			this->parameters.add(this->bursts.parameters);
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::resize()
+		{
 			// Allocate the textures and buffers.
-			for (int i = 0; i < 3; ++i) 
+			for (int i = 0; i < 3; ++i)
 			{
 				this->textures[i].allocate(this->dimensions.x, this->dimensions.y, this->dimensions.z, GL_RGBA16F);
 
@@ -58,30 +86,6 @@ namespace entropy
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.0f));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
-
-			// Load the shaders.
-			auto shaderSettings = ofShader::Settings();
-			shaderSettings.bindDefaults = true;
-			shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
-			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/passthru.vert";
-			shaderSettings.shaderFiles[GL_GEOMETRY_SHADER] = "shaders/layer.geom";
-
-			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/drop3D.frag";
-			this->dropShader.setup(shaderSettings);
-			
-			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/ripple3D.frag";
-			this->rippleShader.setup(shaderSettings);
-
-			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/copy3D.frag";
-			this->copyShader.setup(shaderSettings);
-
-			// Init bursts.
-			this->bursts.init();
-
-			// Init parameters.
-			this->parameters.setName("Pool GL 3D");
-			this->parameters.add(filterMode, volumeSize);
-			this->parameters.add(this->bursts.parameters);
 		}
 
 		//--------------------------------------------------------------
