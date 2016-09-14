@@ -23,6 +23,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		const std::string & AbstractMapping::getPageName() const
+		{
+			return this->pageName;
+		}
+
+		//--------------------------------------------------------------
 		template<typename ParameterType, typename TrackType>
 		Mapping<ParameterType, TrackType>::Mapping()
 			: track(nullptr)
@@ -106,7 +112,7 @@ namespace entropy
 			}
 			timeline->setCurrentPage(pageName);
 			
-			if (timeline->getTrack(this->trackName))
+			if (timeline->hasTrack(this->trackName))
 			{
 				//ofLogWarning("Mapping::addTrack") << "Track for ofParameter " << this->trackName << " already exists!";
 				return;
