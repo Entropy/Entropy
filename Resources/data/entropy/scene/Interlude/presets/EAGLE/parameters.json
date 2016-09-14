@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 692.753723144531,
+                "distance": 692.906188964844,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -50,10 +50,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "0.994393, 0.00445878, -0.0215998, 0.103423",
                 "ortho": false,
+                "position": "-443.412, 7.88137, 532.394",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "0.977674, 0.205493, 0.0438796,        0\n-0.205878, 0.978568, 0.00439973,        0\n-0.0420351, -0.0133354, 0.999027,        0\n-443.159,   7.9203,  532.405,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -82,10 +84,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
+                "orientation": "1, -2.3283e-10, 1.86265e-09, 7.8944e-09",
                 "ortho": false,
+                "position": "3.05176e-05, -7.62939e-06, 6.10352e-05",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "       1, -1.57888e-08, 3.72529e-09,        0\n1.42318e-08,        1, 4.65661e-10,        0\n       0,        0,        1,        0\n3.05176e-05, -7.62939e-06, 6.10352e-05,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
