@@ -36,17 +36,21 @@ namespace entropy
 			this->parameters.add(this->dataSetBoss.parameters);
 			this->parameters.add(this->dataSetDes.parameters);
 			this->parameters.add(this->dataSetVizir.parameters);
+			this->parameters.add(this->sphereGeom.parameters);
+
+			// Init the sphere.
+			this->loadTextureImage(this->getAssetsPath("images/The_Milky_Way.png"), this->sphereTexture);
 
 			// Build the galaxy quad.
-			this->galaxyQuad.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-			this->galaxyQuad.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
-			this->galaxyQuad.addVertex(glm::vec3(-1.0f,  1.0f, 0.0f));
-			this->galaxyQuad.addVertex(glm::vec3( 1.0f, -1.0f, 0.0f));
-			this->galaxyQuad.addVertex(glm::vec3( 1.0f,  1.0f, 0.0f));
-			this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 1.0f));
-			this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 0.0f));
-			this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 1.0f));
-			this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 0.0f));
+			//this->galaxyQuad.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+			//this->galaxyQuad.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
+			//this->galaxyQuad.addVertex(glm::vec3(-1.0f,  1.0f, 0.0f));
+			//this->galaxyQuad.addVertex(glm::vec3( 1.0f, -1.0f, 0.0f));
+			//this->galaxyQuad.addVertex(glm::vec3( 1.0f,  1.0f, 0.0f));
+			//this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 1.0f));
+			//this->galaxyQuad.addTexCoord(glm::vec2(0.0f, 0.0f));
+			//this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 1.0f));
+			//this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 0.0f));
 
 			// Build the texture.
 			//entropy::survey::CreateGaussianMapTexture(this->spriteTexture, 32, GL_TEXTURE_2D);
@@ -71,6 +75,9 @@ namespace entropy
 			this->dataSetVizir.clear();
 
 			this->spriteTexture.clear();
+
+			this->sphereTexture.clear();
+			this->sphereGeom.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -96,6 +103,18 @@ namespace entropy
 		void Surveys::drawBackWorld()
 		{
 			this->drawDataSet(this->backParameters);
+
+			ofPushMatrix();
+			{
+				//ofRotateYDeg(this->parameters.sphere.orientation);
+
+				this->sphereTexture.bind();
+				{
+					this->sphereGeom.draw();
+				}
+				this->sphereTexture.unbind();
+			}
+			ofPopMatrix();
 		}
 
 		//--------------------------------------------------------------
@@ -108,24 +127,24 @@ namespace entropy
 		void Surveys::drawDataSet(LayoutParameters & parameters)
 		{
 			// Draw the galaxy in the center.
-			ofPushMatrix();
-			{
-				ofScale(this->parameters.galaxy.scale);
-				ofRotateX(this->parameters.galaxy.orientation.get().x);
-				ofRotateY(this->parameters.galaxy.orientation.get().y);
-				ofRotateZ(this->parameters.galaxy.orientation.get().z);
+			//ofPushMatrix();
+			//{
+			//	ofScale(this->parameters.galaxy.scale);
+			//	ofRotateX(this->parameters.galaxy.orientation.get().x);
+			//	ofRotateY(this->parameters.galaxy.orientation.get().y);
+			//	ofRotateZ(this->parameters.galaxy.orientation.get().z);
 
-				ofPushStyle();
-				{
-					ofSetColor(255, this->parameters.galaxy.alpha * 255);
+			//	ofPushStyle();
+			//	{
+			//		ofSetColor(255, this->parameters.galaxy.alpha * 255);
 
-					this->texture.bind();
-					this->galaxyQuad.draw();
-					this->texture.unbind();
-				}
-				ofPopStyle();
-			}
-			ofPopMatrix();
+			//		this->texture.bind();
+			//		this->galaxyQuad.draw();
+			//		this->texture.unbind();
+			//	}
+			//	ofPopStyle();
+			//}
+			//ofPopMatrix();
 
 			ofPushMatrix();
 			ofScale(parameters.scale);
@@ -165,7 +184,26 @@ namespace entropy
 			ofxPreset::Gui::SetNextWindow(settings);
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				ofxPreset::Gui::AddGroup(this->parameters.galaxy, settings);
+				//ofxPreset::Gui::AddGroup(this->parameters.galaxy, settings);
+
+				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
+				{
+					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
+					static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
+					ofxPreset::Gui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
+					static const vector<string> cullLabels{ "None", "Back", "Front" };
+					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.radius);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
+					//ofxPreset::Gui::AddParameter(this->parameters.sphere.orientation);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
 				
 				this->dataSetBoss.gui(settings);
 				this->dataSetDes.gui(settings);
