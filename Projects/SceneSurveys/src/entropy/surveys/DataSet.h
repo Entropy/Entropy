@@ -31,6 +31,7 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
+				ofParameter<float> cutRadius{ "Cut Radius", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> minRadius{ "Min Radius", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> maxRadius{ "Max Radius", 0.5f, 0.0f, 1.0f };
 				ofParameter<float> minLatitude{ "Min Latitude", 0.0f, 0.0f, 1.0f };
@@ -40,6 +41,7 @@ namespace entropy
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
 				PARAM_DECLARE("DataSet", 
+					cutRadius,
 					minRadius, maxRadius, 
 					minLatitude, maxLatitude,
 					minLongitude, maxLongitude, 

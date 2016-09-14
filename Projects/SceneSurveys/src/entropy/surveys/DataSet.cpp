@@ -127,6 +127,7 @@ namespace entropy
 			static const auto kLongitudeMin = 0;
 			static const auto kLongitudeMax = TWO_PI;
 
+			shader.setUniform1f("uCutRadius", ofMap(parameters.cutRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
 			shader.setUniform1f("uMinRadius", ofMap(parameters.minRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
 			shader.setUniform1f("uMaxRadius", ofMap(parameters.maxRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
 			shader.setUniform1f("uMinLatitude", ofMap(parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
@@ -144,6 +145,7 @@ namespace entropy
 		{
 			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
 			{
+				ofxPreset::Gui::AddParameter(this->parameters.cutRadius);
 				ofxPreset::Gui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
 				ofxPreset::Gui::AddRange("Latitude", this->parameters.minLatitude, this->parameters.maxLatitude);
 				ofxPreset::Gui::AddRange("Longitude", this->parameters.minLongitude, this->parameters.maxLongitude);
