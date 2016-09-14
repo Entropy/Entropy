@@ -56,7 +56,7 @@
             "Tilt Speed": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 1219.75402832031,
+                "distance": 1021.65197753906,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -66,10 +66,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
+                "orientation": "0.894721, -0.213715, -0.381443, -0.0911124",
                 "ortho": false,
+                "position": "-684.316, 389.344, 651.073",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "0.708091, -3.27826e-07, 0.706122,        0\n0.516587, 0.681752, -0.518027,        0\n -0.4814, 0.731583, 0.482742,        0\n-594.063,  883.638,  595.041,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -98,10 +100,12 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
+                "position": "0, 0, 0",
                 "relativeYAxis": false,
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
-                "transform": "       1,        0,        0,        0\n       0,        1,        0,        0\n       0,        0,        1,        0\n       0,        0,        0,        1",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
             }
@@ -161,7 +165,7 @@
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Back::Bloom::Debug blur": "0",
+        "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
         "Post_Effects_Back::Bloom::Num Passes": "0",
         "Post_Effects_Back::Bloom::Sigma": "0",
@@ -173,12 +177,12 @@
         "Post_Effects_Back::Vignette::Debug": "0",
         "Post_Effects_Back::Vignette::Enabled": "0",
         "Post_Effects_Back::Vignette::Inner": "0",
-        "Post_Effects_Back::Vignette::Only alpha": "0",
-        "Post_Effects_Back::Vignette::Outter": "0",
+        "Post_Effects_Back::Vignette::Only Alpha": "0",
+        "Post_Effects_Back::Vignette::Outer": "0",
         "Post_Effects_Back::Vignette::Power": "0",
         "Post_Effects_Back::Vignette::Rotation": "0",
         "Post_Effects_Front::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Front::Bloom::Debug blur": "0",
+        "Post_Effects_Front::Bloom::Debug Blur": "0",
         "Post_Effects_Front::Bloom::Enabled": "0",
         "Post_Effects_Front::Bloom::Num Passes": "0",
         "Post_Effects_Front::Bloom::Sigma": "0",
@@ -190,8 +194,8 @@
         "Post_Effects_Front::Vignette::Debug": "0",
         "Post_Effects_Front::Vignette::Enabled": "0",
         "Post_Effects_Front::Vignette::Inner": "0",
-        "Post_Effects_Front::Vignette::Only alpha": "0",
-        "Post_Effects_Front::Vignette::Outter": "0",
+        "Post_Effects_Front::Vignette::Only Alpha": "0",
+        "Post_Effects_Front::Vignette::Outer": "0",
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
@@ -200,7 +204,7 @@
         "Post Effects Back": {
             "Bloom": {
                 "Brightness Threshold": "1",
-                "Debug blur": "0",
+                "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "0.9"
@@ -216,8 +220,8 @@
                 "Debug": "0",
                 "Enabled": "0",
                 "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
+                "Only Alpha": "1",
+                "Outer": "1.1",
                 "Power": "1.1",
                 "Rotation": "0"
             }
@@ -225,7 +229,7 @@
         "Post Effects Front": {
             "Bloom": {
                 "Brightness Threshold": "1",
-                "Debug blur": "0",
+                "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "0.9"
@@ -241,8 +245,8 @@
                 "Debug": "0",
                 "Enabled": "0",
                 "Inner": "0.8",
-                "Only alpha": "1",
-                "Outter": "1.1",
+                "Only Alpha": "1",
+                "Outer": "1.1",
                 "Power": "1.1",
                 "Rotation": "0"
             }

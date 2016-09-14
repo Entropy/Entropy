@@ -19,6 +19,10 @@
         {
             "preset": "EAGLE",
             "scene": "Interlude"
+        },
+        {
+            "preset": "Expand_0908",
+            "scene": "Surveys"
         }
     ]
 }
