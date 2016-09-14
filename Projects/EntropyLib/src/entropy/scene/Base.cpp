@@ -452,10 +452,11 @@ namespace entropy
 							ImGui::SameLine();
 							ofxPreset::Gui::AddParameter(it.second.autoDraw);
 						}
-						ofxPreset::Gui::AddParameter(it.second.alphaBlend);
+						static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
+						ofxPreset::Gui::AddRadio(it.second.blendMode, blendLabels, 3);
 						ofxPreset::Gui::AddParameter(it.second.depthTest);
-						static const vector<string> labels{ "None", "Back", "Front" };
-						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
+						static const vector<string> cullLabels{ "None", "Back", "Front" };
+						ofxPreset::Gui::AddRadio(it.second.cullFace, cullLabels, 3);
 						ofxPreset::Gui::AddParameter(it.second.color);
 						ofxPreset::Gui::AddParameter(it.second.alpha);
 						ofxPreset::Gui::AddParameter(it.second.size);

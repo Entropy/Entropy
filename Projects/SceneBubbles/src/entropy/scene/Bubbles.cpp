@@ -158,15 +158,11 @@ namespace entropy
 				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
 				{
 					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
-					if (this->sphereGeom.enabled)
-					{
-						ImGui::SameLine();
-						ofxPreset::Gui::AddParameter(this->sphereGeom.autoDraw);
-					}
-					ofxPreset::Gui::AddParameter(this->sphereGeom.alphaBlend);
+					static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
+					ofxPreset::Gui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
-					static const vector<string> labels{ "None", "Back", "Front" };
-					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, labels, 3);
+					static const vector<string> cullLabels{ "None", "Back", "Front" };
+					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
 					ofxPreset::Gui::AddParameter(this->parameters.sphere.maskMix);
