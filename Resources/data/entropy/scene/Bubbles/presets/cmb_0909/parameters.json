@@ -47,12 +47,12 @@
                 "Enabled": "1",
                 "Force Multiplier": "0.8",
                 "Force Random": "0.2",
-                "Max Age": "5",
+                "Max Age": "10",
                 "Max Distance": "0.15",
                 "Max Links": "3",
                 "Min Distance": "0.01",
                 "Resolution": "8",
-                "World Bounds": "800"
+                "World Bounds": "6000"
             },
             "Damping": "0.999",
             "Draw Back": "1",
