@@ -17,7 +17,8 @@ namespace entropy
 		public:
 			PoolGL2D();
 
-			void setup() override;
+			void init() override;
+			void resize() override;
 
 			void reset() override;
 			void draw() override;

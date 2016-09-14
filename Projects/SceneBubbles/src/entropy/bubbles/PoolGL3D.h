@@ -24,7 +24,8 @@ namespace entropy
 		public:
 			PoolGL3D();
 
-			void setup() override;
+			void init() override;
+			void resize() override;
 
 			void reset() override;
 			void update(double dt) override;

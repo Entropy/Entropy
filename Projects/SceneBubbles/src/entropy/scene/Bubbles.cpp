@@ -22,10 +22,10 @@ namespace entropy
 		{
 			// Init the pools.
 			this->pool2D.setDimensions(glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front)));
-			this->pool2D.setup();
+			this->pool2D.init();
 
 			this->pool3D.setDimensions(glm::vec3(256.0f));
-			this->pool3D.setup();
+			this->pool3D.init();
 
 			// Init the sphere.
 			this->parameters.add(this->sphereGeom.parameters);
