@@ -71,7 +71,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL2D::addDrop()
 		{
-			this->fbos[this->prevIdx].begin();
+			this->fbos[this->prev2Idx].begin();
 			{
 				ofDisableAlphaBlending();
 
@@ -91,30 +91,30 @@ namespace entropy
 				}
 				ofPopMatrix();
 			}
-			this->fbos[this->prevIdx].end();
+			this->fbos[this->prev2Idx].end();
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL2D::stepRipple()
 		{
-			this->fbos[this->tempIdx].begin();
+			this->fbos[this->currIdx].begin();
 			{
 				this->shader.begin();
 				this->shader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-				this->shader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx], 1);
-				this->shader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx], 2);
+				this->shader.setUniformTexture("uPrevBuffer", this->textures[this->prev2Idx], 1);
+				this->shader.setUniformTexture("uCurrBuffer", this->textures[this->prevIdx], 2);
 				{
 					this->mesh.draw();
 				}
 				this->shader.end();
 			}
-			this->fbos[this->tempIdx].end();
+			this->fbos[this->currIdx].end();
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL2D::copyResult()
 		{
-			this->fbos[this->currIdx].begin();
+			/*this->fbos[this->currIdx].begin();
 			{
 				this->textures[this->tempIdx].bind();
 				{
@@ -122,18 +122,19 @@ namespace entropy
 				}
 				this->textures[this->tempIdx].unbind();
 			}
-			this->fbos[this->currIdx].end();
+			this->fbos[this->currIdx].end();*/
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL2D::draw()
 		{
+			///cout << prev2Idx << ", " << prevIdx << ", " << currIdx << endl;
 			ofPushStyle();
 			{
 				ofEnableAlphaBlending();
 				ofSetColor(255, this->alpha * 255);
 
-				this->textures[this->prevIdx].draw(0, 0);
+				this->textures[this->currIdx].draw(0, 0);
 			}
 			ofPopStyle();
 		}
@@ -141,7 +142,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const ofTexture & PoolGL2D::getTexture() const
 		{
-			return this->textures[this->prevIdx];
+			return this->textures[this->currIdx];
 		}
 	}
 }

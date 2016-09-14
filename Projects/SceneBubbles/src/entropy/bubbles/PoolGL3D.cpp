@@ -115,7 +115,7 @@ namespace entropy
 			const auto burstPos = glm::vec3(ofRandom(this->dimensions.x), ofRandom(this->dimensions.y), ofRandom(this->dimensions.z));
 			static const auto burstThickness = 1.0f;
 			
-			this->fbos[this->prevIdx].begin();
+			this->fbos[this->prev2Idx].begin();
 			{
 				ofEnableAlphaBlending();
 				ofSetColor((ofRandomuf() < 0.5 ? this->dropColor1.get() : this->dropColor2.get()));
@@ -137,7 +137,7 @@ namespace entropy
 				}
 				this->dropShader.end();
 			}
-			this->fbos[this->prevIdx].end();
+			this->fbos[this->prev2Idx].end();
 
 			if (this->bursts.enabled)
 			{
@@ -152,15 +152,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::stepRipple()
 		{
-			this->fbos[this->tempIdx].begin();
+			this->fbos[this->currIdx].begin();
 			{
 				ofDisableAlphaBlending();
 				
 				this->rippleShader.begin();
 				{
 					this->rippleShader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 1);
-					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx].texData.textureTarget, this->textures[this->currIdx].texData.textureID, 2);
+					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prev2Idx].texData.textureTarget, this->textures[this->prev2Idx].texData.textureID, 1);
+					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 2);
 					this->rippleShader.setUniform3f("uDims", this->dimensions);
 
 					for (int i = 0; i < this->dimensions.z; ++i)
@@ -171,13 +171,14 @@ namespace entropy
 				}
 				this->rippleShader.end();
 			}
-			this->fbos[this->tempIdx].end();
+			this->fbos[this->currIdx].end();
+			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::copyResult()
 		{
-			this->fbos[this->currIdx].begin();
+			/*this->fbos[this->currIdx].begin();
 			{
 				ofDisableAlphaBlending();
 
@@ -195,12 +196,12 @@ namespace entropy
 				}
 				this->copyShader.end();
 			}
-			this->fbos[this->currIdx].end();
+			this->fbos[this->currIdx].end();*/
 
 			//this->textures[this->tempIdx].copyTo(this->copyBuffer);
 			//this->textures[this->currIdx].loadData(this->copyBuffer, ofGetGLFormatFromInternal(this->textures[this->tempIdx].texData.glInternalFormat));
 
-			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
+			//this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
 		}
 
@@ -279,7 +280,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const ofxTexture & PoolGL3D::getTexture() const
 		{
-			return this->textures[this->prevIdx];
+			return this->textures[this->currIdx];
 		}
 	}
 }

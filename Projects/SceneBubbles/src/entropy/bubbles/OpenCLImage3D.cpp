@@ -7,6 +7,7 @@
 //
 
 #include "OpenCLImage3D.h"
+#ifdef COMPUTE_CL_3D
 
 namespace ent
 {
@@ -83,3 +84,4 @@ namespace ent
         delete [] data;
     }
 }
+#endif

@@ -7,6 +7,8 @@
 //
 
 #pragma once
+#include "entropy/bubbles/Constants.h"
+#ifdef COMPUTE_CL_3D
 
 #include "MSAOpenCL.h"
 #include "ofxTexture3d.h"
@@ -45,3 +47,4 @@ namespace ent
         ofxTexture3d *texture3d;
     };
 }
+#endif

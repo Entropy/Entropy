@@ -63,9 +63,9 @@ namespace entropy
 
 			glm::vec3 dimensions;
 
-			int currIdx;
+			int prev2Idx;
 			int prevIdx;
-			int tempIdx;
+			int currIdx;
 		};
 	}
 }

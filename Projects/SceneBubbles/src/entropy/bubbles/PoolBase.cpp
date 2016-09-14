@@ -18,9 +18,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolBase::reset()
 		{
-			this->prevIdx = 0;
-			this->currIdx = 1;
-			this->tempIdx = 2;
+			this->prev2Idx = 0;
+			this->prevIdx = 1;
+			this->currIdx = 2;
 
 			this->resetSimulation = false;
 		}
@@ -35,6 +35,12 @@ namespace entropy
 
 			if (this->runSimulation && (this->drawBack || this->drawFront))
 			{
+				if ((ofGetFrameNum() % this->rippleRate) == 0)
+				{
+					std::swap(this->currIdx, this->prev2Idx);
+					std::swap(this->prevIdx, this->prev2Idx);
+				}
+
 				if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
 				{
 					this->addDrop();
@@ -43,9 +49,7 @@ namespace entropy
 				if ((ofGetFrameNum() % this->rippleRate) == 0)
 				{
 					this->stepRipple();
-					this->copyResult();
-
-					std::swap(this->currIdx, this->prevIdx);
+					//this->copyResult();
 				}
 			}
 		}
