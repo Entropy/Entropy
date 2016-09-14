@@ -8,3 +8,4 @@
 //#define COMPUTE_CL_3D 1
 
 #define USE_TEX_ARRAY 1
+#define COPY_SHADER 0

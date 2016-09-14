@@ -75,17 +75,31 @@ namespace entropy
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, 0.0f, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(0.0, this->dimensions.y, 0.0f));
 
-			this->mesh.addTexCoord(glm::vec2(0.0f, 0.0f));
-			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.0f));
-			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
-
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, 0.0f, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, this->dimensions.y, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(0.0f, this->dimensions.y, 0.0f));
 
-			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.0f));
+
+#if COPY_SHADER
+
+			this->mesh.addTexCoord(glm::vec2(0.0f, 0.f));
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.f));
+			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
+
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.f));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
+#else
+
+
+			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(0.0f, 0.f));
+
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
+			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.f));
+			this->mesh.addTexCoord(glm::vec2(0.0f, 0.f));
+#endif
 		}
 
 		//--------------------------------------------------------------
@@ -156,12 +170,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::stepRipple()
 		{
+			static bool flip = 0;
 			this->fbos[this->tempIdx].begin();
 			{
 				ofDisableAlphaBlending();
 				
 				this->rippleShader.begin();
 				{
+					this->rippleShader.setUniform1f("flip", flip);
 					this->rippleShader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 1);
 					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx].texData.textureTarget, this->textures[this->currIdx].texData.textureID, 2);
@@ -176,11 +192,13 @@ namespace entropy
 				this->rippleShader.end();
 			}
 			this->fbos[this->tempIdx].end();
+			//flip = !flip;
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::copyResult()
 		{
+#if COPY_SHADER
 			this->fbos[this->currIdx].begin();
 			{
 				ofDisableAlphaBlending();
@@ -200,10 +218,16 @@ namespace entropy
 				this->copyShader.end();
 			}
 			this->fbos[this->currIdx].end();
-
+#else
 			//this->textures[this->tempIdx].copyTo(this->copyBuffer);
 			//this->textures[this->currIdx].loadData(this->copyBuffer, ofGetGLFormatFromInternal(this->textures[this->tempIdx].texData.glInternalFormat));
 
+			auto & src = this->textures[this->tempIdx];
+			auto & dst = this->textures[this->currIdx];
+			glCopyImageSubData( src.texData.textureID, src.texData.textureTarget, 0, 0, 0, 0,
+								dst.texData.textureID, dst.texData.textureTarget, 0, 0, 0, 0,
+								src.texData.width, src.texData.height, src.texData.depth );
+#endif
 			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
 		}
