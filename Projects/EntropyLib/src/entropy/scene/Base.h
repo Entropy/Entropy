@@ -145,6 +145,9 @@ namespace entropy
 			string currPreset;
 			vector<string> presets;
 
+			// Helpers
+			void loadTextureImage(const std::string & filePath, ofTexture & texture);
+
 			// Parameters
 			virtual ofParameterGroup & getParameters() = 0;
 

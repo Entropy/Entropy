@@ -49,23 +49,8 @@ namespace entropy
 			this->galaxyQuad.addTexCoord(glm::vec2(1.0f, 0.0f));
 
 			// Build the texture.
-			//entropy::survey::CreateGaussianMapTexture(texture, 32, GL_TEXTURE_2D);
-			const auto filePath = this->getAssetsPath("images/sprites.png");
-			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
-			ofPixels pixels;
-			ofLoadImage(pixels, filePath);
-			if (!pixels.isAllocated())
-			{
-				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
-			}
-
-			bool wasUsingArbTex = ofGetUsingArbTex();
-			ofDisableArbTex();
-			{
-				this->texture.enableMipmap();
-				this->texture.loadData(pixels);
-			}
-			if (wasUsingArbTex) ofEnableArbTex();
+			//entropy::survey::CreateGaussianMapTexture(this->spriteTexture, 32, GL_TEXTURE_2D);
+			this->loadTextureImage(this->getAssetsPath("images/sprites.png"), this->spriteTexture);
 
 			// Load the shader.
 			this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
@@ -79,13 +64,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Surveys::clear()
 		{
-			// Clear the data.
+			this->spriteShader.unload();
+
 			this->dataSetBoss.clear();
 			this->dataSetDes.clear();
 			this->dataSetVizir.clear();
 
-			// Clear the texture.
-			texture.clear();
+			this->spriteTexture.clear();
 		}
 
 		//--------------------------------------------------------------
@@ -149,7 +134,7 @@ namespace entropy
 				ofDisableDepthTest();
 
 				this->spriteShader.begin();
-				this->spriteShader.setUniformTexture("uTex0", texture, 1);
+				this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
 				this->spriteShader.setUniform1f("uPointSize", parameters.pointSize);
 				ofEnablePointSprites();
 				{

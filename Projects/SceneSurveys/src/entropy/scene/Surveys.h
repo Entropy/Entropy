@@ -59,7 +59,7 @@ namespace entropy
 			ofVboMesh galaxyQuad;
 
 			ofShader spriteShader;
-			ofTexture texture;
+			ofTexture spriteTexture;
 
 			void drawDataSet(LayoutParameters & parameters);
 

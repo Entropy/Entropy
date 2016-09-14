@@ -907,6 +907,25 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::loadTextureImage(const std::string & filePath, ofTexture & texture)
+		{
+			ofPixels pixels;
+			ofLoadImage(pixels, filePath);
+			if (!pixels.isAllocated())
+			{
+				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
+			}
+
+			bool wasUsingArbTex = ofGetUsingArbTex();
+			ofDisableArbTex();
+			{
+				texture.enableMipmap();
+				texture.loadData(pixels);
+			}
+			if (wasUsingArbTex) ofEnableArbTex();
+		}
+
+		//--------------------------------------------------------------
 		void Base::populateMappings(const ofParameterGroup & group, const std::string & timelinePageName)
 		{
 			for (const auto & parameter : group)

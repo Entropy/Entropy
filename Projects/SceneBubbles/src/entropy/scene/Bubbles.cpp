@@ -30,22 +30,7 @@ namespace entropy
 			// Init the sphere.
 			this->parameters.add(this->sphereGeom.parameters);
 
-			const auto filePath = this->getAssetsPath("images/Planck-CMB-SMICA.tif");
-			//const auto filePath = this->getAssetsPath("images/Gaia_star_density_image_log.png");
-			ofPixels pixels;
-			ofLoadImage(pixels, filePath);
-			if (!pixels.isAllocated())
-			{
-				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
-			}
-
-			bool wasUsingArbTex = ofGetUsingArbTex();
-			ofDisableArbTex();
-			{
-				this->sphereTexture.enableMipmap();
-				this->sphereTexture.loadData(pixels);
-			}
-			if (wasUsingArbTex) ofEnableArbTex();
+			this->loadTextureImage(this->getAssetsPath("images/Planck-CMB-SMICA.tif"), this->sphereTexture);
 
 			//this->sphereShader.load("shaders/passthru.vert", "shaders/reveal.frag");
 			this->sphereShader.load("shaders/reveal.vert", "shaders/reveal.frag");
