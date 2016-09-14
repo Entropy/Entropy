@@ -312,7 +312,7 @@ namespace entropy
 
 			if (this->cameraTrack)
 			{
-				ofLogWarning(__FUNCTION__) << "Camera track already exists.";
+				//ofLogWarning(__FUNCTION__) << "Camera track already exists.";
 				return;
 			}
 
