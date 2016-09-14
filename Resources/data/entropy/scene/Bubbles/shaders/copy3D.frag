@@ -21,5 +21,5 @@ void main()
 #else
 	vec3 texCoord = vec3(gTexCoord / uDims.xy, gl_Layer / uDims.z);
 #endif
-	fragColor = texture(uCopyBuffer, texCoord);
+	fragColor = texelFetch(uCopyBuffer, ivec3(ivec2(gTexCoord), gl_Layer), 0);
 }
