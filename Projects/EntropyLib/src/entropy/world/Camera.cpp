@@ -292,7 +292,9 @@ namespace entropy
 			{
 				this->setAttachedToParent(false);
 			}
-			this->easyCam.setTransformMatrix(this->parent->getEasyCam().getGlobalTransformMatrix());
+			this->easyCam.setPosition(this->parent->getEasyCam().getPosition());
+			this->easyCam.setOrientation(this->parent->getEasyCam().getOrientationQuat());
+			this->easyCam.setScale(this->parent->getEasyCam().getScale());
 			if (wasAttached)
 			{
 				this->setAttachedToParent(true);
