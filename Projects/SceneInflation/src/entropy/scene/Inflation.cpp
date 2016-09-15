@@ -61,6 +61,9 @@ namespace entropy
 			for(size_t i=0;i<postBigBangColors.size();i++){
 				postBigBangColors[i] = noiseField.octaves[i].color;
 			}
+
+			transitionParticles.setup();
+			clearParticlesVel.loadCompute("shaders/compute_clear_color.glsl");
 		}
 
 		void Inflation::resizeBack(ofResizeEventArgs & args){
@@ -144,6 +147,7 @@ namespace entropy
 							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], pct * 0.5);
 						}
 					}break;
+
 					case BigBang:{
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
@@ -159,6 +163,7 @@ namespace entropy
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					}break;
+
 					case Expansion:
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
@@ -180,7 +185,7 @@ namespace entropy
 							}
 						}
 					break;
-					case ExpansionTransition:
+					case ExpansionTransition:{
 						float t_EndIn = t_transition + parameters.bbTransitionIn;
 						float t_EndPlateau = t_EndIn + parameters.bbTransitionPlateau;
 						float t_EndOut = t_EndPlateau + parameters.bbTransitionOut;
@@ -206,11 +211,25 @@ namespace entropy
 							scale  += dt * parameters.Ht;
 						}
 						noiseField.scale = scale;
-					break;
+					}break;
+
+					case ParticlesTransition:{
+						float alphaParticles = (now - t_from_particles) / parameters.transitionParticlesDuration;
+						alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
+						transitionParticles.color = ofFloatColor(alphaParticles, alphaParticles);
+
+						float alphaBlobs = (now - t_from_particles) / parameters.transitionBlobsOutDuration;
+						alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
+						//noiseField.speedFactor = alphaBlobs;
+						renderers[entropy::render::Layout::Back].alphaFactor = alphaBlobs;
+					}break;
 				}
 
 				noiseField.update();
 				gpuMarchingCubes.update(noiseField.getTexture());
+
+
+				//transitionParticles.color = ofFloatColor(transitionParticles.color, 0.0);
 			}
 		}
 
@@ -277,6 +296,22 @@ namespace entropy
 			return true;
 		}
 
+		bool Inflation::triggerParticles(){
+			auto vertices = this->gpuMarchingCubes.getNumVertices();
+			auto size = vertices * sizeof(glm::vec4) * 2;
+			transitionParticlesPosition.allocate(size, GL_STATIC_DRAW);
+			this->gpuMarchingCubes.getGeometry().getVertexBuffer().copyTo(transitionParticlesPosition,0,0,size);
+			clearParticlesVel.begin();
+			transitionParticlesPosition.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+			clearParticlesVel.dispatchCompute(vertices / 1024 + 1, 1, 1);
+			clearParticlesVel.end();
+
+			this->transitionParticles.setTotalVertices(vertices);
+			state = ParticlesTransition;
+			t_from_particles = now;
+			return true;
+		}
+
 		//--------------------------------------------------------------
 		void Inflation::drawScene(render::Layout layout)
 		{
@@ -306,6 +341,14 @@ namespace entropy
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].clip = false;
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+				break;
+			case ParticlesTransition:
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+				renderers[layout].clip = false;
+				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+				if(layout==render::Layout::Back){
+					this->transitionParticles.draw(transitionParticlesPosition, noiseField.getTexture(), now);
+				}
 				break;
 			}
 
@@ -409,11 +452,16 @@ namespace entropy
 				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
 				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
 				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
+				ofxPreset::Gui::AddParameter(this->parameters.transitionParticlesDuration);
+				ofxPreset::Gui::AddParameter(this->parameters.transitionBlobsOutDuration);
 				if(ImGui::Button("Trigger bigbang")){
 					this->triggerBigBang();
 				}
 				if(ImGui::Button("Trigger transition")){
 					this->triggerTransition();
+				}
+				if(ImGui::Button("Trigger particles")){
+					this->triggerParticles();
 				}
 
 				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
@@ -498,6 +546,7 @@ namespace entropy
 				}
 
 				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
+				ofxPreset::Gui::AddGroup(this->transitionParticles.parameters, settings);
 			}
 			ofxPreset::Gui::EndWindow(settings);
 		}

@@ -67,7 +67,7 @@ namespace entropy
 			auto i = 0;
 			for (auto & octave : octaves) {
 				if (octave.advanceTime) {
-					octave.now += noiseSpeed * ofGetLastFrameTime();
+					octave.now += noiseSpeed * speedFactor * ofGetLastFrameTime();
 				}
 			}
 

@@ -21,12 +21,16 @@ Project{
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
             "../../Resources/data/entropy/scene/Inflation/presets/_autosave/parameters.json",
+            "../../Resources/data/entropy/scene/Inflation/shaders/compute_clear_color.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
+            "../../Resources/data/entropy/scene/Inflation/shaders/compute_particles.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/frag_blur.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/frag_bright.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/frag_tonemap.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/marching_cubes_geom.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/passthrough_vert.glsl",
+            "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.frag",
+            "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.vert",
             "../../Resources/data/entropy/scene/Inflation/shaders/vert_blur.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/vert_full_quad.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
@@ -36,6 +40,8 @@ Project{
             "src/entropy/inflation/GPUMarchingCubes.h",
             "src/entropy/inflation/NoiseField.cpp",
             "src/entropy/inflation/NoiseField.h",
+            "src/entropy/inflation/TransitionParticles.cpp",
+            "src/entropy/inflation/TransitionParticles.h",
             "src/entropy/scene/Inflation.cpp",
             "src/entropy/scene/Inflation.h",
             "src/main.cpp",
@@ -58,6 +64,7 @@ Project{
             '../../addons/ofxMSATimer',
             '../../addons/ofxWarp',
             '../../addons/ofxEasing',
+            '../../addons/ofxObjLoader',
             'ofxXmlSettings',
         ]
 
@@ -92,5 +99,7 @@ Project{
         }
     }
 
+    property bool usePoco: false;
+    property bool makeOF: true;
     references: [FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/openFrameworks.qbs")]
 }

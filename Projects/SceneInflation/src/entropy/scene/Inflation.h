@@ -5,6 +5,7 @@
 #include "entropy/scene/Base.h"
 #include "entropy/inflation/NoiseField.h"
 #include "entropy/inflation/GPUMarchingCubes.h"
+#include "entropy/inflation/TransitionParticles.h"
 #include "entropy/render/WireframeFillRenderer.h"
 
 namespace entropy
@@ -47,12 +48,16 @@ namespace entropy
 
 			bool triggerBigBang();
 			bool triggerTransition();
+			bool triggerParticles();
 
 			void drawScene(render::Layout layout);
 			void resizeBack(ofResizeEventArgs & args) override;
 			void resizeFront(ofResizeEventArgs & args) override;
 
 			inflation::GPUMarchingCubes gpuMarchingCubes;
+			TransitionParticles transitionParticles;
+			ofBufferObject transitionParticlesPosition;
+			ofShader clearParticlesVel;
 
 			std::map<render::Layout, render::WireframeFillRenderer> renderers;
 
@@ -60,7 +65,7 @@ namespace entropy
 			inflation::NoiseField noiseField;
 
 			uint64_t timeToSetIso;
-            uint64_t timeToUpdate;
+			uint64_t timeToUpdate;
 
             //ofVbo box;
 
@@ -70,12 +75,14 @@ namespace entropy
 				BigBang,
 				Expansion,
 				ExpansionTransition,
+				ParticlesTransition,
 			}state;
 
 			double now = 0.0;
 			double t_bigbang = 0.0;
 			double t_from_bigbang = 0.0;
 			double t_transition = 0.0;
+			double t_from_particles = 0.0;
 			float scale = 1;
 			float cameraDistanceBeforeBB;
 			bool octavesResetDuringTransition=false;
@@ -110,6 +117,8 @@ namespace entropy
 				ofParameter<float> bbTransitionPlateau{"inflation transition plateau, sec.", 0.3, 0.f, 1.f};
 				ofParameter<float> bbTransitionOut{"inflation transition out, sec.", 2, 0.f, 3.f};
 				ofParameter<ofFloatColor> bbTransitionColor{"inflation transition bg color", ofFloatColor::fromHex(0x91a5a3,1)};
+				ofParameter<float> transitionParticlesDuration{"transition particles in. (s)", 1, 0, 5};
+				ofParameter<float> transitionBlobsOutDuration{"transition blobs out. (s)", 1, 0, 5};
 				ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
 				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
 				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
@@ -142,6 +151,8 @@ namespace entropy
 					bbTransitionPlateau,
 					bbTransitionOut,
 					bbTransitionColor,
+					transitionParticlesDuration,
+					transitionBlobsOutDuration,
 					HtBB,
 					HtPostBB,
 					Ht,
