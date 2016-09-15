@@ -37,6 +37,7 @@ namespace entropy
 			ofParameter<bool> wobblyClip{ "Wobbly Clip", false };
 			ofParameter<float> wireframeAlpha{ "Wireframe Alpha", 0.25f, 0.f, 1.f };
 			ofParameter<float> fillAlpha{ "Fill Alpha", 0.5f, 0.f, 1.f };
+			ofParameter<float> alphaFactor{"Alpha factor", 1.0f, 0.f, 1.f};
 			ofParameter<bool> shadeNormals{ "Shade Normals", false };
 			ofParameter<bool> useLights{ "Use Lights", false };
 

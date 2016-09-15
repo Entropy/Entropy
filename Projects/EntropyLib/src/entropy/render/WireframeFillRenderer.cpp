@@ -146,7 +146,7 @@ namespace entropy
 				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
 				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
 				shaderFill.setUniform1f("fadePower", fadePower);
-				shaderFill.setUniform1f("alpha", fillAlpha);
+				shaderFill.setUniform1f("alpha", fillAlpha * alphaFactor);
 				shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
 				shaderFill.setUniform1f("screenW", ofGetViewportWidth());
 				shaderFill.setUniform1f("screenH", ofGetViewportHeight());
@@ -192,7 +192,7 @@ namespace entropy
 					shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
 					shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
 					shaderWireframe.setUniform1f("fadePower", fadePower);
-					shaderWireframe.setUniform1f("alpha", wireframeAlpha);
+					shaderWireframe.setUniform1f("alpha", wireframeAlpha * alphaFactor);
 					shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
 					shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
 					shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
@@ -228,7 +228,7 @@ namespace entropy
 				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
 				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
 				shaderFill.setUniform1f("fadePower", fadePower);
-				shaderFill.setUniform1f("alpha", fillAlpha);
+				shaderFill.setUniform1f("alpha", fillAlpha * alphaFactor);
 				shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
 				shaderFill.setUniform1f("screenW", ofGetViewportWidth());
 				shaderFill.setUniform1f("screenH", ofGetViewportHeight());
@@ -268,7 +268,7 @@ namespace entropy
 					shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
 					shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
 					shaderWireframe.setUniform1f("fadePower", fadePower);
-					shaderWireframe.setUniform1f("alpha", wireframeAlpha);
+					shaderWireframe.setUniform1f("alpha", wireframeAlpha * alphaFactor);
 					shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
 					shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
 					shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
