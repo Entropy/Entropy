@@ -1,5 +1,7 @@
 #include "Sphere.h"
 
+#include "ofGraphics.h"
+
 namespace entropy
 {
 	namespace geom
@@ -38,6 +40,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Sphere::draw()
+		{
+			ofPushMatrix();
+			{
+				ofRotateXRad(this->orientation.get().x);
+				ofRotateYRad(this->orientation.get().y);
+				ofRotateZRad(this->orientation.get().z);
+
+				Shape::draw();
+			}
+			ofPopMatrix();
+		}
+
+		//--------------------------------------------------------------
 		void Sphere::rebuildMesh()
 		{
 			this->clear();
@@ -47,16 +63,16 @@ namespace entropy
 			const int vertResolution = static_cast<int>(ofMap(this->arcVert, 0.0f, 1.0f, 0, this->resolution));
 			const int horzResolution = static_cast<int>(ofMap(this->arcHorz, 0.0f, 1.0f, 0, doubleResolution));
 
-			const float polarInc = PI / this->resolution;
-			const float azimInc = TWO_PI / doubleResolution;
+			const float polarInc = glm::pi<float>() / this->resolution;
+			const float azimInc = glm::two_pi<float>() / doubleResolution;
 
 			glm::vec3 vertex;
 			glm::vec2 texcoord;
 
 			for (int i = 0; i < vertResolution + 1; ++i)
 			{
-				float tr = sin(PI - i * polarInc);
-				float ny = cos(PI - i * polarInc);
+				float tr = sin(glm::pi<float>() - i * polarInc);
+				float ny = cos(glm::pi<float>() - i * polarInc);
 
 				texcoord.y = i / static_cast<float>(this->resolution);
 

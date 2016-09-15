@@ -34,6 +34,14 @@ namespace entropy
 			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/copy3D.frag";
 			this->copyShader.setup(shaderSettings);
 
+			// Init volumetrics.
+#if USE_TEX_ARRAY
+			this->volumetrics.setup(&this->textures[0], glm::vec3(1.0f));
+#else
+			this->volumetricsShader.load("shaders/volumetrics.vert", "shaders/volumetrics.frag");
+			this->volumetrics.setup(&this->textures[0], glm::vec3(1.0f), this->volumetricsShader);
+#endif
+
 			// Init bursts.
 			this->bursts.init();
 
@@ -63,7 +71,7 @@ namespace entropy
 
 			this->copyBuffer.allocate(this->dimensions.x * this->dimensions.y * this->dimensions.z * 2 * 4, GL_STATIC_DRAW);
 
-			this->volumetrics.setup(&this->textures[0], glm::vec3(1.0f));
+			this->volumetrics.updateTexture(&this->textures[0], glm::vec3(1.0f));
 
 			// Build a mesh to render a quad.
 			const auto origin = glm::vec3(0.0f, GetCanvasHeight(render::Layout::Back) - this->dimensions.y, 0.0f);
@@ -79,9 +87,7 @@ namespace entropy
 			this->mesh.addVertex(origin + glm::vec3(this->dimensions.x, this->dimensions.y, 0.0f));
 			this->mesh.addVertex(origin + glm::vec3(0.0f, this->dimensions.y, 0.0f));
 
-
-#if COPY_SHADER
-
+#if USE_COPY_SHADER
 			this->mesh.addTexCoord(glm::vec2(0.0f, 0.f));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, 0.f));
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
@@ -90,8 +96,6 @@ namespace entropy
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 #else
-
-
 			this->mesh.addTexCoord(glm::vec2(0.0f, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(this->dimensions.x, this->dimensions.y));
 			this->mesh.addTexCoord(glm::vec2(0.0f, 0.f));
@@ -161,7 +165,9 @@ namespace entropy
 			{
 				static const auto halfVec = glm::vec3(0.5f);
 				auto worldPos = burstPos / this->dimensions;
+#if USE_COPY_SHADER
 				worldPos.y = 1.0f - worldPos.y;
+#endif
 				worldPos = (worldPos - halfVec) * this->volumeSize.get();
 				this->bursts.addDrop(worldPos, this->radius);
 			}
@@ -195,7 +201,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::copyResult()
 		{
-#if COPY_SHADER
+#if USE_COPY_SHADER
 			this->fbos[this->currIdx].begin();
 			{
 				ofDisableAlphaBlending();

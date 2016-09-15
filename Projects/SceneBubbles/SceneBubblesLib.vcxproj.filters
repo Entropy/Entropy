@@ -94,5 +94,11 @@
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.frag">
       <Filter>shaders</Filter>
     </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

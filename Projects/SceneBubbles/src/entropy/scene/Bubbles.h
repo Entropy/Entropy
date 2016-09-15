@@ -76,10 +76,9 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<float> orientation{ "Orientation", 0.0f, 0.0f, 360.0f };
 					ofParameter<float> maskMix{ "Mask Mix", 1.0f, 0.0f, 1.0f };
 
-					PARAM_DECLARE("SphereExtra", orientation, maskMix);
+					PARAM_DECLARE("SphereExtra", maskMix);
 				} sphere;
 				
 				PARAM_DECLARE("Bubbles", sphere);

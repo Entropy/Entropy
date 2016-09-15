@@ -1,5 +1,6 @@
 #pragma once
 
+#include "entropy/geom/Sphere.h"
 #include "entropy/scene/Base.h"
 #include "entropy/surveys/DataSet.h"
 
@@ -39,7 +40,7 @@ namespace entropy
 				ofParameter<bool> renderDes{ "Render DES", false };
 				ofParameter<bool> renderVizir{ "Render ViziR", false };
 				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 100.0f };
-				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
+				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 32.0f };
 
 				PARAM_DECLARE("Back", 
 					renderBoss, 
@@ -56,10 +57,11 @@ namespace entropy
 			surveys::DataSet dataSetDes;
 			surveys::DataSet dataSetVizir;
 
-			ofVboMesh galaxyQuad;
+			geom::Sphere sphereGeom;
+			ofTexture sphereTexture;
 
 			ofShader spriteShader;
-			ofTexture texture;
+			ofTexture spriteTexture;
 
 			void drawDataSet(LayoutParameters & parameters);
 
@@ -69,22 +71,7 @@ namespace entropy
 				return this->parameters;
 			}
 
-			struct : ofParameterGroup
-			{
-				struct : ofParameterGroup
-				{
-					ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
-					ofParameter<float> scale{ "Scale", 1.0f, 0.0f, 10000.0f };
-					ofParameter<glm::vec3> orientation{ "Orientation", glm::vec3(0.0f), glm::vec3(-180.0f), glm::vec3(180.0f) };
-
-					PARAM_DECLARE("Galaxy", 
-						alpha, 
-						scale, 
-						orientation);
-				} galaxy;
-
-				PARAM_DECLARE("Surveys", galaxy);
-			} parameters;
+			ofParameterGroup parameters;
 		};
 	}
 }

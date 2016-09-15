@@ -211,5 +211,7 @@
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\reveal.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.vert" />
   </ItemGroup>
 </Project>

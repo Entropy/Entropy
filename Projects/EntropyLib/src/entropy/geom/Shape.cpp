@@ -11,9 +11,9 @@ namespace entropy
 			: meshDirty(true)
 			, colorDirty(true)
 		{
-			this->paramListeners.push_back(this->alphaBlend.newListener([this](bool & enabled)
+			this->paramListeners.push_back(this->blendMode.newListener([this](int & mode)
 			{
-				if (enabled)
+				if (mode > OF_BLENDMODE_DISABLED)
 				{
 					this->depthTest = false;
 				}
@@ -22,7 +22,7 @@ namespace entropy
 			{
 				if (enabled)
 				{
-					this->alphaBlend = false;
+					this->blendMode = OF_BLENDMODE_DISABLED;
 				}
 			}));
 			this->paramListeners.push_back(this->color.newListener([this](ofFloatColor &)
@@ -55,7 +55,7 @@ namespace entropy
 
 			ofPushStyle();
 			{
-				this->alphaBlend ? ofEnableAlphaBlending() : ofDisableAlphaBlending();
+				ofEnableBlendMode(static_cast<ofBlendMode>(this->blendMode.get()));
 				this->depthTest ? ofEnableDepthTest() : ofDisableDepthTest();
 
 				ofSetColor(this->color.get());

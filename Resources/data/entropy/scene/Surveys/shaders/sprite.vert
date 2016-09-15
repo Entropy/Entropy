@@ -4,6 +4,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
 uniform float uPointSize;
+uniform float uCutRadius;
 uniform float uMinRadius;
 uniform float uMaxRadius;
 uniform float uMinLatitude;
@@ -38,7 +39,8 @@ void main()
 	gl_PointSize = uPointSize * mass * attenuation;
 
 	// Enable fragment if we're within range.
-	if (uMinLongitude <= position.x && position.x <= uMaxLongitude &&
+	if (uCutRadius <= position.z &&
+		uMinLongitude <= position.x && position.x <= uMaxLongitude &&
 		uMinLatitude <= position.y && position.y <= uMaxLatitude)
 	{
 		vEnabled = 1;

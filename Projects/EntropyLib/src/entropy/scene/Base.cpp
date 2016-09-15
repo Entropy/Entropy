@@ -452,10 +452,11 @@ namespace entropy
 							ImGui::SameLine();
 							ofxPreset::Gui::AddParameter(it.second.autoDraw);
 						}
-						ofxPreset::Gui::AddParameter(it.second.alphaBlend);
+						static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
+						ofxPreset::Gui::AddRadio(it.second.blendMode, blendLabels, 3);
 						ofxPreset::Gui::AddParameter(it.second.depthTest);
-						static const vector<string> labels{ "None", "Back", "Front" };
-						ofxPreset::Gui::AddRadio(it.second.cullFace, labels, 3);
+						static const vector<string> cullLabels{ "None", "Back", "Front" };
+						ofxPreset::Gui::AddRadio(it.second.cullFace, cullLabels, 3);
 						ofxPreset::Gui::AddParameter(it.second.color);
 						ofxPreset::Gui::AddParameter(it.second.alpha);
 						ofxPreset::Gui::AddParameter(it.second.size);
@@ -903,6 +904,25 @@ namespace entropy
 					this->presets.push_back(presetsDir.getName(i));
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::loadTextureImage(const std::string & filePath, ofTexture & texture)
+		{
+			ofPixels pixels;
+			ofLoadImage(pixels, filePath);
+			if (!pixels.isAllocated())
+			{
+				ofLogError(__FUNCTION__) << "Could not load file at path " << filePath;
+			}
+
+			bool wasUsingArbTex = ofGetUsingArbTex();
+			ofDisableArbTex();
+			{
+				texture.enableMipmap();
+				texture.loadData(pixels);
+			}
+			if (wasUsingArbTex) ofEnableArbTex();
 		}
 
 		//--------------------------------------------------------------
