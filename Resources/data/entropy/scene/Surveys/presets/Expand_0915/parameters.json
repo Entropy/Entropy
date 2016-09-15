@@ -2,25 +2,25 @@
     "Boxes": {
         "Box Back": {
             "Alpha": "1",
-            "Alpha Blend": "0",
             "Auto Draw": "1",
+            "Blend Mode": "0",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
             "Depth Test": "1",
             "Edge Ratio": "0.01",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1",
             "Subdivisions": "1"
         },
         "Box Front": {
             "Alpha": "1",
-            "Alpha Blend": "0",
             "Auto Draw": "1",
+            "Blend Mode": "0",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
             "Depth Test": "1",
             "Edge Ratio": "0.01",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1",
             "Subdivisions": "1"
         }
@@ -34,13 +34,13 @@
             "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.0001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0280023",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.0159975",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 65641.2578125,
+                "distance": 65641.296875,
                 "drag": 0.899999976158142,
                 "farClip": 100000.0,
                 "forceAspectRatio": true,
@@ -54,7 +54,7 @@
                 "ortho": false,
                 "position": "13578.2, 39137.7, -50918.1",
                 "relativeYAxis": false,
-                "scale": "0.999899, 0.99996, 0.999878",
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
@@ -97,8 +97,8 @@
     },
     "Mappings": {
         "Box_Back::Alpha": "0",
-        "Box_Back::Alpha Blend": "0",
         "Box_Back::Auto Draw": "0",
+        "Box_Back::Blend Mode": "0",
         "Box_Back::Color": "0",
         "Box_Back::Cull Face": "0",
         "Box_Back::Depth Test": "0",
@@ -107,8 +107,8 @@
         "Box_Back::Size": "0",
         "Box_Back::Subdivisions": "0",
         "Box_Front::Alpha": "0",
-        "Box_Front::Alpha Blend": "0",
         "Box_Front::Auto Draw": "0",
+        "Box_Front::Blend Mode": "0",
         "Box_Front::Color": "0",
         "Box_Front::Cull Face": "0",
         "Box_Front::Depth Test": "0",
@@ -123,7 +123,7 @@
         "Camera_Back::Inherits Settings": "0",
         "Camera_Back::Mouse Control": "0",
         "Camera_Back::Near Clip": "0",
-        "Camera_Back::Pan Speed": "0",
+        "Camera_Back::Pan Speed": "1",
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
         "Camera_Back::Tilt Speed": "1",
@@ -198,8 +198,17 @@
         "Surveys::Front::Render DES": "0",
         "Surveys::Front::Render ViziR": "0",
         "Surveys::Front::Scale": "1",
-        "Surveys::Galaxy::Alpha": "0",
-        "Surveys::Galaxy::Scale": "0",
+        "Surveys::Sphere::Alpha": "1",
+        "Surveys::Sphere::Arc Horizontal": "0",
+        "Surveys::Sphere::Arc Vertical": "0",
+        "Surveys::Sphere::Auto Draw": "0",
+        "Surveys::Sphere::Blend Mode": "0",
+        "Surveys::Sphere::Color": "0",
+        "Surveys::Sphere::Cull Face": "0",
+        "Surveys::Sphere::Depth Test": "0",
+        "Surveys::Sphere::Enabled": "0",
+        "Surveys::Sphere::Radius": "0",
+        "Surveys::Sphere::Resolution": "0",
         "Surveys::ViziR::Color": "0",
         "Surveys::ViziR::Cut Radius": "0",
         "Surveys::ViziR::Max Latitude": "0",
@@ -220,7 +229,7 @@
                 "Sigma": "0.9"
             },
             "Color": {
-                "Brightness": "0",
+                "Brightness": "-0.412",
                 "Contrast": "1",
                 "Exposure": "4",
                 "Gamma": "2.2",
@@ -268,26 +277,26 @@
             "Cut Radius": "0",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0.024058",
+            "Max Radius": "0",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0"
         },
         "Back": {
-            "Point Size": "8.55145",
+            "Point Size": "0.36189",
             "Render BOSS": "1",
             "Render DES": "1",
             "Render ViziR": "1",
-            "Scale": "3.25018"
+            "Scale": "100"
         },
         "DES": {
             "Color": "1, 1, 1, 1",
             "Cut Radius": "0",
             "Max Latitude": "1",
-            "Max Longitude": "0.279",
-            "Max Radius": "1",
+            "Max Longitude": "1",
+            "Max Radius": "0",
             "Min Latitude": "0",
-            "Min Longitude": "0.0571202",
+            "Min Longitude": "0",
             "Min Radius": "0"
         },
         "Front": {
@@ -295,12 +304,20 @@
             "Render BOSS": "0",
             "Render DES": "1",
             "Render ViziR": "0",
-            "Scale": "3.25018"
+            "Scale": "3.10969"
         },
-        "Galaxy": {
+        "Sphere": {
             "Alpha": "0",
-            "Orientation": "0, 0, 0",
-            "Scale": "1"
+            "Arc Horizontal": "1",
+            "Arc Vertical": "1",
+            "Auto Draw": "1",
+            "Blend Mode": "2",
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "0",
+            "Depth Test": "0",
+            "Enabled": "1",
+            "Radius": "1000",
+            "Resolution": "16"
         },
         "ViziR": {
             "Color": "1, 1, 1, 1",

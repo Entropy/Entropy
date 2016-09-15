@@ -40,7 +40,7 @@ namespace entropy
 				ofParameter<bool> renderDes{ "Render DES", false };
 				ofParameter<bool> renderVizir{ "Render ViziR", false };
 				ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 100.0f };
-				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 10.0f };
+				ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 32.0f };
 
 				PARAM_DECLARE("Back", 
 					renderBoss, 
