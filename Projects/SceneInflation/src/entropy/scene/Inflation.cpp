@@ -222,6 +222,7 @@ namespace entropy
 			if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
 			{
 				triggerBigBang();
+				this->timeline->play();
 			}
 			else if (args.flag.compare(0, kTransitionFlag.size(), kTransitionFlag) == 0)
 			{
