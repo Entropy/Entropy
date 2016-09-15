@@ -88,24 +88,18 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Bubbles::drawBackWorld()
 		{
-			ofPushMatrix();
+			this->sphereShader.begin();
 			{
-				ofRotateYDeg(this->parameters.sphere.orientation);
+				this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
+				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
+				this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
+				this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
+				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+				this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
 
-				this->sphereShader.begin();
-				{
-					this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
-					this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
-					this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
-					this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
-					this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
-					this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
-
-					this->sphereGeom.draw();
-				}
-				this->sphereShader.end();
+				this->sphereGeom.draw();
 			}
-			ofPopMatrix();
+			this->sphereShader.end();
 
 			if (this->pool3D.drawBack)
 			{
@@ -155,7 +149,7 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.orientation);
+					ofxPreset::Gui::AddParameter(this->sphereGeom.orientation);
 
 					ofxPreset::Gui::EndTree(settings);
 				}

@@ -1,5 +1,7 @@
 #include "Sphere.h"
 
+#include "ofGraphics.h"
+
 namespace entropy
 {
 	namespace geom
@@ -35,6 +37,20 @@ namespace entropy
 		Sphere::~Sphere()
 		{
 			this->clear();
+		}
+
+		//--------------------------------------------------------------
+		void Sphere::draw()
+		{
+			ofPushMatrix();
+			{
+				ofRotateXRad(this->orientation.get().x);
+				ofRotateYRad(this->orientation.get().y);
+				ofRotateZRad(this->orientation.get().z);
+
+				Shape::draw();
+			}
+			ofPopMatrix();
 		}
 
 		//--------------------------------------------------------------
