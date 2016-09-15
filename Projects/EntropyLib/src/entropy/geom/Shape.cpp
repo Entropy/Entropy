@@ -55,7 +55,7 @@ namespace entropy
 
 			ofPushStyle();
 			{
-				ofBlendMode(static_cast<ofBlendMode>(this->blendMode.get()));
+				ofEnableBlendMode(static_cast<ofBlendMode>(this->blendMode.get()));
 				this->depthTest ? ofEnableDepthTest() : ofDisableDepthTest();
 
 				ofSetColor(this->color.get());
