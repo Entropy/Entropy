@@ -103,10 +103,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;
-$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;
-$(OF_ROOT)\addons\ofxLiquidEvent\src;
-$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -153,10 +150,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;
-$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;
-$(OF_ROOT)\addons\ofxLiquidEvent\src;
-$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -183,10 +177,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxImGui\src;
-$(OF_ROOT)\addons\ofxImGui\libs\imgui\src;
-$(OF_ROOT)\addons\ofxLiquidEvent\src;
-$(OF_ROOT)\addons\ofxPreset\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
