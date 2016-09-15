@@ -79,11 +79,11 @@
             "Depth Test": "0",
             "Enabled": "1",
             "Radius": "100",
-            "Resolution": "16"
+            "Resolution": "16",
+            "Orientation": "75"
         },
         "SphereExtra": {
-            "Mask Mix": "0",
-            "Orientation": "75"
+            "Mask Mix": "0"
         }
     },
     "Cameras": {

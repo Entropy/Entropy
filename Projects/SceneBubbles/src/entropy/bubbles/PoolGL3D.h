@@ -57,6 +57,7 @@ namespace entropy
 #else
 			ofxTexture3d textures[3];
 			ofxVolumetrics3D volumetrics;
+			ofShader volumetricsShader;
 #endif
 			ofxFbo fbos[3];
 
