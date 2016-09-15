@@ -35,9 +35,10 @@ namespace entropy
 			float getContentHeight() const override;
 			void renderContent() override;
 
-			ofSoundPlayer soundPlayer;
+			ofVideoPlayer soundPlayer;
 
 			string fileName;
+			bool wasLoaded;
 
 		protected:
 			BaseParameters & getParameters() override
