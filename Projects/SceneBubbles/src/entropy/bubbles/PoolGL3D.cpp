@@ -170,14 +170,12 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL3D::stepRipple()
 		{
-			static bool flip = 0;
 			this->fbos[this->tempIdx].begin();
 			{
 				ofDisableAlphaBlending();
 				
 				this->rippleShader.begin();
 				{
-					this->rippleShader.setUniform1f("flip", flip);
 					this->rippleShader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
 					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 1);
 					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx].texData.textureTarget, this->textures[this->currIdx].texData.textureID, 2);
@@ -192,7 +190,6 @@ namespace entropy
 				this->rippleShader.end();
 			}
 			this->fbos[this->tempIdx].end();
-			//flip = !flip;
 		}
 
 		//--------------------------------------------------------------
