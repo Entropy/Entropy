@@ -439,30 +439,51 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
-				ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
-				ofxPreset::Gui::AddParameter(this->parameters.preBigBangWobbleDuration);
-				ofxPreset::Gui::AddParameter(this->parameters.Ht);
-				ofxPreset::Gui::AddParameter(this->parameters.HtBB);
-				ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
-				ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
-				ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
-				ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
-				ofxPreset::Gui::AddParameter(this->parameters.bbFlashOut);
-				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionIn);
-				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionOut);
-				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
-				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
-				ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
-				ofxPreset::Gui::AddParameter(this->parameters.transitionParticlesDuration);
-				ofxPreset::Gui::AddParameter(this->parameters.transitionBlobsOutDuration);
-				if(ImGui::Button("Trigger bigbang")){
+
+				if (ImGui::Button("Trigger Big Bang")) {
 					this->triggerBigBang();
 				}
-				if(ImGui::Button("Trigger transition")){
+				ImGui::SameLine();
+				if (ImGui::Button("Trigger Transition")) {
 					this->triggerTransition();
 				}
-				if(ImGui::Button("Trigger particles")){
+				ImGui::SameLine();
+				if (ImGui::Button("Trigger Particles")) {
 					this->triggerParticles();
+				}
+
+				if (ofxPreset::Gui::BeginTree("Big Bang", settings))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
+					ofxPreset::Gui::AddParameter(this->parameters.preBigBangWobbleDuration);
+					ofxPreset::Gui::AddParameter(this->parameters.Ht);
+					ofxPreset::Gui::AddParameter(this->parameters.HtBB);
+					ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
+					ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
+					ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
+					ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
+					ofxPreset::Gui::AddParameter(this->parameters.bbFlashOut);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
+
+				if (ofxPreset::Gui::BeginTree("Transition", settings))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionIn);
+					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionOut);
+					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
+					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
+					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
+
+				if (ofxPreset::Gui::BeginTree("Particles", settings))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.transitionParticlesDuration);
+					ofxPreset::Gui::AddParameter(this->parameters.transitionBlobsOutDuration);
+				
+					ofxPreset::Gui::EndTree(settings);
 				}
 
 				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
