@@ -36,18 +36,26 @@ namespace entropy
 
 			if (this->runSimulation && (this->drawBack || this->drawFront))
 			{
-				if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
+				int frame = (ofGetFrameNum() % this->rippleRate);
+				if (frame == 0)
 				{
-					this->addDrop();
-				}
-
-				if ((ofGetFrameNum() % this->rippleRate) == 0)
-				{
-					this->stepRipple();
-					this->copyResult();
+					//this->copyResult();
 
 					std::swap(this->currIdx, this->prevIdx);
+				
+					if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
+					{
+						this->addDrop();
+					}
+
+					this->stepRipple();
+					this->copyResult();
 				}
+				//else
+				//{
+				//	float pct = frame / static_cast<float>(this->rippleRate.get());
+				//	this->mixFrames(pct);
+				//}
 			}
 		}
 

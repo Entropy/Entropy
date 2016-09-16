@@ -63,6 +63,7 @@ namespace entropy
 			virtual void addDrop() = 0;
 			virtual void stepRipple() = 0;
 			virtual void copyResult() = 0;
+			virtual void mixFrames(float pct) = 0;
 
 			glm::vec3 dimensions;
 

@@ -51,6 +51,9 @@ namespace entropy
 			this->copyShader.setup(copySettings);
 #endif
 
+			shaderSettings.shaderFiles[GL_COMPUTE_SHADER] = "shaders/mix3D.comp";
+			this->mixShader.setup(shaderSettings);
+
 			// Init volumetrics.
 #if USE_TEX_ARRAY
 			this->volumetrics.setup(&this->textures[0], glm::vec3(1.0f));
@@ -226,7 +229,7 @@ namespace entropy
 					this->textures[this->prevIdx].bindAsImage(1, GL_READ_ONLY, 0, true, 0);
 					this->textures[this->currIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0);
 
-					this->dropShader.dispatchCompute(this->dimensions.x / 8, this->dimensions.y / 8, this->dimensions.z / 8);
+					this->rippleShader.dispatchCompute(this->dimensions.x / 8, this->dimensions.y / 8, this->dimensions.z / 8);
 #else
 					this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx].texData.textureTarget, this->textures[this->prevIdx].texData.textureID, 1);
 					this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx].texData.textureTarget, this->textures[this->currIdx].texData.textureID, 2);
@@ -284,6 +287,27 @@ namespace entropy
 #endif
 			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::mixFrames(float pct)
+		{
+			this->textures[this->currIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
+			this->textures[this->prevIdx].bindAsImage(1, GL_READ_ONLY, 0, true, 0);
+			this->textures[this->tempIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0); 
+			
+			this->mixShader.begin();
+			{
+				this->mixShader.setUniform1f("uPct", pct);
+
+				this->mixShader.dispatchCompute(this->dimensions.x / 8, this->dimensions.y / 8, this->dimensions.z / 8);
+			}
+			this->mixShader.end();
+
+			glBindImageTexture(0, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
+			glBindImageTexture(1, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
+			glBindImageTexture(2, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
+			glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 		}
 
 		//--------------------------------------------------------------

@@ -130,6 +130,31 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void PoolGL2D::mixFrames(float pct)
+		{
+			this->fbos[this->currIdx].begin();
+			{
+				ofClear(0, 0);
+				//ofEnableAlphaBlending();
+
+				ofSetColor(255, 255 * (1.0f - pct));
+				this->textures[this->prevIdx].bind();
+				{
+					this->mesh.draw();
+				}
+				this->textures[this->prevIdx].unbind();
+
+				ofSetColor(255, 255 * pct);
+				this->textures[this->tempIdx].bind();
+				{
+					this->mesh.draw();
+				}
+				this->textures[this->tempIdx].unbind();
+			}
+			this->fbos[this->currIdx].end();
+		}
+
+		//--------------------------------------------------------------
 		void PoolGL2D::draw()
 		{
 			ofPushStyle();
@@ -137,7 +162,7 @@ namespace entropy
 				ofEnableAlphaBlending();
 				ofSetColor(255, this->alpha * 255);
 
-				this->textures[this->prevIdx].draw(0, 0);
+				this->getTexture().draw(0, 0);
 			}
 			ofPopStyle();
 		}

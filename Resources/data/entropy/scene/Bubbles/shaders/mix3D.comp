@@ -1,0 +1,25 @@
+#version 450
+
+#define USE_TEX_ARRAY 1
+
+// App uniforms and attributes
+#if USE_TEX_ARRAY
+restrict uniform layout(rgba16f, binding=0, location=0) image2DArray uVolume;
+restrict uniform layout(rgba16f, binding=1, location=1) image2DArray uPrevBuffer;
+restrict uniform layout(rgba16f, binding=2, location=2) image2DArray uCurrBuffer;
+#else
+restrict uniform layout(rgba16f, binding=0, location=0) image3D uVolume;
+restrict uniform layout(rgba16f, binding=1, location=1) image3D uPrevBuffer;
+restrict uniform layout(rgba16f, binding=2, location=2) image3D uCurrBuffer;
+#endif
+
+uniform float uPct;
+
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
+
+void main()
+{
+	ivec3 texelPos = ivec3(gl_GlobalInvocationID.xyz);
+	vec4 color = mix(imageLoad(uPrevBuffer, texelPos), imageLoad(uCurrBuffer, texelPos), 1.0 - uPct);
+	imageStore(uVolume, texelPos, color);
+}

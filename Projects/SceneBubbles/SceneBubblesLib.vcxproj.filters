@@ -106,5 +106,8 @@
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.comp">
       <Filter>shaders</Filter>
     </None>
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\mix3D.comp">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

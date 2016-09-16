@@ -48,12 +48,14 @@ namespace entropy
 			void addDrop() override;
 			void stepRipple() override;
 			void copyResult() override;
+			void mixFrames(float pct) override;
 
 			ofShader dropShader;
 			ofShader rippleShader;
 #if USE_COPY_SHADER
 			ofShader copyShader;
 #endif
+			ofShader mixShader;
 
 			ofVboMesh mesh;
 

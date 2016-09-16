@@ -8,15 +8,15 @@ uniform float uDamping;
 
 in vec2 vTexCoord;
 
-out vec4 vFragColor;
+out vec4 fragColor;
 
 void main()
 {
-    vec2 offset[4];
-    offset[0] = vec2(-1.0,  0.0);
-    offset[1] = vec2( 1.0,  0.0);
-    offset[2] = vec2( 0.0,  1.0);
-    offset[3] = vec2( 0.0, -1.0);
+	const vec2 offset[4] = vec2[](
+		vec2(-1.0,  0.0),
+		vec2( 1.0,  0.0),
+		vec2( 0.0, -1.0),
+		vec2( 0.0,  1.0));
     
     //  Grab the information arround the active pixel.
     //
@@ -34,5 +34,5 @@ void main()
     sum = (sum / 2.0) - texture(uCurrBuffer, vTexCoord);
     sum *= uDamping;
 
-	vFragColor = vec4(sum);
+	fragColor = vec4(sum);
 }
