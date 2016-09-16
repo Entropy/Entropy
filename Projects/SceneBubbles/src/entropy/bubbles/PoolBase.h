@@ -55,6 +55,8 @@ namespace entropy
 				damping, radius, ringSize
 			};
 
+			std::vector<ofEventListener> parameterListeners;
+
 			bool resetSimulation;
 
 		protected:

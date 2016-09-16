@@ -67,6 +67,12 @@ namespace entropy
 			this->parameters.setName("Pool GL 3D");
 			this->parameters.add(filterMode, volumeSize);
 			this->parameters.add(this->bursts.parameters);
+
+			this->parameterListeners.push_back(this->filterMode.newListener([this](int & value)
+			{
+				GLuint mode = (static_cast<FilterMode>(value) == FilterMode::Linear ? GL_LINEAR : GL_NEAREST);
+				this->volumetrics.setVolumeTextureFilterMode(mode);
+			}));
 		}
 
 		//--------------------------------------------------------------
@@ -168,7 +174,6 @@ namespace entropy
 					this->dropShader.setUniform3f("uBurst.pos", burstPos);
 					this->dropShader.setUniform1f("uBurst.radius", this->radius);
 					this->dropShader.setUniform1f("uBurst.thickness", burstThickness);
-					//this->dropShader.setUniform3f("uDims", this->dimensions);
 					
 #if USE_COMPUTE_SHADER
 					this->dropShader.dispatchCompute(this->dimensions.x / 8, this->dimensions.y / 8, this->dimensions.z / 8);
@@ -290,7 +295,6 @@ namespace entropy
 				ofSetColor(255, this->alpha * 255);
 
 				this->volumetrics.setRenderSettings(1.0, 1.0, 1.0, 0.1);
-				this->volumetrics.setVolumeTextureFilterMode(this->filterMode);
 				this->volumetrics.drawVolume(0.0f, 0.0f, 0.0f, this->volumeSize, 0);
 			}
 			ofPopStyle();

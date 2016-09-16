@@ -22,6 +22,12 @@ namespace entropy
 			: public PoolBase
 		{
 		public:
+			enum class FilterMode
+			{
+				Linear,
+				Nearest
+			};
+
 			PoolGL3D();
 
 			void init() override;
@@ -33,7 +39,7 @@ namespace entropy
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
 
-			ofParameter<int> filterMode{ "Filter Mode", GL_LINEAR, GL_NEAREST, GL_LINEAR };
+			ofParameter<int> filterMode{ "Filter Mode", static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Nearest), static_cast<int>(FilterMode::Linear) };
 			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
 
 			const ofxTexture & getTexture() const;
