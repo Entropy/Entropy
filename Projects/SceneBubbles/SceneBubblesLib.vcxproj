@@ -204,12 +204,14 @@
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\burst.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\copy3D.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\drop3D.comp" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\drop3D.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\layer.geom" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\passthru.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\reveal.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\reveal.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.comp" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\ripple3D.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Bubbles\shaders\volumetrics.vert" />

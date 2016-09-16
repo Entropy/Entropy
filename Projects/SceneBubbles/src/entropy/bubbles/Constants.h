@@ -7,5 +7,6 @@
 //#define COMPUTE_CL_2D 1
 //#define COMPUTE_CL_3D 1
 
-#define USE_TEX_ARRAY 1
+#define USE_TEX_ARRAY 0
+#define USE_COMPUTE_SHADER 1
 #define USE_COPY_SHADER 0

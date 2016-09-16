@@ -19,13 +19,13 @@ out vec4 fragColor;
 
 void main()
 {
-	vec3 offset[6];
-	offset[0] = vec3(-1.0,  0.0,  0.0);
-	offset[1] = vec3( 1.0,  0.0,  0.0);
-	offset[2] = vec3( 0.0, -1.0,  0.0);
-	offset[3] = vec3( 0.0,  1.0,  0.0);
-	offset[4] = vec3( 0.0,  0.0, -1.0);
-	offset[5] = vec3( 0.0,  0.0,  1.0);
+	const vec3 offset[6] = vec3[](
+		vec3(-1.0,  0.0,  0.0),
+		vec3( 1.0,  0.0,  0.0),
+		vec3( 0.0, -1.0,  0.0),
+		vec3( 0.0,  1.0,  0.0),
+		vec3( 0.0,  0.0, -1.0),
+		vec3( 0.0,  0.0,  1.0));
 	
 	//  Grab the information arround the active pixel.
 	//

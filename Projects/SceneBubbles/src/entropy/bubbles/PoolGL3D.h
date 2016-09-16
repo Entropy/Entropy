@@ -45,11 +45,11 @@ namespace entropy
 
 			ofShader dropShader;
 			ofShader rippleShader;
+#if USE_COPY_SHADER
 			ofShader copyShader;
+#endif
 
 			ofVboMesh mesh;
-
-			ofBufferObject copyBuffer;
 
 #if USE_TEX_ARRAY
 			ofxTextureArray textures[3];
