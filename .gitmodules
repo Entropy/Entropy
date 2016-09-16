@@ -62,10 +62,6 @@
         path = addons/ofxVolumetrics
         url = https://github.com/Entropy/ofxVolumetrics
         branch = master
-[submodule "addons/ofxWMFVideoPlayer"]
-        path = addons/ofxWMFVideoPlayer
-        url = https://github.com/Entropy/ofxWMFVideoPlayer
-        branch = master
 [submodule "addons/ofxGStreamer"]
 	path = addons/ofxGStreamer
 	url = https://github.com/Entropy/ofxGStreamer.git
