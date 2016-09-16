@@ -10,6 +10,9 @@
     <ClCompile Include="src\entropy\inflation\NoiseField.cpp">
       <Filter>src\entropy\inflation</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\inflation\TransitionParticles.cpp">
+      <Filter>src\entropy\inflation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -50,13 +53,13 @@
     <ClInclude Include="src\entropy\scene\Inflation.h">
       <Filter>src\entropy\scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\inflation\Constants.h">
-      <Filter>src\entropy\inflation</Filter>
-    </ClInclude>
     <ClInclude Include="src\entropy\inflation\GPUMarchingCubes.h">
       <Filter>src\entropy\inflation</Filter>
     </ClInclude>
     <ClInclude Include="src\entropy\inflation\NoiseField.h">
+      <Filter>src\entropy\inflation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\inflation\TransitionParticles.h">
       <Filter>src\entropy\inflation</Filter>
     </ClInclude>
   </ItemGroup>

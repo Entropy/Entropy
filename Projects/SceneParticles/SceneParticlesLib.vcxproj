@@ -185,15 +185,6 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp" />
-    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
-    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.cpp" />
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.cpp" />
     <ClCompile Include="src\entropy\particles\Environment.cpp" />
     <ClCompile Include="src\entropy\particles\Octree.cpp" />
     <ClCompile Include="src\entropy\particles\Particle.cpp" />
@@ -204,25 +195,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h" />
     <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h" />
-    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
-    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\DirectionalLight.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\PointLight.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ProjInfo.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\CameraTools.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\FrustumTools.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\GLError.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\MatrixTools.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\RadixSort.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Rect.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\SphereScissor.h" />
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h" />
     <ClInclude Include="src\entropy\particles\Environment.h" />
     <ClInclude Include="src\entropy\particles\Octree.h" />
     <ClInclude Include="src\entropy\particles\Particle.h" />

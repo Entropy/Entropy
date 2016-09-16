@@ -186,12 +186,13 @@
   <ItemGroup>
     <ClCompile Include="src\entropy\inflation\GPUMarchingCubes.cpp" />
     <ClCompile Include="src\entropy\inflation\NoiseField.cpp" />
+    <ClCompile Include="src\entropy\inflation\TransitionParticles.cpp" />
     <ClCompile Include="src\entropy\scene\Inflation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entropy\inflation\Constants.h" />
     <ClInclude Include="src\entropy\inflation\GPUMarchingCubes.h" />
     <ClInclude Include="src\entropy\inflation\NoiseField.h" />
+    <ClInclude Include="src\entropy\inflation\TransitionParticles.h" />
     <ClInclude Include="src\entropy\scene\Inflation.h" />
   </ItemGroup>
   <ItemGroup>

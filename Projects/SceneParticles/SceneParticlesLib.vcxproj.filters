@@ -22,33 +22,6 @@
     <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
       <Filter>addons\ofxGpuParticles\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.cpp">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -78,33 +51,6 @@
     <Filter Include="addons\ofxGpuParticles\src">
       <UniqueIdentifier>{b18b2930-f745-4c36-a470-b3fb24ccb908}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxObjLoader">
-      <UniqueIdentifier>{f1414a4f-020e-4a01-bf51-2f844938c568}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader\src">
-      <UniqueIdentifier>{78acedcd-f8a0-4ba4-9b59-f93f56bad822}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader\libs">
-      <UniqueIdentifier>{92cbf42b-0361-4c82-8fa9-bf03dfde55fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit">
-      <UniqueIdentifier>{9f3f303f-9a75-4c7a-8924-9d729bd1d15f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit\src">
-      <UniqueIdentifier>{f4e0af19-23f9-4c37-b2a1-789cb1de75a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit">
-      <UniqueIdentifier>{4f18e583-c915-4e0e-905b-a9aa638a5938}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting">
-      <UniqueIdentifier>{b84f36f5-4c21-4f77-988e-6d3e3cb765ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr">
-      <UniqueIdentifier>{8db70eaf-b0dc-4b41-9406-07e040d3391c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxRenderToolkit\src\ofxRenderToolkit\util">
-      <UniqueIdentifier>{04a7a5ee-bbc5-4d99-9267-3210b2e84a4e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entropy\particles\Octree.h">
@@ -130,63 +76,6 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
       <Filter>addons\ofxGpuParticles\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
-      <Filter>addons\ofxObjLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGrid.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ClusterGridDebug.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\DirectionalLight.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\PointLight.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\ProjInfo.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting\System.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\CubeMapTexture.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr\Material.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\pbr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\CameraTools.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\FrustumTools.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\GLError.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\MatrixTools.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Plane.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\RadixSort.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\Rect.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\SphereScissor.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxRenderToolkit\src\ofxRenderToolkit\util\ViewUbo.h">
-      <Filter>addons\ofxRenderToolkit\src\ofxRenderToolkit\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -259,6 +259,12 @@
     <ClCompile Include="src\entropy\render\BlobMask.cpp">
       <Filter>src\entropy\render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
+      <Filter>addons\ofxObjLoader\libs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -404,6 +410,15 @@
     </Filter>
     <Filter Include="addons\ofxGStreamer\src">
       <UniqueIdentifier>{e16930f0-21ff-40d1-a5fd-6b325403b42b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader">
+      <UniqueIdentifier>{de53726e-aa66-4bc6-821b-fa30969711ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\src">
+      <UniqueIdentifier>{04293cbe-9dd6-4838-8b2e-e19e3a6211e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs">
+      <UniqueIdentifier>{de6fda58-5c5e-43a4-a6b1-13b75042e5cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -703,6 +718,12 @@
     </ClInclude>
     <ClInclude Include="src\entropy\render\BlobMask.h">
       <Filter>src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
+      <Filter>addons\ofxObjLoader\libs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

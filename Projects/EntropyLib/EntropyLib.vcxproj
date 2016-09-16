@@ -196,6 +196,8 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
     <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
+    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
+    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
     <ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.cpp" />
     <ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp" />
     <ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp" />
@@ -286,6 +288,8 @@
     <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />
     <ClInclude Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.h" />
+    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
+    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />

@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\libs\tbb\include;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxRenderToolkit\src;..\..\addons\ofxRenderToolkit\libs\gli\include;..\..\Projects\SceneParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libs\tbb\include;..\..\addons\ofxGpuParticles\src;..\..\Projects\SceneParticles\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\..\libs\tbb\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
