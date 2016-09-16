@@ -254,6 +254,7 @@
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp" />
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp" />
     <ClCompile Include="src\entropy\geom\Box.cpp" />
+    <ClCompile Include="src\entropy\geom\Stripes.cpp" />
     <ClCompile Include="src\entropy\geom\Shape.cpp" />
     <ClCompile Include="src\entropy\geom\Sphere.cpp" />
     <ClCompile Include="src\entropy\popup\Sound.cpp" />
@@ -352,6 +353,7 @@
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h" />
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h" />
     <ClInclude Include="src\entropy\geom\Box.h" />
+    <ClInclude Include="src\entropy\geom\Stripes.h" />
     <ClInclude Include="src\entropy\geom\Shape.h" />
     <ClInclude Include="src\entropy\geom\Sphere.h" />
     <ClInclude Include="src\entropy\Helpers.h" />

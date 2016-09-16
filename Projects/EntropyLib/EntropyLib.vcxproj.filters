@@ -265,6 +265,9 @@
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
       <Filter>addons\ofxObjLoader\libs</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\geom\Stripes.cpp">
+      <Filter>src\entropy\geom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -724,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
       <Filter>addons\ofxObjLoader\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\geom\Stripes.h">
+      <Filter>src\entropy\geom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
