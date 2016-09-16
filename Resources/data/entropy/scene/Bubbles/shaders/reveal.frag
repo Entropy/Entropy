@@ -16,6 +16,8 @@ uniform float uVolSize;
 uniform float uAlphaBase;
 uniform float uMaskMix;
 
+uniform vec4 uTintColor;
+
 in vec4 vPosition_ws;
 in vec2 vTexCoord;
 
@@ -40,6 +42,6 @@ void main()
 	
 	float alpha = clamp(mix(uAlphaBase, luminance(maskColor.rgb), uMaskMix), 0.0, 1.0);
 
-	fragColor = texColor;
-	fragColor = vec4(texColor.rgb, alpha);
+	vec3 rgbColor = texColor.rgb * uTintColor.rgb;
+	fragColor = vec4(rgbColor, alpha);
 }

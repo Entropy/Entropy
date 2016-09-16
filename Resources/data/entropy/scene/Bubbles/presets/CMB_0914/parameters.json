@@ -1,13 +1,13 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.003997",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
@@ -33,7 +33,7 @@
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
             "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "1",
+            "Drop Rate": "30",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -41,10 +41,10 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Force Multiplier": "0.8",
                 "Force Random": "0.2",
                 "Max Age": "10",
@@ -59,7 +59,7 @@
             "Draw Front": "0",
             "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
             "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
-            "Drop Rate": "1",
+            "Drop Rate": "60",
             "Dropping": "0",
             "Filter Mode": "0",
             "Radius": "20",
@@ -82,7 +82,8 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0"
+            "Mask Mix": "0",
+            "Tint Color": "1, 0.962537, 0.545098, 1"
         }
     },
     "Cameras": {
@@ -90,19 +91,19 @@
             "Attach to Parent": "0",
             "Dolly Speed": "0",
             "FOV": "60",
-            "Far Clip": "1000",
+            "Far Clip": "200000",
             "Inherits Settings": "1",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0320002",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.00599992",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 935.307434082031,
+                "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
-                "farClip": 1000.0,
+                "farClip": 200000.0,
                 "forceAspectRatio": true,
                 "fov": 60.0,
                 "inertiaEnabled": false,
@@ -110,11 +111,11 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.993279, 0, 0, -0.115748",
+                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
                 "ortho": false,
-                "position": "0, 0, 935.307",
+                "position": "21.8806, 22.6618, 74.4039",
                 "relativeYAxis": false,
-                "scale": "1, 1, 0.999999",
+                "scale": "1, 1, 1",
                 "target": "0, 0, 0",
                 "translationKey": 109,
                 "upAxis": "0, 1, 0"
@@ -126,7 +127,7 @@
             "FOV": "60",
             "Far Clip": "1000",
             "Inherits Settings": "0",
-            "Mouse Control": "1",
+            "Mouse Control": "0",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
@@ -224,6 +225,7 @@
         "Bubbles::Sphere::Radius": "0",
         "Bubbles::Sphere::Resolution": "0",
         "Bubbles::SphereExtra::Mask Mix": "1",
+        "Bubbles::SphereExtra::Tint Color": "0",
         "Camera_Back::Attach to Parent": "0",
         "Camera_Back::Dolly Speed": "0",
         "Camera_Back::FOV": "0",
@@ -246,7 +248,7 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
-        "Post_Effects_Back::Bloom::Brightness Threshold": "0",
+        "Post_Effects_Back::Bloom::Brightness Threshold": "1",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
         "Post_Effects_Back::Bloom::Num Passes": "0",
@@ -285,7 +287,7 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "0.01",
+                "Brightness Threshold": "3",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
@@ -294,7 +296,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "6",
+                "Exposure": "5.619",
                 "Gamma": "2.2",
                 "Tonemapping": "0"
             },

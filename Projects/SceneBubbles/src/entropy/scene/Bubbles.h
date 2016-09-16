@@ -76,9 +76,10 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
+					ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white }; 
 					ofParameter<float> maskMix{ "Mask Mix", 1.0f, 0.0f, 1.0f };
 
-					PARAM_DECLARE("SphereExtra", maskMix);
+					PARAM_DECLARE("SphereExtra", tintColor, maskMix);
 				} sphere;
 				
 				PARAM_DECLARE("Bubbles", sphere);

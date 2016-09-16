@@ -30,10 +30,14 @@ namespace entropy
 			// Init the sphere.
 			this->parameters.add(this->sphereGeom.parameters);
 
-			this->loadTextureImage(this->getAssetsPath("images/Planck-CMB-SMICA.tif"), this->sphereTexture);
+			this->loadTextureImage(this->getAssetsPath("images/Planck-CMB-SMICA.png"), this->sphereTexture);
 
-			//this->sphereShader.load("shaders/passthru.vert", "shaders/reveal.frag");
-			this->sphereShader.load("shaders/reveal.vert", "shaders/reveal.frag");
+			auto shaderSettings = ofShader::Settings();
+			shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
+			shaderSettings.bindDefaults = true;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/reveal.vert";
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/reveal.frag";
+			this->sphereShader.setup(shaderSettings);
 
 			// Init the parameters.
 			this->parameters.add(this->pool2D.parameters);
@@ -96,6 +100,7 @@ namespace entropy
 				this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
 				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
 				this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
+				this->sphereShader.setUniform4f("uTintColor", this->parameters.sphere.tintColor.get());
 
 				this->sphereGeom.draw();
 			}
@@ -137,6 +142,7 @@ namespace entropy
 				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
 				{
 					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
+					ofxPreset::Gui::AddParameter(this->parameters.sphere.tintColor, false);
 					static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
 					ofxPreset::Gui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
 					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
