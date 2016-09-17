@@ -17,8 +17,8 @@ namespace entropy
 
 			ofParameter<float> lineWidth{ "Line Width", 1.0f, 0.0f, 1000.0f };
 			ofParameter<float> lineHeight{ "Line Height", 1.0f, 0.0f, 1000.0f };
+			ofParameter<int> lineCount{ "Line Count", 1, 1, 100 };
 			ofParameter<float> spaceWidth{ "Space Width", 1.0f, 0.0f, 1000.0f };
-			ofParameter<int> count{ "Count", 1, 1, 100 };
 			ofParameter<float> zPosition{ "Z Position", 0.0f, -1000.0f, 1000.0f };
 
 		protected:

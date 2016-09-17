@@ -31,6 +31,7 @@ namespace entropy
 
 			void update(double dt) override;
 
+			void drawBackWorld() override;
 			void drawFrontWorld() override;
 
 			void gui(ofxPreset::Gui::Settings & settings) override;
@@ -41,18 +42,30 @@ namespace entropy
 			static const int MAX_NUM_STRIPES = 8;
 
 		protected:
-			std::shared_ptr<geom::Stripes> addStripes();
-			void removeStripes();
+			std::shared_ptr<geom::Stripes> addStripes(render::Layout layout);
+			void removeStripes(render::Layout layout);
 
-			std::vector<std::shared_ptr<geom::Stripes>> stripes;
-			bool openGuis[MAX_NUM_STRIPES];  // Don't use vector<bool> because they're weird: http://en.cppreference.com/w/cpp/container/vector_bool
+			std::map<render::Layout, std::vector<std::shared_ptr<geom::Stripes>>> stripes;
+			std::map<render::Layout, bool[MAX_NUM_STRIPES]> openGuis;  // Don't use vector<bool> because they're weird: http://en.cppreference.com/w/cpp/container/vector_bool
 
 			virtual ofParameterGroup & getParameters() override
 			{
 				return this->parameters;
 			}
 
-			ofParameterGroup parameters;
+			struct : ofParameterGroup
+			{
+				struct : ofParameterGroup
+				{
+					ofParameter<float> backAlpha{ "Back Alpha", 1.0f, 0.0f, 1.0f };
+					ofParameter<float> frontAlpha{ "Front Alpha", 1.0f, 0.0f, 1.0f };
+
+					PARAM_DECLARE("Stripes", backAlpha, frontAlpha);
+				} stripes;
+
+				PARAM_DECLARE("Interlude", 
+					stripes);
+			} parameters;
 		};
 	}
 }
