@@ -236,9 +236,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::timelineBangFired(ofxTLBangEventArgs & args)
 		{
+			static const string kResetFlag = "reset";
 			static const string kBigBangFlag = "bigbang";
 			static const string kTransitionFlag = "transition";
-			if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
+			static const string kParticlesFlag = "particles";
+			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+			{
+				triggerReset();
+			}
+			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
 			{
 				triggerBigBang();
 				this->timeline->play();
@@ -246,6 +252,10 @@ namespace entropy
 			else if (args.flag.compare(0, kTransitionFlag.size(), kTransitionFlag) == 0)
 			{
 				triggerTransition();
+			}
+			else if (args.flag.compare(0, kParticlesFlag.size(), kParticlesFlag) == 0)
+			{
+				triggerParticles();
 			}
 		}
 
@@ -273,6 +283,19 @@ namespace entropy
 			{
 				this->drawScene(render::Layout::Front);
 			}
+		}
+
+		//--------------------------------------------------------------
+		bool Inflation::triggerReset()
+		{
+			state = PreBigBang;
+			this->setup();
+			for (auto & it : this->cameras)
+			{
+				it.second.reset();
+			}
+
+			return true;
 		}
 
 		//--------------------------------------------------------------
@@ -440,14 +463,15 @@ namespace entropy
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
 
+				if (ImGui::Button("Trigger Reset")) {
+					this->triggerReset();
+				}
 				if (ImGui::Button("Trigger Big Bang")) {
 					this->triggerBigBang();
 				}
-				ImGui::SameLine();
 				if (ImGui::Button("Trigger Transition")) {
 					this->triggerTransition();
 				}
-				ImGui::SameLine();
 				if (ImGui::Button("Trigger Particles")) {
 					this->triggerParticles();
 				}

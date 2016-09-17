@@ -46,6 +46,7 @@ namespace entropy
 			void resetWavelengths();
 			void resetWavelength(size_t octave);
 
+			bool triggerReset();
 			bool triggerBigBang();
 			bool triggerTransition();
 			bool triggerParticles();
