@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ofMain.h"
 #include "ofxPreset.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"

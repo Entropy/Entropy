@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "entropy/scene/Base.h"
 #include "entropy/inflation/NoiseField.h"
 #include "entropy/inflation/GPUMarchingCubes.h"

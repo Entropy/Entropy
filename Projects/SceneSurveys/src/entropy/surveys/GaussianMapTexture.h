@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ofMain.h"
+#include "ofTexture.h"
 
 namespace entropy
 {

@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma once
-
-#include "ofMain.h"
-
 #define CheckGLError() entropy::util::LogGLError(__FILE__, __LINE__)
 
 namespace entropy

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "ofxPreset.h"
 #include "ofxTextureRecorder.h"
 #include "ofxWarp.h"
