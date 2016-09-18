@@ -126,15 +126,15 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> debug{ "Debug Noise", false };
-					ofParameter<bool> drawBoxInRenderer{ "Draw Box In Renderer", false };
 					ofParameter<bool> renderBack{ "Render Back", true };
 					ofParameter<bool> renderFront{ "Render Front", false };
+					ofParameter<bool> boxBackRender{ "Render Box Back", false };
 
 					PARAM_DECLARE("Render", 
 						debug,
-						drawBoxInRenderer,
 						renderBack,
-						renderFront);
+						renderFront,
+						boxBackRender);
 				} render;
 
 				PARAM_DECLARE("Inflation", 

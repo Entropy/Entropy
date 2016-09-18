@@ -47,13 +47,12 @@ namespace entropy
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
 			// Custom parameter listeners.
-			this->parameterListeners.push_back(this->parameters.render.drawBoxInRenderer.newListener([this](bool & value)
+			this->parameterListeners.push_back(this->parameters.render.boxBackRender.newListener([this](bool & value)
 			{
 				// Automatically disable default box drawing when using renderer.
 				if (value)
 				{
 					this->boxes[render::Layout::Back].autoDraw = false;
-					this->boxes[render::Layout::Front].autoDraw = false;
 				}
 			}));
 
@@ -256,6 +255,7 @@ namespace entropy
 			else if (args.flag.compare(0, kParticlesFlag.size(), kParticlesFlag) == 0)
 			{
 				triggerParticles();
+				this->timeline->play();
 			}
 		}
 
@@ -370,16 +370,21 @@ namespace entropy
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].clip = false;
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-				if(layout==render::Layout::Back){
+				//if(layout==render::Layout::Back){
 					this->transitionParticles.draw(transitionParticlesPosition, noiseField.getTexture(), now);
-				}
+				//}
 				break;
 			}
 
-			if (this->parameters.render.drawBoxInRenderer)
+			if (layout == render::Layout::Back && this->parameters.render.boxBackRender)
 			{
+				bool prevClip = renderers[layout].clip;
+				float prevFillAlpha = renderers[layout].fillAlpha;
 				renderers[layout].clip = false;
+				renderers[layout].fillAlpha = this->boxes[render::Layout::Back].alpha;
 				this->boxes[layout].draw(renderers[layout], camera);
+				renderers[layout].clip = prevClip;
+				renderers[layout].fillAlpha = prevFillAlpha;
 			}
 
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
@@ -526,7 +531,7 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
-					ofxPreset::Gui::AddParameter(this->parameters.render.drawBoxInRenderer);
+					ofxPreset::Gui::AddParameter(this->parameters.render.boxBackRender);
 
 					ofxPreset::Gui::AddParameter(this->parameters.render.renderBack);
 					if (this->parameters.render.renderBack)
