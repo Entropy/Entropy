@@ -1,21 +1,21 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
-            "Alpha Blend": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
+            "Blend Mode": "1",
             "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.003998",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
         },
         "Box Front": {
-            "Alpha": "0",
-            "Alpha Blend": "1",
+            "Alpha": "1",
             "Auto Draw": "1",
+            "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
             "Depth Test": "0",
@@ -39,8 +39,8 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
-                "distance": 15244.3447265625,
+                "aspectRatio": 2.36944437026978,
+                "distance": 486.11865234375,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -50,9 +50,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
+                "orientation": "0.939717, 0.00530749, 0.0187133, -0.341399",
                 "ortho": false,
-                "position": "-8070.36, 4679.05, 12056.8",
+                "position": "85.0797, 57.3922, 475.162",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -73,7 +73,7 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 1.77777779102325,
                 "distance": 3.05325011140667e-05,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
@@ -97,8 +97,8 @@
     },
     "Mappings": {
         "Box_Back::Alpha": "1",
-        "Box_Back::Alpha Blend": "0",
         "Box_Back::Auto Draw": "0",
+        "Box_Back::Blend Mode": "0",
         "Box_Back::Color": "0",
         "Box_Back::Cull Face": "0",
         "Box_Back::Depth Test": "0",
@@ -107,8 +107,8 @@
         "Box_Back::Size": "0",
         "Box_Back::Subdivisions": "0",
         "Box_Front::Alpha": "1",
-        "Box_Front::Alpha Blend": "0",
         "Box_Front::Auto Draw": "0",
+        "Box_Front::Blend Mode": "0",
         "Box_Front::Color": "0",
         "Box_Front::Cull Face": "0",
         "Box_Front::Depth Test": "0",
@@ -235,7 +235,7 @@
         "Environment": {
             "Annihiliation Threshold Max": "0.521",
             "Annihiliation Threshold Min": "0.402",
-            "Energy": "0",
+            "Energy": "1",
             "Force Multiplier Max": "1e+08",
             "Force Multiplier Min": "1e+07",
             "Fusion Threshold Exponent Max": "-5.448",
@@ -245,7 +245,7 @@
         },
         "Rendering": {
             "Additive Blend": "1",
-            "Ambient Light": "0.01",
+            "Ambient Light": "0",
             "Attenuation": "0.002",
             "Color per Type": "1",
             "Draw Photons": "0"
@@ -348,14 +348,14 @@
             "Bloom": {
                 "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
-                "Enabled": "0",
+                "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "14.121"
             },
             "Color": {
                 "Brightness": "-0.75",
                 "Contrast": "1",
-                "Exposure": "3.85577",
+                "Exposure": "0",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -378,7 +378,7 @@
             "Fill": "1",
             "Fill Alpha": "0",
             "Fog Enabled": "1",
-            "Fog Max Distance": "8000",
+            "Fog Max Distance": "1400.17",
             "Fog Min Distance": "0.1",
             "Fog Power": "1",
             "Fog Start Distance": "0.1",
@@ -396,7 +396,7 @@
             "Fill": "1",
             "Fill Alpha": "0.5",
             "Fog Enabled": "1",
-            "Fog Max Distance": "7800.01",
+            "Fog Max Distance": "3400.11",
             "Fog Min Distance": "0.1",
             "Fog Power": "1",
             "Fog Start Distance": "0.1",
