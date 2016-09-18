@@ -13,7 +13,8 @@ namespace entropy
 			Stripes();
 			~Stripes();
 
-			void draw() override;
+			void begin() override;
+			void end() override;
 
 			ofParameter<float> lineWidth{ "Line Width", 1.0f, 0.0f, 1000.0f };
 			ofParameter<float> lineHeight{ "Line Height", 1.0f, 0.0f, 1000.0f };

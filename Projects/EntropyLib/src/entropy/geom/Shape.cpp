@@ -49,43 +49,56 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Shape::begin()
+		{
+			ofPushStyle();
+
+			ofEnableBlendMode(static_cast<ofBlendMode>(this->blendMode.get()));
+			this->depthTest ? ofEnableDepthTest() : ofDisableDepthTest();
+
+			ofSetColor(this->color.get());
+
+			const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+			if (cullMode != CullMode::Disabled)
+			{
+				glEnable(GL_CULL_FACE);
+				if (cullMode == CullMode::Back)
+				{
+					glCullFace(GL_BACK);
+				}
+				else
+				{
+					glCullFace(GL_FRONT);
+				}
+			}
+			else
+			{
+				glDisable(GL_CULL_FACE);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Shape::end()
+		{
+			const auto cullMode = static_cast<CullMode>(this->cullFace.get());
+			if (cullMode != CullMode::Disabled)
+			{
+				glDisable(GL_CULL_FACE);
+			}
+	
+			ofPopStyle();
+		}
+
+		//--------------------------------------------------------------
 		void Shape::draw()
 		{
 			if (!this->enabled) return;
 
-			ofPushStyle();
+			this->begin();
 			{
-				ofEnableBlendMode(static_cast<ofBlendMode>(this->blendMode.get()));
-				this->depthTest ? ofEnableDepthTest() : ofDisableDepthTest();
-
-				ofSetColor(this->color.get());
-
-				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-				if (cullMode != CullMode::Disabled)
-				{
-					glEnable(GL_CULL_FACE);
-					if (cullMode == CullMode::Back)
-					{
-						glCullFace(GL_BACK);
-					}
-					else
-					{
-						glCullFace(GL_FRONT);
-					}
-				}
-				else
-				{
-					glDisable(GL_CULL_FACE);
-				}
-
 				this->getMesh().draw();
-
-				if (cullMode != CullMode::Disabled)
-				{
-					glDisable(GL_CULL_FACE);
-				}
 			}
-			ofPopStyle();
+			this->end();
 		}
 
 		//--------------------------------------------------------------

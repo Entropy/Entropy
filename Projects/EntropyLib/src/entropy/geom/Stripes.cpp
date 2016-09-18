@@ -40,14 +40,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Stripes::draw()
+		void Stripes::begin()
 		{
 			ofPushMatrix();
-			{
-				ofTranslate(0.0f, 0.0f, this->zPosition);
+			
+			ofTranslate(0.0f, 0.0f, this->zPosition);
 
-				Shape::draw();
-			}
+			Shape::begin();
+		}
+
+		//--------------------------------------------------------------
+		void Stripes::end()
+		{
+			Shape::end();
+
 			ofPopMatrix();
 		}
 
