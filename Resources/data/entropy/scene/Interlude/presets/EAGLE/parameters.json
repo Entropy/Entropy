@@ -280,6 +280,21 @@
             }
         }
     },
-    "Stripes Back": null,
+    "Stripes Back": {
+        "Stripes 0": {
+            "Alpha": "1",
+            "Auto Draw": "1",
+            "Blend Mode": "1",
+            "Color": "1, 1, 1, 1",
+            "Cull Face": "1",
+            "Depth Test": "0",
+            "Enabled": "1",
+            "Line Count": "16",
+            "Line Height": "1000",
+            "Line Width": "1",
+            "Space Width": "247.423",
+            "Z Position": "247.423"
+        }
+    },
     "Stripes Front": null
 }
