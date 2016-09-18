@@ -77,7 +77,7 @@ namespace entropy
 						this->videoPlayer.setPaused(true);
 					}
 				}
-				else if (shouldPlay)
+				else if (shouldPlay && this->parameters.scrubToTimeline)
 				{
 					// Scrub the video.
 					float positionMillis = this->switchMillis;
@@ -127,6 +127,7 @@ namespace entropy
 			}
 
 			ofxPreset::Gui::AddParameter(this->parameters.loop);
+			ofxPreset::Gui::AddParameter(this->parameters.scrubToTimeline);
 		}
 
 		//--------------------------------------------------------------
