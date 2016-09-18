@@ -292,7 +292,7 @@ namespace entropy
 			this->setup();
 			for (auto & it : this->cameras)
 			{
-				it.second.reset();
+				it.second->reset(false);
 			}
 
 			return true;
