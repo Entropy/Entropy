@@ -19,20 +19,10 @@ namespace entropy
 			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("shaders"));
 			ofxWarp::WarpBase::setShaderPath(warpShaderPath);
 
-			// Set default fbo settings.
+			// Set default size settings.
 			this->fboSettings.width = ofGetWidth();
 			this->fboSettings.height = ofGetHeight();
-			this->fboSettings.numSamples = 4;
-			this->fboSettings.internalformat = GL_RGBA16F;
-			this->fboSettings.textureTarget = GL_TEXTURE_2D;
-
-			this->fboDraw.allocate(this->fboSettings);
-
-			this->fboSettings.numSamples = 0;
-			this->fboPost.allocate(this->fboSettings);
-
-			// Update viewport.
-			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
+			this->updateSize();
 
 			// Load initial settings if any.
 			if (!this->loadSettings())
