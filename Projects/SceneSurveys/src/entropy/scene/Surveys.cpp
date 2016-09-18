@@ -28,6 +28,12 @@ namespace entropy
 			// Init the sphere.
 			this->loadTextureImage(this->getAssetsPath("images/The_Milky_Way.png"), this->sphereTexture);
 
+			auto shaderSettings = ofShader::Settings();
+			shaderSettings.bindDefaults = true;
+			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/galaxy.vert";
+			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
+			this->sphereShader.setup(shaderSettings);
+
 			// Build the texture.
 			//entropy::survey::CreateGaussianMapTexture(this->spriteTexture, 32, GL_TEXTURE_2D);
 			this->loadTextureImage(this->getAssetsPath("images/sprites.png"), this->spriteTexture);
@@ -93,11 +99,25 @@ namespace entropy
 			this->drawDataSet(this->backParameters);
 
 			// Draw the galaxy.
-			this->sphereTexture.bind();
+			this->sphereShader.begin();
 			{
+				this->sphereShader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
+				//this->sphereShader.setUniform1f("uRadius", this->sphereGeom.radius);
+				this->sphereShader.setUniformTexture("uTex0", this->sphereTexture, 1);
+				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+
 				this->sphereGeom.draw();
 			}
-			this->sphereTexture.unbind();
+			this->sphereShader.end();
+
+			//ofSetColor(ofColor::green);
+			//auto & mesh = this->sphereGeom.getMesh();
+			//for (int i = 0; i < mesh.getNumVertices(); ++i)
+			//{
+			//	auto vert = mesh.getVertex(i);
+			//	auto norm = mesh.getNormal(i);
+			//	ofDrawLine(vert, vert + norm * 100);
+			//}
 		}
 
 		//--------------------------------------------------------------

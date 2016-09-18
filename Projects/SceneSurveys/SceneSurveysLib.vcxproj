@@ -203,6 +203,8 @@
     <ClInclude Include="src\entropy\surveys\GaussianMapTexture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.frag" />
     <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.vert" />
   </ItemGroup>
