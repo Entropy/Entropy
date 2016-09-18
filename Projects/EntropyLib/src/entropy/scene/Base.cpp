@@ -657,7 +657,7 @@ namespace entropy
 			this->timeline->setCurrentTimeToInPoint();
 			this->timeline->setCurrentPage(0);
 			this->setCameraLocked(true);
-			this->timeline->play();
+			//this->timeline->play();
 		}
 
 		//--------------------------------------------------------------
