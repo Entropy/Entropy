@@ -1,13 +1,13 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.001",
+            "Edge Ratio": "0.003997",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
@@ -27,13 +27,13 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "0",
+            "Alpha": "0.611523",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
             "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "30",
+            "Drop Rate": "1",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -41,7 +41,7 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
                 "Enabled": "0",
@@ -90,30 +90,30 @@
         "Camera Back": {
             "Attach to Parent": "0",
             "Dolly Speed": "0",
-            "FOV": "60",
+            "FOV": "45",
             "Far Clip": "200000",
             "Inherits Settings": "1",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0.0320002",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0.00599992",
+            "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
-                "distance": 80.7975845336914,
+                "aspectRatio": 2.37037038803101,
+                "distance": 5381.76025390625,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
-                "fov": 60.0,
+                "fov": 45.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
+                "orientation": "0.975771, -0.124901, -0.17964, -0.00085134",
                 "ortho": false,
-                "position": "21.8806, 22.6618, 74.4039",
+                "position": "-3582.14, 2056.41, 3450.04",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -134,7 +134,7 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 1.77777779102325,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -287,7 +287,7 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "3",
+                "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
@@ -312,18 +312,18 @@
         },
         "Post Effects Front": {
             "Bloom": {
-                "Brightness Threshold": "1",
+                "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
-                "Enabled": "0",
-                "Num Passes": "1",
-                "Sigma": "0.9"
+                "Enabled": "1",
+                "Num Passes": "3",
+                "Sigma": "5"
             },
             "Color": {
-                "Brightness": "0",
+                "Brightness": "-1",
                 "Contrast": "1",
-                "Exposure": "4.00001",
+                "Exposure": "4",
                 "Gamma": "2.2",
-                "Tonemapping": "0"
+                "Tonemapping": "6"
             },
             "Vignette": {
                 "Debug": "0",
