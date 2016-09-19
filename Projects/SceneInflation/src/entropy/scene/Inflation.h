@@ -121,7 +121,7 @@ namespace entropy
 				ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
 				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
 				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
-				ofParameter<float> hubbleWavelength{ "Min wavelength for any octave", 4.f, 0.01f, 4.f };
+				ofParameter<float> hubbleWavelength{ "Hubble (min) wavelength for any octave", 4.f, 0.01f, 4.f };
 
 				struct : ofParameterGroup
 				{

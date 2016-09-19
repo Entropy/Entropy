@@ -234,6 +234,8 @@ namespace entropy
 				noiseField.update();
 				gpuMarchingCubes.update(noiseField.getTexture());
 
+				//auto distance = this->getCamera(render::Layout::Back)->getEasyCam().getDistance();
+				//this->getCamera(render::Layout::Back)->getEasyCam().orbitDeg(ofGetElapsedTimef()*10.f,0,distance,glm::vec3(0,0,0));
 
 				//transitionParticles.color = ofFloatColor(transitionParticles.color, 0.0);
 			}
@@ -248,6 +250,7 @@ namespace entropy
 			static const string kParticlesFlag = "particles";
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
+				cout << "reset " << endl;
 				triggerReset();
 			}
 			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
@@ -310,6 +313,7 @@ namespace entropy
 			if (state == PreBigBang)
 			{
 				t_bigbang = now;
+				t_from_bigbang = 0;
 				state = PreBigBangWobble;
 				return true;
 			}
@@ -494,6 +498,7 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.Ht);
 					ofxPreset::Gui::AddParameter(this->parameters.HtBB);
 					ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
+					ofxPreset::Gui::AddParameter(this->parameters.hubbleWavelength);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
