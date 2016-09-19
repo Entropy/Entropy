@@ -66,6 +66,7 @@ namespace entropy
 			{
 				if (instance->enabled)
 				{
+					instance->alpha.set(this->parameters.stripes.backAlpha);
 					instance->draw();
 				}
 			}
@@ -78,6 +79,7 @@ namespace entropy
 			{
 				if (instance->enabled)
 				{
+					instance->alpha.set(this->parameters.stripes.frontAlpha);
 					instance->draw();
 				}
 			}
@@ -154,8 +156,8 @@ namespace entropy
 							ofxPreset::Gui::AddParameter(instance->depthTest);
 							static const vector<string> cullLabels{ "None", "Back", "Front" };
 							ofxPreset::Gui::AddRadio(instance->cullFace, cullLabels, 3);
-							ofxPreset::Gui::AddParameter(instance->color);
-							ofxPreset::Gui::AddParameter(instance->alpha);
+							ofxPreset::Gui::AddParameter(instance->color, false);
+							//ofxPreset::Gui::AddParameter(instance->alpha);
 							ofxPreset::Gui::AddParameter(instance->lineWidth);
 							ofxPreset::Gui::AddParameter(instance->lineHeight);
 							ofxPreset::Gui::AddParameter(instance->lineCount);
