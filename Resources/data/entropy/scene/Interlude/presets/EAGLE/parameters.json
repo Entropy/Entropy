@@ -32,15 +32,16 @@
             "FOV": "60",
             "Far Clip": "1000",
             "Inherits Settings": "0",
-            "Mouse Control": "0",
+            "Mouse Control": "1",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 2.37037038803101,
-                "distance": 561.032836914063,
+                "distance": 706.463134765625,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -52,7 +53,7 @@
                 "nearClip": 0.00100000004749745,
                 "orientation": "0.994393, 0.00445878, -0.0215998, 0.103423",
                 "ortho": false,
-                "position": "-108.811, 59.4408, 547.161",
+                "position": "395.074, 137.086, 569.398",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -72,6 +73,7 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 1.77777779102325,
                 "distance": 6.86646017129533e-05,
@@ -133,6 +135,7 @@
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
         "Camera_Back::Tilt Speed": "0",
+        "Camera_Back::Tumble Override": "0",
         "Camera_Front::Attach to Parent": "0",
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
@@ -144,7 +147,8 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
-        "Interlude::Stripes::Back Alpha": "0",
+        "Camera_Front::Tumble Override": "0",
+        "Interlude::Stripes::Back Alpha": "1",
         "Interlude::Stripes::Front Alpha": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
@@ -185,47 +189,52 @@
         {
             "Video": {
                 "Base": {
-                    "Background": "0, 0, 0, 1",
-                    "Center": "0.5, 0.5",
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
                     "Layout": "0",
                     "Size": "1",
-                    "Surface": "0"
+                    "Surface": "1",
+                    "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\videos\\Entropy_Evolve_Long.mov",
-                "Loop": "0",
-                "Scrub To Timeline": "1",
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Intro_h264.mov",
+                "Loop": "1",
+                "Scrub To Timeline": "0",
                 "Transition": {
                     "Duration": "0.5",
-                    "Type": "0"
+                    "Type": "1"
                 }
             },
             "type": 2
         },
         {
-            "Sound": {
+            "Video": {
                 "Base": {
-                    "Background": "0, 0, 0, 1",
-                    "Center": "0.5, 0.5",
-                    "Layout": "1",
-                    "Size": "0.1",
-                    "Surface": "1"
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\sounds\\flash.mp3",
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Evolve_h264.mov",
                 "Loop": "0",
+                "Scrub To Timeline": "1",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "2.5",
+                    "Type": "1"
                 }
             },
-            "type": 3
+            "type": 2
         }
     ],
     "Post Effects": {

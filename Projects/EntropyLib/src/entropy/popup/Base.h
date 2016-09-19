@@ -26,6 +26,20 @@ namespace entropy
 			Overlay
 		};
 
+		enum class HorzAlign
+		{
+			Left,
+			Center,
+			Right
+		};
+
+		enum class VertAlign
+		{
+			Top,
+			Middle,
+			Bottom
+		};
+
 		enum class Transition
 		{
 			Cut,
@@ -43,6 +57,8 @@ namespace entropy
 			Type getType() const;
 			render::Layout getLayout();
 			Surface getSurface();
+			HorzAlign getHorzAlign();
+			VertAlign getVertAlign();
 
 			bool editing;
 
@@ -123,18 +139,22 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
+					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
-					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
 					ofParameter<float> size{ "Size", 0.1f, 0.0f, 1.0f };
-					ofParameter<glm::vec2> center{ "Center", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
+					ofParameter<glm::vec2> anchor{ "Anchor", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
+					ofParameter<int> alignHorz{ "Horz Align", static_cast<int>(HorzAlign::Center), static_cast<int>(HorzAlign::Left), static_cast<int>(HorzAlign::Right) };
+					ofParameter<int> alignVert{ "Vert Align", static_cast<int>(VertAlign::Middle), static_cast<int>(VertAlign::Top), static_cast<int>(VertAlign::Bottom) };
 
 					PARAM_DECLARE("Base",
+						background,
 						layout,
 						surface,
-						background,
 						size,
-						center);
+						anchor,
+						alignHorz,
+						alignVert);
 				} base;
 
 				struct : ofParameterGroup

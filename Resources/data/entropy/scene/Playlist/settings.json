@@ -9,7 +9,7 @@
             "scene": "Inflation"
         },
         {
-            "preset": "Storm_0918",
+            "preset": "Colours_0919",
             "scene": "Particles"
         },
         {
@@ -23,6 +23,10 @@
         {
             "preset": "Expand_0915",
             "scene": "Surveys"
+        },
+        {
+            "preset": "Outro_0907",
+            "scene": "Inflation"
         }
     ]
 }
