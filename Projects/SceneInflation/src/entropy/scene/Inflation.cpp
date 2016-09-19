@@ -84,7 +84,9 @@ namespace entropy
 			now = 0;
 			t_bigbang = 0;
 			state = PreBigBang;
-			for(size_t i=0;i<postBigBangColors.size();i++){
+			scale = 1;
+			noiseField.scale = scale;
+			for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 				noiseField.octaves[i].color = preBigbangColors[i];
 			}
 			resetWavelengths();
@@ -136,6 +138,9 @@ namespace entropy
 				now += dt;
 				switch(state){
 					case PreBigBang:
+						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
+							noiseField.octaves[i].color = preBigbangColors[i];
+						}
 					break;
 					case PreBigBangWobble:{
 						t_from_bigbang = now - t_bigbang;
@@ -143,7 +148,8 @@ namespace entropy
 						pct *= pct;
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 							noiseField.octaves[i].wavelength = targetWavelengths[i] * ofMap(pct, 0, 1, 1, 0.4);
-							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], pct * 0.5);
+							auto color = preBigbangColors[i];
+							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], pct * 0.5);
 						}
 					}break;
 
@@ -158,7 +164,8 @@ namespace entropy
 							state = Expansion;
 						}
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
-							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], 0.5 + pct * 0.5);
+							auto color = preBigbangColors[i];
+							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], 0.5 + pct * 0.5);
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					}break;
@@ -288,7 +295,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Inflation::triggerReset()
 		{
-			state = PreBigBang;
 			this->setup();
 			for (auto & it : this->cameras)
 			{
