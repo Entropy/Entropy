@@ -39,8 +39,8 @@
             "Roll Speed": "0",
             "Tilt Speed": "0.0159975",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
-                "distance": 65641.296875,
+                "aspectRatio": 2.37037038803101,
+                "distance": 2101.90869140625,
                 "drag": 0.899999976158142,
                 "farClip": 100000.0,
                 "forceAspectRatio": true,
@@ -50,9 +50,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.99999974737875e-05,
-                "orientation": "0.287304, -0.54077, 0.748722, 0.253645",
+                "orientation": "-0.166839, 0.0483904, 0.871469, 0.45864",
                 "ortho": false,
-                "position": "13578.2, 39137.7, -50918.1",
+                "position": "-517.906, 1714.19, -1100.61",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -73,7 +73,7 @@
             "Roll Speed": "0",
             "Tilt Speed": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 1.77777779102325,
                 "distance": 0.00415555667132139,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -283,11 +283,11 @@
             "Min Radius": "0"
         },
         "Back": {
-            "Point Size": "0.36189",
+            "Point Size": "1.64149",
             "Render BOSS": "1",
             "Render DES": "1",
             "Render ViziR": "1",
-            "Scale": "100"
+            "Scale": "14.5095"
         },
         "DES": {
             "Color": "1, 1, 1, 1",
@@ -307,13 +307,13 @@
             "Scale": "3.10969"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
-            "Blend Mode": "2",
+            "Blend Mode": "5",
             "Color": "1, 1, 1, 1",
-            "Cull Face": "0",
+            "Cull Face": "2",
             "Depth Test": "0",
             "Enabled": "1",
             "Radius": "1000",
@@ -324,7 +324,7 @@
             "Cut Radius": "0.045",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0",
+            "Max Radius": "1",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0.05"
