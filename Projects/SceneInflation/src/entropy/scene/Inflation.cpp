@@ -234,6 +234,8 @@ namespace entropy
 				noiseField.update();
 				gpuMarchingCubes.update(noiseField.getTexture());
 
+				//auto distance = this->getCamera(render::Layout::Back)->getEasyCam().getDistance();
+				//this->getCamera(render::Layout::Back)->getEasyCam().orbitDeg(ofGetElapsedTimef()*10.f,0,distance,glm::vec3(0,0,0));
 
 				//transitionParticles.color = ofFloatColor(transitionParticles.color, 0.0);
 			}
@@ -494,6 +496,7 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.Ht);
 					ofxPreset::Gui::AddParameter(this->parameters.HtBB);
 					ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
+					ofxPreset::Gui::AddParameter(this->parameters.hubbleWavelength);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
