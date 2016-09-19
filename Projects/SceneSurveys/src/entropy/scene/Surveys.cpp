@@ -9,7 +9,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		Surveys::Surveys()
 			: Base()
-		{}
+		{
+			this->parameters.setName("Surveys");
+		}
 		
 		//--------------------------------------------------------------
 		Surveys::~Surveys()
@@ -47,7 +49,6 @@ namespace entropy
 			this->spriteShader.linkProgram();
 
 			// Init parameters.
-			this->parameters.setName("Surveys");
 			this->backParameters.setName("Back");
 			this->frontParameters.setName("Front");
 
