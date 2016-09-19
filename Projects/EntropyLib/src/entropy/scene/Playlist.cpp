@@ -529,9 +529,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Playlist::canvasResized(render::Layout layout, ofResizeEventArgs & args)
 		{
-			if (this->currentScene)
+			for (auto & it : this->scenes)
 			{
-				this->currentScene->resize_(layout, args);
+				it.second->resize_(layout, args);
 			}
 		}
 

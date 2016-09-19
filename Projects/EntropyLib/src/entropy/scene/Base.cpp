@@ -67,6 +67,13 @@ namespace entropy
 			// Initialize child class.
 			this->init();
 
+			// Force resize.
+			for (auto & it : this->cameras)
+			{
+				auto resizeArgs = ofResizeEventArgs(GetCanvasWidth(it.first), GetCanvasHeight(it.first));
+				this->resize_(it.first, resizeArgs);
+			}
+
 			// Configure and register parameters.
 			this->populateMappings(parameters);
 
