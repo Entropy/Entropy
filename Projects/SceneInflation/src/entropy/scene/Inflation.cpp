@@ -46,6 +46,12 @@ namespace entropy
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
+			auto resizeBackArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Back), GetCanvasHeight(render::Layout::Back));
+			this->resizeBack(resizeBackArgs);
+
+			auto resizeFrontArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
+			this->resizeFront(resizeBackArgs);
+
 			// Custom parameter listeners.
 			this->parameterListeners.push_back(this->parameters.render.boxBackRender.newListener([this](bool & value)
 			{
