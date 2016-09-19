@@ -256,6 +256,7 @@ namespace entropy
 			static const string kParticlesFlag = "particles";
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
+				cout << "reset " << endl;
 				triggerReset();
 			}
 			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
@@ -318,6 +319,7 @@ namespace entropy
 			if (state == PreBigBang)
 			{
 				t_bigbang = now;
+				t_from_bigbang = 0;
 				state = PreBigBangWobble;
 				return true;
 			}
