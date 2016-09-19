@@ -88,7 +88,7 @@ namespace entropy
 			bool firstCycle;
 
 			std::array<float,4> targetWavelengths;
-			std::array<ofFloatColor,4> preBigbangColors{{
+			const std::array<ofFloatColor,4> preBigbangColors{{
 				ofColor{117.f,118.f,118.f},
 				ofColor{200.,200.,200.},
 				ofColor(240.,127.,19.),
