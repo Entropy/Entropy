@@ -13,7 +13,7 @@
             "Subdivisions": "4"
         },
         "Box Front": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0536151",
+        "Current rate of expansion": "0.0524325",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -308,7 +308,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "0",
+                "Exposure": "4",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -350,9 +350,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "0",
+            "Fade From": "5.06169",
             "Fade Power": "2",
-            "Fade To": "0.5",
+            "Fade To": "2.24982",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -368,9 +368,9 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "0",
+            "Fade From": "5.06169",
             "Fade Power": "2",
-            "Fade To": "0.5",
+            "Fade To": "2.24982",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",
@@ -381,7 +381,7 @@
             "Shade Normals": "0",
             "Spherical Clip": "1",
             "Use Lights": "0",
-            "Wireframe": "1",
+            "Wireframe": "0",
             "Wireframe Alpha": "0.01",
             "Wobbly Clip": "0"
         }
