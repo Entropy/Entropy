@@ -22,6 +22,7 @@ namespace entropy
 			this->prevIdx = 0;
 			this->currIdx = 1;
 			this->tempIdx = 2;
+			this->lerpIdx = 3;
 
 			this->resetSimulation = false;
 		}
@@ -54,7 +55,7 @@ namespace entropy
 				//else
 				//{
 				//	float pct = frame / static_cast<float>(this->rippleRate.get());
-				//	this->mixFrames(pct);
+				//	this->lerpFrames(pct);
 				//}
 			}
 		}

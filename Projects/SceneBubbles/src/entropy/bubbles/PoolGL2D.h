@@ -21,6 +21,7 @@ namespace entropy
 			void resize() override;
 
 			void reset() override;
+			void update(double dt) override;
 			void draw() override;
 
 			const ofTexture & getTexture() const;
@@ -29,13 +30,13 @@ namespace entropy
 			void addDrop() override;
 			void stepRipple() override;
 			void copyResult() override;
-			void mixFrames(float pct) override;
+			void lerpFrames(float pct) override;
 
 			ofShader shader;
 			ofVboMesh mesh;
 
-			ofTexture textures[3];
-			ofxFbo fbos[3];
+			ofTexture textures[4];
+			ofxFbo fbos[4];
 		};
 	}
 }

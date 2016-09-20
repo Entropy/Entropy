@@ -48,7 +48,7 @@ namespace entropy
 			void addDrop() override;
 			void stepRipple() override;
 			void copyResult() override;
-			void mixFrames(float pct) override;
+			void lerpFrames(float pct) override;
 
 			ofShader dropShader;
 			ofShader rippleShader;

@@ -293,7 +293,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void PoolGL3D::mixFrames(float pct)
+		void PoolGL3D::lerpFrames(float pct)
 		{
 			this->textures[this->currIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
 			this->textures[this->prevIdx].bindAsImage(1, GL_READ_ONLY, 0, true, 0);

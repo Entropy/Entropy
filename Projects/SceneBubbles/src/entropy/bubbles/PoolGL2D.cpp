@@ -73,6 +73,39 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void PoolGL2D::update(double dt)
+		{
+			if (this->resetSimulation)
+			{
+				this->reset();
+			}
+
+			if (this->runSimulation && (this->drawBack || this->drawFront))
+			{
+				int frame = (ofGetFrameNum() % this->rippleRate);
+				if (frame == 0)
+				{
+					//this->copyResult();
+
+					std::swap(this->currIdx, this->prevIdx);
+
+					if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
+					{
+						this->addDrop();
+					}
+
+					this->stepRipple();
+					this->copyResult();
+				}
+				else
+				{
+					float pct = frame / static_cast<float>(this->rippleRate.get());
+					this->lerpFrames(pct);
+				}
+			}
+		}
+
+		//--------------------------------------------------------------
 		void PoolGL2D::addDrop()
 		{
 			this->fbos[this->prevIdx].begin();
@@ -130,9 +163,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void PoolGL2D::mixFrames(float pct)
+		void PoolGL2D::lerpFrames(float pct)
 		{
-			this->fbos[this->currIdx].begin();
+			this->fbos[this->lerpIdx].begin();
 			{
 				ofClear(0, 0);
 				//ofEnableAlphaBlending();
@@ -151,7 +184,7 @@ namespace entropy
 				}
 				this->textures[this->tempIdx].unbind();
 			}
-			this->fbos[this->currIdx].end();
+			this->fbos[this->lerpIdx].end();
 		}
 
 		//--------------------------------------------------------------
@@ -170,7 +203,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const ofTexture & PoolGL2D::getTexture() const
 		{
-			return this->textures[this->prevIdx];
+			return this->textures[this->lerpIdx];
 		}
 	}
 }
