@@ -238,6 +238,7 @@ namespace entropy
 						alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
 						//noiseField.speedFactor = alphaBlobs;
 						renderers[entropy::render::Layout::Back].alphaFactor = alphaBlobs;
+						renderers[entropy::render::Layout::Front].alphaFactor = alphaBlobs;
 					}break;
 				}
 
@@ -327,6 +328,8 @@ namespace entropy
 			{
 				it.second->reset(false);
 			}
+			renderers[entropy::render::Layout::Back].alphaFactor = 1;
+			renderers[entropy::render::Layout::Front].alphaFactor = 1;
 
 			return true;
 		}
