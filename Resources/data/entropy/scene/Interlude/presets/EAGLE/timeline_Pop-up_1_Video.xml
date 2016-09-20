@@ -1,6 +1,6 @@
 <keyframes>
     <key>
-        <switchName />
+        <switchName>sequence</switchName>
         <max>00:08:33:304</max>
         <time>00:03:26:132</time>
         <value>0.699999988</value>

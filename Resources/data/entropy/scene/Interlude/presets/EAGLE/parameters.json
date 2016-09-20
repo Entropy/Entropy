@@ -1,7 +1,7 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
@@ -13,7 +13,7 @@
             "Subdivisions": "80"
         },
         "Box Front": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.37037038803101,
+                "aspectRatio": 3.17685174942017,
                 "distance": 706.463134765625,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 2.82592582702637,
                 "distance": 6.86646017129533e-05,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -99,7 +99,7 @@
     },
     "Interlude": {
         "Stripes": {
-            "Back Alpha": "1",
+            "Back Alpha": "0",
             "Front Alpha": "1"
         }
     },
@@ -203,7 +203,7 @@
                 },
                 "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Intro_h264.mov",
                 "Loop": "1",
-                "Scrub To Timeline": "0",
+                "Scrub To Timeline": "1",
                 "Transition": {
                     "Duration": "0.5",
                     "Type": "1"
@@ -235,6 +235,55 @@
                 }
             },
             "type": 2
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Evolve_h264.mov",
+                "Loop": "0",
+                "Scrub To Timeline": "1",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 1",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\sounds\\flash THOMAS EDIT V2.wav",
+                "Loop": "0",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 3
         }
     ],
     "Post Effects": {
@@ -291,7 +340,7 @@
     },
     "Stripes Back": {
         "Stripes 0": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
