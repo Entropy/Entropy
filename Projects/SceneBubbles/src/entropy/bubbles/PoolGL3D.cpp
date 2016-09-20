@@ -74,7 +74,10 @@ namespace entropy
 			this->parameterListeners.push_back(this->filterMode.newListener([this](int & value)
 			{
 				GLuint mode = (static_cast<FilterMode>(value) == FilterMode::Linear ? GL_LINEAR : GL_NEAREST);
-				this->volumetrics.setVolumeTextureFilterMode(mode);
+				for (int i = 0; i < 3; ++i)
+				{
+					this->textures[i].setMinMagFilters(mode, mode);
+				}
 			}));
 		}
 
