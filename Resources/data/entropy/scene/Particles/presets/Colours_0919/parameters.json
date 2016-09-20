@@ -490,11 +490,11 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "1",
+                "Brightness Threshold": "0.15",
                 "Debug Blur": "0",
-                "Enabled": "0",
-                "Num Passes": "1",
-                "Sigma": "0.9"
+                "Enabled": "1",
+                "Num Passes": "6",
+                "Sigma": "4"
             },
             "Color": {
                 "Brightness": "0",
