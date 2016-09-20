@@ -259,17 +259,21 @@ namespace entropy
 				auto & sceneName = this->shortNames[item.first];
 				if (this->setCurrentScene(sceneName))
 				{
-					if (this->setCurrentPreset(item.second, true))
+					auto found = this->setCurrentPreset(item.second, true);
+					if (!found)
 					{
-						this->currentTrack = index;
-
-						this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
-						{
-							this->tracks[this->currentTrack].second = preset;
-						});
-
-						return true;
+						ofLogWarning(__FUNCTION__) << "Preset " << item.second << " not found, reverting to default.";
+						item.second = kPresetDefaultName;
+						this->setCurrentPreset(item.second, true);
 					}
+					this->currentTrack = index;
+
+					this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
+					{
+						this->tracks[this->currentTrack].second = preset;
+					});
+
+					return found;
 				}
 			}
 
@@ -529,9 +533,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Playlist::canvasResized(render::Layout layout, ofResizeEventArgs & args)
 		{
-			if (this->currentScene)
+			for (auto & it : this->scenes)
 			{
-				this->currentScene->resize_(layout, args);
+				it.second->resize_(layout, args);
 			}
 		}
 

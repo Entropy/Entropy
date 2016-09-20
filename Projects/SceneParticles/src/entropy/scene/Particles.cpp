@@ -54,12 +54,6 @@ namespace entropy
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
-			auto resizeBackArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Back), GetCanvasHeight(render::Layout::Back));
-			this->resizeBack(resizeBackArgs);
-
-			auto resizeFrontArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
-			this->resizeFront(resizeBackArgs);
-
 			// Register Environment parameters for Mappings and serialization.
 			this->parameters.add(this->environment->parameters);
 			

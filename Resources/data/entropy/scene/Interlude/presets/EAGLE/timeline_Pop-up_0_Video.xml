@@ -1,8 +1,8 @@
 <keyframes>
     <key>
-        <switchName />
-        <max>00:03:35:484</max>
-        <time>00:00:05:304</time>
-        <value>1.000000000</value>
+        <switchName>intro loop</switchName>
+        <max>00:03:43:281</max>
+        <time>00:00:13:101</time>
+        <value>0.850000024</value>
     </key>
 </keyframes>

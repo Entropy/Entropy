@@ -27,13 +27,13 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "0.611523",
+            "Alpha": "1",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
-            "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
-            "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "1",
+            "Drop Color 1": "0.937255, 0.819608, 0.670588, 1",
+            "Drop Color 2": "0.658824, 0.509804, 0.435294, 1",
+            "Drop Rate": "4",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -99,9 +99,10 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.37037038803101,
-                "distance": 5381.76025390625,
+                "aspectRatio": 3.17685174942017,
+                "distance": 15244.36328125,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -111,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.975771, -0.124901, -0.17964, -0.00085134",
+                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
                 "ortho": false,
-                "position": "-3582.14, 2056.41, 3450.04",
+                "position": "-8070.36, 4679.05, 12056.8",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -133,8 +134,9 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 2.82592582702637,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -237,6 +239,7 @@
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
         "Camera_Back::Tilt Speed": "1",
+        "Camera_Back::Tumble Override": "0",
         "Camera_Front::Attach to Parent": "0",
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
@@ -248,6 +251,7 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
+        "Camera_Front::Tumble Override": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "1",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -283,7 +287,32 @@
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
-    "Pop-ups": null,
+    "Pop-ups": [
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 1",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\sounds\\bubble THOMAS EDIT V1.wav",
+                "Loop": "0",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 3
+        }
+    ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
