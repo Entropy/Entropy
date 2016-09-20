@@ -11,20 +11,20 @@ namespace entropy
 			: meshDirty(true)
 			, colorDirty(true)
 		{
-			this->paramListeners.push_back(this->blendMode.newListener([this](int & mode)
-			{
-				if (mode > OF_BLENDMODE_DISABLED)
-				{
-					this->depthTest = false;
-				}
-			}));
-			this->paramListeners.push_back(this->depthTest.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->blendMode = OF_BLENDMODE_DISABLED;
-				}
-			}));
+			//this->paramListeners.push_back(this->blendMode.newListener([this](int & mode)
+			//{
+			//	if (mode > OF_BLENDMODE_DISABLED)
+			//	{
+			//		this->depthTest = false;
+			//	}
+			//}));
+			//this->paramListeners.push_back(this->depthTest.newListener([this](bool & enabled)
+			//{
+			//	if (enabled)
+			//	{
+			//		this->blendMode = OF_BLENDMODE_DISABLED;
+			//	}
+			//}));
 			this->paramListeners.push_back(this->color.newListener([this](ofFloatColor &)
 			{
 				this->colorDirty = true;

@@ -283,6 +283,20 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
 		{
+			if (this->parameters.render.boxBackRender)
+			{
+				auto layout = render::Layout::Back;
+				auto & camera = this->getCamera(layout)->getEasyCam();
+
+				bool prevClip = renderers[layout].clip;
+				float prevFillAlpha = renderers[layout].fillAlpha;
+				renderers[layout].clip = false;
+				renderers[layout].fillAlpha = this->boxes[layout].alpha;
+				this->boxes[layout].draw(renderers[layout], camera);
+				renderers[layout].clip = prevClip;
+				renderers[layout].fillAlpha = prevFillAlpha;
+			}
+			
 			if (parameters.render.debug)
 			{
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
@@ -397,17 +411,6 @@ namespace entropy
 					this->transitionParticles.draw(transitionParticlesPosition, noiseField.getTexture(), now);
 				//}
 				break;
-			}
-
-			if (layout == render::Layout::Back && this->parameters.render.boxBackRender)
-			{
-				bool prevClip = renderers[layout].clip;
-				float prevFillAlpha = renderers[layout].fillAlpha;
-				renderers[layout].clip = false;
-				renderers[layout].fillAlpha = this->boxes[render::Layout::Back].alpha;
-				this->boxes[layout].draw(renderers[layout], camera);
-				renderers[layout].clip = prevClip;
-				renderers[layout].fillAlpha = prevFillAlpha;
 			}
 
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
