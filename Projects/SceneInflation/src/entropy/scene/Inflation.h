@@ -123,6 +123,8 @@ namespace entropy
 				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
 				ofParameter<float> hubbleWavelength{ "Hubble (min) wavelength for any octave", 4.f, 0.01f, 4.f };
 
+				ofParameter<bool> controlCamera{ "Control Camera", false };
+
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> debug{ "Debug Noise", false };
@@ -156,6 +158,7 @@ namespace entropy
 					HtPostBB,
 					Ht,
 					hubbleWavelength,
+					controlCamera,
 					render);
 			} parameters;
 		};

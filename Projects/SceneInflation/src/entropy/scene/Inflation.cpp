@@ -76,11 +76,14 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			cameraDistanceBeforeBB = 1;
-			this->cameras[render::Layout::Back]->setDistanceToTarget(cameraDistanceBeforeBB);
+			if (this->parameters.controlCamera)
+			{
+				cameraDistanceBeforeBB = 1;
+				this->cameras[render::Layout::Back]->setDistanceToTarget(cameraDistanceBeforeBB);
+			}
 			this->cameras[render::Layout::Back]->nearClip = 0.01f;
 			this->cameras[render::Layout::Back]->farClip = 6.0f;
-
+			
 			now = 0;
 			t_bigbang = 0;
 			state = PreBigBang;
@@ -157,8 +160,11 @@ namespace entropy
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						auto pct = t_from_bigbang/parameters.bigBangDuration;
-						cameras[render::Layout::Back]->setDistanceToTarget(ofMap(pct,0,1,cameraDistanceBeforeBB,0.5));
-						if(t_from_bigbang > parameters.bigBangDuration){
+						if (this->parameters.controlCamera)
+						{
+							cameras[render::Layout::Back]->setDistanceToTarget(ofMap(pct, 0, 1, cameraDistanceBeforeBB, 0.5));
+						}
+						if (t_from_bigbang > parameters.bigBangDuration) {
 							//resetWavelengths();
 							firstCycle = true;
 							state = Expansion;
@@ -174,10 +180,14 @@ namespace entropy
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						noiseField.scale = scale;
-						if(cameras[render::Layout::Back]->getDistanceToTarget()>0.5){
-							auto d = cameras[render::Layout::Back]->getDistanceToTarget();
-							d -= dt * parameters.Ht;
-							cameras[render::Layout::Back]->setDistanceToTarget(d);
+						if (this->parameters.controlCamera)
+						{
+							if (cameras[render::Layout::Back]->getDistanceToTarget() > 0.5f) 
+							{
+								auto d = cameras[render::Layout::Back]->getDistanceToTarget();
+								d -= dt * parameters.Ht;
+								cameras[render::Layout::Back]->setDistanceToTarget(d);
+							}
 						}
 						if(!firstCycle){
 							for(size_t i=0;i<noiseField.octaves.size()/2;i++){
@@ -477,6 +487,7 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
+				ofxPreset::Gui::AddParameter(this->parameters.controlCamera);
 
 				if (ImGui::Button("Trigger Reset")) {
 					this->triggerReset();
