@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0524325",
+        "Current rate of expansion": "0.0565076",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -178,7 +178,7 @@
         "Inflation::Rate of expansion at bigbang": "0",
         "Inflation::Render::Debug Noise": "0",
         "Inflation::Render::Render Back": "0",
-        "Inflation::Render::Render Box Back": "0",
+        "Inflation::Render::Render Box Back": "1",
         "Inflation::Render::Render Front": "0",
         "Inflation::Run Simulation": "0",
         "Inflation::bigbang flash in, duration sec.": "0",
@@ -350,9 +350,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "5.06169",
+            "Fade From": "4.20681",
             "Fade Power": "2",
-            "Fade To": "2.24982",
+            "Fade To": "2.05105",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -368,9 +368,9 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "5.06169",
+            "Fade From": "4.20681",
             "Fade Power": "2",
-            "Fade To": "2.24982",
+            "Fade To": "2.05105",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",

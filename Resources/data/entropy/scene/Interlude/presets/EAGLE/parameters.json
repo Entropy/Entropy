@@ -41,7 +41,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 706.463134765625,
+                "distance": 711.617736816406,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -51,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.994393, 0.00445878, -0.0215998, 0.103423",
+                "orientation": "0.986522, 0, 0, 0.163628",
                 "ortho": false,
-                "position": "395.074, 137.086, 569.398",
+                "position": "429.307, 187.917, 535.521",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -203,9 +203,9 @@
                 },
                 "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Intro_h264.mov",
                 "Loop": "1",
-                "Scrub To Timeline": "1",
+                "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "0.5",
+                    "Duration": "1",
                     "Type": "1"
                 }
             },
@@ -251,12 +251,12 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Evolve_h264.mov",
-                "Loop": "0",
-                "Scrub To Timeline": "1",
+                "File Path": "entropy\\scene\\Interlude\\videos\\Lines1_h264.mov",
+                "Loop": "1",
+                "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "1",
+                    "Type": "1"
                 }
             },
             "type": 2
@@ -338,21 +338,6 @@
             }
         }
     },
-    "Stripes Back": {
-        "Stripes 0": {
-            "Alpha": "0",
-            "Auto Draw": "1",
-            "Blend Mode": "1",
-            "Color": "1, 1, 1, 1",
-            "Cull Face": "1",
-            "Depth Test": "0",
-            "Enabled": "1",
-            "Line Count": "16",
-            "Line Height": "1000",
-            "Line Width": "1",
-            "Space Width": "247.423",
-            "Z Position": "247.423"
-        }
-    },
+    "Stripes Back": null,
     "Stripes Front": null
 }
