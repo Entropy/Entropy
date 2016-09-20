@@ -61,7 +61,7 @@ namespace entropy
 			if (this->switchMillis >= 0.0f)
 			{
 				float durationMillis = this->videoPlayer.getDuration() * 1000.0f;
-				bool shouldPlay = (durationMillis > 0.0) && (this->parameters.loop || (durationMillis >= this->switchMillis));
+				bool shouldPlay = durationMillis > 0.0 && (this->parameters.loop || durationMillis >= this->switchMillis);
 				
 				if (this->timeline->getIsPlaying())
 				{
