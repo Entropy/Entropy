@@ -75,6 +75,9 @@ namespace entropy
 			{
 				GLuint mode = (static_cast<FilterMode>(value) == FilterMode::Linear ? GL_LINEAR : GL_NEAREST);
 				this->volumetrics.setVolumeTextureFilterMode(mode);
+				this->textures[0].setMinMagFilters(mode, mode);
+				this->textures[1].setMinMagFilters(mode, mode);
+				this->textures[2].setMinMagFilters(mode, mode);
 			}));
 		}
 
@@ -358,7 +361,7 @@ namespace entropy
 				ofxPreset::Gui::AddParameter(this->radius);
 				ofxPreset::Gui::AddParameter(this->ringSize);
 
-				static const vector<string> labels{ "Nearest", "Linear" };
+				static const vector<string> labels{ "Linear", "Nearest" };
 				ofxPreset::Gui::AddRadio(this->filterMode, labels, 2);
 				ofxPreset::Gui::AddParameter(this->volumeSize);
 
