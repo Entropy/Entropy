@@ -267,8 +267,8 @@ namespace entropy
 			static const string kParticlesFlag = "particles";
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
-				cout << "reset " << endl;
 				triggerReset();
+				//this->timeline->stop();
 			}
 			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
 			{

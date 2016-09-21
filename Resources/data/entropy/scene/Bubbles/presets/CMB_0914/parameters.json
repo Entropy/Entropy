@@ -1,13 +1,13 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.003997",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
@@ -33,7 +33,7 @@
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.819608, 0.670588, 1",
             "Drop Color 2": "0.658824, 0.509804, 0.435294, 1",
-            "Drop Rate": "4",
+            "Drop Rate": "45",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -101,8 +101,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
-                "distance": 15244.36328125,
+                "aspectRatio": 3.3505859375,
+                "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -112,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
+                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
                 "ortho": false,
-                "position": "-8070.36, 4679.05, 12056.8",
+                "position": "21.8806, 22.6618, 74.4039",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -136,7 +136,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 1.77777779102325,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -193,7 +193,7 @@
         "Bubbles::Pool_GL_2D::Run Simulation": "0",
         "Bubbles::Pool_GL_3D::Alpha": "1",
         "Bubbles::Pool_GL_3D::Bursts::Color": "0",
-        "Bubbles::Pool_GL_3D::Bursts::Enabled": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Enabled": "1",
         "Bubbles::Pool_GL_3D::Bursts::Force Multiplier": "0",
         "Bubbles::Pool_GL_3D::Bursts::Force Random": "0",
         "Bubbles::Pool_GL_3D::Bursts::Max Age": "0",
@@ -257,7 +257,7 @@
         "Post_Effects_Back::Bloom::Enabled": "0",
         "Post_Effects_Back::Bloom::Num Passes": "0",
         "Post_Effects_Back::Bloom::Sigma": "0",
-        "Post_Effects_Back::Color::Brightness": "0",
+        "Post_Effects_Back::Color::Brightness": "1",
         "Post_Effects_Back::Color::Contrast": "0",
         "Post_Effects_Back::Color::Exposure": "0",
         "Post_Effects_Back::Color::Gamma": "0",
@@ -323,7 +323,7 @@
                 "Sigma": "0.951"
             },
             "Color": {
-                "Brightness": "0",
+                "Brightness": "-0.25",
                 "Contrast": "1",
                 "Exposure": "5.619",
                 "Gamma": "2.2",

@@ -198,7 +198,6 @@ namespace entropy
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
 				this->reset();
-
 				this->timeline->stop();
 			}
 		}
