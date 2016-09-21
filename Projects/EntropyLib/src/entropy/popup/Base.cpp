@@ -148,7 +148,7 @@ namespace entropy
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
-						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
+						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeIn);
 						this->borderDirty = true;
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
