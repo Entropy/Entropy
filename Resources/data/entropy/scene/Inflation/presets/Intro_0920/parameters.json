@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
+                "aspectRatio": 3.3505859375,
                 "distance": 0.529601216316223,
                 "drag": 0.899999976158142,
                 "farClip": 6.0,
@@ -51,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00999999977648258,
-                "orientation": "0.947255, -0.156357, 0.268725, 0.077771",
+                "orientation": "0.966852, 0.00747015, 0.253367, 0.0307797",
                 "ortho": false,
-                "position": "0.256741, 0.179014, 0.427218",
+                "position": "0.259715, 0.000610143, 0.461547",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 1.77777779102325,
                 "distance": 0.139618083834648,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0565076",
+        "Current rate of expansion": "0.0529041",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -326,7 +326,7 @@
             "Bloom": {
                 "Brightness Threshold": "0.303",
                 "Debug Blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num Passes": "7",
                 "Sigma": "0.5"
             },
@@ -350,9 +350,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.20681",
+            "Fade From": "4.5901",
             "Fade Power": "2",
-            "Fade To": "2.05105",
+            "Fade To": "2.14245",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -368,9 +368,9 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.20681",
+            "Fade From": "4.5901",
             "Fade Power": "2",
-            "Fade To": "2.05105",
+            "Fade To": "2.14245",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",

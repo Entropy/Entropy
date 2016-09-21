@@ -1,7 +1,7 @@
 <keyframes>
     <key>
         <flag>reset</flag>
-        <time>00:00:03:953</time>
+        <time>00:00:01:009</time>
         <value>0.550000012</value>
     </key>
     <key>
@@ -11,22 +11,17 @@
     </key>
     <key>
         <flag>bigbang</flag>
-        <time>00:00:48:171</time>
-        <value>0.350000024</value>
+        <time>00:00:10:346</time>
+        <value>0.324999988</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:25:132</time>
+        <value>0.725000024</value>
     </key>
     <key>
         <flag>stop</flag>
         <time>00:01:05:620</time>
         <value>0.600000024</value>
-    </key>
-    <key>
-        <flag>play reheating</flag>
-        <time>00:02:00:045</time>
-        <value>0.625000000</value>
-    </key>
-    <key>
-        <flag>stop</flag>
-        <time>00:02:29:697</time>
-        <value>0.375000000</value>
     </key>
 </keyframes>

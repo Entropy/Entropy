@@ -13,30 +13,17 @@
         <value>0.100000024</value>
     </key>
     <key>
-        <px>1.148478508</px>
-        <py>1.432950020</py>
-        <pz>1.853525400</pz>
-        <ow>0.947254181</ow>
-        <ox>-0.156356722</ox>
-        <oy>0.268725693</oy>
-        <oz>0.077771366</oz>
+        <px>2.314962864</px>
+        <py>2.241857290</py>
+        <pz>3.790678978</pz>
+        <ow>0.947252810</ow>
+        <ox>-0.156355083</ox>
+        <oy>0.268718153</oy>
+        <oz>0.077769503</oz>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:00:15:202</time>
-        <value>0.149999976</value>
-    </key>
-    <key>
-        <px>1.148478508</px>
-        <py>1.432950020</py>
-        <pz>1.853525400</pz>
-        <ow>0.947254181</ow>
-        <ox>-0.156356722</ox>
-        <oy>0.268725693</oy>
-        <oz>0.077771366</oz>
-        <easein>0</easein>
-        <easeout>0</easeout>
-        <time>00:00:51:293</time>
-        <value>1.000000000</value>
+        <time>00:00:10:081</time>
+        <value>0.024999976</value>
     </key>
     <key>
         <px>0.256740987</px>
@@ -48,7 +35,20 @@
         <oz>0.077771008</oz>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:00:51:569</time>
-        <value>0.699999988</value>
+        <time>00:00:10:386</time>
+        <value>0.250000000</value>
+    </key>
+    <key>
+        <px>-1.218363404</px>
+        <py>-0.849488080</py>
+        <pz>-2.026661158</pz>
+        <ow>0.947254598</ow>
+        <ox>-0.156356528</ox>
+        <oy>0.268724829</oy>
+        <oz>0.077771008</oz>
+        <easein>0</easein>
+        <easeout>0</easeout>
+        <time>00:00:15:148</time>
+        <value>0.125000000</value>
     </key>
 </keyframes>
