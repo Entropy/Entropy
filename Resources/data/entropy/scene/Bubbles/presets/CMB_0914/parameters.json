@@ -27,7 +27,7 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
@@ -41,17 +41,17 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
                 "Enabled": "0",
                 "Force Multiplier": "0.8",
                 "Force Random": "0.2",
-                "Max Age": "10",
+                "Max Age": "9",
                 "Max Distance": "0.15",
                 "Max Links": "3",
                 "Min Distance": "0.01",
-                "Resolution": "8",
+                "Resolution": "6",
                 "World Bounds": "6000"
             },
             "Damping": "0.999",
@@ -69,7 +69,7 @@
             "Volume Size": "6000"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
@@ -82,8 +82,8 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0",
-            "Tint Color": "1, 0.962537, 0.545098, 1"
+            "Mask Mix": "0.294",
+            "Tint Color": "0.937255, 0.82046, 0.668943, 1"
         }
     },
     "Cameras": {
@@ -95,13 +95,13 @@
             "Inherits Settings": "1",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0320002",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.00599992",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3505859375,
+                "aspectRatio": 3.21944451332092,
                 "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
@@ -136,7 +136,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 3.55555558204651,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -311,19 +311,65 @@
                 }
             },
             "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.75",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "0",
+                    "Size": "0.225",
+                    "Surface": "1",
+                    "Vert Align": "2"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture temp 3000 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.7",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "0",
+                    "Size": "0.225",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture time -400 000 y.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
         }
     ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "0.01",
+                "Brightness Threshold": "3",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "0.951"
             },
             "Color": {
-                "Brightness": "-0.25",
+                "Brightness": "0",
                 "Contrast": "1",
                 "Exposure": "5.619",
                 "Gamma": "2.2",

@@ -34,14 +34,14 @@
             "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.0001",
-            "Pan Speed": "0.05",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
-            "Tumble Override": "1",
+            "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.37037038803101,
-                "distance": 277236.0625,
+                "aspectRatio": 3.21944451332092,
+                "distance": 252664.078125,
                 "drag": 0.899999976158142,
                 "farClip": 100000.0,
                 "forceAspectRatio": true,
@@ -51,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.99999974737875e-05,
-                "orientation": "0.246844, -0.478304, 0.811471, 0.227376",
+                "orientation": "0.229086, -0.0895498, 0.944173, 0.219146",
                 "ortho": false,
-                "position": "52716.7, 161091, -219387",
+                "position": "99469.5, 115001, -201791",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -281,26 +281,26 @@
             "Cut Radius": "0",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0.0803903",
+            "Max Radius": "0.0271152",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0"
         },
         "Back": {
-            "Point Size": "16.0689",
+            "Point Size": "13.318",
             "Render BOSS": "1",
             "Render DES": "1",
             "Render ViziR": "1",
-            "Scale": "3.1325"
+            "Scale": "3.10969"
         },
         "DES": {
             "Color": "1, 1, 1, 1",
             "Cut Radius": "0",
             "Max Latitude": "1",
-            "Max Longitude": "0.279",
-            "Max Radius": "1",
+            "Max Longitude": "1",
+            "Max Radius": "0.0271152",
             "Min Latitude": "0",
-            "Min Longitude": "0.0543238",
+            "Min Longitude": "0",
             "Min Radius": "0"
         },
         "Front": {
@@ -308,7 +308,7 @@
             "Render BOSS": "0",
             "Render DES": "1",
             "Render ViziR": "0",
-            "Scale": "3.13649"
+            "Scale": "3.10969"
         },
         "Sphere": {
             "Alpha": "0",

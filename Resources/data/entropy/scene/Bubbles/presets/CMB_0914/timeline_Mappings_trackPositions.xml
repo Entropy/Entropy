@@ -31,7 +31,7 @@
     </element>
     <element name="Bubbles_Pool_GL_3D_Bursts_Enabled">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -61,7 +61,7 @@
     </element>
     <element name="Post_Effects_Back_Bloom_Brightness Threshold">
         <x>0.000000000</x>
-        <y>892.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

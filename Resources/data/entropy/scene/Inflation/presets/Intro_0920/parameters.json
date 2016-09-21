@@ -13,7 +13,7 @@
             "Subdivisions": "4"
         },
         "Box Front": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3505859375,
+                "aspectRatio": 3.21944451332092,
                 "distance": 0.529601216316223,
                 "drag": 0.899999976158142,
                 "farClip": 6.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 3.03240752220154,
                 "distance": 0.139618083834648,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0529041",
+        "Current rate of expansion": "0.0500207",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -108,7 +108,7 @@
         "Render": {
             "Debug Noise": "0",
             "Render Back": "1",
-            "Render Box Back": "1",
+            "Render Box Back": "0",
             "Render Front": "1"
         },
         "Run Simulation": "1",
@@ -294,6 +294,98 @@
                 }
             },
             "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.75, 0.275",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\inflation temp 10 32 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.275",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\inflation time 10-43 s.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.75, 0.3",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\parent particles temp 10 22 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.3",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\parent particles time 10-32 s.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
         }
     ],
     "Post Effects": {
@@ -308,7 +400,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "4",
+                "Exposure": "0",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -350,9 +442,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.5901",
+            "Fade From": "4.87661",
             "Fade Power": "2",
-            "Fade To": "2.14245",
+            "Fade To": "2.20831",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -368,16 +460,16 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.5901",
+            "Fade From": "4.87661",
             "Fade Power": "2",
-            "Fade To": "2.14245",
+            "Fade To": "2.20831",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",
             "Fog Max Distance": "8.04",
             "Fog Min Distance": "0",
             "Fog Power": "4.743",
-            "Fog Start Distance": "0.005",
+            "Fog Start Distance": "1.41762",
             "Shade Normals": "0",
             "Spherical Clip": "1",
             "Use Lights": "0",

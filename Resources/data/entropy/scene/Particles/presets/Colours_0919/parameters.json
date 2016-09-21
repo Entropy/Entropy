@@ -13,7 +13,7 @@
             "Subdivisions": "5"
         },
         "Box Front": {
-            "Alpha": "0.00603187",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -40,8 +40,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 4.76527786254883,
-                "distance": 15244.3447265625,
+                "aspectRatio": 3.21944451332092,
+                "distance": 18537.6328125,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -53,7 +53,7 @@
                 "nearClip": 0.00100000004749745,
                 "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
                 "ortho": false,
-                "position": "-8070.36, 4679.05, 12056.8",
+                "position": "-9575.16, 5073.44, 15040.6",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 4.23888874053955,
+                "aspectRatio": 3.03240752220154,
                 "distance": 3.05325011140667e-05,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
@@ -163,7 +163,7 @@
         "Post_Effects_Back::Bloom::Sigma": "0",
         "Post_Effects_Back::Color::Brightness": "0",
         "Post_Effects_Back::Color::Contrast": "0",
-        "Post_Effects_Back::Color::Exposure": "0",
+        "Post_Effects_Back::Color::Exposure": "1",
         "Post_Effects_Back::Color::Gamma": "0",
         "Post_Effects_Back::Color::Tonemapping": "0",
         "Post_Effects_Back::Vignette::Debug": "0",
@@ -259,21 +259,21 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.75, 0.3",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.075",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - standard model of particle physics copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particle temp 10 12 k.png",
                 "Transition": {
-                    "Duration": "2",
+                    "Duration": "3",
                     "Type": "1"
                 }
             },
@@ -282,21 +282,21 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.25, 0.3",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.075",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - sub-atomic particles copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particles time 10-12 s.png",
                 "Transition": {
-                    "Duration": "2",
+                    "Duration": "3",
                     "Type": "1"
                 }
             },
@@ -305,22 +305,22 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
+                    "Anchor": "0.75, 0.3",
+                    "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.1",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - 4 fundamental forces copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particles 2 temp 10 10 k.png",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "3",
+                    "Type": "1"
                 }
             },
             "type": 1
@@ -328,22 +328,22 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
+                    "Anchor": "0.25, 0.3",
+                    "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.1",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - electrons copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particles 2 time 1 s.png",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "3",
+                    "Type": "1"
                 }
             },
             "type": 1
@@ -351,22 +351,22 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
+                    "Anchor": "0.75, 0.3",
+                    "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.1",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - quarks copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particles 3 temp 10 9 k.png",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "3",
+                    "Type": "1"
                 }
             },
             "type": 1
@@ -374,114 +374,22 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
+                    "Anchor": "0.25, 0.3",
+                    "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "1",
-                    "Size": "0.1",
+                    "Size": "0.5",
                     "Surface": "1",
-                    "Vert Align": "1"
+                    "Vert Align": "0"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - strong nuclear forces copie.png",
+                "File Path": "entropy\\scene\\PopUps\\images\\particles 3 time 180 s.png",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 1
-        },
-        {
-            "Image": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
-                    "Horz Align": "1",
-                    "Layout": "1",
-                    "Size": "0.1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - weak nuclear forces copie.png",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 1
-        },
-        {
-            "Image": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
-                    "Horz Align": "1",
-                    "Layout": "1",
-                    "Size": "0.1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - electromagnetic force copie.png",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 1
-        },
-        {
-            "Image": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
-                    "Horz Align": "1",
-                    "Layout": "1",
-                    "Size": "0.1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - gravity copie.png",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 1
-        },
-        {
-            "Image": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 1",
-                    "Horz Align": "1",
-                    "Layout": "1",
-                    "Size": "0.1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\PopUps\\images\\Particles- 1-3 - photons copie.png",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "3",
+                    "Type": "1"
                 }
             },
             "type": 1
@@ -490,7 +398,7 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "2.37328",
+                "Brightness Threshold": "3",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "6",
@@ -506,10 +414,10 @@
             "Vignette": {
                 "Debug": "0",
                 "Enabled": "1",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "3",
-                "Power": "1.1",
+                "Inner": "0.4",
+                "Only Alpha": "0",
+                "Outer": "2.5",
+                "Power": "1.12",
                 "Rotation": "0"
             }
         },
@@ -530,11 +438,11 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "0.982",
-                "Power": "0.1",
+                "Enabled": "1",
+                "Inner": "0.7",
+                "Only Alpha": "0",
+                "Outer": "2.5",
+                "Power": "1.7",
                 "Rotation": "0"
             }
         }

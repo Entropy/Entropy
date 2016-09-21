@@ -1,7 +1,7 @@
 <keyframes>
     <key>
         <easefunc>4</easefunc>
-        <easetype>1</easetype>
+        <easetype>0</easetype>
         <time>00:02:15:291</time>
         <value>0.050999969</value>
     </key>
