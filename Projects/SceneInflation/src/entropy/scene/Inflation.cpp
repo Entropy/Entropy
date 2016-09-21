@@ -262,7 +262,7 @@ namespace entropy
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
 				triggerReset();
-				this->timeline->stop();
+				//this->timeline->stop();
 			}
 			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
 			{
