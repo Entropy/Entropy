@@ -98,22 +98,26 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::resetWavelengths()
 		{
-			auto wl = noiseField.resolution/4;
+			float wl = noiseField.resolution/4;
 			targetWavelengths[0] = wl;
 			noiseField.octaves[0].wavelength = wl;
 			noiseField.octaves[0].advanceTime = true;
+			noiseField.octaves[0].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[1] = wl;
 			noiseField.octaves[1].wavelength = wl;
 			noiseField.octaves[1].advanceTime = true;
+			noiseField.octaves[1].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[2] = wl;
 			noiseField.octaves[2].wavelength = wl;
 			noiseField.octaves[2].advanceTime = true;
+			noiseField.octaves[2].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[3] = wl;
 			noiseField.octaves[3].wavelength = wl;
 			noiseField.octaves[3].advanceTime = true;
+			noiseField.octaves[3].frequencyTime = 1/wl;
 			for(int i=4;i<noiseField.octaves.size();i++){
 				noiseField.octaves[i].enabled = false;
 			}
@@ -151,6 +155,7 @@ namespace entropy
 						pct *= pct;
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 							noiseField.octaves[i].wavelength = targetWavelengths[i] * ofMap(pct, 0, 1, 1, 0.4);
+							noiseField.octaves[i].frequencyTime = 1.f/noiseField.octaves[i].wavelength * (1+pct);
 							auto color = preBigbangColors[i];
 							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], pct * 0.5);
 						}
@@ -172,6 +177,7 @@ namespace entropy
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 							auto color = preBigbangColors[i];
 							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], 0.5 + pct * 0.5);
+							noiseField.octaves[i].frequencyTime = 1.f/noiseField.octaves[i].wavelength * ofMap(pct,0,1,2,1);
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					}break;
