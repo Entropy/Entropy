@@ -59,6 +59,7 @@ namespace entropy
 
 			geom::Sphere sphereGeom;
 			ofTexture sphereTexture;
+			ofShader sphereShader;
 
 			ofShader spriteShader;
 			ofTexture spriteTexture;

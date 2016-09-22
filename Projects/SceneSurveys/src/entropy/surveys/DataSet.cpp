@@ -71,13 +71,6 @@ namespace entropy
 			vector<glm::vec3> coordData(coordCount);
 			coordDataSet->read(coordData.data());
 
-			for (int i = 0; i < coordData.size(); ++i)
-			{
-				this->coordinates.push_back(glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
-				this->minRadius = std::min(this->minRadius, coordData[i].z);
-				this->maxRadius = std::max(this->maxRadius, coordData[i].z);
-			}
-
 			// Load the mass data.
 			auto massDataSet = h5Group->loadDataSet("Masses");
 			int massCount = massDataSet->getDimensionSize(0) / stride;
@@ -100,8 +93,12 @@ namespace entropy
 			{
 				if (coordData[i].z > 0.0f)
 				{
-					this->coordinates.push_back(coordData[i]);
+					this->coordinates.push_back(glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
+					this->minRadius = std::min(this->minRadius, coordData[i].z);
+					this->maxRadius = std::max(this->maxRadius, coordData[i].z);
+
 					this->masses.push_back(massData[i]);
+					
 					if (particleType == "PartType6")
 					{
 						this->starFormationRates.push_back(sfrData[i]);

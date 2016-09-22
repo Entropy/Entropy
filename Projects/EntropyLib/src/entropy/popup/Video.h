@@ -50,10 +50,12 @@ namespace entropy
 			{
 				ofParameter<string> filePath{ "File Path", "" };
 				ofParameter<bool> loop{ "Loop", false };
+				ofParameter<bool> scrubToTimeline{ "Scrub To Timeline", true };
 
 				PARAM_DECLARE("Video", 
 					filePath, 
-					loop);
+					loop,
+					scrubToTimeline);
 			} parameters;
 		};
 	}

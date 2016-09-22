@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ofMain.h"
 #include "ofxTexture.h"
 
 class ofxFbo

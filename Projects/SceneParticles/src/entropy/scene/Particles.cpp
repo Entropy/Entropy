@@ -43,13 +43,13 @@ namespace entropy
 
 			// Setup renderers.
 			this->renderers[render::Layout::Back].setup(HALF_DIM);
-			this->renderers[render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 20);
+			this->renderers[render::Layout::Back].fogMaxDistance.setMax(HALF_DIM * 25);
 			this->renderers[render::Layout::Back].fogMinDistance.setMax(HALF_DIM);
 			this->renderers[render::Layout::Back].parameters.setName("Renderer Back");
 			this->populateMappings(this->renderers[render::Layout::Back].parameters);
 
 			this->renderers[render::Layout::Front].setup(HALF_DIM);
-			this->renderers[render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 20);
+			this->renderers[render::Layout::Front].fogMaxDistance.setMax(HALF_DIM * 25);
 			this->renderers[render::Layout::Front].fogMinDistance.setMax(HALF_DIM);
 			this->renderers[render::Layout::Front].parameters.setName("Renderer Front");
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
@@ -198,7 +198,6 @@ namespace entropy
 			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
 			{
 				this->reset();
-
 				this->timeline->stop();
 			}
 		}

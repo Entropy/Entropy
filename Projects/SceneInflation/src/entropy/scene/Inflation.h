@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "entropy/scene/Base.h"
 #include "entropy/inflation/NoiseField.h"
 #include "entropy/inflation/GPUMarchingCubes.h"
@@ -46,6 +44,7 @@ namespace entropy
 			void resetWavelengths();
 			void resetWavelength(size_t octave);
 
+			bool triggerReset();
 			bool triggerBigBang();
 			bool triggerTransition();
 			bool triggerParticles();
@@ -89,7 +88,7 @@ namespace entropy
 			bool firstCycle;
 
 			std::array<float,4> targetWavelengths;
-			std::array<ofFloatColor,4> preBigbangColors{{
+			const std::array<ofFloatColor,4> preBigbangColors{{
 				ofColor{117.f,118.f,118.f},
 				ofColor{200.,200.,200.},
 				ofColor(240.,127.,19.),
@@ -122,20 +121,22 @@ namespace entropy
 				ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
 				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
 				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
-				ofParameter<float> hubbleWavelength{ "Min wavelength for any octave", 4.f, 0.01f, 4.f };
+				ofParameter<float> hubbleWavelength{ "Hubble (min) wavelength for any octave", 4.f, 0.01f, 4.f };
+
+				ofParameter<bool> controlCamera{ "Control Camera", false };
 
 				struct : ofParameterGroup
 				{
 					ofParameter<bool> debug{ "Debug Noise", false };
-					ofParameter<bool> drawBoxInRenderer{ "Draw Box In Renderer", false };
 					ofParameter<bool> renderBack{ "Render Back", true };
 					ofParameter<bool> renderFront{ "Render Front", false };
+					ofParameter<bool> boxBackRender{ "Render Box Back", false };
 
 					PARAM_DECLARE("Render", 
 						debug,
-						drawBoxInRenderer,
 						renderBack,
-						renderFront);
+						renderFront,
+						boxBackRender);
 				} render;
 
 				PARAM_DECLARE("Inflation", 
@@ -157,6 +158,7 @@ namespace entropy
 					HtPostBB,
 					Ht,
 					hubbleWavelength,
+					controlCamera,
 					render);
 			} parameters;
 		};

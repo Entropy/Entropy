@@ -31,9 +31,9 @@
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "1",
-            "Drop Color 1": "0.937255, 0.537255, 0.00392157, 1",
-            "Drop Color 2": "0.658824, 0.231373, 0.0156863, 1",
-            "Drop Rate": "30",
+            "Drop Color 1": "0.937255, 0.819608, 0.670588, 1",
+            "Drop Color 2": "0.658824, 0.509804, 0.435294, 1",
+            "Drop Rate": "45",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -47,11 +47,11 @@
                 "Enabled": "0",
                 "Force Multiplier": "0.8",
                 "Force Random": "0.2",
-                "Max Age": "10",
+                "Max Age": "9",
                 "Max Distance": "0.15",
                 "Max Links": "3",
                 "Min Distance": "0.01",
-                "Resolution": "8",
+                "Resolution": "6",
                 "World Bounds": "6000"
             },
             "Damping": "0.999",
@@ -69,7 +69,7 @@
             "Volume Size": "6000"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
@@ -82,15 +82,15 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0",
-            "Tint Color": "1, 0.962537, 0.545098, 1"
+            "Mask Mix": "0.294",
+            "Tint Color": "0.937255, 0.82046, 0.668943, 1"
         }
     },
     "Cameras": {
         "Camera Back": {
             "Attach to Parent": "0",
             "Dolly Speed": "0",
-            "FOV": "60",
+            "FOV": "45",
             "Far Clip": "200000",
             "Inherits Settings": "1",
             "Mouse Control": "1",
@@ -99,13 +99,14 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0.00599992",
+            "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
+                "aspectRatio": 3.21944451332092,
                 "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
-                "fov": 60.0,
+                "fov": 45.0,
                 "inertiaEnabled": false,
                 "lensOffset": "0, 0",
                 "mouseInputEnabled": false,
@@ -133,8 +134,9 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 3.55555558204651,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -191,7 +193,7 @@
         "Bubbles::Pool_GL_2D::Run Simulation": "0",
         "Bubbles::Pool_GL_3D::Alpha": "1",
         "Bubbles::Pool_GL_3D::Bursts::Color": "0",
-        "Bubbles::Pool_GL_3D::Bursts::Enabled": "0",
+        "Bubbles::Pool_GL_3D::Bursts::Enabled": "1",
         "Bubbles::Pool_GL_3D::Bursts::Force Multiplier": "0",
         "Bubbles::Pool_GL_3D::Bursts::Force Random": "0",
         "Bubbles::Pool_GL_3D::Bursts::Max Age": "0",
@@ -237,6 +239,7 @@
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
         "Camera_Back::Tilt Speed": "1",
+        "Camera_Back::Tumble Override": "0",
         "Camera_Front::Attach to Parent": "0",
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
@@ -248,12 +251,13 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
+        "Camera_Front::Tumble Override": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "1",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
         "Post_Effects_Back::Bloom::Num Passes": "0",
         "Post_Effects_Back::Bloom::Sigma": "0",
-        "Post_Effects_Back::Color::Brightness": "0",
+        "Post_Effects_Back::Color::Brightness": "1",
         "Post_Effects_Back::Color::Contrast": "0",
         "Post_Effects_Back::Color::Exposure": "0",
         "Post_Effects_Back::Color::Gamma": "0",
@@ -283,7 +287,78 @@
         "Post_Effects_Front::Vignette::Power": "0",
         "Post_Effects_Front::Vignette::Rotation": "0"
     },
-    "Pop-ups": null,
+    "Pop-ups": [
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 1",
+                    "Horz Align": "1",
+                    "Layout": "1",
+                    "Size": "0.1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\sounds\\bubble THOMAS EDIT V1.wav",
+                "Loop": "0",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.75",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "0",
+                    "Size": "0.225",
+                    "Surface": "1",
+                    "Vert Align": "2"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture temp 3000 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.25, 0.7",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "0",
+                    "Size": "0.225",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture time -400 000 y.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        }
+    ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
@@ -312,18 +387,18 @@
         },
         "Post Effects Front": {
             "Bloom": {
-                "Brightness Threshold": "1",
+                "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
-                "Enabled": "0",
-                "Num Passes": "1",
-                "Sigma": "0.9"
+                "Enabled": "1",
+                "Num Passes": "3",
+                "Sigma": "5"
             },
             "Color": {
-                "Brightness": "0",
+                "Brightness": "-1",
                 "Contrast": "1",
-                "Exposure": "4.00001",
+                "Exposure": "4",
                 "Gamma": "2.2",
-                "Tonemapping": "0"
+                "Tonemapping": "6"
             },
             "Vignette": {
                 "Debug": "0",

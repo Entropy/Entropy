@@ -2,27 +2,27 @@
     "Boxes": {
         "Box Back": {
             "Alpha": "0",
-            "Alpha Blend": "0",
             "Auto Draw": "1",
-            "Color": "1, 1, 1, 1",
+            "Blend Mode": "1",
+            "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "1",
-            "Depth Test": "1",
-            "Edge Ratio": "0.01",
+            "Depth Test": "0",
+            "Edge Ratio": "0.0001",
             "Enabled": "1",
-            "Size": "1",
-            "Subdivisions": "1"
+            "Size": "1000",
+            "Subdivisions": "80"
         },
         "Box Front": {
             "Alpha": "0",
-            "Alpha Blend": "0",
             "Auto Draw": "1",
+            "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
             "Cull Face": "1",
-            "Depth Test": "1",
-            "Edge Ratio": "0.01",
+            "Depth Test": "0",
+            "Edge Ratio": "0.0001",
             "Enabled": "1",
-            "Size": "1",
-            "Subdivisions": "1"
+            "Size": "1000",
+            "Subdivisions": "50"
         }
     },
     "Cameras": {
@@ -32,15 +32,16 @@
             "FOV": "60",
             "Far Clip": "1000",
             "Inherits Settings": "0",
-            "Mouse Control": "0",
+            "Mouse Control": "1",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.17685174942017,
-                "distance": 692.906188964844,
+                "distance": 711.617736816406,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -50,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.994393, 0.00445878, -0.0215998, 0.103423",
+                "orientation": "0.986522, 0, 0, 0.163628",
                 "ortho": false,
-                "position": "-443.412, 7.88137, 532.394",
+                "position": "429.307, 187.917, 535.521",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -72,6 +73,7 @@
             "Relative Y Axis": "0",
             "Roll Speed": "0",
             "Tilt Speed": "0",
+            "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 2.82592582702637,
                 "distance": 6.86646017129533e-05,
@@ -96,12 +98,15 @@
         }
     },
     "Interlude": {
-        "Dummy": "0"
+        "Stripes": {
+            "Back Alpha": "0",
+            "Front Alpha": "1"
+        }
     },
     "Mappings": {
         "Box_Back::Alpha": "1",
-        "Box_Back::Alpha Blend": "0",
         "Box_Back::Auto Draw": "0",
+        "Box_Back::Blend Mode": "0",
         "Box_Back::Color": "0",
         "Box_Back::Cull Face": "0",
         "Box_Back::Depth Test": "0",
@@ -110,8 +115,8 @@
         "Box_Back::Size": "0",
         "Box_Back::Subdivisions": "0",
         "Box_Front::Alpha": "1",
-        "Box_Front::Alpha Blend": "0",
         "Box_Front::Auto Draw": "0",
+        "Box_Front::Blend Mode": "0",
         "Box_Front::Color": "0",
         "Box_Front::Cull Face": "0",
         "Box_Front::Depth Test": "0",
@@ -130,6 +135,7 @@
         "Camera_Back::Relative Y Axis": "0",
         "Camera_Back::Roll Speed": "0",
         "Camera_Back::Tilt Speed": "0",
+        "Camera_Back::Tumble Override": "0",
         "Camera_Front::Attach to Parent": "0",
         "Camera_Front::Dolly Speed": "0",
         "Camera_Front::FOV": "0",
@@ -141,7 +147,9 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
-        "Interlude::Dummy": "0",
+        "Camera_Front::Tumble Override": "0",
+        "Interlude::Stripes::Back Alpha": "1",
+        "Interlude::Stripes::Front Alpha": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -181,21 +189,74 @@
         {
             "Video": {
                 "Base": {
-                    "Background": "0, 0, 0, 1",
-                    "Center": "0.5, 0.5",
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
                     "Layout": "0",
                     "Size": "1",
-                    "Surface": "0"
+                    "Surface": "1",
+                    "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\videos\\Entropy_Evolve_Long.mov",
-                "Loop": "0",
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Intro_h264.mov",
+                "Loop": "1",
+                "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "1",
+                    "Type": "1"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Evolve_h264.mov",
+                "Loop": "0",
+                "Scrub To Timeline": "1",
+                "Transition": {
+                    "Duration": "2.5",
+                    "Type": "1"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Layout": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\Interlude\\videos\\Lines1_h264.mov",
+                "Loop": "1",
+                "Scrub To Timeline": "0",
+                "Transition": {
+                    "Duration": "1",
+                    "Type": "1"
                 }
             },
             "type": 2
@@ -203,17 +264,19 @@
         {
             "Sound": {
                 "Base": {
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 1",
-                    "Center": "0.5, 0.5",
+                    "Horz Align": "1",
                     "Layout": "1",
                     "Size": "0.1",
-                    "Surface": "1"
+                    "Surface": "1",
+                    "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\sounds\\flash.mp3",
+                "File Path": "entropy\\scene\\PopUps\\sounds\\flash THOMAS EDIT V2.wav",
                 "Loop": "0",
                 "Transition": {
                     "Duration": "0.5",
@@ -274,5 +337,7 @@
                 "Rotation": "0"
             }
         }
-    }
+    },
+    "Stripes Back": null,
+    "Stripes Front": null
 }

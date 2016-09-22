@@ -21,6 +21,10 @@ namespace entropy
 			virtual ~Shape();
 
 			virtual void clear();
+
+			virtual void begin();
+			virtual void end();
+
 			virtual void draw();
 
 			const ofVboMesh & getMesh();

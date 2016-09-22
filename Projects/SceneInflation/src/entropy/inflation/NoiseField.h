@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ofMain.h"
 #include "ofxPreset.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
@@ -20,6 +19,7 @@ namespace entropy
 		struct Octave {
 			Octave(size_t idx, float wavelength_, float amplitude_, const ofFloatColor & color, bool enabled = true)
 				:frequency("Freq. Hz", 1/wavelength_, 0.0f, 200.0f)
+				, frequencyTime("Freq time", 1/wavelength_, 0.0f, 200.f)
 				, wavelength("Wavelength", wavelength_, 0.0f, 128.0f)
 				, amplitude("Amplitude", amplitude_, 0.0f, 1.0f)
 				, radius("Radius", 1.0f, 0.0f, 1.0f)
@@ -27,7 +27,9 @@ namespace entropy
 				, color("Color", color)
 				, enabled("Enabled", enabled)
 				, parameters("Octave " + ofToString(idx),
+
 					this->frequency,
+					this->frequencyTime,
 					this->wavelength,
 					this->amplitude,
 					this->radius,
@@ -53,6 +55,7 @@ namespace entropy
 			}
 
 			ofParameter<float> frequency;
+			ofParameter<float> frequencyTime;
 			ofParameter<float> wavelength;
 			ofParameter<float> amplitude;
 			ofParameter<float> radius;

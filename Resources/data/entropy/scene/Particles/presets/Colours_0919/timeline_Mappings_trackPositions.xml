@@ -1,0 +1,140 @@
+<positions>
+    <element name="Bloom_Enabled">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Back_Alpha">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Back_Edge Ratio">
+        <x>0.000000000</x>
+        <y>444.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Front_Alpha">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Color_Exposure">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Environment_Energy">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles_Environment_Energy">
+        <x>0.000000000</x>
+        <y>636.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles_Rendering_Ambient Light">
+        <x>0.000000000</x>
+        <y>572.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Back_Bloom_Brightness Threshold">
+        <x>0.000000000</x>
+        <y>700.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Back_Color_Exposure">
+        <x>0.000000000</x>
+        <y>764.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Front_Bloom_Enabled">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Front_Color_Exposure">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Fill Alpha">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Fill alpha">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Fog Max Distance">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Fog max dist.">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Wireframe Alpha">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Back_Wireframe alpha">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Fill alpha">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Front_Fog Max Distance">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Front_Fog max dist.">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Renderer_Wireframe alpha">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="_ambient light">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

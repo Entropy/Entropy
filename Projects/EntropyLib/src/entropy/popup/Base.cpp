@@ -42,6 +42,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		HorzAlign Base::getHorzAlign()
+		{
+			return static_cast<HorzAlign>(this->getParameters().base.alignHorz.get());
+		}
+
+		//--------------------------------------------------------------
+		VertAlign Base::getVertAlign()
+		{
+			return static_cast<VertAlign>(this->getParameters().base.alignVert.get());
+		}
+
+		//--------------------------------------------------------------
 		void Base::init_(int index, std::shared_ptr<ofxTimeline> timeline)
 		{
 			this->index = index;
@@ -58,7 +70,15 @@ namespace entropy
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.base.center.newListener([this](glm::vec2 &)
+			this->parameterListeners.push_back(parameters.base.anchor.newListener([this](glm::vec2 &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.base.alignHorz.newListener([this](int &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.base.alignVert.newListener([this](int &)
 			{
 				this->boundsDirty = true;
 			}));
@@ -128,7 +148,7 @@ namespace entropy
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
-						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeOut);
+						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeIn);
 						this->borderDirty = true;
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
@@ -241,13 +261,17 @@ namespace entropy
 				// Add sections for the base parameters.
 				if (ofxPreset::Gui::BeginTree(parameters.base, settings))
 				{
+					ofxPreset::Gui::AddParameter(parameters.base.background);
 					static std::vector<std::string> layoutLabels{ "Back", "Front" };
 					ofxPreset::Gui::AddRadio(parameters.base.layout, layoutLabels, 2);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
 					ofxPreset::Gui::AddRadio(parameters.base.surface, surfaceLabels, 2);
-					ofxPreset::Gui::AddParameter(parameters.base.background);
 					ofxPreset::Gui::AddParameter(parameters.base.size);
-					ofxPreset::Gui::AddParameter(parameters.base.center);
+					ofxPreset::Gui::AddParameter(parameters.base.anchor);
+					static std::vector<std::string> horzLabels{ "Left", "Center", "Right" };
+					ofxPreset::Gui::AddRadio(parameters.base.alignHorz, horzLabels, 3);
+					static std::vector<std::string> vertLabels{ "Top", "Middle", "Bottom" };
+					ofxPreset::Gui::AddRadio(parameters.base.alignVert, vertLabels, 3);
 
 					ofxPreset::Gui::EndTree(settings);
 				}
@@ -381,14 +405,15 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 
-			const auto layout = static_cast<render::Layout>(parameters.base.layout.get());
+			const auto layout = this->getLayout();
 			const auto canvasSize = glm::vec2(GetCanvasWidth(layout), GetCanvasHeight(layout));
+			const auto viewportAnchor = canvasSize * parameters.base.anchor.get();
 			const auto viewportHeight = canvasSize.y * parameters.base.size;
 			if (this->isLoaded())
 			{
 				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
 				const auto viewportWidth = viewportHeight * contentRatio;
-				this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), viewportWidth, viewportHeight);
+				this->viewport.setFromCenter(viewportAnchor, viewportWidth, viewportHeight);
 
 				// Calculate the source subsection for Aspect Fill.
 				const auto viewportRatio = this->viewport.getAspectRatio();
@@ -409,7 +434,25 @@ namespace entropy
 			}
 			else
 			{
-				this->viewport.setFromCenter(canvasSize * parameters.base.center.get(), viewportHeight, viewportHeight);
+				this->viewport.setFromCenter(viewportAnchor, viewportHeight, viewportHeight);
+			}
+
+			// Adjust anchor alignment.
+			if (this->getHorzAlign() == HorzAlign::Left)
+			{
+				this->viewport.x += this->viewport.width * 0.5f;
+			}
+			else if (this->getHorzAlign() == HorzAlign::Right)
+			{
+				this->viewport.x -= this->viewport.width * 0.5f;
+			}
+			if (this->getVertAlign() == VertAlign::Top)
+			{
+				this->viewport.y += this->viewport.height * 0.5f;
+			}
+			else if (this->getVertAlign() == VertAlign::Bottom)
+			{
+				this->viewport.y -= this->viewport.height * 0.5f;
 			}
 
 			this->borderDirty = true;

@@ -13,7 +13,8 @@ namespace entropy
 			Sphere();
 			~Sphere();
 
-			void draw() override;
+			void begin() override;
+			void end() override;
 
 			ofParameter<float> radius{ "Radius", 0.1f, 0.001f, 1.0f };
 			ofParameter<int> resolution{ "Resolution", 16, 3, 24 };

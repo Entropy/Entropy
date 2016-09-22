@@ -145,7 +145,7 @@ restrict uniform layout(rgba16f, binding=0, location=0) image3D volume;
 
 struct Octave{
     float now;
-    float frequency;
+	float frequency;
     float amplitude;
     float enabled;
 	vec4 color;
@@ -181,7 +181,7 @@ void main()
         for(int i=0;i<NUM_OCTAVES;i++){
 			float freqD = octaves[i].frequency;
             float amplitude = octaves[i].amplitude * octaves[i].enabled;// * (1. - ofClamp(normDistance, 0, 1));
-			float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now*freqD)) * 0.5 + 0.5;
+			float noise = snoise(vec4(pos.x*freqD, pos.y*freqD, pos.z*freqD, octaves[i].now)) * 0.5 + 0.5;
 			totalRGB += octaves[i].color.rgb * noise * octaves[i].enabled;
             total +=  noise * amplitude;
             maxRGB += noise;

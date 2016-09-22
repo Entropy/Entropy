@@ -75,7 +75,7 @@ namespace entropy
 			volumeTex.bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
 			for (size_t i = 0; i < octaves.size(); ++i) {
 				auto octave = "octaves[" + ofToString(i) + "].";
-				noiseComputeShader.setUniform1f(octave + "now", octaves[i].now);
+				noiseComputeShader.setUniform1f(octave + "now", octaves[i].now * octaves[i].frequencyTime);
 				noiseComputeShader.setUniform1f(octave + "frequency", octaves[i].frequency);
 				noiseComputeShader.setUniform1f(octave + "amplitude", octaves[i].amplitude);
 				noiseComputeShader.setUniform1f(octave + "enabled", octaves[i].enabled ? 1.0f : 0.0f);

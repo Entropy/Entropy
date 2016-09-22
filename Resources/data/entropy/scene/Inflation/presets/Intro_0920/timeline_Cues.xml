@@ -1,0 +1,72 @@
+<keyframes>
+    <key>
+        <flag>reset</flag>
+        <time>00:00:03:953</time>
+        <value>0.550000012</value>
+    </key>
+    <key>
+        <flag>play intro</flag>
+        <time>00:00:10:312</time>
+        <value>0.274999976</value>
+    </key>
+    <key>
+        <flag>bigbang</flag>
+        <time>00:00:48:171</time>
+        <value>0.350000024</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:01:05:620</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>play popup</flag>
+        <time>00:01:30:090</time>
+        <value>0.625000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:01:42:114</time>
+        <value>0.100000024</value>
+    </key>
+    <key>
+        <flag>play reheating</flag>
+        <time>00:02:00:045</time>
+        <value>0.625000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:02:15:340</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>play popup</flag>
+        <time>00:02:30:030</time>
+        <value>0.500000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:02:40:079</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <flag>particles</flag>
+        <time>00:03:00:248</time>
+        <value>0.550000012</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:03:10:157</time>
+        <value>0.925000012</value>
+    </key>
+    <key>
+        <flag>play outro</flag>
+        <time>00:04:00:091</time>
+        <value>0.475000024</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:04:30:821</time>
+        <value>0.875000000</value>
+    </key>
+</keyframes>

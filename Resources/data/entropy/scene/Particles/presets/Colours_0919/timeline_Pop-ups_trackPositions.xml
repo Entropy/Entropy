@@ -1,0 +1,74 @@
+<positions>
+    <element name="Pop-up_0_Image">
+        <x>0.000000000</x>
+        <y>700.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_1_Image">
+        <x>0.000000000</x>
+        <y>764.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_1_Video">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>1924.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_2_Image">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_2_Video">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>1924.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_3_Image">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_4_Image">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_5_Image">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_6_Image">
+        <x>0.000000000</x>
+        <y>454.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_7_Image">
+        <x>0.000000000</x>
+        <y>518.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_8_Image">
+        <x>0.000000000</x>
+        <y>582.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_9_Image">
+        <x>0.000000000</x>
+        <y>646.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

@@ -47,13 +47,12 @@ namespace entropy
 			this->populateMappings(this->renderers[render::Layout::Front].parameters);
 
 			// Custom parameter listeners.
-			this->parameterListeners.push_back(this->parameters.render.drawBoxInRenderer.newListener([this](bool & value)
+			this->parameterListeners.push_back(this->parameters.render.boxBackRender.newListener([this](bool & value)
 			{
 				// Automatically disable default box drawing when using renderer.
 				if (value)
 				{
 					this->boxes[render::Layout::Back].autoDraw = false;
-					this->boxes[render::Layout::Front].autoDraw = false;
 				}
 			}));
 
@@ -77,15 +76,20 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::setup()
 		{
-			cameraDistanceBeforeBB = 1;
-			this->cameras[render::Layout::Back]->setDistanceToTarget(cameraDistanceBeforeBB);
+			if (this->parameters.controlCamera)
+			{
+				cameraDistanceBeforeBB = 1;
+				this->cameras[render::Layout::Back]->setDistanceToTarget(cameraDistanceBeforeBB);
+			}
 			this->cameras[render::Layout::Back]->nearClip = 0.01f;
 			this->cameras[render::Layout::Back]->farClip = 6.0f;
-
+			
 			now = 0;
 			t_bigbang = 0;
 			state = PreBigBang;
-			for(size_t i=0;i<postBigBangColors.size();i++){
+			scale = 1;
+			noiseField.scale = scale;
+			for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 				noiseField.octaves[i].color = preBigbangColors[i];
 			}
 			resetWavelengths();
@@ -94,22 +98,26 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::resetWavelengths()
 		{
-			auto wl = noiseField.resolution/4;
+			float wl = noiseField.resolution/4;
 			targetWavelengths[0] = wl;
 			noiseField.octaves[0].wavelength = wl;
 			noiseField.octaves[0].advanceTime = true;
+			noiseField.octaves[0].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[1] = wl;
 			noiseField.octaves[1].wavelength = wl;
 			noiseField.octaves[1].advanceTime = true;
+			noiseField.octaves[1].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[2] = wl;
 			noiseField.octaves[2].wavelength = wl;
 			noiseField.octaves[2].advanceTime = true;
+			noiseField.octaves[2].frequencyTime = 1/wl;
 			wl /= 2;
 			targetWavelengths[3] = wl;
 			noiseField.octaves[3].wavelength = wl;
 			noiseField.octaves[3].advanceTime = true;
+			noiseField.octaves[3].frequencyTime = 1/wl;
 			for(int i=4;i<noiseField.octaves.size();i++){
 				noiseField.octaves[i].enabled = false;
 			}
@@ -137,6 +145,9 @@ namespace entropy
 				now += dt;
 				switch(state){
 					case PreBigBang:
+						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
+							noiseField.octaves[i].color = preBigbangColors[i];
+						}
 					break;
 					case PreBigBangWobble:{
 						t_from_bigbang = now - t_bigbang;
@@ -144,7 +155,9 @@ namespace entropy
 						pct *= pct;
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
 							noiseField.octaves[i].wavelength = targetWavelengths[i] * ofMap(pct, 0, 1, 1, 0.4);
-							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], pct * 0.5);
+							noiseField.octaves[i].frequencyTime = 1.f/noiseField.octaves[i].wavelength * (1+pct);
+							auto color = preBigbangColors[i];
+							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], pct * 0.5);
 						}
 					}break;
 
@@ -152,14 +165,19 @@ namespace entropy
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						auto pct = t_from_bigbang/parameters.bigBangDuration;
-						cameras[render::Layout::Back]->setDistanceToTarget(ofMap(pct,0,1,cameraDistanceBeforeBB,0.5));
-						if(t_from_bigbang > parameters.bigBangDuration){
+						if (this->parameters.controlCamera)
+						{
+							cameras[render::Layout::Back]->setDistanceToTarget(ofMap(pct, 0, 1, cameraDistanceBeforeBB, 0.5));
+						}
+						if (t_from_bigbang > parameters.bigBangDuration) {
 							//resetWavelengths();
 							firstCycle = true;
 							state = Expansion;
 						}
 						for(size_t i=0;i<noiseField.octaves.size()/2;i++){
-							noiseField.octaves[i].color = preBigbangColors[i].lerp(postBigBangColors[i], 0.5 + pct * 0.5);
+							auto color = preBigbangColors[i];
+							noiseField.octaves[i].color = color.lerp(postBigBangColors[i], 0.5 + pct * 0.5);
+							noiseField.octaves[i].frequencyTime = 1.f/noiseField.octaves[i].wavelength * ofMap(pct,0,1,2,1);
 						}
 						noiseField.octaves.back().wavelength = targetWavelengths.back() * glm::clamp(1 - scale * 2, 0.8f, 1.f);
 					}break;
@@ -168,10 +186,14 @@ namespace entropy
 						t_from_bigbang = now - t_bigbang;
 						scale += dt * parameters.Ht;// t_from_bigbang/parameters.bigBangDuration;
 						noiseField.scale = scale;
-						if(cameras[render::Layout::Back]->getDistanceToTarget()>0.5){
-							auto d = cameras[render::Layout::Back]->getDistanceToTarget();
-							d -= dt * parameters.Ht;
-							cameras[render::Layout::Back]->setDistanceToTarget(d);
+						if (this->parameters.controlCamera)
+						{
+							if (cameras[render::Layout::Back]->getDistanceToTarget() > 0.5f) 
+							{
+								auto d = cameras[render::Layout::Back]->getDistanceToTarget();
+								d -= dt * parameters.Ht;
+								cameras[render::Layout::Back]->setDistanceToTarget(d);
+							}
 						}
 						if(!firstCycle){
 							for(size_t i=0;i<noiseField.octaves.size()/2;i++){
@@ -222,12 +244,15 @@ namespace entropy
 						alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
 						//noiseField.speedFactor = alphaBlobs;
 						renderers[entropy::render::Layout::Back].alphaFactor = alphaBlobs;
+						renderers[entropy::render::Layout::Front].alphaFactor = alphaBlobs;
 					}break;
 				}
 
 				noiseField.update();
 				gpuMarchingCubes.update(noiseField.getTexture());
 
+				//auto distance = this->getCamera(render::Layout::Back)->getEasyCam().getDistance();
+				//this->getCamera(render::Layout::Back)->getEasyCam().orbitDeg(ofGetElapsedTimef()*10.f,0,distance,glm::vec3(0,0,0));
 
 				//transitionParticles.color = ofFloatColor(transitionParticles.color, 0.0);
 			}
@@ -236,9 +261,16 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Inflation::timelineBangFired(ofxTLBangEventArgs & args)
 		{
+			static const string kResetFlag = "reset";
 			static const string kBigBangFlag = "bigbang";
 			static const string kTransitionFlag = "transition";
-			if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
+			static const string kParticlesFlag = "particles";
+			if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+			{
+				triggerReset();
+				//this->timeline->stop();
+			}
+			else if (args.flag.compare(0, kBigBangFlag.size(), kBigBangFlag) == 0)
 			{
 				triggerBigBang();
 				this->timeline->play();
@@ -247,11 +279,30 @@ namespace entropy
 			{
 				triggerTransition();
 			}
+			else if (args.flag.compare(0, kParticlesFlag.size(), kParticlesFlag) == 0)
+			{
+				triggerParticles();
+				this->timeline->play();
+			}
 		}
 
 		//--------------------------------------------------------------
 		void Inflation::drawBackWorld()
 		{
+			if (this->parameters.render.boxBackRender)
+			{
+				auto layout = render::Layout::Back;
+				auto & camera = this->getCamera(layout)->getEasyCam();
+
+				bool prevClip = renderers[layout].clip;
+				float prevFillAlpha = renderers[layout].fillAlpha;
+				renderers[layout].clip = false;
+				renderers[layout].fillAlpha = this->boxes[layout].alpha;
+				this->boxes[layout].draw(renderers[layout], camera);
+				renderers[layout].clip = prevClip;
+				renderers[layout].fillAlpha = prevFillAlpha;
+			}
+			
 			if (parameters.render.debug)
 			{
 				noiseField.draw(this->gpuMarchingCubes.isoLevel);
@@ -276,11 +327,26 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		bool Inflation::triggerReset()
+		{
+			this->setup();
+			for (auto & it : this->cameras)
+			{
+				it.second->reset(false);
+			}
+			renderers[entropy::render::Layout::Back].alphaFactor = 1;
+			renderers[entropy::render::Layout::Front].alphaFactor = 1;
+
+			return true;
+		}
+
+		//--------------------------------------------------------------
 		bool Inflation::triggerBigBang()
 		{
 			if (state == PreBigBang)
 			{
 				t_bigbang = now;
+				t_from_bigbang = 0;
 				state = PreBigBangWobble;
 				return true;
 			}
@@ -347,16 +413,10 @@ namespace entropy
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].clip = false;
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-				if(layout==render::Layout::Back){
+				//if(layout==render::Layout::Back){
 					this->transitionParticles.draw(transitionParticlesPosition, noiseField.getTexture(), now);
-				}
+				//}
 				break;
-			}
-
-			if (this->parameters.render.drawBoxInRenderer)
-			{
-				renderers[layout].clip = false;
-				this->boxes[layout].draw(renderers[layout], camera);
 			}
 
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
@@ -439,15 +499,17 @@ namespace entropy
 			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
+				ofxPreset::Gui::AddParameter(this->parameters.controlCamera);
 
+				if (ImGui::Button("Trigger Reset")) {
+					this->triggerReset();
+				}
 				if (ImGui::Button("Trigger Big Bang")) {
 					this->triggerBigBang();
 				}
-				ImGui::SameLine();
 				if (ImGui::Button("Trigger Transition")) {
 					this->triggerTransition();
 				}
-				ImGui::SameLine();
 				if (ImGui::Button("Trigger Particles")) {
 					this->triggerParticles();
 				}
@@ -459,6 +521,7 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.Ht);
 					ofxPreset::Gui::AddParameter(this->parameters.HtBB);
 					ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
+					ofxPreset::Gui::AddParameter(this->parameters.hubbleWavelength);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
 					ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
@@ -502,7 +565,7 @@ namespace entropy
 				{
 					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
 					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
-					ofxPreset::Gui::AddParameter(this->parameters.render.drawBoxInRenderer);
+					ofxPreset::Gui::AddParameter(this->parameters.render.boxBackRender);
 
 					ofxPreset::Gui::AddParameter(this->parameters.render.renderBack);
 					if (this->parameters.render.renderBack)

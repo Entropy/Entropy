@@ -1,11 +1,21 @@
 <keyframes>
     <key>
-        <flag>play</flag>
-        <time>00:00:04:999</time>
-        <value>0.425000012</value>
+        <flag>play intro</flag>
+        <time>00:00:05:311</time>
+        <value>0.300000012</value>
     </key>
     <key>
-        <flag>pause</flag>
+        <flag>stop</flag>
+        <time>00:03:05:861</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>play flash</flag>
+        <time>00:03:31:122</time>
+        <value>0.949999988</value>
+    </key>
+    <key>
+        <flag>stop</flag>
         <time>00:09:00:625</time>
         <value>0.475000024</value>
     </key>

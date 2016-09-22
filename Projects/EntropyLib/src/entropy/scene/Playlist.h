@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "entropy/render/Layout.h"
 #include "entropy/world/Camera.h"
 

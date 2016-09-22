@@ -93,13 +93,16 @@ namespace entropy
 			ofParameter<float> rollSpeed{ "Roll Speed", 0.0f, -1.0f, 1.0f };
 			ofParameter<float> dollySpeed{ "Dolly Speed", 0.0f, -10.0f, 10.0f };
 
+			ofParameter<bool> tumbleOverride{ "Tumble Override", false };
+
 			ofParameterGroup parameters{ "Camera",
 				fov,
 				nearClip, farClip,
 				attachToParent,
 				inheritsSettings,
 				mouseControl, relativeYAxis,
-				tiltSpeed, panSpeed, rollSpeed, dollySpeed
+				tiltSpeed, panSpeed, rollSpeed, dollySpeed,
+				tumbleOverride
 			};
 
 		protected:

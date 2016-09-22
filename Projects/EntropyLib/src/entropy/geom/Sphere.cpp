@@ -40,16 +40,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Sphere::draw()
+		void Sphere::begin()
 		{
 			ofPushMatrix();
-			{
-				ofRotateXRad(this->orientation.get().x);
-				ofRotateYRad(this->orientation.get().y);
-				ofRotateZRad(this->orientation.get().z);
+			
+			ofRotateXRad(this->orientation.get().x);
+			ofRotateYRad(this->orientation.get().y);
+			ofRotateZRad(this->orientation.get().z);
 
-				Shape::draw();
-			}
+			Shape::begin();
+		}
+
+		//--------------------------------------------------------------
+		void Sphere::end()
+		{
+			Shape::end();
+
 			ofPopMatrix();
 		}
 

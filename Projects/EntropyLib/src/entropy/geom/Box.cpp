@@ -40,34 +40,11 @@ namespace entropy
 		{
 			if (!this->enabled) return;
 
-			ofPushStyle();
+			this->begin();
 			{
-				ofSetColor(this->color.get());
-
-				const auto cullMode = static_cast<CullMode>(this->cullFace.get());
-				if (cullMode != CullMode::Disabled)
-				{
-					glEnable(GL_CULL_FACE);
-					if (cullMode == CullMode::Back)
-					{
-						glCullFace(GL_BACK);
-					}
-					else
-					{
-						glCullFace(GL_FRONT);
-					}
-				}
-				else
-				{
-					glDisable(GL_CULL_FACE);
-				}
 				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices(), camera);
-				if (cullMode != CullMode::Disabled)
-				{
-					glDisable(GL_CULL_FACE);
-				}
 			}
-			ofPopStyle();
+			this->end();
 		}
 
 		//--------------------------------------------------------------

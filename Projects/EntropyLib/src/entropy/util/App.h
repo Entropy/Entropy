@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "entropy/render/Canvas.h"
 #include "entropy/scene/Playlist.h"
 #include "entropy/util/Singleton.h"

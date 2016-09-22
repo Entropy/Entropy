@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
