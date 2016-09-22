@@ -238,7 +238,7 @@ namespace entropy
 						this->mesh.addIndex((y + 0) * resZ + (x + 1) + vertOffset);
 						this->mesh.addIndex((y + 1) * resZ + (x + 0) + vertOffset);
 
-						this->mesh.addIndex((y + 1) * resZ + (x + 1) + vertOffset);
+						this->mesh.addIndex((y + 0) * resZ + (x + 1) + vertOffset);
 						this->mesh.addIndex((y + 1) * resZ + (x + 1) + vertOffset);
 						this->mesh.addIndex((y + 1) * resZ + (x + 0) + vertOffset);
 					}

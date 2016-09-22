@@ -337,7 +337,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Calibrate::addQuad(const glm::vec3 & center, const glm::vec3 & dimensions, const ofFloatColor & color, ofVboMesh & mesh)
 		{
-			const auto startIdx = mesh.getNumVertices();
+			const auto startIdx = static_cast<ofIndexType>(mesh.getNumVertices());
 			const auto halfDims = dimensions * 0.5f;
 
 			mesh.addVertex(glm::vec3(center.x - halfDims.x, center.y + halfDims.y, 0.0f));
