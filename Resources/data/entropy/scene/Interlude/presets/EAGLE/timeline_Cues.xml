@@ -6,8 +6,8 @@
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:03:05:861</time>
-        <value>0.600000024</value>
+        <time>00:01:00:440</time>
+        <value>0.574999988</value>
     </key>
     <key>
         <flag>play flash</flag>
@@ -16,7 +16,22 @@
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:09:00:625</time>
-        <value>0.475000024</value>
+        <time>00:04:30:210</time>
+        <value>0.524999976</value>
+    </key>
+    <key>
+        <flag>play popup</flag>
+        <time>00:05:00:325</time>
+        <value>0.550000012</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:05:32:915</time>
+        <value>0.175000012</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:11:30:170</time>
+        <value>0.600000024</value>
     </key>
 </keyframes>

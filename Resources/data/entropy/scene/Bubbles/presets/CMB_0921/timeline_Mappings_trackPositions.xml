@@ -1,0 +1,80 @@
+<positions>
+    <element name="Box_Back_Alpha">
+        <x>0.000000000</x>
+        <y>252.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Box_Back_Edge Ratio">
+        <x>0.000000000</x>
+        <y>316.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_2D_Alpha">
+        <x>0.000000000</x>
+        <y>508.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_2D_Drop Rate">
+        <x>0.000000000</x>
+        <y>572.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_3D_Alpha">
+        <x>0.000000000</x>
+        <y>636.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_3D_Bursts_Enabled">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_3D_Drop Rate">
+        <x>0.000000000</x>
+        <y>764.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Pool_GL_3D_Dropping">
+        <x>0.000000000</x>
+        <y>700.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_SphereExtra_Mask Mix">
+        <x>0.000000000</x>
+        <y>380.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles_Sphere_Alpha">
+        <x>0.000000000</x>
+        <y>444.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Back_Bloom_Brightness Threshold">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Back_Color_Brightness">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Post_Effects_Back_Color_Contrast">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

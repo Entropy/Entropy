@@ -1,18 +1,28 @@
 <keyframes>
     <key>
         <flag>play stars</flag>
-        <time>00:00:30:000</time>
-        <value>0.675000012</value>
+        <time>00:00:05:271</time>
+        <value>0.850000024</value>
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:00:45:313</time>
+        <time>00:00:30:390</time>
         <value>0.449999988</value>
     </key>
     <key>
+        <flag>play milky</flag>
+        <time>00:01:00:117</time>
+        <value>0.899999976</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:01:11:629</time>
+        <value>0.899999976</value>
+    </key>
+    <key>
         <flag>play galaxies</flag>
-        <time>00:02:14:688</time>
-        <value>0.250000000</value>
+        <time>00:02:12:289</time>
+        <value>0.300000012</value>
     </key>
     <key>
         <flag>reset</flag>
@@ -28,6 +38,11 @@
         <flag>play expansion</flag>
         <time>00:03:30:190</time>
         <value>0.024999976</value>
+    </key>
+    <key>
+        <flag>cue dida</flag>
+        <time>00:05:30:008</time>
+        <value>0.274999976</value>
     </key>
     <key>
         <flag>stop</flag>

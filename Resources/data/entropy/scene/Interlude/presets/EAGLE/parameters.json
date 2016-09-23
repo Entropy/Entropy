@@ -8,7 +8,7 @@
             "Cull Face": "1",
             "Depth Test": "0",
             "Edge Ratio": "0.0001",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1000",
             "Subdivisions": "80"
         },
@@ -20,7 +20,7 @@
             "Cull Face": "1",
             "Depth Test": "0",
             "Edge Ratio": "0.0001",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1000",
             "Subdivisions": "50"
         }
@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.17685174942017,
+                "aspectRatio": 3.3955078125,
                 "distance": 711.617736816406,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.82592582702637,
+                "aspectRatio": 3.03240752220154,
                 "distance": 6.86646017129533e-05,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -201,7 +201,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Intro_h264.mov",
+                "File Path": "entropy\\scene\\Interlude\\videos\\Intro_h264.mov",
                 "Loop": "1",
                 "Scrub To Timeline": "0",
                 "Transition": {
@@ -219,18 +219,18 @@
                     "Horz Align": "1",
                     "Layout": "0",
                     "Size": "1",
-                    "Surface": "1",
+                    "Surface": "0",
                     "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_Evolve_h264.mov",
+                "File Path": "entropy\\scene\\Interlude\\videos\\EAGLE_h264.mov",
                 "Loop": "0",
-                "Scrub To Timeline": "1",
+                "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "2.5",
+                    "Duration": "1",
                     "Type": "1"
                 }
             },
@@ -276,7 +276,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\sounds\\flash THOMAS EDIT V2.wav",
+                "File Path": "entropy\\scene\\PopUps\\sounds\\flash THOMAS EDIT V3.wav",
                 "Loop": "0",
                 "Transition": {
                     "Duration": "0.5",
@@ -284,6 +284,52 @@
                 }
             },
             "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.6515, 0.35",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\EAGLE temp 10 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.1575, 0.35",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\EGLE time 1 000 000 000 y.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
         }
     ],
     "Post Effects": {
@@ -296,8 +342,8 @@
                 "Sigma": "0.9"
             },
             "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
+                "Brightness": "-0.32",
+                "Contrast": "1.371",
                 "Exposure": "4",
                 "Gamma": "2.2",
                 "Tonemapping": "0"

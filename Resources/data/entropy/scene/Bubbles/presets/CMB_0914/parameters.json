@@ -1,13 +1,13 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.001",
+            "Edge Ratio": "0.003997",
             "Enabled": "1",
             "Size": "6000",
             "Subdivisions": "5"
@@ -33,7 +33,7 @@
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.819608, 0.670588, 1",
             "Drop Color 2": "0.658824, 0.509804, 0.435294, 1",
-            "Drop Rate": "45",
+            "Drop Rate": "1",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -41,7 +41,7 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
                 "Enabled": "0",
@@ -59,7 +59,7 @@
             "Draw Front": "0",
             "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
             "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
-            "Drop Rate": "60",
+            "Drop Rate": "1",
             "Dropping": "0",
             "Filter Mode": "0",
             "Radius": "20",
@@ -69,7 +69,7 @@
             "Volume Size": "6000"
         },
         "Sphere": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
@@ -82,7 +82,7 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0.294",
+            "Mask Mix": "0",
             "Tint Color": "0.937255, 0.82046, 0.668943, 1"
         }
     },
@@ -95,14 +95,14 @@
             "Inherits Settings": "1",
             "Mouse Control": "1",
             "Near Clip": "0.001",
-            "Pan Speed": "0.0320002",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0.00599992",
+            "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.21944451332092,
-                "distance": 80.7975845336914,
+                "distance": 486.11865234375,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -112,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
+                "orientation": "0.939717, 0.00530749, 0.0187133, -0.341399",
                 "ortho": false,
-                "position": "21.8806, 22.6618, 74.4039",
+                "position": "85.0797, 57.3922, 475.162",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -136,7 +136,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.55555558204651,
+                "aspectRatio": 3.03240752220154,
                 "distance": 485.360992431641,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -334,35 +334,12 @@
                 }
             },
             "type": 1
-        },
-        {
-            "Image": {
-                "Base": {
-                    "Anchor": "0.25, 0.7",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "0",
-                    "Layout": "0",
-                    "Size": "0.225",
-                    "Surface": "1",
-                    "Vert Align": "0"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture time -400 000 y.png",
-                "Transition": {
-                    "Duration": "3",
-                    "Type": "1"
-                }
-            },
-            "type": 1
         }
     ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "3",
+                "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",

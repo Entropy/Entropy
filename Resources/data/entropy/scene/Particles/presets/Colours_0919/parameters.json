@@ -1,19 +1,19 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.176471, 0.176471, 0.176471, 1",
             "Cull Face": "2",
             "Depth Test": "1",
-            "Edge Ratio": "0.003998",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
-            "Size": "6000",
+            "Size": "12000",
             "Subdivisions": "5"
         },
         "Box Front": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -21,7 +21,7 @@
             "Depth Test": "0",
             "Edge Ratio": "0.002",
             "Enabled": "1",
-            "Size": "6000",
+            "Size": "12000",
             "Subdivisions": "5"
         }
     },
@@ -40,8 +40,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.21944451332092,
-                "distance": 18537.6328125,
+                "aspectRatio": 3.3955078125,
+                "distance": 486.11865234375,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -51,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
+                "orientation": "0.939717, 0.00530749, 0.0187133, -0.341399",
                 "ortho": false,
-                "position": "-9575.16, 5073.44, 15040.6",
+                "position": "85.0797, 57.3922, 475.162",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -228,11 +228,11 @@
         "Anti up quark": "0.117647, 0.117647, 0.117647, 0.501961",
         "Down quark": "0.303145, 0.501961, 0.494944, 0.501961",
         "Electron": "0.501961, 0.273618, 0.273618, 0.501961",
-        "Neutron": "0.699348, 0.807843, 0.582914, 0.501961",
+        "Neutron": "0.453026, 0.586604, 0.807843, 0.501961",
         "Positron": "0.372549, 0.131488, 0.131488, 0.501961",
         "Proton": "0.583237, 0.62997, 0.803922, 0.501961",
         "Up down quark": "1, 0.588235, 0.588235, 0.501961",
-        "Up quark": "0.533333, 0.421721, 0.181961, 0.501961"
+        "Up quark": "0.248889, 0.396131, 0.533333, 0.501961"
     },
     "Particles": {
         "": "",
@@ -259,9 +259,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.75, 0.3",
+                    "Anchor": "0.6515, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -282,9 +282,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.25, 0.3",
+                    "Anchor": "0.1575, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -305,9 +305,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.75, 0.3",
+                    "Anchor": "0.6515, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -328,9 +328,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.25, 0.3",
+                    "Anchor": "0.1575, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -351,9 +351,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.75, 0.3",
+                    "Anchor": "0.6515, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -374,9 +374,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.25, 0.3",
+                    "Anchor": "0.1575, 0.3",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -398,7 +398,7 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "3",
+                "Brightness Threshold": "0.15053",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "6",
@@ -425,7 +425,7 @@
             "Bloom": {
                 "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
-                "Enabled": "0",
+                "Enabled": "1",
                 "Num Passes": "1",
                 "Sigma": "14.121"
             },
@@ -455,7 +455,7 @@
             "Fill": "1",
             "Fill Alpha": "0",
             "Fog Enabled": "1",
-            "Fog Max Distance": "10000",
+            "Fog Max Distance": "1600.18",
             "Fog Min Distance": "0.1",
             "Fog Power": "1",
             "Fog Start Distance": "0.1",
@@ -473,7 +473,7 @@
             "Fill": "1",
             "Fill Alpha": "0.5",
             "Fog Enabled": "1",
-            "Fog Max Distance": "9750",
+            "Fog Max Distance": "2120.1",
             "Fog Min Distance": "0.1",
             "Fog Power": "1",
             "Fog Start Distance": "0.1",

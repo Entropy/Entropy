@@ -1,15 +1,15 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.00263947",
+            "Edge Ratio": "0.001",
             "Enabled": "1",
-            "Size": "6000",
+            "Size": "12000",
             "Subdivisions": "5"
         },
         "Box Front": {
@@ -27,7 +27,7 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "0",
@@ -41,18 +41,18 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
-                "Enabled": "1",
-                "Force Multiplier": "0.8",
+                "Enabled": "0",
+                "Force Multiplier": "1",
                 "Force Random": "0.2",
-                "Max Age": "7",
+                "Max Age": "5",
                 "Max Distance": "0.15",
-                "Max Links": "3",
-                "Min Distance": "0.01",
+                "Max Links": "2",
+                "Min Distance": "0.05",
                 "Resolution": "6",
-                "World Bounds": "6000"
+                "World Bounds": "12000"
             },
             "Damping": "0.999",
             "Draw Back": "1",
@@ -66,10 +66,10 @@
             "Ring Size": "1.25",
             "Ripple Rate": "2",
             "Run Simulation": "1",
-            "Volume Size": "6000"
+            "Volume Size": "12000"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
@@ -82,7 +82,7 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0",
+            "Mask Mix": "0.294",
             "Tint Color": "0.937255, 0.82046, 0.668943, 1"
         }
     },
@@ -95,14 +95,14 @@
             "Inherits Settings": "1",
             "Mouse Control": "0",
             "Near Clip": "0.001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0320002",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.00599992",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.21944451332092,
-                "distance": 657.627502441406,
+                "aspectRatio": 3.3955078125,
+                "distance": 80.7975845336914,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -112,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.977157, -0.116902, 0.0935554, 0.150818",
+                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
                 "ortho": false,
-                "position": "-112.676, 161.641, 627.415",
+                "position": "21.8806, 22.6618, 74.4039",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -137,7 +137,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.03240752220154,
-                "distance": 809.744995117188,
+                "distance": 809.745300292969,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -147,7 +147,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.557314, -0.000117549, 0.830011, 0.0219787",
+                "orientation": "0.55733, -0.00070834, 0.830011, 0.021582",
                 "ortho": false,
                 "position": "749.134, 29.6498, -305.952",
                 "relativeYAxis": false,
@@ -258,7 +258,7 @@
         "Post_Effects_Back::Bloom::Num Passes": "0",
         "Post_Effects_Back::Bloom::Sigma": "0",
         "Post_Effects_Back::Color::Brightness": "1",
-        "Post_Effects_Back::Color::Contrast": "0",
+        "Post_Effects_Back::Color::Contrast": "1",
         "Post_Effects_Back::Color::Exposure": "0",
         "Post_Effects_Back::Color::Gamma": "0",
         "Post_Effects_Back::Color::Tonemapping": "0",
@@ -313,13 +313,13 @@
             "type": 3
         },
         {
-            "Image": {
+            "Video": {
                 "Base": {
-                    "Anchor": "0.25, 0.3",
+                    "Anchor": "0.1575, 0.5",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
-                    "Size": "0.5",
+                    "Size": "0.3",
                     "Surface": "1",
                     "Vert Align": "0"
                 },
@@ -327,42 +327,69 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture temp 3000 k.png",
+                "File Path": "entropy\\scene\\PopUps\\videos\\CMB anim temp and age H264.mov",
+                "Loop": "0",
+                "Scrub To Timeline": "1",
                 "Transition": {
                     "Duration": "3",
                     "Type": "1"
+                }
+            },
+            "type": 2
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.157, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "1",
+                    "Size": "0.3",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\CMB anim size 400000.png",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
                 }
             },
             "type": 1
         },
         {
-            "Image": {
+            "Video": {
                 "Base": {
-                    "Anchor": "0.75, 0.3",
+                    "Anchor": "0.69, 0.54",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Layout": "1",
-                    "Size": "0.5",
+                    "Layout": "0",
+                    "Size": "0.46",
                     "Surface": "1",
-                    "Vert Align": "0"
+                    "Vert Align": "1"
                 },
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\images\\CMB picture time -400 000 y.png",
+                "File Path": "entropy\\scene\\PopUps\\videos\\CMB anim size H264.mov",
+                "Loop": "0",
+                "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "3",
+                    "Duration": "2",
                     "Type": "1"
                 }
             },
-            "type": 1
+            "type": 2
         }
     ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "0.01",
+                "Brightness Threshold": "3",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",
@@ -371,7 +398,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "5.619",
+                "Exposure": "5.206",
                 "Gamma": "2.2",
                 "Tonemapping": "0"
             },

@@ -10,19 +10,14 @@
         <value>0.574999988</value>
     </key>
     <key>
-        <flag>stop</flag>
-        <time>00:00:30:096</time>
-        <value>0.000000000</value>
-    </key>
-    <key>
         <flag>play popup</flag>
-        <time>00:00:40:104</time>
-        <value>0.500000000</value>
+        <time>00:00:28:157</time>
+        <value>0.524999976</value>
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:00:50:128</time>
-        <value>0.274999976</value>
+        <time>00:00:58:523</time>
+        <value>0.324999988</value>
     </key>
     <key>
         <flag>play nucleo</flag>
@@ -31,18 +26,28 @@
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:04:20:000</time>
+        <time>00:04:15:805</time>
         <value>0.274999976</value>
     </key>
     <key>
         <flag>play popup</flag>
-        <time>00:06:00:000</time>
+        <time>00:05:00:436</time>
+        <value>0.149999976</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:05:20:332</time>
+        <value>0.850000024</value>
+    </key>
+    <key>
+        <flag>play popup</flag>
+        <time>00:06:39:743</time>
         <value>0.824999988</value>
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:06:10:313</time>
-        <value>0.300000012</value>
+        <time>00:06:56:065</time>
+        <value>0.274999976</value>
     </key>
     <key>
         <flag>play outro</flag>
