@@ -80,7 +80,11 @@ namespace entropy
 				if (trackInfo == typeid(ofxTLSwitches))
 				{
 					auto trackSwitches = dynamic_cast<ofxTLSwitches *>(this->track);
-					this->parameter->set(trackSwitches->isOn());
+					auto trackEnabled = trackSwitches->isOn();
+					if (this->parameter->get() != trackEnabled)
+					{
+						this->parameter->set(trackEnabled);
+					}
 				}
 				else if (trackInfo == typeid(ofxTLColorTrack))
 				{

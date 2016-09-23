@@ -30,7 +30,7 @@ namespace entropy
 			// Init the sphere.
 			this->parameters.add(this->sphereGeom.parameters);
 
-			this->loadTextureImage(this->getAssetsPath("images/Planck-CMB-SMICA.png"), this->sphereTexture);
+			this->loadTextureImage(this->getAssetsPath("images/texture-CMB-2.png"), this->sphereTexture);
 
 			auto shaderSettings = ofShader::Settings();
 			shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;

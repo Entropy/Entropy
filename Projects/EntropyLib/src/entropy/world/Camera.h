@@ -113,6 +113,19 @@ namespace entropy
 			glm::vec3 tumbleOffset;
 			float dollyOffset;
 
+			void beginTumbleOverride();
+			
+			struct TweenParams
+			{
+				glm::vec3 origin;
+				glm::vec3 target;
+				glm::vec3 tumble;
+				float startTime;
+				float currPct;
+				float totalDuration;
+			};
+			TweenParams overrideParams;
+
 			std::shared_ptr<Camera> parent;
 
 			std::shared_ptr<ofxTimeline> timeline;

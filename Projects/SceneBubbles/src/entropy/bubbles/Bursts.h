@@ -40,7 +40,7 @@ namespace entropy
 			ofParameter<float> worldBounds{ "World Bounds", 800.0f, 512.0f, 1920.0f };
 			ofParameter<float> minDistance{ "Min Distance", 0.08f, 0.01f, 1.0f };
 			ofParameter<float> maxDistance{ "Max Distance", 0.25f, 0.01f, 1.0f };
-			ofParameter<int> maxLinks{ "Max Links", 8, 3, 64 };
+			ofParameter<int> maxLinks{ "Max Links", 8, 2, 64 };
 
 			ofParameterGroup parameters{ "Bursts",
 				enabled,

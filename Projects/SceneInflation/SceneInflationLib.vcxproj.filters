@@ -91,5 +91,14 @@
     <None Include="..\..\Resources\data\entropy\scene\Common\shaders\inc\fog.glsl">
       <Filter>common shaders\inc</Filter>
     </None>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\transition_particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\transition_particle.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_particles.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

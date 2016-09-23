@@ -47,7 +47,6 @@ namespace entropy
 			bool triggerReset();
 			bool triggerBigBang();
 			bool triggerTransition();
-			bool triggerOscillation();
 			bool triggerParticles();
 
 			void drawScene(render::Layout layout);
@@ -75,7 +74,6 @@ namespace entropy
 				BigBang,
 				Expansion,
 				ExpansionTransition,
-				PreParticlesOscillation,
 				ParticlesTransition,
 			}state;
 
@@ -84,7 +82,6 @@ namespace entropy
 			double t_from_bigbang = 0.0;
 			double t_transition = 0.0;
 			double t_from_particles = 0.0;
-			double t_from_oscillation = 0.0;
 			float scale = 1;
 			float cameraDistanceBeforeBB;
 			bool octavesResetDuringTransition=false;
@@ -121,7 +118,6 @@ namespace entropy
 				ofParameter<ofFloatColor> bbTransitionColor{"inflation transition bg color", ofFloatColor::fromHex(0x91a5a3,1)};
 				ofParameter<float> transitionParticlesDuration{"transition particles in. (s)", 1, 0, 5};
 				ofParameter<float> transitionBlobsOutDuration{"transition blobs out. (s)", 1, 0, 5};
-				ofParameter<float> oscillationInDuration{"oscillation in duration",1,0,5};
 				ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
 				ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
 				ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
@@ -158,7 +154,6 @@ namespace entropy
 					bbTransitionColor,
 					transitionParticlesDuration,
 					transitionBlobsOutDuration,
-				    oscillationInDuration,
 					HtBB,
 					HtPostBB,
 					Ht,

@@ -200,8 +200,11 @@
     <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\cool\parameters.json" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\presets\_default\parameters.json" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_noise4d.glsl" />
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\compute_particles.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\marching_cubes_geom.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\normalShader.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\transition_particle.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\transition_particle.vert" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\vert_full_quad.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\volumetrics_frag.glsl" />
     <None Include="..\..\Resources\data\entropy\scene\Inflation\shaders\volumetrics_vertex.glsl" />

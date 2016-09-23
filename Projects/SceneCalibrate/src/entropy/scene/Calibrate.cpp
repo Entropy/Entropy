@@ -267,7 +267,7 @@ namespace entropy
 
 					// Top-Left to Bottom-Right.
 					{
-						const auto startIdx = this->crossMesh.getNumVertices();
+						const auto startIdx = static_cast<ofIndexType>(this->crossMesh.getNumVertices());
 
 						this->crossMesh.addVertex(glm::vec3(0, 0 + offset, 0));
 						this->crossMesh.addVertex(glm::vec3(GetCanvasWidth(layout) - offset, GetCanvasHeight(layout), 0));
@@ -300,7 +300,7 @@ namespace entropy
 
 					// Bottom-Left to Top-Right.
 					{
-						const auto startIdx = this->crossMesh.getNumVertices();
+						const auto startIdx = static_cast<ofIndexType>(this->crossMesh.getNumVertices());
 
 						this->crossMesh.addVertex(glm::vec3(0, GetCanvasHeight(layout) - offset, 0));
 						this->crossMesh.addVertex(glm::vec3(GetCanvasWidth(layout) - offset, 0, 0));

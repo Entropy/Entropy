@@ -113,6 +113,7 @@ namespace entropy
 				noiseSpeed,
 				normalizationFactor,
 				fillEdges,
+				oscillate,
 				oscillateSpeed,
 				oscillateSpatialFreq,
 			};
