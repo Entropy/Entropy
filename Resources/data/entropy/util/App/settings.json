@@ -7,7 +7,7 @@
             "Screen Height": "1024",
             "Screen Width": "1280"
         },
-        "Background": "0.101961, 0.101961, 0.101961, 1",
+        "Background": "0, 0, 0, 1",
         "Control Screen": {
             "Enabled": "1",
             "Preview": {

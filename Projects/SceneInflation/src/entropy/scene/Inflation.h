@@ -86,6 +86,7 @@ namespace entropy
 			float cameraDistanceBeforeBB;
 			bool octavesResetDuringTransition=false;
 			bool firstCycle;
+			bool needsParticlesUpdate;
 
 			std::array<float,4> targetWavelengths;
 			const std::array<ofFloatColor,4> preBigbangColors{{

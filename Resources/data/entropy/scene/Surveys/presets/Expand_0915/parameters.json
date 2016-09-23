@@ -34,10 +34,10 @@
             "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.0001",
-            "Pan Speed": "0.0660018",
+            "Pan Speed": "0.0200024",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0.0159975",
+            "Tilt Speed": "0.00199771",
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.3955078125,
@@ -282,7 +282,7 @@
             "Color": {
                 "Brightness": "-0.412",
                 "Contrast": "1",
-                "Exposure": "1.54113",
+                "Exposure": "4",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -358,7 +358,7 @@
             "Scale": "3.10969"
         },
         "Sphere": {
-            "Alpha": "0",
+            "Alpha": "0.826716",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",

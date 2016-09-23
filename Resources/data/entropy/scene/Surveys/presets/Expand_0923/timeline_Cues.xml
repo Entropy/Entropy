@@ -6,8 +6,18 @@
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:00:30:390</time>
+        <time>00:00:25:214</time>
         <value>0.449999988</value>
+    </key>
+    <key>
+        <flag>play popup</flag>
+        <time>00:00:30:601</time>
+        <value>0.725000024</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:51:076</time>
+        <value>0.824999988</value>
     </key>
     <key>
         <flag>play milky</flag>

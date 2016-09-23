@@ -1,13 +1,13 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.001",
+            "Edge Ratio": "0.00180731",
             "Enabled": "1",
             "Size": "12000",
             "Subdivisions": "5"
@@ -27,7 +27,7 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "0",
@@ -41,10 +41,10 @@
             "Run Simulation": "1"
         },
         "Pool GL 3D": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
-                "Enabled": "0",
+                "Enabled": "1",
                 "Force Multiplier": "1",
                 "Force Random": "0.2",
                 "Max Age": "5",
@@ -95,14 +95,14 @@
             "Inherits Settings": "1",
             "Mouse Control": "0",
             "Near Clip": "0.001",
-            "Pan Speed": "0.0320002",
+            "Pan Speed": "0",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0.00599992",
+            "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.3955078125,
-                "distance": 80.7975845336914,
+                "distance": 354.507934570313,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -112,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.986653, -0.0788524, -0.023485, 0.140558",
+                "orientation": "0.983737, -0.0982874, 0.0357861, 0.146028",
                 "ortho": false,
-                "position": "21.8806, 22.6618, 74.4039",
+                "position": "-42.8264, 89.4955, 340.341",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -327,7 +327,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\videos\\CMB anim temp and age H264.mov",
+                "File Path": "entropy\\scene\\PopUps\\videos\\CMB anim temp and age court h264.mov",
                 "Loop": "0",
                 "Scrub To Timeline": "1",
                 "Transition": {
@@ -389,7 +389,7 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "3",
+                "Brightness Threshold": "0.01",
                 "Debug Blur": "0",
                 "Enabled": "1",
                 "Num Passes": "1",

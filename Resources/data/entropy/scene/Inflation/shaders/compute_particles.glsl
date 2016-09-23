@@ -183,9 +183,9 @@ void main(void)
 		}
 		acc /= (3. * 3. * 3.);
 		acc *= attractionForce;
-		acc += vec3(1,1,1) * snoise(vec4(vec3(noiseidx) / 128., float(gl_GlobalInvocationID.x) / 1024.));
+		//acc += vec3(1,1,1) * snoise(vec4(vec3(noiseidx) / 128., float(gl_GlobalInvocationID.x) / 1024.));
 	}else{
-		acc = -pos * attractionForce * 0.5;
+		acc = -pos * attractionForce * 0.005;
 	}
 	int i=0;
 	if(int(frameNum)%2==0){

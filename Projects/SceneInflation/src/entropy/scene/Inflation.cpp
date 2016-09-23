@@ -94,6 +94,7 @@ namespace entropy
 				noiseField.octaves[i].color = preBigbangColors[i];
 			}
 			resetWavelengths();
+			needsParticlesUpdate = true;
 		}
 
 		//--------------------------------------------------------------
@@ -253,6 +254,11 @@ namespace entropy
 				noiseField.update();
 				if (renderers[entropy::render::Layout::Back].alphaFactor > 0.001 || renderers[entropy::render::Layout::Front].alphaFactor > 0.001) {
 					gpuMarchingCubes.update(noiseField.getTexture());
+				}
+				if (needsParticlesUpdate) {
+					this->transitionParticles.setTotalVertices(this->gpuMarchingCubes.getNumVertices());
+					this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
+					needsParticlesUpdate = false;
 				}
 
 				//auto distance = this->getCamera(render::Layout::Back)->getEasyCam().getDistance();

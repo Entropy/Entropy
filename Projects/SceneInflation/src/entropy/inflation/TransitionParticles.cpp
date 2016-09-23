@@ -13,11 +13,15 @@ void TransitionParticles::setup(){
 	shader.setup(settings);
 	computeShader.loadCompute("shaders/compute_particles.glsl");
 	glGenQueries(1, &numVerticesQuery);
+
+	//feedbackBuffer.allocate(41535936 * 2, GL_STATIC_DRAW);
+	//positions.setVertexBuffer(feedbackBuffer, 4, sizeof(glm::vec4) * 2, 0);
+	//positions.setColorBuffer(feedbackBuffer, sizeof(glm::vec4) * 2, sizeof(glm::vec4));
 }
 
 void TransitionParticles::setTotalVertices(int totalVertices) {
 	this->totalVertices = totalVertices;
-	feedbackBuffer.allocate(totalVertices / every * modelNumVertices * sizeof(glm::vec4) * 2, GL_STREAM_DRAW);
+	feedbackBuffer.allocate(totalVertices / every * modelNumVertices * sizeof(glm::vec4) * 2, GL_STATIC_DRAW);
 	positions.setVertexBuffer(feedbackBuffer, 4, sizeof(glm::vec4) * 2, 0);
 	positions.setColorBuffer(feedbackBuffer, sizeof(glm::vec4) * 2, sizeof(glm::vec4));
 }
