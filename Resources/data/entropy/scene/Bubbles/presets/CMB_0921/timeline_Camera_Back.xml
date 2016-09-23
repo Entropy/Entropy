@@ -9,8 +9,8 @@
         <oz>-0.026568666</oz>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:00:29:999</time>
-        <value>0.425000012</value>
+        <time>00:01:30:001</time>
+        <value>0.300000012</value>
     </key>
     <key>
         <px>-119.423942566</px>
@@ -22,7 +22,7 @@
         <oz>0.151583359</oz>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:01:30:281</time>
+        <time>00:02:30:283</time>
         <value>0.000000000</value>
     </key>
     <key>
@@ -35,7 +35,7 @@
         <oz>0.140557721</oz>
         <easein>0</easein>
         <easeout>0</easeout>
-        <time>00:01:59:830</time>
-        <value>0.250000000</value>
+        <time>00:02:59:832</time>
+        <value>0.125000000</value>
     </key>
 </keyframes>

@@ -69,7 +69,7 @@
             "Volume Size": "12000"
         },
         "Sphere": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Arc Horizontal": "1",
             "Arc Vertical": "1",
             "Auto Draw": "1",
@@ -82,8 +82,8 @@
             "Resolution": "16"
         },
         "SphereExtra": {
-            "Mask Mix": "0.294",
-            "Tint Color": "0.937255, 0.82046, 0.668943, 1"
+            "Mask Mix": "0",
+            "Tint Color": "1, 1, 1, 1"
         }
     },
     "Cameras": {
@@ -354,8 +354,8 @@
                 },
                 "File Path": "entropy\\scene\\PopUps\\images\\CMB anim size 400000.png",
                 "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Duration": "3",
+                    "Type": "1"
                 }
             },
             "type": 1

@@ -40,7 +40,7 @@ void main()
 	maskCoord.y = 1.0 - maskCoord.y;
 	vec4 maskColor = texture(uTexMask, maskCoord);
 	
-	float alpha = clamp(mix(uAlphaBase, luminance(maskColor.rgb), uMaskMix), 0.0, 1.0);
+	float alpha = clamp(uAlphaBase + luminance(maskColor.rgb) * uMaskMix, 0.0, 1.0);
 
 	vec3 rgbColor = texColor.rgb * uTintColor.rgb;
 	fragColor = vec4(rgbColor, alpha);

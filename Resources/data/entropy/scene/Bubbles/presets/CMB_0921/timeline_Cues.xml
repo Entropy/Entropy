@@ -11,28 +11,28 @@
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:00:10:166</time>
+        <time>00:00:35:045</time>
         <value>0.000000000</value>
     </key>
     <key>
         <flag>play bursts</flag>
-        <time>00:00:30:088</time>
-        <value>0.500000000</value>
+        <time>00:01:30:089</time>
+        <value>0.100000024</value>
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:02:00:855</time>
-        <value>0.199999988</value>
+        <time>00:03:00:856</time>
+        <value>0.000000000</value>
     </key>
     <key>
         <flag>play dark</flag>
-        <time>00:02:30:949</time>
-        <value>0.625000000</value>
+        <time>00:03:30:950</time>
+        <value>0.225000024</value>
     </key>
     <key>
         <flag>stop</flag>
-        <time>00:03:00:201</time>
-        <value>0.875000000</value>
+        <time>00:04:00:202</time>
+        <value>0.475000024</value>
     </key>
     <key>
         <flag>play cmb</flag>

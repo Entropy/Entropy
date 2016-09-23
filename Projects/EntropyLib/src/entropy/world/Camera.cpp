@@ -122,7 +122,7 @@ namespace entropy
 			//if (this->tumbleOffset.z != 0.0f) this->overrideParams.target.z = 360 * (iTumbleOrigin.z + 1);
 			//this->overrideParams.target = glm::vec3(iTumbleTarget);
 			this->overrideParams.startTime = ofGetElapsedTimef();
-			this->overrideParams.totalDuration = 15.0f;
+			this->overrideParams.totalDuration = 20.0f;
 
 
 			//cout << "Tumble num turns " << iTumbleOrigin.x << " " << iTumbleOrigin.y << " " << iTumbleOrigin.z << endl;
@@ -184,7 +184,7 @@ namespace entropy
 					if (pct <= 1.0f)
 					{
 						glm::vec3 tweenPos;
-						static const ofxEasingSine easing;
+						static const ofxEasingQuint easing;
 						//tweenPos.x = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.x, this->overrideParams.target.x, true, easing, ofxTween::easeInOut);
 						tweenPos.y = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.y, this->overrideParams.target.y, true, easing, ofxTween::easeInOut);
 						//tweenPos.z = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.z, this->overrideParams.target.z, true, easing, ofxTween::easeInOut);
