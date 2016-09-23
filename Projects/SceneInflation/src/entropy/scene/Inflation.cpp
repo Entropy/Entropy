@@ -461,13 +461,11 @@ namespace entropy
 						ofDrawRectangle(0, 0, ofGetViewportWidth(), ofGetViewportHeight());
 					}
 
-					/*TODO: Automatic trnasition disabled.
-					 *
-					 * if(scale > parameters.bbTransitionFlash){
+					if(firstCycle && scale > parameters.bbTransitionFlash){
 						state = ExpansionTransition;
 						t_transition = now;
 						octavesResetDuringTransition = false;
-					}*/
+					}
 
 				}break;
 				case ExpansionTransition:{
