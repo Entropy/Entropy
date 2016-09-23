@@ -12,6 +12,17 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "src/entropy/inflation/GPUMarchingCubes.cpp",
+            "src/entropy/inflation/GPUMarchingCubes.h",
+            "src/entropy/inflation/NoiseField.cpp",
+            "src/entropy/inflation/NoiseField.h",
+            "src/entropy/inflation/TransitionParticles.cpp",
+            "src/entropy/inflation/TransitionParticles.h",
+            "src/entropy/scene/Inflation.cpp",
+            "src/entropy/scene/Inflation.h",
+            "src/main.cpp",
+            "src/ofApp.cpp",
+            "src/ofApp.h",
             "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
             "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
             "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
@@ -20,7 +31,6 @@ Project{
             "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
             "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
-            "../../Resources/data/entropy/scene/Inflation/presets/_autosave/parameters.json",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_clear_color.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/compute_particles.glsl",
@@ -36,17 +46,6 @@ Project{
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
             "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_vertex.glsl",
             "addons.make",
-            "src/entropy/inflation/GPUMarchingCubes.cpp",
-            "src/entropy/inflation/GPUMarchingCubes.h",
-            "src/entropy/inflation/NoiseField.cpp",
-            "src/entropy/inflation/NoiseField.h",
-            "src/entropy/inflation/TransitionParticles.cpp",
-            "src/entropy/inflation/TransitionParticles.h",
-            "src/entropy/scene/Inflation.cpp",
-            "src/entropy/scene/Inflation.h",
-            "src/main.cpp",
-            "src/ofApp.cpp",
-            "src/ofApp.h",
         ]
 
         of.addons: [
@@ -99,7 +98,7 @@ Project{
         }
     }
 
-    property bool usePoco: false;
+    //property bool usePoco: false;
     property bool makeOF: true;
     references: [FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/openFrameworks.qbs")]
 }

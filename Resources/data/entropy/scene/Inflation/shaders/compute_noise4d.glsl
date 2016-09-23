@@ -158,7 +158,13 @@ uniform float resolution;
 uniform float normalizationFactor;
 uniform float scale;
 uniform Octave octaves[NUM_OCTAVES];
+uniform float oscillate;
+uniform float oscFreq;
+uniform float now;
 
+float map(float value, float inputMin, float inputMax, float outputMin, float outputMax){
+	return ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+}
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 void main()
@@ -190,6 +196,10 @@ void main()
 		float normalizationValue = (maxValue * normalizationFactor);
 		totalRGB = totalRGB / maxRGB;
 		total = total / normalizationValue;
-        imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(totalRGB, total));
+		float oscillateValue =  1. - oscillate * snoise(vec4(pos.x/oscFreq, pos.y/oscFreq, pos.z/oscFreq, now));
+		oscillateValue *= oscillateValue;
+		oscillateValue = map(oscillateValue,0,1,0.1,1);
+		totalRGB *= oscillateValue;
+		imageStore(volume, ivec3(gl_GlobalInvocationID.xyz), vec4(totalRGB, total));
 	}
 }

@@ -86,6 +86,9 @@ namespace entropy
 			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
 			ofParameter<float> speedFactor{ "Noise Speed Factor", 1.0f, 0.0f, 1.0f };
 			ofParameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
+			ofParameter<float> oscillate{ "Oscillate", 0.0f, 0.f, 1.f };
+			ofParameter<float> oscillateSpeed{ "Oscillate speed", 1.0f, 0.f, 10.f };
+			ofParameter<float> oscillateSpatialFreq{"Oscillate spatial freq.", 64, 1, 1000};
 			ofParameter<bool> fillEdges{ "Fill Edges", false };
 			ofParameter<float> scale{"Scale", 1.f, 0.0f, 1000.f};
 			std::vector<Octave> octaves;
@@ -101,6 +104,7 @@ namespace entropy
 			ofEventListener sphericalClipListener, fillEdgesListener, resolutionListener;
 			void allocateVolumeTexture();
             ofShader::Settings shaderSettings;
+			float now;
 
 		public:
 			ofParameter<int> resolution;
@@ -109,6 +113,8 @@ namespace entropy
 				noiseSpeed,
 				normalizationFactor,
 				fillEdges,
+				oscillateSpeed,
+				oscillateSpatialFreq,
 			};
 		};
 	}

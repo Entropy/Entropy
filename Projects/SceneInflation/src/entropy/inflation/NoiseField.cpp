@@ -70,6 +70,7 @@ namespace entropy
 					octave.now += noiseSpeed * speedFactor * ofGetLastFrameTime();
 				}
 			}
+			now +=  ofGetLastFrameTime() * oscillateSpeed;
 
 			noiseComputeShader.begin();
 			volumeTex.bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
@@ -84,6 +85,9 @@ namespace entropy
 			noiseComputeShader.setUniform1f("resolution", resolution);
 			noiseComputeShader.setUniform1f("normalizationFactor", normalizationFactor);
 			noiseComputeShader.setUniform1f("scale", scale);
+			noiseComputeShader.setUniform1f("oscillate", oscillate);
+			noiseComputeShader.setUniform1f("now", now);
+			noiseComputeShader.setUniform1f("oscFreq", oscillateSpatialFreq);
 			noiseComputeShader.dispatchCompute(resolution / 8, resolution / 8, resolution / 8);
 			noiseComputeShader.end();
 			glBindImageTexture(0, 0, 0, 0, 0, GL_READ_WRITE, GL_R16F);

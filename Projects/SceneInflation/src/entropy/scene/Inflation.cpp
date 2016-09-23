@@ -235,6 +235,12 @@ namespace entropy
 						noiseField.scale = scale;
 					}break;
 
+					case PreParticlesOscillation:{
+						float pct = (now - t_from_oscillation) / parameters.oscillationInDuration;
+						pct = glm::clamp(pct, 0.f, 1.f);
+						noiseField.oscillate = pct;
+					}break;
+
 					case ParticlesTransition:{
 						float alphaParticles = (now - t_from_particles) / parameters.transitionParticlesDuration;
 						alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
@@ -366,6 +372,12 @@ namespace entropy
 			return true;
 		}
 
+		bool Inflation::triggerOscillation(){
+			t_from_oscillation = now;
+			state = PreParticlesOscillation;
+			return true;
+		}
+
 		bool Inflation::triggerParticles(){
 			auto vertices = this->gpuMarchingCubes.getNumVertices();
 			auto size = vertices * sizeof(glm::vec4) * 2;
@@ -408,6 +420,7 @@ namespace entropy
 				break;
 			case Expansion:
 			case ExpansionTransition:
+			case PreParticlesOscillation:
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].clip = false;
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
@@ -503,7 +516,7 @@ namespace entropy
 		void Inflation::gui(ofxPreset::Gui::Settings & settings)
 		{
 			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
+			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings, false))
 			{
 				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
 				ofxPreset::Gui::AddParameter(this->parameters.controlCamera);
@@ -516,6 +529,9 @@ namespace entropy
 				}
 				if (ImGui::Button("Trigger Transition")) {
 					this->triggerTransition();
+				}
+				if (ImGui::Button("Trigger Oscillation")) {
+					this->triggerOscillation();
 				}
 				if (ImGui::Button("Trigger Particles")) {
 					this->triggerParticles();
@@ -544,6 +560,13 @@ namespace entropy
 					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
 					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
 					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
+
+					ofxPreset::Gui::EndTree(settings);
+				}
+
+				if (ofxPreset::Gui::BeginTree("Oscillation", settings))
+				{
+					ofxPreset::Gui::AddParameter(this->parameters.oscillationInDuration);
 
 					ofxPreset::Gui::EndTree(settings);
 				}

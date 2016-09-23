@@ -36,9 +36,6 @@ void main(void)
 	}
 	uint idx = gl_GlobalInvocationID.x * uint(every);
 	vec3 pos = vertices[idx].pos.xyz;
-	if(pos.x>-0.001 && pos.x<0.001 && pos.y>-0.001 && pos.y<0.001 && pos.z>-0.001 && pos.z<0.001){
-		vertices[idx].pos = vec4(10000,10000,10000,1);
-	}
 
 	ivec3 noiseidx = ivec3((pos + vec3(0.5)) * noiseSize);
 	vec3 acc = vec3(0);
@@ -74,5 +71,9 @@ void main(void)
 	vertices[idx].vel.xyz =  vertices[idx].vel.xyz * 0.9 + acc * 0.1 * dt;
 	vertices[idx].pos.xyz += vertices[idx].vel.xyz;
 	//vertices[idx].vel.xyz *= 0.9;
+
+	if(pos.x>-0.001 && pos.x<0.001 && pos.y>-0.001 && pos.y<0.001 && pos.z>-0.001 && pos.z<0.001){
+		vertices[idx].pos = vec4(10000,10000,10000,1);
+	}
 }
 
