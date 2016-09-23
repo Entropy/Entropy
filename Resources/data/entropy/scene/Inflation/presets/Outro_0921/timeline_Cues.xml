@@ -1,8 +1,13 @@
 <keyframes>
     <key>
         <flag>reset</flag>
-        <time>00:00:01:009</time>
-        <value>0.550000012</value>
+        <time>00:00:01:071</time>
+        <value>0.399999976</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:03:006</time>
+        <value>0.375000000</value>
     </key>
     <key>
         <flag>play intro</flag>
@@ -13,15 +18,5 @@
         <flag>bigbang</flag>
         <time>00:00:10:346</time>
         <value>0.324999988</value>
-    </key>
-    <key>
-        <flag>stop</flag>
-        <time>00:00:25:132</time>
-        <value>0.725000024</value>
-    </key>
-    <key>
-        <flag>stop</flag>
-        <time>00:01:05:620</time>
-        <value>0.600000024</value>
     </key>
 </keyframes>

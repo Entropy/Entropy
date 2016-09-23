@@ -1,0 +1,38 @@
+<positions>
+    <element name="Camera Back">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera Front">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera_Back_Dolly Speed">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera_Back_Pan Speed">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera_Back_Roll Speed">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Camera_Back_Tilt Speed">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

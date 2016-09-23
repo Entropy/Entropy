@@ -1,7 +1,7 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "1",
+            "Alpha": "0.95",
             "Auto Draw": "0",
             "Blend Mode": "1",
             "Color": "0.0196078, 0.0196078, 0.0196078, 1",
@@ -40,8 +40,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.21944451332092,
-                "distance": 0.529601216316223,
+                "aspectRatio": 3.3955078125,
+                "distance": 0.529601633548737,
                 "drag": 0.899999976158142,
                 "farClip": 6.0,
                 "forceAspectRatio": true,
@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0500207",
+        "Current rate of expansion": "0.0532351",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -121,7 +121,7 @@
         "inflation transition in, duration sec.": "0.5",
         "inflation transition out, sec.": "2",
         "inflation transition plateau, sec.": "0.3",
-        "transition blobs out. (s)": "1",
+        "transition blobs out. (s)": "0.5",
         "transition particles in. (s)": "1"
     },
     "Mappings": {
@@ -192,6 +192,12 @@
         "Inflation::inflation transition plateau, sec.": "0",
         "Inflation::transition blobs out. (s)": "0",
         "Inflation::transition particles in. (s)": "0",
+        "Noise_Field::Fill Edges": "0",
+        "Noise_Field::Noise Speed": "0",
+        "Noise_Field::Norm. Factor": "0",
+        "Noise_Field::Oscillate": "1",
+        "Noise_Field::Oscillate spatial freq.": "1",
+        "Noise_Field::Oscillate speed": "1",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -246,7 +252,7 @@
         "Renderer_Front::Fade Power": "0",
         "Renderer_Front::Fade To": "0",
         "Renderer_Front::Fill": "0",
-        "Renderer_Front::Fill Alpha": "0",
+        "Renderer_Front::Fill Alpha": "1",
         "Renderer_Front::Fog Enabled": "0",
         "Renderer_Front::Fog Max Distance": "0",
         "Renderer_Front::Fog Min Distance": "0",
@@ -255,20 +261,23 @@
         "Renderer_Front::Shade Normals": "0",
         "Renderer_Front::Spherical Clip": "0",
         "Renderer_Front::Use Lights": "0",
-        "Renderer_Front::Wireframe": "1",
-        "Renderer_Front::Wireframe Alpha": "0",
+        "Renderer_Front::Wireframe": "0",
+        "Renderer_Front::Wireframe Alpha": "1",
         "Renderer_Front::Wobbly Clip": "0"
     },
     "Marching Cubes": {
         "IsoLevel": "0.3",
         "Resolution": "128",
         "Shade Normals": "0",
-        "subdivisions": "1"
+        "subdivisions": "0"
     },
     "Noise Field": {
         "Fill Edges": "0",
         "Noise Speed": "5",
-        "Norm. Factor": "1.181"
+        "Norm. Factor": "1.181",
+        "Oscillate": "0",
+        "Oscillate spatial freq.": "93.691",
+        "Oscillate speed": "2.5"
     },
     "Pop-ups": [
         {
@@ -298,9 +307,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.75, 0.275",
+                    "Anchor": "0.6515, 0.275",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -321,9 +330,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.25, 0.275",
+                    "Anchor": "0.1575, 0.275",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -344,9 +353,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.75, 0.3",
+                    "Anchor": "0.6515, 0.275",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -367,9 +376,9 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.25, 0.3",
+                    "Anchor": "0.15675, 0.275",
                     "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
+                    "Horz Align": "0",
                     "Layout": "1",
                     "Size": "0.5",
                     "Surface": "1",
@@ -431,20 +440,20 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0",
+                "Enabled": "1",
+                "Inner": "0.593",
                 "Only Alpha": "1",
-                "Outer": "6",
-                "Power": "1.1",
+                "Outer": "3.448",
+                "Power": "4.306",
                 "Rotation": "0"
             }
         }
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.87661",
+            "Fade From": "4.60613",
             "Fade Power": "2",
-            "Fade To": "2.20831",
+            "Fade To": "2.14619",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -460,22 +469,30 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.87661",
+            "Fade From": "4.60613",
             "Fade Power": "2",
-            "Fade To": "2.20831",
+            "Fade To": "2.14619",
             "Fill": "1",
-            "Fill Alpha": "1",
+            "Fill Alpha": "0",
             "Fog Enabled": "1",
             "Fog Max Distance": "8.04",
             "Fog Min Distance": "0",
             "Fog Power": "4.743",
-            "Fog Start Distance": "1.41762",
+            "Fog Start Distance": "1.41663",
             "Shade Normals": "0",
             "Spherical Clip": "1",
             "Use Lights": "0",
-            "Wireframe": "0",
-            "Wireframe Alpha": "0.01",
+            "Wireframe": "1",
+            "Wireframe Alpha": "1",
             "Wobbly Clip": "0"
         }
+    },
+    "transition particles": {
+        "color": "1, 1, 1, 1",
+        "noise field attraction": "5.928",
+        "particle every x vertices": "100",
+        "repulsion": "0.001",
+        "scale": "2.02",
+        "speed": "0.081"
     }
 }

@@ -34,14 +34,14 @@
             "Inherits Settings": "0",
             "Mouse Control": "1",
             "Near Clip": "0.0001",
-            "Pan Speed": "0",
+            "Pan Speed": "0.0660018",
             "Relative Y Axis": "0",
             "Roll Speed": "0",
-            "Tilt Speed": "0",
+            "Tilt Speed": "0.0159975",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.21944451332092,
-                "distance": 252664.078125,
+                "aspectRatio": 3.3955078125,
+                "distance": 0.0777632296085358,
                 "drag": 0.899999976158142,
                 "farClip": 100000.0,
                 "forceAspectRatio": true,
@@ -51,9 +51,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.99999974737875e-05,
-                "orientation": "0.229086, -0.0895498, 0.944173, 0.219146",
+                "orientation": "0.229086, -0.0895499, 0.944174, 0.219146",
                 "ortho": false,
-                "position": "99469.5, 115001, -201791",
+                "position": "0.0330274, 0.0330497, -0.0621613",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 3.03240752220154,
                 "distance": 0.00415555667132139,
                 "drag": 0.899999976158142,
                 "farClip": 5000.0,
@@ -149,7 +149,7 @@
         "Post_Effects_Back::Bloom::Sigma": "0",
         "Post_Effects_Back::Color::Brightness": "0",
         "Post_Effects_Back::Color::Contrast": "0",
-        "Post_Effects_Back::Color::Exposure": "0",
+        "Post_Effects_Back::Color::Exposure": "1",
         "Post_Effects_Back::Color::Gamma": "0",
         "Post_Effects_Back::Color::Tonemapping": "0",
         "Post_Effects_Back::Vignette::Debug": "0",
@@ -222,7 +222,54 @@
         "Surveys::ViziR::Min Longitude": "0",
         "Surveys::ViziR::Min Radius": "0"
     },
-    "Pop-ups": null,
+    "Pop-ups": [
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.6515, 0.35",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\survey temp -3 k.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.157, 0.35",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "0",
+                    "Layout": "1",
+                    "Size": "0.5",
+                    "Surface": "1",
+                    "Vert Align": "0"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\images\\today.png",
+                "Transition": {
+                    "Duration": "3",
+                    "Type": "1"
+                }
+            },
+            "type": 1
+        }
+    ],
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
@@ -235,7 +282,7 @@
             "Color": {
                 "Brightness": "-0.412",
                 "Contrast": "1",
-                "Exposure": "4",
+                "Exposure": "1.54113",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -281,24 +328,24 @@
             "Cut Radius": "0",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0.0271152",
+            "Max Radius": "0",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0"
         },
         "Back": {
-            "Point Size": "13.318",
+            "Point Size": "0.80975",
             "Render BOSS": "1",
             "Render DES": "1",
             "Render ViziR": "1",
-            "Scale": "3.10969"
+            "Scale": "14.5095"
         },
         "DES": {
             "Color": "1, 1, 1, 1",
             "Cut Radius": "0",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0.0271152",
+            "Max Radius": "0",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0"
@@ -306,7 +353,7 @@
         "Front": {
             "Point Size": "5",
             "Render BOSS": "0",
-            "Render DES": "1",
+            "Render DES": "0",
             "Render ViziR": "0",
             "Scale": "3.10969"
         },
@@ -328,7 +375,7 @@
             "Cut Radius": "0.045",
             "Max Latitude": "1",
             "Max Longitude": "1",
-            "Max Radius": "0",
+            "Max Radius": "1",
             "Min Latitude": "0",
             "Min Longitude": "0",
             "Min Radius": "0.05"

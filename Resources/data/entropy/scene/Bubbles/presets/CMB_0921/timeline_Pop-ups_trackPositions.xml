@@ -1,0 +1,44 @@
+<positions>
+    <element name="Pop-up_0_Sound">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_0_Video">
+        <x>0.000000000</x>
+        <y>70.000000000</y>
+        <width>1924.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_1_Image">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_1_Video">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_2_Image">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_3_Image">
+        <x>0.000000000</x>
+        <y>262.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Pop-up_3_Video">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

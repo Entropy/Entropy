@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3505859375,
+                "aspectRatio": 3.3955078125,
                 "distance": 2.51264691352844,
                 "drag": 0.899999976158142,
                 "farClip": 6.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 1.77777779102325,
+                "aspectRatio": 3.03240752220154,
                 "distance": 0.139618083834648,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0569153",
+        "Current rate of expansion": "0.0531926",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "0.1",
         "Rate of expansion after bigbang": "0.05",
@@ -192,6 +192,12 @@
         "Inflation::inflation transition plateau, sec.": "0",
         "Inflation::transition blobs out. (s)": "0",
         "Inflation::transition particles in. (s)": "0",
+        "Noise_Field::Fill Edges": "0",
+        "Noise_Field::Noise Speed": "0",
+        "Noise_Field::Norm. Factor": "0",
+        "Noise_Field::Oscillate": "0",
+        "Noise_Field::Oscillate spatial freq.": "0",
+        "Noise_Field::Oscillate speed": "0",
         "Post_Effects_Back::Bloom::Brightness Threshold": "0",
         "Post_Effects_Back::Bloom::Debug Blur": "0",
         "Post_Effects_Back::Bloom::Enabled": "0",
@@ -268,7 +274,10 @@
     "Noise Field": {
         "Fill Edges": "0",
         "Noise Speed": "5",
-        "Norm. Factor": "1.181"
+        "Norm. Factor": "1.181",
+        "Oscillate": "0",
+        "Oscillate spatial freq.": "64",
+        "Oscillate speed": "1"
     },
     "Pop-ups": [
         {
@@ -286,7 +295,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\sounds\\big bang THOMAS EDIT V2.wav",
+                "File Path": "entropy\\scene\\PopUps\\sounds\\fin bigbang + credit THOMAS EDIT V1.wav",
                 "Loop": "0",
                 "Transition": {
                     "Duration": "0.5",
@@ -294,6 +303,31 @@
                 }
             },
             "type": 3
+        },
+        {
+            "Video": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 1",
+                    "Horz Align": "1",
+                    "Layout": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "entropy\\scene\\PopUps\\videos\\credit.mov",
+                "Loop": "0",
+                "Scrub To Timeline": "1",
+                "Transition": {
+                    "Duration": "0.5",
+                    "Type": "0"
+                }
+            },
+            "type": 2
         }
     ],
     "Post Effects": {
@@ -308,7 +342,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "4",
+                "Exposure": "0",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -350,13 +384,13 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.59509",
+            "Fade From": "4.65386",
             "Fade Power": "2",
-            "Fade To": "2.14362",
+            "Fade To": "2.15728",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
-            "Fog Max Distance": "4.365",
+            "Fog Max Distance": "1.5034",
             "Fog Min Distance": "1",
             "Fog Power": "7.835",
             "Fog Start Distance": "1",
@@ -368,9 +402,9 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.59509",
+            "Fade From": "4.65386",
             "Fade Power": "2",
-            "Fade To": "2.14362",
+            "Fade To": "2.15728",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",
@@ -385,5 +419,13 @@
             "Wireframe Alpha": "0.01",
             "Wobbly Clip": "0"
         }
+    },
+    "transition particles": {
+        "color": "1, 1, 1, 1",
+        "noise field attraction": "10",
+        "particle every x vertices": "100",
+        "repulsion": "0.01",
+        "scale": "1",
+        "speed": "0.01"
     }
 }
