@@ -238,18 +238,21 @@ namespace entropy
 					case ParticlesTransition:{
 						float alphaParticles = (now - t_from_particles) / parameters.transitionParticlesDuration;
 						alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
-						transitionParticles.color = ofFloatColor(alphaParticles, alphaParticles);
+						transitionParticles.color = ofFloatColor(transitionParticles.color, alphaParticles);
 
 						float alphaBlobs = (now - t_from_particles) / parameters.transitionBlobsOutDuration;
 						alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
 						//noiseField.speedFactor = alphaBlobs;
 						renderers[entropy::render::Layout::Back].alphaFactor = alphaBlobs;
 						renderers[entropy::render::Layout::Front].alphaFactor = alphaBlobs;
+						this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
 					}break;
 				}
 
 				noiseField.update();
-				gpuMarchingCubes.update(noiseField.getTexture());
+				if (renderers[entropy::render::Layout::Back].alphaFactor > 0.001 || renderers[entropy::render::Layout::Front].alphaFactor > 0.001) {
+					gpuMarchingCubes.update(noiseField.getTexture());
+				}
 
 				//auto distance = this->getCamera(render::Layout::Back)->getEasyCam().getDistance();
 				//this->getCamera(render::Layout::Back)->getEasyCam().orbitDeg(ofGetElapsedTimef()*10.f,0,distance,glm::vec3(0,0,0));
@@ -410,12 +413,16 @@ namespace entropy
 				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
 				break;
 			case ParticlesTransition:
-				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				renderers[layout].clip = false;
-				renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-				//if(layout==render::Layout::Back){
-					this->transitionParticles.draw(transitionParticlesPosition, noiseField.getTexture(), now);
-				//}
+				if (renderers[layout].alphaFactor > 0.001) {
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					renderers[layout].draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+				}
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				auto alphaBlobs = renderers[layout].alphaFactor;
+				renderers[layout].alphaFactor = 1;
+				renderers[layout].draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), camera);
+				renderers[layout].alphaFactor = alphaBlobs;
 				break;
 			}
 
@@ -557,6 +564,8 @@ namespace entropy
 
 					int numVertices = this->gpuMarchingCubes.getNumVertices();
 					ImGui::SliderInt("Num Vertices", &numVertices, 0, this->gpuMarchingCubes.getBufferSize() / this->gpuMarchingCubes.getVertexStride());
+					numVertices = this->transitionParticles.getNumVertices();
+					ImGui::SliderInt("Num Vertices Particles", &numVertices, 0, this->transitionParticles.getNumVertices());
 
 					ofxPreset::Gui::EndTree(settings);
 				}

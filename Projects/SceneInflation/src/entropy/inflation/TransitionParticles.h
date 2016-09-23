@@ -13,10 +13,10 @@ class TransitionParticles
 public:
 	void setup();
 
-	void draw(const ofBufferObject & blobs, const ofxTexture3d & noiseField, float now);
-	void setTotalVertices(int totalVertices){
-		this->totalVertices = totalVertices;
-	}
+	void update(const ofBufferObject & blobs, const ofxTexture3d & noiseField, float now);
+	void setTotalVertices(int totalVertices);
+	int getNumVertices() const;
+	const ofVbo & getVbo() const;
 
 	ofParameter<int> every{"particle every x vertices", 100, 1, 10000};
 	ofParameter<float> scale{"scale", 1, 0.1f, 5};
@@ -36,9 +36,14 @@ public:
 
 private:
 	ofVbo model;
+	ofBufferObject feedbackBuffer;
+	ofVbo positions;
 	ofShader shader;
 	ofShader computeShader;
 	int totalVertices;
+	GLuint numVerticesQuery;
+	GLuint numPrimitives;
+	size_t modelNumVertices;
 };
 
 #endif // TRANSITIONPARTICLES_H
