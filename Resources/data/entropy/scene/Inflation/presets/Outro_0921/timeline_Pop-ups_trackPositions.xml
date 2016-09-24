@@ -8,7 +8,7 @@
     <element name="Pop-up_1_Image">
         <x>0.000000000</x>
         <y>134.000000000</y>
-        <width>7684.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Pop-up_1_Video">
@@ -20,19 +20,19 @@
     <element name="Pop-up_2_Image">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>7684.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Pop-up_3_Image">
         <x>0.000000000</x>
         <y>262.000000000</y>
-        <width>7684.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Pop-up_4_Image">
         <x>0.000000000</x>
         <y>326.000000000</y>
-        <width>7684.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

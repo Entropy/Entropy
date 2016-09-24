@@ -1,7 +1,7 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0.334633",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
@@ -13,7 +13,7 @@
             "Subdivisions": "80"
         },
         "Box Front": {
-            "Alpha": "0.220026",
+            "Alpha": "0",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -41,7 +41,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.3955078125,
-                "distance": 697.5361328125,
+                "distance": 711.617736816406,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
                 "forceAspectRatio": true,
@@ -53,7 +53,7 @@
                 "nearClip": 0.00100000004749745,
                 "orientation": "0.986522, 0, 0, 0.163628",
                 "ortho": false,
-                "position": "-430.55, -120.003, 535.521",
+                "position": "429.307, 187.917, 535.521",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -99,7 +99,7 @@
     },
     "Interlude": {
         "Stripes": {
-            "Back Alpha": "0.289272",
+            "Back Alpha": "0",
             "Front Alpha": "1"
         }
     },
@@ -240,7 +240,7 @@
             "Video": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
+                    "Background": "0, 0, 0, 1",
                     "Horz Align": "1",
                     "Layout": "1",
                     "Size": "1",

@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0531926",
+        "Current rate of expansion": "0.0541248",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "0.1",
         "Rate of expansion after bigbang": "0.05",
@@ -319,7 +319,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "entropy\\scene\\PopUps\\videos\\credit.mov",
+                "File Path": "C:\\assets\\entropy\\scene\\PopUps\\videos\\credit.mov",
                 "Loop": "0",
                 "Scrub To Timeline": "1",
                 "Transition": {
@@ -342,7 +342,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "0",
+                "Exposure": "4",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -384,13 +384,13 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.65386",
+            "Fade From": "4.58116",
             "Fade Power": "2",
-            "Fade To": "2.15728",
+            "Fade To": "2.14036",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
-            "Fog Max Distance": "1.5034",
+            "Fog Max Distance": "4.365",
             "Fog Min Distance": "1",
             "Fog Power": "7.835",
             "Fog Start Distance": "1",
@@ -402,9 +402,9 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.65386",
+            "Fade From": "4.58116",
             "Fade Power": "2",
-            "Fade To": "2.15728",
+            "Fade To": "2.14036",
             "Fill": "1",
             "Fill Alpha": "1",
             "Fog Enabled": "1",
