@@ -100,7 +100,7 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0532022",
+        "Current rate of expansion": "0.0526729",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
         "Rate of expansion after bigbang": "0.05",
@@ -400,10 +400,10 @@
     "Post Effects": {
         "Post Effects Back": {
             "Bloom": {
-                "Brightness Threshold": "0.149",
+                "Brightness Threshold": "0.056",
                 "Debug Blur": "0",
-                "Enabled": "0",
-                "Num Passes": "3",
+                "Enabled": "1",
+                "Num Passes": "6",
                 "Sigma": "3.387"
             },
             "Color": {
@@ -428,8 +428,8 @@
                 "Brightness Threshold": "0.303",
                 "Debug Blur": "0",
                 "Enabled": "1",
-                "Num Passes": "7",
-                "Sigma": "0.5"
+                "Num Passes": "6",
+                "Sigma": "1.8825"
             },
             "Color": {
                 "Brightness": "0",
@@ -451,9 +451,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.69038",
+            "Fade From": "4.71804",
             "Fade Power": "2",
-            "Fade To": "2.16573",
+            "Fade To": "2.17211",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -465,20 +465,20 @@
             "Spherical Clip": "1",
             "Use Lights": "0",
             "Wireframe": "1",
-            "Wireframe Alpha": "0.015",
+            "Wireframe Alpha": "0.031",
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.69038",
+            "Fade From": "4.71804",
             "Fade Power": "2",
-            "Fade To": "2.16573",
+            "Fade To": "2.17211",
             "Fill": "1",
             "Fill Alpha": "0",
             "Fog Enabled": "1",
             "Fog Max Distance": "8.04",
             "Fog Min Distance": "0",
             "Fog Power": "4.743",
-            "Fog Start Distance": "1.41689",
+            "Fog Start Distance": "1.41849",
             "Shade Normals": "0",
             "Spherical Clip": "1",
             "Use Lights": "0",
@@ -491,8 +491,8 @@
         "color": "1, 1, 1, 1",
         "noise field attraction": "8.763",
         "particle every x vertices": "150",
-        "repulsion": "0.001",
+        "repulsion": "0.026",
         "scale": "2.02",
-        "speed": "0.081"
+        "speed": "0.1"
     }
 }
