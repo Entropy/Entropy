@@ -7,7 +7,7 @@
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull Face": "2",
             "Depth Test": "0",
-            "Edge Ratio": "0.00180731",
+            "Edge Ratio": "0.003997",
             "Enabled": "1",
             "Size": "12000",
             "Subdivisions": "5"
@@ -27,13 +27,13 @@
     },
     "Bubbles": {
         "Pool GL 2D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Damping": "0.995",
             "Draw Back": "0",
             "Draw Front": "0",
             "Drop Color 1": "0.937255, 0.819608, 0.670588, 1",
             "Drop Color 2": "0.658824, 0.509804, 0.435294, 1",
-            "Drop Rate": "45",
+            "Drop Rate": "1",
             "Dropping": "1",
             "Radius": "30",
             "Ring Size": "5",
@@ -44,7 +44,7 @@
             "Alpha": "1",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Force Multiplier": "1",
                 "Force Random": "0.2",
                 "Max Age": "5",
@@ -59,7 +59,7 @@
             "Draw Front": "1",
             "Drop Color 1": "0.937255, 0.82046, 0.668943, 1",
             "Drop Color 2": "0.658824, 0.508092, 0.434048, 1",
-            "Drop Rate": "60",
+            "Drop Rate": "1",
             "Dropping": "0",
             "Filter Mode": "0",
             "Radius": "20",
@@ -78,7 +78,7 @@
             "Cull Face": "2",
             "Depth Test": "0",
             "Enabled": "1",
-            "Radius": "100",
+            "Radius": "7000",
             "Resolution": "16"
         },
         "SphereExtra": {
@@ -93,7 +93,7 @@
             "FOV": "45",
             "Far Clip": "200000",
             "Inherits Settings": "1",
-            "Mouse Control": "0",
+            "Mouse Control": "1",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
@@ -101,8 +101,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3955078125,
-                "distance": 354.507934570313,
+                "aspectRatio": 3.17962956428528,
+                "distance": 36030.171875,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -112,9 +112,9 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 0.00100000004749745,
-                "orientation": "0.983737, -0.0982874, 0.0357861, 0.146028",
+                "orientation": "0.965876, -0.12445, -0.225589, -0.0265687",
                 "ortho": false,
-                "position": "-42.8264, 89.4955, 340.341",
+                "position": "-17104.1, 9501.21, 30254.8",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -128,7 +128,7 @@
             "FOV": "60",
             "Far Clip": "200000",
             "Inherits Settings": "0",
-            "Mouse Control": "1",
+            "Mouse Control": "0",
             "Near Clip": "0.001",
             "Pan Speed": "0",
             "Relative Y Axis": "0",
@@ -136,8 +136,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.03240752220154,
-                "distance": 809.745300292969,
+                "aspectRatio": 3.3027777671814,
+                "distance": 1247.9306640625,
                 "drag": 0.899999976158142,
                 "farClip": 200000.0,
                 "forceAspectRatio": true,
@@ -149,7 +149,7 @@
                 "nearClip": 0.00100000004749745,
                 "orientation": "0.55733, -0.00070834, 0.830011, 0.021582",
                 "ortho": false,
-                "position": "749.134, 29.6498, -305.952",
+                "position": "1154.52, 45.6945, -471.515",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -363,7 +363,7 @@
         {
             "Video": {
                 "Base": {
-                    "Anchor": "0.69, 0.54",
+                    "Anchor": "0.705, 0.54",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Layout": "0",
@@ -423,7 +423,7 @@
             "Color": {
                 "Brightness": "-0.8",
                 "Contrast": "1",
-                "Exposure": "4",
+                "Exposure": "0",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },

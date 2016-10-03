@@ -20,22 +20,22 @@
             "Cull Face": "1",
             "Depth Test": "1",
             "Edge Ratio": "0.01",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "500",
             "Subdivisions": "3"
         }
     },
     "Calibrate": {
         "Border": {
-            "Back Draw": "0",
-            "Front Draw": "1",
+            "Back Draw": "1",
+            "Front Draw": "0",
             "Size": "20"
         },
         "Grid": {
             "Center Points": "1",
             "Cross Lines": "1",
             "Horizontal Lines": "1",
-            "Layout": "1",
+            "Layout": "0",
             "Line Width": "4",
             "Resolution": "100",
             "Vertical Lines": "1"
@@ -56,7 +56,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.21944451332092,
+                "aspectRatio": 3.0732421875,
                 "distance": 1021.65197753906,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -91,8 +91,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.03240752220154,
-                "distance": 935.307373046875,
+                "aspectRatio": 3.3027777671814,
+                "distance": 935.307250976563,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,

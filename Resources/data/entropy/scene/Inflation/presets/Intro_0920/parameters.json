@@ -1,7 +1,7 @@
 {
     "Boxes": {
         "Box Back": {
-            "Alpha": "0.95",
+            "Alpha": "0.992842",
             "Auto Draw": "0",
             "Blend Mode": "1",
             "Color": "0.0196078, 0.0196078, 0.0196078, 1",
@@ -13,7 +13,7 @@
             "Subdivisions": "4"
         },
         "Box Front": {
-            "Alpha": "0",
+            "Alpha": "1",
             "Auto Draw": "1",
             "Blend Mode": "1",
             "Color": "1, 1, 1, 1",
@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3955078125,
+                "aspectRatio": 3.17962956428528,
                 "distance": 0.529601216316223,
                 "drag": 0.899999976158142,
                 "farClip": 6.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.03240752220154,
+                "aspectRatio": 3.3027777671814,
                 "distance": 0.139618083834648,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -100,15 +100,15 @@
     "Inflation": {
         "BigBang duration": "0.25",
         "Control Camera": "0",
-        "Current rate of expansion": "0.0526729",
+        "Current rate of expansion": "0.00754786",
         "Hubble (min) wavelength for any octave": "4",
         "Pre BigBang wobble duration": "3",
-        "Rate of expansion after bigbang": "0.05",
+        "Rate of expansion after bigbang": "0.005",
         "Rate of expansion at bigbang": "5",
         "Render": {
             "Debug Noise": "0",
             "Render Back": "1",
-            "Render Box Back": "0",
+            "Render Box Back": "1",
             "Render Front": "1"
         },
         "Run Simulation": "1",
@@ -277,7 +277,7 @@
         "Norm. Factor": "1.181",
         "Oscillate": "0",
         "Oscillate spatial freq.": "93.691",
-        "Oscillate speed": "2.5"
+        "Oscillate speed": "0.82"
     },
     "Pop-ups": [
         {
@@ -409,7 +409,7 @@
             "Color": {
                 "Brightness": "0",
                 "Contrast": "1",
-                "Exposure": "0",
+                "Exposure": "4",
                 "Gamma": "2.2",
                 "Tonemapping": "6"
             },
@@ -451,9 +451,9 @@
     },
     "Renderers": {
         "Renderer Back": {
-            "Fade From": "4.71804",
+            "Fade From": "4.77869",
             "Fade Power": "2",
-            "Fade To": "2.17211",
+            "Fade To": "2.18602",
             "Fill": "1",
             "Fill Alpha": "0.268",
             "Fog Enabled": "1",
@@ -469,21 +469,21 @@
             "Wobbly Clip": "0"
         },
         "Renderer Front": {
-            "Fade From": "4.71804",
+            "Fade From": "4.77869",
             "Fade Power": "2",
-            "Fade To": "2.17211",
+            "Fade To": "2.18602",
             "Fill": "1",
-            "Fill Alpha": "0",
+            "Fill Alpha": "1",
             "Fog Enabled": "1",
             "Fog Max Distance": "8.04",
             "Fog Min Distance": "0",
             "Fog Power": "4.743",
-            "Fog Start Distance": "1.41849",
+            "Fog Start Distance": "0.005",
             "Shade Normals": "0",
             "Spherical Clip": "1",
             "Use Lights": "0",
             "Wireframe": "1",
-            "Wireframe Alpha": "1",
+            "Wireframe Alpha": "0.029",
             "Wobbly Clip": "0"
         }
     },

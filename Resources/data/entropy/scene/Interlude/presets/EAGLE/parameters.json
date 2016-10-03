@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.3955078125,
+                "aspectRatio": 3.17962956428528,
                 "distance": 711.617736816406,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.03240752220154,
+                "aspectRatio": 3.3027777671814,
                 "distance": 6.86646017129533e-05,
                 "drag": 0.899999976158142,
                 "farClip": 1000.0,
@@ -205,7 +205,7 @@
                 "Loop": "0",
                 "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "1",
+                    "Duration": "2",
                     "Type": "1"
                 }
             },
@@ -230,7 +230,7 @@
                 "Loop": "0",
                 "Scrub To Timeline": "0",
                 "Transition": {
-                    "Duration": "1",
+                    "Duration": "2",
                     "Type": "1"
                 }
             },
