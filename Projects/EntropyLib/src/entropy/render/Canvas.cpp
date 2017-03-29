@@ -386,8 +386,9 @@ namespace entropy
 								{
 									auto exportPath = ofFilePath::addTrailingSlash(GetSharedExportsPath().append(folderName));
 									ofxTextureRecorder::Settings settings(this->getWidth(), this->getHeight());
-									settings.pixelFormat = OF_PIXELS_RGBA;
-									settings.imageFormat = OF_IMAGE_FORMAT_PNG;
+									ofLogNotice("Canvas") << "Starting recorder with " << settings.w << " " << settings.h << endl;
+									settings.pixelFormat = OF_PIXELS_RGB;
+									settings.imageFormat = OF_IMAGE_FORMAT_JPEG;
 									settings.folderPath = exportPath;
 									this->textureRecorder.setup(settings);
 									scene->beginExport();
