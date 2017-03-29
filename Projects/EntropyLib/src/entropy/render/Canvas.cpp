@@ -385,8 +385,13 @@ namespace entropy
 								if (folderName.length())
 								{
 									auto exportPath = ofFilePath::addTrailingSlash(GetSharedExportsPath().append(folderName));
-									this->textureRecorder.setup(this->getWidth(), this->getHeight(), OF_PIXELS_RGBA, OF_IMAGE_FORMAT_PNG, exportPath);
+									ofxTextureRecorder::Settings settings(this->getWidth(), this->getHeight());
+									settings.pixelFormat = OF_PIXELS_RGBA;
+									settings.imageFormat = OF_IMAGE_FORMAT_PNG;
+									settings.folderPath = exportPath;
+									this->textureRecorder.setup(settings);
 									scene->beginExport();
+									this->exportFrames = true;
 								}
 								else
 								{
