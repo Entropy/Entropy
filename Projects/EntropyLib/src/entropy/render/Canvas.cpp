@@ -196,7 +196,7 @@ namespace entropy
 			
 			// Re-allocate fbos.
 			this->fboSettings.numSamples = 4;
-			this->fboSettings.internalformat = GL_RGBA16F;
+			this->fboSettings.internalformat = GL_RGB16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
 
 			this->fboDraw.allocate(this->fboSettings);
