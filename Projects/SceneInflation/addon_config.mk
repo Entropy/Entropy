@@ -15,7 +15,7 @@
 # and the PG will write to the console the kind of error and in which line it is
 
 meta:
-    ADDON_NAME = SceneBubbles
+	ADDON_NAME = SceneInflation
 	ADDON_DESCRIPTION = Config scene inflation as an addon so it can be easily included in projects using the standard OF project creation tools
 	ADDON_AUTHOR = Entropy Team
 

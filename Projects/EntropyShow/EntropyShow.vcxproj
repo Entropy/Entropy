@@ -1,271 +1,600 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SceneTemplate</RootNamespace>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
-    <Import Project="..\SceneBubbles\SceneBubblesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneSurveys\SceneSurveysLib.props" />
-    <Import Project="..\SceneInterlude\SceneInterludeLib.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
-    <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
-    <Import Project="..\SceneBubbles\SceneBubblesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneSurveys\SceneSurveysLib.props" />
-    <Import Project="..\SceneInterlude\SceneInterludeLib.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
-    <Import Project="..\SceneBubbles\SceneBubblesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneSurveys\SceneSurveysLib.props" />
-    <Import Project="..\SceneInterlude\SceneInterludeLib.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
-    <Import Project="..\EntropyLib\EntropyLib.props" />
-    <Import Project="..\SceneCalibrate\SceneCalibrateLib.props" />
-    <Import Project="..\SceneBubbles\SceneBubblesLib.props" />
-    <Import Project="..\SceneInflation\SceneInflationLib.props" />
-    <Import Project="..\SceneParticles\SceneParticlesLib.props" />
-    <Import Project="..\SceneSurveys\SceneSurveysLib.props" />
-    <Import Project="..\SceneInterlude\SceneInterludeLib.props" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>bin\</OutDir>
-    <IntDir>obj\$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)_debug</TargetName>
-    <LinkIncremental>true</LinkIncremental>
-    <GenerateManifest>true</GenerateManifest>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>bin\</OutDir>
-    <IntDir>obj\$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)_debug</TargetName>
-    <LinkIncremental>true</LinkIncremental>
-    <GenerateManifest>true</GenerateManifest>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>bin\</OutDir>
-    <IntDir>obj\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>bin\</OutDir>
-    <IntDir>obj\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Command>%(Command)
-robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-if errorlevel 1 exit 0 else exit %errorlevel%</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Command>%(Command)
-robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-if errorlevel 1 exit 0 else exit %errorlevel%</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Command>%(Command)
-robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-if errorlevel 1 exit 0 else exit %errorlevel%</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-    </ClCompile>
-    <Link>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Command>%(Command)
-robocopy "../../libs/tbb/export/vs/$(Platform)/$(Configuration)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-robocopy "$(OF_ROOT)/export/vs/$(Platform_Actual)/" "$(ProjectDir)bin/" "*.dll" /njs /njh /np /fp /bytes
-if errorlevel 1 exit 0 else exit %errorlevel%</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofApp.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\ofApp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
-      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projects\EntropyLib\EntropyLib.vcxproj">
-      <Project>{f6008d6a-6d39-4b68-840e-e7ac8ed855da}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneCalibrate\SceneCalibrateLib.vcxproj">
-      <Project>{89ea6e46-323f-480d-8cfc-80ddb39df76a}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneBubbles\SceneBubblesLib.vcxproj">
-      <Project>{426a8ca4-2c29-46c3-b14a-ea1df58eb707}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneInflation\SceneInflationLib.vcxproj">
-      <Project>{47faed23-8a9b-48eb-9f1b-92a152f7e070}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneParticles\SceneParticlesLib.vcxproj">
-      <Project>{e2c983b0-c898-4513-a571-cd633830fc1f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneSurveys\SceneSurveysLib.vcxproj">
-      <Project>{cb3f0a24-afe0-46d5-a08e-224654c42a55}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SceneInterlude\SceneInterludeLib.vcxproj">
-      <Project>{b3eff3a7-ac0c-4c7d-a6d7-3577d171dd73}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="icon.rc">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
-    </ResourceCompile>
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties RESOURCE_FILE="icon.rc" />
-    </VisualStudio>
-  </ProjectExtensions>
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+		<Keyword>Win32Proj</Keyword>
+		<RootNamespace>EntropyShow</RootNamespace>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\EntropyLib\src;..\EntropyLib\src\entropy;..\EntropyLib\src\entropy\geom;..\EntropyLib\src\entropy\popup;..\EntropyLib\src\entropy\render;..\EntropyLib\src\entropy\scene;..\EntropyLib\src\entropy\util;..\EntropyLib\src\entropy\world;..\SceneBubbles\src;..\SceneBubbles\src\entropy;..\SceneBubbles\src\entropy\bubbles;..\SceneBubbles\src\entropy\scene;..\SceneCalibrate\src;..\SceneCalibrate\src\entropy;..\SceneCalibrate\src\entropy\scene;..\SceneInflation\src;..\SceneInflation\src\entropy;..\SceneInflation\src\entropy\inflation;..\SceneInflation\src\entropy\inflation\shaders;..\SceneInflation\src\entropy\scene;..\SceneInterlude\src;..\SceneInterlude\src\entropy;..\SceneInterlude\src\entropy\scene;..\SceneParticles\src;..\SceneParticles\src\entropy;..\SceneParticles\src\entropy\particles;..\SceneParticles\src\entropy\scene;..\SceneSurveys\src;..\SceneSurveys\src\entropy;..\SceneSurveys\src\entropy\scene;..\SceneSurveys\src\entropy\surveys;..\..\addons\ofxPreset\src;..\..\addons\ofxPreset\src\ofxPreset;..\..\addons\ofxRange\src;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxTimeline\libs;..\..\addons\ofxTimeline\libs\kiss;..\..\addons\ofxTimeline\libs\kiss\include;..\..\addons\ofxTimeline\libs\kiss\src;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src;..\..\addons\ofxTimeline\libs\openal;..\..\addons\ofxTimeline\libs\openal\export;..\..\addons\ofxTimeline\libs\openal\export\vs;..\..\addons\ofxTimeline\libs\openal\export\vs\Win32;..\..\addons\ofxTimeline\libs\openal\export\vs\x64;..\..\addons\ofxTimeline\libs\openal\include;..\..\addons\ofxTimeline\libs\openal\include\AL;..\..\addons\ofxTimeline\libs\openal\lib;..\..\addons\ofxTimeline\libs\openal\lib\vs;..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxTimeline\libs\sndfile;..\..\addons\ofxTimeline\libs\sndfile\export;..\..\addons\ofxTimeline\libs\sndfile\export\vs;..\..\addons\ofxTimeline\libs\sndfile\export\vs\Win32;..\..\addons\ofxTimeline\libs\sndfile\export\vs\x64;..\..\addons\ofxTimeline\libs\sndfile\include;..\..\addons\ofxTimeline\libs\sndfile\lib;..\..\addons\ofxTimeline\libs\sndfile\lib\win_cb;..\..\addons\ofxTimeline\src;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxVolumetrics\src\shaders;..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxMSATimer\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxTextureRecorder\libs;..\..\addons\ofxTextureRecorder\libs\half;..\..\addons\ofxTextureRecorder\libs\half\include;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWarp\src\ofxWarp;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxHDF5\libs;..\..\addons\ofxHDF5\libs\hdf5;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\hdf5\lib;..\..\addons\ofxHDF5\libs\hdf5\lib\vs;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\szip\lib;..\..\addons\ofxHDF5\libs\szip\lib\vs;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib;..\..\addons\ofxHDF5\libs\zlib\include;..\..\addons\ofxHDF5\libs\zlib\lib;..\..\addons\ofxHDF5\libs\zlib\lib\vs;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64;..\..\addons\ofxHDF5\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libszip.lib;libszip_D.lib;libhdf5_cpp.lib;libhdf5.lib;libhdf5_cpp_D.lib;libhdf5_D.lib;libzlib_D.lib;libzlib.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\EntropyLib\src;..\EntropyLib\src\entropy;..\EntropyLib\src\entropy\geom;..\EntropyLib\src\entropy\popup;..\EntropyLib\src\entropy\render;..\EntropyLib\src\entropy\scene;..\EntropyLib\src\entropy\util;..\EntropyLib\src\entropy\world;..\SceneBubbles\src;..\SceneBubbles\src\entropy;..\SceneBubbles\src\entropy\bubbles;..\SceneBubbles\src\entropy\scene;..\SceneCalibrate\src;..\SceneCalibrate\src\entropy;..\SceneCalibrate\src\entropy\scene;..\SceneInflation\src;..\SceneInflation\src\entropy;..\SceneInflation\src\entropy\inflation;..\SceneInflation\src\entropy\inflation\shaders;..\SceneInflation\src\entropy\scene;..\SceneInterlude\src;..\SceneInterlude\src\entropy;..\SceneInterlude\src\entropy\scene;..\SceneParticles\src;..\SceneParticles\src\entropy;..\SceneParticles\src\entropy\particles;..\SceneParticles\src\entropy\scene;..\SceneSurveys\src;..\SceneSurveys\src\entropy;..\SceneSurveys\src\entropy\scene;..\SceneSurveys\src\entropy\surveys;..\..\addons\ofxPreset\src;..\..\addons\ofxPreset\src\ofxPreset;..\..\addons\ofxRange\src;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxTimeline\libs;..\..\addons\ofxTimeline\libs\kiss;..\..\addons\ofxTimeline\libs\kiss\include;..\..\addons\ofxTimeline\libs\kiss\src;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src;..\..\addons\ofxTimeline\libs\openal;..\..\addons\ofxTimeline\libs\openal\export;..\..\addons\ofxTimeline\libs\openal\export\vs;..\..\addons\ofxTimeline\libs\openal\export\vs\Win32;..\..\addons\ofxTimeline\libs\openal\export\vs\x64;..\..\addons\ofxTimeline\libs\openal\include;..\..\addons\ofxTimeline\libs\openal\include\AL;..\..\addons\ofxTimeline\libs\openal\lib;..\..\addons\ofxTimeline\libs\openal\lib\vs;..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxTimeline\libs\sndfile;..\..\addons\ofxTimeline\libs\sndfile\export;..\..\addons\ofxTimeline\libs\sndfile\export\vs;..\..\addons\ofxTimeline\libs\sndfile\export\vs\Win32;..\..\addons\ofxTimeline\libs\sndfile\export\vs\x64;..\..\addons\ofxTimeline\libs\sndfile\include;..\..\addons\ofxTimeline\libs\sndfile\lib;..\..\addons\ofxTimeline\libs\sndfile\lib\win_cb;..\..\addons\ofxTimeline\src;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxVolumetrics\src\shaders;..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxMSATimer\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxTextureRecorder\libs;..\..\addons\ofxTextureRecorder\libs\half;..\..\addons\ofxTextureRecorder\libs\half\include;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWarp\src\ofxWarp;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxHDF5\libs;..\..\addons\ofxHDF5\libs\hdf5;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\hdf5\lib;..\..\addons\ofxHDF5\libs\hdf5\lib\vs;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\szip\lib;..\..\addons\ofxHDF5\libs\szip\lib\vs;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib;..\..\addons\ofxHDF5\libs\zlib\include;..\..\addons\ofxHDF5\libs\zlib\lib;..\..\addons\ofxHDF5\libs\zlib\lib\vs;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64;..\..\addons\ofxHDF5\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libszip.lib;libszip_D.lib;libhdf5_cpp.lib;libhdf5.lib;libhdf5_cpp_D.lib;libhdf5_D.lib;libzlib_D.lib;libzlib.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\EntropyLib\src;..\EntropyLib\src\entropy;..\EntropyLib\src\entropy\geom;..\EntropyLib\src\entropy\popup;..\EntropyLib\src\entropy\render;..\EntropyLib\src\entropy\scene;..\EntropyLib\src\entropy\util;..\EntropyLib\src\entropy\world;..\SceneBubbles\src;..\SceneBubbles\src\entropy;..\SceneBubbles\src\entropy\bubbles;..\SceneBubbles\src\entropy\scene;..\SceneCalibrate\src;..\SceneCalibrate\src\entropy;..\SceneCalibrate\src\entropy\scene;..\SceneInflation\src;..\SceneInflation\src\entropy;..\SceneInflation\src\entropy\inflation;..\SceneInflation\src\entropy\inflation\shaders;..\SceneInflation\src\entropy\scene;..\SceneInterlude\src;..\SceneInterlude\src\entropy;..\SceneInterlude\src\entropy\scene;..\SceneParticles\src;..\SceneParticles\src\entropy;..\SceneParticles\src\entropy\particles;..\SceneParticles\src\entropy\scene;..\SceneSurveys\src;..\SceneSurveys\src\entropy;..\SceneSurveys\src\entropy\scene;..\SceneSurveys\src\entropy\surveys;..\..\addons\ofxPreset\src;..\..\addons\ofxPreset\src\ofxPreset;..\..\addons\ofxRange\src;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxTimeline\libs;..\..\addons\ofxTimeline\libs\kiss;..\..\addons\ofxTimeline\libs\kiss\include;..\..\addons\ofxTimeline\libs\kiss\src;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src;..\..\addons\ofxTimeline\libs\openal;..\..\addons\ofxTimeline\libs\openal\export;..\..\addons\ofxTimeline\libs\openal\export\vs;..\..\addons\ofxTimeline\libs\openal\export\vs\Win32;..\..\addons\ofxTimeline\libs\openal\export\vs\x64;..\..\addons\ofxTimeline\libs\openal\include;..\..\addons\ofxTimeline\libs\openal\include\AL;..\..\addons\ofxTimeline\libs\openal\lib;..\..\addons\ofxTimeline\libs\openal\lib\vs;..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxTimeline\libs\sndfile;..\..\addons\ofxTimeline\libs\sndfile\export;..\..\addons\ofxTimeline\libs\sndfile\export\vs;..\..\addons\ofxTimeline\libs\sndfile\export\vs\Win32;..\..\addons\ofxTimeline\libs\sndfile\export\vs\x64;..\..\addons\ofxTimeline\libs\sndfile\include;..\..\addons\ofxTimeline\libs\sndfile\lib;..\..\addons\ofxTimeline\libs\sndfile\lib\win_cb;..\..\addons\ofxTimeline\src;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxVolumetrics\src\shaders;..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxMSATimer\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxTextureRecorder\libs;..\..\addons\ofxTextureRecorder\libs\half;..\..\addons\ofxTextureRecorder\libs\half\include;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWarp\src\ofxWarp;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxHDF5\libs;..\..\addons\ofxHDF5\libs\hdf5;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\hdf5\lib;..\..\addons\ofxHDF5\libs\hdf5\lib\vs;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\szip\lib;..\..\addons\ofxHDF5\libs\szip\lib\vs;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib;..\..\addons\ofxHDF5\libs\zlib\include;..\..\addons\ofxHDF5\libs\zlib\lib;..\..\addons\ofxHDF5\libs\zlib\lib\vs;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64;..\..\addons\ofxHDF5\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libszip.lib;libszip_D.lib;libhdf5_cpp.lib;libhdf5.lib;libhdf5_cpp_D.lib;libhdf5_D.lib;libzlib_D.lib;libzlib.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\EntropyLib\src;..\EntropyLib\src\entropy;..\EntropyLib\src\entropy\geom;..\EntropyLib\src\entropy\popup;..\EntropyLib\src\entropy\render;..\EntropyLib\src\entropy\scene;..\EntropyLib\src\entropy\util;..\EntropyLib\src\entropy\world;..\SceneBubbles\src;..\SceneBubbles\src\entropy;..\SceneBubbles\src\entropy\bubbles;..\SceneBubbles\src\entropy\scene;..\SceneCalibrate\src;..\SceneCalibrate\src\entropy;..\SceneCalibrate\src\entropy\scene;..\SceneInflation\src;..\SceneInflation\src\entropy;..\SceneInflation\src\entropy\inflation;..\SceneInflation\src\entropy\inflation\shaders;..\SceneInflation\src\entropy\scene;..\SceneInterlude\src;..\SceneInterlude\src\entropy;..\SceneInterlude\src\entropy\scene;..\SceneParticles\src;..\SceneParticles\src\entropy;..\SceneParticles\src\entropy\particles;..\SceneParticles\src\entropy\scene;..\SceneSurveys\src;..\SceneSurveys\src\entropy;..\SceneSurveys\src\entropy\scene;..\SceneSurveys\src\entropy\surveys;..\..\addons\ofxPreset\src;..\..\addons\ofxPreset\src\ofxPreset;..\..\addons\ofxRange\src;..\..\addons\ofxImGui\libs;..\..\addons\ofxImGui\libs\imgui;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxImGui\src;..\..\addons\ofxTimeline\libs;..\..\addons\ofxTimeline\libs\kiss;..\..\addons\ofxTimeline\libs\kiss\include;..\..\addons\ofxTimeline\libs\kiss\src;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions;..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src;..\..\addons\ofxTimeline\libs\openal;..\..\addons\ofxTimeline\libs\openal\export;..\..\addons\ofxTimeline\libs\openal\export\vs;..\..\addons\ofxTimeline\libs\openal\export\vs\Win32;..\..\addons\ofxTimeline\libs\openal\export\vs\x64;..\..\addons\ofxTimeline\libs\openal\include;..\..\addons\ofxTimeline\libs\openal\include\AL;..\..\addons\ofxTimeline\libs\openal\lib;..\..\addons\ofxTimeline\libs\openal\lib\vs;..\..\addons\ofxTimeline\libs\openal\lib\vs\Win32;..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxTimeline\libs\sndfile;..\..\addons\ofxTimeline\libs\sndfile\export;..\..\addons\ofxTimeline\libs\sndfile\export\vs;..\..\addons\ofxTimeline\libs\sndfile\export\vs\Win32;..\..\addons\ofxTimeline\libs\sndfile\export\vs\x64;..\..\addons\ofxTimeline\libs\sndfile\include;..\..\addons\ofxTimeline\libs\sndfile\lib;..\..\addons\ofxTimeline\libs\sndfile\lib\win_cb;..\..\addons\ofxTimeline\src;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxVolumetrics\src\shaders;..\..\addons\ofxVolumetrics\src\shaders\gl;..\..\addons\ofxVolumetrics\src\shaders\gl3;..\..\addons\ofxVolumetrics\src\shaders\gles2;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxMSATimer\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxTextureRecorder\libs;..\..\addons\ofxTextureRecorder\libs\half;..\..\addons\ofxTextureRecorder\libs\half\include;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxWarp\src;..\..\addons\ofxWarp\src\ofxWarp;..\..\addons\ofxGpuParticles\src;..\..\addons\ofxHDF5\libs;..\..\addons\ofxHDF5\libs\hdf5;..\..\addons\ofxHDF5\libs\hdf5\include;..\..\addons\ofxHDF5\libs\hdf5\lib;..\..\addons\ofxHDF5\libs\hdf5\lib\vs;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\Win32;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip;..\..\addons\ofxHDF5\libs\szip\include;..\..\addons\ofxHDF5\libs\szip\lib;..\..\addons\ofxHDF5\libs\szip\lib\vs;..\..\addons\ofxHDF5\libs\szip\lib\vs\Win32;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib;..\..\addons\ofxHDF5\libs\zlib\include;..\..\addons\ofxHDF5\libs\zlib\lib;..\..\addons\ofxHDF5\libs\zlib\lib\vs;..\..\addons\ofxHDF5\libs\zlib\lib\vs\Win32;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64;..\..\addons\ofxHDF5\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libszip.lib;libszip_D.lib;libhdf5_cpp.lib;libhdf5.lib;libhdf5_cpp_D.lib;libhdf5_D.lib;libzlib_D.lib;libzlib.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="src\main.cpp" />
+		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\render\Canvas.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\render\WireframeFillRenderer.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\render\PostEffects.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\render\BlobMask.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\Base.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\Sound.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\Image.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\Video.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\util\Mapping.inl" />
+		<ClCompile Include="..\EntropyLib\src\entropy\util\App.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\scene\Base.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\scene\Playlist.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\geom\Stripes.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\geom\Shape.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\geom\Sphere.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\geom\Box.cpp" />
+		<ClCompile Include="..\EntropyLib\src\entropy\world\Camera.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\scene\Bubbles.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\OpenCLImage3D.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\PoolGL2D.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\ofxFbo.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\CmbSceneCL3D.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\Bursts.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\CmbSceneCL2D.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\PoolGL3D.cpp" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\PoolGL3D.cpp.orig" />
+		<ClCompile Include="..\SceneBubbles\src\entropy\bubbles\PoolBase.cpp" />
+		<ClCompile Include="..\SceneCalibrate\src\entropy\scene\Calibrate.cpp" />
+		<ClCompile Include="..\SceneInflation\src\entropy\inflation\NoiseField.cpp" />
+		<ClCompile Include="..\SceneInflation\src\entropy\inflation\TransitionParticles.cpp" />
+		<ClCompile Include="..\SceneInflation\src\entropy\inflation\GPUMarchingCubes.cpp" />
+		<ClCompile Include="..\SceneInflation\src\entropy\scene\Inflation.cpp" />
+		<ClCompile Include="..\SceneInterlude\src\entropy\scene\Interlude.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\Octree.inl" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\Environment.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\Octree.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\ParticleSystem.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\Particle.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\particles\Photons.cpp" />
+		<ClCompile Include="..\SceneParticles\src\entropy\scene\Particles.cpp" />
+		<ClCompile Include="..\SceneSurveys\src\entropy\surveys\DataSet.cpp" />
+		<ClCompile Include="..\SceneSurveys\src\entropy\surveys\GaussianMapTexture.cpp" />
+		<ClCompile Include="..\SceneSurveys\src\entropy\scene\Surveys.cpp" />
+		<ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.cpp" />
+		<ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.inl" />
+		<ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.inl" />
+		<ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
+		<ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLLFO.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_linux.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLFlags.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_mac.mm" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLBangs.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLInOut.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_win.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTicker.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.mm" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPage.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTimeline.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCurves.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColors.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fftr.c" />
+		<ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fft.c" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\vert_array.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl3\frag_array.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gles2\vert.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gles2\frag.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl\vert.glsl" />
+		<ClCompile Include="..\..\addons\ofxVolumetrics\src\shaders\gl\frag.glsl" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasing.cpp" />
+		<ClCompile Include="..\..\addons\ofxTween\src\ofxTween.cpp" />
+		<ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
+		<ClCompile Include="..\..\addons\ofxTimecode\src\ofxTimecode.cpp" />
+		<ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp" />
+		<ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
+		<ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
+		<ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp" />
+		<ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.cpp" />
+		<ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp" />
+		<ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.cpp" />
+		<ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.cpp" />
+		<ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.cpp" />
+		<ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp" />
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.cpp" />
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.cpp" />
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5File.cpp" />
+		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\render\Layout.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\render\WireframeFillRenderer.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\render\PostEffects.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\render\Canvas.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\render\BlobMask.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\popup\Base.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\popup\Image.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\popup\Video.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\popup\Sound.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\util\App.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\util\GLError.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\util\Singleton.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\util\Mapping.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\Helpers.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\scene\Base.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\scene\Playlist.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\geom\Sphere.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\geom\Shape.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\geom\Stripes.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\geom\Box.h" />
+		<ClInclude Include="..\EntropyLib\src\entropy\world\Camera.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\scene\Bubbles.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\Bursts.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\PoolGL3D.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\CmbSceneCL2D.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\PoolGL2D.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\Constants.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\ofxFbo.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\CmbSceneCL3D.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\OpenCLImage3D.h" />
+		<ClInclude Include="..\SceneBubbles\src\entropy\bubbles\PoolBase.h" />
+		<ClInclude Include="..\SceneCalibrate\src\entropy\scene\Calibrate.h" />
+		<ClInclude Include="..\SceneInflation\src\entropy\inflation\NoiseField.h" />
+		<ClInclude Include="..\SceneInflation\src\entropy\inflation\TransitionParticles.h" />
+		<ClInclude Include="..\SceneInflation\src\entropy\inflation\GPUMarchingCubes.h" />
+		<ClInclude Include="..\SceneInflation\src\entropy\scene\Inflation.h" />
+		<ClInclude Include="..\SceneInterlude\src\entropy\scene\Interlude.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\particles\Photons.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\particles\ParticleSystem.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\particles\Octree.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\particles\Particle.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\particles\Environment.h" />
+		<ClInclude Include="..\SceneParticles\src\entropy\scene\Particles.h" />
+		<ClInclude Include="..\SceneSurveys\src\entropy\surveys\GaussianMapTexture.h" />
+		<ClInclude Include="..\SceneSurveys\src\entropy\surveys\DataSet.h" />
+		<ClInclude Include="..\SceneSurveys\src\entropy\scene\Surveys.h" />
+		<ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h" />
+		<ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Serializer.h" />
+		<ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset.h" />
+		<ClInclude Include="..\..\addons\ofxRange\src\ofRange.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
+		<ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLBangs.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLInOut.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCurves.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColors.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEvents.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTicker.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLFlags.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPage.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTimeline.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxHotKeys.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLLFO.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-presets.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alext.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alc.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-creative.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\al.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\sndfile\include\sndfile.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fft.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fftr.h" />
+		<ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\src\_kiss_fft_guts.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTextureArray.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture2d.h" />
+		<ClInclude Include="..\..\addons\ofxVolumetrics\src\ofxTexture.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCubic.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingCirc.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuad.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingSine.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuart.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\easing_terms_of_use.html" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasing.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingBounce.h" />
+		<ClInclude Include="..\..\addons\ofxTween\src\ofxTween.h" />
+		<ClInclude Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.h" />
+		<ClInclude Include="..\..\addons\ofxTimecode\src\ofxTimecode.h" />
+		<ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h" />
+		<ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputFieldFontRenderer.h" />
+		<ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
+		<ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h" />
+		<ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h" />
+		<ClInclude Include="..\..\addons\ofxTextureRecorder\libs\half\include\half.hpp" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBilinear.h" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.h" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\Controller.h" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpBase.h" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspective.h" />
+		<ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp.h" />
+		<ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h" />
+		<ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5DataSet.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5File.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\src\ofxHDF5Group.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\ricehdf.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\szip_adpt.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\szip\include\szlib.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PLpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Edefin.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Group.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5StrType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HLpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Attribute.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpio.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Spkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Bpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Bpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Spublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSpace.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Alltypes.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5B2pkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5AbstractDs.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_ref.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PLextern.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CommonFG.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FaccProp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Apkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\hdf5_hl.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90proto.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90i.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5AtomType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ArrayType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Opublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5B2public.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5TBpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Location.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDlog.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5MPpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmpi.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Classes.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5LTparse.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDwindows.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Gpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PTpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Exception.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DSpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Lpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Oshared.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\hdf5.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_str.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5OcreatProp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5LTpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HGpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CompType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Object.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_utils.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDmulti.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5CppDoc.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DataSet.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDsec2.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5version.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5overflow.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5trav.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ipkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Rpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Einit.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FSpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Zpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IMpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DOpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5f90i_gen.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5diff.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDstdio.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DcreatProp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HFpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDdirect.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Eterm.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Opkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5SMpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IntType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5pubconf.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5DxferProp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5VarLenType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epubgen.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HLpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HFpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PredType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5MMpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Include.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Epublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FloatType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Cpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Fpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FSpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Apublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Library.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5EnumType.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5File.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDfamily.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PropList.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Ppkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5public.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Dpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5IdComponent.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5PacketTable.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5HGpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5ACpublic.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5api_adpt.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\h5tools_dump.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5Tpkg.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FDcore.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\hdf5\include\H5FcreatProp.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\zlib\include\zlib.h" />
+		<ClInclude Include="..\..\addons\ofxHDF5\libs\zlib\include\zconf.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+			<Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc">
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+		</ResourceCompile>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties RESOURCE_FILE="icon.rc" />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>
