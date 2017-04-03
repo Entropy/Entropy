@@ -16,16 +16,16 @@
       <AdditionalIncludeDirectories>$(GSTREAMER_1_0_ROOT_X86_64)include;$(GSTREAMER_1_0_ROOT_X86_64)include\gstreamer-1.0;$(GSTREAMER_1_0_ROOT_X86_64)include\glib-2.0;$(GSTREAMER_1_0_ROOT_X86_64)lib\glib-2.0\include;$(GSTREAMER_1_0_ROOT_X86_64)lib\gstreamer-1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(GSTREAMER_1_0_ROOT_X86_64)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GSTREAMER_1_0_ROOT_X86_64)lib;$(OF_ROOT)\addons\ofxPoco\libs\poco\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxXmlSettings\src;..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxMSATimer\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxPreset\src;..\..\addons\ofxRange\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTimeline\src;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxWarp\src;..\..\Projects\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\addons\ofxPoco\libs\poco\include;$(OF_ROOT)\addons\ofxPoco\src;$(OF_ROOT)\addons\ofxXmlSettings\src;..\..\addons\ofxImGui\src;..\..\addons\ofxImGui\libs\imgui\src;..\..\addons\ofxMSATimer\src;..\..\addons\ofxObjLoader\libs;..\..\addons\ofxObjLoader\src;..\..\addons\ofxPreset\src;..\..\addons\ofxRange\src;..\..\addons\ofxTextInputField\src;..\..\addons\ofxTextureRecorder\libs\half\include;..\..\addons\ofxTextureRecorder\src;..\..\addons\ofxTimecode\src;..\..\addons\ofxTimeline\src;..\..\addons\ofxTween\src;..\..\addons\ofxTween\src\Easings;..\..\addons\ofxVolumetrics\src;..\..\addons\ofxWarp\src;..\..\Projects\EntropyLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;TIMELINE_VIDEO_INCLUDED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib;PocoCryptomd.lib;PocoDatamd.lib;PocoDataSQLitemd.lib;PocoFoundationmd.lib;PocoJSONmd.lib;PocoMongoDBmd.lib;PocoNetmd.lib;PocoNetSSLmd.lib;PocoPDFmd.lib;PocoUtilmd.lib;PocoXMLmd.lib;PocoZipmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>

@@ -268,6 +268,9 @@
     <ClCompile Include="src\entropy\geom\Stripes.cpp">
       <Filter>src\entropy\geom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.cpp">
+      <Filter>addons\ofxPoco\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -422,6 +425,12 @@
     </Filter>
     <Filter Include="addons\ofxObjLoader\libs">
       <UniqueIdentifier>{de6fda58-5c5e-43a4-a6b1-13b75042e5cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPoco">
+      <UniqueIdentifier>{c5c06342-9148-4a0c-9503-5d6b78ae33a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxPoco\src">
+      <UniqueIdentifier>{cbda70c6-d496-4deb-a2c1-10311fbde6fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -730,6 +739,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\geom\Stripes.h">
       <Filter>src\entropy\geom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.h">
+      <Filter>addons\ofxPoco\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
