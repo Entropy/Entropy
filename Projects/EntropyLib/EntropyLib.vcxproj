@@ -195,7 +195,8 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
+    <ClCompile Include="..\..\addons\ofxImGui\src\Gui.cpp" />
+    <ClCompile Include="..\..\addons\ofxImGui\src\Helpers.cpp" />
     <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
@@ -287,6 +288,8 @@
     <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
+    <ClInclude Include="..\..\addons\ofxImGui\src\Gui.h" />
+    <ClInclude Include="..\..\addons\ofxImGui\src\Helpers.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />

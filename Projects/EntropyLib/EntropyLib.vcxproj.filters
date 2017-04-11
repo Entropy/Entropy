@@ -31,9 +31,6 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp">
-      <Filter>addons\ofxImGui\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp">
       <Filter>addons\ofxMSATimer\src</Filter>
     </ClCompile>
@@ -270,6 +267,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.cpp">
       <Filter>addons\ofxPoco\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxImGui\src\Helpers.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxImGui\src\Gui.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -742,6 +745,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.h">
       <Filter>addons\ofxPoco\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxImGui\src\Helpers.h">
+      <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxImGui\src\Gui.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
