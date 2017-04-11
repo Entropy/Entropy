@@ -50,7 +50,7 @@ namespace entropy
 
 			void processCanvas(render::Layout layout, bool renderEnabled);
 
-			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawGui(ofxImGui::Settings & settings);
 
 			void applyConfiguration();
 			void updatePreviews();
@@ -63,8 +63,8 @@ namespace entropy
 			std::map<render::Layout, ofRectangle> previewBounds;
 			ofRectangle boundsControl;
 
-			ofxImGui imGui;
-			ofxPreset::Gui::Settings guiSettings;
+			ofxImGui::Gui imGui;
+			ofxImGui::Settings guiSettings;
 
 			struct : ofParameterGroup
 			{

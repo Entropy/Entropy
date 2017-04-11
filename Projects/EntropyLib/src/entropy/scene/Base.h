@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ofxImGui.h"
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
@@ -41,7 +42,7 @@ namespace entropy
 			void drawWorld_(render::Layout layout);
 			void drawOverlay_(render::Layout layout);
 
-			void gui_(ofxPreset::Gui::Settings & settings);
+			void gui_(ofxImGui::Settings & settings);
 
 			void serialize_(nlohmann::json & json);
 			void deserialize_(const nlohmann::json & json);
@@ -73,7 +74,7 @@ namespace entropy
 			void setShowtime();
 			
 			// Timeline
-			void drawTimeline(ofxPreset::Gui::Settings & settings);
+			void drawTimeline(ofxImGui::Settings & settings);
 			int getCurrentTimelineFrame();
 			bool goToNextTimelineFlag();
 
@@ -116,7 +117,7 @@ namespace entropy
 			virtual void drawFrontWorld() {}
 			virtual void drawFrontOverlay() {}
 
-			virtual void gui(ofxPreset::Gui::Settings & settings) {}
+			virtual void gui(ofxImGui::Settings & settings) {}
 
 			virtual void serialize(nlohmann::json & json) {}
 			virtual void deserialize(const nlohmann::json & json) {}

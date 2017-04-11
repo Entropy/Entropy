@@ -74,7 +74,7 @@ namespace entropy
 
 			void addKeyframe();
 
-			bool gui(ofxPreset::Gui::Settings & settings);
+			bool gui(ofxImGui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);

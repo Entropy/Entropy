@@ -305,13 +305,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::gui_(ofxPreset::Gui::Settings & settings)
+		void Base::gui_(ofxImGui::Settings & settings)
 		{
 			auto & parameters = this->getParameters();
 
 			// Add gui window for Presets.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Presets", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Presets", settings))
 			{
 				if (ImGui::Button("Save"))
 				{
@@ -338,11 +338,11 @@ namespace entropy
 				}
 				ImGui::ListBoxFooter();
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Add gui window for Pop-ups management.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Pop-ups", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Pop-ups", settings))
 			{
 				ImGui::ListBoxHeader("List", 3);
 				for (auto i = 0; i < this->popUps.size(); ++i)
@@ -390,13 +390,13 @@ namespace entropy
 					}
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Add individual gui windows for each Pop-up.
 			{
-				auto popUpSettings = ofxPreset::Gui::Settings();
-				//popUpSettings.windowPos.x = (settings.totalBounds.getMaxX() + kGuiMargin);
-				popUpSettings.windowPos.x = (800.0f + kGuiMargin);
+				auto popUpSettings = ofxImGui::Settings();
+				//popUpSettings.windowPos.x = (settings.totalBounds.getMaxX() + kImGuiMargin);
+				popUpSettings.windowPos.x = (800.0f + kImGuiMargin);
 				popUpSettings.windowPos.y = 0.0f;
 				for (auto i = 0; i < this->popUps.size(); ++i)
 				{
@@ -406,16 +406,16 @@ namespace entropy
 			}
 
 			// Add gui window for Mappings.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Mappings", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Mappings", settings))
 			{
 				for (auto & it : this->mappings)
 				{
-					if (ofxPreset::Gui::BeginTree(it.first, settings))
+					if (ofxImGui::BeginTree(it.first, settings))
 					{
 						for (auto mapping : it.second)
 						{
-							if (ofxPreset::Gui::AddParameter(mapping->animated))
+							if (ofxImGui::AddParameter(mapping->animated))
 							{
 								if (mapping->animated)
 								{
@@ -428,69 +428,69 @@ namespace entropy
 							}
 						}
 
-						ofxPreset::Gui::EndTree(settings);
+						ofxImGui::EndTree(settings);
 					}
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Add gui window for Cameras.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Cameras", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Cameras", settings))
 			{
 				for (auto & it : this->cameras)
 				{
 					it.second->gui(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Add gui window for Boxes.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Boxes", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Boxes", settings))
 			{
 				for (auto & it : this->boxes)
 				{
-					if (ofxPreset::Gui::BeginTree(it.second.parameters, settings))
+					if (ofxImGui::BeginTree(it.second.parameters, settings))
 					{
-						ofxPreset::Gui::AddParameter(it.second.enabled);
+						ofxImGui::AddParameter(it.second.enabled);
 						if (it.second.enabled)
 						{
 							ImGui::SameLine();
-							ofxPreset::Gui::AddParameter(it.second.autoDraw);
+							ofxImGui::AddParameter(it.second.autoDraw);
 						}
 						static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
-						ofxPreset::Gui::AddRadio(it.second.blendMode, blendLabels, 3);
-						ofxPreset::Gui::AddParameter(it.second.depthTest);
+						ofxImGui::AddRadio(it.second.blendMode, blendLabels, 3);
+						ofxImGui::AddParameter(it.second.depthTest);
 						static const vector<string> cullLabels{ "None", "Back", "Front" };
-						ofxPreset::Gui::AddRadio(it.second.cullFace, cullLabels, 3);
-						ofxPreset::Gui::AddParameter(it.second.color);
-						ofxPreset::Gui::AddParameter(it.second.alpha);
-						ofxPreset::Gui::AddParameter(it.second.size);
-						ofxPreset::Gui::AddParameter(it.second.edgeRatio);
-						ofxPreset::Gui::AddParameter(it.second.subdivisions); 
+						ofxImGui::AddRadio(it.second.cullFace, cullLabels, 3);
+						ofxImGui::AddParameter(it.second.color);
+						ofxImGui::AddParameter(it.second.alpha);
+						ofxImGui::AddParameter(it.second.size);
+						ofxImGui::AddParameter(it.second.edgeRatio);
+						ofxImGui::AddParameter(it.second.subdivisions); 
 						
-						ofxPreset::Gui::EndTree(settings);
+						ofxImGui::EndTree(settings);
 					}
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Add gui window for Post Effects.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Post Effects", settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Post Effects", settings))
 			{
 				for (auto & it : this->postEffects)
 				{
 					auto & postParameters = it.second;
-					if (ofxPreset::Gui::BeginTree(postParameters, settings))
+					if (ofxImGui::BeginTree(postParameters, settings))
 					{
-						ofxPreset::Gui::AddGroup(postParameters.bloom, settings);
+						ofxImGui::AddGroup(postParameters.bloom, settings);
 
-						if (ofxPreset::Gui::BeginTree(postParameters.color, settings))
+						if (ofxImGui::BeginTree(postParameters.color, settings))
 						{
-							ofxPreset::Gui::AddParameter(postParameters.color.exposure);
-							ofxPreset::Gui::AddParameter(postParameters.color.gamma);
+							ofxImGui::AddParameter(postParameters.color.exposure);
+							ofxImGui::AddParameter(postParameters.color.gamma);
 							static vector<string> labels =
 							{
 								"None",
@@ -501,20 +501,20 @@ namespace entropy
 								"ACES",
 								"Uncharted 2"
 							};
-							ofxPreset::Gui::AddRadio(postParameters.color.tonemapping, labels, 3);
-							ofxPreset::Gui::AddParameter(postParameters.color.brightness);
-							ofxPreset::Gui::AddParameter(postParameters.color.contrast);
+							ofxImGui::AddRadio(postParameters.color.tonemapping, labels, 3);
+							ofxImGui::AddParameter(postParameters.color.brightness);
+							ofxImGui::AddParameter(postParameters.color.contrast);
 						
-							ofxPreset::Gui::EndTree(settings);
+							ofxImGui::EndTree(settings);
 						}
 
-						ofxPreset::Gui::AddGroup(postParameters.vignette, settings);
+						ofxImGui::AddGroup(postParameters.vignette, settings);
 
-						ofxPreset::Gui::EndTree(settings);
+						ofxImGui::EndTree(settings);
 					}
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Let the child class handle its child parameters.
 			this->gui(settings);
@@ -668,7 +668,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawTimeline(ofxPreset::Gui::Settings & settings)
+		void Base::drawTimeline(ofxImGui::Settings & settings)
 		{
 			// Disable mouse events if it's already been captured.
 			if (settings.mouseOverGui)

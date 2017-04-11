@@ -22,7 +22,7 @@ namespace entropy
 
 			void update(double dt) override;
 			
-			void gui(ofxPreset::Gui::Settings & settings) override;
+			void gui(ofxImGui::Settings & settings) override;
 
 			void deserialize(const nlohmann::json & json) override;
 

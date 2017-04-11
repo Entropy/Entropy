@@ -102,9 +102,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::gui(ofxPreset::Gui::Settings & settings)
+		void Video::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree("File", settings))
+			if (ofxImGui::BeginTree("File", settings))
 			{
 				if (ImGui::Button("Load..."))
 				{
@@ -128,11 +128,11 @@ namespace entropy
 				}
 				ImGui::Text("Filename: %s", this->fileName.c_str());
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 
-			ofxPreset::Gui::AddParameter(this->parameters.loop);
-			ofxPreset::Gui::AddParameter(this->parameters.scrubToTimeline);
+			ofxImGui::AddParameter(this->parameters.loop);
+			ofxImGui::AddParameter(this->parameters.scrubToTimeline);
 		}
 
 		//--------------------------------------------------------------

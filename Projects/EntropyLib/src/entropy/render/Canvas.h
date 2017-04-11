@@ -45,7 +45,7 @@ namespace entropy
 
 			bool isEditing() const;
 
-			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawGui(ofxImGui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);

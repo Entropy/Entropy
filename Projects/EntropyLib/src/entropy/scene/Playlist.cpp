@@ -354,12 +354,12 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::drawGui(ofxPreset::Gui::Settings & settings)
+		bool Playlist::drawGui(ofxImGui::Settings & settings)
 		{
 			if (this->scenes.size() > 1)
 			{
-				ofxPreset::Gui::SetNextWindow(settings);
-				if (ofxPreset::Gui::BeginWindow("Playlist", settings))
+				ofxImGui::SetNextWindow(settings);
+				if (ofxImGui::BeginWindow("Playlist", settings))
 				{
 					if (ImGui::Button("Save"))
 					{
@@ -396,7 +396,7 @@ namespace entropy
 						}
 					}
 
-					if (ofxPreset::Gui::BeginTree("Tracks", settings))
+					if (ofxImGui::BeginTree("Tracks", settings))
 					{
 						for (int i = 0; i < this->tracks.size(); ++i)
 						{
@@ -437,10 +437,10 @@ namespace entropy
 							ImGui::PopID();
 						}
 
-						ofxPreset::Gui::EndTree(settings);
+						ofxImGui::EndTree(settings);
 					}
 				}
-				ofxPreset::Gui::EndWindow(settings);
+				ofxImGui::EndWindow(settings);
 			}
 			
 			if (this->currentScene)
@@ -448,8 +448,8 @@ namespace entropy
 				if (this->scenes.size() > 1)
 				{
 					// Move to the next column for the Scene specific gui windows.
-					//settings.windowPos = glm::vec2(settings.totalBounds.x + kGuiMargin, 0.0f);
-					settings.windowPos = glm::vec2(400.0f + kGuiMargin, 0.0f);
+					//settings.windowPos = glm::vec2(settings.totalBounds.x + kImGuiMargin, 0.0f);
+					settings.windowPos = glm::vec2(400.0f + kImGuiMargin, 0.0f);
 					settings.windowSize = glm::vec2(0.0f);
 				}
 
@@ -460,7 +460,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::drawTimeline(ofxPreset::Gui::Settings & settings)
+		bool Playlist::drawTimeline(ofxImGui::Settings & settings)
 		{
 			if (this->currentScene)
 			{

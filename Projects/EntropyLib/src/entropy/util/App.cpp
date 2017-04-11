@@ -232,7 +232,7 @@ namespace entropy
 			if (!this->controlsVisible) return;
 
 			this->guiSettings.mouseOverGui = this->canvas[render::Layout::Back]->isEditing() || this->canvas[render::Layout::Front]->isEditing();
-			this->guiSettings.windowPos = ofVec2f(kGuiMargin, kGuiMargin);
+			this->guiSettings.windowPos = ofVec2f(kImGuiMargin, kImGuiMargin);
 			this->guiSettings.windowSize = ofVec2f::zero();
 			if (this->parameters.controlScreen.enabled)
 			{
@@ -308,9 +308,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void App_::drawGui(ofxPreset::Gui::Settings & settings)
+		void App_::drawGui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), this->guiSettings))
+			if (ofxImGui::BeginWindow(this->parameters.getName(), this->guiSettings))
 			{
 				ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ofGetFrameRate());
 
@@ -325,71 +325,71 @@ namespace entropy
 					this->loadSettings();
 				}
 
-				ofxPreset::Gui::AddParameter(this->parameters.background);
+				ofxImGui::AddParameter(this->parameters.background);
 
-				if (ofxPreset::Gui::BeginTree(this->parameters.controlScreen, settings))
+				if (ofxImGui::BeginTree(this->parameters.controlScreen, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(this->parameters.controlScreen.enabled))
+					if (ofxImGui::AddParameter(this->parameters.controlScreen.enabled))
 					{
 						this->applyConfiguration();
 					}
-					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenWidth);
-					ofxPreset::Gui::AddStepper(this->parameters.controlScreen.screenHeight);
+					ofxImGui::AddStepper(this->parameters.controlScreen.screenWidth);
+					ofxImGui::AddStepper(this->parameters.controlScreen.screenHeight);
 					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
 
-					if (ofxPreset::Gui::BeginTree(this->parameters.controlScreen.preview, settings))
+					if (ofxImGui::BeginTree(this->parameters.controlScreen.preview, settings))
 					{
-						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.backEnabled);
+						ofxImGui::AddParameter(this->parameters.controlScreen.preview.backEnabled);
 						ImGui::SameLine();
-						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.frontEnabled);
-						ofxPreset::Gui::AddParameter(this->parameters.controlScreen.preview.scale);
+						ofxImGui::AddParameter(this->parameters.controlScreen.preview.frontEnabled);
+						ofxImGui::AddParameter(this->parameters.controlScreen.preview.scale);
 
-						ofxPreset::Gui::EndTree(settings);
+						ofxImGui::EndTree(settings);
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(this->parameters.backScreen, settings))
+				if (ofxImGui::BeginTree(this->parameters.backScreen, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(this->parameters.backScreen.enabled))
+					if (ofxImGui::AddParameter(this->parameters.backScreen.enabled))
 					{
 						this->applyConfiguration();
 					}
-					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenWidth);
-					ofxPreset::Gui::AddStepper(this->parameters.backScreen.screenHeight);
-					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numRows);
-					ofxPreset::Gui::AddStepper(this->parameters.backScreen.numCols);
+					ofxImGui::AddStepper(this->parameters.backScreen.screenWidth);
+					ofxImGui::AddStepper(this->parameters.backScreen.screenHeight);
+					ofxImGui::AddStepper(this->parameters.backScreen.numRows);
+					ofxImGui::AddStepper(this->parameters.backScreen.numCols);
 					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(this->parameters.frontScreen, settings))
+				if (ofxImGui::BeginTree(this->parameters.frontScreen, settings))
 				{
-					if (ofxPreset::Gui::AddParameter(this->parameters.frontScreen.enabled))
+					if (ofxImGui::AddParameter(this->parameters.frontScreen.enabled))
 					{
 						this->applyConfiguration();
 					}
-					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenWidth);
-					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.screenHeight);
-					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numRows);
-					ofxPreset::Gui::AddStepper(this->parameters.frontScreen.numCols);
+					ofxImGui::AddStepper(this->parameters.frontScreen.screenWidth);
+					ofxImGui::AddStepper(this->parameters.frontScreen.screenHeight);
+					ofxImGui::AddStepper(this->parameters.frontScreen.numRows);
+					ofxImGui::AddStepper(this->parameters.frontScreen.numCols);
 					if (ImGui::Button("Apply"))
 					{
 						this->applyConfiguration();
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(this->guiSettings);
+			ofxImGui::EndWindow(this->guiSettings);
 		}
 
 		//--------------------------------------------------------------
@@ -440,8 +440,8 @@ namespace entropy
 				this->previewBounds[render::Layout::Back].x = (this->boundsControl.getWidth() - this->previewBounds[render::Layout::Back].getWidth()) * 0.5f;
 				this->previewBounds[render::Layout::Front].x = (this->boundsControl.getWidth() - this->previewBounds[render::Layout::Front].getWidth()) * 0.5f;
 
-				this->previewBounds[render::Layout::Back].y = this->boundsControl.getMinY() + kGuiMargin;
-				this->previewBounds[render::Layout::Front].y = this->previewBounds[render::Layout::Back].getMaxY() + kGuiMargin;
+				this->previewBounds[render::Layout::Back].y = this->boundsControl.getMinY() + kImGuiMargin;
+				this->previewBounds[render::Layout::Front].y = this->previewBounds[render::Layout::Back].getMaxY() + kImGuiMargin;
 
 				// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
 				this->playlist->setCameraControlArea(render::Layout::Back, this->previewBounds[render::Layout::Back]);

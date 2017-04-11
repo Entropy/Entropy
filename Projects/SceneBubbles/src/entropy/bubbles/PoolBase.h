@@ -18,7 +18,7 @@ namespace entropy
 			virtual void update(double dt);
 			virtual void draw() = 0;
 
-			virtual void gui(ofxPreset::Gui::Settings & settings);
+			virtual void gui(ofxImGui::Settings & settings);
 
 			void setDimensions(int size);
 			void setDimensions(const glm::vec2 & dimensions);

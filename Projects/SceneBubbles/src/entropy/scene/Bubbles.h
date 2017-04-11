@@ -47,7 +47,7 @@ namespace entropy
 			void drawFrontBase() override;
 			void drawFrontWorld() override;
 
-			void gui(ofxPreset::Gui::Settings & settings) override;
+			void gui(ofxImGui::Settings & settings) override;
 
 		protected:
 #ifdef COMPUTE_GL_2D
