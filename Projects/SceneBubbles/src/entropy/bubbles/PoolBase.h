@@ -59,10 +59,14 @@ namespace entropy
 			bool resetSimulation;
 
 		protected:
+			void computeFrame();
+
 			virtual void addDrop() = 0;
 			virtual void stepRipple() = 0;
 			virtual void copyResult() = 0;
 			virtual void mixFrames(float pct) = 0;
+
+			virtual void setDrawTextureIndex(int idx) = 0;
 
 			glm::vec3 dimensions;
 

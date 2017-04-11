@@ -288,16 +288,16 @@ namespace entropy
 							   dstTex.texData.textureID, dstTex.texData.textureTarget, 0, 0, 0, 0,
 							   srcTex.texData.width, srcTex.texData.height, srcTex.texData.depth);
 #endif
-			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
+			//this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::mixFrames(float pct)
 		{
-			this->textures[this->currIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
+			this->textures[this->tempIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
 			this->textures[this->prevIdx].bindAsImage(1, GL_READ_ONLY, 0, true, 0);
-			this->textures[this->tempIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0); 
+			this->textures[this->currIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0);
 			
 			this->mixShader.begin();
 			{
@@ -311,6 +311,12 @@ namespace entropy
 			glBindImageTexture(1, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
 			glBindImageTexture(2, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
 			glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::setDrawTextureIndex(int idx)
+		{
+			this->volumetrics.updateTexture(&this->textures[idx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------

@@ -19,6 +19,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolBase::reset()
 		{
+			this->frameCount = 0;
+
 			this->prevIdx = 0;
 			this->currIdx = 1;
 			this->tempIdx = 2;
@@ -36,27 +38,50 @@ namespace entropy
 
 			if (this->runSimulation && (this->drawBack || this->drawFront))
 			{
-				int frame = (ofGetFrameNum() % this->rippleRate);
-				if (frame == 0)
-				{
-					//this->copyResult();
-
-					std::swap(this->currIdx, this->prevIdx);
+				++this->frameCount;
 				
-					if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
-					{
-						this->addDrop();
-					}
-
-					this->stepRipple();
-					this->copyResult();
+				if (this->rippleRate == 1)
+				{
+					// Compute a new frame every frame.
+					this->computeFrame();
+					this->setDrawTextureIndex(this->currIdx);
 				}
-				//else
-				//{
-				//	float pct = frame / static_cast<float>(this->rippleRate.get());
-				//	this->mixFrames(pct);
-				//}
+				else
+				{
+					int frame = (this->frameCount % this->rippleRate);
+					if (frame == 1)
+					{
+						// Compute a new target frame for the next cycle.
+						this->computeFrame();
+					}
+					if (frame == 0)
+					{
+						// End of the cycle, draw the previous computed frame.
+						this->setDrawTextureIndex(this->currIdx);
+					}
+					else
+					{
+						// Mix previous and next frames during the cycle.
+						float pct = frame / static_cast<float>(this->rippleRate.get());
+						this->mixFrames(pct);
+						this->setDrawTextureIndex(this->tempIdx);
+					}
+				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void PoolBase::computeFrame()
+		{
+			std::swap(this->currIdx, this->prevIdx);
+
+			if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
+			{
+				this->addDrop();
+			}
+
+			this->stepRipple();
+			this->copyResult();
 		}
 
 		//--------------------------------------------------------------

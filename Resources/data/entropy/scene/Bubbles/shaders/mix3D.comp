@@ -20,6 +20,6 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 void main()
 {
 	ivec3 texelPos = ivec3(gl_GlobalInvocationID.xyz);
-	vec4 color = mix(imageLoad(uPrevBuffer, texelPos), imageLoad(uCurrBuffer, texelPos), 1.0 - uPct);
+	vec4 color = mix(imageLoad(uPrevBuffer, texelPos), imageLoad(uCurrBuffer, texelPos), uPct);
 	imageStore(uVolume, texelPos, color);
 }

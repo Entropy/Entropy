@@ -49,6 +49,7 @@ namespace entropy
 			void stepRipple() override;
 			void copyResult() override;
 			void mixFrames(float pct) override;
+			void setDrawTextureIndex(int idx) override;
 
 			ofShader dropShader;
 			ofShader rippleShader;
