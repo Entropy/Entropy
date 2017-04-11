@@ -1,6 +1,8 @@
 #pragma once
 
+#include "ofFbo.h"
 #include "ofParameter.h"
+#include "ofShader.h"
 #include "ofxPreset.h"
 
 namespace entropy

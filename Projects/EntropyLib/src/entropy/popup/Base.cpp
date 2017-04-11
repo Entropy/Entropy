@@ -345,7 +345,7 @@ namespace entropy
 			}
 			auto page = this->timeline->getPage(PopUpsTimelinePageName);
 
-			std:ostringstream oss;
+			std::ostringstream oss;
 			oss << "Pop-up_" << this->index << "_";
 			if (this->type == Type::Image)
 			{
