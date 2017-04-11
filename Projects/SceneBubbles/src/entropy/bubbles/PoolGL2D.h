@@ -23,19 +23,20 @@ namespace entropy
 			void reset() override;
 			void draw() override;
 
-			const ofTexture & getTexture() const;
-
 		protected:
 			void addDrop() override;
 			void stepRipple() override;
 			void copyResult() override;
 			void mixFrames(float pct) override;
+			void setDrawTextureIndex(int idx) override;
 
-			ofShader shader;
+			ofShader rippleShader;
+			ofShader mixShader;
 			ofVboMesh mesh;
 
 			ofTexture textures[3];
 			ofxFbo fbos[3];
+			int drawIdx;
 		};
 	}
 }
