@@ -70,6 +70,8 @@ namespace entropy
 
 			glm::vec3 dimensions;
 
+			int frameCount;
+
 			int currIdx;
 			int prevIdx;
 			int tempIdx;
