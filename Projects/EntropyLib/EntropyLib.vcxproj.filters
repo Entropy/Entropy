@@ -274,6 +274,9 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\Gui.cpp">
       <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\util\Messenger.cpp">
+      <Filter>src\entropy\util</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
       <Filter>addons\ofxOsc\src</Filter>
     </ClCompile>
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxImGui\src\Gui.h">
       <Filter>addons\ofxImGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\util\Messenger.h">
+      <Filter>src\entropy\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
       <Filter>addons\ofxOsc\src</Filter>

@@ -2,6 +2,7 @@
 
 #include "entropy/render/Canvas.h"
 #include "entropy/scene/Playlist.h"
+#include "entropy/util/Messenger.h"
 #include "entropy/util/Singleton.h"
 
 namespace entropy
@@ -15,6 +16,7 @@ namespace entropy
 			~App_();
 
 			shared_ptr<render::Canvas> getCanvas(render::Layout layout);
+			shared_ptr<util::Messenger> getMessenger() const;
 			shared_ptr<scene::Playlist> getPlaylist() const;
 
 			const ofRectangle & getScreenBounds(render::Layout layout);
@@ -57,6 +59,7 @@ namespace entropy
 
 		protected:
 			std::map<render::Layout, shared_ptr<render::Canvas>> canvas;
+			shared_ptr<util::Messenger> messenger;
 			shared_ptr<scene::Playlist> playlist;
 
 			std::map<render::Layout, ofRectangle> screenBounds;

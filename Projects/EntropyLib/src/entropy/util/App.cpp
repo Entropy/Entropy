@@ -15,6 +15,7 @@ namespace entropy
 			// Instantiate attributes.
 			this->canvas[render::Layout::Back] = make_shared<render::Canvas>(render::Layout::Back);
 			this->canvas[render::Layout::Front] = make_shared<render::Canvas>(render::Layout::Front);
+			this->messenger = make_shared<util::Messenger>();
 			this->playlist = make_shared<scene::Playlist>();
 
 			// Setup gui.
@@ -73,6 +74,7 @@ namespace entropy
 
 			// Reset pointers.
 			this->playlist.reset();
+			this->messenger.reset();
 			for (auto & it : this->canvas)
 			{
 				it.second.reset();
@@ -121,6 +123,7 @@ namespace entropy
 			file >> json;
 
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
+			this->messenger->deserialize(json);
 
 			return true;
 		}
@@ -130,6 +133,7 @@ namespace entropy
 		{
 			nlohmann::json json;
 			ofxPreset::Serializer::Serialize(json, this->parameters);
+			this->messenger->serialize(json);
 
 			auto filePath = this->getSettingsFilePath();
 			auto file = ofFile(filePath, ofFile::WriteOnly);
@@ -142,6 +146,12 @@ namespace entropy
 		shared_ptr<render::Canvas> App_::getCanvas(render::Layout layout)
 		{
 			return this->canvas[layout];
+		}
+
+		//--------------------------------------------------------------
+		shared_ptr<util::Messenger> App_::getMessenger() const
+		{
+			return this->messenger;
 		}
 
 		//--------------------------------------------------------------
@@ -190,6 +200,8 @@ namespace entropy
 			{
 				it.second->update();
 			}
+
+			this->messenger->update();
 
 			auto dt = ofGetLastFrameTime();
 			this->playlist->update(dt);
@@ -263,6 +275,8 @@ namespace entropy
 				{
 					it.second->drawGui(this->guiSettings);
 				}
+
+				this->messenger->drawGui(this->guiSettings);
 
 				this->playlist->drawGui(this->guiSettings);
 			}
