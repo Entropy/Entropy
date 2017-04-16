@@ -18,17 +18,17 @@ namespace entropy
 			: cameraTrack(nullptr)
 		{
 			// Set parameter listeners.
-			this->parameterListeners.push_back(fov.newListener([this](float & enabled)
+			this->parameterListeners.push_back(fov.newListener([this](float & value)
 			{
-				this->easyCam.setFov(enabled);
+				this->easyCam.setFov(value);
 			}));
-			this->parameterListeners.push_back(nearClip.newListener([this](float & enabled)
+			this->parameterListeners.push_back(nearClip.newListener([this](float & value)
 			{
-				this->easyCam.setNearClip(enabled);
+				this->easyCam.setNearClip(value);
 			}));
-			this->parameterListeners.push_back(farClip.newListener([this](float & enabled)
+			this->parameterListeners.push_back(farClip.newListener([this](float & value)
 			{
-				this->easyCam.setFarClip(enabled);
+				this->easyCam.setFarClip(value);
 			})); 
 			
 			this->parameterListeners.push_back(attachToParent.newListener([this](bool & enabled)
