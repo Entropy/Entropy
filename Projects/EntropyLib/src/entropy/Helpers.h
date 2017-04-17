@@ -106,6 +106,12 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
+	inline shared_ptr<util::Messenger> GetMessenger()
+	{
+		return GetApp()->getMessenger();
+	}
+
+	//--------------------------------------------------------------
 	inline shared_ptr<scene::Playlist> GetPlaylist()
 	{
 		return GetApp()->getPlaylist();
