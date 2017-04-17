@@ -163,38 +163,38 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Surveys::gui(ofxPreset::Gui::Settings & settings)
+		void Surveys::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
-				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
+				if (ofxImGui::BeginTree(this->sphereGeom.parameters, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
+					ofxImGui::AddParameter(this->sphereGeom.enabled);
 					static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
-					ofxPreset::Gui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
+					ofxImGui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
+					ofxImGui::AddParameter(this->sphereGeom.depthTest);
 					static const vector<string> cullLabels{ "None", "Back", "Front" };
-					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.radius);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.orientation);
+					ofxImGui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
+					ofxImGui::AddParameter(this->sphereGeom.color);
+					ofxImGui::AddParameter(this->sphereGeom.alpha);
+					ofxImGui::AddParameter(this->sphereGeom.radius);
+					ofxImGui::AddParameter(this->sphereGeom.resolution);
+					ofxImGui::AddParameter(this->sphereGeom.arcHorz);
+					ofxImGui::AddParameter(this->sphereGeom.arcVert);
+					ofxImGui::AddParameter(this->sphereGeom.orientation);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 				
 				this->dataSetBoss.gui(settings);
 				this->dataSetDes.gui(settings);
 				this->dataSetVizir.gui(settings);
 
-				ofxPreset::Gui::AddGroup(this->backParameters, settings);
-				ofxPreset::Gui::AddGroup(this->frontParameters, settings);
+				ofxImGui::AddGroup(this->backParameters, settings);
+				ofxImGui::AddGroup(this->frontParameters, settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 	}
 }

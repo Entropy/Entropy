@@ -508,13 +508,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Inflation::gui(ofxPreset::Gui::Settings & settings)
+		void Inflation::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName(), settings))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.runSimulation);
-				ofxPreset::Gui::AddParameter(this->parameters.controlCamera);
+				ofxImGui::AddParameter(this->parameters.runSimulation);
+				ofxImGui::AddParameter(this->parameters.controlCamera);
 
 				if (ImGui::Button("Trigger Reset")) {
 					this->triggerReset();
@@ -529,128 +529,128 @@ namespace entropy
 					this->triggerParticles();
 				}
 
-				if (ofxPreset::Gui::BeginTree("Big Bang", settings))
+				if (ofxImGui::BeginTree("Big Bang", settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.bigBangDuration);
-					ofxPreset::Gui::AddParameter(this->parameters.preBigBangWobbleDuration);
-					ofxPreset::Gui::AddParameter(this->parameters.Ht);
-					ofxPreset::Gui::AddParameter(this->parameters.HtBB);
-					ofxPreset::Gui::AddParameter(this->parameters.HtPostBB);
-					ofxPreset::Gui::AddParameter(this->parameters.hubbleWavelength);
-					ofxPreset::Gui::AddParameter(this->parameters.bbFlashStart);
-					ofxPreset::Gui::AddParameter(this->parameters.bbFlashIn);
-					ofxPreset::Gui::AddParameter(this->parameters.bbFlashPlateau);
-					ofxPreset::Gui::AddParameter(this->parameters.bbFlashOut);
+					ofxImGui::AddParameter(this->parameters.bigBangDuration);
+					ofxImGui::AddParameter(this->parameters.preBigBangWobbleDuration);
+					ofxImGui::AddParameter(this->parameters.Ht);
+					ofxImGui::AddParameter(this->parameters.HtBB);
+					ofxImGui::AddParameter(this->parameters.HtPostBB);
+					ofxImGui::AddParameter(this->parameters.hubbleWavelength);
+					ofxImGui::AddParameter(this->parameters.bbFlashStart);
+					ofxImGui::AddParameter(this->parameters.bbFlashIn);
+					ofxImGui::AddParameter(this->parameters.bbFlashPlateau);
+					ofxImGui::AddParameter(this->parameters.bbFlashOut);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree("Transition", settings))
+				if (ofxImGui::BeginTree("Transition", settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionIn);
-					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionOut);
-					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionPlateau);
-					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionColor);
-					ofxPreset::Gui::AddParameter(this->parameters.bbTransitionFlash);
+					ofxImGui::AddParameter(this->parameters.bbTransitionIn);
+					ofxImGui::AddParameter(this->parameters.bbTransitionOut);
+					ofxImGui::AddParameter(this->parameters.bbTransitionPlateau);
+					ofxImGui::AddParameter(this->parameters.bbTransitionColor);
+					ofxImGui::AddParameter(this->parameters.bbTransitionFlash);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree("Particles", settings))
+				if (ofxImGui::BeginTree("Particles", settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.transitionParticlesDuration);
-					ofxPreset::Gui::AddParameter(this->parameters.transitionBlobsOutDuration);
+					ofxImGui::AddParameter(this->parameters.transitionParticlesDuration);
+					ofxImGui::AddParameter(this->parameters.transitionBlobsOutDuration);
 				
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(this->gpuMarchingCubes.parameters, settings))
+				if (ofxImGui::BeginTree(this->gpuMarchingCubes.parameters, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.resolution);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.isoLevel);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.subdivisions);
+					ofxImGui::AddParameter(this->gpuMarchingCubes.resolution);
+					ofxImGui::AddParameter(this->gpuMarchingCubes.isoLevel);
+					ofxImGui::AddParameter(this->gpuMarchingCubes.subdivisions);
 
 					int numVertices = this->gpuMarchingCubes.getNumVertices();
 					ImGui::SliderInt("Num Vertices", &numVertices, 0, this->gpuMarchingCubes.getBufferSize() / this->gpuMarchingCubes.getVertexStride());
 					numVertices = this->transitionParticles.getNumVertices();
 					ImGui::SliderInt("Num Vertices Particles", &numVertices, 0, this->transitionParticles.getNumVertices());
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(this->parameters.render, settings))
+				if (ofxImGui::BeginTree(this->parameters.render, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.render.debug);
-					ofxPreset::Gui::AddParameter(this->gpuMarchingCubes.shadeNormals);
-					ofxPreset::Gui::AddParameter(this->parameters.render.boxBackRender);
+					ofxImGui::AddParameter(this->parameters.render.debug);
+					ofxImGui::AddParameter(this->gpuMarchingCubes.shadeNormals);
+					ofxImGui::AddParameter(this->parameters.render.boxBackRender);
 
-					ofxPreset::Gui::AddParameter(this->parameters.render.renderBack);
+					ofxImGui::AddParameter(this->parameters.render.renderBack);
 					if (this->parameters.render.renderBack)
 					{
-						if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
+						if (ofxImGui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
 						{
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].wireframe);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fill);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].wireframe);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fill);
 
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogEnabled);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogStartDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogMinDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogMaxDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fogPower);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadeEdge0);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadeEdge1);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fadePower);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].sphericalClip);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].wobblyClip);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].useLights);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fogEnabled);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fogStartDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fogMinDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fogMaxDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fogPower);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fadeEdge0);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fadeEdge1);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fadePower);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].sphericalClip);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].wobblyClip);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].useLights);
 
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fillAlpha);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].wireframeAlpha);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].fillAlpha);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Back].wireframeAlpha);
 
 							static const auto kNumPoints = 100;
 							ImGui::PlotLines("Fog Function", this->renderers[render::Layout::Back].getFogFunctionPlot(kNumPoints).data(), kNumPoints);
 
-							ofxPreset::Gui::EndTree(settings);
+							ofxImGui::EndTree(settings);
 						}
 					}
 
-					ofxPreset::Gui::AddParameter(this->parameters.render.renderFront);
+					ofxImGui::AddParameter(this->parameters.render.renderFront);
 					if (this->parameters.render.renderFront)
 					{
-						if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
+						if (ofxImGui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
 						{
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wireframe);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fill);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].wireframe);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fill);
 
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogEnabled);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogStartDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogMinDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogMaxDistance);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fogPower);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadeEdge0);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadeEdge1);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fadePower);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].sphericalClip);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wobblyClip);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].useLights);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fogEnabled);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fogStartDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fogMinDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fogMaxDistance);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fogPower);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fadeEdge0);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fadeEdge1);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fadePower);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].sphericalClip);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].wobblyClip);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].useLights);
 
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fillAlpha);
-							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wireframeAlpha);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].fillAlpha);
+							ofxImGui::AddParameter(this->renderers[render::Layout::Front].wireframeAlpha);
 
 							static const auto kNumPoints = 100;
 							ImGui::PlotLines("Fog Function", this->renderers[render::Layout::Front].getFogFunctionPlot(kNumPoints).data(), kNumPoints);
 
-							ofxPreset::Gui::EndTree(settings);
+							ofxImGui::EndTree(settings);
 						}
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				ofxPreset::Gui::AddGroup(this->noiseField.parameters, settings);
-				ofxPreset::Gui::AddGroup(this->transitionParticles.parameters, settings);
+				ofxImGui::AddGroup(this->noiseField.parameters, settings);
+				ofxImGui::AddGroup(this->transitionParticles.parameters, settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------

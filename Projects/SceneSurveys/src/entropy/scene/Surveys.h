@@ -31,7 +31,7 @@ namespace entropy
 			void drawBackWorld() override;
 			void drawFrontWorld() override;
 
-			void gui(ofxPreset::Gui::Settings & settings) override;
+			void gui(ofxImGui::Settings & settings) override;
 
 		protected:
 			struct LayoutParameters : ofParameterGroup

@@ -249,17 +249,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Particles::gui(ofxPreset::Gui::Settings & settings)
+		void Particles::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName(), settings))
 			{
 				if (ImGui::Button("Reset"))
 				{
 					this->reset();
 				}
 				
-				if (ofxPreset::Gui::BeginTree("State", settings))
+				if (ofxImGui::BeginTree("State", settings))
 				{
 					if (ImGui::Button("Save"))
 					{
@@ -282,50 +282,50 @@ namespace entropy
 						}
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				ofxPreset::Gui::AddGroup(this->environment->parameters, settings);
+				ofxImGui::AddGroup(this->environment->parameters, settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.rendering.getName(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.rendering.getName(), settings))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.colorsPerType);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.additiveBlending);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.ambientLight);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.attenuation);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.lightStrength);
-				ofxPreset::Gui::AddParameter(this->parameters.rendering.drawPhotons);
+				ofxImGui::AddParameter(this->parameters.rendering.colorsPerType);
+				ofxImGui::AddParameter(this->parameters.rendering.additiveBlending);
+				ofxImGui::AddParameter(this->parameters.rendering.ambientLight);
+				ofxImGui::AddParameter(this->parameters.rendering.attenuation);
+				ofxImGui::AddParameter(this->parameters.rendering.lightStrength);
+				ofxImGui::AddParameter(this->parameters.rendering.drawPhotons);
 
 				ImGui::Checkbox("Debug Lights", &debug);
 
-				ofxPreset::Gui::AddGroup(nm::Particle::parameters, settings);
+				ofxImGui::AddGroup(nm::Particle::parameters, settings);
 				
 				static const auto numPlotPoints = 100;
 				
-				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
+				if (ofxImGui::BeginTree(this->renderers[render::Layout::Back].parameters, settings))
 				{
-					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
+					ofxImGui::AddGroup(this->renderers[entropy::render::Layout::Back].parameters, settings);
 					ImGui::PlotLines("Fog Function", this->renderers[entropy::render::Layout::Back].getFogFunctionPlot(numPlotPoints).data(), numPlotPoints);
 					this->renderers[entropy::render::Layout::Back].clip = this->renderers[entropy::render::Layout::Back].sphericalClip ||
 																		  this->renderers[entropy::render::Layout::Back].wobblyClip;
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
+				if (ofxImGui::BeginTree(this->renderers[render::Layout::Front].parameters, settings))
 				{
-					ofxPreset::Gui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
+					ofxImGui::AddGroup(this->renderers[entropy::render::Layout::Front].parameters, settings);
 					ImGui::PlotLines("Fog Function", this->renderers[entropy::render::Layout::Front].getFogFunctionPlot(numPlotPoints).data(), numPlotPoints);
 					this->renderers[entropy::render::Layout::Front].clip = this->renderers[entropy::render::Layout::Front].sphericalClip ||
 																		   this->renderers[entropy::render::Layout::Front].wobblyClip;
 				
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------

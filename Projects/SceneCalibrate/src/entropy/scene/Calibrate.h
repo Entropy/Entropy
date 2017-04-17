@@ -40,7 +40,7 @@ namespace entropy
 			void drawFrontWorld() override;
 			void drawFrontOverlay() override;
 
-			void gui(ofxPreset::Gui::Settings & settings) override;
+			void gui(ofxImGui::Settings & settings) override;
 
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
