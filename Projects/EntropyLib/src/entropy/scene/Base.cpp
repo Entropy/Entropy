@@ -11,6 +11,7 @@ namespace entropy
 			: initialized(false)
 			, ready(false)
 			, cuesTrack(nullptr)
+			, messagesTrack(nullptr)
 		{}
 
 		//--------------------------------------------------------------
@@ -51,9 +52,9 @@ namespace entropy
 			this->timeline->setAutosave(false);
 			this->timeline->setPageName(parameters.getName());
 
-			// Add the cues track and listener.
+			// Add the cues and messages tracks, and bang listener.
 			this->cuesTrack = this->timeline->addFlags("Cues");
-
+			this->messagesTrack = this->timeline->addFlags("Messages");
 			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
 
 			// Build the Back and Front cameras.
@@ -716,20 +717,27 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::timelineBangFired_(ofxTLBangEventArgs & args)
 		{
-			static const string kStopFlag = "stop";
-			static const string kPlayFlag = "play";
-			if (args.flag.compare(0, kStopFlag.size(), kStopFlag) == 0)
+			if (args.track == this->messagesTrack)
 			{
-				this->timeline->stop();
-			}
-			else if (args.flag.compare(0, kPlayFlag.size(), kPlayFlag) == 0)
-			{
-				this->timeline->play();
+				GetMessenger()->sendMessage(args.flag);
 			}
 			else
 			{
-				// Cascade to child scene.
-				this->timelineBangFired(args);
+				static const string kStopFlag = "stop";
+				static const string kPlayFlag = "play";
+				if (args.flag.compare(0, kStopFlag.size(), kStopFlag) == 0)
+				{
+					this->timeline->stop();
+				}
+				else if (args.flag.compare(0, kPlayFlag.size(), kPlayFlag) == 0)
+				{
+					this->timeline->play();
+				}
+				else
+				{
+					// Cascade to child scene.
+					this->timelineBangFired(args);
+				}
 			}
 		}
 

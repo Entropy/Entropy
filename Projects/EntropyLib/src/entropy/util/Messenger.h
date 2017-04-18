@@ -20,12 +20,17 @@ namespace entropy
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
+			void sendMessage(const string & rawMessage);
+
 		protected:
 			void connectSender();
 			void disconnectSender();
 
 			void connectReceiver();
 			void disconnectReceiver();
+
+			bool parseInt(const string & candidate, int & value);
+			bool parseFloat(const string & candidate, float & value);
 
 			struct : ofParameterGroup
 			{

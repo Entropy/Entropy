@@ -158,6 +158,7 @@ namespace entropy
 
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLFlags * cuesTrack;
+			ofxTLFlags * messagesTrack;
 
 			// Mappings
 			void populateMappings(const ofParameterGroup & group, const std::string & timelinePageName = util::kMappingTimelinePageName);

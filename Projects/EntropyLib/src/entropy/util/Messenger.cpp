@@ -225,5 +225,68 @@ namespace entropy
 			this->oscReceiver.stop();
 			this->receiverConnected = false;
 		}
+
+		//--------------------------------------------------------------
+		void Messenger::sendMessage(const string & rawMessage)
+		{
+			if (!this->senderConnected)
+			{
+				ofLogError(__FUNCTION__) << "Sender not connected!";
+				return;
+			}
+
+			auto tokens = ofSplitString(rawMessage, " ", true, true);
+			if (tokens[0].at(0) != '/')
+			{
+				ofLogError(__FUNCTION__) << "Message address must start with '/'! It is " << tokens[0];
+				return;
+			}
+
+			ofxOscMessage message;
+			message.setAddress(tokens.at(0));
+
+			for (int i = 1; i < tokens.size(); ++i)
+			{
+				int intValue;
+				if (parseInt(tokens[i], intValue))
+				{
+					message.addIntArg(intValue);
+					continue;
+				}
+
+				float floatValue;
+				if (parseFloat(tokens[i], floatValue))
+				{
+					message.addFloatArg(floatValue);
+					continue;
+				}
+
+				message.addStringArg(tokens[i]);
+			}
+			
+			this->oscSender.sendMessage(message);
+		}
+
+		//--------------------------------------------------------------
+		bool Messenger::parseInt(const string & candidate, int & value)
+		{
+			int length;
+			if (sscanf(candidate.c_str(), "%d%n", &value, &length) != 1 || (length != candidate.size()))
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		//--------------------------------------------------------------
+		bool Messenger::parseFloat(const string & candidate, float & value)
+		{
+			int length;
+			if (sscanf(candidate.c_str(), "%f%n", &value, &length) != 1 || (length != candidate.size()))
+			{
+				return false;
+			}
+			return true;
+		}
 	}
 }
