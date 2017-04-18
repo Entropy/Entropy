@@ -13,7 +13,7 @@ namespace entropy
 			: Base(Type::Video)
 			, wasLoaded(false)
 		{
-			this->videoPlayer.setPlayer(std::shared_ptr<ofGstVideoPlayer>(new ofGstVideoPlayer()));
+			this->videoPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
 
 		//--------------------------------------------------------------

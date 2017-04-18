@@ -14,7 +14,7 @@ namespace entropy
 			, wasLoaded(false)
 		{
 			// Use a video player because it has better playback functionality.
-			this->soundPlayer.setPlayer(std::shared_ptr<ofGstVideoPlayer>(new ofGstVideoPlayer()));
+			this->soundPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
 
 		//--------------------------------------------------------------
