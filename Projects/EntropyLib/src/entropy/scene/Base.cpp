@@ -52,10 +52,11 @@ namespace entropy
 			this->timeline->setAutosave(false);
 			this->timeline->setPageName(parameters.getName());
 
-			// Add the cues and messages tracks, and bang listener.
+			// Add the cues and messages tracks and listeners.
 			this->cuesTrack = this->timeline->addFlags("Cues");
 			this->messagesTrack = this->timeline->addFlags("Messages");
 			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
+			ofAddListener(GetMessenger()->messageReceivedEvent, this, &Base::messageReceived_);
 
 			// Build the Back and Front cameras.
 			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
@@ -128,6 +129,7 @@ namespace entropy
 
 			// Clear any remaining timeline stuff.
 			ofRemoveListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
+			ofRemoveListener(GetMessenger()->messageReceivedEvent, this, &Base::messageReceived_);
 			this->timeline->clear();
 			this->timeline.reset();
 		}
@@ -739,6 +741,39 @@ namespace entropy
 					this->timelineBangFired(args);
 				}
 			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::messageReceived_(ofxOscMessage & message)
+		{
+			ostringstream oss;
+			oss << message.getAddress() << " ";
+			for (int i = 0; i < message.getNumArgs(); ++i)
+			{
+				oss << message.getArgTypeName(i) << ":";
+				if (message.getArgType(i) == OFXOSC_TYPE_INT32)
+				{
+					oss << message.getArgAsInt32(i);
+				}
+				else if (message.getArgType(i) == OFXOSC_TYPE_FLOAT)
+				{
+					oss << message.getArgAsFloat(i);
+				}
+				else if (message.getArgType(i) == OFXOSC_TYPE_STRING)
+				{
+					oss << message.getArgAsString(i);
+				}
+				else
+				{
+					oss << "unknown";
+				}
+				oss << " ";
+			}
+
+			ofLogNotice(__FUNCTION__) << "Received OSC message " << oss.str();
+
+			// Cascade to child scene.
+			this->messageReceived(message);
 		}
 
 		//--------------------------------------------------------------

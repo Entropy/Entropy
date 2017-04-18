@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofxImGui.h"
+#include "ofxOsc.h"
 #include "ofxPreset.h"
 #include "ofxTimeline.h"
 
@@ -123,6 +124,7 @@ namespace entropy
 			virtual void deserialize(const nlohmann::json & json) {}
 
 			virtual void timelineBangFired(ofxTLBangEventArgs & args) {}
+			virtual void messageReceived(ofxOscMessage & message) {}
 
 			// State
 			bool initialized;
@@ -172,6 +174,9 @@ namespace entropy
 			void removePopUp();
 
 			std::vector<std::shared_ptr<popup::Base>> popUps;
+
+			// Messenger
+			void messageReceived_(ofxOscMessage & message);
 		};
 	}
 }

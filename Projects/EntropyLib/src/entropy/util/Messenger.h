@@ -22,6 +22,8 @@ namespace entropy
 
 			void sendMessage(const string & rawMessage);
 
+			ofEvent<ofxOscMessage> messageReceivedEvent;
+
 		protected:
 			void connectSender();
 			void disconnectSender();
