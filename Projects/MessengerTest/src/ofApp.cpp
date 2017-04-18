@@ -3,6 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	if (this->oscSender.setup(SEND_HOST, SEND_PORT))
+	{
+		ofLogNotice(__FUNCTION__) << "Sending OSC messages to "<< SEND_HOST << " on port " << SEND_PORT;
+	}
+	else
+	{
+		ofLogError(__FUNCTION__) << "Error setting up OSC sender to host " << SEND_HOST << " on port " << SEND_PORT;
+	}
+	
 	if (this->oscReceiver.setup(RECV_PORT))
 	{
 		ofLogNotice(__FUNCTION__) << "Listening for OSC messages on port " << RECV_PORT;
@@ -20,38 +29,12 @@ void ofApp::update()
 	while (this->oscReceiver.hasWaitingMessages())
 	{
 		// Get the next message.
-		ofxOscMessage m;
-		this->oscReceiver.getNextMessage(m);
+		ofxOscMessage message;
+		this->oscReceiver.getNextMessage(message);
 
-		ostringstream oss;
-		oss << m.getAddress() << " ";
-		for (int i = 0; i < m.getNumArgs(); ++i)
-		{
-			oss << m.getArgTypeName(i) << ":";
-			if (m.getArgType(i) == OFXOSC_TYPE_INT32)
-			{
-				oss << m.getArgAsInt32(i);
-			}
-			else if (m.getArgType(i) == OFXOSC_TYPE_FLOAT)
-			{
-				oss << m.getArgAsFloat(i);
-			}
-			else if (m.getArgType(i) == OFXOSC_TYPE_STRING)
-			{
-				oss << m.getArgAsString(i);
-			}
-			else
-			{
-				oss << "unknown";
-			}
-			oss << " ";
-		}
-
-		// Add it to the list.
 		Entry entry;
-		entry.message = oss.str();
-		entry.timestamp = ofGetTimestampString("%Y-%M-%d %H:%M:%S");
-
+		this->buildEntry(message, entry);
+		entry.type = "RECV";
 		this->entries.push_front(entry);
 	}
 
@@ -77,7 +60,56 @@ void ofApp::draw()
 	currY += 20.0f;
 	for (auto & entry : this->entries)
 	{
-		ofDrawBitmapStringHighlight(entry.timestamp + " >> " + entry.message, kLeftMargin, currY);
+		ofDrawBitmapStringHighlight(entry.type + " >> " + entry.timestamp + " >> " + entry.message, kLeftMargin, currY);
 		currY += 15.0f;
 	}
 }
+
+//--------------------------------------------------------------
+void ofApp::mouseReleased(int x, int y, int button)
+{
+	ofxOscMessage message;
+	message.setAddress("/testies");
+	message.addFloatArg(x);
+	message.addFloatArg(y);
+	message.addIntArg(button);
+
+	Entry entry;
+	this->buildEntry(message, entry);
+	entry.type = "SEND";
+	this->entries.push_front(entry);
+
+	this->oscSender.sendMessage(message);
+}
+
+//--------------------------------------------------------------
+void ofApp::buildEntry(const ofxOscMessage & message, Entry & entry)
+{
+	ostringstream oss;
+	oss << message.getAddress() << " ";
+	for (int i = 0; i < message.getNumArgs(); ++i)
+	{
+		oss << message.getArgTypeName(i) << ":";
+		if (message.getArgType(i) == OFXOSC_TYPE_INT32)
+		{
+			oss << message.getArgAsInt32(i);
+		}
+		else if (message.getArgType(i) == OFXOSC_TYPE_FLOAT)
+		{
+			oss << message.getArgAsFloat(i);
+		}
+		else if (message.getArgType(i) == OFXOSC_TYPE_STRING)
+		{
+			oss << message.getArgAsString(i);
+		}
+		else
+		{
+			oss << "unknown";
+		}
+		oss << " ";
+	}
+
+	entry.message = oss.str();
+	entry.timestamp = ofGetTimestampString("%Y-%M-%d %H:%M:%S");
+}
+
