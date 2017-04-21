@@ -240,7 +240,7 @@ namespace entropy
 					}
 					else
 					{
-						this->addQuad(glm::vec3(i * this->parameters.grid.resolution, GetCanvasHeight(layout) * 0.5f, 0), glm::vec3(this->parameters.grid.lineWidth, GetCanvasHeight(layout), 0.0f), color, this->horizontalMesh);
+						this->addQuad(glm::vec3(i * this->parameters.grid.resolution, GetCanvasHeight(layout) * 0.5f, 0), glm::vec3(this->parameters.grid.lineWidth, GetCanvasHeight(layout), 0.0f), color, this->verticalMesh);
 					}
 				}
 			}
