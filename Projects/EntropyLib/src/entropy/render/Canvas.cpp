@@ -107,6 +107,7 @@ namespace entropy
 			{
 				ofPushMatrix();
 				ofTranslate(bounds.x, bounds.y);
+				ofScale(bounds.width / this->screenWidth, bounds.height / this->screenHeight);
 				{
 					// Go through warps and fbo texture subsections and draw the whole thing.
 					for (auto i = 0; i < this->warps.size(); ++i)
