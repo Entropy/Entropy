@@ -215,14 +215,17 @@ namespace entropy
 			auto scene = GetCurrentScene();
 			if (scene)
 			{
+				const auto previewBack = static_cast<Preview>(this->parameters.controlScreen.preview.modeBack.get());
+				const auto previewFront = static_cast<Preview>(this->parameters.controlScreen.preview.modeFront.get());
+
 				// Back screen.
-				if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.backEnabled))
+				if (this->parameters.backScreen.enabled || (this->parameters.controlScreen.enabled && previewBack != Preview::None))
 				{
 					this->processCanvas(render::Layout::Back, this->parameters.backScreen.enabled);
 				}
 
 				// Front screen.
-				if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && this->parameters.controlScreen.preview.frontEnabled))
+				if (this->parameters.frontScreen.enabled || (this->parameters.controlScreen.enabled && previewFront != Preview::None))
 				{
 					this->processCanvas(render::Layout::Front, this->parameters.frontScreen.enabled);
 				}
@@ -230,11 +233,20 @@ namespace entropy
 				// Control screen.
 				if (this->parameters.controlScreen.enabled)
 				{
-					if (this->parameters.controlScreen.preview.backEnabled)
+					if (previewBack == Preview::Warp)
+					{
+						this->canvas[render::Layout::Back]->render(this->previewBounds[render::Layout::Back]);
+					}
+					else if (previewBack == Preview::Full)
 					{
 						this->canvas[render::Layout::Back]->getRenderTexture().draw(this->previewBounds[render::Layout::Back]);
 					}
-					if (this->parameters.controlScreen.preview.frontEnabled)
+
+					if (previewFront == Preview::Warp)
+					{
+						this->canvas[render::Layout::Front]->render(this->previewBounds[render::Layout::Front]);
+					}
+					else if (previewFront == Preview::Full)
 					{
 						this->canvas[render::Layout::Front]->getRenderTexture().draw(this->previewBounds[render::Layout::Front]);
 					}
@@ -356,9 +368,9 @@ namespace entropy
 
 					if (ofxImGui::BeginTree(this->parameters.controlScreen.preview, settings))
 					{
-						ofxImGui::AddParameter(this->parameters.controlScreen.preview.backEnabled);
-						ImGui::SameLine();
-						ofxImGui::AddParameter(this->parameters.controlScreen.preview.frontEnabled);
+						static std::vector<std::string> labels{ "None", "Warp", "Full" };
+						ofxImGui::AddRadio(parameters.controlScreen.preview.modeBack, labels, 3);
+						ofxImGui::AddRadio(parameters.controlScreen.preview.modeFront, labels, 3);
 						ofxImGui::AddParameter(this->parameters.controlScreen.preview.scale);
 
 						ofxImGui::EndTree(settings);

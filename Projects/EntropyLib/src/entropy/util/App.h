@@ -9,6 +9,13 @@ namespace entropy
 {
 	namespace util
 	{
+		enum class Preview
+		{
+			None,
+			Warp,
+			Full
+		};
+		
 		class App_
 		{
 		public:
@@ -81,11 +88,11 @@ namespace entropy
 
 					struct : ofParameterGroup
 					{
-						ofParameter<bool> backEnabled{ "Back Enabled", true };
-						ofParameter<bool> frontEnabled{ "Front Enabled", true };
+						ofParameter<int> modeBack{ "Back", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
+						ofParameter<int> modeFront{ "Front", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
 						ofParameter<float> scale{ "Scale", 0.5f, 0.1f, 1.0f };
 
-						PARAM_DECLARE("Preview", backEnabled, frontEnabled, scale);
+						PARAM_DECLARE("Preview", modeBack, modeFront, scale);
 					} preview;
 					
 					PARAM_DECLARE("Control Screen", enabled, screenWidth, screenHeight, preview);
