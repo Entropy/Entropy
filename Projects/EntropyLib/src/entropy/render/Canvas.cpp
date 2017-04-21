@@ -87,9 +87,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-        void Canvas::postProcess(PostParameters & parameters)
+		void Canvas::postProcess(PostParameters & parameters)
 		{
-            this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
+			this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
 			this->postApplied = true;
 		}
 
@@ -97,6 +97,11 @@ namespace entropy
 		void Canvas::render(const ofRectangle & bounds)
 		{
 			auto & texture = this->getRenderTexture();
+
+			if (this->parameters.additiveBlend)
+			{
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+			}
 
 			if (this->parameters.fillWindow)
 			{
@@ -118,7 +123,12 @@ namespace entropy
 						}
 					}
 				}
-				ofPopMatrix();
+				ofPopMatrix(); 
+			}
+
+			if (this->parameters.additiveBlend)
+			{
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 
 			if (this->exportFrames)
@@ -419,6 +429,7 @@ namespace entropy
 				if (ofxImGui::BeginTree("Warping", settings))
 				{
 					ofxImGui::AddParameter(this->parameters.fillWindow);
+					ofxImGui::AddParameter(this->parameters.additiveBlend);
 
 					if (!this->parameters.fillWindow)
 					{

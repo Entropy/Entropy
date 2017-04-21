@@ -110,6 +110,7 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<bool> fillWindow{ "Fill Window", false };
+				ofParameter<bool> additiveBlend{ "Additive Blend", false };
 
 				PARAM_DECLARE("Canvas", fillWindow);
 			} parameters;
