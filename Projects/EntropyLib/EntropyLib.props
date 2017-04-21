@@ -16,7 +16,17 @@
       <AdditionalIncludeDirectories>$(GSTREAMER_1_0_ROOT_X86_64)include;$(GSTREAMER_1_0_ROOT_X86_64)include\gstreamer-1.0;$(GSTREAMER_1_0_ROOT_X86_64)include\glib-2.0;$(GSTREAMER_1_0_ROOT_X86_64)lib\glib-2.0\include;$(GSTREAMER_1_0_ROOT_X86_64)lib\gstreamer-1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(GSTREAMER_1_0_ROOT_X86_64)lib;$(OF_ROOT)\addons\ofxPoco\libs\poco\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GSTREAMER_1_0_ROOT_X86_64)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <Link>
+      <AdditionalDependencies>PocoCryptomdd.lib;PocoDatamdd.lib;PocoDataSQLitemdd.lib;PocoFoundationmdd.lib;PocoJSONmdd.lib;PocoMongoDBmdd.lib;PocoNetmdd.lib;PocoNetSSLmdd.lib;PocoPDFmdd.lib;PocoUtilmdd.lib;PocoXMLmdd.lib;PocoZipmdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <Link>
+      <AdditionalDependencies>PocoCryptomd.lib;PocoDatamd.lib;PocoDataSQLitemd.lib;PocoFoundationmd.lib;PocoJSONmd.lib;PocoMongoDBmd.lib;PocoNetmd.lib;PocoNetSSLmd.lib;PocoPDFmd.lib;PocoUtilmd.lib;PocoXMLmd.lib;PocoZipmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -25,7 +35,8 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;TIMELINE_VIDEO_INCLUDED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib;PocoCryptomd.lib;PocoDatamd.lib;PocoDataSQLitemd.lib;PocoFoundationmd.lib;PocoJSONmd.lib;PocoMongoDBmd.lib;PocoNetmd.lib;PocoNetSSLmd.lib;PocoPDFmd.lib;PocoUtilmd.lib;PocoXMLmd.lib;PocoZipmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OF_ROOT)\addons\ofxPoco\libs\poco\lib\vs\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
