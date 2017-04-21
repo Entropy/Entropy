@@ -605,22 +605,47 @@ namespace entropy
 						{
 							if (ofxImGui::BeginTree(paramGroup.blend, settings))
 							{
-								auto tmpLuminanceRef = paramGroup.blend.luminance.get();
-								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
+								ofxImGui::AddParameter(paramGroup.blend.luminanceChannelLock);
+								if (paramGroup.blend.luminanceChannelLock.get())
 								{
-									paramGroup.blend.luminance.set(tmpLuminanceRef);
-									warp->setLuminance(paramGroup.blend.luminance);
+									auto tmpLuminanceRef = paramGroup.blend.luminance->r;
+									if (ImGui::SliderFloat(ofxImGui::GetUniqueName(paramGroup.blend.luminance), (float *)&tmpLuminanceRef, paramGroup.blend.luminance.getMin().r, paramGroup.blend.luminance.getMax().r))
+									{
+										paramGroup.blend.luminance.set(glm::vec3(tmpLuminanceRef));
+										warp->setLuminance(paramGroup.blend.luminance);
+									}
 								}
-								auto tmpGammaRef = paramGroup.blend.gamma.get();
-								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(tmpGammaRef)))
+								else
 								{
-									paramGroup.blend.gamma.set(tmpGammaRef);
-									warp->setGamma(paramGroup.blend.gamma);
+									if (ofxImGui::AddColor(paramGroup.blend.luminance))
+									{
+										warp->setLuminance(paramGroup.blend.luminance);
+									}
 								}
+
+								ofxImGui::AddParameter(paramGroup.blend.gammaChannelLock);
+								if (paramGroup.blend.gammaChannelLock.get())
+								{
+									auto tmpGammaRef = paramGroup.blend.gamma->r;
+									if (ImGui::SliderFloat(ofxImGui::GetUniqueName(paramGroup.blend.gamma), (float *)&tmpGammaRef, paramGroup.blend.gamma.getMin().r, paramGroup.blend.gamma.getMax().r))
+									{
+										paramGroup.blend.gamma.set(glm::vec3(tmpGammaRef));
+										warp->setGamma(paramGroup.blend.gamma);
+									}
+								}
+								else
+								{
+									if (ofxImGui::AddParameter(paramGroup.blend.gamma))
+									{
+										warp->setGamma(paramGroup.blend.gamma);
+									}
+								}
+								
 								if (ofxImGui::AddParameter(paramGroup.blend.exponent))
 								{
 									warp->setExponent(paramGroup.blend.exponent);
 								}
+
 								if (i > 0)
 								{
 									if (ofxImGui::AddParameter(paramGroup.blend.edgeLeft))
