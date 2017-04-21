@@ -236,6 +236,7 @@ namespace entropy
 					if (previewBack == Preview::Warp)
 					{
 						this->canvas[render::Layout::Back]->render(this->previewBounds[render::Layout::Back]);
+						this->previewOutlines[render::Layout::Back].draw();
 					}
 					else if (previewBack == Preview::Full)
 					{
@@ -245,6 +246,7 @@ namespace entropy
 					if (previewFront == Preview::Warp)
 					{
 						this->canvas[render::Layout::Front]->render(this->previewBounds[render::Layout::Front]);
+						this->previewOutlines[render::Layout::Front].draw();
 					}
 					else if (previewFront == Preview::Full)
 					{
@@ -469,6 +471,10 @@ namespace entropy
 				this->previewBounds[render::Layout::Back].y = this->boundsControl.getMinY() + kImGuiMargin;
 				this->previewBounds[render::Layout::Front].y = this->previewBounds[render::Layout::Back].getMaxY() + kImGuiMargin;
 
+				// Draw screen outlines to use when preview mode is set to Warp.
+				this->updateOutline(render::Layout::Back);
+				this->updateOutline(render::Layout::Front);
+
 				// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
 				this->playlist->setCameraControlArea(render::Layout::Back, this->previewBounds[render::Layout::Back]);
 				this->playlist->setCameraControlArea(render::Layout::Front, this->previewBounds[render::Layout::Front]);
@@ -478,6 +484,51 @@ namespace entropy
 				// Set the Scene cameras to use the Canvas bounds as mouse-enabled areas.
 				this->playlist->setCameraControlArea(render::Layout::Back, this->screenBounds[render::Layout::Back]);
 				this->playlist->setCameraControlArea(render::Layout::Front, this->screenBounds[render::Layout::Front]);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void App_::updateOutline(render::Layout layout)
+		{
+			this->previewOutlines[layout].clear();
+			this->previewOutlines[layout].setMode(OF_PRIMITIVE_LINES);
+
+			// Outline.
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMinX(), this->previewBounds[layout].getMinY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMaxX(), this->previewBounds[layout].getMinY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMaxX(), this->previewBounds[layout].getMinY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMaxX(), this->previewBounds[layout].getMaxY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMaxX(), this->previewBounds[layout].getMaxY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMinX(), this->previewBounds[layout].getMaxY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMinX(), this->previewBounds[layout].getMaxY(), 0));
+			this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMinX(), this->previewBounds[layout].getMinY(), 0));
+
+			// Columns.
+			int numCols = (layout == render::Layout::Back) ? this->parameters.backScreen.numCols : this->parameters.frontScreen.numCols;
+			if (numCols > 1)
+			{
+				float colWidth = this->previewBounds[layout].getWidth() / numCols;
+				float currX = this->previewBounds[layout].getMinX();
+				for (int i = 0; i < numCols; ++i)
+				{
+					this->previewOutlines[layout].addVertex(glm::vec3(currX, this->previewBounds[layout].getMinY(), 0));
+					this->previewOutlines[layout].addVertex(glm::vec3(currX, this->previewBounds[layout].getMaxY(), 0));
+					currX += colWidth;
+				}
+			}
+
+			// Rows.
+			int numRows = (layout == render::Layout::Back) ? this->parameters.backScreen.numRows : this->parameters.frontScreen.numRows;
+			if (numRows > 1)
+			{
+				float rowHeight = this->previewBounds[layout].getHeight() / numRows;
+				float currY = this->previewBounds[layout].getMinY();
+				for (int i = 0; i < numRows; ++i)
+				{
+					this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMinX(), currY, 0));
+					this->previewOutlines[layout].addVertex(glm::vec3(this->previewBounds[layout].getMaxX(), currY, 0));
+					currY += rowHeight;
+				}
 			}
 		}
 		
