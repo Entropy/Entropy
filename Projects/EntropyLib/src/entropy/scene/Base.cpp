@@ -211,6 +211,11 @@ namespace entropy
 			{
 				this->resizeFront(args);
 			}
+
+			for (auto popUp : this->popUps)
+			{
+				popUp->resize_(args);
+			}
 		}
 
 		//--------------------------------------------------------------
