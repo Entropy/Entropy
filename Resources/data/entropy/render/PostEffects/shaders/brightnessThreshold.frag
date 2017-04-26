@@ -2,6 +2,7 @@
 
 uniform sampler2D tex0;
 uniform float bright_threshold;
+uniform float boost;
 out vec4 fragColor;
 
 in vec2 f_texcoord;
@@ -18,7 +19,7 @@ float bright(vec3 rgb){
 void main(){
     vec4 color = texture(tex0, f_texcoord);
     if(bright(color.rgb)>bright_threshold){
-        fragColor = vec4(clamp(color.rgb, vec3(0), vec3(100)), 1);
+		fragColor = vec4(clamp(color.rgb * boost, vec3(0), vec3(100)), 1);
     }else{
         discard;
     }

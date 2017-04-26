@@ -15,9 +15,12 @@ uniform float fadePower;
 uniform float screenW;
 uniform float screenH;
 uniform float wobblyClip;
+uniform float accumValue;
+uniform float alpha;
 
 uniform sampler2D minDepthMask;
 uniform sampler2D maxDepthMask;
+uniform float isFill;
 
 out vec4 fragColor;
 #define FOG_ENABLED 0
@@ -35,13 +38,15 @@ void main(void)
 	float minDepth = texture(minDepthMask, texcoord).r;
 	float maxDepth = texture(maxDepthMask, texcoord).r;
 	if(wobblyClip<1 || (gl_FragCoord.z<minDepth && gl_FragCoord.z>maxDepth)){
-	    fragColor = f_color;
+		fragColor = vec4(f_color.rgb, 0);
+		fragColor.rgb *= accumValue * alpha;
+		//fragColor.a = alpha * accumValue;
     #if FOG_ENABLED
-		fragColor *= fog(f_distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+		fragColor.rgb *= fog(f_distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
     #endif
     #if SPHERICAL_CLIP
 		float sphere = 1 - pow(smoothstep(fadeEdge0, fadeEdge1, f_distanceToCenter), fadePower);
-		fragColor.a *= sphere;
+		fragColor.rgb *= sphere;
     #endif
 	}else{
 		discard;
