@@ -16,7 +16,8 @@ namespace entropy
 		public:
             void setup(size_t maxMemory);
             void update(ofxTexture3d & isoLevels);
-            const ofVbo & getGeometry();
+			ofVbo & getGeometry();
+			const ofMesh downloadGeometry();
             size_t getNumVertices() const;
             size_t getBufferSize() const;
             size_t getVertexStride() const;

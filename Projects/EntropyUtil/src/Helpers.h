@@ -1,16 +1,16 @@
 #pragma once
 
-#include "entropy/render/Layout.h"
-#include "entropy/util/App.h"
-#include "entropy/util/GLError.h"
+#include "ofConstants.h"
+#include "ofFileUtils.h"
+
+
+// Stolen from ofxRulr, thanks Elliot!
+// Syntactic sugar which enables struct-ofParameterGroup
+#define PARAM_DECLARE(NAME, ...) bool paramDeclareConstructor \
+{ [this] { this->setName(NAME), this->add(__VA_ARGS__); return true; }() };
 
 namespace entropy
 {
-	//--------------------------------------------------------------
-	inline util::App_ * GetApp()
-	{
-		return util::App::X();
-	}
 
 	//--------------------------------------------------------------
 	inline string GetSharedDataPath(bool absolute = true)
@@ -82,48 +82,6 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline shared_ptr<render::Canvas> GetCanvas(render::Layout layout)
-	{
-		return GetApp()->getCanvas(layout);
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasWidth(render::Layout layout)
-	{
-		return GetCanvas(layout)->getWidth();
-	}
-
-	//--------------------------------------------------------------
-	inline float GetCanvasHeight(render::Layout layout)
-	{
-		return GetCanvas(layout)->getHeight();
-	}
-
-	//--------------------------------------------------------------
-	inline const ofRectangle & GetCanvasViewport(render::Layout layout)
-	{
-		return GetCanvas(layout)->getViewport();
-	}
-
-	//--------------------------------------------------------------
-	inline shared_ptr<scene::Playlist> GetPlaylist()
-	{
-		return GetApp()->getPlaylist();
-	}
-
-	//--------------------------------------------------------------
-	inline const world::Camera::Settings & GetSavedCameraSettings(render::Layout layout)
-	{
-		return GetPlaylist()->getCameraSettings(layout);
-	}
-
-	//--------------------------------------------------------------
-	inline shared_ptr<scene::Base> GetCurrentScene()
-	{
-		return GetPlaylist()->getCurrentScene();
-	}
-
-	//--------------------------------------------------------------
 	enum class Module
 	{
 		Renderers,
@@ -139,6 +97,7 @@ namespace entropy
 		case Module::Renderers: return "Renderers";
 		case Module::Canvas: return "Canvas";
 		case Module::PostEffects: return "PostEffects";
+		default: return "Unknown";
 		}
 	}
 

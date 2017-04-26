@@ -266,6 +266,16 @@ namespace entropy
 
 				//transitionParticles.color = ofFloatColor(transitionParticles.color, 0.0);
 			}
+
+			if(save){
+				static size_t idx = 0;
+				auto mesh = gpuMarchingCubes.downloadGeometry();
+				mesh.save("/media/arturo/8ce69044-c453-4781-b966-dc8ff8302030/entropy/inflation/" + ofToString(idx,0,4)+".ply", true);
+				idx += 1;
+				if(idx==1201){
+					ofExit(0);
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -606,6 +616,9 @@ namespace entropy
 
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].fillAlpha);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].wireframeAlpha);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].dofSamples);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].dofAperture);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Back].dofDistance);
 
 							static const auto kNumPoints = 100;
 							ImGui::PlotLines("Fog Function", this->renderers[render::Layout::Back].getFogFunctionPlot(kNumPoints).data(), kNumPoints);
@@ -636,6 +649,9 @@ namespace entropy
 
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].fillAlpha);
 							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].wireframeAlpha);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].dofSamples);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].dofAperture);
+							ofxPreset::Gui::AddParameter(this->renderers[render::Layout::Front].dofDistance);
 
 							static const auto kNumPoints = 100;
 							ImGui::PlotLines("Fog Function", this->renderers[render::Layout::Front].getFogFunctionPlot(kNumPoints).data(), kNumPoints);

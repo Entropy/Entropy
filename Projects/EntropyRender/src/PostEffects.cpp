@@ -1,6 +1,6 @@
 #include "PostEffects.h"
+#include "ofGraphics.h"
 
-#include "entropy/Helpers.h"
 
 //--------------------------------------------------------------
 float gaussian(float x, float mu, float sigma) 
@@ -38,7 +38,7 @@ namespace entropy
 			this->blurVertShader.bindDefaults();
 			this->blurVertShader.linkProgram();
 
-            colorCorrectShaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getShaderPath("fullscreenTriangle.vert");
+			colorCorrectShaderSettings.shaderFiles[GL_VERTEX_SHADER] = this->getShaderPath("vert_full_quad.glsl");
             colorCorrectShaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = this->getShaderPath("frag_tonemap.glsl");
 			colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"] = true;
 			colorCorrectShaderSettings.intDefines["DEBUG_VIGNETTE"] = false;
@@ -94,9 +94,8 @@ namespace entropy
 					brightnessThresholdShader.begin();
 					brightnessThresholdShader.setUniformTexture("tex0", srcTexture, 0);
 					brightnessThresholdShader.setUniform1f("bright_threshold", parameters.bloom.brightnessThreshold);
-					{
-						this->fullQuad.draw();
-					}
+					brightnessThresholdShader.setUniform1f("boost", parameters.bloom.boost);
+					this->fullQuad.draw();
 					brightnessThresholdShader.end();
 				}
 				this->fboTemp[0].end();
@@ -169,9 +168,8 @@ namespace entropy
 
 			// Color Correction.
 			dstFbo.begin();
-			{
-				ofClear(0, 255);
-
+			ofClear(0, 255);
+			if(parameters.color.enabled){
 				this->colorCorrectShader.begin();
 				this->colorCorrectShader.setUniform1f("exposureBias", parameters.color.exposure);
 				this->colorCorrectShader.setUniform1f("gamma", parameters.color.gamma);
@@ -202,11 +200,15 @@ namespace entropy
 					}
 				}
 				{
-					// Draw full-screen quad.
-					glBindVertexArray(this->defaultVao);
-					glDrawArrays(GL_TRIANGLES, 0, 3);
+					this->fullQuad.draw();
 				}
 				this->colorCorrectShader.end();
+			}else{
+				if (parameters.bloom.debugBlur){
+					this->fboTemp[0].draw(0,0);
+				}else{
+					srcTexture.draw(0,0);
+				}
 			}
 			dstFbo.end();
 		}

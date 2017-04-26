@@ -1,0 +1,18 @@
+<keyframes>
+    <key>
+        <colorR>244</colorR>
+        <colorG>204</colorG>
+        <colorB>0</colorB>
+        <colorA>255</colorA>
+        <time>00:03:39:531</time>
+        <value>0.000000000</value>
+    </key>
+    <key>
+        <colorR>255</colorR>
+        <colorG>255</colorG>
+        <colorB>255</colorB>
+        <colorA>255</colorA>
+        <time>00:05:00:000</time>
+        <value>0.350000024</value>
+    </key>
+</keyframes>

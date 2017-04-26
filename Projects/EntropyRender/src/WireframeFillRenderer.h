@@ -21,6 +21,7 @@ namespace entropy
 			void drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, ofCamera & camera) const;
 			void drawDebug();
 			std::vector<float> getFogFunctionPlot(size_t numberOfPoints) const;
+			const ofMesh & getBokehShape() const;
 
 			ofParameter<bool> wireframe{ "Wireframe", true };
 			ofParameter<bool> fill{ "Fill", true };
@@ -40,6 +41,10 @@ namespace entropy
 			ofParameter<float> alphaFactor{"Alpha factor", 1.0f, 0.f, 1.f};
 			ofParameter<bool> shadeNormals{ "Shade Normals", false };
 			ofParameter<bool> useLights{ "Use Lights", false };
+			ofParameter<int> dofSamples{ "DOF samples", 1, 1, 512 };
+			ofParameter<float> dofAperture{ "DOF aperture", 0.0005, 0.0, 0.05};
+			ofParameter<float> dofDistance{ "DOF distance", 1, 0.01, 2};
+			ofParameter<int> bokehsides{ "Bokeh sides", 6, 4, 200 };
 
 			ofParameterGroup parameters{
 				"Renderer",
@@ -58,10 +63,16 @@ namespace entropy
 				wobblyClip,
 				wireframeAlpha,
 				fillAlpha,
+				alphaFactor,
 				useLights,
+				dofSamples,
+				dofAperture,
+				dofDistance,
+				bokehsides,
 			};
 
 		private:
+			ofMesh bokehshape;
 			ofShader shaderFill, shaderWireframe;
 			ofShader shaderFillSphere, shaderWireframeSphere;
 			ofShader::Settings shaderSettings;
@@ -70,6 +81,8 @@ namespace entropy
 			mutable ofMaterial material;
 			mutable ofMaterial materialSphericalClip;
 			float sceneSize;
+			mutable std::vector<glm::mat4> modelview;
+			mutable std::vector<glm::mat4> mvp;
 		};
 	}
 }

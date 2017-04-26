@@ -6,7 +6,7 @@ import qbs.TextFile
 import "../../../libs/openFrameworksCompiled/project/qtcreator/ofApp.qbs" as ofApp
 
 Project{
-    property string of_root: "../../.."
+    property string of_root: FileInfo.joinPaths(path, "../../..")
 
     ofApp {
         name: { return FileInfo.baseName(path) }
@@ -18,54 +18,63 @@ Project{
             "src/entropy/inflation/NoiseField.h",
             "src/entropy/inflation/TransitionParticles.cpp",
             "src/entropy/inflation/TransitionParticles.h",
-            "src/entropy/scene/Inflation.cpp",
-            "src/entropy/scene/Inflation.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
-            "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
-            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
-            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
-            "../../Resources/data/entropy/render/PostEffects/shaders/frag_tonemap.glsl",
-            "../../Resources/data/entropy/render/PostEffects/shaders/fullscreenTriangle.vert",
-            "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
-            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
-            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
-            "../../Resources/data/entropy/scene/Inflation/shaders/compute_clear_color.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/compute_particles.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/frag_blur.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/frag_bright.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/frag_tonemap.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/marching_cubes_geom.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/passthrough_vert.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.frag",
-            "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.vert",
-            "../../Resources/data/entropy/scene/Inflation/shaders/vert_blur.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/vert_full_quad.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
-            "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_vertex.glsl",
-            "addons.make",
         ]
 
         of.addons: [
-            '../EntropyLib',
-            '../../addons/ofxRange',
-            '../../addons/ofxImGui',
-            '../../addons/ofxPreset',
-            '../../addons/ofxSet',
-            '../../addons/ofxTextInputField',
+            '../EntropyRender',
+            '../EntropyUtil',
+//            '../EntropyLib',
+//            '../../addons/ofxPreset',
+//            '../../addons/ofxTextInputField',
+            '../../addons/ofxTimeline',
+            '../../addons/ofxEasing',
             '../../addons/ofxTextureRecorder',
             '../../addons/ofxVolumetrics',
-            '../../addons/ofxTimeline',
-            '../../addons/ofxTimecode',
-            '../../addons/ofxTween',
-            '../../addons/ofxMSATimer',
-            '../../addons/ofxWarp',
-            '../../addons/ofxEasing',
             '../../addons/ofxObjLoader',
             'ofxXmlSettings',
+            'ofxGui',
         ]
+
+        Group{
+            name: "config"
+            condition: false
+            files: [
+                "../../Resources/data/entropy/scene/Inflation/presets/_autosave/parameters.json",
+                "addons.make",
+            ]
+        }
+
+        Group{
+            name: "shaders"
+            files: [
+                "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
+                "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
+                "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
+                "../../Resources/data/entropy/render/PostEffects/shaders/frag_tonemap.glsl",
+                "../../Resources/data/entropy/render/PostEffects/shaders/fullscreenTriangle.vert",
+                "../../Resources/data/entropy/render/PostEffects/shaders/vert_full_quad.glsl",
+                "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
+                "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
+                "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
+                "../../Resources/data/entropy/scene/Inflation/shaders/compute_clear_color.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/compute_noise4d.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/compute_particles.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/frag_blur.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/frag_bright.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/frag_tonemap.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/marching_cubes_geom.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/passthrough_vert.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.frag",
+                "../../Resources/data/entropy/scene/Inflation/shaders/transition_particle.vert",
+                "../../Resources/data/entropy/scene/Inflation/shaders/vert_blur.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/vert_full_quad.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_frag.glsl",
+                "../../Resources/data/entropy/scene/Inflation/shaders/volumetrics_vertex.glsl",
+            ]
+        }
 
         // additional flags for the project. the of module sets some
         // flags by default to add the core libraries, search paths...

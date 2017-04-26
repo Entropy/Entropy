@@ -463,7 +463,7 @@ namespace entropy
 				ofToggleFullscreen();
 				return;
 			}
-			if (args.key == '`')
+			if (args.key == 'g')
 			{
 				this->controlsVisible ^= 1;
 			}

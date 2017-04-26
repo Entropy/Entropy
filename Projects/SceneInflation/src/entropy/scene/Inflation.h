@@ -39,6 +39,7 @@ namespace entropy
 
 			void serialize(nlohmann::json & json) override;
 			void deserialize(const nlohmann::json & json) override;
+			bool save = false;
 
 		protected:
 			void resetWavelengths();

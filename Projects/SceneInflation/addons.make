@@ -12,4 +12,10 @@
 ../../addons/ofxMSATimer
 ../../addons/ofxWarp
 ../../addons/ofxEasing
+../../addons/ofxObjLoader
+../../addons/ofxColorPicker
+../../addons/ofxMSAInteractiveObject
+ofxEasing
+ofxPoco
 ofxXmlSettings
+ofxGui

@@ -118,4 +118,53 @@ namespace entropy
 
 		typedef util::Singleton<App_> App;
 	}
+
+
+	//--------------------------------------------------------------
+	inline util::App_ * GetApp()
+	{
+		return util::App::X();
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<render::Canvas> GetCanvas(render::Layout layout)
+	{
+		return GetApp()->getCanvas(layout);
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasWidth(render::Layout layout)
+	{
+		return GetCanvas(layout)->getWidth();
+	}
+
+	//--------------------------------------------------------------
+	inline float GetCanvasHeight(render::Layout layout)
+	{
+		return GetCanvas(layout)->getHeight();
+	}
+
+	//--------------------------------------------------------------
+	inline const ofRectangle & GetCanvasViewport(render::Layout layout)
+	{
+		return GetCanvas(layout)->getViewport();
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<scene::Playlist> GetPlaylist()
+	{
+		return GetApp()->getPlaylist();
+	}
+
+	//--------------------------------------------------------------
+	inline const world::Camera::Settings & GetSavedCameraSettings(render::Layout layout)
+	{
+		return GetPlaylist()->getCameraSettings(layout);
+	}
+
+	//--------------------------------------------------------------
+	inline shared_ptr<scene::Base> GetCurrentScene()
+	{
+		return GetPlaylist()->getCurrentScene();
+	}
 }

@@ -1,7 +1,10 @@
 #pragma once
 
 #include "ofParameter.h"
-#include "ofxPreset.h"
+#include "ofFbo.h"
+#include "Helpers.h"
+#include "ofShader.h"
+#include "ofVboMesh.h"
 
 namespace entropy
 {
@@ -17,6 +20,7 @@ namespace entropy
 				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<int> numPasses{ "Num Passes", 1, 1, 10 };
 				ofParameter<float> brightnessThreshold{ "Brightness Threshold", 1.0f, 0.01f, 3.0f };
+				ofParameter<float> boost{ "Boost", 1.0f, 0.01f, 6.0f };
 				ofParameter<float> sigma{ "Sigma", 0.9f, 0.5f, 18.0f };
 				ofParameter<bool> debugBlur{ "Debug Blur", false };
 
@@ -24,12 +28,14 @@ namespace entropy
 					enabled, 
 					numPasses, 
 					brightnessThreshold, 
+					boost,
 					sigma, 
 					debugBlur);
 			} bloom;
 
 			struct : ofParameterGroup
 			{
+				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<float> exposure{ "Exposure", 4.0f, 0.0f, 10.0f };
 				ofParameter<float> gamma{ "Gamma", 2.2f, 0.01f, 10.0f };
 				ofParameter<int> tonemapping{ "Tonemapping", 6, 0, 6 };
@@ -37,6 +43,7 @@ namespace entropy
                 ofParameter<float> brightness{ "Brightness", 0.0f, -1.0f, 1.0f };
 
                 PARAM_DECLARE("Color", 
+					enabled,
 					exposure, 
 					gamma, 
 					tonemapping, 
@@ -44,30 +51,30 @@ namespace entropy
 					brightness);
 			} color;
 
-            struct : ofParameterGroup
-            {
-                ofParameter<bool> enabled{ "Enabled", true };
+			struct : ofParameterGroup
+			{
+				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<bool> onlyAlpha{ "Only Alpha", true };
-                ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f };
+				ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f };
 				ofParameter<float> outer{ "Outer", 1.1f, 0.5f, 6.0f };
 				ofParameter<float> power{ "Power", 1.1f, 0.1f, 20.0f };
-                ofParameter<float> rotation{ "Rotation", 0.f, -90.f, 90.f };
-                ofParameter<bool> debug{ "Debug", false };
+				ofParameter<float> rotation{ "Rotation", 0.f, -90.f, 90.f };
+				ofParameter<bool> debug{ "Debug", false };
 
-				PARAM_DECLARE("Vignette", 
-					enabled, 
-					onlyAlpha, 
-					inner, outer, 
-					power, 
-					rotation, 
+				PARAM_DECLARE("Vignette",
+					enabled,
+					onlyAlpha,
+					inner, outer,
+					power,
+					rotation,
 					debug);
-            } vignette;
+			} vignette;
 
             ofParameter<float> screenRatio{ "Ratio", 0.f, 0.f, 2.f };
 
             PARAM_DECLARE("Post Effects", 
 				bloom, 
-				color, 
+				color,
 				vignette);
 		};
 		

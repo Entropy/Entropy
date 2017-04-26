@@ -266,6 +266,11 @@ namespace entropy
 {
 	namespace inflation
     {
+		struct Vertex{
+			glm::vec4 pos;
+			ofFloatColor color;
+		};
+
         void GPUMarchingCubes::setup(size_t maxMemorySize) {
             this->maxMemorySize = maxMemorySize;
 
@@ -346,9 +351,20 @@ namespace entropy
 			//glDisable(GL_RASTERIZER_DISCARD);
         }
 
-        const ofVbo & GPUMarchingCubes::getGeometry(){
+		ofVbo & GPUMarchingCubes::getGeometry(){
             return vboFeedback;
         }
+
+		const ofMesh GPUMarchingCubes::downloadGeometry(){
+			ofMesh geometry;
+			auto data = bufferFeedback.map<Vertex>(GL_READ_ONLY);
+			for(size_t i=0;i<getNumVertices();i++){
+				geometry.addVertex(data[i].pos.xyz());
+				geometry.addColor(data[i].color);
+			}
+			bufferFeedback.unmap();
+			return geometry;
+		}
 
         size_t GPUMarchingCubes::getNumVertices() const{
             return numPrimitives * 3;

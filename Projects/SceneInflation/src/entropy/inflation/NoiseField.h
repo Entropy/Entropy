@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ofxPreset.h"
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 
@@ -83,7 +82,7 @@ namespace entropy
 				return volumeTex;
 			}
 
-			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 5.0f };
+			ofParameter<float> noiseSpeed{ "Noise Speed", 0.0f, 0.0f, 15.0f };
 			ofParameter<float> speedFactor{ "Noise Speed Factor", 1.0f, 0.0f, 1.0f };
 			ofParameter<float> normalizationFactor{ "Norm. Factor", 1.0f, 0.8f, 1.2f };
 			ofParameter<float> oscillate{ "Oscillate", 0.0f, 0.f, 1.f };
