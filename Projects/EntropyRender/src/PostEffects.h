@@ -70,7 +70,7 @@ namespace entropy
 					debug);
 			} vignette;
 
-            ofParameter<float> screenRatio{ "Ratio", 0.f, 0.f, 2.f };
+			ofParameter<float> screenRatio{ "Ratio", 16.f/9.f, 0.f, 2.f };
 
             PARAM_DECLARE("Post Effects", 
 				bloom, 
