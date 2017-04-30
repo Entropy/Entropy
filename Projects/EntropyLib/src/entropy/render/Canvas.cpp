@@ -88,9 +88,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-        void Canvas::postProcess(PostParameters & parameters)
+		void Canvas::postProcess(PostParameters & parameters)
 		{
-            this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
+			this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
 			this->postApplied = true;
 		}
 
@@ -98,6 +98,11 @@ namespace entropy
 		void Canvas::render(const ofRectangle & bounds)
 		{
 			auto & texture = this->getRenderTexture();
+
+			if (this->parameters.additiveBlend)
+			{
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+			}
 
 			if (this->parameters.fillWindow)
 			{
@@ -108,6 +113,7 @@ namespace entropy
 			{
 				ofPushMatrix();
 				ofTranslate(bounds.x, bounds.y);
+				ofScale(bounds.width / this->screenWidth, bounds.height / this->screenHeight);
 				{
 					// Go through warps and fbo texture subsections and draw the whole thing.
 					for (auto i = 0; i < this->warps.size(); ++i)
@@ -118,7 +124,12 @@ namespace entropy
 						}
 					}
 				}
-				ofPopMatrix();
+				ofPopMatrix(); 
+			}
+
+			if (this->parameters.additiveBlend)
+			{
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 
 			if (this->exportFrames)
@@ -354,10 +365,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Canvas::drawGui(ofxPreset::Gui::Settings & settings)
+		void Canvas::drawGui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName().c_str(), settings))
 			{
 				if (ImGui::Button("Save"))
 				{
@@ -369,7 +380,7 @@ namespace entropy
 					this->loadSettings();
 				}
 				
-				if (ofxPreset::Gui::BeginTree("Render", settings))
+				if (ofxImGui::BeginTree("Render", settings))
 				{
 					if (ImGui::Checkbox("Export", &this->exportFrames))
 					{
@@ -413,12 +424,13 @@ namespace entropy
 						}
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 				
-				if (ofxPreset::Gui::BeginTree("Warping", settings))
+				if (ofxImGui::BeginTree("Warping", settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.fillWindow);
+					ofxImGui::AddParameter(this->parameters.fillWindow);
+					ofxImGui::AddParameter(this->parameters.additiveBlend);
 
 					if (!this->parameters.fillWindow)
 					{
@@ -476,15 +488,15 @@ namespace entropy
 						}
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Move to the next column for the Warp gui windows.
-			auto warpSettings = ofxPreset::Gui::Settings();
-			//warpSettings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kGuiMargin, 0.0f);
-			warpSettings.windowPos = glm::vec2(800.0f + kGuiMargin, 0.0f);
+			auto warpSettings = ofxImGui::Settings();
+			//warpSettings.windowPos = glm::vec2(settings.totalBounds.getMaxX() + kImGuiMargin, 0.0f);
+			warpSettings.windowPos = glm::vec2(800.0f + kImGuiMargin, 0.0f);
 			for (auto i = 0; i < this->warps.size(); ++i)
 			{
 				if (this->openGuis[i])
@@ -492,17 +504,17 @@ namespace entropy
 					auto warp = this->warps[i];
 					auto & paramGroup = this->warpParameters[i];
 					
-					ofxPreset::Gui::SetNextWindow(warpSettings);
-					if (ofxPreset::Gui::BeginWindow(paramGroup.getName(), warpSettings, false, &this->openGuis[i]))
+					ofxImGui::SetNextWindow(warpSettings);
+					if (ofxImGui::BeginWindow(paramGroup.getName(), warpSettings, false, &this->openGuis[i]))
 					{
-						if (ofxPreset::Gui::AddParameter(paramGroup.editing))
+						if (ofxImGui::AddParameter(paramGroup.editing))
 						{
 							warp->setEditing(paramGroup.editing);
 						}
 
-						ofxPreset::Gui::AddParameter(paramGroup.enabled);
+						ofxImGui::AddParameter(paramGroup.enabled);
 
-						if (ofxPreset::Gui::AddParameter(paramGroup.brightness))
+						if (ofxImGui::AddParameter(paramGroup.brightness))
 						{
 							warp->setBrightness(paramGroup.brightness);
 						}
@@ -536,7 +548,7 @@ namespace entropy
 							// The rest of the controls only apply to Bilinear warps.
 							auto warpBilinear = dynamic_pointer_cast<ofxWarp::WarpBilinear>(warp);
 
-							if (ofxPreset::Gui::AddParameter(paramGroup.mesh.linear))
+							if (ofxImGui::AddParameter(paramGroup.mesh.linear))
 							{
 								warpBilinear->setLinear(paramGroup.mesh.linear);
 							}
@@ -552,7 +564,7 @@ namespace entropy
 								warpBilinear->increaseResolution();
 							}
 
-							if (ofxPreset::Gui::AddParameter(paramGroup.mesh.adaptive))
+							if (ofxImGui::AddParameter(paramGroup.mesh.adaptive))
 							{
 								warpBilinear->setAdaptive(paramGroup.mesh.adaptive);
 							}
@@ -604,27 +616,52 @@ namespace entropy
 
 						if (this->warps.size() > 1)
 						{
-							if (ofxPreset::Gui::BeginTree(paramGroup.blend, settings))
+							if (ofxImGui::BeginTree(paramGroup.blend, settings))
 							{
-								auto tmpLuminanceRef = paramGroup.blend.luminance.get();
-								if (ImGui::ColorEdit3(paramGroup.blend.luminance.getName().c_str(), glm::value_ptr(tmpLuminanceRef)))
+								ofxImGui::AddParameter(paramGroup.blend.luminanceChannelLock);
+								if (paramGroup.blend.luminanceChannelLock.get())
 								{
-									paramGroup.blend.luminance.set(tmpLuminanceRef);
-									warp->setLuminance(paramGroup.blend.luminance);
+									auto tmpLuminanceRef = paramGroup.blend.luminance->r;
+									if (ImGui::SliderFloat(ofxImGui::GetUniqueName(paramGroup.blend.luminance), (float *)&tmpLuminanceRef, paramGroup.blend.luminance.getMin().r, paramGroup.blend.luminance.getMax().r))
+									{
+										paramGroup.blend.luminance.set(glm::vec3(tmpLuminanceRef));
+										warp->setLuminance(paramGroup.blend.luminance);
+									}
 								}
-								auto tmpGammaRef = paramGroup.blend.gamma.get();
-								if (ImGui::ColorEdit3(paramGroup.blend.gamma.getName().c_str(), glm::value_ptr(tmpGammaRef)))
+								else
 								{
-									paramGroup.blend.gamma.set(tmpGammaRef);
-									warp->setGamma(paramGroup.blend.gamma);
+									if (ofxImGui::AddColor(paramGroup.blend.luminance))
+									{
+										warp->setLuminance(paramGroup.blend.luminance);
+									}
 								}
-								if (ofxPreset::Gui::AddParameter(paramGroup.blend.exponent))
+
+								ofxImGui::AddParameter(paramGroup.blend.gammaChannelLock);
+								if (paramGroup.blend.gammaChannelLock.get())
+								{
+									auto tmpGammaRef = paramGroup.blend.gamma->r;
+									if (ImGui::SliderFloat(ofxImGui::GetUniqueName(paramGroup.blend.gamma), (float *)&tmpGammaRef, paramGroup.blend.gamma.getMin().r, paramGroup.blend.gamma.getMax().r))
+									{
+										paramGroup.blend.gamma.set(glm::vec3(tmpGammaRef));
+										warp->setGamma(paramGroup.blend.gamma);
+									}
+								}
+								else
+								{
+									if (ofxImGui::AddParameter(paramGroup.blend.gamma))
+									{
+										warp->setGamma(paramGroup.blend.gamma);
+									}
+								}
+								
+								if (ofxImGui::AddParameter(paramGroup.blend.exponent))
 								{
 									warp->setExponent(paramGroup.blend.exponent);
 								}
+
 								if (i > 0)
 								{
-									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeLeft))
+									if (ofxImGui::AddParameter(paramGroup.blend.edgeLeft))
 									{
 										// Set current left edge.
 										auto edgesSelf = warp->getEdges();
@@ -646,7 +683,7 @@ namespace entropy
 								}
 								if (i < this->warps.size() - 1)
 								{
-									if (ofxPreset::Gui::AddParameter(paramGroup.blend.edgeRight))
+									if (ofxImGui::AddParameter(paramGroup.blend.edgeRight))
 									{
 										// Set current right edge.
 										auto edges = warp->getEdges();
@@ -667,11 +704,11 @@ namespace entropy
 									}
 								}
 
-								ofxPreset::Gui::EndTree(settings);
+								ofxImGui::EndTree(settings);
 							}
 						}
 					}
-					ofxPreset::Gui::EndWindow(warpSettings);
+					ofxImGui::EndWindow(warpSettings);
 				}
 			}
 

@@ -86,20 +86,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Interlude::gui(ofxPreset::Gui::Settings & settings)
+		void Interlude::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName().c_str(), settings))
 			{
-				if (ofxPreset::Gui::BeginTree(this->parameters.stripes, settings))
+				if (ofxImGui::BeginTree(this->parameters.stripes, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->parameters.stripes.backAlpha);
-					ofxPreset::Gui::AddParameter(this->parameters.stripes.frontAlpha);
+					ofxImGui::AddParameter(this->parameters.stripes.backAlpha);
+					ofxImGui::AddParameter(this->parameters.stripes.frontAlpha);
 
 					for (auto & it : this->stripes)
 					{
 						const string name = (it.first == render::Layout::Back ? "Back Stripes" : "Front Stripes");
-						if (ofxPreset::Gui::BeginTree(name, settings))
+						if (ofxImGui::BeginTree(name, settings))
 						{
 							ImGui::ListBoxHeader("List", 3);
 							for (auto i = 0; i < it.second.size(); ++i)
@@ -125,17 +125,17 @@ namespace entropy
 								}
 							}
 
-							ofxPreset::Gui::EndTree(settings);
+							ofxImGui::EndTree(settings);
 						}
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 
 			// Move to the next column for the Stripes gui windows.
-			auto stripesSettings = ofxPreset::Gui::Settings();
+			auto stripesSettings = ofxImGui::Settings();
 			stripesSettings.windowPos = glm::vec2(800.0f + kGuiMargin, 0.0f);
 			for (auto & it : this->stripes)
 			{
@@ -147,24 +147,24 @@ namespace entropy
 						auto instance = it.second.at(i);
 						const auto name = prefix + instance->parameters.getName();
 
-						ofxPreset::Gui::SetNextWindow(stripesSettings);
-						if (ofxPreset::Gui::BeginWindow(name, stripesSettings, false, &this->openGuis[it.first][i]))
+						ofxImGui::SetNextWindow(stripesSettings);
+						if (ofxImGui::BeginWindow(name, stripesSettings, false, &this->openGuis[it.first][i]))
 						{
-							ofxPreset::Gui::AddParameter(instance->enabled);
+							ofxImGui::AddParameter(instance->enabled);
 							static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
-							ofxPreset::Gui::AddRadio(instance->blendMode, blendLabels, 3);
-							ofxPreset::Gui::AddParameter(instance->depthTest);
+							ofxImGui::AddRadio(instance->blendMode, blendLabels, 3);
+							ofxImGui::AddParameter(instance->depthTest);
 							static const vector<string> cullLabels{ "None", "Back", "Front" };
-							ofxPreset::Gui::AddRadio(instance->cullFace, cullLabels, 3);
-							ofxPreset::Gui::AddParameter(instance->color, false);
-							//ofxPreset::Gui::AddParameter(instance->alpha);
-							ofxPreset::Gui::AddParameter(instance->lineWidth);
-							ofxPreset::Gui::AddParameter(instance->lineHeight);
-							ofxPreset::Gui::AddParameter(instance->lineCount);
-							ofxPreset::Gui::AddParameter(instance->spaceWidth);
-							ofxPreset::Gui::AddParameter(instance->zPosition);
+							ofxImGui::AddRadio(instance->cullFace, cullLabels, 3);
+							ofxImGui::AddParameter(instance->color, false);
+							//ofxImGui::AddParameter(instance->alpha);
+							ofxImGui::AddParameter(instance->lineWidth);
+							ofxImGui::AddParameter(instance->lineHeight);
+							ofxImGui::AddParameter(instance->lineCount);
+							ofxImGui::AddParameter(instance->spaceWidth);
+							ofxImGui::AddParameter(instance->zPosition);
 						}
-						ofxPreset::Gui::EndWindow(stripesSettings);
+						ofxImGui::EndWindow(stripesSettings);
 					}
 				}
 			}

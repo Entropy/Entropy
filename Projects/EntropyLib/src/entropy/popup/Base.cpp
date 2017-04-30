@@ -252,59 +252,59 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::gui_(ofxPreset::Gui::Settings & settings)
+		void Base::gui_(ofxImGui::Settings & settings)
 		{
 			if (!this->editing) return;
 
 			auto & parameters = this->getParameters();
 
 			// Add a GUI window for the parameters.
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow("Pop-up " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Pop-up " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
 			{
 				// Add sections for the base parameters.
-				if (ofxPreset::Gui::BeginTree(parameters.base, settings))
+				if (ofxImGui::BeginTree(parameters.base, settings))
 				{
-					ofxPreset::Gui::AddParameter(parameters.base.background);
+					ofxImGui::AddParameter(parameters.base.background);
 					static std::vector<std::string> layoutLabels{ "Back", "Front" };
-					ofxPreset::Gui::AddRadio(parameters.base.layout, layoutLabels, 2);
+					ofxImGui::AddRadio(parameters.base.layout, layoutLabels, 2);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
-					ofxPreset::Gui::AddRadio(parameters.base.surface, surfaceLabels, 2);
-					ofxPreset::Gui::AddParameter(parameters.base.size);
-					ofxPreset::Gui::AddParameter(parameters.base.anchor);
+					ofxImGui::AddRadio(parameters.base.surface, surfaceLabels, 2);
+					ofxImGui::AddParameter(parameters.base.size);
+					ofxImGui::AddParameter(parameters.base.anchor);
 					static std::vector<std::string> horzLabels{ "Left", "Center", "Right" };
-					ofxPreset::Gui::AddRadio(parameters.base.alignHorz, horzLabels, 3);
+					ofxImGui::AddRadio(parameters.base.alignHorz, horzLabels, 3);
 					static std::vector<std::string> vertLabels{ "Top", "Middle", "Bottom" };
-					ofxPreset::Gui::AddRadio(parameters.base.alignVert, vertLabels, 3);
+					ofxImGui::AddRadio(parameters.base.alignVert, vertLabels, 3);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(parameters.border, settings))
+				if (ofxImGui::BeginTree(parameters.border, settings))
 				{
-					ofxPreset::Gui::AddParameter(parameters.border.width);
-					ofxPreset::Gui::AddParameter(parameters.border.color);
+					ofxImGui::AddParameter(parameters.border.width);
+					ofxImGui::AddParameter(parameters.border.color);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxPreset::Gui::BeginTree(parameters.transition, settings))
+				if (ofxImGui::BeginTree(parameters.transition, settings))
 				{
 					static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
-					ofxPreset::Gui::AddRadio(parameters.transition.type, labels, 2);
+					ofxImGui::AddRadio(parameters.transition.type, labels, 2);
 
 					if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
 					{
-						ofxPreset::Gui::AddParameter(parameters.transition.duration);
+						ofxImGui::AddParameter(parameters.transition.duration);
 					}
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
 				// Let the child class handle its child parameters.
 				this->gui(settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------
@@ -349,7 +349,7 @@ namespace entropy
 			}
 			auto page = this->timeline->getPage(PopUpsTimelinePageName);
 
-			std:ostringstream oss;
+			std::ostringstream oss;
 			oss << "Pop-up_" << this->index << "_";
 			if (this->type == Type::Image)
 			{

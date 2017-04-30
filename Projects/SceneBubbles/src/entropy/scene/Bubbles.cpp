@@ -131,36 +131,36 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Bubbles::gui(ofxPreset::Gui::Settings & settings)
+		void Bubbles::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName().c_str(), settings, true, nullptr))
 			{
 				this->pool2D.gui(settings);
 				this->pool3D.gui(settings);
 
-				if (ofxPreset::Gui::BeginTree(this->sphereGeom.parameters, settings))
+				if (ofxImGui::BeginTree(this->sphereGeom.parameters, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->sphereGeom.enabled);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.tintColor, false);
+					ofxImGui::AddParameter(this->sphereGeom.enabled);
+					ofxImGui::AddParameter(this->parameters.sphere.tintColor, false);
 					static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
-					ofxPreset::Gui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.depthTest);
+					ofxImGui::AddRadio(this->sphereGeom.blendMode, blendLabels, 3);
+					ofxImGui::AddParameter(this->sphereGeom.depthTest);
 					static const vector<string> cullLabels{ "None", "Back", "Front" };
-					ofxPreset::Gui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.color);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.alpha);
-					ofxPreset::Gui::AddParameter(this->parameters.sphere.maskMix);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.radius);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.resolution);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.arcHorz);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.arcVert);
-					ofxPreset::Gui::AddParameter(this->sphereGeom.orientation);
+					ofxImGui::AddRadio(this->sphereGeom.cullFace, cullLabels, 3);
+					ofxImGui::AddParameter(this->sphereGeom.color);
+					ofxImGui::AddParameter(this->sphereGeom.alpha);
+					ofxImGui::AddParameter(this->parameters.sphere.maskMix);
+					ofxImGui::AddParameter(this->sphereGeom.radius);
+					ofxImGui::AddParameter(this->sphereGeom.resolution);
+					ofxImGui::AddParameter(this->sphereGeom.arcHorz);
+					ofxImGui::AddParameter(this->sphereGeom.arcVert);
+					ofxImGui::AddParameter(this->sphereGeom.orientation);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 	}
 }

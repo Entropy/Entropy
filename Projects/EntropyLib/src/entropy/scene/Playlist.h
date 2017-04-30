@@ -44,8 +44,8 @@ namespace entropy
 			bool drawSceneWorld(render::Layout layout);
 			bool drawSceneOverlay(render::Layout layout);
 
-			bool drawGui(ofxPreset::Gui::Settings & settings);
-			bool drawTimeline(ofxPreset::Gui::Settings & settings);
+			bool drawGui(ofxImGui::Settings & settings);
+			bool drawTimeline(ofxImGui::Settings & settings);
 
 			bool postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const;
 

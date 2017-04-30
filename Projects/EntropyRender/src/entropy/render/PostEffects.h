@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ofParameter.h"
 #include "ofFbo.h"
-#include "Helpers.h"
+#include "ofParameter.h"
 #include "ofShader.h"
-#include "ofVboMesh.h"
+#include "ofxPreset.h"
 
 namespace entropy
 {

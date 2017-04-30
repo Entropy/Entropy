@@ -138,17 +138,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::gui(ofxPreset::Gui::Settings & settings)
+		void DataSet::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
+			if (ofxImGui::BeginTree(this->parameters, settings))
 			{
-				ofxPreset::Gui::AddParameter(this->parameters.cutRadius);
-				ofxPreset::Gui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
-				ofxPreset::Gui::AddRange("Latitude", this->parameters.minLatitude, this->parameters.maxLatitude);
-				ofxPreset::Gui::AddRange("Longitude", this->parameters.minLongitude, this->parameters.maxLongitude);
-				ofxPreset::Gui::AddParameter(this->parameters.color);
+				ofxImGui::AddParameter(this->parameters.cutRadius);
+				ofxImGui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
+				ofxImGui::AddRange("Latitude", this->parameters.minLatitude, this->parameters.maxLatitude);
+				ofxImGui::AddRange("Longitude", this->parameters.minLongitude, this->parameters.maxLongitude);
+				ofxImGui::AddParameter(this->parameters.color);
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 		}
 

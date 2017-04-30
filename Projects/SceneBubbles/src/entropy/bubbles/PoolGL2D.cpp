@@ -19,8 +19,9 @@ namespace entropy
 		{
 			PoolBase::init();
 
-			// Load the shader.
-			this->shader.load("shaders/passthru.vert", "shaders/ripple.frag");
+			// Load the shaders.
+			this->rippleShader.load("shaders/passthru.vert", "shaders/ripple.frag");
+			this->mixShader.load("shaders/passthru.vert", "shaders/mix.frag");
 		}
 
 		//--------------------------------------------------------------
@@ -103,14 +104,14 @@ namespace entropy
 		{
 			this->fbos[this->tempIdx].begin();
 			{
-				this->shader.begin();
-				this->shader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
-				this->shader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx], 1);
-				this->shader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx], 2);
+				this->rippleShader.begin();
+				this->rippleShader.setUniform1f("uDamping", this->damping / 10.0f + 0.9f);  // 0.9 - 1.0 range
+				this->rippleShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx], 1);
+				this->rippleShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx], 2);
 				{
 					this->mesh.draw();
 				}
-				this->shader.end();
+				this->rippleShader.end();
 			}
 			this->fbos[this->tempIdx].end();
 		}
@@ -132,26 +133,35 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolGL2D::mixFrames(float pct)
 		{
-			this->fbos[this->currIdx].begin();
+			this->fbos[this->tempIdx].begin();
 			{
-				ofClear(0, 0);
-				//ofEnableAlphaBlending();
-
-				ofSetColor(255, 255 * (1.0f - pct));
-				this->textures[this->prevIdx].bind();
+				// Gotta flip for some reason...
+				ofPushMatrix();
 				{
-					this->mesh.draw();
-				}
-				this->textures[this->prevIdx].unbind();
+					ofScale(1.0, -1.0, 1.0);
+					ofTranslate(0.0, this->dimensions.y * -1.0, 0.0);
+				
+					ofClear(0, 0);
+					ofEnableAlphaBlending();
 
-				ofSetColor(255, 255 * pct);
-				this->textures[this->tempIdx].bind();
-				{
-					this->mesh.draw();
+					this->mixShader.begin();
+					this->mixShader.setUniformTexture("uPrevBuffer", this->textures[this->prevIdx], 1);
+					this->mixShader.setUniformTexture("uCurrBuffer", this->textures[this->currIdx], 2);
+					this->mixShader.setUniform1f("uPct", pct);
+					{	
+						this->mesh.draw();
+					}
+					this->mixShader.end();
 				}
-				this->textures[this->tempIdx].unbind();
+				ofPopMatrix();
 			}
-			this->fbos[this->currIdx].end();
+			this->fbos[this->tempIdx].end();
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL2D::setDrawTextureIndex(int idx)
+		{
+			this->drawIdx = idx;
 		}
 
 		//--------------------------------------------------------------
@@ -162,15 +172,9 @@ namespace entropy
 				ofEnableAlphaBlending();
 				ofSetColor(255, this->alpha * 255);
 
-				this->getTexture().draw(0, 0);
+				this->textures[this->drawIdx].draw(0, 0);
 			}
 			ofPopStyle();
-		}
-
-		//--------------------------------------------------------------
-		const ofTexture & PoolGL2D::getTexture() const
-		{
-			return this->textures[this->prevIdx];
 		}
 	}
 }

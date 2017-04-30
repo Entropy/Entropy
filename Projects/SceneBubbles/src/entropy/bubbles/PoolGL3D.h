@@ -37,7 +37,7 @@ namespace entropy
 			void update(double dt) override;
 			void draw() override;
 
-			void gui(ofxPreset::Gui::Settings & settings) override;
+			void gui(ofxImGui::Settings & settings) override;
 
 			ofParameter<int> filterMode{ "Filter Mode", static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Nearest), static_cast<int>(FilterMode::Linear) };
 			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
@@ -49,6 +49,7 @@ namespace entropy
 			void stepRipple() override;
 			void copyResult() override;
 			void mixFrames(float pct) override;
+			void setDrawTextureIndex(int idx) override;
 
 			ofShader dropShader;
 			ofShader rippleShader;

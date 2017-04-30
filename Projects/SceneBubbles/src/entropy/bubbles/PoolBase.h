@@ -18,7 +18,7 @@ namespace entropy
 			virtual void update(double dt);
 			virtual void draw() = 0;
 
-			virtual void gui(ofxPreset::Gui::Settings & settings);
+			virtual void gui(ofxImGui::Settings & settings);
 
 			void setDimensions(int size);
 			void setDimensions(const glm::vec2 & dimensions);
@@ -59,12 +59,18 @@ namespace entropy
 			bool resetSimulation;
 
 		protected:
+			void computeFrame();
+
 			virtual void addDrop() = 0;
 			virtual void stepRipple() = 0;
 			virtual void copyResult() = 0;
 			virtual void mixFrames(float pct) = 0;
 
+			virtual void setDrawTextureIndex(int idx) = 0;
+
 			glm::vec3 dimensions;
+
+			int frameCount;
 
 			int currIdx;
 			int prevIdx;

@@ -45,7 +45,7 @@ namespace entropy
 
 			bool isEditing() const;
 
-			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawGui(ofxImGui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
@@ -93,13 +93,15 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
+					ofParameter<bool> luminanceChannelLock{ "Luminance Channel Lock", false };
 					ofParameter<glm::vec3> luminance{ "Luminance", glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(1.0f) };
-					ofParameter<glm::vec3> gamma{ "Gamma", glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f) };
-					ofParameter<float> exponent{ "Exponent", 2.0f, 0.1f, 20.0f };
+					ofParameter<bool> gammaChannelLock{ "Gamma Channel Lock", true };
+					ofParameter<glm::vec3> gamma{ "Gamma", glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(8.0f) };
+					ofParameter<float> exponent{ "Exponent", 2.0f, 0.1f, 8.0f };
 					ofParameter<float> edgeLeft{ "Edge Left", 0.0f, 0.0f, 1.0f };
 					ofParameter<float> edgeRight{ "Edge Right", 0.0f, 0.0f, 1.0f };
 
-					PARAM_DECLARE("Blend", luminance, gamma, exponent, edgeLeft, edgeRight);
+					PARAM_DECLARE("Blend", luminanceChannelLock, luminance, gammaChannelLock, gamma, exponent, edgeLeft, edgeRight);
 				} blend;
 
 				PARAM_DECLARE("Warp", editing, enabled, brightness, mesh, blend);
@@ -108,6 +110,7 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<bool> fillWindow{ "Fill Window", false };
+				ofParameter<bool> additiveBlend{ "Additive Blend", false };
 
 				PARAM_DECLARE("Canvas", fillWindow);
 			} parameters;

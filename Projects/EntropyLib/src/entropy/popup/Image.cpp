@@ -22,9 +22,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Image::gui(ofxPreset::Gui::Settings & settings)
+		void Image::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree("File", settings))
+			if (ofxImGui::BeginTree("File", settings))
 			{
 				if (ImGui::Button("Load..."))
 				{
@@ -48,7 +48,7 @@ namespace entropy
 				}
 				ImGui::Text("Filename: %s", this->fileName.c_str());
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 		}
 

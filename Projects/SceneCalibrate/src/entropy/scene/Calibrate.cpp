@@ -240,7 +240,7 @@ namespace entropy
 					}
 					else
 					{
-						this->addQuad(glm::vec3(i * this->parameters.grid.resolution, GetCanvasHeight(layout) * 0.5f, 0), glm::vec3(this->parameters.grid.lineWidth, GetCanvasHeight(layout), 0.0f), color, this->horizontalMesh);
+						this->addQuad(glm::vec3(i * this->parameters.grid.resolution, GetCanvasHeight(layout) * 0.5f, 0), glm::vec3(this->parameters.grid.lineWidth, GetCanvasHeight(layout), 0.0f), color, this->verticalMesh);
 					}
 				}
 			}
@@ -385,30 +385,30 @@ namespace entropy
 
 		//--------------------------------------------------------------
 		/// Add Scene specific gui windows here.
-		void Calibrate::gui(ofxPreset::Gui::Settings & settings)
+		void Calibrate::gui(ofxImGui::Settings & settings)
 		{
-			ofxPreset::Gui::SetNextWindow(settings);
-			if (ofxPreset::Gui::BeginWindow(this->parameters.getName(), settings))
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow(this->parameters.getName(), settings))
 			{
 				// Add parameters manually.
-				if (ofxPreset::Gui::BeginTree(this->parameters.grid, settings))
+				if (ofxImGui::BeginTree(this->parameters.grid, settings))
 				{
 					static vector<string> labels{ "Back", "Front" };
-					ofxPreset::Gui::AddRadio(this->parameters.grid.layout, labels, 2);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.resolution);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.lineWidth);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.centerPoints);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.horizontalLines);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.verticalLines);
-					ofxPreset::Gui::AddParameter(this->parameters.grid.crossLines);
+					ofxImGui::AddRadio(this->parameters.grid.layout, labels, 2);
+					ofxImGui::AddParameter(this->parameters.grid.resolution);
+					ofxImGui::AddParameter(this->parameters.grid.lineWidth);
+					ofxImGui::AddParameter(this->parameters.grid.centerPoints);
+					ofxImGui::AddParameter(this->parameters.grid.horizontalLines);
+					ofxImGui::AddParameter(this->parameters.grid.verticalLines);
+					ofxImGui::AddParameter(this->parameters.grid.crossLines);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
 				// Add parameters by group.
-				ofxPreset::Gui::AddGroup(this->parameters.border, settings);
+				ofxImGui::AddGroup(this->parameters.border, settings);
 			}
-			ofxPreset::Gui::EndWindow(settings);
+			ofxImGui::EndWindow(settings);
 		}
 
 		//--------------------------------------------------------------

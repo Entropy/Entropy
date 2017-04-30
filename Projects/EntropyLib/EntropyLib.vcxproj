@@ -180,6 +180,19 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
@@ -194,7 +207,8 @@
     <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
     <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\addons\ofxImGui\src\ofxImGui.cpp" />
+    <ClCompile Include="..\..\addons\ofxImGui\src\Gui.cpp" />
+    <ClCompile Include="..\..\addons\ofxImGui\src\Helpers.cpp" />
     <ClCompile Include="..\..\addons\ofxMSATimer\src\ofxMSATimer.cpp" />
     <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c" />
     <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
@@ -268,9 +282,31 @@
     <ClCompile Include="src\entropy\scene\Base.cpp" />
     <ClCompile Include="src\entropy\scene\Playlist.cpp" />
     <ClCompile Include="src\entropy\util\App.cpp" />
+    <ClCompile Include="src\entropy\util\Messenger.cpp" />
     <ClCompile Include="src\entropy\world\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
+    <ClInclude Include="..\..\..\addons\ofxPoco\src\ofxXmlPoco.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
     <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstUtils.h" />
@@ -285,6 +321,8 @@
     <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
+    <ClInclude Include="..\..\addons\ofxImGui\src\Gui.h" />
+    <ClInclude Include="..\..\addons\ofxImGui\src\Helpers.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h" />
     <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h" />
@@ -371,6 +409,7 @@
     <ClInclude Include="src\entropy\util\App.h" />
     <ClInclude Include="src\entropy\util\GLError.h" />
     <ClInclude Include="src\entropy\util\Mapping.h" />
+    <ClInclude Include="src\entropy\util\Messenger.h" />
     <ClInclude Include="src\entropy\util\Singleton.h" />
     <ClInclude Include="src\entropy\world\Camera.h" />
   </ItemGroup>

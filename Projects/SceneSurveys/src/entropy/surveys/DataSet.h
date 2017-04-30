@@ -23,7 +23,7 @@ namespace entropy
 
 			void draw(ofShader & shader);
 
-			void gui(ofxPreset::Gui::Settings & settings);
+			void gui(ofxImGui::Settings & settings);
 
 			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);

@@ -15,7 +15,7 @@ namespace entropy
 			, wasLoaded(false)
 		{
 			// Use a video player because it has better playback functionality.
-			this->soundPlayer.setPlayer(std::shared_ptr<ofGstVideoPlayer>(new ofGstVideoPlayer()));
+			this->soundPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
 
 		//--------------------------------------------------------------
@@ -102,9 +102,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Sound::gui(ofxPreset::Gui::Settings & settings)
+		void Sound::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree("File", settings))
+			if (ofxImGui::BeginTree("File", settings))
 			{
 				if (ImGui::Button("Load..."))
 				{
@@ -128,10 +128,10 @@ namespace entropy
 				}
 				ImGui::Text("Filename: %s", this->fileName.c_str());
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 
-			ofxPreset::Gui::AddParameter(this->parameters.loop);
+			ofxImGui::AddParameter(this->parameters.loop);
 		}
 
 		//--------------------------------------------------------------

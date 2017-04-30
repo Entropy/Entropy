@@ -19,6 +19,8 @@ namespace entropy
 		//--------------------------------------------------------------
 		void PoolBase::reset()
 		{
+			this->frameCount = 0;
+
 			this->prevIdx = 0;
 			this->currIdx = 1;
 			this->tempIdx = 2;
@@ -36,59 +38,82 @@ namespace entropy
 
 			if (this->runSimulation && (this->drawBack || this->drawFront))
 			{
-				int frame = (ofGetFrameNum() % this->rippleRate);
-				if (frame == 0)
-				{
-					//this->copyResult();
-
-					std::swap(this->currIdx, this->prevIdx);
+				++this->frameCount;
 				
-					if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
-					{
-						this->addDrop();
-					}
-
-					this->stepRipple();
-					this->copyResult();
+				if (this->rippleRate == 1)
+				{
+					// Compute a new frame every frame.
+					this->computeFrame();
+					this->setDrawTextureIndex(this->currIdx);
 				}
-				//else
-				//{
-				//	float pct = frame / static_cast<float>(this->rippleRate.get());
-				//	this->mixFrames(pct);
-				//}
+				else
+				{
+					int frame = (this->frameCount % this->rippleRate);
+					if (frame == 1)
+					{
+						// Compute a new target frame for the next cycle.
+						this->computeFrame();
+					}
+					if (frame == 0)
+					{
+						// End of the cycle, draw the previous computed frame.
+						this->setDrawTextureIndex(this->currIdx);
+					}
+					else
+					{
+						// Mix previous and next frames during the cycle.
+						float pct = frame / static_cast<float>(this->rippleRate.get());
+						this->mixFrames(pct);
+						this->setDrawTextureIndex(this->tempIdx);
+					}
+				}
 			}
 		}
 
 		//--------------------------------------------------------------
-		void PoolBase::gui(ofxPreset::Gui::Settings & settings)
+		void PoolBase::computeFrame()
 		{
-			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
+			std::swap(this->currIdx, this->prevIdx);
+
+			if (this->dropping && (ofGetFrameNum() % this->dropRate) == 0)
 			{
-				ofxPreset::Gui::AddParameter(this->runSimulation);
+				this->addDrop();
+			}
+
+			this->stepRipple();
+			this->copyResult();
+		}
+
+		//--------------------------------------------------------------
+		void PoolBase::gui(ofxImGui::Settings & settings)
+		{
+			if (ofxImGui::BeginTree(this->parameters, settings))
+			{
+				ofxImGui::AddParameter(this->runSimulation);
 				ImGui::SameLine();
 				if (ImGui::Button("Reset Simulation"))
 				{
 					this->resetSimulation = true;
 				}
 
-				ofxPreset::Gui::AddParameter(this->drawBack);
+				ofxImGui::AddParameter(this->drawBack);
 				ImGui::SameLine();
-				ofxPreset::Gui::AddParameter(this->drawFront);
+				ofxImGui::AddParameter(this->drawFront);
 
-				ofxPreset::Gui::AddParameter(this->alpha);
+				ofxImGui::AddParameter(this->alpha);
 
-				ofxPreset::Gui::AddParameter(this->dropColor1);
-				ofxPreset::Gui::AddParameter(this->dropColor2);
-				ofxPreset::Gui::AddParameter(this->dropping);
-				ofxPreset::Gui::AddParameter(this->dropRate);
+				ofxImGui::AddParameter(this->dropColor1);
+				ofxImGui::AddParameter(this->dropColor2);
+				ofxImGui::AddParameter(this->dropping);
+				ofxImGui::AddParameter(this->dropRate);
 
-				ofxPreset::Gui::AddParameter(this->rippleRate);
+				ofxImGui::AddParameter(this->rippleRate);
 
-				ofxPreset::Gui::AddParameter(this->damping);
-				ofxPreset::Gui::AddParameter(this->radius);
-				ofxPreset::Gui::AddParameter(this->ringSize);
+				ofxImGui::AddParameter(this->damping);
+				ofxImGui::AddParameter(this->radius);
+				ofxImGui::AddParameter(this->ringSize);
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 		}
 

@@ -20,17 +20,17 @@ namespace entropy
 			: cameraTrack(nullptr)
 		{
 			// Set parameter listeners.
-			this->parameterListeners.push_back(fov.newListener([this](float & enabled)
+			this->parameterListeners.push_back(fov.newListener([this](float & value)
 			{
-				this->easyCam.setFov(enabled);
+				this->easyCam.setFov(value);
 			}));
-			this->parameterListeners.push_back(nearClip.newListener([this](float & enabled)
+			this->parameterListeners.push_back(nearClip.newListener([this](float & value)
 			{
-				this->easyCam.setNearClip(enabled);
+				this->easyCam.setNearClip(value);
 			}));
-			this->parameterListeners.push_back(farClip.newListener([this](float & enabled)
+			this->parameterListeners.push_back(farClip.newListener([this](float & value)
 			{
-				this->easyCam.setFarClip(enabled);
+				this->easyCam.setFarClip(value);
 			})); 
 			
 			this->parameterListeners.push_back(attachToParent.newListener([this](bool & enabled)
@@ -493,23 +493,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Camera::gui(ofxPreset::Gui::Settings & settings)
+		bool Camera::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
+			if (ofxImGui::BeginTree(this->parameters, settings))
 			{				
-				ofxPreset::Gui::AddParameter(this->inheritsSettings);
+				ofxImGui::AddParameter(this->inheritsSettings);
 
-				ofxPreset::Gui::AddParameter(this->fov);
-				ofxPreset::Gui::AddRange("Clipping", this->nearClip, this->farClip);
+				ofxImGui::AddParameter(this->fov);
+				ofxImGui::AddRange("Clipping", this->nearClip, this->farClip);
 				
 				if (this->hasParent())
 				{
-					ofxPreset::Gui::AddParameter(this->attachToParent);
+					ofxImGui::AddParameter(this->attachToParent);
 				}
 				if (!this->isAttachedToParent())
 				{
-					ofxPreset::Gui::AddParameter(this->mouseControl);
-					ofxPreset::Gui::AddParameter(this->relativeYAxis);
+					ofxImGui::AddParameter(this->mouseControl);
+					ofxImGui::AddParameter(this->relativeYAxis);
 				}
 				
 				if (ImGui::Button("Reset"))
@@ -532,14 +532,14 @@ namespace entropy
 
 				if (!this->isAttachedToParent())
 				{
-					ofxPreset::Gui::AddParameter(this->tiltSpeed);
-					ofxPreset::Gui::AddParameter(this->panSpeed);
-					ofxPreset::Gui::AddParameter(this->rollSpeed);
-					ofxPreset::Gui::AddParameter(this->tumbleOverride);
-					ofxPreset::Gui::AddParameter(this->dollySpeed);
+					ofxImGui::AddParameter(this->tiltSpeed);
+					ofxImGui::AddParameter(this->panSpeed);
+					ofxImGui::AddParameter(this->rollSpeed);
+					ofxImGui::AddParameter(this->tumbleOverride);
+					ofxImGui::AddParameter(this->dollySpeed);
 				}
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 
 				return true;
 			}

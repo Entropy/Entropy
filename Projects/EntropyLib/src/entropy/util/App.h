@@ -2,12 +2,20 @@
 
 #include "entropy/render/Canvas.h"
 #include "entropy/scene/Playlist.h"
+#include "entropy/util/Messenger.h"
 #include "entropy/util/Singleton.h"
 
 namespace entropy
 {
 	namespace util
 	{
+		enum class Preview
+		{
+			None,
+			Warp,
+			Full
+		};
+		
 		class App_
 		{
 		public:
@@ -15,6 +23,7 @@ namespace entropy
 			~App_();
 
 			shared_ptr<render::Canvas> getCanvas(render::Layout layout);
+			shared_ptr<util::Messenger> getMessenger() const;
 			shared_ptr<scene::Playlist> getPlaylist() const;
 
 			const ofRectangle & getScreenBounds(render::Layout layout);
@@ -50,21 +59,24 @@ namespace entropy
 
 			void processCanvas(render::Layout layout, bool renderEnabled);
 
-			void drawGui(ofxPreset::Gui::Settings & settings);
+			void drawGui(ofxImGui::Settings & settings);
 
 			void applyConfiguration();
 			void updatePreviews();
+			void updateOutline(render::Layout layout);
 
 		protected:
 			std::map<render::Layout, shared_ptr<render::Canvas>> canvas;
+			shared_ptr<util::Messenger> messenger;
 			shared_ptr<scene::Playlist> playlist;
 
 			std::map<render::Layout, ofRectangle> screenBounds;
 			std::map<render::Layout, ofRectangle> previewBounds;
+			std::map<render::Layout, ofVboMesh> previewOutlines;
 			ofRectangle boundsControl;
 
-			ofxImGui imGui;
-			ofxPreset::Gui::Settings guiSettings;
+			ofxImGui::Gui imGui;
+			ofxImGui::Settings guiSettings;
 
 			struct : ofParameterGroup
 			{
@@ -78,11 +90,11 @@ namespace entropy
 
 					struct : ofParameterGroup
 					{
-						ofParameter<bool> backEnabled{ "Back Enabled", true };
-						ofParameter<bool> frontEnabled{ "Front Enabled", true };
+						ofParameter<int> modeBack{ "Back", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
+						ofParameter<int> modeFront{ "Front", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
 						ofParameter<float> scale{ "Scale", 0.5f, 0.1f, 1.0f };
 
-						PARAM_DECLARE("Preview", backEnabled, frontEnabled, scale);
+						PARAM_DECLARE("Preview", modeBack, modeFront, scale);
 					} preview;
 					
 					PARAM_DECLARE("Control Screen", enabled, screenWidth, screenHeight, preview);

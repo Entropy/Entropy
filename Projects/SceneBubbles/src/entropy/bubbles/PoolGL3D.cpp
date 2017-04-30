@@ -288,16 +288,16 @@ namespace entropy
 							   dstTex.texData.textureID, dstTex.texData.textureTarget, 0, 0, 0, 0,
 							   srcTex.texData.width, srcTex.texData.height, srcTex.texData.depth);
 #endif
-			this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
+			//this->volumetrics.updateTexture(&this->textures[this->currIdx], glm::vec3(1.0f));
 			//this->volumetrics.updateTexture(&this->textures[this->prevIdx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------
 		void PoolGL3D::mixFrames(float pct)
 		{
-			this->textures[this->currIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
+			this->textures[this->tempIdx].bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
 			this->textures[this->prevIdx].bindAsImage(1, GL_READ_ONLY, 0, true, 0);
-			this->textures[this->tempIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0); 
+			this->textures[this->currIdx].bindAsImage(2, GL_READ_ONLY, 0, true, 0);
 			
 			this->mixShader.begin();
 			{
@@ -311,6 +311,12 @@ namespace entropy
 			glBindImageTexture(1, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
 			glBindImageTexture(2, 0, 0, 0, 0, GL_READ_WRITE, GL_RGBA16F);
 			glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		}
+
+		//--------------------------------------------------------------
+		void PoolGL3D::setDrawTextureIndex(int idx)
+		{
+			this->volumetrics.updateTexture(&this->textures[idx], glm::vec3(1.0f));
 		}
 
 		//--------------------------------------------------------------
@@ -333,54 +339,54 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void PoolGL3D::gui(ofxPreset::Gui::Settings & settings)
+		void PoolGL3D::gui(ofxImGui::Settings & settings)
 		{
-			if (ofxPreset::Gui::BeginTree(this->parameters, settings))
+			if (ofxImGui::BeginTree(this->parameters, settings))
 			{
-				ofxPreset::Gui::AddParameter(this->runSimulation);
+				ofxImGui::AddParameter(this->runSimulation);
 				ImGui::SameLine();
 				if (ImGui::Button("Reset Simulation"))
 				{
 					this->resetSimulation = true;
 				}
 
-				ofxPreset::Gui::AddParameter(this->drawBack);
+				ofxImGui::AddParameter(this->drawBack);
 				ImGui::SameLine();
-				ofxPreset::Gui::AddParameter(this->drawFront);
+				ofxImGui::AddParameter(this->drawFront);
 
-				ofxPreset::Gui::AddParameter(this->alpha);
+				ofxImGui::AddParameter(this->alpha);
 
-				ofxPreset::Gui::AddParameter(this->dropColor1);
-				ofxPreset::Gui::AddParameter(this->dropColor2);
-				ofxPreset::Gui::AddParameter(this->dropping);
-				ofxPreset::Gui::AddParameter(this->dropRate);
+				ofxImGui::AddParameter(this->dropColor1);
+				ofxImGui::AddParameter(this->dropColor2);
+				ofxImGui::AddParameter(this->dropping);
+				ofxImGui::AddParameter(this->dropRate);
 
-				ofxPreset::Gui::AddParameter(this->rippleRate);
+				ofxImGui::AddParameter(this->rippleRate);
 
-				ofxPreset::Gui::AddParameter(this->damping);
-				ofxPreset::Gui::AddParameter(this->radius);
-				ofxPreset::Gui::AddParameter(this->ringSize);
+				ofxImGui::AddParameter(this->damping);
+				ofxImGui::AddParameter(this->radius);
+				ofxImGui::AddParameter(this->ringSize);
 
 				static const vector<string> labels{ "Nearest", "Linear" };
-				ofxPreset::Gui::AddRadio(this->filterMode, labels, 2);
-				ofxPreset::Gui::AddParameter(this->volumeSize);
+				ofxImGui::AddRadio(this->filterMode, labels, 2);
+				ofxImGui::AddParameter(this->volumeSize);
 
-				if (ofxPreset::Gui::BeginTree(this->bursts.parameters, settings))
+				if (ofxImGui::BeginTree(this->bursts.parameters, settings))
 				{
-					ofxPreset::Gui::AddParameter(this->bursts.enabled);
-					ofxPreset::Gui::AddParameter(this->bursts.resolution);
-					ofxPreset::Gui::AddParameter(this->bursts.color);
-					ofxPreset::Gui::AddParameter(this->bursts.maxAge);
-					ofxPreset::Gui::AddParameter(this->bursts.forceMultiplier);
-					ofxPreset::Gui::AddParameter(this->bursts.forceRandom);
-					ofxPreset::Gui::AddParameter(this->bursts.worldBounds);
-					ofxPreset::Gui::AddRange("Distance", this->bursts.minDistance, this->bursts.maxDistance);
-					ofxPreset::Gui::AddParameter(this->bursts.maxLinks);
+					ofxImGui::AddParameter(this->bursts.enabled);
+					ofxImGui::AddParameter(this->bursts.resolution);
+					ofxImGui::AddParameter(this->bursts.color);
+					ofxImGui::AddParameter(this->bursts.maxAge);
+					ofxImGui::AddParameter(this->bursts.forceMultiplier);
+					ofxImGui::AddParameter(this->bursts.forceRandom);
+					ofxImGui::AddParameter(this->bursts.worldBounds);
+					ofxImGui::AddRange("Distance", this->bursts.minDistance, this->bursts.maxDistance);
+					ofxImGui::AddParameter(this->bursts.maxLinks);
 
-					ofxPreset::Gui::EndTree(settings);
+					ofxImGui::EndTree(settings);
 				}
 
-				ofxPreset::Gui::EndTree(settings);
+				ofxImGui::EndTree(settings);
 			}
 		}
 

@@ -73,7 +73,7 @@ namespace entropy
 			void update_(double dt);
 			void draw_();
 
-			void gui_(ofxPreset::Gui::Settings & settings);
+			void gui_(ofxImGui::Settings & settings);
 			
 			void serialize_(nlohmann::json & json);
 			void deserialize_(const nlohmann::json & json);
@@ -91,7 +91,7 @@ namespace entropy
 
 			virtual void draw() {}
 
-			virtual void gui(ofxPreset::Gui::Settings & settings) {}
+			virtual void gui(ofxImGui::Settings & settings) {}
 
 			virtual void serialize(nlohmann::json & json) {}
 			virtual void deserialize(const nlohmann::json & json) {}
