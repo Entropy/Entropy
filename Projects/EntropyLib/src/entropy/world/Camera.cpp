@@ -1,6 +1,8 @@
 #include "Camera.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/util/App.h"
+#include "ofxTween.h"
 
 namespace entropy
 {
@@ -142,7 +144,7 @@ namespace entropy
 				this->easyCam.enableMouseInput();
 			}
 
-			if (!this->attachToParent && !this->easyCam.isMoving())
+			if (!this->attachToParent)// && !this->easyCam.isMoving())
 			{
 				if (this->tumbleOverride)
 				{

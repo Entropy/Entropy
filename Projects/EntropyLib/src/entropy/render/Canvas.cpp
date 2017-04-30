@@ -1,6 +1,7 @@
 #include "Canvas.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/util/App.h"
 
 namespace entropy
 {

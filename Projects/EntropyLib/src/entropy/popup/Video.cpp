@@ -3,6 +3,7 @@
 #include "ofGstVideoPlayer.h"
 
 #include "entropy/Helpers.h"
+#include "ofxTimeline.h"
 
 namespace entropy
 {

@@ -1,6 +1,10 @@
 #include "Base.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/util/App.h"
+
+#include "ofxTween.h"
+#include "ofxTimeline.h"
 
 namespace entropy
 {
