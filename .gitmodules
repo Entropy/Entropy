@@ -61,3 +61,6 @@
 [submodule "addons/ofxGStreamer"]
 	path = addons/ofxGStreamer
 	url = https://github.com/Entropy/ofxGStreamer.git
+[submodule "addons/ofxEasing"]
+	path = addons/ofxEasing
+	url = https://github.com/arturoc/ofxEasing
