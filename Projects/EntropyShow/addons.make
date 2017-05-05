@@ -1,4 +1,6 @@
 ../EntropyLib
+../EntropyUtil
+../EntropyRender
 ../SceneBubbles
 ../SceneCalibrate
 ../SceneInflation
@@ -19,4 +21,4 @@
 ../../addons/ofxWarp
 ../../addons/ofxGpuParticles
 ../../addons/ofxHDF5
-ofxXmlSettings'
+ofxXmlSettings

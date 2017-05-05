@@ -10,15 +10,6 @@
 		<ClCompile Include="..\EntropyLib\src\entropy\render\Canvas.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\render\WireframeFillRenderer.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\render\PostEffects.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\render\BlobMask.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\popup\Base.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
 		</ClCompile>
@@ -32,6 +23,9 @@
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\util\Mapping.inl">
+			<Filter>local_addons\EntropyLib\src\entropy\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyLib\src\entropy\util\Messenger.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\util</Filter>
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\util\App.cpp">
@@ -57,6 +51,15 @@
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\world\Camera.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\world</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.cpp">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyRender\src\entropy\render\PostEffects.cpp">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyRender\src\entropy\render\BlobMask.cpp">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
 		</ClCompile>
 		<ClCompile Include="..\SceneBubbles\src\entropy\scene\Bubbles.cpp">
 			<Filter>local_addons\SceneBubbles\src\entropy\scene</Filter>
@@ -319,6 +322,9 @@
 		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxBaseEasing.cpp">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClCompile>
@@ -341,9 +347,6 @@
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp">
-			<Filter>local_addons\ofxTween\src\Easings</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\addons\ofxTween\src\Easings\ofxEasing.cpp">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\addons\ofxTween\src\ofxTween.cpp">
@@ -397,6 +400,18 @@
 		<ClCompile Include="..\..\addons\ofxHDF5\src\ofxHDF5Container.cpp">
 			<Filter>local_addons\ofxHDF5\src</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
 	</ItemGroup>
 	<ItemGroup>
 		<Filter Include="src">
@@ -431,6 +446,27 @@
 		</Filter>
 		<Filter Include="local_addons\EntropyLib\src\entropy\world">
 			<UniqueIdentifier>{1C25C1FA-5923-D7B1-9FC0-3B96}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyUtil">
+			<UniqueIdentifier>{BB8A8D78-89DA-2819-DBA5-F090}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyUtil\src">
+			<UniqueIdentifier>{73EDF871-B49B-4AE6-BEC4-2098}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyUtil\src\entropy">
+			<UniqueIdentifier>{B775035B-342C-D6AC-0EED-D0DB}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyRender">
+			<UniqueIdentifier>{31A44935-C502-8EFA-2677-F449}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyRender\src">
+			<UniqueIdentifier>{F1261477-D89A-F3EA-EFCF-1E88}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyRender\src\entropy">
+			<UniqueIdentifier>{73F1BE7B-10C8-CA82-5B22-6286}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyRender\src\entropy\render">
+			<UniqueIdentifier>{D0002D35-1F4C-75D4-E003-90A5}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="local_addons\SceneBubbles">
 			<UniqueIdentifier>{23578B8D-0566-A4B7-4DF1-2BEB}</UniqueIdentifier>
@@ -696,6 +732,18 @@
 		<Filter Include="local_addons\ofxHDF5\libs\zlib\include">
 			<UniqueIdentifier>{950EFA3D-5B1F-BAB6-9D6D-6F04}</UniqueIdentifier>
 		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings">
+			<UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\src">
+			<UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\libs">
+			<UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
+		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h">
@@ -704,16 +752,7 @@
 		<ClInclude Include="..\EntropyLib\src\entropy\render\Layout.h">
 			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\render\WireframeFillRenderer.h">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\render\PostEffects.h">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClInclude>
 		<ClInclude Include="..\EntropyLib\src\entropy\render\Canvas.h">
-			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
-		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\render\BlobMask.h">
 			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
 		</ClInclude>
 		<ClInclude Include="..\EntropyLib\src\entropy\popup\Base.h">
@@ -740,8 +779,8 @@
 		<ClInclude Include="..\EntropyLib\src\entropy\util\Mapping.h">
 			<Filter>local_addons\EntropyLib\src\entropy\util</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\Helpers.h">
-			<Filter>local_addons\EntropyLib\src\entropy</Filter>
+		<ClInclude Include="..\EntropyLib\src\entropy\util\Messenger.h">
+			<Filter>local_addons\EntropyLib\src\entropy\util</Filter>
 		</ClInclude>
 		<ClInclude Include="..\EntropyLib\src\entropy\scene\Base.h">
 			<Filter>local_addons\EntropyLib\src\entropy\scene</Filter>
@@ -763,6 +802,18 @@
 		</ClInclude>
 		<ClInclude Include="..\EntropyLib\src\entropy\world\Camera.h">
 			<Filter>local_addons\EntropyLib\src\entropy\world</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyUtil\src\entropy\Helpers.h">
+			<Filter>local_addons\EntropyUtil\src\entropy</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.h">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyRender\src\entropy\render\PostEffects.h">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyRender\src\entropy\render\BlobMask.h">
+			<Filter>local_addons\EntropyRender\src\entropy\render</Filter>
 		</ClInclude>
 		<ClInclude Include="..\SceneBubbles\src\entropy\scene\Bubbles.h">
 			<Filter>local_addons\SceneBubbles\src\entropy\scene</Filter>
@@ -1052,13 +1103,13 @@
 		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxBaseEasing.h">
+			<Filter>local_addons\ofxTween\src\Easings</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\addons\ofxTween\src\Easings\easing_terms_of_use.html">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h">
-			<Filter>local_addons\ofxTween\src\Easings</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasing.h">
 			<Filter>local_addons\ofxTween\src\Easings</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h">
@@ -1516,6 +1567,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\addons\ofxHDF5\libs\zlib\include\zconf.h">
 			<Filter>local_addons\ofxHDF5\libs\zlib\include</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>
