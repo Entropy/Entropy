@@ -3,7 +3,7 @@
 #include "ofFbo.h"
 #include "ofParameter.h"
 #include "ofShader.h"
-#include "ofxPreset.h"
+#include "entropy/Helpers.h"
 
 namespace entropy
 {

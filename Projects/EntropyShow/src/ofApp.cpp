@@ -7,6 +7,7 @@
 #include "entropy/scene/Interlude.h"
 #include "entropy/scene/Particles.h"
 #include "entropy/scene/Surveys.h"
+#include "entropy/util/App.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
