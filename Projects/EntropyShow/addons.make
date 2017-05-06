@@ -1,3 +1,6 @@
+ofxOsc
+ofxXmlSettings
+../EntropyGeom
 ../EntropyLib
 ../EntropyUtil
 ../EntropyRender
@@ -22,5 +25,3 @@
 ../../addons/ofxEasing
 ../../addons/ofxTbb
 ../../addons/ofxGStreamer
-ofxOsc
-ofxXmlSettings
