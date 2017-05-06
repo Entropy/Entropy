@@ -13,17 +13,65 @@
 		<ClCompile Include="src\ofApp.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\geom\Box.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\geom\Shape.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\geom\Sphere.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\geom\Stripes.cpp">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyGeom\src\entropy\geom\Box.cpp">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyGeom\src\entropy\geom\Shape.cpp">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyGeom\src\entropy\geom\Sphere.cpp">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClCompile>
+		<ClCompile Include="..\EntropyGeom\src\entropy\geom\Stripes.cpp">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\popup\Image.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
@@ -337,61 +385,61 @@
 		<ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.cpp">
 			<Filter>other</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
-			<Filter>addons\ofxXmlSettings\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
-			<Filter>addons\ofxXmlSettings\libs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
-			<Filter>addons\ofxXmlSettings\libs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
-			<Filter>addons\ofxXmlSettings\libs</Filter>
-		</ClCompile>
 	</ItemGroup>
 	<ItemGroup>
 		<Filter Include="src">
 			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
 		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc">
+			<UniqueIdentifier>{D91DCA33-6E5D-4481-2AEC-9FBB}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\src">
+			<UniqueIdentifier>{B9DD339A-D93D-92A1-0A2F-4B41}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs">
+			<UniqueIdentifier>{99ECA1D9-873F-4622-8FC0-FC7B}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs\oscpack">
+			<UniqueIdentifier>{D3A98534-1602-4FEF-57A6-6593}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src">
+			<UniqueIdentifier>{BFB5BB47-98C8-BBCB-3066-1046}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip">
+			<UniqueIdentifier>{5A029128-EB41-95C5-CBC0-CDED}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip\win32">
+			<UniqueIdentifier>{79DFDFE2-400B-8654-3675-01A3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\osc">
+			<UniqueIdentifier>{EDACB89C-9768-9551-4D41-B590}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings">
+			<UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\src">
+			<UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\libs">
+			<UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
+		</Filter>
 		<Filter Include="local_addons">
 			<UniqueIdentifier>{DE6745C7-E99D-D8E0-F77D-C032}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyGeom">
+			<UniqueIdentifier>{8E03FC7A-1BDB-D206-104A-4E4B}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyGeom\src">
+			<UniqueIdentifier>{668B0D10-5A56-121D-72BE-5490}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyGeom\src\entropy">
+			<UniqueIdentifier>{45678B2B-8DDC-9B0C-EEEA-802B}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="local_addons\EntropyGeom\src\entropy\geom">
+			<UniqueIdentifier>{B7B44AA4-23A6-A451-1B56-2A08}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="local_addons\EntropyLib">
 			<UniqueIdentifier>{333A819A-D14A-B906-4091-799E}</UniqueIdentifier>
@@ -401,9 +449,6 @@
 		</Filter>
 		<Filter Include="local_addons\EntropyLib\src\entropy">
 			<UniqueIdentifier>{7B14EE33-C98F-DEB1-1029-0648}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="local_addons\EntropyLib\src\entropy\geom">
-			<UniqueIdentifier>{25E79684-8BFD-2108-62E4-41DD}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="local_addons\EntropyLib\src\entropy\popup">
 			<UniqueIdentifier>{32A82D1D-5990-AF43-00F9-1818}</UniqueIdentifier>
@@ -708,42 +753,6 @@
 		<Filter Include="other">
 			<UniqueIdentifier>{A2230F47-9F6B-908F-FF0E-E006}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons">
-			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc">
-			<UniqueIdentifier>{D91DCA33-6E5D-4481-2AEC-9FBB}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\src">
-			<UniqueIdentifier>{B9DD339A-D93D-92A1-0A2F-4B41}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs">
-			<UniqueIdentifier>{99ECA1D9-873F-4622-8FC0-FC7B}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs\oscpack">
-			<UniqueIdentifier>{D3A98534-1602-4FEF-57A6-6593}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs\oscpack\src">
-			<UniqueIdentifier>{BFB5BB47-98C8-BBCB-3066-1046}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip">
-			<UniqueIdentifier>{5A029128-EB41-95C5-CBC0-CDED}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip\win32">
-			<UniqueIdentifier>{79DFDFE2-400B-8654-3675-01A3}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxOsc\libs\oscpack\src\osc">
-			<UniqueIdentifier>{EDACB89C-9768-9551-4D41-B590}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxXmlSettings">
-			<UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxXmlSettings\src">
-			<UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="addons\ofxXmlSettings\libs">
-			<UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
-		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h">
@@ -752,17 +761,83 @@
 		<ClInclude Include="src\ofApp.h">
 			<Filter>src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\geom\Box.h">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\geom\Shape.h">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\geom\Sphere.h">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\EntropyLib\src\entropy\geom\Stripes.h">
-			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyGeom\src\entropy\geom\Box.h">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyGeom\src\entropy\geom\Shape.h">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyGeom\src\entropy\geom\Sphere.h">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+		</ClInclude>
+		<ClInclude Include="..\EntropyGeom\src\entropy\geom\Stripes.h">
+			<Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
 		</ClInclude>
 		<ClInclude Include="..\EntropyLib\src\entropy\popup\Base.h">
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
@@ -1474,72 +1549,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.h">
 			<Filter>other</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
-			<Filter>addons\ofxOsc\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
-			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
-			<Filter>addons\ofxXmlSettings\src</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
-			<Filter>addons\ofxXmlSettings\libs</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>
