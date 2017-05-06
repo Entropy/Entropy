@@ -25,10 +25,10 @@
 		<ClCompile Include="..\EntropyLib\src\entropy\geom\Stripes.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\geom</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\popup\Base.cpp">
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\Image.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\popup\Image.cpp">
+		<ClCompile Include="..\EntropyLib\src\entropy\popup\PopupBase.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\popup</Filter>
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\popup\Sound.cpp">
@@ -40,10 +40,10 @@
 		<ClCompile Include="..\EntropyLib\src\entropy\render\Canvas.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\render</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\scene\Base.cpp">
+		<ClCompile Include="..\EntropyLib\src\entropy\scene\Playlist.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\scene</Filter>
 		</ClCompile>
-		<ClCompile Include="..\EntropyLib\src\entropy\scene\Playlist.cpp">
+		<ClCompile Include="..\EntropyLib\src\entropy\scene\PopupBase.cpp">
 			<Filter>local_addons\EntropyLib\src\entropy\scene</Filter>
 		</ClCompile>
 		<ClCompile Include="..\EntropyLib\src\entropy\util\App.cpp">
@@ -136,7 +136,7 @@
 		<ClCompile Include="..\SceneSurveys\src\entropy\surveys\GaussianMapTexture.cpp">
 			<Filter>local_addons\SceneSurveys\src\entropy\surveys</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.cpp">
+		<ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\PresetGui.cpp">
 			<Filter>local_addons\ofxPreset\src\ofxPreset</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp">
