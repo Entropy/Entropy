@@ -47,8 +47,8 @@ vs:
 	# when parsing the file system looking for libraries exclude this for all or
 	# a specific platform
 	ADDON_INCLUDES = libs/tbb/include
-	ADDON_DLLS_TO_COPY = export/x86_64/Debug/tbb_debug.dll
-	ADDON_DLLS_TO_COPY += export/x86_64/Release/tbb.dll
+	ADDON_DLLS_TO_COPY = export/vs/x64/Debug/tbb_debug.dll
+	ADDON_DLLS_TO_COPY += export/vs/x64/Release/tbb.dll
 
 linux64:
 	ADDON_INCLUDES_EXCLUDE = libs/tbb/%
