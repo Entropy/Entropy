@@ -45,7 +45,9 @@ namespace entropy
 			}
 			this->timeline = std::make_shared<ofxTimeline>();
 			this->timeline->setName("timeline");
-			this->timeline->setup(timelineDataPath);
+			auto timelineSettings = ofxTimeline::Settings();
+			timelineSettings.dataPath = timelineDataPath;
+			this->timeline->setup(timelineSettings);
 			this->timeline->setSpacebarTogglePlay(false);
 			this->timeline->setLoopType(OF_LOOP_NONE);
 			this->timeline->setFrameRate(30.0f);
