@@ -3,7 +3,7 @@
 #include "entropy/Helpers.h"
 #include "entropy/util/App.h"
 
-#include "ofxTween.h"
+#include "ofxEasing.h"
 #include "ofxTimeline.h"
 
 namespace entropy
@@ -147,18 +147,18 @@ namespace entropy
 				{
 					this->switchMillis = trackTime - activeSwitch->timeRange.min;
 
-					static const ofxEasingQuad kEasingFunction;
+					auto kEasingFunction = ofxeasing::quad::easeIn;
 					long transitionDuration = this->getParameters().transition.duration * 1000; 
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
-						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f, true, kEasingFunction, ofxTween::easeIn);
+						this->transitionPct = ofxeasing::map_clamp(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f ,kEasingFunction);
 						this->borderDirty = true;
 					}
 					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
 					{
 						// Transitioning out.
-						this->transitionPct = ofxTween::map(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, true, kEasingFunction, ofxTween::easeIn);
+						this->transitionPct = ofxeasing::map_clamp(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, kEasingFunction);
 						this->borderDirty = true;
 					}
 					else if (this->transitionPct != 1.0f)

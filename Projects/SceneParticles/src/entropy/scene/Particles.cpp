@@ -2,6 +2,8 @@
 #include "glm/gtc/random.hpp"
 
 #include "entropy/Helpers.h"
+#include "entropy/util/App.h"
+
 #include <regex>
 
 #define MAX_LIGHTS 16u

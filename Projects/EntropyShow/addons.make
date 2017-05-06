@@ -12,8 +12,6 @@
 ../../addons/ofxImGui
 ../../addons/ofxTimeline
 ../../addons/ofxVolumetrics
-../../addons/ofxTween
-../../addons/ofxMSATimer
 ../../addons/ofxTimecode
 ../../addons/ofxTextInputField
 ../../addons/ofxObjLoader
@@ -21,4 +19,8 @@
 ../../addons/ofxWarp
 ../../addons/ofxGpuParticles
 ../../addons/ofxHDF5
+../../addons/ofxEasing
+../../addons/ofxTbb
+../../addons/ofxGStreamer
+ofxOsc
 ofxXmlSettings

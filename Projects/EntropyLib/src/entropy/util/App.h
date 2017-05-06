@@ -179,4 +179,10 @@ namespace entropy
 	{
 		return GetPlaylist()->getCurrentScene();
 	}
+	
+	//--------------------------------------------------------------
+	inline shared_ptr<util::Messenger> GetMessenger()
+	{
+		return GetApp()->getMessenger();
+	}
 }

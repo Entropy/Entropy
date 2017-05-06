@@ -25,7 +25,7 @@
     <ClInclude Include="src\entropy\scene\Calibrate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3F0A24-AFE0-46D5-A08E-224654C42A55}</ProjectGuid>
+    <ProjectGuid>{89EA6E46-323F-480D-8CFC-80DDB39DF76A}</ProjectGuid>
     <RootNamespace>SceneCalibrateLib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

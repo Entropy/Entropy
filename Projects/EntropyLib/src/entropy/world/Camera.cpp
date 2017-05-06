@@ -2,7 +2,7 @@
 
 #include "entropy/Helpers.h"
 #include "entropy/util/App.h"
-#include "ofxTween.h"
+#include "ofxEasing.h"
 
 namespace entropy
 {
@@ -186,10 +186,10 @@ namespace entropy
 					if (pct <= 1.0f)
 					{
 						glm::vec3 tweenPos;
-						static const ofxEasingQuint easing;
-						//tweenPos.x = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.x, this->overrideParams.target.x, true, easing, ofxTween::easeInOut);
-						tweenPos.y = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.y, this->overrideParams.target.y, true, easing, ofxTween::easeInOut);
-						//tweenPos.z = ofxTween::map(pct, 0.0f, 1.0f, this->overrideParams.origin.z, this->overrideParams.target.z, true, easing, ofxTween::easeInOut);
+						auto easing = ofxeasing::quint::easeInOut;
+						//tweenPos.x = ofxeasing::map_clamp(pct, 0.0f, 1.0f, this->overrideParams.origin.x, this->overrideParams.target.x, easing);
+						tweenPos.y = ofxeasing::map_clamp(pct, 0.0f, 1.0f, this->overrideParams.origin.y, this->overrideParams.target.y, easing);
+						//tweenPos.z = ofxeasing::map_clamp(pct, 0.0f, 1.0f, this->overrideParams.origin.z, this->overrideParams.target.z, easing);
 					
 						this->overrideParams.tumble += glm::vec3(this->tiltSpeed, this->panSpeed, this->rollSpeed);
 						float otherPct = ofMap(pct, 0.0, 0.2, 0.0, 1.0);
