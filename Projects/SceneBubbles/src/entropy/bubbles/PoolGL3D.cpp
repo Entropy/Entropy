@@ -3,6 +3,7 @@
 #ifdef COMPUTE_GL_3D
 
 #include "entropy/Helpers.h"
+#include "entropy/util/App.h"
 
 namespace entropy
 {
