@@ -48,6 +48,7 @@ vs:
 	# a specific platform
 	ADDON_INCLUDES = libs/tbb/include
 	ADDON_DLLS_TO_COPY = export/x86_64/Debug/tbb_debug.dll
+	ADDON_DLLS_TO_COPY += export/x86_64/Release/tbb.dll
 
 linux64:
 	ADDON_INCLUDES_EXCLUDE = libs/tbb/%
