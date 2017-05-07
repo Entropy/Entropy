@@ -126,7 +126,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libhdf5.lib;libhdf5_cpp.lib;libhdf5_cpp_D.lib;libhdf5_D.lib;libszip.lib;libszip_D.lib;libzlib.lib;libzlib_D.lib;tbb_debug.lib;gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);libOpenAL32.dll.a;libhdf5_cpp_D.lib;libhdf5_D.lib;libszip_D.lib;libzlib_D.lib;tbb_debug.lib;gstreamer-1.0.lib;gstapp-1.0.lib;gstvideo-1.0.lib;gstbase-1.0.lib;gstnet-1.0.lib;gstaudio-1.0.lib;gio-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;gdk_pixbuf-2.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;gthread-2.0.lib;ffi.lib;intl.lib;glib-2.0.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\addons\ofxTimeline\libs\openal\lib\vs\x64;..\..\addons\ofxHDF5\libs\hdf5\lib\vs\x64;..\..\addons\ofxHDF5\libs\szip\lib\vs\x64;..\..\addons\ofxHDF5\libs\zlib\lib\vs\x64;..\..\addons\ofxTbb\libs\tbb\lib\vs\x64\Debug;C:\gstreamer\1.0\x86_64\lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
