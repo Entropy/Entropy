@@ -56,7 +56,7 @@
 			<Num_Passes>10</Num_Passes>
 			<Brightness_Threshold>0.01</Brightness_Threshold>
 			<Boost>6</Boost>
-			<Sigma>18</Sigma>
+			<Sigma>2.69388</Sigma>
 			<Debug_Blur>0</Debug_Blur>
 		</Bloom>
 		<Color>

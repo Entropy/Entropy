@@ -15,14 +15,14 @@ void ofApp::setup(){
 	galaxy.setMode(OF_PRIMITIVE_POINTS);
 
 	for(auto & v: galaxy.getVertices()){
-		v.y *= 0.8;
 		auto d = glm::length2(v);
+		v.y *= 0.8;
 		auto pct = ofMap(d, 0, 0.85, 1, 0, true);
 		auto bri = ofRandom(1) > 0.99 ? 35 : 15;
 		galaxy.addColor(colors[int(ofRandom(colors.size()))] * bri * pct);
 	}
 
-	camera.setDistance(10);
+	camera.setDistance(5);
 	camera.setNearClip(0.01);
 
 	ofSetBackgroundColor(0);
