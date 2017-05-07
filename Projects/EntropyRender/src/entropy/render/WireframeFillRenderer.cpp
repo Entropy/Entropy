@@ -3,7 +3,7 @@
 #include <regex>
 #include <random>
 #include "ofPolyline.h"
-#include "Helpers.h"
+#include "entropy/Helpers.h"
 
 namespace entropy
 {
