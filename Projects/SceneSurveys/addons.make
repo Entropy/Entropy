@@ -1,0 +1,16 @@
+ofxGui
+ofxXmlSettings
+../../addons/ofxEasing
+../../addons/ofxHDF5
+../../addons/ofxImGui
+../../addons/ofxObjLoader
+../../addons/ofxPreset
+../../addons/ofxRange
+../../addons/ofxSet
+../../addons/ofxTextInputField
+../../addons/ofxTextureRecorder
+../../addons/ofxTimecode
+../../addons/ofxTimeline
+../EntropyGeom
+../EntropyRender
+../EntropyUtil
