@@ -33,6 +33,23 @@ void ofApp::setup()
 	// Load the model.
 	this->masterMesh.load("models/galaxy.ply");
 	this->masterMesh.setMode(OF_PRIMITIVE_POINTS);
+	std::vector<ofFloatColor> colors{
+		ofFloatColor::white,
+		ofFloatColor::darkBlue,
+		ofFloatColor::white,
+		ofFloatColor::cyan,
+		ofFloatColor::lightBlue,
+		ofFloatColor::aliceBlue,
+	};
+	for (auto & v : this->masterMesh.getVertices()) 
+	{
+		auto d = glm::length2(v);
+		v.y *= 0.8;
+		auto pct = ofMap(d, 0, 0.85, 1, 0, true);
+		auto bri = ofRandom(1) > 0.99 ? 35 : 15;
+		this->masterMesh.addColor(colors[int(ofRandom(colors.size()))] * bri * pct);
+	}
+
 	this->scaledMesh = this->masterMesh;
 
 	this->eventListeners.push_back(this->modelResolution.newListener([this](int & val)
@@ -47,6 +64,7 @@ void ofApp::setup()
 			for (int i = 0; i < this->masterMesh.getNumVertices(); i += val)
 			{
 				this->scaledMesh.addVertex(this->masterMesh.getVertex(i));
+				this->scaledMesh.addColor(this->masterMesh.getColor(i));
 			}
 		}
 	}));

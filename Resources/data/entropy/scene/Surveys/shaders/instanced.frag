@@ -9,6 +9,7 @@ uniform vec4 globalColor;
 //flat in int vCell;
 
 //in float vAlpha;
+in vec4 vColor;
 
 out vec4 fragColor;
 
@@ -59,5 +60,5 @@ void main(void)
 	//	fragColor = vec4(1.0, 1.0, 1.0, vAlpha);
 	//}
 
-	fragColor = globalColor;
+	fragColor = globalColor * vColor;
 }

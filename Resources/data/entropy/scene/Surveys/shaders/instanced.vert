@@ -4,9 +4,10 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 modelViewProjectionMatrix;
 
-uniform	samplerBuffer uTexData;	
+uniform	samplerBuffer uTexData;
 
 in vec4 position;
+in vec4 color;
 //in float mass;
 //in float starFormationRate;
 
@@ -15,6 +16,7 @@ in vec4 position;
 //flat out int vCell;
 
 //out float vAlpha;
+out vec4 vColor;
 
 void main()
 {
@@ -30,4 +32,5 @@ void main()
 	//vec3 origin = vec3(transformMatrix[3][0], transformMatrix[3][1], transformMatrix[3][2]);
 
 	gl_Position = modelViewProjectionMatrix * transformMatrix * position;
+	vColor = color;
 }
