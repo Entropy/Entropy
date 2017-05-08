@@ -2,7 +2,7 @@
 
 #include "ofConstants.h"
 #include "ofFileUtils.h"
-
+#include "ofImage.h"
 
 // Stolen from ofxRulr, thanks Elliot!
 // Syntactic sugar which enables struct-ofParameterGroup
@@ -11,11 +11,29 @@
 
 namespace entropy
 {
-
 	//--------------------------------------------------------------
-	inline string GetSharedDataPath(bool absolute = true)
+	inline void LoadTextureImage(const std::filesystem::path & path, ofTexture & texture)
 	{
-		static string dataPath;
+		ofPixels pixels;
+		ofLoadImage(pixels, path);
+		if (!pixels.isAllocated())
+		{
+			ofLogError(__FUNCTION__) << "Could not load file at path " << path;
+		}
+
+		bool wasUsingArbTex = ofGetUsingArbTex();
+		ofDisableArbTex();
+		{
+			texture.enableMipmap();
+			texture.loadData(pixels);
+		}
+		if (wasUsingArbTex) ofEnableArbTex();
+	}
+	
+	//--------------------------------------------------------------
+	inline std::filesystem::path GetSharedDataPath(bool absolute = true)
+	{
+		static std::filesystem::path dataPath;
 		if (dataPath.empty())
 		{
 			dataPath = ofFilePath::addTrailingSlash("../../../Resources/data");
@@ -23,7 +41,7 @@ namespace entropy
 
 		if (absolute)
 		{
-			static string dataPathAbs;
+			static std::filesystem::path dataPathAbs;
 			if (dataPathAbs.empty())
 			{
 				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / dataPath;
@@ -36,9 +54,9 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline string GetSharedAssetsPath(bool absolute = true)
+	inline std::filesystem::path GetSharedAssetsPath(bool absolute = true)
 	{
-		static string assetsPath;
+		static std::filesystem::path assetsPath;
 		if (assetsPath.empty())
 		{
 			assetsPath = ofFilePath::addTrailingSlash("../../../Resources/assets");
@@ -46,7 +64,7 @@ namespace entropy
 
 		if (absolute)
 		{
-			static string assetsPathAbs;
+			static std::filesystem::path assetsPathAbs;
 			if (assetsPathAbs.empty())
 			{
 				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / assetsPath;
@@ -59,9 +77,9 @@ namespace entropy
 	}
 
 	//--------------------------------------------------------------
-	inline string GetSharedExportsPath(bool absolute = true)
+	inline std::filesystem::path GetSharedExportsPath(bool absolute = true)
 	{
-		static string exportsPath;
+		static std::filesystem::path exportsPath;
 		if (exportsPath.empty())
 		{
 			exportsPath = ofFilePath::addTrailingSlash("../../../Resources/exports");
@@ -69,16 +87,28 @@ namespace entropy
 
 		if (absolute)
 		{
-			static string exportsPathAbs;
+			static std::filesystem::path exportsPathAbs;
 			if (exportsPathAbs.empty())
 			{
-                auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
+				auto path = std::filesystem::path(ofFilePath::getCurrentExeDir()) / exportsPath;
 				exportsPathAbs = ofFilePath::addTrailingSlash(canonical(path).string());
 			}
 			return exportsPathAbs;
 		}
 
 		return exportsPath;
+	}
+
+	//--------------------------------------------------------------
+	inline std::filesystem::path GetSceneDataPath(const string & name, const string & data = "", bool absolute = true)
+	{
+		return std::filesystem::path(GetSharedDataPath()) / "entropy" / "scene" / name / data;
+	}
+
+	//--------------------------------------------------------------
+	inline std::filesystem::path GetSceneAssetPath(const string & name, const string & asset = "", bool absolute = true)
+	{
+		return std::filesystem::path(GetSharedAssetsPath()) / "entropy" / "scene" / name / asset;
 	}
 
 	//--------------------------------------------------------------
