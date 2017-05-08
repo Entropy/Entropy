@@ -396,7 +396,7 @@ namespace entropy
 			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
 			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get();
 			auto eye = camera.getPosition();
-			auto up = glm::vec3(0,1,0); // Use camera y axis?
+			auto up = camera.getYAxis();
 			auto right = glm::normalize(glm::cross(object - eye, up));
 			auto numSamples = bokehshape.getVertices().size();
 			for(size_t i = 0; i < numSamples; i++){
