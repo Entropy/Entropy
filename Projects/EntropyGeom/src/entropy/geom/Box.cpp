@@ -42,7 +42,7 @@ namespace entropy
 
 			this->begin();
 			{
-				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices(), camera);
+				renderer.drawElements(this->getMesh().getVbo(), 0, this->getMesh().getNumIndices(), GL_TRIANGLES, camera);
 			}
 			this->end();
 		}

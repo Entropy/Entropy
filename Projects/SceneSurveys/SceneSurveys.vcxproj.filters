@@ -423,6 +423,9 @@
     <Filter Include="local_addons\EntropyUtil\src\entropy">
       <UniqueIdentifier>{B775035B-342C-D6AC-0EED-D0DB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{683486f8-2abc-4d2f-a237-10abc0780035}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -734,5 +737,25 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\instanced.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\instanced.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

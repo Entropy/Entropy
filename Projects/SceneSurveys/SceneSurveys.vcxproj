@@ -367,6 +367,14 @@
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\galaxy.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\instanced.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\instanced.vert" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.frag" />
+    <None Include="..\..\Resources\data\entropy\scene\Surveys\shaders\sprite.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
     <VisualStudio>

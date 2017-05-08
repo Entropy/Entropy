@@ -1,0 +1,54 @@
+{
+    "Surveys": {
+        "BOSS": {
+            "Color": "1, 1, 1, 1",
+            "Cut_Radius": "0",
+            "Max_Latitude": "1",
+            "Max_Longitude": "1",
+            "Max_Radius": "1",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0",
+            "Min_Radius": "0",
+            "Render_Models": "1",
+            "Render_Points": "1"
+        },
+        "Camera": {
+            "Far_Clip": "5000",
+            "Near_Clip": "0.001"
+        },
+        "DES": {
+            "Color": "1, 1, 1, 1",
+            "Cut_Radius": "0",
+            "Max_Latitude": "0.5",
+            "Max_Longitude": "0.5",
+            "Max_Radius": "0.5",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0",
+            "Min_Radius": "0",
+            "Render_Models": "0",
+            "Render_Points": "1"
+        },
+        "Render": {
+            "Attenuation": "600",
+            "Model_Distance": "1000",
+            "Model_Resolution": "50",
+            "Point_Size": "0.01",
+            "Render_BOSS": "1",
+            "Render_DES": "0",
+            "Render_ViziR": "0",
+            "Scale": "0.1"
+        },
+        "ViziR": {
+            "Color": "1, 1, 1, 1",
+            "Cut_Radius": "0",
+            "Max_Latitude": "0.5",
+            "Max_Longitude": "0.5",
+            "Max_Radius": "0.5",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0",
+            "Min_Radius": "0",
+            "Render_Models": "0",
+            "Render_Points": "1"
+        }
+    }
+}
