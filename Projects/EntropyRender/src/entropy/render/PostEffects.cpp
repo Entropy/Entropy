@@ -50,7 +50,7 @@ namespace entropy
 			this->fullQuad.addTexCoords({ { 0,1 },{ 0,0 },{ 1,0 },{ 1,1 } });
 			this->fullQuad.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
 
-			glGenVertexArrays(1, &this->defaultVao);
+			//glGenVertexArrays(1, &this->defaultVao);
 		}
 		
 		//--------------------------------------------------------------
@@ -63,12 +63,16 @@ namespace entropy
 
 			this->fullQuad.clear();
 
-			glDeleteVertexArrays(1, &this->defaultVao);
+			//glDeleteVertexArrays(1, &this->defaultVao);
 		}
 
 		//--------------------------------------------------------------
         void PostEffects::process(const ofTexture & srcTexture, ofFbo & dstFbo, const entropy::render::PostParameters & parameters)
 		{
+
+			if(srcTexture.getTextureData().textureTarget != GL_TEXTURE_2D || dstFbo.getTexture().getTextureData().textureTarget != GL_TEXTURE_2D){
+				ofLogError("PostEffects") << "Only works with texture 2D";
+			}
             ofSetColor(255);
 			if(parameters.vignette.enabled != colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"]){
 				colorCorrectShaderSettings.intDefines["ENABLE_VIGNETTE"] = parameters.vignette.enabled;

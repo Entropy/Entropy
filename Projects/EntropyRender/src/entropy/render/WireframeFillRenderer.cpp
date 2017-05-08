@@ -322,7 +322,7 @@ namespace entropy
 			this->blobMask.getMaxDepthMask().draw(0,0);
 		}
 
-		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, ofCamera & camera) const{
+		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera) const{
 			if(wobblyClip){
 				this->blobMask.updateWith(camera);
 			}
@@ -412,7 +412,7 @@ namespace entropy
 				for(size_t i = 0; i < numSamples; i++){
 					shaderFill.setUniformMatrix4f("modelViewMatrix", modelview[i]);
 					shaderFill.setUniformMatrix4f("modelViewProjectionMatrix", mvp[i]);
-					geometry.draw(GL_TRIANGLES, offset, numVertices);
+					geometry.draw(mode, offset, numVertices);
 				}
 				shaderFill.end();
 				if(useLights){
@@ -420,7 +420,7 @@ namespace entropy
 					for(size_t i = 0; i < numSamples; i++){
 						material->setCustomUniformMatrix4f("modelViewMatrix", modelview[i]);
 						material->setCustomUniformMatrix4f("modelViewProjectionMatrix", mvp[i]);
-						geometry.draw(GL_TRIANGLES, offset, numVertices);
+						geometry.draw(mode, offset, numVertices);
 					}
 					material->end();
 				}
@@ -434,7 +434,7 @@ namespace entropy
 					for(size_t i = 0; i < numSamples; i++){
 						material->setCustomUniformMatrix4f("modelViewMatrix", modelview[i]);
 						material->setCustomUniformMatrix4f("modelViewProjectionMatrix", mvp[i]);
-						geometry.draw(GL_TRIANGLES, offset, numVertices);
+						geometry.draw(mode, offset, numVertices);
 					}
 					material->end();
 				}else{
@@ -442,7 +442,7 @@ namespace entropy
 					for(size_t i = 0; i < numSamples; i++){
 						shaderWireframe.setUniformMatrix4f("modelViewMatrix", modelview[i]);
 						shaderWireframe.setUniformMatrix4f("modelViewProjectionMatrix", mvp[i]);
-						geometry.draw(GL_TRIANGLES, offset, numVertices);
+						geometry.draw(mode, offset, numVertices);
 					}
 					shaderWireframe.end();
 				}
@@ -451,7 +451,7 @@ namespace entropy
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		}
 
-		void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, ofCamera & camera) const{
+		void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, GLenum mode, ofCamera & camera) const{
 			if(wobblyClip){
 				this->blobMask.updateWith(camera);
 			}
@@ -482,7 +482,7 @@ namespace entropy
 				shaderFill.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
 				shaderFill.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				geometry.drawElements(GL_TRIANGLES, numIndices, offset);
+				geometry.drawElements(mode, numIndices, offset);
 				shaderFill.end();
 			}
 
@@ -504,7 +504,7 @@ namespace entropy
 					material->setCustomUniform1f("screenH", ofGetViewportHeight());
 					material->setCustomUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
 					material->setCustomUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
-					geometry.drawElements(GL_TRIANGLES, numIndices, offset);
+					geometry.drawElements(mode, numIndices, offset);
 					material->end();
 				}else{
 					shaderWireframe.begin();
@@ -521,7 +521,7 @@ namespace entropy
 					shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
 					shaderWireframe.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
 					shaderWireframe.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
-					geometry.drawElements(GL_TRIANGLES, numIndices, offset);
+					geometry.drawElements(mode, numIndices, offset);
 					shaderWireframe.end();
 				}
 			}
