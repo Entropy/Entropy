@@ -12,6 +12,8 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "bin/data/billboard.frag.glsl",
+            "bin/data/billboard.vert.glsl",
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',

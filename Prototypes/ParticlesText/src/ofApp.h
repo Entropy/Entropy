@@ -6,6 +6,8 @@
 #include "PostEffects.h"
 #include "ofxTextureRecorder.h"
 
+#include <unordered_map>
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -58,4 +60,8 @@ class ofApp : public ofBaseApp{
 
 		ofxTextureRecorder recorder;
 		bool save = false;
+
+		ofShader billboardShader;
+
+		std::unordered_map<std::string, ofMesh> particleTexts;
 };
