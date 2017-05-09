@@ -322,6 +322,23 @@ namespace entropy
 			this->blobMask.getMaxDepthMask().draw(0,0);
 		}
 
+		void WireframeFillRenderer::drawWithDOF(ofCamera & camera, std::function<void(float accumValue, glm::mat4 projection, glm::mat4 modelview)> drawFunc) const{
+			auto accumValue = 1.0 / float(bokehshape.getVertices().size());
+
+			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
+			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get();
+			auto eye = camera.getPosition();
+			auto up = camera.getYAxis();
+			auto right = glm::normalize(glm::cross(object - eye, up));
+			auto numSamples = bokehshape.getVertices().size();
+			for(size_t i = 0; i < numSamples; i++){
+				auto p = bokehshape.getVertices()[i];
+				glm::vec3 bokeh = right * p.x + up * p.y;
+				auto modelview = glm::lookAt(eye + bokeh * dofAperture.get(), object, up);
+				drawFunc(accumValue, projection, modelview);
+			}
+		}
+
 		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera) const{
 			if(wobblyClip){
 				this->blobMask.updateWith(camera);
