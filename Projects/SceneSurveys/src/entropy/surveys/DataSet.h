@@ -22,7 +22,8 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
-			void draw(ofShader & shader);
+			void drawPoints(ofShader & shader, const glm::mat4 & modelTransform);
+			void drawModels(ofShader & shader, const glm::mat4 & modelTransform, ofVboMesh & mesh, const ofCamera & camera, float cutoff);
 
 			void gui(ofxImGui::Settings & settings);
 
@@ -31,6 +32,8 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
+				ofParameter<bool> renderPoints{ "Render Points", true };
+				ofParameter<bool> renderModels{ "Render Models", false };
 				ofParameter<float> cutRadius{ "Cut Radius", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> minRadius{ "Min Radius", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> maxRadius{ "Max Radius", 0.5f, 0.0f, 1.0f };
@@ -41,6 +44,7 @@ namespace entropy
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
 				PARAM_DECLARE("DataSet", 
+					renderPoints, renderModels,
 					cutRadius,
 					minRadius, maxRadius, 
 					minLatitude, maxLatitude,
@@ -50,6 +54,9 @@ namespace entropy
 
 		protected:
 			size_t loadFragment(const std::string & filePath, const std::string & particleType);
+			
+			size_t updateFilteredData(const glm::mat4 & modelTransform, const ofCamera & camera);
+			void updateShaderUniforms(ofShader & shader);
 
 			std::vector<glm::vec3> coordinates;
 			std::vector<float> masses;
@@ -58,7 +65,16 @@ namespace entropy
 			float minRadius;
 			float maxRadius;
 
+			glm::vec3 mappedRadiusRange;
+			glm::vec2 mappedLatitudeRange;
+			glm::vec2 mappedLongitudeRange;
+
 			ofVbo vbo;
+
+			ofTexture bufferTex;
+			ofBufferObject bufferObj;
+
+			std::vector<ofEventListener> paramListeners;
 		};
 	}
 }

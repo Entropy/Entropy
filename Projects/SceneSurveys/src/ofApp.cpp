@@ -21,22 +21,78 @@ void ofApp::setup()
 	// Init the sphere.
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/The_Milky_Way.png"), this->sphereTexture);
 
-	auto shaderSettings = ofShader::Settings();
-	shaderSettings.bindDefaults = true;
-	shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/galaxy.vert";
-	shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
-	this->sphereShader.setup(shaderSettings);
+	auto sphereSettings = ofShader::Settings();
+	sphereSettings.bindDefaults = true;
+	sphereSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/galaxy.vert";
+	sphereSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
+	this->sphereShader.setup(sphereSettings);
 
 	// Build the texture.
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/sprites.png"), this->spriteTexture);
 
-	// Load the shader.
+	// Load the model.
+	this->masterMesh.load("models/galaxy.ply");
+	this->masterMesh.setMode(OF_PRIMITIVE_POINTS);
+	std::vector<ofFloatColor> colors{
+		ofFloatColor::white,
+		ofFloatColor::darkBlue,
+		ofFloatColor::white,
+		ofFloatColor::cyan,
+		ofFloatColor::lightBlue,
+		ofFloatColor::aliceBlue,
+	};
+	for (auto & v : this->masterMesh.getVertices()) 
+	{
+		auto d = glm::length2(v);
+		v.y *= 0.8;
+		auto pct = ofMap(d, 0, 0.85, 1, 0, true);
+		auto bri = ofRandom(1) > 0.99 ? 35 : 15;
+		this->masterMesh.addColor(colors[int(ofRandom(colors.size()))] * bri * pct);
+	}
+
+	this->scaledMesh = this->masterMesh;
+
+	this->eventListeners.push_back(this->modelResolution.newListener([this](int & val)
+	{
+		this->scaledMesh.clear();
+		if (val == 1)
+		{
+			this->scaledMesh = this->masterMesh;
+		}
+		else
+		{
+			for (int i = 0; i < this->masterMesh.getNumVertices(); i += val)
+			{
+				this->scaledMesh.addVertex(this->masterMesh.getVertex(i));
+				this->scaledMesh.addColor(this->masterMesh.getColor(i));
+			}
+		}
+	}));
+
+	// we want each box to have a different color so let's add
+	// as many colors as boxes
+	//this->galaxyMesh.getColors().resize(matrices.size());
+	//for (size_t i = 0; i<this->galaxyMesh.getColors().size(); i++) {
+	//	this->galaxyMesh.getColors()[i] = ofColor::fromHsb(i % 255, 255, 255);
+	//}
+
+	//// then we tell the vbo that colors should be used per instance by using
+	//// ofVbo::setAttributeDivisor
+	//this->galaxyMesh.getVbo().setAttributeDivisor(ofShader::COLOR_ATTRIBUTE, 1);
+
+	// Load the shaders.
 	this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
 	this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
 	this->spriteShader.bindAttribute(entropy::surveys::ExtraAttribute::Mass, "mass");
 	this->spriteShader.bindAttribute(entropy::surveys::ExtraAttribute::StarFormationRate, "starFormationRate");
 	this->spriteShader.bindDefaults();
 	this->spriteShader.linkProgram();
+
+	modelSettings = ofShader::Settings();
+	modelSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/instanced.vert";
+	modelSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/instanced.frag";
+	modelSettings.bindDefaults = true;
+	this->modelShader.setup(modelSettings);
 
 	// Setup the camera.
 	this->eventListeners.push_back(this->nearClip.newListener([this](float & val)
@@ -46,6 +102,7 @@ void ofApp::setup()
 	this->eventListeners.push_back(this->farClip.newListener([this](float & val)
 	{
 		this->camera.setFarClip(val);
+		this->modelDistance.setMax(val);
 	}));
 
 	// Setup the gui and timeline.
@@ -77,7 +134,14 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	auto vertT = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.vert"));
+	auto fragT = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.frag"));
+	if(vertT>shaderTime || fragT>shaderTime)
+	{
+		shaderTime = vertT > fragT ? vertT : fragT;
+		this->modelShader.setup(modelSettings);
 
+	}
 }
 
 //--------------------------------------------------------------
@@ -86,37 +150,52 @@ void ofApp::draw()
 	// Draw the scene.
 	this->camera.begin();
 	{
+		auto modelTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->scale));
+		
 		// Draw the data set.
-		ofPushMatrix();
-		ofScale(this->scale);
 		{
 			ofEnableBlendMode(OF_BLENDMODE_ADD);
 			ofDisableDepthTest();
 
+			// Draw all the points.
 			this->spriteShader.begin();
 			this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
 			this->spriteShader.setUniform1f("uPointSize", this->pointSize);
+			this->spriteShader.setUniform1f("uAttenuation", this->attenuation);
 			ofEnablePointSprites();
 			{
-				if (this->renderBoss)
-				{
-					this->dataSetBoss.draw(this->spriteShader);
-				}
+				this->dataSetBoss.drawPoints(this->spriteShader, modelTransform);
+				
 				if (this->renderDes)
 				{
-					this->dataSetDes.draw(this->spriteShader);
+					this->dataSetDes.drawPoints(this->spriteShader, modelTransform);
 				}
 				if (this->renderVizir)
 				{
-					this->dataSetVizir.draw(this->spriteShader);
+					this->dataSetVizir.drawPoints(this->spriteShader, modelTransform);
 				}
 			}
 			ofDisablePointSprites();
 			this->spriteShader.end();
 
+			// Draw the models for galaxies near the camera.
+			this->modelShader.begin();
+			{
+				this->dataSetBoss.drawModels(this->modelShader, modelTransform, this->scaledMesh, this->camera, this->modelDistance);
+				
+				//if (this->renderDes)
+				//{
+				//	this->dataSetDes.drawModels(this->modelShader, this->galaxyMesh, this->modelDistance);
+				//}
+			}
+			this->modelShader.end();
+
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+
+			ofNoFill();
+			ofDrawBox(1);
+			ofFill();
 		}
-		ofPopMatrix();
 
 		// Draw the galaxy.
 		this->sphereShader.begin();

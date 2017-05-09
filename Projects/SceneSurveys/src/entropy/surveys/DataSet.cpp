@@ -27,6 +27,38 @@ namespace entropy
 
 			this->clear();
 
+			auto radiusChanged = [this](const float &) 
+			{
+				this->mappedRadiusRange = glm::vec3(ofMap(parameters.cutRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius),
+													ofMap(parameters.minRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius),
+													ofMap(parameters.maxRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
+			};
+			this->paramListeners.push_back(this->parameters.cutRadius.newListener(radiusChanged));
+			this->paramListeners.push_back(this->parameters.minRadius.newListener(radiusChanged));
+			this->paramListeners.push_back(this->parameters.maxRadius.newListener(radiusChanged));
+
+			auto latitudeChanged = [this](const float &)
+			{
+				static const auto kLatitudeMin = -HALF_PI;
+				static const auto kLatitudeMax = HALF_PI;
+
+				this->mappedLatitudeRange = glm::vec2(ofMap(parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax),
+													  ofMap(parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
+			};
+			this->paramListeners.push_back(this->parameters.minLatitude.newListener(latitudeChanged));
+			this->paramListeners.push_back(this->parameters.maxLatitude.newListener(latitudeChanged));
+
+			auto longitudeChanged = [this](const float &)
+			{
+				static const auto kLongitudeMin = 0;
+				static const auto kLongitudeMax = TWO_PI;
+
+				this->mappedLongitudeRange = glm::vec2(ofMap(parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax),
+													   ofMap(parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
+			};
+			this->paramListeners.push_back(this->parameters.minLongitude.newListener(longitudeChanged));
+			this->paramListeners.push_back(this->parameters.maxLongitude.newListener(longitudeChanged));
+
 			// Load the data one fragment at a time.
 			for (int i = 0; i < count; ++i)
 			{
@@ -39,11 +71,22 @@ namespace entropy
 			this->vbo.setVertexData(this->coordinates.data(), this->coordinates.size(), GL_STATIC_DRAW);
 			this->vbo.setAttributeData(ExtraAttribute::Mass, this->masses.data(), 1, this->masses.size(), GL_STATIC_DRAW, 0);
 			this->vbo.setAttributeData(ExtraAttribute::StarFormationRate, this->starFormationRates.data(), 1, this->starFormationRates.size(), GL_STATIC_DRAW, 0);
+		
+			//this->data.push_back(glm::vec4(0.0, 0.0, 0.0, 1.0));
+
+			// Allocate the tbo.
+			std::vector<glm::mat4> tmpData(this->coordinates.size(), glm::mat4(1.0f));
+			bufferObj.allocate();
+			bufferObj.bind(GL_TEXTURE_BUFFER);
+			bufferObj.setData(tmpData, GL_STREAM_DRAW);
+			bufferTex.allocateAsBufferTexture(bufferObj, GL_RGBA32F);
 		}
 		
 		//--------------------------------------------------------------
 		void DataSet::clear()
 		{
+			this->paramListeners.clear();
+			
 			this->coordinates.clear();
 			this->masses.clear();
 			this->starFormationRates.clear();
@@ -98,7 +141,22 @@ namespace entropy
 					this->maxRadius = std::max(this->maxRadius, coordData[i].z);
 
 					this->masses.push_back(massData[i]);
-					
+
+					//if (this->data.size() < 400)
+					//{
+					//	auto transform = glm::translate(glm::mat4(1.0f), glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
+					//	//auto transform = glm::mat4(1.0f);
+					//	//transform[3][0] = ofDegToRad(coordData[i].x);
+					//	//transform[3][1] = ofDegToRad(coordData[i].y);
+					//	//transform[3][2] = coordData[i].z;
+					//	
+					//	//transform = glm::scale(transform, glm::vec3(massData[i]));
+					//	//transform = glm::rotate(transform, ofRandom(-glm::two_pi<float>(), glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandomf(), ofRandomf(), ofRandomf())));
+					//	this->data.push_back(transform);
+
+					//	//this->data.push_back(glm::vec4(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z, 1.0f));
+					//}
+
 					if (particleType == "PartType6")
 					{
 						this->starFormationRates.push_back(sfrData[i]);
@@ -115,26 +173,96 @@ namespace entropy
 
 			return total;
 		}
+
+		//--------------------------------------------------------------
+		size_t DataSet::updateFilteredData(const glm::mat4 & modelTransform, const ofCamera & camera)
+		{
+			std::vector<glm::mat4> data;
+			const auto cameraTransform = camera.getModelViewProjectionMatrix();
+
+			for (int i = 0; i < this->coordinates.size(); ++i)
+			{
+				const auto & coords = this->coordinates[i];
+
+				// Make sure the point is within clipping bounds.
+				if (this->mappedRadiusRange.x <= coords.z &&
+					this->mappedLongitudeRange.x <= coords.x && coords.x <= this->mappedLongitudeRange.y &&
+					this->mappedLatitudeRange.x <= coords.y && coords.y <= this->mappedLatitudeRange.y)
+				{
+					// Convert from spherical to Cartesian coordinates.
+					const auto position = glm::vec4(coords.z * cos(coords.y) * cos(coords.x),
+													coords.z * cos(coords.y) * sin(coords.x),
+													coords.z * sin(coords.y),
+													1.0f);
+
+					// Make sure the point is inside the visible frustum.
+					const auto camPos = cameraTransform * modelTransform * position;
+					const auto clipPos = camPos.xyz() / camPos.w;
+					if (-1 <= clipPos.x && clipPos.x <= 1 &&
+						-1 <= clipPos.y && clipPos.y <= 1 &&
+						 0 <= clipPos.z && clipPos.z <= 1)
+					{
+						auto transform = glm::translate(modelTransform, position.xyz());
+						transform = glm::scale(transform, glm::vec3(this->masses[i]));
+						transform = glm::rotate(transform, i * 0.12345f, glm::normalize(glm::vec3(i%23, i%43, i%11)));
+						data.push_back(transform);
+					}
+				}
+			}
+
+			if (data.empty()) return 0;
+
+			// Update the buffer.
+			this->bufferObj.updateData(data);
+			return data.size();
+		}
+
+		//--------------------------------------------------------------
+		void DataSet::updateShaderUniforms(ofShader & shader)
+		{
+			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
+			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
+			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);
+			shader.setUniform1f("uMinLatitude", this->mappedLatitudeRange.x);
+			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
+			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
+			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
+		}
 		
 		//--------------------------------------------------------------
-		void DataSet::draw(ofShader & shader)
+		void DataSet::drawPoints(ofShader & shader, const glm::mat4 & modelTransform)
 		{
-			static const auto kLatitudeMin = -HALF_PI;
-			static const auto kLatitudeMax = HALF_PI;
-			static const auto kLongitudeMin = 0;
-			static const auto kLongitudeMax = TWO_PI;
+			if (!this->parameters.renderPoints) return;
 
-			shader.setUniform1f("uCutRadius", ofMap(parameters.cutRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
-			shader.setUniform1f("uMinRadius", ofMap(parameters.minRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
-			shader.setUniform1f("uMaxRadius", ofMap(parameters.maxRadius, 0.0f, 1.0f, this->minRadius, this->maxRadius));
-			shader.setUniform1f("uMinLatitude", ofMap(parameters.minLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-			shader.setUniform1f("uMaxLatitude", ofMap(parameters.maxLatitude, 0.0f, 1.0f, kLatitudeMin, kLatitudeMax));
-			shader.setUniform1f("uMinLongitude", ofMap(parameters.minLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-			shader.setUniform1f("uMaxLongitude", ofMap(parameters.maxLongitude, 0.0f, 1.0f, kLongitudeMin, kLongitudeMax));
-			
+			this->updateShaderUniforms(shader);
+			shader.setUniformMatrix4f("uTransform", modelTransform);
 			ofSetColor(this->parameters.color.get());
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
+		}
+
+		//--------------------------------------------------------------
+		void DataSet::drawModels(ofShader & shader, const glm::mat4 & modelTransform, ofVboMesh & mesh, const ofCamera & camera, float cutoff)
+		{
+			if (!this->parameters.renderModels) return;
+			
+			if (cutoff == 0.0f) return;
+
+			auto clipCamera = camera;
+			clipCamera.setFarClip(cutoff);
+			int count = this->updateFilteredData(modelTransform, clipCamera);
+			
+			if (count == 0) return;
+
+			this->updateShaderUniforms(shader);
+			shader.setUniformTexture("uTexData", this->bufferTex, 1);
+			ofSetColor(this->parameters.color.get());
+
+			cout << "Drawing " << count << " models" << endl;
+			mesh.drawInstanced(OF_MESH_POINTS, count);
+
+			//ofVboMesh m = ofVboMesh::box(1, 1, 1);
+			//m.drawInstanced(OF_MESH_POINTS, count);
 		}
 
 		//--------------------------------------------------------------
@@ -155,13 +283,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void DataSet::serialize(nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Serialize(json, this->parameters);
+			ofSerialize(json, this->parameters);
 		}
 
 		//--------------------------------------------------------------
 		void DataSet::deserialize(const nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Deserialize(json, this->parameters);
+			ofDeserialize(json, this->parameters);
 		}
 	}
 }
