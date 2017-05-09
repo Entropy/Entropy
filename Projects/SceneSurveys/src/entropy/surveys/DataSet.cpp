@@ -67,6 +67,9 @@ namespace entropy
 				this->loadFragment(filePath, particleType);
 			}
 
+			this->avgMass /= this->masses.size();
+			cout << "Mass range is " << this->minMass << " to " << this->maxMass << " with avg = " << this->avgMass << endl;
+
 			// Upload everything to the vbo.
 			this->vbo.setVertexData(this->coordinates.data(), this->coordinates.size(), GL_STATIC_DRAW);
 			this->vbo.setAttributeData(ExtraAttribute::Mass, this->masses.data(), 1, this->masses.size(), GL_STATIC_DRAW, 0);
@@ -93,6 +96,10 @@ namespace entropy
 
 			this->minRadius = std::numeric_limits<float>::max();
 			this->maxRadius = std::numeric_limits<float>::min();
+
+			this->minMass = std::numeric_limits<float>::max();
+			this->maxMass = std::numeric_limits<float>::min();
+			this->avgMass = 0.0f;
 
 			this->vbo.clear();
 		}
@@ -141,6 +148,9 @@ namespace entropy
 					this->maxRadius = std::max(this->maxRadius, coordData[i].z);
 
 					this->masses.push_back(massData[i]);
+					this->minMass = std::min(this->minMass, massData[i]);
+					this->maxMass = std::max(this->maxMass, massData[i]);
+					this->avgMass += massData[i];
 
 					//if (this->data.size() < 400)
 					//{
@@ -175,7 +185,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::updateFilteredData(const glm::mat4 & modelTransform, const ofCamera & camera)
+		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
 		{
 			std::vector<glm::mat4> data;
 			const auto cameraTransform = camera.getModelViewProjectionMatrix();
@@ -196,15 +206,19 @@ namespace entropy
 													1.0f);
 
 					// Make sure the point is inside the visible frustum.
-					const auto camPos = cameraTransform * modelTransform * position;
+					const auto camPos = cameraTransform * worldTransform * position;
 					const auto clipPos = camPos.xyz() / camPos.w;
 					if (-1 <= clipPos.x && clipPos.x <= 1 &&
 						-1 <= clipPos.y && clipPos.y <= 1 &&
 						 0 <= clipPos.z && clipPos.z <= 1)
 					{
-						auto transform = glm::translate(modelTransform, position.xyz());
-						transform = glm::scale(transform, glm::vec3(this->masses[i]));
-						transform = glm::rotate(transform, i * 0.12345f, glm::normalize(glm::vec3(i%23, i%43, i%11)));
+						const auto scale = glm::vec3(this->masses[i] * params.model.scale);
+						
+						auto transform = glm::translate(worldTransform, position.xyz());
+						transform = glm::scale(transform, scale);
+						transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i%23, i%43, i%11)));
+						// Hide the alpha value in the transform matrix.
+						//transform[3][3] = ofMap(clipPos.z, fadeDistance, 1.0f, 1.0f, 0.0f, true);
 						data.push_back(transform);
 					}
 				}
@@ -230,27 +244,27 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void DataSet::drawPoints(ofShader & shader, const glm::mat4 & modelTransform)
+		void DataSet::drawPoints(ofShader & shader, const glm::mat4 & worldTransform, SharedParams & params)
 		{
 			if (!this->parameters.renderPoints) return;
 
 			this->updateShaderUniforms(shader);
-			shader.setUniformMatrix4f("uTransform", modelTransform);
+			shader.setUniformMatrix4f("uTransform", worldTransform);
 			ofSetColor(this->parameters.color.get());
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::drawModels(ofShader & shader, const glm::mat4 & modelTransform, ofVboMesh & mesh, const ofCamera & camera, float cutoff)
+		void DataSet::drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params)
 		{
 			if (!this->parameters.renderModels) return;
 			
-			if (cutoff == 0.0f) return;
+			if (params.model.clipDistance == 0.0f) return;
 
 			auto clipCamera = camera;
-			clipCamera.setFarClip(cutoff);
-			int count = this->updateFilteredData(modelTransform, clipCamera);
+			clipCamera.setFarClip(params.model.clipDistance);
+			int count = this->updateFilteredData(worldTransform, clipCamera, params);
 			
 			if (count == 0) return;
 

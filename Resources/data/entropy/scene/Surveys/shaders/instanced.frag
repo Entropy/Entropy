@@ -8,8 +8,8 @@ uniform vec4 globalColor;
 //flat in int vID;
 //flat in int vCell;
 
-//in float vAlpha;
 in vec4 vColor;
+in float vAlpha;
 
 out vec4 fragColor;
 

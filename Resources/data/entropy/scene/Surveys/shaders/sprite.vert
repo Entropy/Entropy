@@ -38,8 +38,8 @@ void main()
 	gl_Position = projectionMatrix * eyeCoord;
 
 	float dist = sqrt(eyeCoord.x * eyeCoord.x + eyeCoord.y * eyeCoord.y + eyeCoord.z * eyeCoord.z);
-	//float attenuation = uAttenuation / dist;
-	float attenuation = 1.0;
+	float attenuation = uAttenuation / dist;
+	//float attenuation = 1.0;
 
 	gl_PointSize = uPointSize * mass * attenuation;
 

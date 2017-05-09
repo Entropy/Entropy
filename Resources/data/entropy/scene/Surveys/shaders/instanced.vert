@@ -15,8 +15,8 @@ in vec4 color;
 //flat out int vID;
 //flat out int vCell;
 
-//out float vAlpha;
 out vec4 vColor;
+out float vAlpha;
 
 void main()
 {
@@ -28,6 +28,9 @@ void main()
 		texelFetch(uTexData, x + 2), 
 		texelFetch(uTexData, x + 3)
 	);
+
+	vAlpha = transformMatrix[3][3];
+	transformMatrix[3][3] = 1.0f;
 	
 	//vec3 origin = vec3(transformMatrix[3][0], transformMatrix[3][1], transformMatrix[3][2]);
 
