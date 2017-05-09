@@ -2,9 +2,111 @@
 #include <algorithm>
 #include "of3dGraphics.h"
 #include "ofGraphics.h"
+#include "ofTrueTypeFont.h"
+#include "ofCamera.h"
 #include "ofUtils.h"
 #include <future>
 #include <numeric>
+
+namespace {
+ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size){
+	ofMesh boxWireframeMesh;
+	boxWireframeMesh.setMode( OF_PRIMITIVE_LINES );
+
+	boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, -.5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, -.5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, -.5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, -.5f} * size + pos);
+
+	boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, .5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, .5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, .5f} * size + pos);
+	boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, .5f} * size + pos);
+
+	// front face
+	boxWireframeMesh.addIndex(0);
+	boxWireframeMesh.addIndex(1);
+
+	boxWireframeMesh.addIndex(1);
+	boxWireframeMesh.addIndex(2);
+
+	boxWireframeMesh.addIndex(2);
+	boxWireframeMesh.addIndex(3);
+
+	boxWireframeMesh.addIndex(3);
+	boxWireframeMesh.addIndex(0);
+
+	// back face
+	boxWireframeMesh.addIndex(4);
+	boxWireframeMesh.addIndex(5);
+
+	boxWireframeMesh.addIndex(5);
+	boxWireframeMesh.addIndex(6);
+
+	boxWireframeMesh.addIndex(6);
+	boxWireframeMesh.addIndex(7);
+
+	boxWireframeMesh.addIndex(7);
+	boxWireframeMesh.addIndex(4);
+
+
+	boxWireframeMesh.addIndex(0);
+	boxWireframeMesh.addIndex(4);
+
+	boxWireframeMesh.addIndex(1);
+	boxWireframeMesh.addIndex(5);
+
+	boxWireframeMesh.addIndex(2);
+	boxWireframeMesh.addIndex(6);
+
+	boxWireframeMesh.addIndex(3);
+	boxWireframeMesh.addIndex(7);
+
+	return boxWireframeMesh;
+}
+void billboard(const ofTrueTypeFont & f, std::string text, glm::mat4 projection, glm::mat4 modelview, glm::vec3 pos){
+	auto rViewport = ofGetCurrentViewport();
+
+	auto mat = projection * modelview;
+	auto dScreen4 = mat * glm::vec4(pos,1.0);
+	auto dScreen = dScreen4.xyz() / dScreen4.w;
+	dScreen += glm::vec3(1.0) ;
+	dScreen *= 0.5;
+
+	dScreen.x += rViewport.x;
+	dScreen.x *= rViewport.width;
+
+	dScreen.y += rViewport.y;
+	dScreen.y *= rViewport.height;
+
+	if (dScreen.z >= 1) return;
+
+
+	ofSetMatrixMode(OF_MATRIX_PROJECTION);
+	ofPushMatrix();
+	ofLoadIdentityMatrix();
+
+	ofSetMatrixMode(OF_MATRIX_MODELVIEW);
+	ofPushMatrix();
+
+	glm::mat4 modelView;
+	modelView = glm::translate(modelView, glm::vec3(-1,-1,0));
+	modelView = glm::scale(modelView, glm::vec3(2/rViewport.width, 2/rViewport.height, 1));
+	modelView = glm::translate(modelView, glm::vec3(dScreen.x, dScreen.y, 0));
+	ofLoadMatrix(modelView);
+	auto m = f.getStringMesh(text, 0, 0, false);
+	f.getFontTexture().bind();
+	m.draw();
+	f.getFontTexture().unbind();
+
+
+	ofSetMatrixMode(OF_MATRIX_PROJECTION);
+	ofPopMatrix();
+
+	ofSetMatrixMode(OF_MATRIX_MODELVIEW);
+	ofPopMatrix();
+}
+}
 
 struct BoundingBoxSearch {
 	inline BoundingBoxSearch(const ofVec3f & min, const ofVec3f & max, float density)
@@ -29,6 +131,7 @@ VaporOctree::VaporOctree()
 void VaporOctree::setup(const std::vector <Particle> & particles){
 	*this->particles = particles;
 	this->particlesIndex.resize(this->particles->size());
+	children.clear();
 	std::iota(this->particlesIndex.begin(), this->particlesIndex.end(), 0);
 	auto bb = std::accumulate(particles.begin(), particles.end(), BoundingBoxSearch(), [] (const BoundingBoxSearch &box, const Particle &p)->BoundingBoxSearch {
 		auto maxpos = p.getMaxPos();
@@ -52,7 +155,7 @@ bool VaporOctree::divide(size_t resolution, float minDensity, float maxDensity){
 	float thresDensity = minDensity + span * 0.002f;
 	if(density < thresDensity){
 		particlesIndex.clear();
-		density = 0;
+		//density = 0;
 	}
 	if(resolution == 0 || particlesIndex.size() == 0){
 		return false;
@@ -139,6 +242,7 @@ void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity)
 	this->x = center;
 	this->y = center;
 	this->z = center;
+	this->level = 0;
 	if(this->divide(resolution, minDensity, maxDensity)){
 		std::array <std::future <bool>, 8> futures;
 		for(size_t i = 0; i < children.size(); ++i){
@@ -156,7 +260,7 @@ void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity)
 }
 
 void VaporOctree::compute(size_t resolution, float minDensity, float maxDensity, size_t level){
-	this->resolution = resolution;
+	this->level = level;
 	if(this->divide(resolution, minDensity, maxDensity)){
 		for(auto & child : children){
 			child.compute(resolution - 1, minDensity, maxDensity, level + 1);
@@ -169,6 +273,25 @@ bool VaporOctree::isLeaf() const {
 	return children.empty();
 }
 
+ofMesh VaporOctree::getMesh(float minDensity, float maxDensity) const{
+	if(this->isLeaf()){
+		if(this->particlesIndex.empty()){
+			ofSetColor(255, 20);
+		}else{
+			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
+			ofSetColor(255, alpha);
+		}
+		return boxWireframe(bb.center, bb.size);
+	}else{
+		ofMesh mesh;
+		mesh.setMode( OF_PRIMITIVE_LINES );
+		for(const auto & child : children){
+			mesh.append(child.getMesh(minDensity, maxDensity));
+		}
+		return mesh;
+	}
+}
+
 void VaporOctree::drawLeafs(float minDensity, float maxDensity) const {
 	if(this->isLeaf()){
 		if(this->particlesIndex.empty()){
@@ -178,9 +301,29 @@ void VaporOctree::drawLeafs(float minDensity, float maxDensity) const {
 			ofSetColor(255, alpha);
 		}
 		ofDrawBox(bb.center, bb.size.x, bb.size.y, bb.size.z);
+
+		ofSetColor(255, 80);
+		//ofDrawBitmapString(density, bb.center);
 	}else{
 		for(const auto & child : children){
 			child.drawLeafs(minDensity, maxDensity);
+		}
+	}
+	//getMesh(minDensity, maxDensity).draw();
+}
+
+void VaporOctree::drawDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity) const{
+	if(this->isLeaf()){
+		if(this->particlesIndex.empty()){
+			ofSetColor(255, 60);
+		}else{
+			auto alpha = ofMap(density, minDensity, maxDensity, 50, 90);
+			ofSetColor(255, alpha);
+		}
+		billboard(ttf, ofToString(density), camera.getProjectionMatrix(), camera.getModelViewMatrix() * model, bb.center);
+	}else{
+		for(const auto & child : children){
+			child.drawDensities(ttf, camera, model, minDensity, maxDensity);
 		}
 	}
 }

@@ -7,6 +7,7 @@
 #include "ofxVolumetrics3D.h"
 #include "ofxTexture3d.h"
 #include "Constants.h"
+#include "VaporOctree.h"
 
 namespace ent
 {
@@ -39,7 +40,7 @@ namespace ent
 				ofShader particles2texture;
 				ofBufferObject particlesBuffer;
 				ofTexture particlesTexture;
-            #endif
+			#endif
 		};
 
 		void setup(Settings & settings);
@@ -48,6 +49,7 @@ namespace ent
 		void update(ofShader& shader);
 		void draw();
 		void drawOctree(float minDensity, float maxDensity);
+		void drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity);
 
 		ofxRange3f& getCoordRange();
 		ofxRange1f& getSizeRange();
@@ -77,5 +79,7 @@ namespace ent
 		std::string metaFileName;
 		std::string voxelsFileName;
 		std::string particlesGroupsFileName;
+
+		VaporOctree vaporOctree;
 	};
 }

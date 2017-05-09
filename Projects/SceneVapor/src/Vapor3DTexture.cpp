@@ -241,7 +241,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 
 		cout << "---------------------------------------------------" << endl;
 		cout << "intersecting " << nonIntersecting - intersectingParticles.begin() << " non intersecting " << intersectingParticles.end() - nonIntersecting << " intersecting " <<
-		        float(nonIntersecting - intersectingParticles.begin()) / float(total) << "%" << endl;
+				float(nonIntersecting - intersectingParticles.begin()) / float(total) << "%" << endl;
 
 		intersectingParticles.erase(nonIntersecting, intersectingParticles.end());
 		groupIndices.push_back(particlesInBox.size());

@@ -8,10 +8,8 @@ void ofApp::setup()
 //    ofSetDataPathRoot("../Resources/data/");
     ofBackground(ofColor::black);
 
-    m_scale = 1024.0;
-
-	m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
-	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
+	m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -28,11 +26,15 @@ void ofApp::setup()
 	//m_timeline.play();
 
 	m_bSyncPlayback = false;
-	m_bExportFrames = false;
-
-    m_bGuiVisible = true;
 	//m_camera.disableInertia();
-	m_camera.setDistance(1024);
+	m_camera.setDistance(5);
+	m_camera.setNearClip(0.01);
+
+	ofxGuiSetFont("Fira Code", 11, true, true, 72);
+	ttf.load("Fira Code", 11, true, true, 72);
+	m_gui.setup(parameters);
+	m_gui.getGroup("Sequence Ramses").getFloatSlider("density min").setUpdateOnReleaseOnly(true);
+	m_gui.getGroup("Sequence Ramses").getFloatSlider("density max").setUpdateOnReleaseOnly(true);
 
 	/*fullQuadFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA32F);
 	fxaaShader.load("shaders/vert_full_quad.glsl", "shaders/frag_fxaa.glsl");
@@ -55,16 +57,6 @@ void ofApp::update()
 		m_sequenceRamses.setFrame(m_timeline.getCurrentFrame());
 	}
 	m_sequenceRamses.update();
-
-    if (m_bMouseOverGui) 
-	{
-		m_camera.disableMouseInput();
-    }
-    else 
-	{
-		m_camera.enableMouseInput();
-    }
-	m_bMouseOverGui = false;
 }
 
 //--------------------------------------------------------------
@@ -72,31 +64,28 @@ void ofApp::draw()
 {
 //    cam.setNearClip(0);
 //    cam.setFarClip(FLT_MAX);
-
-	if(m_vboTex){
-		m_camera.begin();
-		if(m_showOctree){
-			ofNoFill();
-			m_sequenceRamses.drawOctree(m_scale);
-			ofFill();
-		}else{
-			m_sequenceRamses.draw(m_scale);
-		}
-		m_camera.end();
-	}else{
-		m_camera.begin();
-		m_sequenceRamses.drawTexture(m_scale);
-		m_camera.end();
-	}
-
 	m_camera.begin();
+	if(m_showOctree){
+		ofNoFill();
+		m_sequenceRamses.drawOctree(m_scale);
+		ofFill();
+	}
+	if(m_showOctreeDensities){
+		m_sequenceRamses.drawOctreeDensities(ttf, m_camera, m_scale);
+	}
+	if(m_vboTex){
+		m_sequenceRamses.draw(m_scale);
+	}else{
+		m_sequenceRamses.drawTexture(m_scale);
+	}
+	if(m_showAxis)
 	{
 		ofNoFill();
 		ofSetColor(255,255);
         ofDrawBox(0, 0, 0, m_scale, m_scale, m_scale);
 		ofFill();
         
-        ofDrawAxis(20);
+		ofDrawAxis(0.2);
     }
 	m_camera.end();
 
@@ -104,7 +93,7 @@ void ofApp::draw()
 	{
 		if (m_timeline.getIsPlaying())
 		{
-			ofSaveScreen(m_exportPath + ofToString(m_timeline.getCurrentFrame(), 5, '0') + ".png");
+			ofSaveScreen(m_exportPath.get() + ofToString(m_timeline.getCurrentFrame(), 5, '0') + ".png");
 		}
 		else
 		{
@@ -115,97 +104,11 @@ void ofApp::draw()
 
     if (m_bGuiVisible) 
 	{
-        m_bMouseOverGui = imGui();
 
 		m_timeline.setOffset(ofVec2f(0.0, ofGetHeight() - m_timeline.getHeight()));
 		m_timeline.draw();
-
-		m_bMouseOverGui != m_timeline.getDrawRect().inside(ofGetMouseX(), ofGetMouseY());
+		m_gui.draw();
     }
-}
-
-//--------------------------------------------------------------
-bool ofApp::imGui()
-{
-	static const int kGuiMargin = 10;
-
-	bool bMouseOverGui = false;
-	m_gui.begin();
-	{
-		ofVec2f windowPos(kGuiMargin, kGuiMargin);
-		ofVec2f windowSize = ofVec2f(0);
-
-		ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-		ImGui::SetNextWindowSize(ofVec2f(380, 94), ImGuiSetCond_Appearing);
-		if (ImGui::Begin("App", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
-		{
-			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-
-			if (ImGui::CollapsingHeader("World", nullptr, true, true))
-			{
-				ImGui::SliderFloat("Scale", &m_scale, 1.0f, 2048.0f);
-			}
-
-			if (ImGui::CollapsingHeader("Playback", nullptr, true, true))
-			{
-				if (ImGui::Checkbox("Sync Timeline", &m_bSyncPlayback))
-				{
-					if (m_bSyncPlayback)
-					{
-						m_timeline.stop();
-						m_timeline.setCurrentFrame(0);
-						m_timeline.setFrameRate(m_sequenceRamses.getFrameRate());
-						m_timeline.setDurationInFrames(m_sequenceRamses.getTotalFrames());
-						m_timeline.setFrameBased(true);
-					}
-				}
-
-				if (ImGui::Checkbox("Export", &m_bExportFrames))
-				{
-					if (m_bExportFrames)
-					{
-						std::string folderName = ofSystemTextBoxDialog("Save to folder", ofGetTimestampString("%Y%m%d-%H%M%S"));
-						if (folderName.length())
-						{
-							m_exportPath = ofToDataPath("exports/" + folderName + "/");
-
-							m_timeline.setCurrentFrame(0);
-							m_timeline.setFrameBased(true);
-							m_timeline.play();
-						}
-					}
-					else
-					{
-						m_timeline.stop();
-						m_timeline.setFrameBased(false);
-					}
-				}
-
-				/*if(ImGui::Checkbox("GL debug", &m_glDebug)){
-					if(m_glDebug){
-						ofEnableGLDebugLog();
-					}else{
-						ofDisableGLDebugLog();
-					}
-				}*/
-
-				ImGui::Checkbox("Show octree", &m_showOctree);
-				ImGui::Checkbox("Vbo/Tex3d", &m_vboTex);
-			}
-
-			windowSize = ImGui::GetWindowSize();
-			ImGui::End();
-		}
-
-		ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
-		bMouseOverGui = windowBounds.inside(ofGetMouseX(), ofGetMouseY());
-
-		windowPos.y += windowSize.y + kGuiMargin;
-		bMouseOverGui |= m_sequenceRamses.imGui(windowPos, windowSize);
-	}
-	m_gui.end();
-
-	return bMouseOverGui;
 }
 
 //--------------------------------------------------------------
@@ -213,7 +116,7 @@ void ofApp::keyPressed(int key)
 {
     switch (key) 
 	{
-        case '`':
+		case 'g':
             m_bGuiVisible ^= 1;
             break;
 
@@ -225,9 +128,9 @@ void ofApp::keyPressed(int key)
 			m_cameraTrack->lockCameraToTrack ^= 1;
 			break;
 
-		case 'T':
-			m_cameraTrack->addKeyframe();
-			break;
+//		case 'T':
+//			m_cameraTrack->addKeyframe();
+//			break;
 
         default:
             break;

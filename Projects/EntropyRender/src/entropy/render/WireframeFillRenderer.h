@@ -19,6 +19,7 @@ namespace entropy
 			void resize(float width, float height);
 			void draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera) const;
 			void drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, GLenum mode, ofCamera & camera) const;
+			void drawWithDOF(ofCamera & camera, std::function<void(float accumValue, glm::mat4 projection, glm::mat4 modelview)> drawFunc) const;
 			void drawDebug();
 			std::vector<float> getFogFunctionPlot(size_t numberOfPoints) const;
 			const ofMesh & getBokehShape() const;

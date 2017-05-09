@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "ofxHDF5.h"
-#include "ofxImGui.h"
 #include "ofxRange.h"
 
 #include "SnapshotRamses.h"
@@ -23,9 +22,8 @@ namespace ent
         void update();
         void draw(float scale);
 		void drawOctree(float scale);
+		void drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, float scale);
 		void drawTexture(float scale);
-
-		bool imGui(ofVec2f& windowPos, ofVec2f& windowSize);
 
 		void preloadAllFrames();
 		void loadFrame(int index);
@@ -58,17 +56,23 @@ namespace ent
 		std::string m_folder;
 		int m_startIndex;
 		int m_endIndex;
+		int m_currentIndex;
 		
 		ofxRange3f m_coordRange;
 		ofxRange1f m_sizeRange;
 		ofxRange1f m_densityRange;
+
+		ofParameter<float> m_densityMin{"density min", 0.f, 0.f, 1.f, ofParameterScale::Logarithmic};
+		ofParameter<float> m_densityMax{"density max", 0.25f, 0.f, 1.f, ofParameterScale::Logarithmic};
+		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 5};
+		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 50, ofParameterScale::Logarithmic};
 
 		// Playback
 		float m_frameRate;
 		std::size_t m_currFrame;
 
         // 3D Render
-        bool m_bRender;
+		ofParameter<bool> m_bRender{"render", true};
 
         glm::vec3 m_originShift;
         float m_normalizeFactor;
@@ -76,21 +80,28 @@ namespace ent
         ofShader m_renderShader;
 		ofShader m_volumetricsShader;
 
-        float m_densityMin;
-        float m_densityMax;
-
 		bool m_bReady;
 
-		std::time_t m_lastVertTime;
-		std::time_t m_lastFragTime;
-		std::time_t m_lastIncludesTime;
+		std::filesystem::file_time_type m_lastVertTime;
+		std::filesystem::file_time_type m_lastFragTime;
+		std::filesystem::file_time_type m_lastIncludesTime;
 
 		ofxVolumetrics3D volumetrics;
-		float m_volumeQuality;
-		float m_volumeDensity;
 
 		std::vector<float> m_clearData;
 
 		SnapshotRamses::Settings frameSettings;
+
+		std::vector<ofEventListener> listeners;
+
+	public:
+		ofParameterGroup parameters{
+			"Sequence Ramses",
+			m_bRender,
+			m_densityMin,
+			m_densityMax,
+			m_volumeQuality,
+			m_volumeDensity,
+		};
     };
 }

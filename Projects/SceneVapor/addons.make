@@ -1,10 +1,12 @@
 ../../addons/ofxHDF5
-../../addons/ofxImGui
 ../../addons/ofxRange
 ../../addons/ofxSet
 ../../addons/ofxTimeline
-../../addons/ofxMSATimer
 ../../addons/ofxTextInputField
-../../addons/ofxTween
 ../../addons/ofxTimecode
+../../addons/ofxEasing
+../../addons/ofxVolumetrics
+../../addons/ofxLibfbi
+../../addons/ofxTextureRecorder
 ofxXmlSettings
+ofxGui

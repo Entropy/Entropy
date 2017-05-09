@@ -111,10 +111,10 @@ _autosave
 # Project data folders (everything should be in Shared/data or Shared/assets)
 */*/bin/*
 !*/*/bin/data/
-*/*/bin/data/*
-!*/*/bin/data/shaders/
-!*/*/bin/data/*.xml
-!*/*/bin/data/*.json
+#*/*/bin/data/*
+#!*/*/bin/data/shaders/
+#!*/*/bin/data/*.xml
+#!*/*/bin/data/*.json
 
 # Assets (managed by Syncthing)
 Resources/assets/*
@@ -130,3 +130,5 @@ imgui.ini
 
 # ofxTimeline garbage
 Resources/data/entropy/scene/*/*.xml
+Resources/data/entropy/scene/*/render*
+*.bphys

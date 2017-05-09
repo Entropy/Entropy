@@ -7,8 +7,12 @@ ofFbo::Settings fboSettings(){
 	ofFbo::Settings settings;
 	settings.width = ofGetWidth();
 	settings.height = ofGetHeight();
-	//settings.numSamples = 8;
+	settings.numSamples = 8;
 	settings.internalformat = GL_RGBA32F;
+	//settings.depthStencilInternalFormat = GL_DEPTH32F_STENCIL8;
+	//settings.depthStencilAsTexture = true;
+	settings.useDepth = true;
+	settings.useStencil = false;
 	return settings;
 }
 
@@ -87,6 +91,8 @@ void ofApp::setup(){
 	fbo.allocate(fboSettings());
 	fbo2.allocate(fboSettings());
 
+	fbo.getDepthTexture().setRGToRGBASwizzles(true);
+
 	postEffects.resize(ofGetWidth(), ofGetHeight());
 	renderer.setup(side);
 	renderer.resize(ofGetWidth(), ofGetHeight());
@@ -100,24 +106,34 @@ void ofApp::setup(){
 	recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
 	recorderSettings.folderPath = "render";
 	recorder.setup(recorderSettings);
+
+	billboardShader.load("billboard.vert.glsl", "billboard.frag.glsl");
+
+	particleTexts["H"] = font.getStringMesh("H", 0, 0);
+	particleTexts["He"] = font.getStringMesh("He", 0, 0);
+	particleTexts["Li"] = font.getStringMesh("Li", 0, 0);
+	particleTexts["Hydrogen"] = font.getStringMesh("Hydrogen", 0, 0);
+	particleTexts["Helium"] = font.getStringMesh("Helium", 0, 0);
+	particleTexts["Lithium"] = font.getStringMesh("Lithium", 0, 0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	cam.orbitDeg(ofGetFrameNum()/60.f,0,side*0.6);
+	//cam.orbitDeg(ofGetFrameNum()/60.f,0,side*0.6);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//	glEnable(GL_BLEND);
-//	glBlendFunc(GL_ONE, GL_ONE);
+	ofEnableDepthTest();
 	fbo.begin();
 	ofClear(0,255);
 	cam.begin();
 	auto maxScreenDistance = (maxDistance * side) * (maxDistance * side);
 
-	ofEnableDepthTest();
-	renderer.drawWithDOF([this, maxScreenDistance](float accumValue, glm::mat4 projection, glm::mat4 modelview){
+
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_ONE, GL_ONE);
+	renderer.drawWithDOF(cam, [this, maxScreenDistance](float accumValue, glm::mat4 projection, glm::mat4 modelview){
 		ofLoadMatrix(modelview);
 		for(auto & r: relations){
 			auto p1 = positions[r.first];
@@ -127,43 +143,57 @@ void ofApp::draw(){
 			ofSetColor(pct*255, accumValue*255);
 			ofDrawLine(p1,p2);
 		}
-	}, cam);
+	});
 
-	renderer.drawWithDOF([this, maxScreenDistance](float accumValue, glm::mat4 projection, glm::mat4 modelview){
+	renderer.drawWithDOF(cam, [this, maxScreenDistance](float accumValue, glm::mat4 projection, glm::mat4 modelview){
 		auto i = 0;
+		billboardShader.begin();
+		auto viewport = ofGetCurrentViewport();
+		auto viewportv4 = glm::vec4(viewport.position.xy(), viewport.width, viewport.height);
+		billboardShader.setUniform4f("viewport", viewportv4);
+		billboardShader.setUniformMatrix4f("projectionMatrix", projection);
+		billboardShader.setUniformMatrix4f("modelViewMatrix", modelview);
+		billboardShader.setUniformMatrix4f("modelViewProjectionMatrix", projection * modelview);
+		billboardShader.setUniformTexture("tex0", font.getFontTexture(), 0);
 		for(auto & p: positions){
 			auto distance = glm::distance2(cam.getPosition(), p);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
 			auto pctColor = 1-pctDistance;
-			ofSetColor(pctColor*255, accumValue*255);
+			billboardShader.setUniform1f("pctColor", pctColor);
+			billboardShader.setUniform1f("accumValue", accumValue);
+			billboardShader.setUniform4f("billboard_position", glm::vec4(p, 1.0));
+			std::string text = "";
 			if(pctDistance>fulltextDistance){
 				switch(types[i++]){
 					case 0:
-						billboard(font, "H", cam.getProjectionMatrix(), modelview, p);
+						text = "H";
 					break;
 					case 1:
-						billboard(font, "He", cam.getProjectionMatrix(), modelview, p);
+						text = "He";
 					break;
 					case 2:
-						billboard(font, "Li", cam.getProjectionMatrix(), modelview, p);
+						text = "Li";
 					break;
 				}
 			}else{
 				switch(types[i++]){
 					case 0:
-						billboard(font, "Hydrogen", cam.getProjectionMatrix(), modelview, p);
+						text = "Hydrogen";
 					break;
 					case 1:
-						billboard(font, "Helium", cam.getProjectionMatrix(), modelview, p);
+						text = "Helium";
 					break;
 					case 2:
-						billboard(font, "Lithium", cam.getProjectionMatrix(), modelview, p);
+						text = "Lithium";
 					break;
 				}
 			}
-
+			particleTexts[text].draw();
+			//font.getStringMesh(text, 0, 0).draw();
+			//billboard(font, text, cam.getProjectionMatrix(), modelview, p);
 		}
-	}, cam);
+		billboardShader.end();
+	});
 	cam.end();
 	fbo.end();
 	postEffects.process(fbo.getTexture(), fbo2, postParameters);
@@ -175,6 +205,7 @@ void ofApp::draw(){
 	ofDisableDepthTest();
 //	ofDisableAlphaBlending();
 	fbo2.getTexture().draw(0,0);
+	//fbo.getDepthTexture().draw(0,0);
 	gui.draw();
 }
 
