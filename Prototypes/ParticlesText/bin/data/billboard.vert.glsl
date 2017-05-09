@@ -32,9 +32,6 @@ void main(void){
 		pos *= vec3(2/viewport.z, 2/viewport.w, 1);
 		pos += vec3(-1,-1,0);
 
-		float far=gl_DepthRange.far;
-		float near=gl_DepthRange.near;
-
 		vec4 clip_space_pos = modelViewProjectionMatrix * vec4(position + billboard_position.xyz,1);
 		float ndc_depth = clip_space_pos.z / clip_space_pos.w;
 
