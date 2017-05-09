@@ -5,10 +5,7 @@ namespace ent
 {
     //--------------------------------------------------------------
     SequenceRamses::SequenceRamses()
-		: m_bRender(true)
-		, m_densityMin(0.0f)
-		, m_densityMax(0.25f)
-		, m_frameRate(30.0f)
+		: m_frameRate(30.0f)
 	    , m_currFrame(-1)
     {
 		clear();
@@ -90,8 +87,6 @@ namespace ent
 		m_lastFragTime = fs::last_write_time(ofFile("shaders/render.frag", ofFile::Reference));
 		m_lastIncludesTime = fs::last_write_time(ofFile("shaders/defines.glsl", ofFile::Reference));
 
-		m_volumeDensity = 20.0;
-		m_volumeQuality = 1;
 		m_volumetricsShader.load("shaders/volumetrics_vertex.glsl", "shaders/volumetrics_frag.glsl");
 		m_volumetricsShader.begin();
 		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
@@ -115,6 +110,12 @@ namespace ent
 		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
 		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);
 
+		auto reload = [this](float&){
+			loadFrame(m_currentIndex);
+		};
+
+		listeners.push_back(m_densityMin.newListener(reload));
+		listeners.push_back(m_densityMax.newListener(reload));
 
 		m_bReady = true;
     }
@@ -156,20 +157,20 @@ namespace ent
 			}
 			if(loaded){
 				m_renderShader = newShader;
-				m_renderShader.begin();
-				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
-				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
-				m_renderShader.end();
-				m_volumetricsShader.begin();
-				m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
-				m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
-				m_volumetricsShader.end();
 			}
 
 			m_lastVertTime = vertTime;
 			m_lastFragTime = fragTime;
 			m_lastIncludesTime = includesTime;
 		}
+		m_renderShader.begin();
+		m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
+		m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
+		m_renderShader.end();
+		m_volumetricsShader.begin();
+		m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
+		m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
+		m_volumetricsShader.end();
     }
 
     //--------------------------------------------------------------
@@ -211,6 +212,18 @@ namespace ent
 	}
 
 	//--------------------------------------------------------------
+	void SequenceRamses::drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, float scale)
+	{
+		if (m_bRender)
+		{
+			ofSetColor(ofColor::white);
+			glm::mat4 model = glm::scale(glm::vec3(scale/m_normalizeFactor));
+			model = glm::translate(model, m_originShift);
+			getSnapshot().drawOctreeDensities(ttf, camera, model, m_densityMin * m_densityRange.getSpan(), m_densityMax * m_densityRange.getSpan());
+		}
+	}
+
+	//--------------------------------------------------------------
 	void SequenceRamses::drawTexture(float scale){
 		auto original_scale = std::max(getSnapshot().getCoordRange().getSpan().x, std::max(getSnapshot().getCoordRange().getSpan().y, getSnapshot().getCoordRange().getSpan().z));
 		auto box_scale = std::max(getSnapshot().m_boxRange.getSpan().x, std::max(getSnapshot().m_boxRange.getSpan().y, getSnapshot().m_boxRange.getSpan().z));
@@ -227,48 +240,6 @@ namespace ent
 		ofPopMatrix();
 		ofFill();
 	}
-
-    //--------------------------------------------------------------
-    bool SequenceRamses::imGui(ofVec2f& windowPos, ofVec2f& windowSize)
-    {
-        ImGui::SetNextWindowPos(windowPos, ImGuiSetCond_Appearing);
-		ImGui::SetNextWindowSize(ofVec2f(380, 364), ImGuiSetCond_Appearing);
-        if (ImGui::Begin("Cell Renderer", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) 
-		{
-			ImGui::Text("Frame %lu / %lu", m_currFrame, m_snapshots.size());
-			ImGui::Text("%lu Cells", m_snapshots[m_currFrame].getNumCells());
-
-			ImGui::Checkbox("Render", &m_bRender);
-			if(ImGui::DragFloatRange2("Density Range", &m_densityMin, &m_densityMax, 0.0001f, 0.0f, 1.0f, "Min: %.4f%%", "Max: %.4f%%")){
-				m_renderShader.begin();
-				m_renderShader.setUniform1f("uDensityMin", m_densityMin * m_densityRange.getSpan());
-				m_renderShader.setUniform1f("uDensityMax", m_densityMax * m_densityRange.getSpan());
-				m_renderShader.end();
-				m_volumetricsShader.begin();
-				m_volumetricsShader.setUniform1f("minDensity", m_densityMin * m_densityRange.getSpan());
-				m_volumetricsShader.setUniform1f("maxDensity", m_densityMax * m_densityRange.getSpan());
-				m_volumetricsShader.end();
-			}
-			if (ImGui::Button("Next Frame"))
-			{
-				setFrame(getCurrentFrame() + 1);
-			}
-
-			if(ImGui::SliderFloat("Volume Quality", &m_volumeQuality, 0, 2) | ImGui::SliderFloat("Volume Density", &m_volumeDensity, 0, 50)){
-				volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity, 0);
-			}
-
-            windowSize = ImGui::GetWindowSize();
-            ImGui::End();
-        }
-        else 
-		{
-            windowSize = ofVec2f(0);
-        }
-
-        ofRectangle windowBounds(windowPos, windowSize.x, windowSize.y);
-        return windowBounds.inside(ofGetMouseX(), ofGetMouseY());
-    }
 
 	//--------------------------------------------------------------
 	void SequenceRamses::preloadAllFrames()
@@ -289,7 +260,7 @@ namespace ent
 		}
 
 		frameSettings.folder = m_folder;
-		frameSettings.frameIndex = m_startIndex + index;
+		frameSettings.frameIndex = m_currentIndex = m_startIndex + index;
 		frameSettings.minDensity = m_densityMin;
 		frameSettings.maxDensity = m_densityMax;
 		frameSettings.volumeTexture.loadData(

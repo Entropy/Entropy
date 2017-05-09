@@ -4,8 +4,8 @@
 #include "ofConstants.h"
 #include "ofVectorMath.h"
 #include "ofPixels.h"
-#include "ofxRange.h"
 #include "Particle.h"
+#include "ofxRange.h"
 
 
 class Vapor3DTexture

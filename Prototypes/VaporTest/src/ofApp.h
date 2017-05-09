@@ -1,10 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxImGui.h"
+#include "ofxGui.h"
 #include "ofxTimeline.h"
 
 #include "SequenceRamses.h"
+#include "ofxTextureRecorder.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -30,22 +31,41 @@ public:
 
     ofEasyCam m_camera;
 
-    float m_scale;
-	bool m_bSyncPlayback;
+	ofParameter<float> m_scale{"world scale", 1, 0.1, 100};
+	ofParameter<bool> m_glDebug{"debug gl", false};
+	ofParameter<bool> m_showOctree{"show octree", false};
+	ofParameter<bool> m_showOctreeDensities{"show octree densities", false};
+	ofParameter<bool> m_showAxis{"show axis", false};
+	ofParameter<bool> m_vboTex{"vbo texture", false};
+	ofParameter<bool> m_bSyncPlayback{"sync playback", false};
+	ofParameter<bool> m_bExportFrames{"record", false};
+	ofParameter<string> m_exportPath{ofToDataPath("",true)};
+	ofParameterGroup appParameters{
+		"application",
+		m_scale,
+		m_glDebug,
+		m_showOctree,
+		m_showOctreeDensities,
+		m_showAxis,
+		//m_vboTex,
+		m_bSyncPlayback,
+		m_bExportFrames,
+		m_exportPath,
+	};
 
-	bool m_bExportFrames;
-	std::string m_exportPath;
 
-    // GUI
-    bool imGui();
+	ofParameterGroup parameters{
+		"vapor",
+		appParameters,
+		m_sequenceRamses.parameters,
+	};
 
 	ofxTimeline m_timeline;
 	ofxTLCameraTrack *m_cameraTrack;
 
-    ofxImGui m_gui;
-    bool m_bGuiVisible;
-    bool m_bMouseOverGui;
-	bool m_glDebug;
-	bool m_showOctree;
-	bool m_vboTex;
+	ofxPanel m_gui;
+	bool m_bGuiVisible = true;
+	ofxTextureRecorder recorder;
+
+	ofTrueTypeFont ttf;
 };

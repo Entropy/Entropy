@@ -37,17 +37,13 @@ Project{
 
         of.addons: [
             '../../addons/ofxHDF5',
-            '../../addons/ofxImGui',
-            '../../addons/ofxRange',
-            '../../addons/ofxSet',
             '../../addons/ofxTimeline',
-            '../../addons/ofxMSATimer',
-            '../../addons/ofxTextInputField',
-            '../../addons/ofxTween',
-            '../../addons/ofxTimecode',
             '../../addons/ofxVolumetrics',
             '../../addons/ofxLibfbi',
+            '../../addons/ofxSet',
+            '../../addons/ofxTextureRecorder',
             'ofxXmlSettings',
+            'ofxGui',
         ]
 
         // additional flags for the project. the of module sets some
