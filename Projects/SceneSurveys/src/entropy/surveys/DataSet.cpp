@@ -77,12 +77,9 @@ namespace entropy
 		
 			//this->data.push_back(glm::vec4(0.0, 0.0, 0.0, 1.0));
 
-			// Allocate the tbo.
-			std::vector<glm::mat4> tmpData(this->coordinates.size(), glm::mat4(1.0f));
-			bufferObj.allocate();
-			bufferObj.bind(GL_TEXTURE_BUFFER);
-			bufferObj.setData(tmpData, GL_STREAM_DRAW);
-			bufferTex.allocateAsBufferTexture(bufferObj, GL_RGBA32F);
+			// Allocate the buffer.
+			std::vector<InstanceData> tmpData(this->coordinates.size());
+			bufferObj.allocate(tmpData, GL_DYNAMIC_DRAW);
 		}
 		
 		//--------------------------------------------------------------
@@ -172,7 +169,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
 		{
-			std::vector<glm::mat4> data;
+			std::vector<InstanceData> data;
 			const auto cameraModelView = camera.getModelViewMatrix();
 			const auto cameraProjection = camera.getProjectionMatrix();
 
@@ -206,14 +203,24 @@ namespace entropy
 							0 <= clipPos.z && clipPos.z <= 1)
 						{
 							// Passed all tests, build and add transform matrix!
-							const auto scale = glm::vec3(this->masses[i] * params.model.scale);
+							const auto scale = glm::vec3(this->masses[i] * params.model.geoScale);
 
 							auto transform = glm::translate(worldTransform, position.xyz());
 							transform = glm::scale(transform, scale);
 							transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
 							// Hide the alpha value in the transform matrix.
-							//transform[3][3] = ofMap(clipPos.z, fadeDistance, 1.0f, 1.0f, 0.0f, true);
-							data.push_back(transform);
+							//transform[3][3] = ofMap(position.z, this->mappedRadiusRange.x, this->mappedRadiusRange.y, 1.0f, 0.0f, true);
+							InstanceData instanceData;
+							instanceData.transform = transform;
+							if (this->mappedRadiusRange.y < this->mappedRadiusRange.z)
+							{
+								instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * params.model.alphaScale;
+							}
+							else
+							{
+								instanceData.alpha = 0.0f;
+							}
+							data.push_back(instanceData);
 						}
 					}
 				}
@@ -256,14 +263,14 @@ namespace entropy
 			
 			if (count == 0) return;
 
-			shader.setUniformTexture("uTexData", this->bufferTex, 1);
+			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
 			cout << "Drawing " << count << " models" << endl;
 			mesh.drawInstanced(OF_MESH_POINTS, count);
 
-			//ofVboMesh m = ofVboMesh::box(1, 1, 1);
-			//m.drawInstanced(OF_MESH_POINTS, count);
+			//static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+			//simpleMesh.drawInstanced(OF_MESH_POINTS, count);
 		}
 
 		//--------------------------------------------------------------

@@ -1,7 +1,7 @@
 {
     "Surveys": {
         "BOSS": {
-            "Color": "1, 1, 1, 1",
+            "Color": "0.611111, 0.655638, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "1",
             "Max_Longitude": "1",
@@ -22,12 +22,12 @@
             "Cut_Radius": "0",
             "Max_Latitude": "0.5",
             "Max_Longitude": "0.5",
-            "Max_Radius": "0.5",
+            "Max_Radius": "0.510204",
             "Min_Latitude": "0",
             "Min_Longitude": "0",
             "Min_Radius": "0",
             "Render_Models": "0",
-            "Render_Points": "1"
+            "Render_Points": "0"
         },
         "Model": {
             "Clip_Distance": "0",
@@ -110,15 +110,17 @@
         },
         "Shared": {
             "Model": {
-                "Clip_Distance": "1000",
+                "Alpha_Scale": "0.1",
+                "Clip_Distance": "2000",
                 "Clip_Mass": "1000",
                 "Clip_Size": "4",
-                "Resolution": "1",
+                "Geo_Scale": "2",
+                "Resolution": "4",
                 "Scale": "1"
             },
             "Points": {
                 "Attenuation": "300",
-                "Size": "0.05"
+                "Size": "0.1"
             }
         },
         "ViziR": {

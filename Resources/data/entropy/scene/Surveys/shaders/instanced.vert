@@ -1,39 +1,31 @@
-#version 150
+#version 440
 
-uniform mat4 projectionMatrix;
-uniform mat4 modelViewMatrix;
 uniform mat4 modelViewProjectionMatrix;
 
-uniform	samplerBuffer uTexData;
+struct InstanceData
+{
+	mat4 transform;
+	float alpha;
+	float starFormationRate;
+	vec2 dummy;
+};
+
+layout(std140, binding=0) buffer instanceData
+{
+	InstanceData uData[];
+};
 
 in vec4 position;
 in vec4 color;
-//in float mass;
-//in float starFormationRate;
-
-//flat out int vEnabled;
-//flat out int vID;
-//flat out int vCell;
 
 out vec4 vColor;
 out float vAlpha;
 
 void main()
 {
-	int x = gl_InstanceID * 4;
-	
-	mat4 transformMatrix = mat4( 
-		texelFetch(uTexData, x + 0),
-		texelFetch(uTexData, x + 1),
-		texelFetch(uTexData, x + 2), 
-		texelFetch(uTexData, x + 3)
-	);
-
-	vAlpha = transformMatrix[3][3];
-	transformMatrix[3][3] = 1.0f;
-	
-	//vec3 origin = vec3(transformMatrix[3][0], transformMatrix[3][1], transformMatrix[3][2]);
-
+	mat4 transformMatrix = uData[gl_InstanceID].transform;
 	gl_Position = modelViewProjectionMatrix * transformMatrix * position;
+
 	vColor = color;
+	vAlpha = uData[gl_InstanceID].alpha;
 }

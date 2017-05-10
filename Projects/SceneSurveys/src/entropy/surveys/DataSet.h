@@ -21,7 +21,7 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<float> size{ "Size", 8.0f, 0.01f, 32.0f };
+					ofParameter<float> size{ "Size", 8.0f, 0.01f, 32.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> attenuation{ "Attenuation", 600.0f, 1.0f, 1000.0f };
 
 					PARAM_DECLARE("Points",
@@ -31,13 +31,15 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofParameter<float> scale{ "Scale", 8.0f, 0.01f, 32.0f };
+					ofParameter<float> geoScale{ "Geo Scale", 8.0f, 0.01f, 32.0f };
+					ofParameter<float> alphaScale{ "Alpha Scale", 1.0f, 0.01f, 8.0f, ofParameterScale::Logarithmic };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
 					ofParameter<float> clipDistance{ "Clip Distance", 1000.0f, 0.0f, 5000.0f };
 					ofParameter<float> clipSize{ "Clip Size", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
 
 					PARAM_DECLARE("Model",
-						scale,
+						geoScale,
+						alphaScale,
 						resolution,
 						clipDistance,
 						clipSize);
@@ -86,6 +88,14 @@ namespace entropy
 			} parameters;
 
 		protected:
+			struct InstanceData
+			{
+				glm::mat4 transform;
+				float alpha;
+				float starFormationRate;
+				glm::vec2 dummy;
+			};
+
 			size_t loadFragment(const std::string & filePath, const std::string & particleType);
 			size_t updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params);
 
@@ -105,8 +115,6 @@ namespace entropy
 			glm::vec2 mappedLongitudeRange;
 
 			ofVbo vbo;
-
-			ofTexture bufferTex;
 			ofBufferObject bufferObj;
 
 			std::vector<ofEventListener> paramListeners;
