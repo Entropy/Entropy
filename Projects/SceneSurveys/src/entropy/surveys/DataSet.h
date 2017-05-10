@@ -34,13 +34,13 @@ namespace entropy
 					ofParameter<float> scale{ "Scale", 8.0f, 0.01f, 32.0f };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
 					ofParameter<float> clipDistance{ "Clip Distance", 1000.0f, 0.0f, 5000.0f };
-					ofParameter<float> clipMass{ "Clip Mass", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
+					ofParameter<float> clipSize{ "Clip Size", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
 
 					PARAM_DECLARE("Model",
 						scale,
 						resolution,
 						clipDistance,
-						clipMass);
+						clipSize);
 				} model;
 
 				PARAM_DECLARE("Shared",
@@ -55,7 +55,7 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
-			void drawPoints(ofShader & shader, const glm::mat4 & worldTransform, SharedParams & params);
+			void drawPoints(ofShader & shader);
 			void drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params);
 
 			void gui(ofxImGui::Settings & settings);
@@ -87,9 +87,7 @@ namespace entropy
 
 		protected:
 			size_t loadFragment(const std::string & filePath, const std::string & particleType);
-			
 			size_t updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params);
-			void updateShaderUniforms(ofShader & shader);
 
 			std::vector<glm::vec3> coordinates;
 			std::vector<float> masses;

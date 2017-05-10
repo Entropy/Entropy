@@ -9,7 +9,7 @@
             "Min_Latitude": "0",
             "Min_Longitude": "0",
             "Min_Radius": "0",
-            "Render_Models": "0",
+            "Render_Models": "1",
             "Render_Points": "1"
         },
         "Camera": {
@@ -27,7 +27,7 @@
             "Min_Longitude": "0",
             "Min_Radius": "0",
             "Render_Models": "0",
-            "Render_Points": "0"
+            "Render_Points": "1"
         },
         "Model": {
             "Clip_Distance": "0",
@@ -108,6 +108,19 @@
             "Wireframe_Alpha": "0.25",
             "Wobbly_Clip": "0"
         },
+        "Shared": {
+            "Model": {
+                "Clip_Distance": "1000",
+                "Clip_Mass": "1000",
+                "Clip_Size": "4",
+                "Resolution": "1",
+                "Scale": "1"
+            },
+            "Points": {
+                "Attenuation": "300",
+                "Size": "0.05"
+            }
+        },
         "ViziR": {
             "Color": "1, 1, 1, 1",
             "Cut_Radius": "0",
@@ -118,7 +131,7 @@
             "Min_Longitude": "0",
             "Min_Radius": "0",
             "Render_Models": "0",
-            "Render_Points": "1"
+            "Render_Points": "0"
         }
     }
 }

@@ -152,21 +152,6 @@ namespace entropy
 					this->maxMass = std::max(this->maxMass, massData[i]);
 					this->avgMass += massData[i];
 
-					//if (this->data.size() < 400)
-					//{
-					//	auto transform = glm::translate(glm::mat4(1.0f), glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
-					//	//auto transform = glm::mat4(1.0f);
-					//	//transform[3][0] = ofDegToRad(coordData[i].x);
-					//	//transform[3][1] = ofDegToRad(coordData[i].y);
-					//	//transform[3][2] = coordData[i].z;
-					//	
-					//	//transform = glm::scale(transform, glm::vec3(massData[i]));
-					//	//transform = glm::rotate(transform, ofRandom(-glm::two_pi<float>(), glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandomf(), ofRandomf(), ofRandomf())));
-					//	this->data.push_back(transform);
-
-					//	//this->data.push_back(glm::vec4(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z, 1.0f));
-					//}
-
 					if (particleType == "PartType6")
 					{
 						this->starFormationRates.push_back(sfrData[i]);
@@ -188,38 +173,48 @@ namespace entropy
 		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
 		{
 			std::vector<glm::mat4> data;
-			const auto cameraTransform = camera.getModelViewProjectionMatrix();
+			const auto cameraModelView = camera.getModelViewMatrix();
+			const auto cameraProjection = camera.getProjectionMatrix();
 
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
 
-				// Make sure the point is within clipping bounds.
+				// Test that the point is within clipping bounds.
 				if (this->mappedRadiusRange.x <= coords.z &&
 					this->mappedLongitudeRange.x <= coords.x && coords.x <= this->mappedLongitudeRange.y &&
 					this->mappedLatitudeRange.x <= coords.y && coords.y <= this->mappedLatitudeRange.y)
 				{
 					// Convert from spherical to Cartesian coordinates.
 					const auto position = glm::vec4(coords.z * cos(coords.y) * cos(coords.x),
-													coords.z * cos(coords.y) * sin(coords.x),
-													coords.z * sin(coords.y),
-													1.0f);
+						coords.z * cos(coords.y) * sin(coords.x),
+						coords.z * sin(coords.y),
+						1.0f);
 
-					// Make sure the point is inside the visible frustum.
-					const auto camPos = cameraTransform * worldTransform * position;
-					const auto clipPos = camPos.xyz() / camPos.w;
-					if (-1 <= clipPos.x && clipPos.x <= 1 &&
-						-1 <= clipPos.y && clipPos.y <= 1 &&
-						 0 <= clipPos.z && clipPos.z <= 1)
+					// Test that the point is larger than the clipping size.
+					const auto eyePos = cameraModelView * worldTransform * position;
+					const float eyeDist = glm::length(eyePos.xyz());
+					const float attenuation = params.point.attenuation / eyeDist;
+					const float size = params.point.size * this->masses[i] * attenuation;
+					if (size >= params.model.clipSize)
 					{
-						const auto scale = glm::vec3(this->masses[i] * params.model.scale);
-						
-						auto transform = glm::translate(worldTransform, position.xyz());
-						transform = glm::scale(transform, scale);
-						transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i%23, i%43, i%11)));
-						// Hide the alpha value in the transform matrix.
-						//transform[3][3] = ofMap(clipPos.z, fadeDistance, 1.0f, 1.0f, 0.0f, true);
-						data.push_back(transform);
+						// Test that the point is inside the visible frustum.
+						const auto camPos = cameraProjection * eyePos;
+						const auto clipPos = camPos.xyz() / camPos.w;
+						if (-1 <= clipPos.x && clipPos.x <= 1 &&
+							-1 <= clipPos.y && clipPos.y <= 1 &&
+							0 <= clipPos.z && clipPos.z <= 1)
+						{
+							// Passed all tests, build and add transform matrix!
+							const auto scale = glm::vec3(this->masses[i] * params.model.scale);
+
+							auto transform = glm::translate(worldTransform, position.xyz());
+							transform = glm::scale(transform, scale);
+							transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
+							// Hide the alpha value in the transform matrix.
+							//transform[3][3] = ofMap(clipPos.z, fadeDistance, 1.0f, 1.0f, 0.0f, true);
+							data.push_back(transform);
+						}
 					}
 				}
 			}
@@ -230,10 +225,12 @@ namespace entropy
 			this->bufferObj.updateData(data);
 			return data.size();
 		}
-
+		
 		//--------------------------------------------------------------
-		void DataSet::updateShaderUniforms(ofShader & shader)
+		void DataSet::drawPoints(ofShader & shader)
 		{
+			if (!this->parameters.renderPoints) return;
+
 			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
 			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
 			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);
@@ -241,15 +238,6 @@ namespace entropy
 			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
 			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
 			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
-		}
-		
-		//--------------------------------------------------------------
-		void DataSet::drawPoints(ofShader & shader, const glm::mat4 & worldTransform, SharedParams & params)
-		{
-			if (!this->parameters.renderPoints) return;
-
-			this->updateShaderUniforms(shader);
-			shader.setUniformMatrix4f("uTransform", worldTransform);
 			ofSetColor(this->parameters.color.get());
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
@@ -268,7 +256,6 @@ namespace entropy
 			
 			if (count == 0) return;
 
-			this->updateShaderUniforms(shader);
 			shader.setUniformTexture("uTexData", this->bufferTex, 1);
 			ofSetColor(this->parameters.color.get());
 
