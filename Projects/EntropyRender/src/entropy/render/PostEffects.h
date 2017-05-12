@@ -58,6 +58,7 @@ namespace entropy
 				ofParameter<float> outer{ "Outer", 1.1f, 0.5f, 6.0f };
 				ofParameter<float> power{ "Power", 1.1f, 0.1f, 20.0f };
 				ofParameter<float> rotation{ "Rotation", 0.f, -90.f, 90.f };
+				ofParameter<float> ratio{ "Ratio", 1.f, 0.1f, 2.f };
 				ofParameter<bool> debug{ "Debug", false };
 
 				PARAM_DECLARE("Vignette",
@@ -66,6 +67,7 @@ namespace entropy
 					inner, outer,
 					power,
 					rotation,
+					ratio,
 					debug);
 			} vignette;
 
