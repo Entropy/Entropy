@@ -21,11 +21,11 @@ void ofApp::setup()
 	// Init the sphere.
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/The_Milky_Way.png"), this->sphereTexture);
 
-	auto sphereSettings = ofShader::Settings();
-	sphereSettings.bindDefaults = true;
-	sphereSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/galaxy.vert";
-	sphereSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
-	this->sphereShader.setup(sphereSettings);
+	this->sphereSettings = ofShader::Settings();
+	this->sphereSettings.bindDefaults = true;
+	this->sphereSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/galaxy.vert";
+	this->sphereSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
+	this->sphereShader.setup(this->sphereSettings);
 
 	// Build the texture.
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/sprites.png"), this->spriteTexture);
@@ -52,7 +52,7 @@ void ofApp::setup()
 
 	this->scaledMesh = this->masterMesh;
 
-	this->eventListeners.push_back(this->modelResolution.newListener([this](int & val)
+	this->eventListeners.push_back(this->sharedParams.model.resolution.newListener([this](int & val)
 	{
 		this->scaledMesh.clear();
 		if (val == 1)
@@ -88,11 +88,11 @@ void ofApp::setup()
 	this->spriteShader.bindDefaults();
 	this->spriteShader.linkProgram();
 
-	modelSettings = ofShader::Settings();
-	modelSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/instanced.vert";
-	modelSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/instanced.frag";
-	modelSettings.bindDefaults = true;
-	this->modelShader.setup(modelSettings);
+	this->modelSettings = ofShader::Settings();
+	this->modelSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/instanced.vert";
+	this->modelSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/instanced.frag";
+	this->modelSettings.bindDefaults = true;
+	this->modelShader.setup(this->modelSettings);
 
 	// Setup the camera.
 	this->eventListeners.push_back(this->nearClip.newListener([this](float & val)
@@ -102,18 +102,23 @@ void ofApp::setup()
 	this->eventListeners.push_back(this->farClip.newListener([this](float & val)
 	{
 		this->camera.setFarClip(val);
-		this->modelDistance.setMax(val);
+		this->sharedParams.model.clipDistance.setMax(val);
 	}));
+
+	// Setup renderer and post effects using resize callback.
+	this->windowResized(ofGetWidth(), ofGetHeight());
 
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("Fira Code", 11, true, true, 72);
 	this->gui.setup("Surveys", "settings.json");
-	this->gui.add(this->cameraParams);
-	this->gui.add(this->renderParams);
+	this->gui.add(this->parameters);
+	this->gui.add(this->sharedParams);
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
+	this->gui.add(this->renderer.parameters);
+	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
 
 	this->timeline.setup();
@@ -123,6 +128,7 @@ void ofApp::setup()
 	this->timeline.setAutosave(false);
 
 	this->gui.setTimeline(&this->timeline);
+	this->gui.loadFromFile("settings.json");
 }
 
 //--------------------------------------------------------------
@@ -134,13 +140,34 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	auto vertT = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.vert"));
-	auto fragT = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.frag"));
-	if(vertT>shaderTime || fragT>shaderTime)
+	// Auto-reload shaders.
+	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
+	auto fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.frag"));
+	if (vertTime > sphereTime || fragTime > sphereTime)
 	{
-		shaderTime = vertT > fragT ? vertT : fragT;
-		this->modelShader.setup(modelSettings);
+		sphereTime = std::max(vertTime, fragTime);
+		this->sphereShader.setup(sphereSettings);
+	}
 
+	vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/sprite.vert"));
+	fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/sprite.frag"));
+	if (vertTime > spriteTime || fragTime > spriteTime)
+	{
+		spriteTime = std::max(vertTime, fragTime);
+		this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
+		this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
+		this->spriteShader.bindAttribute(entropy::surveys::ExtraAttribute::Mass, "mass");
+		this->spriteShader.bindAttribute(entropy::surveys::ExtraAttribute::StarFormationRate, "starFormationRate");
+		this->spriteShader.bindDefaults();
+		this->spriteShader.linkProgram();
+	}
+
+	vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.vert"));
+	fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.frag"));
+	if (vertTime > modelTime || fragTime > modelTime)
+	{
+		modelTime = std::max(vertTime, fragTime);
+		this->modelShader.setup(modelSettings);
 	}
 }
 
@@ -148,68 +175,77 @@ void ofApp::update()
 void ofApp::draw()
 {
 	// Draw the scene.
-	this->camera.begin();
+	this->fboScene.begin();
 	{
-		auto modelTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->scale));
-		
-		// Draw the data set.
+		ofClear(0, 255);
+
+		this->camera.begin();
 		{
-			ofEnableBlendMode(OF_BLENDMODE_ADD);
-			ofDisableDepthTest();
+			//renderer.draw(galaxy.getVbo(), 0, galaxy.getNumVertices(), GL_POINTS, camera);
 
-			// Draw all the points.
-			this->spriteShader.begin();
-			this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
-			this->spriteShader.setUniform1f("uPointSize", this->pointSize);
-			this->spriteShader.setUniform1f("uAttenuation", this->attenuation);
-			ofEnablePointSprites();
+			auto worldTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->worldScale));
+
+			// Draw the data set.
 			{
-				this->dataSetBoss.drawPoints(this->spriteShader, modelTransform);
-				
-				if (this->renderDes)
-				{
-					this->dataSetDes.drawPoints(this->spriteShader, modelTransform);
-				}
-				if (this->renderVizir)
-				{
-					this->dataSetVizir.drawPoints(this->spriteShader, modelTransform);
-				}
-			}
-			ofDisablePointSprites();
-			this->spriteShader.end();
+				//glEnable(GL_BLEND);
+				//glBlendFunc(GL_ONE, GL_ONE);
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+				ofDisableDepthTest();
 
-			// Draw the models for galaxies near the camera.
-			this->modelShader.begin();
+				// Draw all the points.
+				this->spriteShader.begin();
+				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
+				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
+				this->spriteShader.setUniform1f("uMaxSize", this->sharedParams.model.clipSize);
+				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);
+				this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
+				ofEnablePointSprites();
+				{
+					this->dataSetBoss.drawPoints(this->spriteShader);
+					this->dataSetDes.drawPoints(this->spriteShader);
+					this->dataSetVizir.drawPoints(this->spriteShader);
+				}
+				ofDisablePointSprites();
+				this->spriteShader.end();
+
+				// Draw the models for galaxies near the camera.
+				this->modelShader.begin();
+				{
+					this->dataSetBoss.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
+					this->dataSetDes.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
+				}
+				this->modelShader.end();
+
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+
+				ofNoFill();
+				ofDrawBox(1);
+				ofFill();
+			}
+
+			// Draw the galaxy texture.
+			this->sphereShader.begin();
 			{
-				this->dataSetBoss.drawModels(this->modelShader, modelTransform, this->scaledMesh, this->camera, this->modelDistance);
-				
-				//if (this->renderDes)
-				//{
-				//	this->dataSetDes.drawModels(this->modelShader, this->galaxyMesh, this->modelDistance);
-				//}
+				this->sphereShader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
+				//this->sphereShader.setUniform1f("uRadius", this->sphereGeom.radius);
+				this->sphereShader.setUniformTexture("uTex0", this->sphereTexture, 1);
+				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+
+				this->sphereGeom.draw();
 			}
-			this->modelShader.end();
-
-			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-
-			ofNoFill();
-			ofDrawBox(1);
-			ofFill();
+			this->sphereShader.end();
 		}
-
-		// Draw the galaxy.
-		this->sphereShader.begin();
-		{
-			this->sphereShader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
-			//this->sphereShader.setUniform1f("uRadius", this->sphereGeom.radius);
-			this->sphereShader.setUniformTexture("uTex0", this->sphereTexture, 1);
-			this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
-
-			this->sphereGeom.draw();
-		}
-		this->sphereShader.end();
+		this->camera.end();
 	}
-	this->camera.end();
+	this->fboScene.end();
+
+	this->postEffects.process(this->fboScene.getTexture(), this->fboPost, this->postParams);
+
+	ofDisableBlendMode();
+	ofSetColor(ofColor::white);
+	this->fboPost.draw(0, 0);
+
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 
 	// Draw the controls.
 	this->timeline.draw();
@@ -260,6 +296,19 @@ void ofApp::mouseExited(int x, int y){
 void ofApp::windowResized(int w, int h)
 {
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+
+	auto fboSettings = ofFbo::Settings();
+	fboSettings.width = ofGetWidth();
+	fboSettings.height = ofGetHeight();
+	fboSettings.internalformat = GL_RGBA32F;
+	fboSettings.textureTarget = GL_TEXTURE_2D;
+	fboSettings.numSamples = 4;
+	this->fboScene.allocate(fboSettings);
+	this->fboPost.allocate(fboSettings);
+
+	this->postEffects.resize(fboSettings.width, fboSettings.height);
+	this->renderer.setup(1);
+	this->renderer.resize(fboSettings.width, fboSettings.height);
 }
 
 //--------------------------------------------------------------

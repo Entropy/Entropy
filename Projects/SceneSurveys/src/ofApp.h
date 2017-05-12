@@ -5,6 +5,8 @@
 #include "ofxTimeline.h"
 
 #include "entropy/geom/Sphere.h"
+#include "entropy/render/PostEffects.h"
+#include "entropy/render/WireframeFillRenderer.h"
 #include "entropy/surveys/DataSet.h"
 
 class ofApp 
@@ -34,27 +36,13 @@ protected:
 
 	ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
 	ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
-	ofParameterGroup cameraParams{ "Camera",
+	ofParameter<float> worldScale{ "World Scale", 1.0f, 0.01f, 100.0f, ofParameterScale::Logarithmic };
+	ofParameterGroup parameters{ "Parameters",
 		nearClip,
-		farClip };
+		farClip,
+		worldScale };
 
-	ofParameter<bool> renderBoss{ "Render BOSS", true };
-	ofParameter<bool> renderDes{ "Render DES", false };
-	ofParameter<bool> renderVizir{ "Render ViziR", false };
-	ofParameter<float> scale{ "Scale", 1.0f, 0.01f, 100.0f };
-	ofParameter<float> pointSize{ "Point Size", 8.0f, 0.01f, 32.0f };
-	ofParameter<float> attenuation{ "Attenuation", 600.0f, 1.0f, 1000.0f };
-	ofParameter<int> modelResolution{ "Model Resolution", 1, 1, 1000 };
-	ofParameter<float> modelDistance{ "Model Distance", 10.0f, 0.0f, 5000.0f };
-	ofParameterGroup renderParams{ "Render",
-		renderBoss,
-		renderDes,
-		renderVizir,
-		scale,
-		pointSize,
-		attenuation,
-		modelResolution,
-		modelDistance };
+	entropy::surveys::DataSet::SharedParams sharedParams;
 
 	vector<ofEventListener> eventListeners;
 	ofxPanel gui;
@@ -67,16 +55,24 @@ protected:
 	entropy::geom::Sphere sphereGeom;
 	ofTexture sphereTexture;
 	ofShader sphereShader;
+	ofShader::Settings sphereSettings;
+	std::time_t sphereTime;
 
 	ofShader spriteShader;
+	std::time_t spriteTime;
 	ofTexture spriteTexture;
 
 	ofShader modelShader;
+	ofShader::Settings modelSettings;
+	std::time_t modelTime;
 	ofBufferObject dataBuffer;
 	ofVboMesh masterMesh;
 	ofVboMesh scaledMesh;
 
 	ofEasyCam camera;
-	ofShader::Settings modelSettings;
-	std::time_t shaderTime;
+
+	entropy::render::WireframeFillRenderer renderer;
+	entropy::render::PostEffects postEffects;
+	entropy::render::PostParameters postParams;
+	ofFbo fboScene, fboPost;
 };

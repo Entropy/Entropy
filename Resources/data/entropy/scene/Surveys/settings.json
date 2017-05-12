@@ -1,7 +1,7 @@
 {
     "Surveys": {
         "BOSS": {
-            "Color": "1, 1, 1, 1",
+            "Color": "0.611111, 0.655638, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "1",
             "Max_Longitude": "1",
@@ -13,24 +13,71 @@
             "Render_Points": "1"
         },
         "Camera": {
-            "Far_Clip": "5000",
-            "Near_Clip": "0.001"
+            "Far_Clip": "1000",
+            "Near_Clip": "0.001",
+            "World_Scale": "0.01"
         },
         "DES": {
             "Color": "1, 1, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "0.5",
             "Max_Longitude": "0.5",
-            "Max_Radius": "0.5",
+            "Max_Radius": "0.510204",
             "Min_Latitude": "0",
             "Min_Longitude": "0",
             "Min_Radius": "0",
             "Render_Models": "0",
-            "Render_Points": "1"
+            "Render_Points": "0"
+        },
+        "Model": {
+            "Clip_Distance": "0",
+            "Fade_Distance": "0.5",
+            "Resolution": "506",
+            "Scale": "8"
+        },
+        "Parameters": {
+            "Far_Clip": "5000",
+            "Model_Resolution": "522",
+            "Near_Clip": "0.001",
+            "Resolution": "510",
+            "World_Scale": "0.01"
+        },
+        "Points": {
+            "Attenuation": "200",
+            "Log_Intercept": "0",
+            "Point_Size": "0.05",
+            "Size": "0.2"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "1",
+                "Brightness_Threshold": "1",
+                "Debug_Blur": "0",
+                "Enabled": "0",
+                "Num_Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "1",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "0",
+                "Inner": "0.8",
+                "Only_Alpha": "0",
+                "Outer": "1.1",
+                "Power": "1.1",
+                "Rotation": "0"
+            }
         },
         "Render": {
             "Attenuation": "600",
-            "Model_Distance": "1000",
+            "Model_Distance": "1200",
             "Model_Resolution": "50",
             "Point_Size": "0.01",
             "Render_BOSS": "1",
@@ -38,17 +85,55 @@
             "Render_ViziR": "0",
             "Scale": "0.1"
         },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "DOF_aperture": "0.0005",
+            "DOF_distance": "1",
+            "DOF_samples": "1",
+            "Fade_From": "0.8",
+            "Fade_Power": "2",
+            "Fade_To": "1",
+            "Fill": "0",
+            "Fill_Alpha": "0.5",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.5",
+            "Fog_Min_Distance": "0.1",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0.1",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "0",
+            "Use_Lights": "0",
+            "Wireframe": "0",
+            "Wireframe_Alpha": "0.25",
+            "Wobbly_Clip": "0"
+        },
+        "Shared": {
+            "Model": {
+                "Alpha_Scale": "0.1",
+                "Clip_Distance": "2000",
+                "Clip_Mass": "1000",
+                "Clip_Size": "4",
+                "Geo_Scale": "2",
+                "Resolution": "4",
+                "Scale": "1"
+            },
+            "Points": {
+                "Attenuation": "300",
+                "Size": "0.1"
+            }
+        },
         "ViziR": {
             "Color": "1, 1, 1, 1",
             "Cut_Radius": "0",
-            "Max_Latitude": "0.5",
-            "Max_Longitude": "0.5",
-            "Max_Radius": "0.5",
+            "Max_Latitude": "1",
+            "Max_Longitude": "1",
+            "Max_Radius": "1",
             "Min_Latitude": "0",
             "Min_Longitude": "0",
             "Min_Radius": "0",
             "Render_Models": "0",
-            "Render_Points": "1"
+            "Render_Points": "0"
         }
     }
 }

@@ -67,6 +67,9 @@ namespace entropy
 				this->loadFragment(filePath, particleType);
 			}
 
+			this->avgMass /= this->masses.size();
+			cout << "Mass range is " << this->minMass << " to " << this->maxMass << " with avg = " << this->avgMass << endl;
+
 			// Upload everything to the vbo.
 			this->vbo.setVertexData(this->coordinates.data(), this->coordinates.size(), GL_STATIC_DRAW);
 			this->vbo.setAttributeData(ExtraAttribute::Mass, this->masses.data(), 1, this->masses.size(), GL_STATIC_DRAW, 0);
@@ -74,12 +77,9 @@ namespace entropy
 		
 			//this->data.push_back(glm::vec4(0.0, 0.0, 0.0, 1.0));
 
-			// Allocate the tbo.
-			std::vector<glm::mat4> tmpData(this->coordinates.size(), glm::mat4(1.0f));
-			bufferObj.allocate();
-			bufferObj.bind(GL_TEXTURE_BUFFER);
-			bufferObj.setData(tmpData, GL_STREAM_DRAW);
-			bufferTex.allocateAsBufferTexture(bufferObj, GL_RGBA32F);
+			// Allocate the buffer.
+			std::vector<InstanceData> tmpData(this->coordinates.size());
+			bufferObj.allocate(tmpData, GL_DYNAMIC_DRAW);
 		}
 		
 		//--------------------------------------------------------------
@@ -93,6 +93,10 @@ namespace entropy
 
 			this->minRadius = std::numeric_limits<float>::max();
 			this->maxRadius = std::numeric_limits<float>::min();
+
+			this->minMass = std::numeric_limits<float>::max();
+			this->maxMass = std::numeric_limits<float>::min();
+			this->avgMass = 0.0f;
 
 			this->vbo.clear();
 		}
@@ -141,21 +145,9 @@ namespace entropy
 					this->maxRadius = std::max(this->maxRadius, coordData[i].z);
 
 					this->masses.push_back(massData[i]);
-
-					//if (this->data.size() < 400)
-					//{
-					//	auto transform = glm::translate(glm::mat4(1.0f), glm::vec3(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z));
-					//	//auto transform = glm::mat4(1.0f);
-					//	//transform[3][0] = ofDegToRad(coordData[i].x);
-					//	//transform[3][1] = ofDegToRad(coordData[i].y);
-					//	//transform[3][2] = coordData[i].z;
-					//	
-					//	//transform = glm::scale(transform, glm::vec3(massData[i]));
-					//	//transform = glm::rotate(transform, ofRandom(-glm::two_pi<float>(), glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandomf(), ofRandomf(), ofRandomf())));
-					//	this->data.push_back(transform);
-
-					//	//this->data.push_back(glm::vec4(ofDegToRad(coordData[i].x), ofDegToRad(coordData[i].y), coordData[i].z, 1.0f));
-					//}
+					this->minMass = std::min(this->minMass, massData[i]);
+					this->maxMass = std::max(this->maxMass, massData[i]);
+					this->avgMass += massData[i];
 
 					if (particleType == "PartType6")
 					{
@@ -175,37 +167,61 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::updateFilteredData(const glm::mat4 & modelTransform, const ofCamera & camera)
+		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
 		{
-			std::vector<glm::mat4> data;
-			const auto cameraTransform = camera.getModelViewProjectionMatrix();
+			std::vector<InstanceData> data;
+			const auto cameraModelView = camera.getModelViewMatrix();
+			const auto cameraProjection = camera.getProjectionMatrix();
 
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
 
-				// Make sure the point is within clipping bounds.
+				// Test that the point is within clipping bounds.
 				if (this->mappedRadiusRange.x <= coords.z &&
 					this->mappedLongitudeRange.x <= coords.x && coords.x <= this->mappedLongitudeRange.y &&
 					this->mappedLatitudeRange.x <= coords.y && coords.y <= this->mappedLatitudeRange.y)
 				{
 					// Convert from spherical to Cartesian coordinates.
 					const auto position = glm::vec4(coords.z * cos(coords.y) * cos(coords.x),
-													coords.z * cos(coords.y) * sin(coords.x),
-													coords.z * sin(coords.y),
-													1.0f);
+						coords.z * cos(coords.y) * sin(coords.x),
+						coords.z * sin(coords.y),
+						1.0f);
 
-					// Make sure the point is inside the visible frustum.
-					const auto camPos = cameraTransform * modelTransform * position;
-					const auto clipPos = camPos.xyz() / camPos.w;
-					if (-1 <= clipPos.x && clipPos.x <= 1 &&
-						-1 <= clipPos.y && clipPos.y <= 1 &&
-						 0 <= clipPos.z && clipPos.z <= 1)
+					// Test that the point is larger than the clipping size.
+					const auto eyePos = cameraModelView * worldTransform * position;
+					const float eyeDist = glm::length(eyePos.xyz());
+					const float attenuation = params.point.attenuation / eyeDist;
+					const float size = params.point.size * this->masses[i] * attenuation;
+					if (size >= params.model.clipSize)
 					{
-						auto transform = glm::translate(modelTransform, position.xyz());
-						transform = glm::scale(transform, glm::vec3(this->masses[i]));
-						transform = glm::rotate(transform, i * 0.12345f, glm::normalize(glm::vec3(i%23, i%43, i%11)));
-						data.push_back(transform);
+						// Test that the point is inside the visible frustum.
+						const auto camPos = cameraProjection * eyePos;
+						const auto clipPos = camPos.xyz() / camPos.w;
+						if (-1 <= clipPos.x && clipPos.x <= 1 &&
+							-1 <= clipPos.y && clipPos.y <= 1 &&
+							0 <= clipPos.z && clipPos.z <= 1)
+						{
+							// Passed all tests, build and add transform matrix!
+							const auto scale = glm::vec3(this->masses[i] * params.model.geoScale);
+
+							auto transform = glm::translate(worldTransform, position.xyz());
+							transform = glm::scale(transform, scale);
+							transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
+							// Hide the alpha value in the transform matrix.
+							//transform[3][3] = ofMap(position.z, this->mappedRadiusRange.x, this->mappedRadiusRange.y, 1.0f, 0.0f, true);
+							InstanceData instanceData;
+							instanceData.transform = transform;
+							if (this->mappedRadiusRange.y < this->mappedRadiusRange.z)
+							{
+								instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * params.model.alphaScale;
+							}
+							else
+							{
+								instanceData.alpha = 0.0f;
+							}
+							data.push_back(instanceData);
+						}
 					}
 				}
 			}
@@ -216,10 +232,12 @@ namespace entropy
 			this->bufferObj.updateData(data);
 			return data.size();
 		}
-
+		
 		//--------------------------------------------------------------
-		void DataSet::updateShaderUniforms(ofShader & shader)
+		void DataSet::drawPoints(ofShader & shader)
 		{
+			if (!this->parameters.renderPoints) return;
+
 			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
 			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
 			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);
@@ -227,42 +245,32 @@ namespace entropy
 			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
 			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
 			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
-		}
-		
-		//--------------------------------------------------------------
-		void DataSet::drawPoints(ofShader & shader, const glm::mat4 & modelTransform)
-		{
-			if (!this->parameters.renderPoints) return;
-
-			this->updateShaderUniforms(shader);
-			shader.setUniformMatrix4f("uTransform", modelTransform);
 			ofSetColor(this->parameters.color.get());
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::drawModels(ofShader & shader, const glm::mat4 & modelTransform, ofVboMesh & mesh, const ofCamera & camera, float cutoff)
+		void DataSet::drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params)
 		{
 			if (!this->parameters.renderModels) return;
 			
-			if (cutoff == 0.0f) return;
+			if (params.model.clipDistance == 0.0f) return;
 
 			auto clipCamera = camera;
-			clipCamera.setFarClip(cutoff);
-			int count = this->updateFilteredData(modelTransform, clipCamera);
+			clipCamera.setFarClip(params.model.clipDistance);
+			int count = this->updateFilteredData(worldTransform, clipCamera, params);
 			
 			if (count == 0) return;
 
-			this->updateShaderUniforms(shader);
-			shader.setUniformTexture("uTexData", this->bufferTex, 1);
+			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
 			cout << "Drawing " << count << " models" << endl;
 			mesh.drawInstanced(OF_MESH_POINTS, count);
 
-			//ofVboMesh m = ofVboMesh::box(1, 1, 1);
-			//m.drawInstanced(OF_MESH_POINTS, count);
+			//static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+			//simpleMesh.drawInstanced(OF_MESH_POINTS, count);
 		}
 
 		//--------------------------------------------------------------
