@@ -8,7 +8,19 @@
     <key>
         <easefunc>0</easefunc>
         <easetype>0</easetype>
-        <time>00:03:51:249</time>
-        <value>0.216326535</value>
+        <time>00:03:40:128</time>
+        <value>0.266326904</value>
+    </key>
+    <key>
+        <easefunc>0</easefunc>
+        <easetype>0</easetype>
+        <time>00:03:50:983</time>
+        <value>0.324999988</value>
+    </key>
+    <key>
+        <easefunc>0</easefunc>
+        <easetype>0</easetype>
+        <time>00:03:53:137</time>
+        <value>0.142857134</value>
     </key>
 </keyframes>

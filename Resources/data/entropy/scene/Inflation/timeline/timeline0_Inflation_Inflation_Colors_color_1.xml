@@ -12,7 +12,23 @@
         <colorG>255</colorG>
         <colorB>255</colorB>
         <colorA>255</colorA>
-        <time>00:05:00:000</time>
-        <value>0.350000024</value>
+        <time>00:03:40:197</time>
+        <value>0.399999976</value>
+    </key>
+    <key>
+        <colorR>255</colorR>
+        <colorG>255</colorG>
+        <colorB>255</colorB>
+        <colorA>255</colorA>
+        <time>00:03:40:815</time>
+        <value>0.800000012</value>
+    </key>
+    <key>
+        <colorR>255</colorR>
+        <colorG>233</colorG>
+        <colorB>0</colorB>
+        <colorA>255</colorA>
+        <time>00:03:44:164</time>
+        <value>0.725000024</value>
     </key>
 </keyframes>
