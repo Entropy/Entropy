@@ -45,9 +45,22 @@ namespace entropy
 						clipSize);
 				} model;
 
+				struct : ofParameterGroup
+				{
+					ofParameter<float> maxDistance{ "Max Distance", 100.0f, 1.0f, 5000.0f };
+					ofParameter<float> lockDistance{ "Min Lock Distance", 1.0f, 0.0f, 1000.0f };
+					ofParameter<float> minMass{ "Min Mass", 1.0f, 0.0f, 1000.0f, ofParameterScale::Logarithmic };
+					
+					PARAM_DECLARE("Target",
+						maxDistance,
+						lockDistance,
+						minMass);
+				} target;
+
 				PARAM_DECLARE("Shared",
 					point,
-					model);
+					model,
+					target);
 			};
 
 		public:
@@ -60,10 +73,9 @@ namespace entropy
 			void drawPoints(ofShader & shader);
 			void drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params);
 
-			void gui(ofxImGui::Settings & settings);
-
-			void serialize(nlohmann::json & json);
-			void deserialize(const nlohmann::json & json);
+			int getTargetIndex() const;
+			glm::vec3 getTargetPosition() const;
+			float getTargetMass() const;
 
 			struct : ofParameterGroup
 			{
@@ -96,8 +108,8 @@ namespace entropy
 				glm::vec2 dummy;
 			};
 
-			size_t loadFragment(const std::string & filePath, const std::string & particleType);
-			size_t updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params);
+			std::size_t loadFragment(const std::string & filePath, const std::string & particleType);
+			std::size_t updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params);
 
 			std::vector<glm::vec3> coordinates;
 			std::vector<float> masses;
@@ -109,6 +121,8 @@ namespace entropy
 			float minMass;
 			float maxMass;
 			float avgMass;
+
+			int targetIndex;
 
 			glm::vec3 mappedRadiusRange;
 			glm::vec2 mappedLatitudeRange;

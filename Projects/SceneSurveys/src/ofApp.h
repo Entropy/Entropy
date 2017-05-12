@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxTimeline.h"
@@ -34,19 +36,57 @@ public:
 protected:
 	static const string kSceneName;
 
-	ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
-	ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
-	ofParameter<float> worldScale{ "World Scale", 1.0f, 0.01f, 100.0f, ofParameterScale::Logarithmic };
-	ofParameterGroup parameters{ "Parameters",
-		nearClip,
-		farClip,
-		worldScale };
+	struct : ofParameterGroup
+	{
+		ofParameter<float> worldScale{ "World Scale", 1.0f, 0.01f, 100.0f, ofParameterScale::Logarithmic };
+
+		struct : ofParameterGroup
+		{
+			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
+			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
+
+			PARAM_DECLARE("Camera",
+				nearClip,
+				farClip);
+		} camera;
+
+		struct : ofParameterGroup
+		{
+			ofParameter<bool> enabled{ "Enable Orbit", false };
+			ofParameter<float> speed{ "Speed", 0.0f, -100.0f, 100.0f };
+
+			PARAM_DECLARE("Orbit",
+				enabled,
+				speed);
+		} orbit;
+
+		struct : ofParameterGroup
+		{
+			ofParameter<bool> enabled{ "Enable Travel", false };
+			ofParameter<float> camCutoff{ "Cam Cutoff", 1.0f, 0.0f, 1000.0f };
+			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.2f, 0.0f, 1.0f };
+			ofParameter<float> moveLerp{ "Move Lerp", 0.1f, 0.0f, 1.0f };
+
+			PARAM_DECLARE("Travel",
+				enabled,
+				camCutoff,
+				lookAtLerp,
+				moveLerp);
+		} travel;
+
+		PARAM_DECLARE("Parameters",
+			worldScale,
+			camera,
+			orbit,
+			travel);
+	} params;
 
 	entropy::surveys::DataSet::SharedParams sharedParams;
 
-	vector<ofEventListener> eventListeners;
+	vector<ofEventListener> paramListeners;
 	ofxPanel gui;
 	ofxTimeline timeline;
+	ofxTLCameraTrack cameraTrack;
 
 	entropy::surveys::DataSet dataSetBoss;
 	entropy::surveys::DataSet dataSetDes;
@@ -70,6 +110,8 @@ protected:
 	ofVboMesh scaledMesh;
 
 	ofEasyCam camera;
+	int prevTargetIndex;
+	std::unordered_set<int> travelLog;
 
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;

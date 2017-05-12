@@ -98,6 +98,8 @@ namespace entropy
 			this->maxMass = std::numeric_limits<float>::min();
 			this->avgMass = 0.0f;
 
+			this->targetIndex = std::numeric_limits<int>::max();
+
 			this->vbo.clear();
 		}
 
@@ -170,9 +172,13 @@ namespace entropy
 		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
 		{
 			std::vector<InstanceData> data;
+
 			const auto cameraModelView = camera.getModelViewMatrix();
 			const auto cameraProjection = camera.getProjectionMatrix();
-
+			
+			this->targetIndex = std::numeric_limits<int>::max();
+			float foundTargetDist = std::numeric_limits<float>::max();
+			
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
@@ -221,6 +227,16 @@ namespace entropy
 								instanceData.alpha = 0.0f;
 							}
 							data.push_back(instanceData);
+
+							if (-0.5 <= clipPos.x && clipPos.x <= 0.5 &&
+								-0.5 <= clipPos.y && clipPos.y <= 0.5 &&
+								params.target.lockDistance < eyeDist && eyeDist < params.target.maxDistance && 
+								foundTargetDist > eyeDist && this->masses[i] > params.target.minMass)
+							{
+								// Found new target.
+								foundTargetDist = eyeDist;
+								this->targetIndex = i;
+							}
 						}
 					}
 				}
@@ -266,7 +282,7 @@ namespace entropy
 			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
-			cout << "Drawing " << count << " models" << endl;
+			//cout << "Drawing " << count << " models" << endl;
 			mesh.drawInstanced(OF_MESH_POINTS, count);
 
 			//static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
@@ -274,30 +290,31 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::gui(ofxImGui::Settings & settings)
+		int DataSet::getTargetIndex() const
 		{
-			if (ofxImGui::BeginTree(this->parameters, settings))
-			{
-				ofxImGui::AddParameter(this->parameters.cutRadius);
-				ofxImGui::AddRange("Radius", this->parameters.minRadius, this->parameters.maxRadius);
-				ofxImGui::AddRange("Latitude", this->parameters.minLatitude, this->parameters.maxLatitude);
-				ofxImGui::AddRange("Longitude", this->parameters.minLongitude, this->parameters.maxLongitude);
-				ofxImGui::AddParameter(this->parameters.color);
-
-				ofxImGui::EndTree(settings);
-			}
+			return this->targetIndex;
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::serialize(nlohmann::json & json)
+		glm::vec3 DataSet::getTargetPosition() const
 		{
-			ofSerialize(json, this->parameters);
-		}
+			if (this->targetIndex >= this->coordinates.size()) 
+				return glm::vec3(0);
 
+			const auto & coords = this->coordinates[this->targetIndex];
+			const auto position = glm::vec3(coords.z * cos(coords.y) * cos(coords.x),
+											coords.z * cos(coords.y) * sin(coords.x),
+											coords.z * sin(coords.y));
+			return position;
+		}
+		
 		//--------------------------------------------------------------
-		void DataSet::deserialize(const nlohmann::json & json)
+		float DataSet::getTargetMass() const
 		{
-			ofDeserialize(json, this->parameters);
+			if (this->targetIndex >= this->masses.size()) 
+				return 0;
+
+			return this->masses[this->targetIndex];
 		}
 	}
 }

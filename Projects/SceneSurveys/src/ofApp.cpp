@@ -52,7 +52,7 @@ void ofApp::setup()
 
 	this->scaledMesh = this->masterMesh;
 
-	this->eventListeners.push_back(this->sharedParams.model.resolution.newListener([this](int & val)
+	this->paramListeners.push_back(this->sharedParams.model.resolution.newListener([this](int & val)
 	{
 		this->scaledMesh.clear();
 		if (val == 1)
@@ -69,17 +69,6 @@ void ofApp::setup()
 		}
 	}));
 
-	// we want each box to have a different color so let's add
-	// as many colors as boxes
-	//this->galaxyMesh.getColors().resize(matrices.size());
-	//for (size_t i = 0; i<this->galaxyMesh.getColors().size(); i++) {
-	//	this->galaxyMesh.getColors()[i] = ofColor::fromHsb(i % 255, 255, 255);
-	//}
-
-	//// then we tell the vbo that colors should be used per instance by using
-	//// ofVbo::setAttributeDivisor
-	//this->galaxyMesh.getVbo().setAttributeDivisor(ofShader::COLOR_ATTRIBUTE, 1);
-
 	// Load the shaders.
 	this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
 	this->spriteShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/sprite.frag");
@@ -95,14 +84,21 @@ void ofApp::setup()
 	this->modelShader.setup(this->modelSettings);
 
 	// Setup the camera.
-	this->eventListeners.push_back(this->nearClip.newListener([this](float & val)
+	this->paramListeners.push_back(this->params.camera.nearClip.newListener([this](float & val)
 	{
 		this->camera.setNearClip(val);
 	}));
-	this->eventListeners.push_back(this->farClip.newListener([this](float & val)
+	this->paramListeners.push_back(this->params.camera.farClip.newListener([this](float & val)
 	{
 		this->camera.setFarClip(val);
 		this->sharedParams.model.clipDistance.setMax(val);
+	}));
+
+	this->paramListeners.push_back(this->params.travel.enabled.newListener([this](bool &)
+	{
+		this->prevTargetIndex = -1;
+		this->travelLog.clear();
+		cout << "Resetting travel log" << endl;
 	}));
 
 	// Setup renderer and post effects using resize callback.
@@ -110,9 +106,9 @@ void ofApp::setup()
 
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
-	ofxGuiSetFont("Fira Code", 11, true, true, 72);
+	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
 	this->gui.setup("Surveys", "settings.json");
-	this->gui.add(this->parameters);
+	this->gui.add(this->params);
 	this->gui.add(this->sharedParams);
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
@@ -122,10 +118,13 @@ void ofApp::setup()
 	this->gui.minimizeAll();
 
 	this->timeline.setup();
-	this->timeline.setDefaultFontPath("Fira Code");
+	this->timeline.setDefaultFontPath("FiraCode-Light");
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
+
+	this->cameraTrack.setCamera(this->camera);
+	this->timeline.addTrack("Camera", &this->cameraTrack);
 
 	this->gui.setTimeline(&this->timeline);
 	this->gui.loadFromFile("settings.json");
@@ -137,9 +136,88 @@ void ofApp::exit()
 
 }
 
+glm::vec3 spherical;
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	/*
+	if (this->orbitSpeed != 0.0f)
+	{
+		{
+			const auto camPos = this->camera.getPosition();
+			//auto radius = glm::length(camPos);
+
+			//auto longitude = atan2(camPos.y, camPos.x);
+			//auto latitude = atan2(glm::length(camPos.xy()), camPos.z);
+			//auto latitude = acos(camPos.z / radius);
+			//cout << "Orbit SRC " << radius << ", " << longitude << ", " << latitude << endl;
+			
+			//this->camera.orbitRad(latitude, longitude + ofDegToRad(this->orbitSpeed), radius);
+			
+			//latitude += ofDegToRad(this->orbitSpeed);
+			//float x = radius * sin(latitude) * cos(longitude);
+			//float y = radius * sin(latitude) * sin(longitude);
+			//float z = radius * cos(latitude);
+
+			//this->camera.setPosition(x, y, z);
+			//this->camera.lookAt(glm::vec3(0));
+			//cout << "Orbit DST " << radius << ", " << (longitude + ofDegToRad(this->orbitSpeed)) << ", " << latitude << endl;
+		
+		
+			//spherical.x = glm::length(camPos) * 0.5f;
+			//spherical.y += ofDegToRad(this->orbitSpeed);
+			//this->camera.orbitRad(spherical.y, spherical.z, spherical.x);
+		}
+		//{
+		//	const auto camPos = this->camera.getPosition();
+		//	auto radius = glm::length(camPos);
+		//	auto longitude = atan2(camPos.y, camPos.x);
+		//	auto latitude = atan2(glm::length(camPos.xy()), camPos.z);
+		//	cout << "Orbit RES " << radius << ", " << longitude << ", " << latitude << endl;
+
+		//}
+		this->camera.rotateAroundRad(ofDegToRad(this->orbitSpeed), glm::vec3(0, 1, 0), glm::vec3(0));
+		this->camera.lookAt(glm::vec3(0));
+	}
+	*/
+	if (this->params.travel.enabled)
+	{
+		// Get the data target.
+		int currTargetIndex = this->dataSetBoss.getTargetIndex();
+		glm::vec3 targetPos;
+		const auto camPos = this->camera.getPosition();
+		if (glm::length(camPos) > this->params.travel.camCutoff &&
+			(this->prevTargetIndex == currTargetIndex ||
+			 this->travelLog.find(currTargetIndex) == this->travelLog.end()))
+		{
+			// Camera is far enough from the origin.
+			// Target is either the same as previous frame, or it's never been visited on this travel.
+			targetPos = this->dataSetBoss.getTargetPosition() * this->params.worldScale.get();
+			this->prevTargetIndex = currTargetIndex;
+			this->travelLog.insert(currTargetIndex);
+		}
+		else
+		{
+			// Using default target at origin.
+			this->prevTargetIndex = -1;
+		}
+		
+		const auto toTarget = targetPos - camPos;
+		const auto lerpedDir = glm::mix(this->camera.getLookAtDir(), glm::normalize(toTarget), this->params.travel.lookAtLerp.get());
+		const auto targetDist = glm::length(toTarget);
+
+		// This always has the camera looking at the heading direction.
+		//const auto lerpedDist = targetDist * (1.0f - this->sharedParams.target.travelSpeed.get());
+		//this->camera.setTarget(camPos + lerpedDir * targetDist);
+		//this->camera.setDistance(lerpedDist);
+		
+		// This looks nicer because you're not always looking at the target, more drifty.
+		this->camera.lookAt(camPos + lerpedDir * targetDist);
+		const auto lerpPos = glm::mix(camPos, targetPos, this->params.travel.moveLerp.get());
+		this->camera.setPosition(lerpPos);
+	}
+	
 	// Auto-reload shaders.
 	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
 	auto fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.frag"));
@@ -183,7 +261,7 @@ void ofApp::draw()
 		{
 			//renderer.draw(galaxy.getVbo(), 0, galaxy.getNumVertices(), GL_POINTS, camera);
 
-			auto worldTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->worldScale));
+			auto worldTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->params.worldScale));
 
 			// Draw the data set.
 			{
@@ -223,6 +301,13 @@ void ofApp::draw()
 				ofFill();
 			}
 
+			ofNoFill();
+			const auto targetPos = this->dataSetBoss.getTargetPosition() * this->params.worldScale.get();
+			ofSetColor(ofColor::red);
+			ofDrawLine(glm::vec3(0), targetPos);
+			ofDrawBox(targetPos, this->sharedParams.target.lockDistance * 2.0f);
+			ofFill();
+			
 			// Draw the galaxy texture.
 			this->sphereShader.begin();
 			{
@@ -253,8 +338,16 @@ void ofApp::draw()
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
+void ofApp::keyPressed(int key)
+{
+	if (key == 'L')
+	{
+		this->cameraTrack.lockCameraToTrack ^= 1;
+	}
+	else if (key == 'T')
+	{
+		this->cameraTrack.addKeyframe();
+	}
 }
 
 //--------------------------------------------------------------
