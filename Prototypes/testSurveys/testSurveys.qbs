@@ -34,6 +34,8 @@ Project{
         of.addons: [
             '../../Projects/EntropyRender',
             '../../Projects/EntropyUtil',
+            '../../Projects/EntropyGeom',
+            '../../addons/ofxTextureRecorder',
             'ofxGui',
         ]
 
