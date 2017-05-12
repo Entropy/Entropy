@@ -23,11 +23,12 @@ class VaporOctree
 		std::vector<Particle> toVector() const;
 		ofFloatPixels getPixels(size_t z, float minDensity, float maxDensity) const;
 		float getDensity(size_t x, size_t y, size_t z) const;
+		ofMesh getMesh(float minDensity, float maxDensity) const;
 
 	private:
 		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);
 		bool divide(size_t resolution, float minDensity, float maxDensity);
-		ofMesh getMesh(float minDensity, float maxDensity) const;
+		void getChildrenRecursively(std::vector<const VaporOctree*> & childrenPtr) const;
 		size_t getMaxLevel(size_t current) const;
 		std::shared_ptr<std::vector<Particle>> particles;
 		std::vector<size_t> particlesIndex;

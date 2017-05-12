@@ -24,6 +24,7 @@ namespace ent
 		void drawOctree(float scale);
 		void drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, float scale);
 		void drawTexture(float scale);
+		ofMesh getOctreeMesh(float scale) const;
 
 		void preloadAllFrames();
 		void loadFrame(int index);
@@ -47,7 +48,13 @@ namespace ent
 		SnapshotRamses& getSnapshotForTime(float time);
 		SnapshotRamses& getSnapshotForPercent(float percent);
 
+		const SnapshotRamses& getSnapshot() const;
+
 		bool isReady() const;
+
+		float getNormalizeFactor() const{
+			return m_normalizeFactor;
+		}
 
     protected:
 		// Data
@@ -64,7 +71,7 @@ namespace ent
 
 		ofParameter<float> m_densityMin{"density min", 0.f, 0.f, 1.f, ofParameterScale::Logarithmic};
 		ofParameter<float> m_densityMax{"density max", 0.25f, 0.f, 1.f, ofParameterScale::Logarithmic};
-		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 5};
+		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 5, ofParameterScale::Logarithmic};
 		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 50, ofParameterScale::Logarithmic};
 
 		// Playback

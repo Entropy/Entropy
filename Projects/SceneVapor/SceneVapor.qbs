@@ -12,6 +12,8 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "bin/data/octree.frag.glsl",
+            "bin/data/octree.vert.glsl",
             "bin/data/shaders/int2float.glsl",
             "bin/data/shaders/maprange.glsl",
             "bin/data/shaders/particles2texture3d.glsl",
@@ -42,6 +44,7 @@ Project{
             '../../addons/ofxLibfbi',
             '../../addons/ofxSet',
             '../../addons/ofxTextureRecorder',
+            '../../addons/ofxEasing',
             'ofxXmlSettings',
             'ofxGui',
         ]
