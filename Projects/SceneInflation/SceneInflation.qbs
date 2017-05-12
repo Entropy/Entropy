@@ -32,6 +32,7 @@ Project{
             '../../addons/ofxTimeline',
             '../../addons/ofxEasing',
             '../../addons/ofxTextureRecorder',
+            '../../addons/ofxVideoRecorder',
             '../../addons/ofxVolumetrics',
             '../../addons/ofxObjLoader',
             'ofxXmlSettings',
