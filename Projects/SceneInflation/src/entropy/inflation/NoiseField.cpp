@@ -62,15 +62,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void NoiseField::update()
+		void NoiseField::update(double now)
 		{
 			auto i = 0;
 			for (auto & octave : octaves) {
 				if (octave.advanceTime) {
-					octave.now += noiseSpeed * speedFactor * ofGetLastFrameTime();
+					octave.now = now;
 				}
 			}
-			now +=  ofGetLastFrameTime() * oscillateSpeed;
+			this->now =  now;
 
 			noiseComputeShader.begin();
 			volumeTex.bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
