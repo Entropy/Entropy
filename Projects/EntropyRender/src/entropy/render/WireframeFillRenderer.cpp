@@ -326,7 +326,7 @@ namespace entropy
 			auto accumValue = 1.0 / float(bokehshape.getVertices().size());
 
 			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
-			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get();
+			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get() * sceneSize;
 			auto eye = camera.getPosition();
 			auto up = camera.getYAxis();
 			auto right = glm::normalize(glm::cross(object - eye, up));
@@ -334,12 +334,12 @@ namespace entropy
 			for(size_t i = 0; i < numSamples; i++){
 				auto p = bokehshape.getVertices()[i];
 				glm::vec3 bokeh = right * p.x + up * p.y;
-				auto modelview = glm::lookAt(eye + bokeh * dofAperture.get(), object, up);
+				auto modelview = glm::lookAt(eye + bokeh * dofAperture.get() * sceneSize, object, up);
 				drawFunc(accumValue, projection, modelview);
 			}
 		}
 
-		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera) const{
+		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera, const glm::mat4 & model) const{
 			if(wobblyClip){
 				this->blobMask.updateWith(camera);
 			}
@@ -411,7 +411,7 @@ namespace entropy
 			}
 
 			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
-			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get();
+			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get() * sceneSize;
 			auto eye = camera.getPosition();
 			auto up = camera.getYAxis();
 			auto right = glm::normalize(glm::cross(object - eye, up));
@@ -419,7 +419,7 @@ namespace entropy
 			for(size_t i = 0; i < numSamples; i++){
 				auto p = bokehshape.getVertices()[i];
 				glm::vec3 bokeh = right * p.x + up * p.y;
-				modelview[i] = glm::lookAt(eye + bokeh * dofAperture.get(), object, up);
+				modelview[i] = glm::lookAt(eye + bokeh * dofAperture.get() * sceneSize, object, up) * model;
 				mvp[i] = projection * modelview[i];
 			}
 

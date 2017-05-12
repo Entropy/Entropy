@@ -17,7 +17,7 @@ namespace entropy
 		public:
 			void setup(float sceneSize);
 			void resize(float width, float height);
-			void draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera) const;
+			void draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera, const glm::mat4 & model = glm::mat4()) const;
 			void drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, GLenum mode, ofCamera & camera) const;
 			void drawWithDOF(ofCamera & camera, std::function<void(float accumValue, glm::mat4 projection, glm::mat4 modelview)> drawFunc) const;
 			void drawDebug();
@@ -60,6 +60,7 @@ namespace entropy
 				fadeEdge0,
 				fadeEdge1,
 				fadePower,
+				clip,
 				sphericalClip,
 				wobblyClip,
 				wireframeAlpha,
