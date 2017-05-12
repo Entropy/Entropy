@@ -113,7 +113,7 @@ void ofApp::setup()
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if(path.bSuccess){
 				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
-				recorderSettings.folderPath = path.getPath();
+				recorderSettings.videoPath = path.getPath();
 //				recorderSettings.videoCodec = "libx264";
 //				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
 				recorderSettings.videoCodec = "prores";
