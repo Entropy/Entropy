@@ -64,3 +64,6 @@
 [submodule "addons/ofxEasing"]
 	path = addons/ofxEasing
 	url = https://github.com/arturoc/ofxEasing
+[submodule "addons/ofxHPVPlayer"]
+	path = addons/ofxHPVPlayer
+	url = https://github.com/Entropy/ofxHPVPlayer.git
