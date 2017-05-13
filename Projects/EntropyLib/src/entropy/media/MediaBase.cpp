@@ -34,6 +34,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		std::string Base::getTypeName() const
+		{
+			switch (this->type)
+			{
+			case Type::Image:
+				return "Image";
+			case Type::Movie:
+				return "Movie";
+			case Type::Sound:
+				return "Sound";
+			default:
+				return "Unknown";
+			}
+		}
+
+		//--------------------------------------------------------------
 		render::Layout Base::getLayout()
 		{
 			return static_cast<render::Layout>(this->getParameters().base.layout.get());
@@ -260,7 +276,7 @@ namespace entropy
 
 			// Add a GUI window for the parameters.
 			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Pop-up " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
+			if (ofxImGui::BeginWindow("Media " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
 			{
 				// Add sections for the base parameters.
 				if (ofxImGui::BeginTree(parameters.base, settings))
@@ -349,22 +365,7 @@ namespace entropy
 			}
 			auto page = this->timeline->getPage(MediaTimelinePageName);
 
-			std::ostringstream oss;
-			oss << "Pop-up_" << this->index << "_";
-			if (this->type == Type::Image)
-			{
-				oss << "Image";
-			}
-			else if (this->type == Type::Video)
-			{
-				oss << "Video";
-			}
-			else if (this->type == Type::Sound)
-			{
-				oss << "Sound";
-			}
-			auto trackName = oss.str();
-
+			const auto trackName = "Media_" + ofToString(this->index) + "_" + this->getTypeName();
 			if (page->getTrack(trackName))
 			{
 				//ofLogWarning(__FUNCTION__) << "Track for Pop-up " << this->index << " already exists!";

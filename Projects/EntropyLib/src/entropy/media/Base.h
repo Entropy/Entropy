@@ -55,6 +55,7 @@ namespace entropy
 			virtual ~Base();
 
 			Type getType() const;
+			std::string getTypeName() const;
 			render::Layout getLayout();
 			Surface getSurface();
 			HorzAlign getHorzAlign();

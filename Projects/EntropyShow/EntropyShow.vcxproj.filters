@@ -271,10 +271,10 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Video.cpp">
+    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
   </ItemGroup>
@@ -887,7 +887,7 @@
     <ClInclude Include="..\EntropyLib\src\entropy\media\Sound.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Video.h">
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
   </ItemGroup>

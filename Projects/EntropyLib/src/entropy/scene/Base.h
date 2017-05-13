@@ -9,7 +9,7 @@
 #include "entropy/geom/Box.h"
 #include "entropy/media/Image.h"
 #include "entropy/media/Sound.h"
-#include "entropy/media/Video.h"
+#include "entropy/media/Movie.h"
 #include "entropy/render/Layout.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"

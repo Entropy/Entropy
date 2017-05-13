@@ -358,20 +358,7 @@ namespace entropy
 				ImGui::ListBoxHeader("List", 3);
 				for (auto i = 0; i < this->medias.size(); ++i)
 				{
-					string name;
-					if (this->medias[i]->getType() == media::Type::Image)
-					{
-						name = "Image";
-					}
-					else if (this->medias[i]->getType() == media::Type::Video)
-					{
-						name = "Video";
-					}
-					else // if (this->medias[i]->getType() == media::Type::Sound)
-					{
-						name = "Sound";
-					}
-					name.append(" " + ofToString(i));
+					const auto name = this->medias[i]->getTypeName() + " " + ofToString(i);
 					ImGui::Checkbox(name.c_str(), &this->medias[i]->editing);
 				}
 				ImGui::ListBoxFooter();
@@ -394,7 +381,7 @@ namespace entropy
 							}
 							else if (i == 1)
 							{
-								this->addMedia(media::Type::Video);
+								this->addMedia(media::Type::Movie);
 							}
 							else // if (i == 2)
 							{
@@ -1090,9 +1077,9 @@ namespace entropy
 			{
 				media = make_shared<media::Image>();
 			}
-			else if (type == media::Type::Video)
+			else if (type == media::Type::Movie)
 			{
-				media = make_shared<media::Video>();
+				media = make_shared<media::Movie>();
 			}
 			else if (type == media::Type::Sound)
 			{

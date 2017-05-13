@@ -11,12 +11,12 @@ namespace entropy
 {
 	namespace media
 	{
-		class Video 
+		class Movie 
 			: public Base
 		{
 		public:
-			Video();
-			virtual ~Video();
+			Movie();
+			virtual ~Movie();
 
 			void init() override;
 
@@ -55,7 +55,7 @@ namespace entropy
 				ofParameter<bool> loop{ "Loop", false };
 				ofParameter<bool> scrubToTimeline{ "Scrub To Timeline", true };
 
-				PARAM_DECLARE("Video", 
+				PARAM_DECLARE("Movie", 
 					filePath, 
 					loop,
 					scrubToTimeline);

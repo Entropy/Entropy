@@ -182,7 +182,7 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp" />
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Video.cpp" />
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
@@ -274,7 +274,7 @@
     <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h" />
     <ClInclude Include="..\EntropyLib\src\entropy\media\Image.h" />
     <ClInclude Include="..\EntropyLib\src\entropy\media\Sound.h" />
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Video.h" />
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />

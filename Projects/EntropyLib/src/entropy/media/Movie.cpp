@@ -1,4 +1,4 @@
-#include "Video.h"
+#include "Movie.h"
 
 #include "ofGstVideoPlayer.h"
 
@@ -10,19 +10,19 @@ namespace entropy
 	namespace media
 	{
 		//--------------------------------------------------------------
-		Video::Video()
-			: Base(Type::Video)
+		Movie::Movie()
+			: Base(Type::Movie)
 			, wasLoaded(false)
 		{
 			this->videoPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
 
 		//--------------------------------------------------------------
-		Video::~Video()
+		Movie::~Movie()
 		{}
 
 		//--------------------------------------------------------------
-		void Video::init()
+		void Movie::init()
 		{
 			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
 			{
@@ -31,19 +31,19 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::setup()
+		void Movie::setup()
 		{
 			this->wasLoaded = false;
 		}
 
 		//--------------------------------------------------------------
-		void Video::exit()
+		void Movie::exit()
 		{
 			this->videoPlayer.close();
 		}
 
 		//--------------------------------------------------------------
-		void Video::update(double dt)
+		void Movie::update(double dt)
 		{
 			if (!wasLoaded && this->isLoaded())
 			{
@@ -103,13 +103,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::gui(ofxImGui::Settings & settings)
+		void Movie::gui(ofxImGui::Settings & settings)
 		{
 			if (ofxImGui::BeginTree("File", settings))
 			{
 				if (ImGui::Button("Load..."))
 				{
-					auto result = ofSystemLoadDialog("Select a video file.", false, GetSharedAssetsPath().string());
+					auto result = ofSystemLoadDialog("Select a movie file.", false, GetSharedAssetsPath().string());
 					if (result.bSuccess)
 					{
 						if (this->loadVideo(result.filePath))
@@ -137,7 +137,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Video::deserialize(const nlohmann::json & json)
+		void Movie::deserialize(const nlohmann::json & json)
 		{
 			if (!this->parameters.filePath->empty())
 			{
@@ -154,11 +154,11 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Video::loadVideo(const std::filesystem::path & filePath)
+		bool Movie::loadVideo(const std::filesystem::path & filePath)
 		{
 			if (!ofFile::doesFileExist(filePath))
 			{
-				ofLogError(__FUNCTION__) << "No video found at " << filePath;
+				ofLogError(__FUNCTION__) << "No file found at " << filePath;
 				return false;
 			}
 			
@@ -179,25 +179,25 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Video::isLoaded() const
+		bool Movie::isLoaded() const
 		{
 			return (this->videoPlayer.isLoaded() && this->getContentWidth() > 0.0f && this->getContentHeight() > 0.0f);
 		}
 
 		//--------------------------------------------------------------
-		float Video::getContentWidth() const
+		float Movie::getContentWidth() const
 		{
 			return this->videoPlayer.getWidth();
 		}
 
 		//--------------------------------------------------------------
-		float Video::getContentHeight() const
+		float Movie::getContentHeight() const
 		{
 			return this->videoPlayer.getHeight();
 		}
 
 		//--------------------------------------------------------------
-		void Video::renderContent()
+		void Movie::renderContent()
 		{
 			if (this->isLoaded() && !this->videoPlayer.isPaused())
 			{
