@@ -4,7 +4,8 @@
 
 #include "ofFileUtils.h"
 #include "ofTexture.h"
-#include "ofxPreset.h"
+
+#include "entropy/Helpers.h"
 
 namespace entropy
 {

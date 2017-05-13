@@ -32,7 +32,7 @@ namespace entropy
 
 			// Set data path root for scene.
 			const auto prevDataPathRoot = ofToDataPath("");
-			ofSetDataPathRoot(this->getDataPath().string());
+			ofSetDataPathRoot(this->getDataPath());
 
 			auto & parameters = this->getParameters();
 
@@ -873,7 +873,7 @@ namespace entropy
 			}
 
 			// Set data path root for scene.
-			ofSetDataPathRoot(this->getDataPath().string());
+			ofSetDataPathRoot(this->getDataPath());
 
 			// Clean up scene.
 			this->exit_();

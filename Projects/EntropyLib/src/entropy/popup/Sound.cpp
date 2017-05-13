@@ -152,7 +152,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Sound::loadSound(const string & filePath)
+		bool Sound::loadSound(const std::filesystem::path & filePath)
 		{
 			if (!ofFile::doesFileExist(filePath))
 			{
@@ -160,7 +160,7 @@ namespace entropy
 				return false;
 			}
 
-			this->soundPlayer.load(filePath);
+			this->soundPlayer.load(filePath.string());
 			this->soundPlayer.setLoopState(this->parameters.loop ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 
 			this->fileName = ofFilePath::getFileName(filePath);

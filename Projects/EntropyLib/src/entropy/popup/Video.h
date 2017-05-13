@@ -2,7 +2,10 @@
 
 #include "Base.h"
 
-#include "ofxPreset.h"
+#include "ofFileUtils.h"
+#include "ofVideoPlayer.h"
+
+#include "entropy/Helpers.h"
 
 namespace entropy
 {
@@ -27,7 +30,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			bool loadVideo(const string & filePath);
+			bool loadVideo(const std::filesystem::path & filePath);
 
 			bool isLoaded() const override;
 

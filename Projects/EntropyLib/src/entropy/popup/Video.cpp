@@ -154,7 +154,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Video::loadVideo(const string & filePath)
+		bool Video::loadVideo(const std::filesystem::path & filePath)
 		{
 			if (!ofFile::doesFileExist(filePath))
 			{
@@ -165,7 +165,7 @@ namespace entropy
 			bool wasUsingArbTex = ofGetUsingArbTex();
 			ofDisableArbTex();
 			{
-				this->videoPlayer.loadAsync(filePath);
+				this->videoPlayer.loadAsync(filePath.string());
 			}
 			if (wasUsingArbTex) ofEnableArbTex();
 
