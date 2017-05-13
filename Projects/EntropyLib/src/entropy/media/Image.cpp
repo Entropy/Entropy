@@ -5,7 +5,7 @@
 
 namespace entropy
 {
-	namespace popup
+	namespace media
 	{
 		//--------------------------------------------------------------
 		Image::Image()

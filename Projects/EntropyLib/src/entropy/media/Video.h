@@ -9,7 +9,7 @@
 
 namespace entropy
 {
-	namespace popup
+	namespace media
 	{
 		class Video 
 			: public Base

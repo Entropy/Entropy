@@ -193,9 +193,9 @@ namespace entropy
 			this->savePreset(kPresetDefaultName);
 
 			// Clear pop-ups.
-			while (!this->popUps.empty())
+			while (!this->medias.empty())
 			{
-				this->removePopUp();
+				this->removeMedia();
 			}
 
 			this->ready = false;
@@ -215,9 +215,9 @@ namespace entropy
 				this->resizeFront(args);
 			}
 
-			for (auto popUp : this->popUps)
+			for (auto media : this->medias)
 			{
-				popUp->resize_(args);
+				media->resize_(args);
 			}
 		}
 
@@ -237,9 +237,9 @@ namespace entropy
 				}
 			}
 
-			for (auto popUp : this->popUps)
+			for (auto media : this->medias)
 			{
-				popUp->update_(dt);
+				media->update_(dt);
 			}
 
 			this->update(dt);
@@ -259,11 +259,11 @@ namespace entropy
 				this->drawFrontBase();
 			}
 
-			for (auto popUp : this->popUps)
+			for (auto media : this->medias)
 			{
-				if (popUp->getLayout() == layout && popUp->getSurface() == popup::Surface::Base)
+				if (media->getLayout() == layout && media->getSurface() == media::Surface::Base)
 				{
-					popUp->draw_();
+					media->draw_();
 				}
 			}
 		}
@@ -306,11 +306,11 @@ namespace entropy
 				this->drawFrontOverlay();
 			}
 
-			for (auto popUp : this->popUps)
+			for (auto media : this->medias)
 			{
-				if (popUp->getLayout() == layout && popUp->getSurface() == popup::Surface::Overlay)
+				if (media->getLayout() == layout && media->getSurface() == media::Surface::Overlay)
 				{
-					popUp->draw_();
+					media->draw_();
 				}
 			}
 		}
@@ -353,67 +353,80 @@ namespace entropy
 
 			// Add gui window for Pop-ups management.
 			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Pop-ups", settings))
+			if (ofxImGui::BeginWindow("Media", settings))
 			{
 				ImGui::ListBoxHeader("List", 3);
-				for (auto i = 0; i < this->popUps.size(); ++i)
+				for (auto i = 0; i < this->medias.size(); ++i)
 				{
-					auto name = "Pop-up " + ofToString(i);
-					ImGui::Checkbox(name.c_str(), &this->popUps[i]->editing);
+					string name;
+					if (this->medias[i]->getType() == media::Type::Image)
+					{
+						name = "Image";
+					}
+					else if (this->medias[i]->getType() == media::Type::Video)
+					{
+						name = "Video";
+					}
+					else // if (this->medias[i]->getType() == media::Type::Sound)
+					{
+						name = "Sound";
+					}
+					name.append(" " + ofToString(i));
+					ImGui::Checkbox(name.c_str(), &this->medias[i]->editing);
 				}
 				ImGui::ListBoxFooter();
 
-				if (ImGui::Button("Add Pop-up..."))
+				if (ImGui::Button("Add Media..."))
 				{
-					ImGui::OpenPopup("Pop-ups");
+					ImGui::OpenPopup("Media Types");
 					ImGui::SameLine();
 				}
-				if (ImGui::BeginPopup("Pop-ups"))
+				if (ImGui::BeginPopup("Media Types"))
 				{
-					static vector<string> popUpNames{ "Image", "Video", "Sound" };
-					for (auto i = 0; i < popUpNames.size(); ++i)
+					static vector<string> mediaNames{ "Image", "Video", "Sound" };
+					for (auto i = 0; i < mediaNames.size(); ++i)
 					{
-						if (ImGui::Selectable(popUpNames[i].c_str()))
+						if (ImGui::Selectable(mediaNames[i].c_str()))
 						{
 							if (i == 0)
 							{
-								this->addPopUp(popup::Type::Image);
+								this->addMedia(media::Type::Image);
 							}
 							else if (i == 1)
 							{
-								this->addPopUp(popup::Type::Video);
+								this->addMedia(media::Type::Video);
 							}
 							else // if (i == 2)
 							{
-								this->addPopUp(popup::Type::Sound);
+								this->addMedia(media::Type::Sound);
 							}
 						}
 					}
 					ImGui::EndPopup();
 				}
 
-				if (!this->popUps.empty())
+				if (!this->medias.empty())
 				{
 					ImGui::SameLine();
-					if (ImGui::Button("Remove Pop-up"))
+					if (ImGui::Button("Remove Media"))
 					{
-						this->removePopUp();
+						this->removeMedia();
 					}
 				}
 			}
 			ofxImGui::EndWindow(settings);
 
-			// Add individual gui windows for each Pop-up.
+			// Add individual gui windows for each Media.
 			{
-				auto popUpSettings = ofxImGui::Settings();
-				//popUpSettings.windowPos.x = (settings.totalBounds.getMaxX() + kImGuiMargin);
-				popUpSettings.windowPos.x = (800.0f + kImGuiMargin);
-				popUpSettings.windowPos.y = 0.0f;
-				for (auto i = 0; i < this->popUps.size(); ++i)
+				auto mediaSettings = ofxImGui::Settings();
+				//mediaSettings.windowPos.x = (settings.totalBounds.getMaxX() + kImGuiMargin);
+				mediaSettings.windowPos.x = (800.0f + kImGuiMargin);
+				mediaSettings.windowPos.y = 0.0f;
+				for (auto i = 0; i < this->medias.size(); ++i)
 				{
-					this->popUps[i]->gui_(popUpSettings);
+					this->medias[i]->gui_(mediaSettings);
 				}
-				settings.mouseOverGui |= popUpSettings.mouseOverGui;
+				settings.mouseOverGui |= mediaSettings.mouseOverGui;
 			}
 
 			// Add gui window for Mappings.
@@ -567,13 +580,13 @@ namespace entropy
 				}
 			}
 
-			// Save Pop-ups.
-			auto & jsonPopUps = json["Pop-ups"];
-			for (auto popUp : this->popUps)
+			// Save Medias.
+			auto & jsonMedias = json["Media"];
+			for (auto media : this->medias)
 			{
-				nlohmann::json jsonPopUp;
-				popUp->serialize_(jsonPopUp);
-				jsonPopUps.push_back(jsonPopUp);
+				nlohmann::json jsonMedia;
+				media->serialize_(jsonMedia);
+				jsonMedias.push_back(jsonMedia);
 			}
 
 			// Save child scene settings.
@@ -616,23 +629,23 @@ namespace entropy
 			}
 
 			// Clear previous Pop-ups.
-			while (!this->popUps.empty())
+			while (!this->medias.empty())
 			{
-				this->removePopUp();
+				this->removeMedia();
 			}
 
-			// Add new Pop-ups.
-			if (json.count("Pop-ups"))
+			// Restore Media.
+			if (json.count("Media"))
 			{
-				for (auto & jsonPopUp : json["Pop-ups"])
+				for (auto & jsonMedia : json["Media"])
 				{
-					int typeAsInt = jsonPopUp["type"];
-					popup::Type type = static_cast<popup::Type>(typeAsInt);
+					int typeAsInt = jsonMedia["type"];
+					media::Type type = static_cast<media::Type>(typeAsInt);
 
-					auto popUp = this->addPopUp(type);
-					if (popUp)
+					auto media = this->addMedia(type);
+					if (media)
 					{
-						popUp->deserialize_(jsonPopUp);
+						media->deserialize_(jsonMedia);
 					}
 				}
 			}
@@ -1070,20 +1083,20 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<popup::Base> Base::addPopUp(popup::Type type)
+		shared_ptr<media::Base> Base::addMedia(media::Type type)
 		{
-			shared_ptr<popup::Base> popUp;
-			if (type == popup::Type::Image)
+			shared_ptr<media::Base> media;
+			if (type == media::Type::Image)
 			{
-				popUp = make_shared<popup::Image>();
+				media = make_shared<media::Image>();
 			}
-			else if (type == popup::Type::Video)
+			else if (type == media::Type::Video)
 			{
-				popUp = make_shared<popup::Video>();
+				media = make_shared<media::Video>();
 			}
-			else if (type == popup::Type::Sound)
+			else if (type == media::Type::Sound)
 			{
-				popUp = make_shared<popup::Sound>();
+				media = make_shared<media::Sound>();
 			}
 			else
 			{
@@ -1091,19 +1104,19 @@ namespace entropy
 				return nullptr;
 			}
 
-			auto idx = this->popUps.size();
-			popUp->init_(idx, this->timeline);
-			this->popUps.push_back(popUp);
+			auto idx = this->medias.size();
+			media->init_(idx, this->timeline);
+			this->medias.push_back(media);
 
-			return popUp;
+			return media;
 		}
 
 		//--------------------------------------------------------------
-		void Base::removePopUp()
+		void Base::removeMedia()
 		{
-			auto popUp = this->popUps.back();
-			popUp->clear_();
-			this->popUps.pop_back();
+			auto media = this->medias.back();
+			media->clear_();
+			this->medias.pop_back();
 		}
 
 		//--------------------------------------------------------------

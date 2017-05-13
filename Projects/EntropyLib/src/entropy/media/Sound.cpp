@@ -7,7 +7,7 @@
 
 namespace entropy
 {
-	namespace popup
+	namespace media
 	{
 		//--------------------------------------------------------------
 		Sound::Sound()

@@ -7,9 +7,9 @@
 #include "ofxTimeline.h"
 
 #include "entropy/geom/Box.h"
-#include "entropy/popup/Image.h"
-#include "entropy/popup/Sound.h"
-#include "entropy/popup/Video.h"
+#include "entropy/media/Image.h"
+#include "entropy/media/Sound.h"
+#include "entropy/media/Video.h"
 #include "entropy/render/Layout.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"
@@ -170,11 +170,11 @@ namespace entropy
 
 			std::map<std::string, std::vector<std::shared_ptr<util::AbstractMapping>>> mappings;
 
-			// Popups
-			std::shared_ptr<popup::Base> addPopUp(popup::Type type);
-			void removePopUp();
+			// Media
+			std::shared_ptr<media::Base> addMedia(media::Type type);
+			void removeMedia();
 
-			std::vector<std::shared_ptr<popup::Base>> popUps;
+			std::vector<std::shared_ptr<media::Base>> medias;
 
 			// Messenger
 			void messageReceived_(ofxOscMessage & message);

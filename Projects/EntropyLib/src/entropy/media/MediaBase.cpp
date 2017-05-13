@@ -8,7 +8,7 @@
 
 namespace entropy
 {
-	namespace popup
+	namespace media
 	{
 		//--------------------------------------------------------------
 		Base::Base(Type type)
@@ -343,11 +343,11 @@ namespace entropy
 			}
 			
 			// Add Page if it doesn't already exist.
-			if (!this->timeline->hasPage(PopUpsTimelinePageName))
+			if (!this->timeline->hasPage(MediaTimelinePageName))
 			{
-				this->timeline->addPage(PopUpsTimelinePageName);
+				this->timeline->addPage(MediaTimelinePageName);
 			}
-			auto page = this->timeline->getPage(PopUpsTimelinePageName);
+			auto page = this->timeline->getPage(MediaTimelinePageName);
 
 			std::ostringstream oss;
 			oss << "Pop-up_" << this->index << "_";
@@ -371,7 +371,7 @@ namespace entropy
 				return;
 			}
 
-			this->timeline->setCurrentPage(PopUpsTimelinePageName);
+			this->timeline->setCurrentPage(MediaTimelinePageName);
 
 			// Add Track.
 			this->switchesTrack = this->timeline->addSwitches(trackName);

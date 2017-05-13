@@ -8,9 +8,9 @@
 
 namespace entropy
 {
-	namespace popup
+	namespace media
 	{
-		static const string PopUpsTimelinePageName = "Pop-ups";
+		static const string MediaTimelinePageName = "Media";
 		
 		enum class Type
 		{
