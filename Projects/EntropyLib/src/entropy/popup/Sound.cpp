@@ -108,14 +108,14 @@ namespace entropy
 			{
 				if (ImGui::Button("Load..."))
 				{
-					auto result = ofSystemLoadDialog("Select a sound file.", false, GetSharedAssetsPath());
+					auto result = ofSystemLoadDialog("Select a sound file.", false, GetSharedAssetsPath().string());
 					if (result.bSuccess)
 					{
 						if (this->loadSound(result.filePath))
 						{
-							auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
-							auto testPath = GetSharedAssetsPath().append(relativePath);
-							if (ofFile::doesFileExist(testPath))
+							const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
+							const auto testPath = GetSharedAssetsPath().append(relativePath);
+							if (ofFile::doesFileExist(testPath.string()))
 							{
 								this->parameters.filePath = relativePath;
 							}
@@ -146,7 +146,7 @@ namespace entropy
 				}
 				else
 				{
-					this->loadSound(GetSharedAssetsPath() + filePath);
+					this->loadSound(GetSharedAssetsPath().string() + filePath);
 				}
 			}
 		}

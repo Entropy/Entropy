@@ -15,9 +15,7 @@ namespace entropy
 			this->parameters.setName((layout == Layout::Back) ? "Canvas Back" : "Canvas Front");
 			
 			// Set ofxWarp shader path.
-			auto warpShaderPath = GetSharedDataPath();
-			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("ofxWarp"));
-			warpShaderPath = ofFilePath::addTrailingSlash(warpShaderPath.append("shaders"));
+			const auto warpShaderPath = GetSharedDataPath() / "ofxWarp" / "shaders";
 			ofxWarp::WarpBase::setShaderPath(warpShaderPath);
 
 			// Set default size settings.

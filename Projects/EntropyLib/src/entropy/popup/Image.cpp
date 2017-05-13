@@ -1,5 +1,6 @@
 #include "Image.h"
 
+#include "ofImage.h"
 #include "entropy/Helpers.h"
 
 namespace entropy
@@ -28,14 +29,14 @@ namespace entropy
 			{
 				if (ImGui::Button("Load..."))
 				{
-					auto result = ofSystemLoadDialog("Select an image file.", false, GetSharedAssetsPath());
+					auto result = ofSystemLoadDialog("Select an image file.", false, GetSharedAssetsPath().string());
 					if (result.bSuccess)
 					{
 						if (this->loadImage(result.filePath))
 						{
-							auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
-							auto testPath = GetSharedAssetsPath().append(relativePath);
-							if (ofFile::doesFileExist(testPath))
+							const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
+							const auto testPath = GetSharedAssetsPath().append(relativePath);
+							if (ofFile::doesFileExist(testPath.string()))
 							{
 								this->parameters.filePath = relativePath;
 							}
@@ -64,13 +65,13 @@ namespace entropy
 				}
 				else
 				{
-					this->loadImage(GetSharedAssetsPath() + filePath);
+					this->loadImage(GetSharedAssetsPath() / filePath);
 				}
 			}
 		}
 
 		//--------------------------------------------------------------
-		bool Image::loadImage(const string & filePath)
+		bool Image::loadImage(const std::filesystem::path & filePath)
 		{
 			ofPixels pixels;
 			ofLoadImage(pixels, filePath);

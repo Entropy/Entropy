@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ofFileUtils.h"
 #include "ofxImGui.h"
 #include "ofxOsc.h"
 #include "ofxPreset.h"
@@ -57,10 +58,10 @@ namespace entropy
 			virtual bool postProcessFront(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; };
 
 			// Resources
-			string getAssetsPath(const string & file = "");
-			string getDataPath(const string & file = "");
-			string getPresetPath(const string & preset = "");
-			string getCurrentPresetPath(const string & file = "");
+			std::filesystem::path getAssetsPath(const string & file = "");
+			std::filesystem::path getDataPath(const string & file = "");
+			std::filesystem::path getPresetPath(const string & preset = "");
+			std::filesystem::path getCurrentPresetPath(const string & file = "");
 
 			const vector<string> & getPresets() const;
 			const string & getCurrentPresetName() const;
@@ -142,8 +143,8 @@ namespace entropy
 			// Resources
 			void populatePresets();
 
-			string assetsPath;
-			string dataPath;
+			std::filesystem::path assetsPath;
+			std::filesystem::path dataPath;
 			string currPreset;
 			vector<string> presets;
 

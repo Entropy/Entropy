@@ -540,27 +540,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & Playlist::getDataPath()
+		const std::filesystem::path & Playlist::getDataPath()
 		{
-			static string dataPath;
+			static std::filesystem::path dataPath;
 			if (dataPath.empty())
 			{
-				dataPath = GetSharedDataPath();
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("entropy"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("scene"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("Playlist"));
+				dataPath = GetSharedDataPath() / "entropy" / "scene" / "Playlist";
 			}
 			return dataPath;
 		}
 
 		//--------------------------------------------------------------
-		const string & Playlist::getSettingsFilePath()
+		const std::filesystem::path & Playlist::getSettingsFilePath()
 		{
-			static string filePath;
+			static std::filesystem::path filePath;
 			if (filePath.empty())
 			{
-				filePath = this->getDataPath();
-				filePath.append("settings.json");
+				filePath = this->getDataPath() / "settings.json";
 			}
 			return filePath;
 		}

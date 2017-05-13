@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ofFileUtils.h"
+
 #include "entropy/render/Canvas.h"
 #include "entropy/scene/Playlist.h"
 #include "entropy/util/Messenger.h"
@@ -51,8 +53,8 @@ namespace entropy
 			std::vector<ofEventListener> parameterListeners;
 
 		protected:
-			const string & getDataPath();
-			const string & getSettingsFilePath();
+			const std::filesystem::path & getDataPath();
+			const std::filesystem::path & getSettingsFilePath();
 
 			bool loadSettings();
 			bool saveSettings();

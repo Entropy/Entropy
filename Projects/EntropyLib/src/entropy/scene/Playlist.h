@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ofFileUtils.h"
+
 #include "entropy/render/Layout.h"
 #include "entropy/world/Camera.h"
 
@@ -57,8 +59,8 @@ namespace entropy
 
 			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
-			const string & getDataPath();
-			const string & getSettingsFilePath();
+			const std::filesystem::path & getDataPath();
+			const std::filesystem::path & getSettingsFilePath();
 
 			bool loadSettings();
 			bool saveSettings();

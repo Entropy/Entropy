@@ -2,7 +2,8 @@
 
 #include "Base.h"
 
-#include "ofImage.h"
+#include "ofFileUtils.h"
+#include "ofTexture.h"
 #include "ofxPreset.h"
 
 namespace entropy
@@ -23,7 +24,7 @@ namespace entropy
 			void deserialize(const nlohmann::json & json) override;
 
 		protected:
-			bool loadImage(const string & filePath);
+			bool loadImage(const std::filesystem::path & filePath);
 
 			bool isLoaded() const override;
 

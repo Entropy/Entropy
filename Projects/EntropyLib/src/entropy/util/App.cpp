@@ -83,27 +83,23 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const string & App_::getDataPath()
+		const std::filesystem::path & App_::getDataPath()
 		{
-			static string dataPath;
+			static std::filesystem::path dataPath;
 			if (dataPath.empty())
 			{
-				dataPath = GetSharedDataPath();
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("entropy"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("util"));
-				dataPath = ofFilePath::addTrailingSlash(dataPath.append("App"));
+				dataPath = GetSharedDataPath() / "entropy" / "util" / "App";
 			}
 			return dataPath;
 		}
 
 		//--------------------------------------------------------------
-		const string & App_::getSettingsFilePath()
+		const std::filesystem::path & App_::getSettingsFilePath()
 		{
-			static string filePath;
+			static std::filesystem::path filePath;
 			if (filePath.empty())
 			{
-				filePath = this->getDataPath();
-				filePath.append("settings.json");
+				filePath = this->getDataPath() / "settings.json";
 			}
 			return filePath;
 		}

@@ -32,7 +32,7 @@ namespace entropy
 
 			// Set data path root for scene.
 			const auto prevDataPathRoot = ofToDataPath("");
-			ofSetDataPathRoot(this->getDataPath());
+			ofSetDataPathRoot(this->getDataPath().string());
 
 			auto & parameters = this->getParameters();
 
@@ -785,7 +785,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		string Base::getAssetsPath(const string & file)
+		std::filesystem::path Base::getAssetsPath(const string & file)
 		{
 			if (this->assetsPath.empty())
 			{
@@ -793,7 +793,7 @@ namespace entropy
 				auto assetsPath = GetSharedAssetsPath();
 				for (auto & component : tokens)
 				{
-					assetsPath = ofFilePath::addTrailingSlash(assetsPath.append(component));
+					assetsPath = assetsPath / component;
 				}
 				this->assetsPath = assetsPath;
 			}
@@ -802,13 +802,12 @@ namespace entropy
 				return this->assetsPath;
 			}
 
-			auto filePath = this->assetsPath;
-			filePath.append(file);
+			auto filePath = this->assetsPath / file;
 			return filePath;
 		}
 
 		//--------------------------------------------------------------
-		string Base::getDataPath(const string & file)
+		std::filesystem::path Base::getDataPath(const string & file)
 		{
 			if (this->dataPath.empty())
 			{
@@ -816,7 +815,7 @@ namespace entropy
 				auto dataPath = GetSharedDataPath();
 				for (auto & component : tokens)
 				{
-					dataPath = ofFilePath::addTrailingSlash(dataPath.append(component));
+					dataPath = dataPath / component;
 				}
 				this->dataPath = dataPath;
 			}
@@ -825,24 +824,23 @@ namespace entropy
 				return this->dataPath;
 			}
 
-			auto filePath = this->dataPath;
-			filePath.append(file);
+			auto filePath = this->dataPath / file;
 			return filePath;
 		}
 
 		//--------------------------------------------------------------
-		string Base::getPresetPath(const string & preset)
+		std::filesystem::path Base::getPresetPath(const string & preset)
 		{
-			auto presetPath = ofFilePath::addTrailingSlash(this->getDataPath("presets"));
+			auto presetPath = this->getDataPath("presets");
 			if (!preset.empty())
 			{
-				presetPath.append(ofFilePath::addTrailingSlash(preset));
+				presetPath = presetPath / preset;
 			}
 			return presetPath;
 		}
 
 		//--------------------------------------------------------------
-		string Base::getCurrentPresetPath(const string & file)
+		std::filesystem::path Base::getCurrentPresetPath(const string & file)
 		{
 			auto currentPresetPath = this->getPresetPath(this->currPreset);
 			if (file.empty())
@@ -850,8 +848,7 @@ namespace entropy
 				return currentPresetPath;
 			}
 
-			currentPresetPath.append(file);
-			return currentPresetPath;
+			return (currentPresetPath / file);
 		}
 
 		//--------------------------------------------------------------
@@ -876,7 +873,7 @@ namespace entropy
 			}
 
 			// Set data path root for scene.
-			ofSetDataPathRoot(this->getDataPath());
+			ofSetDataPathRoot(this->getDataPath().string());
 
 			// Clean up scene.
 			this->exit_();
@@ -887,8 +884,7 @@ namespace entropy
 			if (presetFile.exists())
 			{
 				// Load parameters from the preset.
-				auto paramsPath = presetPath;
-				paramsPath.append("parameters.json");
+				auto paramsPath = presetPath / "parameters.json";
 				auto paramsFile = ofFile(paramsPath);
 				if (paramsFile.exists())
 				{
@@ -898,7 +894,7 @@ namespace entropy
 					this->deserialize_(json);
 				}
 
-				this->timeline->loadTracksFromFolder(presetPath);
+				this->timeline->loadTracksFromFolder(presetPath.string());
 
 				this->currPreset = presetName;
 			}
@@ -927,14 +923,13 @@ namespace entropy
 		{
 			const auto presetPath = this->getPresetPath(presetName);
 
-			auto paramsPath = presetPath;
-			paramsPath.append("parameters.json");
+			auto paramsPath = presetPath / "parameters.json";
 			auto paramsFile = ofFile(paramsPath, ofFile::WriteOnly);
 			nlohmann::json json;
 			this->serialize_(json);
 			paramsFile << json.dump(4);
 
-			this->timeline->saveTracksToFolder(presetPath);
+			this->timeline->saveTracksToFolder(presetPath.string());
 
 			// Notify listeners.
 			// TODO: This parameter should be presetName but it's volatile
