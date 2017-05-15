@@ -78,6 +78,10 @@ void ofApp::setup()
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
 	this->timeline.setPageName(this->parameters.getName());
+	this->eventListeners.push_back(this->timeline.events().viewWasResized.newListener([this](ofEventArgs &)
+	{
+		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	}));
 
 	const auto cameraTrackName = "Camera";
 	this->cameraTrack.setDampening(1.0f);
@@ -308,7 +312,6 @@ bool ofApp::loadPreset(const string & presetName)
 
 		this->timeline.loadStructure(presetPath.string());
 		this->timeline.loadTracksFromFolder(presetPath.string());
-		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 
 		this->gui.refreshTimelined(&this->timeline);
 		
