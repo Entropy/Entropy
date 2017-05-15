@@ -4,6 +4,7 @@
 #include "entropy/media/HiPerfVideo.h"
 #include "entropy/media/Image.h"
 #include "entropy/media/Movie.h"
+#include "entropy/media/Sequence.h"
 #include "entropy/media/Sound.h"
 #include "entropy/util/App.h"
 
@@ -390,6 +391,10 @@ namespace entropy
 							else if (i == 2)
 							{
 								this->addMedia(media::Type::HPV);
+							}
+							else if (i == 3)
+							{
+								this->addMedia(media::Type::Sequence);
 							}
 							else // if (i == 4)
 							{
@@ -1092,6 +1097,10 @@ namespace entropy
 			else if (type == media::Type::HPV)
 			{
 				media = make_shared<media::HiPerfVideo>();
+			}
+			else if (type == media::Type::Sequence)
+			{
+				media = make_shared<media::Sequence>();
 			}
 			else if (type == media::Type::Sound)
 			{

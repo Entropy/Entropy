@@ -18,6 +18,7 @@ namespace entropy
 			Image,
 			Movie,
 			HPV,
+			Sequence,
 			Sound
 		};
 

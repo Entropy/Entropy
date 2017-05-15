@@ -73,6 +73,9 @@
     <ClCompile Include="..\EntropyGeom\src\entropy\geom\Stripes.cpp">
       <Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
     </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\HiPerfVideo.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
@@ -171,6 +174,12 @@
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxHPVPlayer\src\lz4hc.c">
       <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\ofxHPVPlayer.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxImageSequence\src\ofxImageSequence.cpp">
+      <Filter>local_addons\ofxImageSequence\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\PresetGui.cpp">
       <Filter>local_addons\ofxPreset\src\ofxPreset</Filter>
@@ -295,11 +304,8 @@
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp">
       <Filter>local_addons\ofxWarp\src\ofxWarp</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\HiPerfVideo.cpp">
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Sequence.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\ofxHPVPlayer.cpp">
-      <Filter>local_addons\ofxHPVPlayer\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,6 +461,12 @@
     </Filter>
     <Filter Include="local_addons\ofxHPVPlayer\src">
       <UniqueIdentifier>{EAAE9F07-32AE-6381-E085-BDAA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxImageSequence">
+      <UniqueIdentifier>{2A70EDF2-FD46-64F2-4704-7876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxImageSequence\src">
+      <UniqueIdentifier>{FC3752C4-F9C8-A3FD-987C-585E}</UniqueIdentifier>
     </Filter>
     <Filter Include="local_addons\ofxPreset">
       <UniqueIdentifier>{BCEDC51C-68BB-17CD-374D-DC84}</UniqueIdentifier>
@@ -635,6 +647,9 @@
     <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\Image.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
@@ -784,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxHPVPlayer\src\Timer.h">
       <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxImageSequence\src\ofxImageSequence.h">
+      <Filter>local_addons\ofxImageSequence\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
       <Filter>local_addons\ofxPreset\src\ofxPreset</Filter>
@@ -953,7 +971,7 @@
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp.h">
       <Filter>local_addons\ofxWarp\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h">
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Sequence.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
   </ItemGroup>

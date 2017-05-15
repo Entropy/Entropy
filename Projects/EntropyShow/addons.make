@@ -10,6 +10,7 @@ ofxXmlSettings
 ../../addons/ofxEasing
 ../../addons/ofxGStreamer
 ../../addons/ofxHPVPlayer
+../../addons/ofxImageSequence
 ../../addons/ofxPreset
 ../../addons/ofxRange
 ../../addons/ofxTextInputField
