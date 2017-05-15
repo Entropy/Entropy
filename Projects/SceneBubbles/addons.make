@@ -1,3 +1,14 @@
-ofxImGui
-ofxMSAOpenCL
-ofxVolumetrics
+ofxGui
+ofxXmlSettings
+../../addons/ofxEasing
+../../addons/ofxImGui
+../../addons/ofxRange
+../../addons/ofxSet
+../../addons/ofxTextInputField
+../../addons/ofxTextureRecorder
+../../addons/ofxTimecode
+../../addons/ofxTimeline
+../../addons/ofxVolumetrics
+../EntropyGeom
+../EntropyRender
+../EntropyUtil

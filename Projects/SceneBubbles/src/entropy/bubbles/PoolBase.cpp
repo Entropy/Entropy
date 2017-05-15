@@ -6,14 +6,19 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		PoolBase::PoolBase()
-			: resetSimulation(false)
+			: needsReset(false)
 		{}
 
 		//--------------------------------------------------------------
 		void PoolBase::init()
 		{
 			this->resize();
-			this->resetSimulation = true;
+			this->needsReset = true;
+
+			this->parameterListeners.push_back(this->resetSimulation.newListener([this](void)
+			{
+				this->needsReset = true;
+			}));
 		}
 
 		//--------------------------------------------------------------
@@ -25,18 +30,18 @@ namespace entropy
 			this->currIdx = 1;
 			this->tempIdx = 2;
 
-			this->resetSimulation = false;
+			this->needsReset = false;
 		}
 
 		//--------------------------------------------------------------
 		void PoolBase::update(double dt)
 		{
-			if (this->resetSimulation)
+			if (this->needsReset)
 			{
 				this->reset();
 			}
 
-			if (this->runSimulation && (this->drawBack || this->drawFront))
+			if (this->runSimulation && this->drawEnabled)
 			{
 				++this->frameCount;
 				
@@ -84,6 +89,7 @@ namespace entropy
 			this->copyResult();
 		}
 
+		/*
 		//--------------------------------------------------------------
 		void PoolBase::gui(ofxImGui::Settings & settings)
 		{
@@ -116,6 +122,7 @@ namespace entropy
 				ofxImGui::EndTree(settings);
 			}
 		}
+		*/
 
 		//--------------------------------------------------------------
 		void PoolBase::setDimensions(int size)

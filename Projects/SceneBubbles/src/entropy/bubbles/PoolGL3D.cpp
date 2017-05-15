@@ -3,7 +3,6 @@
 #ifdef COMPUTE_GL_3D
 
 #include "entropy/Helpers.h"
-#include "entropy/util/App.h"
 
 namespace entropy
 {
@@ -103,7 +102,7 @@ namespace entropy
 			this->volumetrics.updateTexture(&this->textures[0], glm::vec3(1.0f));
 
 			// Build a mesh to render a quad.
-			const auto origin = glm::vec3(0.0f, GetCanvasHeight(render::Layout::Back) - this->dimensions.y, 0.0f);
+			const auto origin = glm::vec3(0.0f, ofGetHeight() - this->dimensions.y, 0.0f);
 
 			this->mesh.clear();
 			this->mesh.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -339,6 +338,7 @@ namespace entropy
 			}
 		}
 
+		/*
 		//--------------------------------------------------------------
 		void PoolGL3D::gui(ofxImGui::Settings & settings)
 		{
@@ -390,6 +390,7 @@ namespace entropy
 				ofxImGui::EndTree(settings);
 			}
 		}
+		*/
 
 		//--------------------------------------------------------------
 		const ofxTexture & PoolGL3D::getTexture() const

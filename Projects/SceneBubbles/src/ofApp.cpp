@@ -1,38 +1,134 @@
 #include "ofApp.h"
 
-#include "entropy/Helpers.h"
-#include "entropy/scene/Bubbles.h"
-
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	//ofEnableGLDebugLog();
+	// Init the pools.
+	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
+	this->pool2D.init();
 
-	// Add Scene to the Playlist.
-	auto playlist = entropy::GetPlaylist();
-	playlist->addScene(make_shared<entropy::scene::Bubbles>());
-	playlist->previewScene();
+	this->pool3D.setDimensions(glm::vec3(256.0f));
+	this->pool3D.init();
+
+	this->pool2D.reset();
+	this->pool3D.reset();
+
+	// Init the sphere.
+	this->parameters.add(this->sphereGeom.parameters);
+
+	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-2.png"), this->sphereTexture);
+
+	auto shaderSettings = ofShader::Settings();
+	shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
+	shaderSettings.bindDefaults = true;
+	shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/reveal.vert";
+	shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/reveal.frag";
+	this->sphereShader.setup(shaderSettings);
+
+	// Setup the gui and timeline.
+	ofxGuiSetDefaultWidth(250);
+	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
+	this->gui.setup("Surveys", "settings.json");
+	this->gui.add(this->parameters);
+	this->gui.add(this->pool2D.parameters);
+	this->gui.add(this->pool3D.parameters);
+	this->gui.add(this->sphereGeom.parameters);
+	this->gui.add(this->renderer.parameters);
+	this->gui.add(this->postParams);
+	this->gui.minimizeAll();
+
+	this->timeline.setup();
+	this->timeline.setDefaultFontPath("FiraCode-Light");
+	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	this->timeline.setDurationInSeconds(60 * 5);
+	this->timeline.setAutosave(false);
+
+	this->cameraTrack.setCamera(this->camera);
+	this->timeline.addTrack("Camera", &this->cameraTrack);
+
+	this->gui.setTimeline(&this->timeline);
+	this->gui.loadFromFile("settings.json");
+
+	// Setup renderer and post effects using resize callback.
+	this->windowResized(ofGetWidth(), ofGetHeight());
 }
 
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	entropy::util::App::Destroy();
-}
-
-//--------------------------------------------------------------
-void ofApp::update(){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::update()
+{
+	double dt = ofGetLastFrameTime();
+	this->pool2D.update(dt);
+	this->pool3D.update(dt);
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::draw()
+{
+	// Draw the scene.
+	this->fboScene.begin();
+	{
+		ofClear(0, 255);
 
+		if (this->pool2D.drawEnabled)
+		{
+			this->pool2D.draw();
+		}
+
+		this->camera.begin();
+		{
+			this->sphereShader.begin();
+			{
+				this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
+				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
+				this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
+				this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
+				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+				this->sphereShader.setUniform1f("uMaskMix", this->parameters.sphere.maskMix);
+				this->sphereShader.setUniform4f("uTintColor", this->parameters.sphere.tintColor.get());
+
+				this->sphereGeom.draw();
+			}
+			this->sphereShader.end();
+
+			if (this->pool3D.drawEnabled)
+			{
+				this->pool3D.draw();
+			}
+		}
+		this->camera.end();
+	}
+	this->fboScene.end();
+
+	this->postEffects.process(this->fboScene.getTexture(), this->fboPost, this->postParams);
+
+	ofDisableBlendMode();
+	ofSetColor(ofColor::white);
+	this->fboPost.draw(0, 0);
+
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+
+	// Draw the controls.
+	this->timeline.draw();
+	this->gui.draw();
+}
+
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key)
+{
+	if (key == 'L')
+	{
+		this->cameraTrack.lockCameraToTrack ^= 1;
+	}
+	else if (key == 'T')
+	{
+		this->cameraTrack.addKeyframe();
+	}
 }
 
 //--------------------------------------------------------------
@@ -71,8 +167,24 @@ void ofApp::mouseExited(int x, int y){
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
+void ofApp::windowResized(int w, int h)
+{
+	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
 
+	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+
+	auto fboSettings = ofFbo::Settings();
+	fboSettings.width = ofGetWidth();
+	fboSettings.height = ofGetHeight();
+	fboSettings.internalformat = GL_RGBA32F;
+	fboSettings.textureTarget = GL_TEXTURE_2D;
+	fboSettings.numSamples = 4;
+	this->fboScene.allocate(fboSettings);
+	this->fboPost.allocate(fboSettings);
+
+	this->postEffects.resize(fboSettings.width, fboSettings.height);
+	this->renderer.setup(1);
+	this->renderer.resize(fboSettings.width, fboSettings.height);
 }
 
 //--------------------------------------------------------------

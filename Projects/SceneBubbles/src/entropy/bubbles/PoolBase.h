@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofxPreset.h"
+#include "ofParameter.h"
 
 namespace entropy
 {
@@ -18,7 +18,7 @@ namespace entropy
 			virtual void update(double dt);
 			virtual void draw() = 0;
 
-			virtual void gui(ofxImGui::Settings & settings);
+			//virtual void gui(ofxImGui::Settings & settings);
 
 			void setDimensions(int size);
 			void setDimensions(const glm::vec2 & dimensions);
@@ -27,9 +27,9 @@ namespace entropy
 			const glm::vec3 & getDimensions() const;
 
 			ofParameter<bool> runSimulation{ "Run Simulation", true };
+			ofParameter<void> resetSimulation{ "Reset Simulation" };
 
-			ofParameter<bool> drawBack{ "Draw Back", true }; 
-			ofParameter<bool> drawFront{ "Draw Front", true };
+			ofParameter<bool> drawEnabled{ "Draw Enabled", true };
 
 			ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
 
@@ -46,7 +46,8 @@ namespace entropy
 
 			ofParameterGroup parameters{ "Pool",
 				runSimulation,
-				drawFront, drawBack,
+				resetSimulation,
+				drawEnabled,
 				alpha,
 				dropColor1, dropColor2,
 				dropping, dropRate,
@@ -56,7 +57,7 @@ namespace entropy
 
 			std::vector<ofEventListener> parameterListeners;
 
-			bool resetSimulation;
+			bool needsReset;
 
 		protected:
 			void computeFrame();
