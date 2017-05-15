@@ -10,12 +10,7 @@ void ofApp::setup()
 	this->pool3D.setDimensions(glm::vec3(256.0f));
 	this->pool3D.init();
 
-	this->pool2D.reset();
-	this->pool3D.reset();
-
 	// Init the sphere.
-	this->parameters.add(this->sphereGeom.parameters);
-
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-2.png"), this->sphereTexture);
 
 	auto shaderSettings = ofShader::Settings();
@@ -28,7 +23,7 @@ void ofApp::setup()
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
-	this->gui.setup("Surveys", "settings.json");
+	this->gui.setup("Bubbles", "parameters.json");
 	this->gui.add(this->parameters);
 	this->gui.add(this->pool2D.parameters);
 	this->gui.add(this->pool3D.parameters);
@@ -36,6 +31,30 @@ void ofApp::setup()
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
+	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
+	{
+		if (ofGetKeyPressed(OF_KEY_SHIFT))
+		{
+			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
+			if (!name.empty())
+			{
+				return this->savePreset(name);
+			}
+		}
+		return this->savePreset(this->currPreset);
+	}));
+	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
+	{
+		if (ofGetKeyPressed(OF_KEY_SHIFT))
+		{
+			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
+			if (result.bSuccess)
+			{
+				return this->loadPreset(result.fileName);
+			}
+		}
+		return this->loadPreset(this->currPreset);
+	}));
 
 	this->timeline.setup();
 	this->timeline.setDefaultFontPath("FiraCode-Light");
@@ -47,16 +66,19 @@ void ofApp::setup()
 	this->timeline.addTrack("Camera", &this->cameraTrack);
 
 	this->gui.setTimeline(&this->timeline);
-	this->gui.loadFromFile("settings.json");
+	//this->gui.loadFromFile("parameters.json");
 
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
+
+	this->loadPreset("_autosave");
+	//this->reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-
+	this->savePreset("_autosave");
 }
 
 //--------------------------------------------------------------
@@ -195,4 +217,69 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
 
+}
+
+//--------------------------------------------------------------
+void ofApp::reset()
+{
+	this->pool2D.reset();
+	this->pool3D.reset();
+
+	this->timeline.setCurrentFrame(0);
+}
+
+//--------------------------------------------------------------
+bool ofApp::loadPreset(const string & presetName)
+{
+	// Make sure file exists.
+	const auto presetPath = std::filesystem::path("presets") / presetName;
+	const auto presetFile = ofFile(presetPath);
+	if (presetFile.exists())
+	{
+		// Load parameters from the preset.
+		const auto paramsPath = presetPath / "parameters.json";
+		const auto paramsFile = ofFile(paramsPath);
+		if (paramsFile.exists())
+		{
+			const auto json = ofLoadJson(paramsFile);
+			ofDeserialize(json, this->gui.getParameter());
+		}
+
+		this->timeline.loadStructure(presetPath.string());
+		this->timeline.loadTracksFromFolder(presetPath.string());
+		this->gui.refreshTimelined(&this->timeline);
+		
+		this->currPreset = presetName;
+	}
+	else
+	{
+		ofLogWarning(__FUNCTION__) << "Directory not found at path " << presetPath;
+		this->currPreset.clear();
+	}
+
+	// Setup scene with the new parameters.
+	this->reset();
+
+	if (this->currPreset.empty())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+//--------------------------------------------------------------
+bool ofApp::savePreset(const string & presetName)
+{
+	const auto presetPath = std::filesystem::path("presets") / presetName;
+
+	const auto paramsPath = presetPath / "parameters.json";
+	nlohmann::json json;
+	ofSerialize(json, this->gui.getParameter());
+	ofSavePrettyJson(paramsPath, json);
+
+	this->timeline.saveTracksToFolder(presetPath.string());
+	this->timeline.saveStructure(presetPath.string());
+
+	return true;
 }

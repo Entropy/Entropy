@@ -38,6 +38,11 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+	void reset();
+
+	bool loadPreset(const string & presetName);
+	bool savePreset(const string & presetName);
+
 protected:
 #ifdef COMPUTE_GL_2D
 	entropy::bubbles::PoolGL2D pool2D;
@@ -58,7 +63,7 @@ protected:
 	ofFbo fboScene;
 	ofFbo fboPost;
 
-	vector<ofEventListener> paramListeners;
+	vector<ofEventListener> eventListeners;
 	ofxPanel gui;
 	ofxTimeline timeline;
 	ofxTLCameraTrack cameraTrack;
@@ -75,4 +80,6 @@ protected:
 
 		PARAM_DECLARE("Bubbles", sphere);
 	} parameters;
+
+	std::string currPreset;
 };
