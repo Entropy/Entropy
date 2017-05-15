@@ -9,7 +9,7 @@
 #include <numeric>
 
 namespace {
-ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size){
+ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size, const ofFloatColor & color){
 	ofMesh boxWireframeMesh;
 	boxWireframeMesh.setMode( OF_PRIMITIVE_LINES );
 
@@ -22,6 +22,8 @@ ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size){
 	boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, .5f} * size + pos);
 	boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, .5f} * size + pos);
 	boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, .5f} * size + pos);
+
+	boxWireframeMesh.getColors().assign(8, color);
 
 	// front face
 	boxWireframeMesh.addIndex(0);
@@ -273,43 +275,57 @@ bool VaporOctree::isLeaf() const {
 	return children.empty();
 }
 
+void VaporOctree::getChildrenRecursively(std::vector<const VaporOctree*> & childrenPtr) const {
+	for(auto & child: children){
+		if(child.isLeaf()){
+			childrenPtr.push_back(&child);
+		}else{
+			child.getChildrenRecursively(childrenPtr);
+		}
+	}
+}
+
 ofMesh VaporOctree::getMesh(float minDensity, float maxDensity) const{
 	if(this->isLeaf()){
+		ofFloatColor color;
 		if(this->particlesIndex.empty()){
-			ofSetColor(255, 20);
+			color.set(1, 20./255.);
 		}else{
-			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
-			ofSetColor(255, alpha);
+			auto alpha = ofMap(density, minDensity, maxDensity, 0, 1);
+			color.set(1., alpha);
 		}
-		return boxWireframe(bb.center, bb.size);
+		return boxWireframe(bb.center, bb.size, color);
 	}else{
 		ofMesh mesh;
 		mesh.setMode( OF_PRIMITIVE_LINES );
-		for(const auto & child : children){
-			mesh.append(child.getMesh(minDensity, maxDensity));
+		std::vector<const VaporOctree*> sortedChildren;
+		getChildrenRecursively(sortedChildren);
+		std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
+			return o1->density * o1->level > o2->density * o2->level;
+		});
+
+		for(const auto * child: sortedChildren){
+			mesh.append(child->getMesh(minDensity, maxDensity));
 		}
 		return mesh;
 	}
 }
 
 void VaporOctree::drawLeafs(float minDensity, float maxDensity) const {
-	if(this->isLeaf()){
-		if(this->particlesIndex.empty()){
-			ofSetColor(255, 20);
-		}else{
-			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
-			ofSetColor(255, alpha);
-		}
-		ofDrawBox(bb.center, bb.size.x, bb.size.y, bb.size.z);
-
-		ofSetColor(255, 80);
-		//ofDrawBitmapString(density, bb.center);
-	}else{
-		for(const auto & child : children){
-			child.drawLeafs(minDensity, maxDensity);
-		}
-	}
-	//getMesh(minDensity, maxDensity).draw();
+//	if(this->isLeaf()){
+//		if(this->particlesIndex.empty()){
+//			ofSetColor(255, 20);
+//		}else{
+//			auto alpha = ofMap(density, minDensity, maxDensity, 0, 255);
+//			ofSetColor(255, alpha);
+//		}
+//		ofDrawBox(bb.center, bb.size.x, bb.size.y, bb.size.z);
+//	}else{
+//		for(const auto & child : children){
+//			child.drawLeafs(minDensity, maxDensity);
+//		}
+//	}
+	getMesh(minDensity, maxDensity).draw();
 }
 
 void VaporOctree::drawDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity) const{

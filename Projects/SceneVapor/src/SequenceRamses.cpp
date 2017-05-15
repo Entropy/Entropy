@@ -231,14 +231,24 @@ namespace ent
 		volumetrics.setRenderSettings(1, m_volumeQuality, m_volumeDensity/(ratio*ratio), 0);
 		volumetrics.drawVolume(0, 0, 0, scale * ratio, 0);
 
-		ofSetColor(ofColor::white);
+		/*ofSetColor(ofColor::white);
 		ofNoFill();
 		ofPushMatrix();
 		ofScale(scale / m_normalizeFactor, scale / m_normalizeFactor, scale / m_normalizeFactor);
 		ofTranslate(m_originShift.x, m_originShift.y, m_originShift.z);
 		ofDrawBox(getSnapshot().m_boxRange.center, getSnapshot().m_boxRange.size.x, getSnapshot().m_boxRange.size.y, getSnapshot().m_boxRange.size.z);
 		ofPopMatrix();
-		ofFill();
+		ofFill();*/
+	}
+
+	ofMesh SequenceRamses::getOctreeMesh(float scale) const{
+		auto mesh = getSnapshot().getOctreeMesh(m_densityMin * m_densityRange.getSpan(), m_densityMax * m_densityRange.getSpan());
+		glm::mat4 model = glm::scale(glm::vec3(scale/m_normalizeFactor));
+		model = glm::translate(model, m_originShift);
+		for(auto & v: mesh.getVertices()){
+			v = (model * glm::vec4(v,1.0)).xyz();
+		}
+		return mesh;
 	}
 
 	//--------------------------------------------------------------
@@ -400,6 +410,12 @@ namespace ent
 	{
 		setFrameAtPercent(percent);
 		return getSnapshot();
+	}
+
+	//--------------------------------------------------------------
+	const SnapshotRamses& SequenceRamses::getSnapshot() const
+	{
+		return m_snapshots[m_currFrame];
 	}
 
 	//--------------------------------------------------------------

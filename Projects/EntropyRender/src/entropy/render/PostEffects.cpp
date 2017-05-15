@@ -183,7 +183,7 @@ namespace entropy
                 this->colorCorrectShader.setUniform1f("inner_vigneting", parameters.vignette.inner);
                 this->colorCorrectShader.setUniform1f("outer_vigneting", parameters.vignette.outer);
                 this->colorCorrectShader.setUniform1f("vignette_power", parameters.vignette.power);
-				this->colorCorrectShader.setUniform1f("ratio", srcTexture.getWidth() / float(srcTexture.getHeight()));
+				this->colorCorrectShader.setUniform1f("ratio", srcTexture.getWidth() / float(srcTexture.getHeight()) * parameters.vignette.ratio);
                 glm::mat3 rot(glm::rotate(glm::radians((float)-parameters.vignette.rotation), glm::vec3(0,0,1)));
                 this->colorCorrectShader.setUniformMatrix3f("vignette_rotation", rot);
 				if (parameters.bloom.debugBlur)

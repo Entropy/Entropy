@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
+#include "ofxTextureRecorder.h"
 
 class ofApp : public ofBaseApp{
 
@@ -38,4 +39,6 @@ public:
 	};
 	ofxPanel gui{parameters};
 
+	ofxTextureRecorder recorder;
+	bool save = false;
 };

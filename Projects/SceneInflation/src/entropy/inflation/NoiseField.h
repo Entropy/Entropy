@@ -71,7 +71,7 @@ namespace entropy
 		public:
 			NoiseField();
 			void setup(ofParameter<int> & resolution);
-			void update();
+			void update(double now);
 			void draw(float threshold);
 
 			int getNumScales();

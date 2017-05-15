@@ -44,12 +44,6 @@
                     "min": 0.100000001490116,
                     "name": "Inflation/Post_Effects/Vignette/Power",
                     "type": "Curves"
-                },
-                {
-                    "max": 90.0,
-                    "min": -90.0,
-                    "name": "Inflation/Post_Effects/Vignette/Rotation",
-                    "type": "Curves"
                 }
             ]
         },
@@ -81,6 +75,30 @@
         {
             "name": "Inflation/Noise_Field",
             "tracks": [
+                {
+                    "max": 100.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Equations/Current_rate_of_expansion",
+                    "type": "Curves"
+                },
+                {
+                    "max": 30.0,
+                    "min": 1.0,
+                    "name": "Inflation/Inflation/Equations/New_cluster_at_scale",
+                    "type": "Curves"
+                },
+                {
+                    "max": 5.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/state",
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Marching_Cubes/IsoLevel",
+                    "type": "Curves"
+                },
                 {
                     "max": 15.0,
                     "min": 0.0,
@@ -117,6 +135,36 @@
             "name": "Inflation/Renderer",
             "tracks": [
                 {
+                    "max": 100.0,
+                    "min": 0.5,
+                    "name": "Inflation/Inflation/Rotation_radius",
+                    "type": "Curves"
+                },
+                {
+                    "max": 0.0500000007450581,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/DOF_aperture",
+                    "type": "Curves"
+                },
+                {
+                    "max": 2.0,
+                    "min": 0.00999999977648258,
+                    "name": "Inflation/Renderer/DOF_distance",
+                    "type": "Curves"
+                },
+                {
+                    "max": 512.0,
+                    "min": 1.0,
+                    "name": "Inflation/Renderer/DOF_samples",
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Fill_Alpha",
+                    "type": "Curves"
+                },
+                {
                     "max": 10.0,
                     "min": 0.200000002980232,
                     "name": "Inflation/Renderer/Fog_Max_Distance",
@@ -138,6 +186,12 @@
                     "max": 5.0,
                     "min": 0.0,
                     "name": "Inflation/Renderer/Fog_Start_Distance",
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Wireframe_Alpha",
                     "type": "Curves"
                 }
             ]

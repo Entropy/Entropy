@@ -51,19 +51,29 @@ public:
 
 	enum State{
 		PreBigBang,
-		PreBigBangWobble,
+		//PreBigBangWobble,
 		BigBang,
 		Expansion,
 		ExpansionTransition,
 		ParticlesTransition,
-	}state;
+	};
 
 	double now = 0.0;
 	double t_bigbang = 0.0;
 	double t_from_bigbang = 0.0;
+	double t_expansion = 0.0;
+	double t_from_expansion = 0.0;
 	double t_transition = 0.0;
 	double t_from_particles = 0.0;
-	float scale = 1;
+
+
+	struct Cluster{
+		float scale = 1;
+		glm::vec3 origin;
+		double startTime;
+		float startScale = 1;
+	};
+	std::vector<Cluster> clusters{Cluster()};
 	float cameraDistanceBeforeBB;
 	bool octavesResetDuringTransition=false;
 	bool firstCycle;
@@ -102,6 +112,9 @@ public:
 		ofParameter<float> cameraDistance{"camera disntace", 0, 0, 10};
 		ofParameter<void> triggerBigbang{"trigger bigbang"};
 		ofParameter<bool> controlCamera{ "Control Camera", false };
+		ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 100, ofParameterScale::Logarithmic};
+		ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
+		ofParameter<float> state{"state", 0, 0, 5};
 
 		struct : ofParameterGroup{
 			ofParameter<ofFloatColor> color1{"color 1", ofColor::white};
@@ -116,6 +129,7 @@ public:
 		} colors;
 
 		struct : ofParameterGroup{
+			ofParameter<float> newClusterAt{ "New cluster at scale", 3, 1, 30};
 			ofParameter<float> bigBangDuration{ "BigBang duration", 0.25f, 0.0f, 2.f};
 			ofParameter<float> preBigBangWobbleDuration{ "Pre BigBang wobble duration", 3.f, 0.0f, 5.f};
 			ofParameter<float> bbFlashStart{"bigbang flash start %", 0.9, 0.f, 1.f};
@@ -137,6 +151,7 @@ public:
 
 			PARAM_DECLARE("Equations",
 				  bigBangDuration,
+				  newClusterAt,
 				  preBigBangWobbleDuration,
 				  bbFlashStart,
 				  bbFlashIn,
@@ -162,20 +177,27 @@ public:
 			ofParameter<bool> renderBack{ "Render Back", true };
 			ofParameter<bool> renderFront{ "Render Front", false };
 			ofParameter<bool> boxBackRender{ "Render Box Back", false };
-			ofParameter<bool> record{"Record",false};
+			ofParameter<int>  fps{ "fps", 60, 20, 1200, ofParameterScale::Logarithmic};
+			ofParameter<bool> record{"Record image seq.",false};
+			ofParameter<bool> recordVideo{"Record video",false};
 
 			PARAM_DECLARE("Render",
 				debug,
 				renderBack,
 				renderFront,
 				boxBackRender,
-				record);
+				fps,
+				record,
+				recordVideo);
 		} render;
 
 		PARAM_DECLARE("Inflation",
 			runSimulation,
 			cameraDistance,
 			controlCamera,
+			rotationRadius,
+			rotationSpeed,
+			state,
 			render,
 			colors,
 			equations);
@@ -194,7 +216,7 @@ public:
 	bool rotating = false;
 	ofPolyline cameraPath;
 	glm::vec3 dofTarget;
-	ofTime dofTimeStart;
+	double dofTimeStart = 0;
 	float dofDistanceTarget;
 	float dofDistanceStart;
 
@@ -203,4 +225,7 @@ public:
 
 	std::vector<ofEventListener> listeners;
 	ofxTimeline timeline;
+	bool showTimeline = true;
+	int prevState = 0;
+	float orbitAngle;
 };

@@ -12,8 +12,9 @@
             "Current_rate_of_expansion": "5",
             "Equations": {
                 "BigBang_duration": "0.25",
-                "Current_rate_of_expansion": "5.45606",
+                "Current_rate_of_expansion": "5",
                 "Hubble__min__wavelength_for_any_octave": "4",
+                "New_cluster_at_scale": "3",
                 "Pre_BigBang_wobble_duration": "3",
                 "Rate_of_expansion_after_bigbang": "0.05",
                 "Rate_of_expansion_at_bigbang": "5",
@@ -21,7 +22,7 @@
                 "bigbang_flash_out__duration_sec_": "0.1",
                 "bigbang_flash_plateau__sec_": "0.1",
                 "bigbang_flash_start_%": "0.9",
-                "geometry_size": "259668",
+                "geometry_size": "963120",
                 "inflation_transition_bg_color": "0.568627, 0.647059, 0.639216, 1",
                 "inflation_transition_flash_at_scale_": "10",
                 "inflation_transition_in__duration_sec_": "0.5",
@@ -36,10 +37,15 @@
             "Rate_of_expansion_at_bigbang": "5",
             "Render": {
                 "Debug_Noise": "0",
+                "Record": "0",
+                "Record_video": "0",
                 "Render_Back": "1",
                 "Render_Box_Back": "0",
-                "Render_Front": "0"
+                "Render_Front": "0",
+                "fps": "60"
             },
+            "Rotation_radius": "1.2",
+            "Rotation_speed": "5",
             "Run_Simulation": "1",
             "bigbang_flash_in__duration_sec_": "0.1",
             "bigbang_flash_out__duration_sec_": "0.1",
@@ -56,26 +62,27 @@
             "inflation_transition_in__duration_sec_": "0.5",
             "inflation_transition_out__sec_": "2",
             "inflation_transition_plateau__sec_": "0.3",
+            "state": "0",
             "transition_blobs_out___s_": "1",
             "transition_particles_in___s_": "1"
         },
         "Marching_Cubes": {
             "IsoLevel": "0.3",
-            "Resolution": "128",
+            "Resolution": "256",
             "Shade_Normals": "0",
             "subdivisions": "0"
         },
         "Noise_Field": {
             "Fill_Edges": "1",
-            "Noise_Speed": "3.03743",
-            "Norm__Factor": "1",
+            "Noise_Speed": "3",
+            "Norm__Factor": "0.9929",
             "Oscillate": "0",
             "Oscillate_spatial_freq_": "64",
             "Oscillate_speed": "1"
         },
         "Post_Effects": {
             "Bloom": {
-                "Boost": "1",
+                "Boost": "0.850251",
                 "Brightness_Threshold": "0.15",
                 "Debug_Blur": "0",
                 "Enabled": "1",
@@ -92,25 +99,27 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0.8",
+                "Enabled": "1",
+                "Inner": "0",
                 "Only_Alpha": "0",
-                "Outer": "1.1",
-                "Power": "1.1",
-                "Rotation": "0"
+                "Outer": "0.5",
+                "Power": "2",
+                "Ratio": "0.710121",
+                "Rotation": "90"
             }
         },
         "Renderer": {
             "Alpha_factor": "1",
             "Bokeh_sides": "6",
-            "DOF_aperture": "0.0265306",
-            "DOF_distance": "0.75212",
+            "Clip": "0",
+            "DOF_aperture": "0.027191",
+            "DOF_distance": "0.72104",
             "DOF_samples": "1",
             "Fade_From": "0.759184",
             "Fade_Power": "2.575",
             "Fade_To": "1",
             "Fill": "1",
-            "Fill_Alpha": "0.475",
+            "Fill_Alpha": "0",
             "Fog_Enabled": "1",
             "Fog_Max_Distance": "1.56",
             "Fog_Min_Distance": "0.183673",

@@ -9,6 +9,14 @@
 #define PARAM_DECLARE(NAME, ...) bool paramDeclareConstructor \
 { [this] { this->setName(NAME), this->add(__VA_ARGS__); return true; }() };
 
+#define OF_PARAMETER(TYPE, NAME, ...) ofParameter<TYPE> NAME{__VA_ARGS__}; \
+	bool NAME##Grouper{ [this]{this->add(NAME); return true; }() };
+
+#define OF_PARAMETER_GROUP(NAME, STRING_NAME, ...) struct NAME##Class: public ofParameterGroup { \
+	NAME##Class():ofParameterGroup(STRING_NAME){} \
+	__VA_ARGS__ \
+} NAME;
+
 namespace entropy
 {
 	//--------------------------------------------------------------

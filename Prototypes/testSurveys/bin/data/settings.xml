@@ -45,9 +45,9 @@
 		<Fill_Alpha>0.5</Fill_Alpha>
 		<Alpha_factor>1</Alpha_factor>
 		<Use_Lights>0</Use_Lights>
-		<DOF_samples>1</DOF_samples>
-		<DOF_aperture>0.0005</DOF_aperture>
-		<DOF_distance>1</DOF_distance>
+		<DOF_samples>256</DOF_samples>
+		<DOF_aperture>0.0130102</DOF_aperture>
+		<DOF_distance>1.40097</DOF_distance>
 		<Bokeh_sides>6</Bokeh_sides>
 	</Renderer>
 	<Post_Effects>
