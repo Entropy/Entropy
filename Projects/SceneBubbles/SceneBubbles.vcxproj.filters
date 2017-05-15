@@ -79,33 +79,6 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
       <Filter>addons\ofxXmlSettings\libs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseEngine.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\BaseTheme.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineGLFW.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\EngineOpenGLES.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\Gui.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\src\Helpers.cpp">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp">
       <Filter>local_addons\ofxTextInputField\src</Filter>
     </ClCompile>
@@ -291,26 +264,17 @@
     <Filter Include="local_addons\ofxEasing\src">
       <UniqueIdentifier>{A6B16EF9-3A3D-EA2D-8A51-7D3D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="local_addons\ofxImGui">
-      <UniqueIdentifier>{EA30943C-9159-F3C6-CA5A-2624}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="local_addons\ofxImGui\src">
-      <UniqueIdentifier>{6C0F77A4-05C0-8741-6EAB-BCCA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="local_addons\ofxImGui\libs">
-      <UniqueIdentifier>{786A29BE-59D1-66A3-FDFA-48D9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="local_addons\ofxImGui\libs\imgui">
-      <UniqueIdentifier>{4D56D533-80CB-0284-17AD-1E9E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="local_addons\ofxImGui\libs\imgui\src">
-      <UniqueIdentifier>{777A49B6-A2CF-2A9F-BB46-20C8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="local_addons\ofxRange">
       <UniqueIdentifier>{37BAA317-9451-E12F-7CDF-0905}</UniqueIdentifier>
     </Filter>
     <Filter Include="local_addons\ofxRange\src">
       <UniqueIdentifier>{9C86F2DF-AF0B-20E3-D9F9-5218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSerialize">
+      <UniqueIdentifier>{B2A6570A-D2C7-40CB-5DE8-99E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSerialize\src">
+      <UniqueIdentifier>{CA5122F3-8527-5916-5866-2119}</UniqueIdentifier>
     </Filter>
     <Filter Include="local_addons\ofxSet">
       <UniqueIdentifier>{8AFCF2D2-FEB6-04EA-DF1B-5D60}</UniqueIdentifier>
@@ -515,50 +479,14 @@
     <ClInclude Include="..\..\addons\ofxEasing\src\ofxEasing.h">
       <Filter>local_addons\ofxEasing\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseEngine.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\BaseTheme.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineGLFW.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\EngineOpenGLES.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\Gui.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\Helpers.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\imconfig.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\ofxImGui.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\src\ThemeTest.h">
-      <Filter>local_addons\ofxImGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui.h">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h">
-      <Filter>local_addons\ofxImGui\libs\imgui\src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\addons\ofxRange\src\ofRange.h">
       <Filter>local_addons\ofxRange\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSerialize\src\ofxSerialize.h">
+      <Filter>local_addons\ofxSerialize\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSerialize\src\ofxSerialize.inl">
+      <Filter>local_addons\ofxSerialize\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxSet\src\ofxRange.h">
       <Filter>local_addons\ofxSet\src</Filter>

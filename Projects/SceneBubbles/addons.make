@@ -1,8 +1,8 @@
 ofxGui
 ofxXmlSettings
 ../../addons/ofxEasing
-../../addons/ofxImGui
 ../../addons/ofxRange
+../../addons/ofxSerialize
 ../../addons/ofxSet
 ../../addons/ofxTextInputField
 ../../addons/ofxTextureRecorder

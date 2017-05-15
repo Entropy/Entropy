@@ -12,6 +12,7 @@
 #ifdef COMPUTE_GL_3D
 	#include "entropy/bubbles/PoolGL3D.h"
 #endif
+#include "entropy/geom/Box.h"
 #include "entropy/geom/Sphere.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
@@ -51,6 +52,8 @@ protected:
 	entropy::bubbles::PoolGL3D pool3D;
 #endif
 
+	entropy::geom::Box boxGeom;
+
 	entropy::geom::Sphere sphereGeom;
 	ofTexture sphereTexture;
 	ofShader sphereShader;
@@ -72,13 +75,25 @@ protected:
 	{
 		struct : ofParameterGroup
 		{
+			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f, ofParameterScale::Logarithmic };
+			ofParameter<float> farClip{ "Far Clip", 1000.0f, 1.0f, 200000.0f };
+
+			PARAM_DECLARE("Camera",
+				nearClip,
+				farClip);
+		} camera;
+
+		struct : ofParameterGroup
+		{
 			ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
 			ofParameter<float> maskMix{ "Mask Mix", 1.0f, 0.0f, 1.0f };
 
 			PARAM_DECLARE("SphereExtra", tintColor, maskMix);
 		} sphere;
 
-		PARAM_DECLARE("Bubbles", sphere);
+		PARAM_DECLARE("Bubbles", 
+			camera,
+			sphere);
 	} parameters;
 
 	std::string currPreset;

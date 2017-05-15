@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "ofxSerialize.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -20,11 +21,22 @@ void ofApp::setup()
 	shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/reveal.frag";
 	this->sphereShader.setup(shaderSettings);
 
+	// Setup the camera.
+	this->eventListeners.push_back(this->parameters.camera.nearClip.newListener([this](float & val)
+	{
+		this->camera.setNearClip(val);
+	}));
+	this->eventListeners.push_back(this->parameters.camera.farClip.newListener([this](float & val)
+	{
+		this->camera.setFarClip(val);
+	}));
+
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
 	this->gui.setup("Bubbles", "parameters.json");
 	this->gui.add(this->parameters);
+	this->gui.add(this->boxGeom.parameters);
 	this->gui.add(this->pool2D.parameters);
 	this->gui.add(this->pool3D.parameters);
 	this->gui.add(this->sphereGeom.parameters);
@@ -103,7 +115,10 @@ void ofApp::draw()
 		}
 
 		this->camera.begin();
+		ofEnableDepthTest();
 		{
+			this->boxGeom.draw();
+
 			this->sphereShader.begin();
 			{
 				this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
@@ -123,6 +138,7 @@ void ofApp::draw()
 				this->pool3D.draw();
 			}
 		}
+		ofDisableDepthTest();
 		this->camera.end();
 	}
 	this->fboScene.end();
@@ -193,6 +209,8 @@ void ofApp::windowResized(int w, int h)
 {
 	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
 
+	this->camera.setAspectRatio(ofGetWidth() / static_cast<float>(ofGetHeight()));
+
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 
 	auto fboSettings = ofFbo::Settings();
@@ -243,6 +261,7 @@ bool ofApp::loadPreset(const string & presetName)
 		{
 			const auto json = ofLoadJson(paramsFile);
 			ofDeserialize(json, this->gui.getParameter());
+			ofDeserialize(json, this->camera, "ofEasyCam");
 		}
 
 		this->timeline.loadStructure(presetPath.string());
@@ -276,6 +295,7 @@ bool ofApp::savePreset(const string & presetName)
 	const auto paramsPath = presetPath / "parameters.json";
 	nlohmann::json json;
 	ofSerialize(json, this->gui.getParameter());
+	ofSerialize(json, this->camera, "ofEasyCam");
 	ofSavePrettyJson(paramsPath, json);
 
 	this->timeline.saveTracksToFolder(presetPath.string());
