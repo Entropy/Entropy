@@ -67,3 +67,6 @@
 [submodule "addons/ofxHPVPlayer"]
 	path = addons/ofxHPVPlayer
 	url = https://github.com/Entropy/ofxHPVPlayer.git
+[submodule "addons/ofxImageSequence"]
+	path = addons/ofxImageSequence
+	url = https://github.com/entropy/ofxImageSequence
