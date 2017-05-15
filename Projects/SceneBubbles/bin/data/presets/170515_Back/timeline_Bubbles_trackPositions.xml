@@ -1,163 +1,163 @@
 <positions>
     <element name="Bubbles/Box/Alpha">
         <x>0.000000000</x>
-        <y>-580.000000000</y>
+        <y>1084.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Box/Alpha_0">
         <x>0.000000000</x>
-        <y>-516.000000000</y>
+        <y>1148.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Box/Edge_Ratio">
         <x>0.000000000</x>
-        <y>-452.000000000</y>
+        <y>1148.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Box/Edge_Ratio_0">
         <x>0.000000000</x>
-        <y>-388.000000000</y>
+        <y>1276.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Pan_Speed">
         <x>0.000000000</x>
-        <y>-324.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Pan_Speed_0">
         <x>0.000000000</x>
-        <y>-260.000000000</y>
+        <y>1404.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Tilt_Speed">
         <x>0.000000000</x>
-        <y>-196.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Tilt_Speed_0">
         <x>0.000000000</x>
-        <y>-132.000000000</y>
+        <y>1532.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/SphereExtra/Mask_Mix">
         <x>0.000000000</x>
-        <y>-68.000000000</y>
+        <y>1340.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/SphereExtra/Mask_Mix_0">
         <x>0.000000000</x>
-        <y>-4.000000000</y>
+        <y>1660.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Alpha">
         <x>0.000000000</x>
-        <y>60.000000000</y>
+        <y>1404.000000000</y>
         <width>1920.000000000</width>
-        <height>50.000000000</height>
+        <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Alpha_0">
         <x>0.000000000</x>
-        <y>134.000000000</y>
+        <y>1788.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Bursts/Enabled">
         <x>0.000000000</x>
-        <y>198.000000000</y>
+        <y>1468.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Bursts/Enabled_0">
         <x>0.000000000</x>
-        <y>262.000000000</y>
+        <y>1916.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Drop_Rate">
         <x>0.000000000</x>
-        <y>326.000000000</y>
+        <y>1532.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Drop_Rate_0">
         <x>0.000000000</x>
-        <y>390.000000000</y>
+        <y>2044.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Dropping">
         <x>0.000000000</x>
-        <y>454.000000000</y>
+        <y>1596.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Pool_GL_3D/Dropping_0">
         <x>0.000000000</x>
-        <y>518.000000000</y>
+        <y>2172.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Bloom/Brightness_Threshold">
         <x>0.000000000</x>
-        <y>582.000000000</y>
+        <y>1660.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Bloom/Brightness_Threshold_0">
         <x>0.000000000</x>
-        <y>646.000000000</y>
+        <y>2300.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Color/Brightness">
         <x>0.000000000</x>
-        <y>710.000000000</y>
+        <y>1724.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Color/Brightness_0">
         <x>0.000000000</x>
-        <y>774.000000000</y>
+        <y>2428.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Color/Contrast">
         <x>0.000000000</x>
-        <y>838.000000000</y>
+        <y>1788.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Post_Effects/Color/Contrast_0">
         <x>0.000000000</x>
-        <y>902.000000000</y>
+        <y>2556.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Sphere/Alpha">
         <x>0.000000000</x>
-        <y>966.000000000</y>
+        <y>1852.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Sphere/Alpha_0">
         <x>0.000000000</x>
-        <y>1030.000000000</y>
+        <y>2684.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera">
         <x>0.000000000</x>
-        <y>-644.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

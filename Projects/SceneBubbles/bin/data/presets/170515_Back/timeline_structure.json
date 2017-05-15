@@ -6,38 +6,8 @@
             "tracks": [
                 {
                     "max": 1.0,
-                    "min": 0.0,
-                    "name": "Bubbles/Box/Alpha",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": 0.0,
-                    "name": "Bubbles/Box/Alpha_0",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": 0.00100000004749745,
-                    "name": "Bubbles/Box/Edge_Ratio",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": 0.00100000004749745,
-                    "name": "Bubbles/Box/Edge_Ratio_0",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
                     "min": -1.0,
                     "name": "Bubbles/Bubbles/Camera/Pan_Speed",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": -1.0,
-                    "name": "Bubbles/Bubbles/Camera/Pan_Speed_0",
                     "type": "Curves"
                 },
                 {
@@ -47,9 +17,24 @@
                     "type": "Curves"
                 },
                 {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                }
+            ]
+        },
+        {
+            "name": "Geom",
+            "tracks": [
+                {
                     "max": 1.0,
-                    "min": -1.0,
-                    "name": "Bubbles/Bubbles/Camera/Tilt_Speed_0",
+                    "min": 0.0,
+                    "name": "Bubbles/Box/Alpha",
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.00100000004749745,
+                    "name": "Bubbles/Box/Edge_Ratio",
                     "type": "Curves"
                 },
                 {
@@ -61,9 +46,14 @@
                 {
                     "max": 1.0,
                     "min": 0.0,
-                    "name": "Bubbles/Bubbles/SphereExtra/Mask_Mix_0",
+                    "name": "Bubbles/Sphere/Alpha",
                     "type": "Curves"
-                },
+                }
+            ]
+        },
+        {
+            "name": "Pool",
+            "tracks": [
                 {
                     "max": 1.0,
                     "min": 0.0,
@@ -71,17 +61,7 @@
                     "type": "Curves"
                 },
                 {
-                    "max": 1.0,
-                    "min": 0.0,
-                    "name": "Bubbles/Pool_GL_3D/Alpha_0",
-                    "type": "Curves"
-                },
-                {
                     "name": "Bubbles/Pool_GL_3D/Bursts/Enabled",
-                    "type": "Switches"
-                },
-                {
-                    "name": "Bubbles/Pool_GL_3D/Bursts/Enabled_0",
                     "type": "Switches"
                 },
                 {
@@ -91,29 +71,18 @@
                     "type": "Curves"
                 },
                 {
-                    "max": 60.0,
-                    "min": 1.0,
-                    "name": "Bubbles/Pool_GL_3D/Drop_Rate_0",
-                    "type": "Curves"
-                },
-                {
                     "name": "Bubbles/Pool_GL_3D/Dropping",
                     "type": "Switches"
-                },
-                {
-                    "name": "Bubbles/Pool_GL_3D/Dropping_0",
-                    "type": "Switches"
-                },
+                }
+            ]
+        },
+        {
+            "name": "Post_Effects",
+            "tracks": [
                 {
                     "max": 3.0,
                     "min": 0.00999999977648258,
                     "name": "Bubbles/Post_Effects/Bloom/Brightness_Threshold",
-                    "type": "Curves"
-                },
-                {
-                    "max": 3.0,
-                    "min": 0.00999999977648258,
-                    "name": "Bubbles/Post_Effects/Bloom/Brightness_Threshold_0",
                     "type": "Curves"
                 },
                 {
@@ -123,38 +92,10 @@
                     "type": "Curves"
                 },
                 {
-                    "max": 1.0,
-                    "min": -1.0,
-                    "name": "Bubbles/Post_Effects/Color/Brightness_0",
-                    "type": "Curves"
-                },
-                {
                     "max": 1.5,
                     "min": 0.5,
                     "name": "Bubbles/Post_Effects/Color/Contrast",
                     "type": "Curves"
-                },
-                {
-                    "max": 1.5,
-                    "min": 0.5,
-                    "name": "Bubbles/Post_Effects/Color/Contrast_0",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": 0.0,
-                    "name": "Bubbles/Sphere/Alpha",
-                    "type": "Curves"
-                },
-                {
-                    "max": 1.0,
-                    "min": 0.0,
-                    "name": "Bubbles/Sphere/Alpha_0",
-                    "type": "Curves"
-                },
-                {
-                    "name": "Camera",
-                    "type": "CameraTrack"
                 }
             ]
         }
