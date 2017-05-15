@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "ofxHPVPlayer.h"
 
 #include "entropy/Helpers.h"
 #include "entropy/scene/Calibrate.h"
@@ -11,6 +12,9 @@ void ofApp::setup()
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofBackground(ofColor::black);
 
+	// Start the HPV engine.
+	HPV::InitHPVEngine();
+
 	// Add all Scenes to the Playlist.
 	auto playlist = entropy::GetPlaylist();
 	playlist->addScene(std::make_shared<entropy::scene::Calibrate>());
@@ -20,13 +24,17 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::exit()
 {
+	// Stop the HPV engine.
+	HPV::DestroyHPVEngine();
+	
 	// TODO: Figure out why just letting the destructor do its thing crashes the app.
 	entropy::util::App::Destroy();
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
+void ofApp::update()
+{
+	HPV::Update();
 }
 
 //--------------------------------------------------------------

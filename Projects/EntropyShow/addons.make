@@ -9,6 +9,7 @@ ofxXmlSettings
 ../../addons/ofxImGui
 ../../addons/ofxEasing
 ../../addons/ofxGStreamer
+../../addons/ofxHPVPlayer
 ../../addons/ofxPreset
 ../../addons/ofxRange
 ../../addons/ofxTextInputField

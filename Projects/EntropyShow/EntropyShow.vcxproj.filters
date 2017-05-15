@@ -73,6 +73,18 @@
     <ClCompile Include="..\EntropyGeom\src\entropy\geom\Stripes.cpp">
       <Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
     </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\render\Canvas.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\render</Filter>
     </ClCompile>
@@ -141,6 +153,24 @@
     </ClCompile>
     <ClCompile Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.cpp">
       <Filter>other</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\HPVManager.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\HPVPlayer.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\HPVRenderBridge.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\Log.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\lz4.c">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\lz4hc.c">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxPreset\src\ofxPreset\PresetGui.cpp">
       <Filter>local_addons\ofxPreset\src\ofxPreset</Filter>
@@ -265,17 +295,11 @@
     <ClCompile Include="..\..\addons\ofxWarp\src\ofxWarp\WarpPerspectiveBilinear.cpp">
       <Filter>local_addons\ofxWarp\src\ofxWarp</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp">
+    <ClCompile Include="..\EntropyLib\src\entropy\media\HiPerfVideo.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    <ClCompile Include="..\..\addons\ofxHPVPlayer\src\ofxHPVPlayer.cpp">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +365,9 @@
     </Filter>
     <Filter Include="local_addons\EntropyLib\src\entropy">
       <UniqueIdentifier>{7B14EE33-C98F-DEB1-1029-0648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyLib\src\entropy\media">
+      <UniqueIdentifier>{B845859F-44A7-4B26-C877-55BC}</UniqueIdentifier>
     </Filter>
     <Filter Include="local_addons\EntropyLib\src\entropy\render">
       <UniqueIdentifier>{C09F3380-65CE-8C65-2DC6-B074}</UniqueIdentifier>
@@ -422,6 +449,12 @@
     </Filter>
     <Filter Include="other">
       <UniqueIdentifier>{A2230F47-9F6B-908F-FF0E-E006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxHPVPlayer">
+      <UniqueIdentifier>{875664AE-9449-17C7-DE62-0534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxHPVPlayer\src">
+      <UniqueIdentifier>{EAAE9F07-32AE-6381-E085-BDAA}</UniqueIdentifier>
     </Filter>
     <Filter Include="local_addons\ofxPreset">
       <UniqueIdentifier>{BCEDC51C-68BB-17CD-374D-DC84}</UniqueIdentifier>
@@ -513,9 +546,6 @@
     <Filter Include="local_addons\ofxWarp\src\ofxWarp">
       <UniqueIdentifier>{F33AC200-99D2-D0B6-37F5-ACBF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="local_addons\EntropyLib\src\entropy\media">
-      <UniqueIdentifier>{32A82D1D-5990-AF43-00F9-1818}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -601,6 +631,18 @@
     </ClInclude>
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Stripes.h">
       <Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Image.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Sound.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\render\Canvas.h">
       <Filter>local_addons\EntropyLib\src\entropy\render</Filter>
@@ -709,6 +751,39 @@
     </ClInclude>
     <ClInclude Include="..\..\..\libs\openFrameworks\video\ofGstVideoGrabber.h">
       <Filter>other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\HPVEvent.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\HPVHeader.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\HPVManager.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\HPVPlayer.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\HPVRenderBridge.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\Log.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\lz4.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\lz4hc.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\ofxHPVPlayer.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\ThreadSafeQueue.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxHPVPlayer\src\Timer.h">
+      <Filter>local_addons\ofxHPVPlayer\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxPreset\src\ofxPreset\Gui.h">
       <Filter>local_addons\ofxPreset\src\ofxPreset</Filter>
@@ -878,16 +953,7 @@
     <ClInclude Include="..\..\addons\ofxWarp\src\ofxWarp.h">
       <Filter>local_addons\ofxWarp\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Image.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Sound.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h">
+    <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
   </ItemGroup>

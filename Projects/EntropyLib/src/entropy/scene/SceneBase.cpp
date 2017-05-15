@@ -1,6 +1,10 @@
 #include "Base.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/media/HiPerfVideo.h"
+#include "entropy/media/Image.h"
+#include "entropy/media/Movie.h"
+#include "entropy/media/Sound.h"
 #include "entropy/util/App.h"
 
 namespace entropy
@@ -370,7 +374,7 @@ namespace entropy
 				}
 				if (ImGui::BeginPopup("Media Types"))
 				{
-					static vector<string> mediaNames{ "Image", "Video", "Sound" };
+					static vector<string> mediaNames{ "Image", "Movie", "HPV", "Sequence", "Sound" };
 					for (auto i = 0; i < mediaNames.size(); ++i)
 					{
 						if (ImGui::Selectable(mediaNames[i].c_str()))
@@ -383,7 +387,11 @@ namespace entropy
 							{
 								this->addMedia(media::Type::Movie);
 							}
-							else // if (i == 2)
+							else if (i == 2)
+							{
+								this->addMedia(media::Type::HPV);
+							}
+							else // if (i == 4)
 							{
 								this->addMedia(media::Type::Sound);
 							}
@@ -1080,6 +1088,10 @@ namespace entropy
 			else if (type == media::Type::Movie)
 			{
 				media = make_shared<media::Movie>();
+			}
+			else if (type == media::Type::HPV)
+			{
+				media = make_shared<media::HiPerfVideo>();
 			}
 			else if (type == media::Type::Sound)
 			{

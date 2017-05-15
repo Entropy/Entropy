@@ -16,7 +16,8 @@ namespace entropy
 		{
 			Unknown,
 			Image,
-			Video,
+			Movie,
+			HPV,
 			Sound
 		};
 
