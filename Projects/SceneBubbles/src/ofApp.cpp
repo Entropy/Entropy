@@ -68,14 +68,23 @@ void ofApp::setup()
 		return this->loadPreset(this->currPreset);
 	}));
 
+	this->timeline.setName("timeline");
 	this->timeline.setup();
 	this->timeline.setDefaultFontPath("FiraCode-Light");
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	//this->timeline.setSpacebarTogglePlay(false);
+	this->timeline.setLoopType(OF_LOOP_NONE);
+	this->timeline.setFrameRate(30.0f);
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
+	this->timeline.setPageName(this->parameters.getName());
 
+	const auto cameraTrackName = "Camera";
+	this->cameraTrack.setDampening(1.0f);
 	this->cameraTrack.setCamera(this->camera);
-	this->timeline.addTrack("Camera", &this->cameraTrack);
+	this->cameraTrack.setXMLFileName(this->timeline.nameToXMLName(cameraTrackName));
+	this->timeline.addTrack(cameraTrackName, &this->cameraTrack);
+	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
 	//this->gui.loadFromFile("parameters.json");
@@ -266,6 +275,8 @@ bool ofApp::loadPreset(const string & presetName)
 
 		this->timeline.loadStructure(presetPath.string());
 		this->timeline.loadTracksFromFolder(presetPath.string());
+		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+
 		this->gui.refreshTimelined(&this->timeline);
 		
 		this->currPreset = presetName;
