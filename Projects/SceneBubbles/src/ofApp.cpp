@@ -108,6 +108,11 @@ void ofApp::update()
 	double dt = ofGetLastFrameTime();
 	this->pool2D.update(dt);
 	this->pool3D.update(dt);
+
+	this->tumbleOffset.x += this->parameters.camera.tiltSpeed;
+	this->tumbleOffset.y += this->parameters.camera.panSpeed;
+	this->tumbleOffset.z += this->parameters.camera.rollSpeed;
+	this->dollyOffset += this->parameters.camera.dollySpeed;
 }
 
 //--------------------------------------------------------------
@@ -126,6 +131,9 @@ void ofApp::draw()
 		this->camera.begin();
 		ofEnableDepthTest();
 		{
+			ofPushMatrix();
+			ofMultMatrix(this->getWorldTransform());
+
 			this->boxGeom.draw();
 
 			this->sphereShader.begin();
@@ -146,6 +154,8 @@ void ofApp::draw()
 			{
 				this->pool3D.draw();
 			}
+
+			ofPopMatrix();
 		}
 		ofDisableDepthTest();
 		this->camera.end();
@@ -252,7 +262,30 @@ void ofApp::reset()
 	this->pool2D.reset();
 	this->pool3D.reset();
 
+	this->tumbleOffset = glm::vec3(0.0f);
+	this->dollyOffset = 0.0f;
+
 	this->timeline.setCurrentFrame(0);
+}
+
+//--------------------------------------------------------------
+glm::mat4 ofApp::getWorldTransform() const
+{
+	static const auto xAxis = glm::vec3(1.0f, 0.0f, 0.0f);
+	static const auto yAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+	static const auto zAxis = glm::vec3(0.0f, 0.0f, 1.0f);
+
+	glm::mat4 transform;
+
+	// Dolly.
+	transform = glm::translate(transform, this->camera.getZAxis() * this->dollyOffset);
+
+	// Tumble.
+	transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.x), xAxis);
+	transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.y), yAxis);
+	transform = glm::rotate(transform, ofDegToRad(this->tumbleOffset.z), zAxis);
+
+	return transform;
 }
 
 //--------------------------------------------------------------
