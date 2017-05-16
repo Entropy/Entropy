@@ -80,6 +80,7 @@ void ofApp::setup()
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
 	this->timeline.setPageName(this->parameters.getName());
+	this->timeline.addFlags("Cues");
 	this->eventListeners.push_back(this->timeline.events().viewWasResized.newListener([this](ofEventArgs &)
 	{
 		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
@@ -93,8 +94,7 @@ void ofApp::setup()
 	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
-	//this->gui.loadFromFile("parameters.json");
-
+	
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
