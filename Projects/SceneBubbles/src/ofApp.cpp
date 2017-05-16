@@ -4,6 +4,10 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofDisableArbTex();
+	ofBackground(ofColor::black);
+	ofSetTimeModeFixedRate(ofGetFixedStepForFps(60));
+	
 	// Init the pools.
 	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
 	this->pool2D.init();
@@ -12,7 +16,9 @@ void ofApp::setup()
 	this->pool3D.init();
 
 	// Init the sphere.
-	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-2.png"), this->sphereTexture);
+	this->sphereGeom.radius.setMax(8000.0f);
+
+	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-gray.png"), this->sphereTexture);
 
 	auto shaderSettings = ofShader::Settings();
 	shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
@@ -78,6 +84,7 @@ void ofApp::setup()
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
 	this->timeline.setPageName(this->parameters.getName());
+	this->timeline.addFlags("Cues");
 	this->eventListeners.push_back(this->timeline.events().viewWasResized.newListener([this](ofEventArgs &)
 	{
 		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
@@ -91,8 +98,57 @@ void ofApp::setup()
 	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
-	//this->gui.loadFromFile("parameters.json");
 
+	// Setup texture recorder.
+	this->eventListeners.push_back(this->parameters.render.recordSequence.newListener([this](bool & record) 
+	{
+		if (record) 
+		{
+			auto path = ofSystemLoadDialog("Record to folder:", true);
+			if (path.bSuccess) 
+			{
+				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
+				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettings.folderPath = path.getPath();
+				this->textureRecorder.setup(recorderSettings);
+
+				this->reset();
+				this->cameraTrack.lockCameraToTrack = true;
+				this->timeline.play();
+			}
+			else 
+			{
+				this->parameters.render.recordSequence = false;
+			}
+		}
+	}));
+
+	this->eventListeners.push_back(parameters.render.recordVideo.newListener([this](bool & record) 
+	{
+#if OFX_VIDEO_RECORDER
+		if (record)
+		{
+			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
+			if (path.bSuccess) 
+			{
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				recorderSettings.videoPath = path.getPath();
+				//				recorderSettings.videoCodec = "libx264";
+				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				recorderSettings.videoCodec = "prores";
+				recorderSettings.extrasettings = "-profile:v 0";
+				recorder.setup(recorderSettings);
+			}
+			else {
+				this->parameters.render.recordVideo = false;
+			}
+		}
+		else {
+			recorder.stop();
+		}
+#endif
+	}));
+	
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
@@ -143,7 +199,7 @@ void ofApp::draw()
 			this->sphereShader.begin();
 			{
 				this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
-				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
+				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getDrawTexture().texData.textureTarget, this->pool3D.getDrawTexture().texData.textureID, 2);
 				this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
 				this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
 				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
@@ -171,6 +227,17 @@ void ofApp::draw()
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
 	this->fboPost.draw(0, 0);
+
+	if (this->parameters.render.recordSequence || this->parameters.render.recordVideo)
+	{
+		this->textureRecorder.save(this->fboPost.getTexture());
+
+		if (this->timeline.getCurrentFrame() == this->timeline.getOutFrame())
+		{
+			this->parameters.render.recordSequence = false;
+			this->parameters.render.recordVideo = false;
+		}
+	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 

@@ -38,7 +38,7 @@ namespace entropy
 			ofParameter<bool> dropping{ "Dropping", true };
 			ofParameter<int> dropRate{ "Drop Rate", 1, 1, 60 };
 
-			ofParameter<int> rippleRate{ "Ripple Rate", 1, 1, 60 };
+			ofParameter<int> rippleRate{ "Ripple Rate", 1, 1, 120 };
 
 			ofParameter<float> damping{ "Damping", 0.995f, 0.0f, 1.0f };
 			ofParameter<float> radius{ "Radius", 30.0f, 1.0f, 60.0f };
@@ -72,6 +72,7 @@ namespace entropy
 			glm::vec3 dimensions;
 
 			int frameCount;
+			int currRippleRate;
 
 			int currIdx;
 			int prevIdx;

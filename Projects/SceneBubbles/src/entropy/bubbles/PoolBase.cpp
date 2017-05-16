@@ -25,6 +25,7 @@ namespace entropy
 		void PoolBase::reset()
 		{
 			this->frameCount = 0;
+			this->currRippleRate = this->rippleRate;
 
 			this->prevIdx = 0;
 			this->currIdx = 1;
@@ -45,29 +46,35 @@ namespace entropy
 			{
 				++this->frameCount;
 				
-				if (this->rippleRate == 1)
+				if (this->currRippleRate == 1)
 				{
 					// Compute a new frame every frame.
 					this->computeFrame();
 					this->setDrawTextureIndex(this->currIdx);
+
+					// Update the rate.
+					this->currRippleRate = this->rippleRate;
 				}
 				else
 				{
-					int frame = (this->frameCount % this->rippleRate);
-					if (frame == 1)
-					{
-						// Compute a new target frame for the next cycle.
-						this->computeFrame();
-					}
+					int frame = (this->frameCount % this->currRippleRate);
 					if (frame == 0)
 					{
 						// End of the cycle, draw the previous computed frame.
 						this->setDrawTextureIndex(this->currIdx);
+						
+						// Update the rate.
+						this->currRippleRate = this->rippleRate;
+						this->frameCount = 0;
+			
+						// Compute a new target frame for the next cycle.
+						this->computeFrame();
 					}
 					else
 					{
 						// Mix previous and next frames during the cycle.
-						float pct = frame / static_cast<float>(this->rippleRate.get());
+						float pct = frame / static_cast<float>(this->currRippleRate);
+
 						this->mixFrames(pct);
 						this->setDrawTextureIndex(this->tempIdx);
 					}
