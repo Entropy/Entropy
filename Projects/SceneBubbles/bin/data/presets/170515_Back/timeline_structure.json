@@ -11,14 +11,12 @@
                     "type": "Curves"
                 },
                 {
-                    "max": 1.0,
-                    "min": -1.0,
-                    "name": "Bubbles/Bubbles/Camera/Tilt_Speed",
-                    "type": "Curves"
-                },
-                {
                     "name": "Camera",
                     "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
                 }
             ]
         },
@@ -73,6 +71,12 @@
                 {
                     "name": "Bubbles/Pool_GL_3D/Dropping",
                     "type": "Switches"
+                },
+                {
+                    "max": 120.0,
+                    "min": 1.0,
+                    "name": "Bubbles/Pool_GL_3D/Ripple_Rate",
+                    "type": "Curves"
                 }
             ]
         },
@@ -95,6 +99,12 @@
                     "max": 1.5,
                     "min": 0.5,
                     "name": "Bubbles/Post_Effects/Color/Contrast",
+                    "type": "Curves"
+                },
+                {
+                    "max": 6.0,
+                    "min": 0.00999999977648258,
+                    "name": "Bubbles/Post_Effects/Bloom/Boost",
                     "type": "Curves"
                 }
             ]
