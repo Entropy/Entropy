@@ -42,7 +42,7 @@ namespace entropy
 			ofParameter<int> filterMode{ "Filter Mode", static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Nearest) };
 			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
 
-			const ofxTexture & getTexture() const;
+			const ofxTexture & getDrawTexture() const;
 
 		protected:
 			void addDrop() override;

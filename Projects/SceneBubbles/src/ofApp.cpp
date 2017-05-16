@@ -12,7 +12,9 @@ void ofApp::setup()
 	this->pool3D.init();
 
 	// Init the sphere.
-	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-2.png"), this->sphereTexture);
+	this->sphereGeom.radius.setMax(8000.0f);
+
+	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Bubbles", "images/texture-CMB-gray.png"), this->sphereTexture);
 
 	auto shaderSettings = ofShader::Settings();
 	shaderSettings.intDefines["USE_TEX_ARRAY"] = USE_TEX_ARRAY;
@@ -143,7 +145,7 @@ void ofApp::draw()
 			this->sphereShader.begin();
 			{
 				this->sphereShader.setUniformTexture("uTexColor", this->sphereTexture, 1);
-				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getTexture().texData.textureTarget, this->pool3D.getTexture().texData.textureID, 2);
+				this->sphereShader.setUniformTexture("uTexMask", this->pool3D.getDrawTexture().texData.textureTarget, this->pool3D.getDrawTexture().texData.textureID, 2);
 				this->sphereShader.setUniform3f("uMaskDims", this->pool3D.getDimensions());
 				this->sphereShader.setUniform1f("uVolSize", this->pool3D.volumeSize);
 				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);

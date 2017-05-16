@@ -393,9 +393,9 @@ namespace entropy
 		*/
 
 		//--------------------------------------------------------------
-		const ofxTexture & PoolGL3D::getTexture() const
+		const ofxTexture & PoolGL3D::getDrawTexture() const
 		{
-			return this->textures[this->prevIdx];
+			return *this->volumetrics.getTexture();
 		}
 	}
 }
