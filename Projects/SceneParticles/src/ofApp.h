@@ -109,7 +109,7 @@ public:
 				recordVideo);
 		} recording;
 
-		PARAM_DECLARE("Particles",
+		PARAM_DECLARE("Scene",
 			resetScene,
 			debugLights,
 			//stateFile,

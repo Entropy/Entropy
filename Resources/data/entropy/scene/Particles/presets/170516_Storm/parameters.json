@@ -22,20 +22,6 @@
             "Up_down_quark": "0.501961, 0.444875, 0.444875, 0.501961",
             "Up_quark": "0.1, 0.1, 0.1, 0.5"
         },
-        "Particles": {
-            "Debug_Lights": "0",
-            "Recording": {
-                "Record_Sequence": "0",
-                "Record_Video": "0"
-            },
-            "Rendering": {
-                "Additive_Blend": "1",
-                "Ambient_Light": "0",
-                "Attenuation": "0.002",
-                "Color_per_Type": "1",
-                "Draw_Photons": "0"
-            }
-        },
         "Post_Effects": {
             "Bloom": {
                 "Boost": "1",
@@ -87,10 +73,24 @@
             "Wireframe": "1",
             "Wireframe_Alpha": "0",
             "Wobbly_Clip": "0"
+        },
+        "Scene": {
+            "Debug_Lights": "0",
+            "Recording": {
+                "Record_Sequence": "0",
+                "Record_Video": "0"
+            },
+            "Rendering": {
+                "Additive_Blend": "1",
+                "Ambient_Light": "0",
+                "Attenuation": "0.002",
+                "Color_per_Type": "1",
+                "Draw_Photons": "0"
+            }
         }
     },
     "ofEasyCam": {
-        "aspectRatio": 2.04305553436279,
+        "aspectRatio": 1.77777779102325,
         "distance": 486.11865234375,
         "drag": 0.899999976158142,
         "farClip": 200000.0,
