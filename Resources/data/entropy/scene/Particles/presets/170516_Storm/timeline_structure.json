@@ -1,0 +1,36 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Particles",
+            "tracks": [
+                {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Particles/Environment/Energy",
+                    "type": "Curves"
+                },
+                {
+                    "max": 0.0199999995529652,
+                    "min": 0.0,
+                    "name": "Particles/Particles/Rendering/Ambient_Light",
+                    "type": "Curves"
+                },
+                {
+                    "max": 40000.0,
+                    "min": 0.200000002980232,
+                    "name": "Particles/Renderer/Fog_Max_Distance",
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

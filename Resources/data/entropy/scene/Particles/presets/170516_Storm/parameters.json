@@ -1,0 +1,113 @@
+{
+    "Particles": {
+        "Environment": {
+            "Annihiliation_Threshold_Max": "0.521",
+            "Annihiliation_Threshold_Min": "0.402",
+            "Energy": "1",
+            "Force_Multiplier_Max": "1e+08",
+            "Force_Multiplier_Min": "1e+07",
+            "Fusion_Threshold_Exponent_Max": "-5.448",
+            "Fusion_Threshold_Exponent_Min": "-5.216",
+            "Pair_Production_Threshold_Max": "0.567",
+            "Pair_Production_Threshold_Min": "0.562"
+        },
+        "Particle": {
+            "Anti_down_quark": "0.337255, 0.320062, 0.320062, 0.501961",
+            "Anti_up_quark": "0.2, 0.2, 0.2, 0.5",
+            "Down_quark": "0.5, 0.5, 0.5, 0.5",
+            "Electron": "0.5, 0.5, 0.5, 0.5",
+            "Neutron": "0.2, 0.2, 0.2, 0.5",
+            "Positron": "0.372549, 0.372549, 0.372549, 0.501961",
+            "Proton": "0.251626, 0.265607, 0.317647, 0.501961",
+            "Up_down_quark": "0.501961, 0.444875, 0.444875, 0.501961",
+            "Up_quark": "0.1, 0.1, 0.1, 0.5"
+        },
+        "Particles": {
+            "Debug_Lights": "0",
+            "Recording": {
+                "Record_Sequence": "0",
+                "Record_Video": "0"
+            },
+            "Rendering": {
+                "Additive_Blend": "1",
+                "Ambient_Light": "0",
+                "Attenuation": "0.002",
+                "Color_per_Type": "1",
+                "Draw_Photons": "0"
+            }
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "1",
+                "Brightness_Threshold": "1",
+                "Debug_Blur": "0",
+                "Enabled": "0",
+                "Num_Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.8",
+                "Only_Alpha": "1",
+                "Outer": "3",
+                "Power": "1.1",
+                "Ratio": "1",
+                "Rotation": "0"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.0005",
+            "DOF_distance": "1",
+            "DOF_samples": "1",
+            "Fade_From": "0.8",
+            "Fade_Power": "2",
+            "Fade_To": "1",
+            "Fill": "1",
+            "Fill_Alpha": "0",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "7000.17",
+            "Fog_Min_Distance": "0.1",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0.1",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "0",
+            "Use_Lights": "1",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0",
+            "Wobbly_Clip": "0"
+        }
+    },
+    "ofEasyCam": {
+        "aspectRatio": 2.04305553436279,
+        "distance": 486.11865234375,
+        "drag": 0.899999976158142,
+        "farClip": 200000.0,
+        "forceAspectRatio": true,
+        "fov": 45.0,
+        "inertiaEnabled": false,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": true,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 0.00100000004749745,
+        "orientation": "0.939717, 0.00530749, 0.0187133, -0.341399",
+        "ortho": false,
+        "position": "85.0797, 57.3922, 475.162",
+        "relativeYAxis": false,
+        "scale": "1, 1, 1",
+        "target": "0, 0, 0",
+        "translationKey": 109,
+        "upAxis": "0, 1, 0"
+    }
+}
