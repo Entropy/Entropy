@@ -9,6 +9,11 @@ const unsigned int ofApp::kMaxLights = 16u;
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofDisableArbTex();
+	ofSetDataPathRoot(entropy::GetSceneDataPath(kSceneName).string());
+	//ofSetTimeModeFixedRate(ofGetFixedStepForFps(60));
+	ofBackground(ofColor::black);	
+	
 	// Initialize particle system.
 	environment = nm::Environment::Ptr(new nm::Environment(glm::vec3(-kHalfDim), glm::vec3(kHalfDim)));
 	particleSystem.init(environment);
@@ -63,7 +68,7 @@ void ofApp::setup()
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
-	this->gui.setup("Particles", "parameters.json");
+	this->gui.setup(kSceneName, "parameters.json");
 	this->gui.add(this->parameters);
 	this->gui.add(this->environment->parameters);
 	this->gui.add(nm::Particle::parameters);
@@ -184,6 +189,8 @@ void ofApp::exit()
 	
 	// Clear transform feedback.
 	glDeleteQueries(1, &numPrimitivesQuery);
+
+	this->savePreset("_autosave");
 }
 
 //--------------------------------------------------------------
@@ -307,8 +314,16 @@ void ofApp::draw()
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
+void ofApp::keyPressed(int key)
+{
+	if (key == 'L')
+	{
+		this->cameraTrack.lockCameraToTrack ^= 1;
+	}
+	else if (key == 'T')
+	{
+		this->cameraTrack.addKeyframe();
+	}
 }
 
 //--------------------------------------------------------------
@@ -317,7 +332,7 @@ void ofApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
+void ofApp::mouseMoved(int x, int y){
 
 }
 
@@ -382,6 +397,9 @@ void ofApp::reset()
 	particleSystem.clearParticles();
 	
 	ofSetGlobalAmbientColor(ofFloatColor(parameters.rendering.ambientLight));
+
+	// Use the same random seed for each run.
+	ofSeedRandom(3030);
 
 	for (unsigned i = 0; i < 4000; ++i)
 	{
