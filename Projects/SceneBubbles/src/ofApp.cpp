@@ -4,6 +4,10 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofDisableArbTex();
+	ofBackground(ofColor::black);
+	ofSetTimeModeFixedRate(ofGetFixedStepForFps(60));
+	
 	// Init the pools.
 	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
 	this->pool2D.init();
@@ -94,6 +98,56 @@ void ofApp::setup()
 	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
+
+	// Setup texture recorder.
+	this->eventListeners.push_back(this->parameters.render.recordSequence.newListener([this](bool & record) 
+	{
+		if (record) 
+		{
+			auto path = ofSystemLoadDialog("Record to folder:", true);
+			if (path.bSuccess) 
+			{
+				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
+				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettings.folderPath = path.getPath();
+				this->textureRecorder.setup(recorderSettings);
+
+				this->reset();
+				this->cameraTrack.lockCameraToTrack = true;
+				this->timeline.play();
+			}
+			else 
+			{
+				this->parameters.render.recordSequence = false;
+			}
+		}
+	}));
+
+	this->eventListeners.push_back(parameters.render.recordVideo.newListener([this](bool & record) 
+	{
+#if OFX_VIDEO_RECORDER
+		if (record)
+		{
+			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
+			if (path.bSuccess) 
+			{
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				recorderSettings.videoPath = path.getPath();
+				//				recorderSettings.videoCodec = "libx264";
+				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				recorderSettings.videoCodec = "prores";
+				recorderSettings.extrasettings = "-profile:v 0";
+				recorder.setup(recorderSettings);
+			}
+			else {
+				this->parameters.render.recordVideo = false;
+			}
+		}
+		else {
+			recorder.stop();
+		}
+#endif
+	}));
 	
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
@@ -173,6 +227,17 @@ void ofApp::draw()
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
 	this->fboPost.draw(0, 0);
+
+	if (this->parameters.render.recordSequence || this->parameters.render.recordVideo)
+	{
+		this->textureRecorder.save(this->fboPost.getTexture());
+
+		if (this->timeline.getCurrentFrame() == this->timeline.getOutFrame())
+		{
+			this->parameters.render.recordSequence = false;
+			this->parameters.render.recordVideo = false;
+		}
+	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 

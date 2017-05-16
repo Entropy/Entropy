@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxTextureRecorder.h"
 #include "ofxTimeline.h"
 
 #include "entropy/Helpers.h"
@@ -75,8 +76,22 @@ protected:
 	ofxTimeline timeline;
 	ofxTLCameraTrack cameraTrack;
 
+	ofxTextureRecorder textureRecorder;
+
+	std::string currPreset;
+
 	struct : ofParameterGroup
 	{
+		struct : ofParameterGroup
+		{
+			ofParameter<bool> recordSequence{ "Record Sequence", false };
+			ofParameter<bool> recordVideo{ "Record Video", false };
+
+			PARAM_DECLARE("Render",
+				recordSequence,
+				recordVideo);
+		} render;
+		
 		struct : ofParameterGroup
 		{
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f, ofParameterScale::Logarithmic };
@@ -100,10 +115,9 @@ protected:
 			PARAM_DECLARE("SphereExtra", tintColor, maskMix);
 		} sphere;
 
-		PARAM_DECLARE("Bubbles", 
+		PARAM_DECLARE("Bubbles",
+			render,
 			camera,
 			sphere);
 	} parameters;
-
-	std::string currPreset;
 };
