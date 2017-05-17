@@ -132,7 +132,7 @@
             "Cull_Face": "1",
             "Depth_Test": "0",
             "Enabled": "1",
-            "Radius": "4500",
+            "Radius": "6000",
             "Resolution": "16"
         }
     },

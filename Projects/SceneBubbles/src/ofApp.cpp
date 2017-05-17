@@ -107,17 +107,25 @@ void ofApp::setup()
 			auto path = ofSystemLoadDialog("Record to folder:", true);
 			if (path.bSuccess) 
 			{
+				// Resize canvas.
+				this->windowResized(this->parameters.render.renderWidth, this->parameters.render.renderHeight);
+				
+				// Setup texture recorder.
 				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
 				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
 				recorderSettings.folderPath = path.getPath();
 				this->textureRecorder.setup(recorderSettings);
 
+				// Start scene.
 				this->reset();
 				this->cameraTrack.lockCameraToTrack = true;
 				this->timeline.play();
 			}
 			else 
 			{
+				// Resize canvas.
+				this->windowResized(ofGetWidth(), ofGetHeight()); 
+				
 				this->parameters.render.recordSequence = false;
 			}
 		}
@@ -297,15 +305,23 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-	this->pool2D.setDimensions(glm::vec2(ofGetWidth(), ofGetHeight()));
+	int canvasWidth = ofGetWidth();
+	int canvasHeight = ofGetHeight();
+	if (this->parameters.render.recordSequence || this->parameters.render.recordVideo)
+	{
+		canvasWidth = this->parameters.render.renderWidth;
+		canvasHeight = this->parameters.render.renderHeight;
+	}
 
-	this->camera.setAspectRatio(ofGetWidth() / static_cast<float>(ofGetHeight()));
+	this->pool2D.setDimensions(glm::vec2(canvasWidth, canvasHeight));
+
+	this->camera.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
 
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 
 	auto fboSettings = ofFbo::Settings();
-	fboSettings.width = ofGetWidth();
-	fboSettings.height = ofGetHeight();
+	fboSettings.width = canvasWidth;
+	fboSettings.height = canvasHeight;
 	fboSettings.internalformat = GL_RGBA32F;
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 	fboSettings.numSamples = 4;

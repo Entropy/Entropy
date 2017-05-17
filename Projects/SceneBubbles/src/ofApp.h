@@ -86,10 +86,14 @@ protected:
 		{
 			ofParameter<bool> recordSequence{ "Record Sequence", false };
 			ofParameter<bool> recordVideo{ "Record Video", false };
+			ofParameter<int> renderWidth{ "Render Width", 4200, 800, 5760 };
+			ofParameter<int> renderHeight{ "Render Height", 1050, 600, 2160 };
 
 			PARAM_DECLARE("Render",
 				recordSequence,
-				recordVideo);
+				recordVideo,
+				renderWidth,
+				renderHeight);
 		} render;
 		
 		struct : ofParameterGroup
