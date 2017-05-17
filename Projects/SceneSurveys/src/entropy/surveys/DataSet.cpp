@@ -267,6 +267,24 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void DataSet::drawShells(ofShader & shader, SharedParams & sharedParams)
+		{
+			if (!this->parameters.renderShells) return;
+
+			//shader.setUniform1f("uPointSize", ofMap(sharedParams.shell.size, 0.0f, 1.0f, this->mappedRadiusRange.y, this->mappedRadiusRange.z));
+			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
+			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
+			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);
+			shader.setUniform1f("uMinLatitude", this->mappedLatitudeRange.x);
+			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
+			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
+			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
+			ofSetColor(this->parameters.color.get());
+
+			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
+		}
+
+		//--------------------------------------------------------------
 		void DataSet::drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params)
 		{
 			if (!this->parameters.renderModels) return;

@@ -77,6 +77,12 @@ void ofApp::setup()
 	this->spriteShader.bindDefaults();
 	this->spriteShader.linkProgram();
 
+	this->shellSettings = ofShader::Settings();
+	this->shellSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/shell.vert";
+	this->shellSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/shell.frag";
+	this->shellSettings.bindDefaults = true;
+	this->shellShader.setup(this->shellSettings);
+
 	this->modelSettings = ofShader::Settings();
 	this->modelSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/instanced.vert";
 	this->modelSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/instanced.frag";
@@ -240,6 +246,14 @@ void ofApp::update()
 		this->spriteShader.linkProgram();
 	}
 
+	vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/shell.vert"));
+	fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/shell.frag"));
+	if (vertTime > shellTime || fragTime > shellTime)
+	{
+		shellTime = std::max(vertTime, fragTime);
+		this->shellShader.setup(shellSettings);
+	}
+
 	vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.vert"));
 	fragTime = std::filesystem::last_write_time(ofToDataPath("shaders/instanced.frag"));
 	if (vertTime > modelTime || fragTime > modelTime)
@@ -271,54 +285,78 @@ void ofApp::draw()
 				ofDisableDepthTest();
 
 				// Draw all the points.
+				ofSetColor(ofColor::white);
+
 				this->spriteShader.begin();
 				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
 				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
-				this->spriteShader.setUniform1f("uMaxSize", this->sharedParams.model.clipSize);
 				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);
 				this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
 				ofEnablePointSprites();
 				{
+					this->spriteShader.setUniform1f("uMaxSize", this->dataSetBoss.parameters.renderModels ? this->sharedParams.model.clipSize : std::numeric_limits<float>::max());
 					this->dataSetBoss.drawPoints(this->spriteShader);
+
+					this->spriteShader.setUniform1f("uMaxSize", this->dataSetDes.parameters.renderModels ? this->sharedParams.model.clipSize : std::numeric_limits<float>::max());
 					this->dataSetDes.drawPoints(this->spriteShader);
+
+					this->spriteShader.setUniform1f("uMaxSize", std::numeric_limits<float>::max());
 					this->dataSetVizir.drawPoints(this->spriteShader);
 				}
 				ofDisablePointSprites();
 				this->spriteShader.end();
 
+				// Draw all the shells.
+				ofSetColor(ofColor::white, this->sharedParams.shell.alpha * 255);
+
+				this->shellShader.begin();
+				this->shellShader.setUniform1f("uPointSize", this->sharedParams.shell.size);
+				this->shellShader.setUniform1f("uAttenuation", this->sharedParams.shell.attenuation);
+				this->shellShader.setUniform1f("uDensity", this->sharedParams.shell.density);
+				this->shellShader.setUniformMatrix4f("uTransform", worldTransform);
+				this->shellShader.setUniformTexture("uTex0", this->shellTexture, 1);
+				ofEnablePointSprites();
+				{
+					this->dataSetBoss.drawShells(this->shellShader, this->sharedParams);
+					this->dataSetDes.drawShells(this->shellShader, this->sharedParams);
+				}
+				ofDisablePointSprites();
+				this->shellShader.end();
+
 				// Draw the models for galaxies near the camera.
+				ofSetColor(ofColor::white);
+
 				this->modelShader.begin();
 				{
 					this->dataSetBoss.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
 					this->dataSetDes.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
 				}
 				this->modelShader.end();
-
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-
-				ofNoFill();
-				ofDrawBox(1);
-				ofFill();
 			}
 
-			ofNoFill();
-			const auto targetPos = this->dataSetBoss.getTargetPosition() * this->params.worldScale.get();
-			ofSetColor(ofColor::red);
-			ofDrawLine(glm::vec3(0), targetPos);
-			ofDrawBox(targetPos, this->sharedParams.target.lockDistance * 2.0f);
-			ofFill();
+			//ofNoFill();
+			//const auto targetPos = this->dataSetDes.getTargetPosition() * this->parameters.worldScale.get();
+			//ofSetColor(ofColor::red);
+			//ofDrawLine(glm::vec3(0), targetPos);
+			//ofDrawBox(targetPos, this->sharedParams.target.lockDistance * 2.0f);
+			//ofFill();
 			
-			// Draw the galaxy texture.
-			this->sphereShader.begin();
+			ofPushMatrix();
+			ofMultMatrix(worldTransform);
 			{
-				this->sphereShader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
-				//this->sphereShader.setUniform1f("uRadius", this->sphereGeom.radius);
-				this->sphereShader.setUniformTexture("uTex0", this->sphereTexture, 1);
-				this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
+				// Draw the galaxy texture.
+				this->sphereShader.begin();
+				{
+					this->sphereShader.setUniformMatrix4f("uNormalMatrix", ofGetCurrentNormalMatrix());
+					//this->sphereShader.setUniform1f("uRadius", this->sphereGeom.radius);
+					this->sphereShader.setUniformTexture("uTex0", this->sphereTexture, 1);
+					this->sphereShader.setUniform1f("uAlphaBase", this->sphereGeom.alpha);
 
-				this->sphereGeom.draw();
+					this->sphereGeom.draw();
+				}
+				this->sphereShader.end();
 			}
-			this->sphereShader.end();
+			ofPopMatrix();
 		}
 		this->camera.end();
 	}

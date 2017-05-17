@@ -31,6 +31,20 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
+					ofParameter<float> size{ "Size", 8.0f, 0.01f, 64.0f };
+					ofParameter<float> attenuation{ "Attenuation", 600.0f, 1.0f, 1000.0f };
+					ofParameter<float> alpha{ "Alpha", 1.0f, 0.0f, 1.0f };
+					ofParameter<int> density{ "Density", 1000, 100, 100000 };
+
+					PARAM_DECLARE("Shells",
+						size,
+						attenuation,
+						alpha,
+						density);
+				} shell;
+
+				struct : ofParameterGroup
+				{
 					ofParameter<float> geoScale{ "Geo Scale", 8.0f, 0.01f, 32.0f };
 					ofParameter<float> alphaScale{ "Alpha Scale", 1.0f, 0.01f, 8.0f, ofParameterScale::Logarithmic };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
@@ -59,6 +73,7 @@ namespace entropy
 
 				PARAM_DECLARE("Shared",
 					point,
+					shell,
 					model,
 					target);
 			};
@@ -71,6 +86,7 @@ namespace entropy
 			void clear();
 
 			void drawPoints(ofShader & shader);
+			void drawShells(ofShader & shader, SharedParams & sharedParams);
 			void drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params);
 
 			int getTargetIndex() const;
@@ -80,6 +96,7 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<bool> renderPoints{ "Render Points", true };
+				ofParameter<bool> renderShells{ "Render Shells", true };
 				ofParameter<bool> renderModels{ "Render Models", false };
 				ofParameter<float> cutRadius{ "Cut Radius", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> minRadius{ "Min Radius", 0.0f, 0.0f, 1.0f };
@@ -91,7 +108,7 @@ namespace entropy
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
 
 				PARAM_DECLARE("DataSet", 
-					renderPoints, renderModels,
+					renderPoints, renderShells, renderModels,
 					cutRadius,
 					minRadius, maxRadius, 
 					minLatitude, maxLatitude,

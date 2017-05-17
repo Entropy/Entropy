@@ -102,6 +102,11 @@ protected:
 	std::time_t spriteTime;
 	ofTexture spriteTexture;
 
+	ofShader shellShader;
+	ofShader::Settings shellSettings;
+	std::time_t shellTime;
+	ofTexture shellTexture;
+
 	ofShader modelShader;
 	ofShader::Settings modelSettings;
 	std::time_t modelTime;
