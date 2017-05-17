@@ -1,0 +1,115 @@
+{
+    "Inflation": {
+        "Inflation": {
+            "Colors": {
+                "color_1": "1, 0.913726, 0, 1",
+                "color_2": "1, 0.0941177, 0, 1",
+                "color_3": "1, 0.560784, 0.0588235, 1",
+                "color_4": "1, 0.145098, 0, 1"
+            },
+            "Control_Camera": "0",
+            "Equations": {
+                "BigBang_duration": "0.25",
+                "Current_rate_of_expansion": "2.75162",
+                "Hubble__min__wavelength_for_any_octave": "4",
+                "New_cluster_at_scale": "4.5",
+                "Pre_BigBang_wobble_duration": "3",
+                "Rate_of_expansion_after_bigbang": "0.05",
+                "Rate_of_expansion_at_bigbang": "5",
+                "bigbang_flash_in__duration_sec_": "0.1",
+                "bigbang_flash_out__duration_sec_": "0.1",
+                "bigbang_flash_plateau__sec_": "0.1",
+                "bigbang_flash_start_%": "0.9",
+                "geometry_size": "4310640",
+                "inflation_transition_bg_color": "0.568627, 0.647059, 0.639216, 1",
+                "inflation_transition_flash_at_scale_": "10",
+                "inflation_transition_in__duration_sec_": "0.5",
+                "inflation_transition_out__sec_": "2",
+                "inflation_transition_plateau__sec_": "0.3",
+                "transition_blobs_out___s_": "1",
+                "transition_particles_in___s_": "1"
+            },
+            "Render": {
+                "Debug_Noise": "0",
+                "Record_video": "0",
+                "Render_Back": "1",
+                "Render_Box_Back": "0",
+                "Render_Front": "0",
+                "fps": "60"
+            },
+            "Rotation_radius": "0.5",
+            "Rotation_speed": "0.5",
+            "Run_Simulation": "1",
+            "camera_disntace": "0.5",
+            "state": "2"
+        },
+        "Marching_Cubes": {
+            "IsoLevel": "0.357",
+            "Resolution": "256",
+            "Shade_Normals": "0",
+            "subdivisions": "0"
+        },
+        "Noise_Field": {
+            "Fill_Edges": "1",
+            "Noise_Speed": "3",
+            "Norm__Factor": "1.07",
+            "Oscillate": "0",
+            "Oscillate_spatial_freq_": "64",
+            "Oscillate_speed": "1"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "1.807",
+                "Brightness_Threshold": "0.01",
+                "Debug_Blur": "0",
+                "Enabled": "1",
+                "Num_Passes": "10",
+                "Sigma": "4.4375"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.95",
+                "Only_Alpha": "0",
+                "Outer": "6",
+                "Power": "0.1",
+                "Ratio": "0.710121",
+                "Rotation": "90"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.01",
+            "DOF_distance": "0.669223",
+            "DOF_samples": "64",
+            "Fade_From": "0.0653061",
+            "Fade_Power": "1.18367",
+            "Fade_To": "0.546939",
+            "Fill": "1",
+            "Fill_Alpha": "0.475",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.6",
+            "Fog_Min_Distance": "0.183673",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "1",
+            "Use_Lights": "0",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.1",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "0"
+        },
+        "UnknownName": "textParam"
+    }
+}

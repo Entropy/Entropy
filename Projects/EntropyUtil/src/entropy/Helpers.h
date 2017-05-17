@@ -154,4 +154,28 @@ namespace entropy
 		fs::path dataPath(GetDataPath(module));
 		return (dataPath / "shaders");
 	}
+
+	//--------------------------------------------------------------
+	inline void thickline(const vector<glm::vec3> & data, float lineWidth, ofMesh & outVertices){
+		outVertices.clear();
+		outVertices.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+		auto scaledHalfW = lineWidth * 0.5;
+		for(size_t i = 1; i<data.size(); i++){
+			auto p = data[i].xy();
+			auto prev = data[i-1].xy();
+			auto dx = p.x - prev.x;
+			auto dy = p.y - prev.y;
+			glm::vec2 normal(-dy, dx);
+			normal = glm::normalize(normal);
+			normal *= scaledHalfW;
+			const glm::vec2 v1 = {prev + normal};
+			const glm::vec2 v2 = {prev - normal};
+			const glm::vec2 v3 = {p + normal};
+			const glm::vec2 v4 = {p - normal};
+			outVertices.addVertex({v1.x,v1.y,0.0f});
+			outVertices.addVertex({v2.x,v2.y,0.0f});
+			outVertices.addVertex({v3.x,v3.y,0.0f});
+			outVertices.addVertex({v4.x,v4.y,0.0f});
+		}
+	}
 }

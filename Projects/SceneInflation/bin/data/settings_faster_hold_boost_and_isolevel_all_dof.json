@@ -1,0 +1,119 @@
+{
+    "Inflation": {
+        "Inflation": {
+            "Circle": {
+                "circle_pct": "0",
+                "inner_radius": "0.99",
+                "outer_radius": "1"
+            },
+            "Colors": {
+                "color_1": "0.956863, 0.8, 0, 1",
+                "color_2": "0.956863, 0.666667, 0, 1",
+                "color_3": "0.964706, 0.462745, 0, 1",
+                "color_4": "0.992157, 0, 0.0509804, 1",
+                "negative_wire": "1"
+            },
+            "Control_Camera": "0",
+            "Equations": {
+                "BigBang_duration": "0.25",
+                "Current_rate_of_expansion": "5",
+                "Hubble__min__wavelength_for_any_octave": "4",
+                "New_cluster_at_scale": "4.5",
+                "Pre_BigBang_wobble_duration": "3",
+                "Rate_of_expansion_after_bigbang": "0.05",
+                "Rate_of_expansion_at_bigbang": "5",
+                "bigbang_flash_in__duration_sec_": "0.1",
+                "bigbang_flash_out__duration_sec_": "0.1",
+                "bigbang_flash_plateau__sec_": "0.1",
+                "bigbang_flash_start_%": "0.9",
+                "geometry_size": "1060776",
+                "inflation_transition_bg_color": "0.568627, 0.647059, 0.639216, 1",
+                "inflation_transition_flash_at_scale_": "10",
+                "inflation_transition_in__duration_sec_": "0.5",
+                "inflation_transition_out__sec_": "2",
+                "inflation_transition_plateau__sec_": "0.3",
+                "transition_blobs_out___s_": "1",
+                "transition_particles_in___s_": "1"
+            },
+            "Render": {
+                "Debug_Noise": "0",
+                "Record_video": "0",
+                "fps": "60"
+            },
+            "Rotating": "1",
+            "Rotation_radius": "1.14938",
+            "Rotation_speed": "5",
+            "Run_Simulation": "1",
+            "camera_disntace": "1.14938",
+            "state": "0"
+        },
+        "Marching_Cubes": {
+            "IsoLevel": "0.3",
+            "Resolution": "256",
+            "Shade_Normals": "0",
+            "subdivisions": "0"
+        },
+        "Noise_Field": {
+            "Fill_Edges": "1",
+            "Noise_Speed": "3.38761",
+            "Norm__Factor": "0.990098",
+            "Oscillate": "0",
+            "Oscillate_spatial_freq_": "64",
+            "Oscillate_speed": "1"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "0.850251",
+                "Brightness_Threshold": "0.15",
+                "Debug_Blur": "0",
+                "Enabled": "1",
+                "Num_Passes": "10",
+                "Sigma": "5"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0",
+                "Only_Alpha": "0",
+                "Outer": "0.593129",
+                "Power": "0.359599",
+                "Ratio": "0.710121",
+                "Rotation": "90"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.000131185",
+            "DOF_distance": "0.91193",
+            "DOF_samples": "64",
+            "Fade_From": "0.0653061",
+            "Fade_Power": "1.18367",
+            "Fade_To": "0.546939",
+            "Fill": "1",
+            "Fill_Alpha": "0.475",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.58716",
+            "Fog_Min_Distance": "0.183673",
+            "Fog_Power": "1.0009",
+            "Fog_Start_Distance": "0",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "1",
+            "Use_Lights": "0",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.1",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "1"
+        },
+        "UnknownName": "textParam"
+    }
+}

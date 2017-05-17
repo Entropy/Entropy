@@ -1,0 +1,188 @@
+{
+    "Inflation": {
+        "Inflation": {
+            "Circle": {
+                "circle_pct": "0",
+                "inner_radius": "0.99",
+                "outer_radius": "1"
+            },
+            "Colors": {
+                "color_1": "0.956863, 0.8, 0, 1",
+                "color_2": "0.956863, 0.666667, 0, 1",
+                "color_3": "0.964706, 0.462745, 0, 1",
+                "color_4": "0.992157, 0, 0.0509804, 1",
+                "negative_wire": "1"
+            },
+            "Control_Camera": "0",
+            "Equations": {
+                "Current_rate_of_expansion": "3.6",
+                "Hubble__min__wavelength_for_any_octave": "4",
+                "Max_scale_for_any_cluster": "30",
+                "New_cluster_at_scale": "4.5",
+                "geometry_size": "955560",
+                "transition_blobs_out___s_": "1",
+                "transition_particles_in___s_": "1"
+            },
+            "Render": {
+                "Debug_Noise": "0",
+                "fps": "60",
+                "system_clock": "0"
+            },
+            "Rotating": "1",
+            "Rotation_radius": "1.3",
+            "Rotation_radius_speed": "0.1",
+            "Rotation_speed": "6",
+            "Rotation_use_speed": "0",
+            "Run_Simulation": "1",
+            "camera_disntace": "1.3",
+            "state": "0"
+        },
+        "Marching_Cubes": {
+            "IsoLevel": "0.3",
+            "Resolution": "256",
+            "Shade_Normals": "0",
+            "subdivisions": "0"
+        },
+        "Noise_Field": {
+            "Fill_Edges": "1",
+            "Noise_Speed": "3",
+            "Norm__Factor": "1",
+            "Octave_0": {
+                "Advance_Time_0": "1",
+                "Amplitude_0": "1",
+                "Color_0": "0.956863, 0.8, 0, 1",
+                "Enabled_0": "1",
+                "Freq__Hz_0": "0.015625",
+                "Freq_time_0": "0.015625",
+                "Radius_0": "1",
+                "Wavelength_0": "64"
+            },
+            "Octave_1": {
+                "Advance_Time_1": "1",
+                "Amplitude_1": "0.5",
+                "Color_1": "0.956863, 0.666667, 0, 1",
+                "Enabled_1": "1",
+                "Freq__Hz_1": "0.03125",
+                "Freq_time_1": "0.03125",
+                "Radius_1": "1",
+                "Wavelength_1": "32"
+            },
+            "Octave_2": {
+                "Advance_Time_2": "1",
+                "Amplitude_2": "0.25",
+                "Color_2": "0.964706, 0.462745, 0, 1",
+                "Enabled_2": "1",
+                "Freq__Hz_2": "0.0625",
+                "Freq_time_2": "0.0625",
+                "Radius_2": "1",
+                "Wavelength_2": "16"
+            },
+            "Octave_3": {
+                "Advance_Time_3": "1",
+                "Amplitude_3": "0.125",
+                "Color_3": "0.992157, 0, 0.0509804, 1",
+                "Enabled_3": "1",
+                "Freq__Hz_3": "0.125",
+                "Freq_time_3": "0.125",
+                "Radius_3": "1",
+                "Wavelength_3": "8"
+            },
+            "Octave_4": {
+                "Advance_Time_4": "1",
+                "Amplitude_4": "1",
+                "Color_4": "0.886275, 0.784314, 0.443137, 1",
+                "Enabled_4": "0",
+                "Freq__Hz_4": "0.03125",
+                "Freq_time_4": "0.03125",
+                "Radius_4": "1",
+                "Wavelength_4": "32"
+            },
+            "Octave_5": {
+                "Advance_Time_5": "1",
+                "Amplitude_5": "0.5",
+                "Color_5": "0.905882, 1, 1, 1",
+                "Enabled_5": "0",
+                "Freq__Hz_5": "0.0625",
+                "Freq_time_5": "0.0625",
+                "Radius_5": "1",
+                "Wavelength_5": "16"
+            },
+            "Octave_6": {
+                "Advance_Time_6": "1",
+                "Amplitude_6": "0.25",
+                "Color_6": "0.419608, 0.631373, 0.733333, 1",
+                "Enabled_6": "0",
+                "Freq__Hz_6": "0.125",
+                "Freq_time_6": "0.125",
+                "Radius_6": "1",
+                "Wavelength_6": "8"
+            },
+            "Octave_7": {
+                "Advance_Time_7": "1",
+                "Amplitude_7": "0.125",
+                "Color_7": "0.121569, 0.870588, 1, 1",
+                "Enabled_7": "0",
+                "Freq__Hz_7": "0.25",
+                "Freq_time_7": "0.25",
+                "Radius_7": "1",
+                "Wavelength_7": "4"
+            },
+            "Oscillate": "0",
+            "Oscillate_spatial_freq_": "64",
+            "Oscillate_speed": "1"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "0.850251",
+                "Brightness_Threshold": "0.15",
+                "Debug_Blur": "0",
+                "Enabled": "1",
+                "Num_Passes": "10",
+                "Sigma": "5"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.8",
+                "Only_Alpha": "0",
+                "Outer": "0.5",
+                "Power": "1.1",
+                "Ratio": "0.710121",
+                "Rotation": "90"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.0265306",
+            "DOF_distance": "0.75212",
+            "DOF_samples": "1",
+            "Fade_From": "0.0653061",
+            "Fade_Power": "1.18367",
+            "Fade_To": "0.546939",
+            "Fill": "1",
+            "Fill_Alpha": "0",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.58716",
+            "Fog_Min_Distance": "0.183673",
+            "Fog_Power": "1.0009",
+            "Fog_Start_Distance": "0",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "1",
+            "Use_Lights": "0",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.1",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "0"
+        }
+    }
+}
