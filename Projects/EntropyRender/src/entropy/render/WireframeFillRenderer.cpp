@@ -213,8 +213,8 @@ namespace entropy
 			shaderSettings.shaderFiles[GL_VERTEX_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.vert";
 			shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = GetShadersPath(Module::Renderers) / "wireframeFillRender.frag";
 			shaderSettings.bindDefaults = true;
-			shaderSettings.intDefines["FOG_ENABLED"] = fogEnabled;
-			shaderSettings.intDefines["SHADE_NORMALS"] = shadeNormals;
+			shaderSettings.intDefines["FOG_ENABLED"] = parameters.fogEnabled;
+			shaderSettings.intDefines["SHADE_NORMALS"] = parameters.shadeNormals;
 
 			shaderSettings.intDefines["SPHERICAL_CLIP"] = 0;
 
@@ -273,7 +273,7 @@ namespace entropy
 			settings.postFragment = "#define SPHERICAL_CLIP 1\n" + settings.postFragment;
 			materialSphericalClip.setup(settings);
 
-			listeners.push_back((fogEnabled.newListener([&](bool & enabled){
+			listeners.push_back((parameters.fogEnabled.newListener([&](bool & enabled){
 				shaderSettings.intDefines["FOG_ENABLED"] = enabled;
 				shaderSettings.intDefines["SPHERICAL_CLIP"] = 0;
 
@@ -292,19 +292,19 @@ namespace entropy
 				shaderWireframeSphere.setup(shaderSettings);
 			})));
 
-			listeners.push_back(dofSamples.newListener([&](int & dofSamples){
-				bokehshape = generateBokehShape(dofSamples, bokehsides);
+			listeners.push_back(parameters.dofSamples.newListener([&](int & dofSamples){
+				bokehshape = generateBokehShape(dofSamples, parameters.bokehsides);
 				modelview.resize(bokehshape.getVertices().size());
 				mvp.resize(bokehshape.getVertices().size());
 			}));
 
-			listeners.push_back(bokehsides.newListener([&](int & bokehsides){
-				bokehshape = generateBokehShape(dofSamples, bokehsides);
+			listeners.push_back(parameters.bokehsides.newListener([&](int & bokehsides){
+				bokehshape = generateBokehShape(parameters.dofSamples, bokehsides);
 				modelview.resize(bokehshape.getVertices().size());
 				mvp.resize(bokehshape.getVertices().size());
 			}));
 
-			bokehshape = generateBokehShape(dofSamples, bokehsides);
+			bokehshape = generateBokehShape(parameters.dofSamples, parameters.bokehsides);
 			modelview.resize(bokehshape.getVertices().size());
 			mvp.resize(bokehshape.getVertices().size());
 
@@ -326,7 +326,7 @@ namespace entropy
 			auto accumValue = 1.0 / float(bokehshape.getVertices().size());
 
 			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
-			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get() * sceneSize;
+			auto object = camera.getPosition() - camera.getZAxis() * parameters.dofDistance.get() * sceneSize;
 			auto eye = camera.getPosition();
 			auto up = camera.getYAxis();
 			auto right = glm::normalize(glm::cross(object - eye, up));
@@ -334,42 +334,53 @@ namespace entropy
 			for(size_t i = 0; i < numSamples; i++){
 				auto p = bokehshape.getVertices()[i];
 				glm::vec3 bokeh = right * p.x + up * p.y;
-				auto modelview = glm::lookAt(eye + bokeh * dofAperture.get() * sceneSize, object, up);
+				auto modelview = glm::lookAt(eye + bokeh * parameters.dofAperture.get() * sceneSize, object, up);
 				drawFunc(accumValue, projection, modelview);
 			}
 		}
 
 		void WireframeFillRenderer::draw(const ofVbo & geometry, size_t offset, size_t numVertices, GLenum mode, ofCamera & camera, const glm::mat4 & model) const{
-			if(wobblyClip){
-				this->blobMask.updateWith(camera);
+			DrawSettings settings;
+			settings.offset = offset;
+			settings.numVertices = numVertices;
+			settings.mode = mode;
+			settings.camera = &camera;
+			settings.model = model;
+			draw(geometry, settings);
+		}
+
+		void WireframeFillRenderer::draw(const ofVbo & geometry, WireframeFillRenderer::DrawSettings settings) const{
+			if(parameters.wobblyClip){
+				this->blobMask.updateWith(*settings.camera);
 			}
 
 			ofDisableDepthTest();
 			//ofEnableBlendMode(OF_BLENDMODE_ADD);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_ONE, GL_ONE);
+//			glEnable(GL_BLEND);
+//			glBlendFunc(GL_ONE, GL_ONE);
 			ofShader shaderFill;
 			ofShader shaderWireframe;
-			if(sphericalClip && clip){
+			if(parameters.sphericalClip){
 				shaderFill = this->shaderFillSphere;
 				shaderWireframe = this->shaderWireframeSphere;
 			}else{
 				shaderFill = this->shaderFill;
 				shaderWireframe = this->shaderWireframe;
 			}
-			auto accumValue = 1.0 / float(bokehshape.getVertices().size());
+			auto numSamples = parameters.enableDOF ? bokehshape.getVertices().size() : 1;
+			auto accumValue = 1.0 / float(numSamples);
 
 			shaderFill.begin();
 			shaderFill.setUniform1f("accumValue", accumValue);
-			shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
-			shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
-			shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
-			shaderFill.setUniform1f("fogPower", fogPower);
-			shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
-			shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
-			shaderFill.setUniform1f("fadePower", fadePower);
-			shaderFill.setUniform1f("alpha", fillAlpha * alphaFactor);
-			shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
+			shaderFill.setUniform1f("fogStartDistance", parameters.fogStartDistance);
+			shaderFill.setUniform1f("fogMinDistance", parameters.fogMinDistance);
+			shaderFill.setUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+			shaderFill.setUniform1f("fogPower", parameters.fogPower);
+			shaderFill.setUniform1f("fadeEdge0", parameters.fadeEdge0);
+			shaderFill.setUniform1f("fadeEdge1", parameters.fadeEdge1);
+			shaderFill.setUniform1f("fadePower", parameters.fadePower);
+			shaderFill.setUniform1f("alpha", parameters.fillAlpha * parameters.alphaFactor);
+			shaderFill.setUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 			shaderFill.setUniform1f("screenW", ofGetViewportWidth());
 			shaderFill.setUniform1f("screenH", ofGetViewportHeight());
 			shaderFill.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
@@ -378,52 +389,62 @@ namespace entropy
 
 			shaderWireframe.begin();
 			shaderWireframe.setUniform1f("accumValue", accumValue);
-			shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
-			shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-			shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-			shaderWireframe.setUniform1f("fogPower", fogPower);
-			shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
-			shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
-			shaderWireframe.setUniform1f("fadePower", fadePower);
-			shaderWireframe.setUniform1f("alpha", wireframeAlpha * alphaFactor);
-			shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
+			shaderWireframe.setUniform1f("fogStartDistance", parameters.fogStartDistance);
+			shaderWireframe.setUniform1f("fogMinDistance", parameters.fogMinDistance);
+			shaderWireframe.setUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+			shaderWireframe.setUniform1f("fogPower", parameters.fogPower);
+			shaderWireframe.setUniform1f("fadeEdge0", parameters.fadeEdge0);
+			shaderWireframe.setUniform1f("fadeEdge1", parameters.fadeEdge1);
+			shaderWireframe.setUniform1f("fadePower", parameters.fadePower);
+			shaderWireframe.setUniform1f("alpha", parameters.wireframeAlpha * parameters.alphaFactor);
+			shaderWireframe.setUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 			shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
 			shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
 			shaderWireframe.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
 			shaderWireframe.setUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
 			shaderWireframe.end();
 
-			auto * material = (clip && sphericalClip) ? &this->materialSphericalClip : &this->material;
-			if(useLights){
+			auto * material = (parameters.clip && parameters.sphericalClip) ? &this->materialSphericalClip : &this->material;
+			if(parameters.useLights){
 				material->setCustomUniform1f("accumValue", accumValue);
-				material->setCustomUniform1f("fogStartDistance", fogStartDistance);
-				material->setCustomUniform1f("fogMinDistance", fogMinDistance);
-				material->setCustomUniform1f("fogMaxDistance", fogMaxDistance);
-				material->setCustomUniform1f("fogPower", fogPower);
-				material->setCustomUniform1f("fadeEdge0", fadeEdge0);
-				material->setCustomUniform1f("fadeEdge1", fadeEdge1);
-				material->setCustomUniform1f("fadePower", fadePower);
-				material->setCustomUniform1f("wobblyClip", wobblyClip && clip);
+				material->setCustomUniform1f("fogStartDistance", parameters.fogStartDistance);
+				material->setCustomUniform1f("fogMinDistance", parameters.fogMinDistance);
+				material->setCustomUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+				material->setCustomUniform1f("fogPower", parameters.fogPower);
+				material->setCustomUniform1f("fadeEdge0", parameters.fadeEdge0);
+				material->setCustomUniform1f("fadeEdge1", parameters.fadeEdge1);
+				material->setCustomUniform1f("fadePower", parameters.fadePower);
+				material->setCustomUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 				material->setCustomUniform1f("screenW", ofGetViewportWidth());
 				material->setCustomUniform1f("screenH", ofGetViewportHeight());
 				material->setCustomUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
 				material->setCustomUniformTexture("maxDepthMask", this->blobMask.getMaxDepthMask(), 1);
 			}
 
+			auto & camera = *settings.camera;
+			auto & model = settings.model;
+			auto mode = settings.mode;
+			auto offset = settings.offset;
+			auto numVertices = settings.numVertices;
 			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
-			auto object = camera.getPosition() - camera.getZAxis() * dofDistance.get() * sceneSize;
-			auto eye = camera.getPosition();
-			auto up = camera.getYAxis();
-			auto right = glm::normalize(glm::cross(object - eye, up));
-			auto numSamples = bokehshape.getVertices().size();
-			for(size_t i = 0; i < numSamples; i++){
-				auto p = bokehshape.getVertices()[i];
-				glm::vec3 bokeh = right * p.x + up * p.y;
-				modelview[i] = glm::lookAt(eye + bokeh * dofAperture.get() * sceneSize, object, up) * model;
-				mvp[i] = projection * modelview[i];
+
+			if(parameters.enableDOF){
+				auto object = camera.getPosition() - camera.getZAxis() * parameters.dofDistance.get() * sceneSize;
+				auto eye = camera.getPosition();
+				auto up = camera.getYAxis();
+				auto right = glm::normalize(glm::cross(object - eye, up));
+				for(size_t i = 0; i < numSamples; i++){
+					auto p = bokehshape.getVertices()[i];
+					glm::vec3 bokeh = right * p.x + up * p.y;
+					modelview[i] = glm::lookAt(eye + bokeh * parameters.dofAperture.get() * sceneSize, object, up) * model;
+					mvp[i] = projection * modelview[i];
+				}
+			}else{
+				modelview[0] = camera.getModelViewMatrix() * model;
+				mvp[0] = projection * modelview[0];
 			}
 
-			if (fill) {
+			if (parameters.fill) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				shaderFill.begin();
 				for(size_t i = 0; i < numSamples; i++){
@@ -432,7 +453,7 @@ namespace entropy
 					geometry.draw(mode, offset, numVertices);
 				}
 				shaderFill.end();
-				if(useLights){
+				if(parameters.useLights){
 					material->begin();
 					for(size_t i = 0; i < numSamples; i++){
 						material->setCustomUniformMatrix4f("modelViewMatrix", modelview[i]);
@@ -443,10 +464,10 @@ namespace entropy
 				}
 			}
 
-			if (wireframe) {
+			if (parameters.wireframe) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				if(useLights){
-					auto * material = (clip && sphericalClip) ? &this->materialSphericalClip : &this->material;
+				if(parameters.useLights){
+					auto * material = (parameters.clip && parameters.sphericalClip) ? &this->materialSphericalClip : &this->material;
 					material->begin();
 					for(size_t i = 0; i < numSamples; i++){
 						material->setCustomUniformMatrix4f("modelViewMatrix", modelview[i]);
@@ -465,35 +486,35 @@ namespace entropy
 				}
 			}
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		}
 
 		void WireframeFillRenderer::drawElements(const ofVbo & geometry, size_t offset, size_t numIndices, GLenum mode, ofCamera & camera) const{
-			if(wobblyClip){
+			if(parameters.wobblyClip){
 				this->blobMask.updateWith(camera);
 			}
 
 			ofDisableDepthTest();
 			ofShader shaderFill;
 			ofShader shaderWireframe;
-			if(sphericalClip && clip){
+			if(parameters.sphericalClip && parameters.clip){
 				shaderFill = this->shaderFillSphere;
 				shaderWireframe = this->shaderWireframeSphere;
 			}else{
 				shaderFill = this->shaderFill;
 				shaderWireframe = this->shaderWireframe;
 			}
-			if (fill) {
+			if (parameters.fill) {
 				shaderFill.begin();
-				shaderFill.setUniform1f("fogStartDistance", fogStartDistance);
-				shaderFill.setUniform1f("fogMinDistance", fogMinDistance);
-				shaderFill.setUniform1f("fogMaxDistance", fogMaxDistance);
-				shaderFill.setUniform1f("fogPower", fogPower);
-				shaderFill.setUniform1f("fadeEdge0", fadeEdge0);
-				shaderFill.setUniform1f("fadeEdge1", fadeEdge1);
-				shaderFill.setUniform1f("fadePower", fadePower);
-				shaderFill.setUniform1f("alpha", fillAlpha * alphaFactor);
-				shaderFill.setUniform1f("wobblyClip", wobblyClip && clip);
+				shaderFill.setUniform1f("fogStartDistance", parameters.fogStartDistance);
+				shaderFill.setUniform1f("fogMinDistance", parameters.fogMinDistance);
+				shaderFill.setUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+				shaderFill.setUniform1f("fogPower", parameters.fogPower);
+				shaderFill.setUniform1f("fadeEdge0", parameters.fadeEdge0);
+				shaderFill.setUniform1f("fadeEdge1", parameters.fadeEdge1);
+				shaderFill.setUniform1f("fadePower", parameters.fadePower);
+				shaderFill.setUniform1f("alpha", parameters.fillAlpha * parameters.alphaFactor);
+				shaderFill.setUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 				shaderFill.setUniform1f("screenW", ofGetViewportWidth());
 				shaderFill.setUniform1f("screenH", ofGetViewportHeight());
 				shaderFill.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
@@ -503,20 +524,20 @@ namespace entropy
 				shaderFill.end();
 			}
 
-			if (wireframe) {
+			if (parameters.wireframe) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-				if(useLights){
-					auto * material = (clip && sphericalClip) ? &this->materialSphericalClip : &this->material;
+				if(parameters.useLights){
+					auto * material = (parameters.clip && parameters.sphericalClip) ? &this->materialSphericalClip : &this->material;
 					material->begin();
-					material->setCustomUniform1f("fogStartDistance", fogStartDistance);
-					material->setCustomUniform1f("fogMinDistance", fogMinDistance);
-					material->setCustomUniform1f("fogMaxDistance", fogMaxDistance);
-					material->setCustomUniform1f("fogPower", fogPower);
-					material->setCustomUniform1f("fadeEdge0", fadeEdge0);
-					material->setCustomUniform1f("fadeEdge1", fadeEdge1);
-					material->setCustomUniform1f("fadePower", fadePower);
-					material->setCustomUniform1f("wobblyClip", wobblyClip && clip);
+					material->setCustomUniform1f("fogStartDistance", parameters.fogStartDistance);
+					material->setCustomUniform1f("fogMinDistance", parameters.fogMinDistance);
+					material->setCustomUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+					material->setCustomUniform1f("fogPower", parameters.fogPower);
+					material->setCustomUniform1f("fadeEdge0", parameters.fadeEdge0);
+					material->setCustomUniform1f("fadeEdge1", parameters.fadeEdge1);
+					material->setCustomUniform1f("fadePower", parameters.fadePower);
+					material->setCustomUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 					material->setCustomUniform1f("screenW", ofGetViewportWidth());
 					material->setCustomUniform1f("screenH", ofGetViewportHeight());
 					material->setCustomUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
@@ -525,15 +546,15 @@ namespace entropy
 					material->end();
 				}else{
 					shaderWireframe.begin();
-					shaderWireframe.setUniform1f("fogStartDistance", fogStartDistance);
-					shaderWireframe.setUniform1f("fogMinDistance", fogMinDistance);
-					shaderWireframe.setUniform1f("fogMaxDistance", fogMaxDistance);
-					shaderWireframe.setUniform1f("fogPower", fogPower);
-					shaderWireframe.setUniform1f("fadeEdge0", fadeEdge0);
-					shaderWireframe.setUniform1f("fadeEdge1", fadeEdge1);
-					shaderWireframe.setUniform1f("fadePower", fadePower);
-					shaderWireframe.setUniform1f("alpha", wireframeAlpha * alphaFactor);
-					shaderWireframe.setUniform1f("wobblyClip", wobblyClip && clip);
+					shaderWireframe.setUniform1f("fogStartDistance", parameters.fogStartDistance);
+					shaderWireframe.setUniform1f("fogMinDistance", parameters.fogMinDistance);
+					shaderWireframe.setUniform1f("fogMaxDistance", parameters.fogMaxDistance);
+					shaderWireframe.setUniform1f("fogPower", parameters.fogPower);
+					shaderWireframe.setUniform1f("fadeEdge0", parameters.fadeEdge0);
+					shaderWireframe.setUniform1f("fadeEdge1", parameters.fadeEdge1);
+					shaderWireframe.setUniform1f("fadePower", parameters.fadePower);
+					shaderWireframe.setUniform1f("alpha", parameters.wireframeAlpha * parameters.alphaFactor);
+					shaderWireframe.setUniform1f("wobblyClip", parameters.wobblyClip && parameters.clip);
 					shaderWireframe.setUniform1f("screenW", ofGetViewportWidth());
 					shaderWireframe.setUniform1f("screenH", ofGetViewportHeight());
 					shaderWireframe.setUniformTexture("minDepthMask", this->blobMask.getMinDepthMask(), 0);
@@ -548,7 +569,7 @@ namespace entropy
 			std::vector<float> plot(numberOfPoints);
 			for (size_t i = 0; i < numberOfPoints; i++) {
 				float distanceToCamera = i/float(numberOfPoints) * 10.;
-				plot[i] = fog(distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+				plot[i] = fog(distanceToCamera, parameters.fogStartDistance, parameters.fogMinDistance, parameters.fogMaxDistance, parameters.fogPower);
 			}
 			return plot;
 		}
