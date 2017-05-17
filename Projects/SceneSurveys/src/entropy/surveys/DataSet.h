@@ -1,7 +1,9 @@
 #pragma once
 
-#include "ofxPreset.h"
+#include "ofParameter.h"
 #include "ofShader.h"
+
+#include "entropy/Helpers.h"
 
 namespace entropy
 {

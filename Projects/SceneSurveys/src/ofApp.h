@@ -4,8 +4,10 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxTextureRecorder.h"
 #include "ofxTimeline.h"
 
+#include "entropy/Helpers.h"
 #include "entropy/geom/Sphere.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
@@ -37,6 +39,9 @@ public:
 
 	glm::mat4 getWorldTransform() const;
 
+	bool loadPreset(const string & presetName);
+	bool savePreset(const string & presetName);
+
 protected:
 	static const string kSceneName;
 
@@ -61,27 +66,50 @@ protected:
 			ofParameter<float> camCutoff{ "Cam Cutoff", 1.0f, 0.0f, 1000.0f };
 			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.2f, 0.0f, 1.0f };
 			ofParameter<float> moveLerp{ "Move Lerp", 0.1f, 0.0f, 1.0f };
+			ofParameter<float> maxSpeed{ "Max Speed", 10.0f, 0.0f, 100.0f };
 
 			PARAM_DECLARE("Travel",
 				enabled,
 				camCutoff,
 				lookAtLerp,
-				moveLerp);
+				moveLerp,
+				maxSpeed);
 		} travel;
 
-		PARAM_DECLARE("Parameters",
+		struct : ofParameterGroup
+		{
+			ofParameter<bool> recordSequence{ "Record Sequence", false };
+			ofParameter<bool> recordVideo{ "Record Video", false };
+			ofParameter<int> renderWidth{ "Render Width", 4200, 1920, 5760 };
+			ofParameter<int> renderHeight{ "Render Height", 1080, 360, 1080 };
+
+			PARAM_DECLARE("Recording",
+				recordSequence,
+				recordVideo,
+				renderWidth,
+				renderHeight);
+		} recording;
+
+		PARAM_DECLARE("Scene",
 			worldScale,
 			orbitSpeed,
 			camera,
-			travel);
-	} params;
+			travel,
+			recording);
+	} parameters;
 
 	entropy::surveys::DataSet::SharedParams sharedParams;
 
-	vector<ofEventListener> paramListeners;
+	vector<ofEventListener> eventListeners;
 	ofxPanel gui;
 	ofxTimeline timeline;
 	ofxTLCameraTrack cameraTrack;
+	bool guiVisible;
+	bool timelineVisible;
+
+	ofxTextureRecorder textureRecorder;
+
+	std::string currPreset;
 
 	entropy::surveys::DataSet dataSetBoss;
 	entropy::surveys::DataSet dataSetDes;
@@ -117,5 +145,6 @@ protected:
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;
 	entropy::render::PostParameters postParams;
-	ofFbo fboScene, fboPost;
+	ofFbo fboScene;
+	ofFbo fboPost;
 };

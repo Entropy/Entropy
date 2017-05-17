@@ -2,10 +2,9 @@ ofxGui
 ofxXmlSettings
 ../../addons/ofxEasing
 ../../addons/ofxHDF5
-../../addons/ofxImGui
 ../../addons/ofxObjLoader
-../../addons/ofxPreset
 ../../addons/ofxRange
+../../addons/ofxSerialize
 ../../addons/ofxSet
 ../../addons/ofxTextInputField
 ../../addons/ofxTextureRecorder

@@ -1,6 +1,5 @@
 #include "ofApp.h"
-
-#include "entropy/Helpers.h"
+#include "ofxSerialize.h"
 
 //--------------------------------------------------------------
 const string ofApp::kSceneName = "Surveys";
@@ -53,7 +52,7 @@ void ofApp::setup()
 
 	this->scaledMesh = this->masterMesh;
 
-	this->paramListeners.push_back(this->sharedParams.model.resolution.newListener([this](int & val)
+	this->eventListeners.push_back(this->sharedParams.model.resolution.newListener([this](int & val)
 	{
 		this->scaledMesh.clear();
 		if (val == 1)
@@ -91,21 +90,20 @@ void ofApp::setup()
 	this->modelShader.setup(this->modelSettings);
 
 	// Setup the camera.
-	this->paramListeners.push_back(this->params.camera.nearClip.newListener([this](float & val)
+	this->eventListeners.push_back(this->parameters.camera.nearClip.newListener([this](float & val)
 	{
 		this->camera.setNearClip(val);
 	}));
-	this->paramListeners.push_back(this->params.camera.farClip.newListener([this](float & val)
+	this->eventListeners.push_back(this->parameters.camera.farClip.newListener([this](float & val)
 	{
 		this->camera.setFarClip(val);
 		this->sharedParams.model.clipDistance.setMax(val);
 	}));
 
-	this->paramListeners.push_back(this->params.travel.enabled.newListener([this](bool &)
+	this->eventListeners.push_back(this->parameters.travel.enabled.newListener([this](bool &)
 	{
 		this->prevTargetIndex = -1;
 		this->travelLog.clear();
-		cout << "Resetting travel log" << endl;
 	}));
 
 	// Setup renderer and post effects using resize callback.
@@ -114,33 +112,138 @@ void ofApp::setup()
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("FiraCode-Light", 11, true, true, 72);
-	this->gui.setup("Surveys", "settings.json");
-	this->gui.add(this->params);
+	this->gui.setup("Surveys", "parameters.json");
+	this->gui.add(this->parameters);
 	this->gui.add(this->sharedParams);
+	this->gui.add(this->sphereGeom.parameters);
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
+	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
+	{
+		if (ofGetKeyPressed(OF_KEY_SHIFT))
+		{
+			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
+			if (!name.empty())
+			{
+				return this->savePreset(name);
+			}
+		}
+		return this->savePreset(this->currPreset);
+	}));
+	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
+	{
+		if (ofGetKeyPressed(OF_KEY_SHIFT))
+		{
+			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
+			if (result.bSuccess)
+			{
+				return this->loadPreset(result.fileName);
+			}
+		}
+		return this->loadPreset(this->currPreset);
+	}));
 
+	this->timeline.setName("timeline");
 	this->timeline.setup();
 	this->timeline.setDefaultFontPath("FiraCode-Light");
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	//this->timeline.setSpacebarTogglePlay(false);
+	this->timeline.setLoopType(OF_LOOP_NONE);
+	this->timeline.setFrameRate(30.0f);
 	this->timeline.setDurationInSeconds(60 * 5);
 	this->timeline.setAutosave(false);
+	this->timeline.setPageName(this->parameters.getName());
+	this->timeline.addFlags("Cues");
+	this->eventListeners.push_back(this->timeline.events().viewWasResized.newListener([this](ofEventArgs &)
+	{
+		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	}));
 
+	const auto cameraTrackName = "Camera";
+	this->cameraTrack.setDampening(1.0f);
 	this->cameraTrack.setCamera(this->camera);
-	this->timeline.addTrack("Camera", &this->cameraTrack);
+	this->cameraTrack.setXMLFileName(this->timeline.nameToXMLName(cameraTrackName));
+	this->timeline.addTrack(cameraTrackName, &this->cameraTrack);
+	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
-	this->gui.loadFromFile("settings.json");
+
+	this->guiVisible = true;
+	this->timelineVisible = true;
+
+	// Setup texture recorder.
+	this->eventListeners.push_back(this->parameters.recording.recordSequence.newListener([this](bool & record)
+	{
+		if (record)
+		{
+			auto path = ofSystemLoadDialog("Record to folder:", true);
+			if (path.bSuccess)
+			{
+				// Resize canvas.
+				this->windowResized(this->parameters.recording.renderWidth, this->parameters.recording.renderHeight);
+
+				// Setup texture recorder.
+				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
+				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettings.folderPath = path.getPath();
+				this->textureRecorder.setup(recorderSettings);
+
+				// Start scene.
+				this->reset();
+				this->cameraTrack.lockCameraToTrack = true;
+				this->timeline.play();
+			}
+			else
+			{
+				// Resize canvas.
+				this->windowResized(ofGetWidth(), ofGetHeight()); 
+				
+				this->parameters.recording.recordSequence = false;
+			}
+		}
+	}));
+
+	this->eventListeners.push_back(parameters.recording.recordVideo.newListener([this](bool & record)
+	{
+#if OFX_VIDEO_RECORDER
+		if (record)
+		{
+			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
+			if (path.bSuccess)
+			{
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				recorderSettings.videoPath = path.getPath();
+				//				recorderSettings.videoCodec = "libx264";
+				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				recorderSettings.videoCodec = "prores";
+				recorderSettings.extrasettings = "-profile:v 0";
+				textureRecorder.setup(recorderSettings);
+			}
+			else {
+				this->parameters.recording.recordVideo = false;
+			}
+		}
+		else {
+			textureRecorder.stop();
+		}
+#endif
+	}));
+
+	// Setup renderer and post effects using resize callback.
+	this->windowResized(ofGetWidth(), ofGetHeight());
+
+	this->loadPreset("_autosave");
+	//this->reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-
+	this->savePreset("_autosave");
 }
 
 glm::vec3 spherical;
@@ -190,40 +293,42 @@ void ofApp::update()
 		this->camera.lookAt(glm::vec3(0));
 	}
 	*/
-	if (this->params.travel.enabled)
+
+	if (this->parameters.travel.enabled)
 	{
 		// Get the data target.
-		int currTargetIndex = this->dataSetBoss.getTargetIndex();
+		int currTargetIndex = this->dataSetDes.getTargetIndex();
 		glm::vec3 targetPos;
 		const auto camPos = this->camera.getPosition();
-		if (glm::length(camPos) > this->params.travel.camCutoff &&
+		if (glm::length(camPos) > this->parameters.travel.camCutoff &&
 			(this->prevTargetIndex == currTargetIndex ||
 			 this->travelLog.find(currTargetIndex) == this->travelLog.end()))
 		{
 			// Camera is far enough from the origin.
 			// Target is either the same as previous frame, or it's never been visited on this travel.
-			targetPos = this->dataSetBoss.getTargetPosition() * this->params.worldScale.get();
+			targetPos = this->dataSetDes.getTargetPosition() * this->parameters.worldScale.get();
 			this->prevTargetIndex = currTargetIndex;
 			this->travelLog.insert(currTargetIndex);
+			cout << "[ofApp] Travel target index = " << this->prevTargetIndex << endl;
 		}
 		else
 		{
 			// Using default target at origin.
 			this->prevTargetIndex = -1;
+			cout << "[ofApp] Default target index = " << this->prevTargetIndex << endl;
 		}
 		
 		const auto toTarget = targetPos - camPos;
-		const auto lerpedDir = glm::mix(this->camera.getLookAtDir(), glm::normalize(toTarget), this->params.travel.lookAtLerp.get());
+		const auto lerpedDir = glm::normalize(glm::mix(this->camera.getLookAtDir(), glm::normalize(toTarget), this->parameters.travel.lookAtLerp.get()));
 		const auto targetDist = glm::length(toTarget);
 
-		// This always has the camera looking at the heading direction.
-		//const auto lerpedDist = targetDist * (1.0f - this->sharedParams.target.travelSpeed.get());
-		//this->camera.setTarget(camPos + lerpedDir * targetDist);
-		//this->camera.setDistance(lerpedDist);
-		
-		// This looks nicer because you're not always looking at the target, more drifty.
 		this->camera.lookAt(camPos + lerpedDir * targetDist);
-		const auto lerpPos = glm::mix(camPos, targetPos, this->params.travel.moveLerp.get());
+		auto lerpPos = glm::mix(camPos, targetPos, this->parameters.travel.moveLerp.get());
+		if (this->parameters.travel.maxSpeed > 0.0f && this->parameters.travel.maxSpeed < glm::distance(camPos, lerpPos))
+		{
+			// Clamp the new position if it's too big of a jump.
+			lerpPos = camPos + glm::normalize(toTarget) * this->parameters.travel.maxSpeed.get();
+		}
 		this->camera.setPosition(lerpPos);
 	}
 	
@@ -371,11 +476,28 @@ void ofApp::draw()
 	ofSetColor(ofColor::white);
 	this->fboPost.draw(0, 0);
 
+	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
+	{
+		this->textureRecorder.save(this->fboPost.getTexture());
+
+		if (this->timeline.getCurrentFrame() == this->timeline.getOutFrame())
+		{
+			this->parameters.recording.recordSequence = false;
+			this->parameters.recording.recordVideo = false;
+		}
+	}
+
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 
 	// Draw the controls.
-	this->timeline.draw();
-	this->gui.draw();
+	if (this->timelineVisible)
+	{
+		this->timeline.draw();
+	}
+	if (this->guiVisible)
+	{
+		this->gui.draw();
+	}
 }
 
 //--------------------------------------------------------------
@@ -388,6 +510,14 @@ void ofApp::keyPressed(int key)
 	else if (key == 'T')
 	{
 		this->cameraTrack.addKeyframe();
+	}
+	else if (key == 'G')
+	{
+		this->guiVisible ^= 1;
+	}
+	else if (key == 'F')
+	{
+		this->timelineVisible ^= 1;
 	}
 }
 
@@ -429,11 +559,16 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
+	int canvasWidth = w;
+	int canvasHeight = h;
+
+	this->camera.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
+
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 
 	auto fboSettings = ofFbo::Settings();
-	fboSettings.width = ofGetWidth();
-	fboSettings.height = ofGetHeight();
+	fboSettings.width = canvasWidth;
+	fboSettings.height = canvasHeight;
 	fboSettings.internalformat = GL_RGBA32F;
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 	fboSettings.numSamples = 4;
@@ -477,4 +612,63 @@ glm::mat4 ofApp::getWorldTransform() const
 	transform = glm::rotate(transform, ofDegToRad(this->orbitOffset.y), yAxis);
 
 	return transform;
+}
+
+//--------------------------------------------------------------
+bool ofApp::loadPreset(const string & presetName)
+{
+	// Make sure file exists.
+	const auto presetPath = std::filesystem::path("presets") / presetName;
+	const auto presetFile = ofFile(presetPath);
+	if (presetFile.exists())
+	{
+		// Load parameters from the preset.
+		const auto paramsPath = presetPath / "parameters.json";
+		const auto paramsFile = ofFile(paramsPath);
+		if (paramsFile.exists())
+		{
+			const auto json = ofLoadJson(paramsFile);
+			ofDeserialize(json, this->gui.getParameter());
+			ofDeserialize(json, this->camera, "ofEasyCam");
+		}
+
+		this->timeline.loadStructure(presetPath.string());
+		this->timeline.loadTracksFromFolder(presetPath.string());
+
+		this->gui.refreshTimelined(&this->timeline);
+
+		this->currPreset = presetName;
+	}
+	else
+	{
+		ofLogWarning(__FUNCTION__) << "Directory not found at path " << presetPath;
+		this->currPreset.clear();
+	}
+
+	// Setup scene with the new parameters.
+	this->reset();
+
+	if (this->currPreset.empty())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+//--------------------------------------------------------------
+bool ofApp::savePreset(const string & presetName)
+{
+	const auto presetPath = std::filesystem::path("presets") / presetName;
+
+	const auto paramsPath = presetPath / "parameters.json";
+	nlohmann::json json;
+	ofSerialize(json, this->gui.getParameter());
+	ofSerialize(json, this->camera, "ofEasyCam");
+	ofSavePrettyJson(paramsPath, json);
+
+	this->timeline.saveTracksToFolder(presetPath.string());
+	this->timeline.saveStructure(presetPath.string());
+
+	return true;
 }

@@ -1,8 +1,7 @@
 #include "DataSet.h"
 
+#include "ofCamera.h"
 #include "ofxHDF5.h"
-
-#include "entropy/Helpers.h"
 
 namespace entropy
 {
@@ -176,8 +175,9 @@ namespace entropy
 			const auto cameraModelView = camera.getModelViewMatrix();
 			const auto cameraProjection = camera.getProjectionMatrix();
 			
-			this->targetIndex = std::numeric_limits<int>::max();
+			int foundTargetIndex = std::numeric_limits<int>::max();
 			float foundTargetDist = std::numeric_limits<float>::max();
+			bool lockedTarget = false;
 			
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
@@ -228,18 +228,35 @@ namespace entropy
 							}
 							data.push_back(instanceData);
 
-							if (-0.5 <= clipPos.x && clipPos.x <= 0.5 &&
+							if (i == this->targetIndex && params.target.lockDistance > 0.0f && params.target.lockDistance < eyeDist)
+							{
+								// Keep the current target locked in.
+								// (This will set the foundTargetIndex to the current value and fail all subsequent tests)
+								foundTargetDist = eyeDist;
+								foundTargetIndex = i;
+								lockedTarget = true;
+								cout << "[DataSet] Keep it locked to " << this->targetIndex << endl;
+							}
+							else 
+								if (!lockedTarget &&
+								-0.5 <= clipPos.x && clipPos.x <= 0.5 &&
 								-0.5 <= clipPos.y && clipPos.y <= 0.5 &&
 								params.target.lockDistance < eyeDist && eyeDist < params.target.maxDistance && 
 								foundTargetDist > eyeDist && this->masses[i] > params.target.minMass)
 							{
 								// Found new target.
 								foundTargetDist = eyeDist;
-								this->targetIndex = i;
+								foundTargetIndex = i;
 							}
 						}
 					}
 				}
+			}
+
+			if (this->targetIndex != foundTargetIndex)
+			{
+				this->targetIndex = foundTargetIndex;
+				cout << "[DataSet] Found new target with index = " << this->targetIndex << endl;
 			}
 
 			if (data.empty()) return 0;
@@ -300,7 +317,7 @@ namespace entropy
 			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
-			//cout << "Drawing " << count << " models" << endl;
+			cout << "Drawing " << count << " models" << endl;
 			mesh.drawInstanced(OF_MESH_POINTS, count);
 
 			//static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
