@@ -52,6 +52,18 @@ namespace entropy
 
 			struct : ofParameterGroup
 			{
+				ofParameter<float> a{"shoulder strenght", 0.22, 0.01, 1};
+				ofParameter<float> b{"linear strenght", 0.30, 0., 1.};
+				ofParameter<float> c{"linear angle", 0.10, 0., 1.};
+				ofParameter<float> d{"toe strenght", 0.20, 0., 1.};
+				ofParameter<float> e{"toe numerator", 0.01, 0., 0.1, ofParameterScale::Logarithmic};
+				ofParameter<float> f{"toe denominator", 0.30, 0.05, 1., ofParameterScale::Logarithmic};
+				PARAM_DECLARE("Tonemapping",
+							  a, b, c, d, e, f);
+			} tonemapping;
+
+			struct : ofParameterGroup
+			{
 				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<bool> onlyAlpha{ "Only Alpha", true };
 				ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f };
@@ -76,7 +88,8 @@ namespace entropy
             PARAM_DECLARE("Post Effects", 
 				bloom, 
 				color,
-				vignette);
+				vignette,
+				tonemapping);
 		};
 		
 		class PostEffects
