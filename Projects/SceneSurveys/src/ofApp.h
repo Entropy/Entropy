@@ -33,12 +33,17 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+	void reset();
+
+	glm::mat4 getWorldTransform() const;
+
 protected:
 	static const string kSceneName;
 
 	struct : ofParameterGroup
 	{
 		ofParameter<float> worldScale{ "World Scale", 1.0f, 0.01f, 100.0f, ofParameterScale::Logarithmic };
+		ofParameter<float> orbitSpeed{ "Orbit Speed", 0.0f, -100.0f, 100.0f };
 
 		struct : ofParameterGroup
 		{
@@ -49,16 +54,6 @@ protected:
 				nearClip,
 				farClip);
 		} camera;
-
-		struct : ofParameterGroup
-		{
-			ofParameter<bool> enabled{ "Enable Orbit", false };
-			ofParameter<float> speed{ "Speed", 0.0f, -100.0f, 100.0f };
-
-			PARAM_DECLARE("Orbit",
-				enabled,
-				speed);
-		} orbit;
 
 		struct : ofParameterGroup
 		{
@@ -76,8 +71,8 @@ protected:
 
 		PARAM_DECLARE("Parameters",
 			worldScale,
+			orbitSpeed,
 			camera,
-			orbit,
 			travel);
 	} params;
 
@@ -115,6 +110,7 @@ protected:
 	ofVboMesh scaledMesh;
 
 	ofEasyCam camera;
+	glm::vec3 orbitOffset;
 	int prevTargetIndex;
 	std::unordered_set<int> travelLog;
 

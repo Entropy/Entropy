@@ -147,6 +147,8 @@ glm::vec3 spherical;
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	this->orbitOffset.y += this->parameters.orbitSpeed;
+
 	/*
 	if (this->orbitSpeed != 0.0f)
 	{
@@ -275,7 +277,7 @@ void ofApp::draw()
 		{
 			//renderer.draw(galaxy.getVbo(), 0, galaxy.getNumVertices(), GL_POINTS, camera);
 
-			auto worldTransform = glm::scale(glm::mat4(1.0f), glm::vec3(this->params.worldScale));
+			auto worldTransform = this->getWorldTransform();
 
 			// Draw the data set.
 			{
@@ -450,4 +452,28 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
 
+}
+
+//--------------------------------------------------------------
+void ofApp::reset()
+{
+	this->orbitOffset = glm::vec3(0.0f);
+	
+	this->timeline.setCurrentFrame(0);
+}
+
+//--------------------------------------------------------------
+glm::mat4 ofApp::getWorldTransform() const
+{
+	static const auto yAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+	
+	glm::mat4 transform;
+
+	// Scale.
+	transform = glm::scale(glm::mat4(1.0f), glm::vec3(this->parameters.worldScale));
+
+	// Tumble.
+	transform = glm::rotate(transform, ofDegToRad(this->orbitOffset.y), yAxis);
+
+	return transform;
 }
