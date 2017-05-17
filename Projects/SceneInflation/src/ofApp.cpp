@@ -49,8 +49,8 @@ void ofApp::setup()
 	needsParticlesUpdate = true;
 
 	ofFbo::Settings settings;
-	settings.width = ofGetWidth();
-	settings.height = ofGetHeight();
+	settings.width = 1920;
+	settings.height = 1080/3;
 	settings.internalformat = GL_RGBA32F;
 	settings.numSamples = 4;
 
@@ -59,6 +59,7 @@ void ofApp::setup()
 	postEffects.resize(ofGetWidth(), ofGetHeight());
 
 	parameters.render.record.setSerializable(false);
+	parameters.render.recordVideo.setSerializable(false);
 	ofxGuiSetDefaultWidth(250);
 	ofxGuiSetFont("Fira Code", 11, true, true, 72);
 	gui.setup("Inflation","settings.json");
@@ -69,8 +70,6 @@ void ofApp::setup()
 	gui.add(parameters);
 
 
-	textField.setup(textParam);
-	gui.add(&textField);
 	gui.minimizeAll();
 
 	cameraPath.arc(glm::vec3(0), 0.6, 0.5, 0, 360, true, 4800);
@@ -81,8 +80,9 @@ void ofApp::setup()
 	timeline.setup();
 	timeline.setDefaultFontPath("Fira Code");
 	timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
-	timeline.setDurationInSeconds(60*5);
+	timeline.setDurationInSeconds(60*8);
 	timeline.setAutosave(false);
+	timeline.addFlags("subscene labels");
 
 	gui.setTimeline(&timeline);
 
@@ -112,7 +112,7 @@ void ofApp::setup()
 		if(record){
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if(path.bSuccess){
-				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), parameters.render.fps);
 				recorderSettings.videoPath = path.getPath();
 //				recorderSettings.videoCodec = "libx264";
 //				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
@@ -128,7 +128,173 @@ void ofApp::setup()
 	}));
 
 	listeners.push_back(parameters.render.fps.newListener([this](int & fps){
-		ofSetTimeModeFixedRate(ofGetFixedStepForFps(fps));
+		if(parameters.render.systemClock){
+			ofSetTimeModeSystem();
+		}else{
+			ofSetTimeModeFixedRate(ofGetFixedStepForFps(fps));
+		}
+	}));
+
+	listeners.push_back(parameters.render.systemClock.newListener([this](bool & systemClock){
+		if(systemClock){
+			ofSetTimeModeSystem();
+		}else{
+			ofSetTimeModeFixedRate(ofGetFixedStepForFps(parameters.render.fps));
+		}
+	}));
+	
+	listeners.push_back(gui.savePressedE.newListener([this]{
+		auto saveTo = ofSystemSaveDialog(ofGetTimestampString() + ".json", "save settings");
+		if(saveTo.bSuccess){
+			auto path = std::filesystem::path(saveTo.getPath());
+			auto folder = path.parent_path();
+			auto basename = path.stem().filename().string();
+			auto extension = ofToLower(path.extension().string());
+			auto timelineDir = (folder / (basename + "_timeline")).string();
+			if(extension == ".xml"){
+				ofXml xml;
+				if(std::filesystem::exists(path)){
+					xml.load(path);
+				}
+				ofSerialize(xml, gui.getParameter());
+				timeline.saveTracksToFolder(timelineDir);
+				timeline.saveStructure(timelineDir);
+				xml.save(path);
+			}else if(extension == ".json"){
+				ofJson json = ofLoadJson(path);
+				ofSerialize(json, gui.getParameter());
+				timeline.saveTracksToFolder(timelineDir);
+				timeline.saveStructure(timelineDir);
+				ofSavePrettyJson(path, json);
+			}else{
+				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+			}
+		}
+		return true;
+	}));
+
+
+	listeners.push_back(gui.loadPressedE.newListener([this]{
+		auto loadFrom = ofSystemLoadDialog("load settings");
+		if(loadFrom.bSuccess){
+			auto path = std::filesystem::path(loadFrom.getPath());
+			auto folder = path.parent_path();
+			auto basename = path.stem().filename().string();
+			auto extension = ofToLower(path.extension().string());
+			auto timelineDir = (folder / (basename + "_timeline")).string();
+			if(extension == ".xml"){
+				ofXml xml;
+				xml.load(path);
+				ofDeserialize(xml, gui.getParameter());
+				timeline.loadStructure(timelineDir);
+				timeline.loadTracksFromFolder(timelineDir);
+				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+				gui.refreshTimelined(&timeline);
+			}else
+			if(extension == ".json"){
+				ofJson json;
+				ofFile jsonFile(path);
+				jsonFile >> json;
+				ofDeserialize(json, gui.getParameter());
+				timeline.loadStructure(timelineDir);
+				timeline.loadTracksFromFolder(timelineDir);
+				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+				gui.refreshTimelined(&timeline);
+			}else{
+				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+			}
+			resetWavelengths();
+			forceRedraw = true;
+		}
+		return true;
+	}));
+
+	auto createCircle = [this](float&){
+		if(parameters.circle.pct>0.0001 && parameters.circle.pct<1){
+			ofPolyline poly;
+			auto r = (parameters.circle.inner + parameters.circle.outer) / 2.;
+			auto thickness = parameters.circle.outer - parameters.circle.inner;
+			poly.arc(glm::vec3(0), r, r, 0, 360 * parameters.circle.pct, true, 200);
+			entropy::thickline(poly.getVertices(), thickness, circle);
+		}else if(parameters.circle.pct>0.0001){
+			ofPath path;
+			path.setCircleResolution(200);
+			auto r = (parameters.circle.inner + parameters.circle.outer) / 2.;
+			auto thickness = parameters.circle.outer - parameters.circle.inner;
+			path.arc(glm::vec3(0), r + thickness/2., r + thickness/2., 0, 360 * parameters.circle.pct);
+			path.arc(glm::vec3(0), r - thickness/2., r - thickness/2., 0, 360 * parameters.circle.pct);
+			circle = path.getTessellation();
+		}else{
+			circle.clear();
+		}
+	};
+	listeners.push_back(parameters.circle.inner.newListener(createCircle));
+	listeners.push_back(parameters.circle.outer.newListener(createCircle));
+	listeners.push_back(parameters.circle.pct.newListener(createCircle));
+
+	listeners.push_back(parameters.equations.newCluster.newListener([this]{
+		int state = parameters.state;
+		if(state == BigBang){
+			clusters.emplace_back();
+			auto & cluster = clusters.back();
+			auto now = timeline.getCurrentTime();
+			//cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
+			cluster.origin = glm::vec3(ofSignedNoise(now) * 0.25, ofSignedNoise(now * glm::pi<float>()) * 0.25, ofSignedNoise(now * 2.71828) * 0.25);
+			cluster.scale = 0;//parameters.rotationRadius * 0.6;
+			cluster.startTime = now;
+			cluster.startScale = cluster.scale;
+			cluster.negativeSpace = false;
+			cluster.alpha = 1;
+			cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+		}
+	}));
+
+	listeners.push_back(parameters.offsetTimeline.newListener([this]{
+		auto answer = ofSystemTextBoxDialog("offset in ms","");
+		auto offset_ms = ofToInt(answer);
+		for(auto * page: timeline.getPages()){
+			for(auto * track: page->getTracks()){
+				auto * keyframes = static_cast<ofxTLKeyframes*>(track);
+				for(auto * kf: keyframes->getKeyframes()){
+					kf->time = ofClamp(kf->time + offset_ms, 0, timeline.getDurationInMilliseconds());
+				}
+				keyframes->recomputePreviews();
+			}
+		}
+	}));
+
+	listeners.push_back(parameters.offsetSelected.newListener([this]{
+		auto answer = ofSystemTextBoxDialog("offset in ms","");
+		auto offset_ms = ofToInt(answer);
+		for(auto * page: timeline.getPages()){
+			for(auto * track: page->getTracks()){
+				auto * keyframes = static_cast<ofxTLKeyframes*>(track);
+				for(auto * kf: keyframes->getSelectedKeyframes()){
+					kf->time = ofClamp(kf->time + offset_ms, 0, timeline.getDurationInMilliseconds());
+				}
+				keyframes->recomputePreviews();
+			}
+		}
+	}));
+
+	listeners.push_back(gui.getParameter().castGroup().parameterChangedE().newListener([this](ofAbstractParameter&p){
+		forceRedraw = true;
+	}));
+
+	listeners.push_back(parameters.colors.color1.newListener([this](ofFloatColor & color){
+		noiseField.octaves[0].color = color;
+	}));
+
+	listeners.push_back(parameters.colors.color2.newListener([this](ofFloatColor & color){
+		noiseField.octaves[1].color = color;
+	}));
+
+	listeners.push_back(parameters.colors.color3.newListener([this](ofFloatColor & color){
+		noiseField.octaves[2].color = color;
+	}));
+
+	listeners.push_back(parameters.colors.color4.newListener([this](ofFloatColor & color){
+		noiseField.octaves[3].color = color;
 	}));
 }
 
@@ -177,14 +343,9 @@ void ofApp::exit()
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	noiseField.octaves[0].color = parameters.colors.color1.get();
-	noiseField.octaves[1].color = parameters.colors.color2.get();
-	noiseField.octaves[2].color = parameters.colors.color3.get();
-	noiseField.octaves[3].color = parameters.colors.color4.get();
-
-	auto dt = timeline.getCurrentTime() - now;
+	dt = timeline.getCurrentTime() - now;
 	now = timeline.getCurrentTime();
-	if (parameters.runSimulation) {
+	if ((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw) {
 		int state = parameters.state;
 		switch(state){
 			case PreBigBang:
@@ -212,38 +373,47 @@ void ofApp::update(){
 //			}break;
 
 			case BigBang:{
-				cout << "bigbang" << endl;
+				//cout << "bigbang" << endl;
 				if(state != prevState){
 					t_bigbang = now;
 					clusters[0].startTime = now;
 					clusters[0].startScale = clusters[0].scale;
 				}
 				t_from_bigbang = now - t_bigbang;
-				auto newClusters = 0;
-				for(auto & cluster: clusters){
-					auto prevScale = cluster.scale;
-					//cluster.scale += log(cluster.scale+1.1) * dt * parameters.equations.Ht;
-					cluster.scale = ofxeasing::map(now - cluster.startTime, 0, 1.5, cluster.startScale, 30, ofxeasing::sine::easeIn);
 
-					newClusters += prevScale < parameters.equations.newClusterAt && cluster.scale > parameters.equations.newClusterAt;
-					cout << cluster.scale << ", ";
+				for(auto & cluster: clusters){
+					ofParameter<float> logScale{"", cluster.startScale,cluster.startScale, parameters.equations.maxClusterScale, ofParameterScale::Logarithmic};
+					logScale.setPctScaled(ofMap(now - cluster.startTime, 0, 20 / parameters.equations.Ht, 0, 1));
+					auto currentScale = logScale.get();
+					logScale.setPctScaled(ofMap(now - dt - cluster.startTime, 0, 20 / parameters.equations.Ht, 0, 1));
+					auto prevScale = logScale.get();
+					cluster.scale += currentScale - prevScale;
+					if(cluster.alpha<1){
+						cluster.alpha = ofxeasing::map_clamp(cluster.scale, 2, 5, 0, 1, ofxeasing::sine::easeIn);
+					}
 				}
-				cout << endl;
-				if(newClusters==0 && t_from_bigbang>4 && clusters.size()<4){
-					newClusters++;
-				}
-				for(auto i=0; i<newClusters; i++){
-					cout << "adding cluster" << endl;
-					clusters.emplace_back();
-					auto & cluster = clusters.back();
-					cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
-					cluster.scale = parameters.rotationRadius * 0.6;
-					cluster.startTime = now;
-					cluster.startScale = cluster.scale;
+				auto negative = std::count_if(clusters.begin(), clusters.end(),
+								[](const Cluster & cluster){ return cluster.negativeSpace; });
+				auto positive = std::count_if(clusters.begin(), clusters.end(),
+								[](const Cluster & cluster){ return !cluster.negativeSpace; });
+				if(positive>3 && negative < positive/3 && noiseField.noiseSpeed > 10){
+					auto newNegatives = positive/3 - negative;
+					for(auto i=0; i<newNegatives; i++){
+						cout << "adding negative" << endl;
+						clusters.emplace_back();
+						auto & cluster = clusters.back();
+						cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
+						cluster.scale = parameters.rotationRadius * 0.6;
+						cluster.startTime = now;
+						cluster.startScale = cluster.scale;
+						cluster.negativeSpace = true;
+						cluster.alpha = 0;
+						cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+					}
 				}
 				auto size = clusters.size();
 				clusters.erase(
-					std::remove_if(clusters.begin(), clusters.end(), [this](Cluster & cluster){ return cluster.scale > 30 || cluster.startTime > now; }),
+					std::remove_if(clusters.begin(), clusters.end(), [this](Cluster & cluster){ return cluster.scale > parameters.equations.maxClusterScale || cluster.startTime > now; }),
 					clusters.end());
 				if(clusters.size()<size){
 					cout << "removed " << size - clusters.size() << endl;
@@ -271,19 +441,42 @@ void ofApp::update(){
 					t_expansion = now;
 					clusters.emplace(clusters.begin());
 					clusters.front().origin = glm::vec3();
-					clusters.front().scale = 0.5;
+					clusters.front().scale = parameters.equations.mainClusterScaleAfterBigbang;
+					clusters.front().startScale = parameters.equations.mainClusterScaleAfterBigbang;
+					clusters.front().negativeSpace = false;
+					clusters.front().startTime = now;
 				}
 				t_from_expansion = now - t_expansion;
-				if(clusters[0].scale<1){
-					clusters[0].scale = ofxeasing::map(t_from_expansion, 0, 1, 0.5, 1.01, ofxeasing::sine::easeOut);
-				}else{
-					clusters[0].scale += log(clusters[0].scale+0.5) * dt * parameters.equations.Ht / 100.;
-				}
+//				if(clusters[0].scale<0.8){
+//					//clusters[0].scale = ofxeasing::map(t_from_expansion, 0, 1, 0.5, 1.01, ofxeasing::sine::easeOut);
+
+//					ofParameter<float> logScale{"",clusters[0].startScale,clusters[0].startScale,30,ofParameterScale::Logarithmic};
+//					logScale.setPctScaled(ofMap(now - clusters[0].startTime, 0, 20 / parameters.equations.Ht, 0, 1));
+//					clusters[0].scale = logScale;
+//					if(clusters[0].scale > 1){
+//						clusters[0].startTime = now;
+//						clusters[0].startScale = clusters[0].scale;
+//					}
+
+//				}else{
+//					ofParameter<float> logScale{"",clusters[0].startScale,clusters[0].startScale,30,ofParameterScale::Logarithmic};
+//					logScale.setPctScaled(ofMap(now - clusters[0].startTime, 0, 1500, 0, 1));
+//					clusters[0].scale = logScale;
+//				}
+				clusters[0].scale = parameters.equations.mainClusterScaleAfterBigbang;
 				for(auto i=1;i<clusters.size();i++){
-					clusters[i].scale += log(clusters[i].scale+1.1) * dt * parameters.equations.Ht;
+					//clusters[i].scale = ofxeasing::map(now - clusters[i].startTime, 0, 1.5, clusters[i].startScale, 30, ofxeasing::sine::easeIn);
+					//clusters[i].scale += log(clusters[i].scale+1.1) * dt * parameters.equations.Ht;
+
+					ofParameter<float> logScale{"",clusters[i].startScale,clusters[i].startScale, parameters.equations.maxClusterScale, ofParameterScale::Logarithmic};
+					logScale.setPctScaled(ofMap(now - clusters[i].startTime, 0, 20 / parameters.equations.Ht, 0, 1));
+					auto currentScale = logScale.get();
+					logScale.setPctScaled(ofMap(now - dt - clusters[i].startTime, 0, 20 / parameters.equations.Ht, 0, 1));
+					auto prevScale = logScale.get();
+					clusters[i].scale += currentScale - prevScale;
 				}
 				clusters.erase(
-					std::remove_if(clusters.begin(), clusters.end(), [](Cluster & cluster){ return cluster.scale > 30; }),
+					std::remove_if(clusters.begin() + 1, clusters.end(), [this](Cluster & cluster){ return cluster.scale > parameters.equations.maxClusterScale; }),
 					clusters.end());
 			break;
 
@@ -353,12 +546,11 @@ void ofApp::update(){
 //				this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
 //			}break;
 		}
-
-		noiseField.update(now);
-		if (renderer.alphaFactor > 0.001) {
+		noiseField.update(dt);
+		if (renderer.parameters.alphaFactor > 0.001) {
 			gpuMarchingCubes.update(noiseField.getTexture());
 		}
-		parameters.equations.geometrySize = this->gpuMarchingCubes.getNumVertices();
+
 		if (needsParticlesUpdate) {
 			this->transitionParticles.setTotalVertices(this->gpuMarchingCubes.getNumVertices());
 			this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
@@ -385,10 +577,13 @@ void ofApp::update(){
 //		idx += 1;
 //	}
 
-	parameters.cameraDistance = camera.getDistance();
-	if(rotating){
+	if((parameters.rotating && abs(dt) > 0.001) || forceRedraw){
+		if(parameters.rotatingUseSpeed){
+			parameters.rotationRadius -= dt * parameters.rotationRadiusSpeed;
+		}
 		camera.orbitDeg(orbitAngle, 0, parameters.rotationRadius);
 		orbitAngle += dt * parameters.rotationSpeed;
+		orbitAngle = ofWrap(orbitAngle, 0, 360);
 
 		/*camera.setPosition(cameraPath[ofGetFrameNum() % cameraPath.size()] * parameters.rotationRadius.get());
 		camera.lookAt(glm::vec3(0), glm::vec3(0,1,0));*/
@@ -397,7 +592,7 @@ void ofApp::update(){
 	if(dofTimeStart > 0){
 		auto diff = std::chrono::duration<double>(now - dofTimeStart).count();
 		auto d = ofxeasing::map_clamp(diff, 0, 1, dofDistanceStart, dofDistanceTarget, ofxeasing::back::easeOut);
-		renderer.dofDistance = d;
+		renderer.parameters.dofDistance = d;
 		if(diff>=1){
 			dofTimeStart = 0;
 		}
@@ -407,73 +602,181 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	fbo.begin();
-	ofClear(0,255);
-	camera.begin();
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE);
-	//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
-	auto first = true;
-	for(auto & cluster: clusters){
-//		glm::mat4 model = glm::translate(cluster.origin);
-//		model = glm::scale(model, glm::vec3(cluster.scale));
-		ofNode node;
-		node.setScale(cluster.scale);
-		node.setPosition(cluster.origin);
-		if(!first){
-			node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
+	if((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw){
+		auto drawNegativeSpace = [this]{
+			camera.begin();
+			cout << "negative space!" << endl;
+			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+			std::vector<ofFloatColor> colors;
+			colors.push_back(noiseField.octaves[0].color);
+			colors.push_back(noiseField.octaves[1].color);
+			colors.push_back(noiseField.octaves[2].color);
+			colors.push_back(noiseField.octaves[3].color);
+			float alphaFactor = renderer.parameters.alphaFactor;
+			bool wire = renderer.parameters.wireframe;
+			float fillAlpha = renderer.parameters.fillAlpha;
+			if(!parameters.colors.negativeWire){
+				renderer.parameters.wireframe = false;
+			}else{
+				//renderer.fillAlpha = 0;
+			}
+
+			noiseField.octaves[0].color = ofFloatColor::black;
+			noiseField.octaves[1].color = ofFloatColor::black;
+			noiseField.octaves[2].color = ofFloatColor::darkRed;
+			noiseField.octaves[3].color = ofFloatColor::brown;
+			noiseField.update(0);
+			if (renderer.parameters.alphaFactor > 0.001) {
+				gpuMarchingCubes.update(noiseField.getTexture());
+			}
+
+			if (needsParticlesUpdate) {
+				this->transitionParticles.setTotalVertices(this->gpuMarchingCubes.getNumVertices());
+				this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
+				needsParticlesUpdate = false;
+			}
+			auto first = true;
+			for(auto & cluster: clusters){
+		//		glm::mat4 model = glm::translate(cluster.origin);
+		//		model = glm::scale(model, glm::vec3(cluster.scale));
+				if(cluster.negativeSpace){
+					ofNode node;
+					node.setScale(cluster.scale);
+					node.setPosition(cluster.origin);
+					if(!first){
+						//node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
+						node.setOrientation(cluster.rotation);
+					}
+					const auto & model = node.getLocalTransformMatrix();
+					if(!parameters.colors.negativeWire){
+						renderer.parameters.fillAlpha = ofMap(cluster.alpha, 0, 1, 0, 0.8);
+					}else{
+						renderer.parameters.alphaFactor = cluster.alpha;
+					}
+					renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+				}
+				first = false;
+			}
+			noiseField.octaves[0].color = colors[0];
+			noiseField.octaves[1].color = colors[1];
+			noiseField.octaves[2].color = colors[2];
+			noiseField.octaves[3].color = colors[3];
+			renderer.parameters.alphaFactor = alphaFactor;
+			renderer.parameters.wireframe = wire;
+			renderer.parameters.fillAlpha = fillAlpha;
+			camera.end();
+		};
+
+		fbo.begin();
+		ofClear(0,255);
+		camera.begin();
+		ofDisableAlphaBlending();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE);
+		//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
+		auto hasNegativeSpace = false;
+		for(auto & cluster: clusters){
+			hasNegativeSpace |= cluster.negativeSpace;
 		}
-		first = false;
-		const auto & model = node.getLocalTransformMatrix();
-		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+
+		auto first = true;
+		for(auto & cluster: clusters){
+	//		glm::mat4 model = glm::translate(cluster.origin);
+	//		model = glm::sc255ale(model, glm::vec3(cluster.scale));
+			if(!cluster.negativeSpace){
+				ofNode node;
+				node.setScale(cluster.scale);
+				node.setPosition(cluster.origin);
+				if(!first){
+					//node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
+					node.setOrientation(cluster.rotation);
+				}
+				const auto & model = node.getLocalTransformMatrix();
+				//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
+				renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+
+			}
+			first = false;
+		}
+
+
+	//	switch (state) {
+	//	case PreBigBang:
+	//	case PreBigBangWobble:
+	//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	//		renderer.clip = true;
+	//		renderer.fadeEdge0 = 0.0;
+	//		renderer.fadeEdge1 = 0.5;
+	//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+	//		break;
+	//	case BigBang:
+	//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	//		renderer.fadeEdge0 = 0.0;
+	//		renderer.fadeEdge1 = 0.5;
+	//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+
+	//		ofEnableBlendMode(OF_BLENDMODE_ADD);
+	//		renderer.fadeEdge0 = scale*scale;
+	//		renderer.fadeEdge1 = scale;
+	//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+	//		break;
+	//	case Expansion:
+	//	case ExpansionTransition:
+	//		ofEnableBlendMode(OF_BLENDMODE_ADD);
+	//		renderer.clip = false;
+	//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+	//		break;
+	//	case ParticlesTransition:
+	//		renderer.clip = false;
+	//		if (renderer.alphaFactor > 0.001) {
+	//			ofEnableBlendMode(OF_BLENDMODE_ADD);
+	//			renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
+	//		}
+	//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	//		auto alphaBlobs = renderer.alphaFactor;
+	//		renderer.alphaFactor = 1;
+	//		renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), camera);
+	//		renderer.alphaFactor = alphaBlobs;
+	//		break;
+	//	}
+
+		//ofDrawSphere(dofTarget, 0.01);
+
+		camera.end();
+
+		if(renderer.parameters.enableDOF && renderer.parameters.dofSamples > 1 && hasNegativeSpace){
+			drawNegativeSpace();
+		}
+		fbo.end();
+
+		postEffects.process(fbo.getTexture(), postFbo, postParameters);
+
+		postFbo.begin();
+
+		if((!renderer.parameters.enableDOF || renderer.parameters.dofSamples == 1) && hasNegativeSpace){
+			drawNegativeSpace();
+		}
+
+
+		ofCamera camera;
+		auto fov = camera.getFov();
+		float eyeY = 1;
+		float halfFov = PI * fov / 360.;
+		float theTan = tanf(halfFov);
+		float d = eyeY / theTan;
+		camera.setPosition({0,0,d});
+		camera.lookAt({0,0,0}, {0,1,0});
+		camera.setNearClip(0.01);
+		camera.setFarClip(10);
+		ofSetColor(255);
+		camera.begin();
+		circle.draw();
+		camera.end();
+
+		postFbo.end();
+
+		forceRedraw = false;
 	}
-
-
-//	switch (state) {
-//	case PreBigBang:
-//	case PreBigBangWobble:
-//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//		renderer.clip = true;
-//		renderer.fadeEdge0 = 0.0;
-//		renderer.fadeEdge1 = 0.5;
-//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-//		break;
-//	case BigBang:
-//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//		renderer.fadeEdge0 = 0.0;
-//		renderer.fadeEdge1 = 0.5;
-//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-
-//		ofEnableBlendMode(OF_BLENDMODE_ADD);
-//		renderer.fadeEdge0 = scale*scale;
-//		renderer.fadeEdge1 = scale;
-//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-//		break;
-//	case Expansion:
-//	case ExpansionTransition:
-//		ofEnableBlendMode(OF_BLENDMODE_ADD);
-//		renderer.clip = false;
-//		renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-//		break;
-//	case ParticlesTransition:
-//		renderer.clip = false;
-//		if (renderer.alphaFactor > 0.001) {
-//			ofEnableBlendMode(OF_BLENDMODE_ADD);
-//			renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), camera);
-//		}
-//		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//		auto alphaBlobs = renderer.alphaFactor;
-//		renderer.alphaFactor = 1;
-//		renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), camera);
-//		renderer.alphaFactor = alphaBlobs;
-//		break;
-//	}
-
-	//ofDrawSphere(dofTarget, 0.01);
-	camera.end();
-	fbo.end();
-
-	postEffects.process(fbo.getTexture(), postFbo, postParameters);
 
 	ofDisableAlphaBlending();
 	ofSetColor(255);
@@ -497,10 +800,6 @@ void ofApp::draw(){
 	ofScale(100,100,0);
 
 	ofSetColor(255);
-//	ofPolyline polygon;
-//	polygon.arc(glm::vec3(0), 1, 1, 0, 360, true, renderer.bokehsides);
-//	polygon.close();
-//	polygon.draw();
 
 	renderer.getBokehShape().draw();
 	ofPopMatrix();
@@ -514,10 +813,7 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	switch(key){
-		case 'r':
-			rotating = !rotating;
-		break;
-		case 'T':
+		case 't':
 			showTimeline = !showTimeline;
 		break;
 	}
@@ -552,7 +848,7 @@ void ofApp::mousePressed(ofMouseEventArgs & mouse){
 				dofTarget = v;
 			}
 		}
-		renderer.dofDistance = glm::distance(camera.getPosition(), dofTarget);
+		renderer.parameters.dofDistance = glm::distance(camera.getPosition(), dofTarget);
 //		dofTimeStart = timeline.getCurrentTime();
 //		dofDistanceStart = renderer.dofDistance;
 //		dofDistanceTarget = glm::distance(camera.getPosition(), dofTarget);

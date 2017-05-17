@@ -59,11 +59,11 @@ public:
 	};
 
 	double now = 0.0;
+	double dt = 0.0;
 	double t_bigbang = 0.0;
 	double t_from_bigbang = 0.0;
 	double t_expansion = 0.0;
 	double t_from_expansion = 0.0;
-	double t_transition = 0.0;
 	double t_from_particles = 0.0;
 
 
@@ -72,6 +72,9 @@ public:
 		glm::vec3 origin;
 		double startTime;
 		float startScale = 1;
+		bool negativeSpace = false;
+		glm::quat rotation;
+		float alpha;
 	};
 	std::vector<Cluster> clusters{Cluster()};
 	float cameraDistanceBeforeBB;
@@ -109,10 +112,14 @@ public:
 		std::array<ofFloatColor,4> postBigBangColors;
 
 		ofParameter<bool> runSimulation{ "Run Simulation", true };
-		ofParameter<float> cameraDistance{"camera disntace", 0, 0, 10};
+		ofParameter<void> offsetTimeline{"offset timeline"};
+		ofParameter<void> offsetSelected{"offset selected"};
 		ofParameter<void> triggerBigbang{"trigger bigbang"};
 		ofParameter<bool> controlCamera{ "Control Camera", false };
-		ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 100, ofParameterScale::Logarithmic};
+		ofParameter<bool> rotating{"Rotating", true};
+		ofParameter<bool> rotatingUseSpeed{"Rotation use speed", true};
+		ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
+		ofParameter<float> rotationRadiusSpeed{"Rotation radius speed", 0.1, -1, 1, ofParameterScale::Logarithmic};
 		ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 		ofParameter<float> state{"state", 0, 0, 5};
 
@@ -121,84 +128,76 @@ public:
 			ofParameter<ofFloatColor> color2{"color 2", ofColor::white};
 			ofParameter<ofFloatColor> color3{"color 3", ofColor::white};
 			ofParameter<ofFloatColor> color4{"color 4", ofColor::white};
+			ofParameter<bool> negativeWire{"negative wire", false};
 			PARAM_DECLARE("Colors",
 			  color1,
 			  color2,
 			  color3,
-			  color4)
+			  color4,
+			  negativeWire)
 		} colors;
 
 		struct : ofParameterGroup{
+			ofParameter<void> newCluster{"Trigger new cluster"};
 			ofParameter<float> newClusterAt{ "New cluster at scale", 3, 1, 30};
-			ofParameter<float> bigBangDuration{ "BigBang duration", 0.25f, 0.0f, 2.f};
-			ofParameter<float> preBigBangWobbleDuration{ "Pre BigBang wobble duration", 3.f, 0.0f, 5.f};
-			ofParameter<float> bbFlashStart{"bigbang flash start %", 0.9, 0.f, 1.f};
-			ofParameter<float> bbFlashIn{"bigbang flash in, duration sec.", 0.1, 0.f, 1.f};
-			ofParameter<float> bbFlashPlateau{"bigbang flash plateau, sec.", 0.1, 0.f, 1.f};
-			ofParameter<float> bbFlashOut{"bigbang flash out, duration sec.", 0.1, 0.f, 1.f};
-			ofParameter<float> bbTransitionFlash{"inflation transition flash at scale.", 10.f, 2.f, 20.f};
-			ofParameter<float> bbTransitionIn{"inflation transition in, duration sec.", 0.5, 0.f, 1.f};
-			ofParameter<float> bbTransitionPlateau{"inflation transition plateau, sec.", 0.3, 0.f, 1.f};
-			ofParameter<float> bbTransitionOut{"inflation transition out, sec.", 2, 0.f, 3.f};
-			ofParameter<ofFloatColor> bbTransitionColor{"inflation transition bg color", ofFloatColor::fromHex(0x91a5a3,1)};
+			ofParameter<float> mainClusterScaleAfterBigbang{ "Main cluster scale after bb", 0, 0, 30, ofParameterScale::Logarithmic};
 			ofParameter<float> transitionParticlesDuration{"transition particles in. (s)", 1, 0, 5};
 			ofParameter<float> transitionBlobsOutDuration{"transition blobs out. (s)", 1, 0, 5};
-			ofParameter<float> HtBB{ "Rate of expansion at bigbang", 5.f, 1.f, 100.f}; // rate of expansion
-			ofParameter<float> HtPostBB{ "Rate of expansion after bigbang", 0.05f, 0.0f, 5.f}; // rate of expansion
 			ofParameter<float> Ht{ "Current rate of expansion", 5.f, 0.0f, 100.f}; // rate of expansion
 			ofParameter<float> hubbleWavelength{ "Hubble (min) wavelength for any octave", 4.f, 0.01f, 4.f };
-			ofParameter<int> geometrySize{"geometry size", 0, 0, 1024*1024*1024};
+			ofParameter<float> maxClusterScale{"Max scale for any cluster", 30, 0, 60};
 
 			PARAM_DECLARE("Equations",
-				  bigBangDuration,
+				  newCluster,
 				  newClusterAt,
-				  preBigBangWobbleDuration,
-				  bbFlashStart,
-				  bbFlashIn,
-				  bbFlashPlateau,
-				  bbFlashOut,
-				  bbTransitionFlash,
-				  bbTransitionIn,
-				  bbTransitionPlateau,
-				  bbTransitionOut,
-				  bbTransitionColor,
+				  mainClusterScaleAfterBigbang,
 				  transitionParticlesDuration,
 				  transitionBlobsOutDuration,
-				  HtBB,
-				  HtPostBB,
 				  Ht,
 				  hubbleWavelength,
-				  geometrySize);
+				  maxClusterScale);
 		} equations;
 
 		struct : ofParameterGroup
 		{
 			ofParameter<bool> debug{ "Debug Noise", false };
-			ofParameter<bool> renderBack{ "Render Back", true };
-			ofParameter<bool> renderFront{ "Render Front", false };
-			ofParameter<bool> boxBackRender{ "Render Box Back", false };
 			ofParameter<int>  fps{ "fps", 60, 20, 1200, ofParameterScale::Logarithmic};
+			ofParameter<bool> systemClock{"system clock", false};
 			ofParameter<bool> record{"Record image seq.",false};
 			ofParameter<bool> recordVideo{"Record video",false};
 
 			PARAM_DECLARE("Render",
 				debug,
-				renderBack,
-				renderFront,
-				boxBackRender,
 				fps,
+				systemClock,
 				record,
 				recordVideo);
 		} render;
 
+		struct : ofParameterGroup{
+			ofParameter<float> pct{ "circle pct", 0, 0, 1};
+			ofParameter<float> inner{ "inner radius", 0.8, 0, 1};
+			ofParameter<float> outer{ "outer radius", 0.9, 0, 1};
+
+			PARAM_DECLARE("Circle",
+						  pct,
+						  inner,
+						  outer);
+		} circle;
+
 		PARAM_DECLARE("Inflation",
 			runSimulation,
-			cameraDistance,
+			offsetTimeline,
+			offsetSelected,
 			controlCamera,
+			rotating,
+			rotatingUseSpeed,
 			rotationRadius,
 			rotationSpeed,
+			rotationRadiusSpeed,
 			state,
 			render,
+			circle,
 			colors,
 			equations);
 	} parameters;
@@ -213,19 +212,19 @@ public:
 
 	ofxPanel gui;
 	ofxTextureRecorder recorder;
-	bool rotating = false;
 	ofPolyline cameraPath;
 	glm::vec3 dofTarget;
 	double dofTimeStart = 0;
 	float dofDistanceTarget;
 	float dofDistanceStart;
 
-	ofParameter<string> textParam{"textParam"};
-	ofxInputField<string> textField;
-
 	std::vector<ofEventListener> listeners;
 	ofxTimeline timeline;
 	bool showTimeline = true;
 	int prevState = 0;
 	float orbitAngle;
+
+	bool forceRedraw = true;
+
+	ofMesh circle;
 };
