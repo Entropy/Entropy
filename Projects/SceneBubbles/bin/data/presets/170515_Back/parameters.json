@@ -1,13 +1,13 @@
 {
     "Bubbles": {
         "Box": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Auto_Draw": "1",
             "Blend_Mode": "1",
             "Color": "0.376471, 0.376471, 0.376471, 1",
             "Cull_Face": "1",
             "Depth_Test": "0",
-            "Edge_Ratio": "0.003997",
+            "Edge_Ratio": "0.001",
             "Enabled": "1",
             "Size": "12000",
             "Subdivisions": "5"
@@ -17,7 +17,7 @@
                 "Dolly_Speed": "0",
                 "Far_Clip": "200000",
                 "Near_Clip": "0.001",
-                "Pan_Speed": "0",
+                "Pan_Speed": "0.0320008",
                 "Roll_Speed": "0",
                 "Tilt_Speed": "0"
             },
@@ -26,7 +26,7 @@
                 "Record_Video": "0"
             },
             "SphereExtra": {
-                "Mask_Mix": "0",
+                "Mask_Mix": "0.118455",
                 "Tint_Color": "1, 1, 1, 1"
             }
         },
@@ -44,7 +44,7 @@
             "Run_Simulation": "0"
         },
         "Pool_GL_3D": {
-            "Alpha": "1",
+            "Alpha": "0",
             "Bursts": {
                 "Color": "0.498039, 0.498039, 0.498039, 1",
                 "Enabled": "0",
@@ -61,18 +61,18 @@
             "Draw_Enabled": "1",
             "Drop_Color_1": "0.937255, 0.82046, 0.668943, 1",
             "Drop_Color_2": "0.658824, 0.508092, 0.434048, 1",
-            "Drop_Rate": "1",
+            "Drop_Rate": "60",
             "Dropping": "0",
             "Filter_Mode": "0",
             "Radius": "20",
             "Ring_Size": "1.25",
-            "Ripple_Rate": "2",
+            "Ripple_Rate": "120",
             "Run_Simulation": "1",
             "Volume_Size": "12000"
         },
         "Post_Effects": {
             "Bloom": {
-                "Boost": "1",
+                "Boost": "0.01",
                 "Brightness_Threshold": "0.01",
                 "Debug_Blur": "0",
                 "Enabled": "1",
@@ -80,8 +80,8 @@
                 "Sigma": "0.951"
             },
             "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
+                "Brightness": "-0.25",
+                "Contrast": "0.65",
                 "Enabled": "1",
                 "Exposure": "5.206",
                 "Gamma": "2.2",
