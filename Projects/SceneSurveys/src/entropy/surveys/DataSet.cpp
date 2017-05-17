@@ -209,7 +209,8 @@ namespace entropy
 							0 <= clipPos.z && clipPos.z <= 1)
 						{
 							// Passed all tests, build and add transform matrix!
-							const auto scale = glm::vec3(this->masses[i] * params.model.geoScale);
+							auto scale = glm::vec3(this->masses[i] * params.model.geoScale);
+							scale.y *= (1.0f - (((i % 53) / 53.0f) * params.model.squashRange));
 
 							auto transform = glm::translate(worldTransform, position.xyz());
 							transform = glm::scale(transform, scale);

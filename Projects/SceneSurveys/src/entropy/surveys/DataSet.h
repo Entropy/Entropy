@@ -49,6 +49,7 @@ namespace entropy
 				{
 					ofParameter<float> geoScale{ "Geo Scale", 8.0f, 0.01f, 32.0f };
 					ofParameter<float> alphaScale{ "Alpha Scale", 1.0f, 0.01f, 8.0f, ofParameterScale::Logarithmic };
+					ofParameter<float> squashRange{ "Squash Range", 0.2f, 0.0f, 1.0f };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
 					ofParameter<float> clipDistance{ "Clip Distance", 1000.0f, 0.0f, 5000.0f };
 					ofParameter<float> clipSize{ "Clip Size", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
@@ -56,6 +57,7 @@ namespace entropy
 					PARAM_DECLARE("Model",
 						geoScale,
 						alphaScale,
+						squashRange,
 						resolution,
 						clipDistance,
 						clipSize);
