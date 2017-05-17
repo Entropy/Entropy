@@ -114,24 +114,23 @@ vec3 toReinhard2(vec3 _rgb, float _whiteSq)
     return toGamma(_rgb*lumScale/lumRgb);
 }
 
-const float a = 0.22; // Shoulder strength
-const float b = 0.30; // Linear strength
-const float c = 0.10; // Linear angle
-const float d = 0.20; // Toe Strength
-const float e = 0.01; // Toe numerator
-const float f = 0.30; // Toe denominator
-					  // e/f Toe angle
+//const float a = 0.22; // Shoulder strength
+//const float b = 0.30; // Linear strength
+//const float c = 0.10; // Linear angle
+//const float d = 0.20; // Toe Strength
+//const float e = 0.01; // Toe numerator
+//const float f = 0.30; // Toe denominator
+//					  // e/f Toe angle
 const float w = 11.2; // Linear white point value
 
-/*uniform float exposureBias;
 uniform float a; // Shoulder strength
 uniform float b; // Linear strength
 uniform float c; // Linear angle
 uniform float d; // Toe Strength
 uniform float e; // Toe numerator
 uniform float f; // Toe denominator
-					  // e/f Toe angle
-uniform float w = 11.2; // Linear white point value*/
+                      // e/f Toe angle
+//uniform float w = 11.2; // Linear white point value
 
 vec3 toUncharted2(vec3 _x)
 {
