@@ -38,15 +38,18 @@ void main(void)
 	float minDepth = texture(minDepthMask, texcoord).r;
 	float maxDepth = texture(maxDepthMask, texcoord).r;
 	if(wobblyClip<1 || (gl_FragCoord.z<minDepth && gl_FragCoord.z>maxDepth)){
-		fragColor = vec4(f_color.rgb, 0);
+		fragColor = f_color;//vec4(f_color.rgb, 0);
 		fragColor.rgb *= accumValue * alpha;
 		//fragColor.a = alpha * accumValue;
     #if FOG_ENABLED
-		fragColor.rgb *= fog(f_distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+		float fogValue = fog(f_distanceToCamera, fogStartDistance, fogMinDistance, fogMaxDistance, fogPower);
+		fragColor.rgb *= fogValue;
+		fragColor.a *= fogValue;
     #endif
     #if SPHERICAL_CLIP
 		float sphere = 1 - pow(smoothstep(fadeEdge0, fadeEdge1, f_distanceToCenter), fadePower);
 		fragColor.rgb *= sphere;
+		fragColor.a *= sphere;
     #endif
 	}else{
 		discard;
