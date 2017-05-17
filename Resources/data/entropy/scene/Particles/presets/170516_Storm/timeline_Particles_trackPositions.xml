@@ -1,0 +1,56 @@
+<positions>
+    <element name="Camera">
+        <x>0.000000000</x>
+        <y>468.000000000</y>
+        <width>1471.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Cues">
+        <x>0.000000000</x>
+        <y>404.000000000</y>
+        <width>1471.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Messages">
+        <x>0.000000000</x>
+        <y>116.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Environment/Energy">
+        <x>0.000000000</x>
+        <y>532.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Particles/Rendering/Ambient_Light">
+        <x>0.000000000</x>
+        <y>596.000000000</y>
+        <width>1471.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Post_Effects/Bloom/Enabled">
+        <x>0.000000000</x>
+        <y>532.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Post_Effects/Color/Exposure">
+        <x>0.000000000</x>
+        <y>596.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Renderer/Fog_Max_Distance">
+        <x>0.000000000</x>
+        <y>660.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/Ambient_Light">
+        <x>0.000000000</x>
+        <y>596.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

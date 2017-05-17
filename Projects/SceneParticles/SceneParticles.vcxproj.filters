@@ -1,0 +1,936 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Environment.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Octree.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Particle.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\ParticleSystem.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\particles\Photons.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyRender\src\entropy\render\BlobMask.cpp">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyRender\src\entropy\render\PostEffects.cpp">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.cpp">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxGpuParticles\src\GpuParticles.cpp">
+      <Filter>local_addons\ofxGpuParticles\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
+      <Filter>local_addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxObjLoader\libs\glm.c">
+      <Filter>local_addons\ofxObjLoader\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.cpp">
+      <Filter>local_addons\ofxTextInputField\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.cpp">
+      <Filter>local_addons\ofxTextureRecorder\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimecode\src\ofxTimecode.cpp">
+      <Filter>local_addons\ofxTimecode\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_linux.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_mac.mm">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxHotKeys_impl_win.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.mm">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTimeline.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLBangs.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColors.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLCurves.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLFlags.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLInOut.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLLFO.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPage.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTicker.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.cpp">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fft.c">
+      <Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\libs\kiss\src\kiss_fftr.c">
+      <Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.cpp">
+      <Filter>local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{D3F5A9F4-E5AB-AAE4-DC1C-6918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\particles">
+      <UniqueIdentifier>{95B66F27-0E40-0E9C-576F-AE99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGui">
+      <UniqueIdentifier>{4F2A59AF-5F4E-704B-D067-EC13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGui\src">
+      <UniqueIdentifier>{645E9533-4DCD-6179-1CDF-CB65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings">
+      <UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\src">
+      <UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\libs">
+      <UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons">
+      <UniqueIdentifier>{DE6745C7-E99D-D8E0-F77D-C032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyRender">
+      <UniqueIdentifier>{31A44935-C502-8EFA-2677-F449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyRender\src">
+      <UniqueIdentifier>{F1261477-D89A-F3EA-EFCF-1E88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyRender\src\entropy">
+      <UniqueIdentifier>{73F1BE7B-10C8-CA82-5B22-6286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyRender\src\entropy\render">
+      <UniqueIdentifier>{D0002D35-1F4C-75D4-E003-90A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyUtil">
+      <UniqueIdentifier>{BB8A8D78-89DA-2819-DBA5-F090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyUtil\src">
+      <UniqueIdentifier>{73EDF871-B49B-4AE6-BEC4-2098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\EntropyUtil\src\entropy">
+      <UniqueIdentifier>{B775035B-342C-D6AC-0EED-D0DB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxEasing">
+      <UniqueIdentifier>{09BAC5A2-221F-DBBE-CEE3-29FF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxEasing\src">
+      <UniqueIdentifier>{A6B16EF9-3A3D-EA2D-8A51-7D3D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxGpuParticles">
+      <UniqueIdentifier>{8433B3C1-8F26-3D2B-CFE5-6918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxGpuParticles\src">
+      <UniqueIdentifier>{EF7FC220-63D2-B582-E8D2-D09C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxObjLoader">
+      <UniqueIdentifier>{571A3230-8355-C122-4341-3889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxObjLoader\src">
+      <UniqueIdentifier>{08AE2AF2-51BD-A42B-6637-F04E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxObjLoader\libs">
+      <UniqueIdentifier>{211C49D9-51CB-E6C6-8DAD-31E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxRange">
+      <UniqueIdentifier>{37BAA317-9451-E12F-7CDF-0905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxRange\src">
+      <UniqueIdentifier>{9C86F2DF-AF0B-20E3-D9F9-5218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSerialize">
+      <UniqueIdentifier>{B2A6570A-D2C7-40CB-5DE8-99E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSerialize\src">
+      <UniqueIdentifier>{CA5122F3-8527-5916-5866-2119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSet">
+      <UniqueIdentifier>{8AFCF2D2-FEB6-04EA-DF1B-5D60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxSet\src">
+      <UniqueIdentifier>{5AE432FB-C8D0-1918-FCBC-FD71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb">
+      <UniqueIdentifier>{79D202C6-B00E-1E0B-4AEE-938C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs">
+      <UniqueIdentifier>{A1F44B87-97D0-4E2E-095E-22B5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb">
+      <UniqueIdentifier>{FCE2DFFC-F399-F36B-75C2-95DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include">
+      <UniqueIdentifier>{79F57B87-EB51-5D37-E58F-C5DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\serial">
+      <UniqueIdentifier>{213D5278-E71C-212A-08A7-87CF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\serial\tbb">
+      <UniqueIdentifier>{36D00112-C416-98CC-8EC4-E8E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\tbb">
+      <UniqueIdentifier>{AECD842F-2F83-EF52-9337-4D89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\tbb\compat">
+      <UniqueIdentifier>{2DFA9135-07EF-FB37-1A64-CDFF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\tbb\internal">
+      <UniqueIdentifier>{213CD874-77B0-7197-A6E8-D232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTbb\libs\tbb\include\tbb\machine">
+      <UniqueIdentifier>{33F5DE93-D35D-8717-4523-6613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextInputField">
+      <UniqueIdentifier>{5FC37960-E6F8-CD1A-33EE-F5E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextInputField\src">
+      <UniqueIdentifier>{E5E3389E-B5E5-B40C-A4DC-A8AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextureRecorder">
+      <UniqueIdentifier>{49B4AD87-1CA9-AB4A-48AE-4FA0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextureRecorder\src">
+      <UniqueIdentifier>{BBA602B5-AB8B-5F1B-BE51-7DA9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextureRecorder\libs">
+      <UniqueIdentifier>{01CCD978-A4A4-84CD-F5C0-D2F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextureRecorder\libs\half">
+      <UniqueIdentifier>{84B6C7C5-C329-ABA5-F37C-A6C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTextureRecorder\libs\half\include">
+      <UniqueIdentifier>{97E3B1B2-03CA-4BE0-8B63-1715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimecode">
+      <UniqueIdentifier>{61CBE0D7-6D4D-5396-5960-D176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimecode\src">
+      <UniqueIdentifier>{4EAE671B-F2AB-B1ED-022C-B1A9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline">
+      <UniqueIdentifier>{779B08AE-F457-51A3-FAFC-82E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\src">
+      <UniqueIdentifier>{74708723-9F17-8290-CAD1-44F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs">
+      <UniqueIdentifier>{0BFAE52E-3834-9FC1-F48B-4200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\kiss">
+      <UniqueIdentifier>{B57C3786-03FA-86BD-4510-DFBA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\kiss\include">
+      <UniqueIdentifier>{501856A1-A98F-FF4A-FC21-6F97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\kiss\src">
+      <UniqueIdentifier>{B60ECCC0-BA57-B881-867D-9D49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions">
+      <UniqueIdentifier>{FD823F29-3551-6F9E-5FA9-9664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src">
+      <UniqueIdentifier>{E32CF88C-F81A-BB61-0DF1-8073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\openal">
+      <UniqueIdentifier>{ED3CB3F1-D21F-CE5E-2B45-3607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\openal\include">
+      <UniqueIdentifier>{008A755E-BBA9-B895-CC2A-038E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\openal\include\AL">
+      <UniqueIdentifier>{A54686D7-412F-A692-5D5B-4859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\sndfile">
+      <UniqueIdentifier>{C78B1F1D-DDD9-B784-19AD-3A1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="local_addons\ofxTimeline\libs\sndfile\include">
+      <UniqueIdentifier>{4D028A0C-B98D-7CF4-EA7F-350E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Environment.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Octree.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Octree.inl">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Particle.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\ParticleSystem.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\Photons.h">
+      <Filter>src\entropy\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyRender\src\entropy\render\BlobMask.h">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyRender\src\entropy\render\PostEffects.h">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.h">
+      <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyUtil\src\entropy\Helpers.h">
+      <Filter>local_addons\EntropyUtil\src\entropy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxEasing\src\easing_terms_of_use.html">
+      <Filter>local_addons\ofxEasing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxEasing\src\ofxEasing.h">
+      <Filter>local_addons\ofxEasing\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\GpuParticles.h">
+      <Filter>local_addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxGpuParticles\src\ofxGpuParticles.h">
+      <Filter>local_addons\ofxGpuParticles\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
+      <Filter>local_addons\ofxObjLoader\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxObjLoader\libs\glm.h">
+      <Filter>local_addons\ofxObjLoader\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxRange\src\ofRange.h">
+      <Filter>local_addons\ofxRange\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSerialize\src\ofxSerialize.h">
+      <Filter>local_addons\ofxSerialize\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSerialize\src\ofxSerialize.inl">
+      <Filter>local_addons\ofxSerialize\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSet\src\ofxRange.h">
+      <Filter>local_addons\ofxSet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSet\src\ofxRange.inl">
+      <Filter>local_addons\ofxSet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSet\src\ofxSet.h">
+      <Filter>local_addons\ofxSet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxSet\src\ofxSet.inl">
+      <Filter>local_addons\ofxSet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\serial\tbb\parallel_for.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\serial\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\serial\tbb\tbb_annotate.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\serial\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\aggregator.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\aligned_space.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\atomic.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\blocked_range.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\blocked_range2d.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\blocked_range3d.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\cache_aligned_allocator.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\combinable.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\compat\ppl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_hash_map.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_lru_cache.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_priority_queue.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_queue.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_unordered_map.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_unordered_set.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\concurrent_vector.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\critical_section.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\enumerable_thread_specific.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\flow_graph.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\flow_graph_opencl_node.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\global_control.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_aggregator_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_concurrent_queue_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_concurrent_unordered_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_async_msg_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_indexer_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_item_buffer_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_join_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_node_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_tagged_buffer_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_trace_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_flow_graph_types_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_mutex_padding.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_range_iterator.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_tbb_hash_compare_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_tbb_strings.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_tbb_windef.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_template_helpers.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_x86_eliding_mutex_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\internal\_x86_rtm_rw_mutex_impl.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\gcc_armv7.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\gcc_generic.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\gcc_ia32_common.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\gcc_itsx.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\ibm_aix51.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\icc_generic.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\linux_common.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\linux_ia32.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\linux_ia64.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\linux_intel64.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\macos_common.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\mac_ppc.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\mic_common.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\msvc_armv7.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\msvc_ia32_common.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\sunos_sparc.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\windows_api.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\windows_ia32.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\windows_intel64.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\machine\xbox360_ppc.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb\machine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\memory_pool.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\null_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\null_rw_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_do.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_for.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_for_each.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_invoke.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_reduce.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_scan.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_sort.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\parallel_while.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\partitioner.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\pipeline.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\queuing_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\queuing_rw_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\reader_writer_lock.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\recursive_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\runtime_loader.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\scalable_allocator.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\spin_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\spin_rw_mutex.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\task.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\task_arena.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\task_group.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\task_scheduler_init.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\task_scheduler_observer.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbbmalloc_proxy.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_allocator.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_config.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_exception.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_machine.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_profiling.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_stddef.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tbb_thread.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTbb\libs\tbb\include\tbb\tick_count.h">
+      <Filter>local_addons\ofxTbb\libs\tbb\include\tbb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputField.h">
+      <Filter>local_addons\ofxTextInputField\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTextInputField\src\ofxTextInputFieldFontRenderer.h">
+      <Filter>local_addons\ofxTextInputField\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTextureRecorder\src\ofxTextureRecorder.h">
+      <Filter>local_addons\ofxTextureRecorder\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTextureRecorder\libs\half\include\half.hpp">
+      <Filter>local_addons\ofxTextureRecorder\libs\half\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimecode\src\ofxTimecode.h">
+      <Filter>local_addons\ofxTimecode\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxHotKeys.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxRemoveCocoaMenu.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTimeline.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLAudioTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLBangs.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCameraTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColors.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLColorTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLCurves.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyKeyframes.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEmptyTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLEvents.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLFlags.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequence.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageSequenceFrame.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLImageTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLInOut.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLKeyframes.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLLFO.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPage.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLPageTabs.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLSwitches.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTicker.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLTrackHeader.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoThumb.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLVideoTrack.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\src\ofxTLZoomer.h">
+      <Filter>local_addons\ofxTimeline\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fft.h">
+      <Filter>local_addons\ofxTimeline\libs\kiss\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\include\kiss_fftr.h">
+      <Filter>local_addons\ofxTimeline\libs\kiss\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\kiss\src\_kiss_fft_guts.h">
+      <Filter>local_addons\ofxTimeline\libs\kiss\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.h">
+      <Filter>local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\al.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alc.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\alext.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-creative.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx-presets.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\openal\include\AL\efx.h">
+      <Filter>local_addons\ofxTimeline\libs\openal\include\AL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\addons\ofxTimeline\libs\sndfile\include\sndfile.h">
+      <Filter>local_addons\ofxTimeline\libs\sndfile\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+</Project>
