@@ -1,0 +1,34 @@
+<keyframes>
+    <key>
+        <colorR>253</colorR>
+        <colorG>0</colorG>
+        <colorB>13</colorB>
+        <colorA>255</colorA>
+        <time>00:03:39:816</time>
+        <value>0.274999976</value>
+    </key>
+    <key>
+        <colorR>255</colorR>
+        <colorG>255</colorG>
+        <colorB>255</colorB>
+        <colorA>255</colorA>
+        <time>00:03:42:473</time>
+        <value>0.725000024</value>
+    </key>
+    <key>
+        <colorR>121</colorR>
+        <colorG>60</colorG>
+        <colorB>255</colorB>
+        <colorA>255</colorA>
+        <time>00:03:44:051</time>
+        <value>0.675000012</value>
+    </key>
+    <key>
+        <colorR>255</colorR>
+        <colorG>37</colorG>
+        <colorB>0</colorB>
+        <colorA>255</colorA>
+        <time>00:03:56:269</time>
+        <value>0.600000024</value>
+    </key>
+</keyframes>
