@@ -25,9 +25,9 @@ namespace entropy
 			octaves.emplace_back(6, 8, 0.25f, ofFloatColor{0.419608f, 0.631373f, 0.733333f, 1}, false);
 			octaves.emplace_back(7, 4, 0.125f, ofFloatColor{0.121569f, 0.870588f, 1, 1}, false);
 
-			/*for (auto & octave : octaves) {
+			for (auto & octave : octaves) {
 				parameters.add(octave.parameters);
-			}*/
+			}
         }
 
 		//--------------------------------------------------------------
@@ -62,15 +62,15 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void NoiseField::update(double now)
+		void NoiseField::update(double dt)
 		{
 			auto i = 0;
+			this->now +=  dt * noiseSpeed;
 			for (auto & octave : octaves) {
 				if (octave.advanceTime) {
-					octave.now = now;
+					octave.now = this->now;
 				}
 			}
-			this->now =  now;
 
 			noiseComputeShader.begin();
 			volumeTex.bindAsImage(0, GL_WRITE_ONLY, 0, true, 0);
