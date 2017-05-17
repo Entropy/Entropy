@@ -27,8 +27,9 @@ void ofApp::setup()
 	this->sphereSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/galaxy.frag";
 	this->sphereShader.setup(this->sphereSettings);
 
-	// Build the texture.
+	// Build the textures.
 	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/sprites.png"), this->spriteTexture);
+	entropy::LoadTextureImage("textures/ring.png", this->shellTexture);
 
 	// Load the model.
 	this->masterMesh.load("models/galaxy.ply");
