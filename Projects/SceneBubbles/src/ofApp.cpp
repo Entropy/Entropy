@@ -305,13 +305,8 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-	int canvasWidth = ofGetWidth();
-	int canvasHeight = ofGetHeight();
-	if (this->parameters.render.recordSequence || this->parameters.render.recordVideo)
-	{
-		canvasWidth = this->parameters.render.renderWidth;
-		canvasHeight = this->parameters.render.renderHeight;
-	}
+	int canvasWidth = w;
+	int canvasHeight = h;
 
 	this->pool2D.setDimensions(glm::vec2(canvasWidth, canvasHeight));
 

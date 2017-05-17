@@ -86,8 +86,8 @@ protected:
 		{
 			ofParameter<bool> recordSequence{ "Record Sequence", false };
 			ofParameter<bool> recordVideo{ "Record Video", false };
-			ofParameter<int> renderWidth{ "Render Width", 4200, 800, 5760 };
-			ofParameter<int> renderHeight{ "Render Height", 1050, 600, 2160 };
+			ofParameter<int> renderWidth{ "Render Width", 4200, 1920, 5760 };
+			ofParameter<int> renderHeight{ "Render Height", 1080, 360, 1080 };
 
 			PARAM_DECLARE("Render",
 				recordSequence,
