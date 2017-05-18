@@ -424,15 +424,15 @@ namespace nm
 
 	//--------------------------------------------------------------
 	std::vector<Particle*> ParticleSystem::findNearestThan(const Particle & p, float distance) const{
-		std::vector<Particle*> near;
-		octree.findNearestThan(p, distance, near);
-		return near;
+		std::vector<Particle*> nearList;
+		octree.findNearestThan(p, distance, nearList);
+		return nearList;
 	}
 
 	//--------------------------------------------------------------
 	std::vector<Particle*> ParticleSystem::findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const{
-		std::vector<Particle*> near;
-		octree.findNearestThanByType(p, distance, allowedTypes, near);
-		return near;
+		std::vector<Particle*> nearList;
+		octree.findNearestThanByType(p, distance, allowedTypes, nearList);
+		return nearList;
 	}
 }

@@ -170,7 +170,7 @@ namespace nm
 	}
 
 	template<class T>
-	void Octree<T>::findNearestThan(const T& point, float distance, std::vector<T*> & near) const{
+	void Octree<T>::findNearestThan(const T& point, float distance, std::vector<T*> & nearList) const{
 		if(hasPoints){
 			if (depth < MAX_DEPTH())
 			{
@@ -180,7 +180,7 @@ namespace nm
 					if (point.x > mid.x) octant |= X_SIDE;
 					if (point.y > mid.y) octant |= Y_SIDE;
 					if (point.z > mid.z) octant |= Z_SIDE;
-					children[octant].findNearestThan(point, distance, near);
+					children[octant].findNearestThan(point, distance, nearList);
 				}
 			}
 			else
@@ -193,7 +193,7 @@ namespace nm
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						if (dist < distance){
-							near.push_back(points[i]);
+							nearList.push_back(points[i]);
 						}
 					}
 				}
@@ -204,7 +204,7 @@ namespace nm
 
 	template<class T>
 	template<typename Type>
-	void Octree<T>::findNearestThanByType(const T& point, float distance, std::initializer_list<Type> allowedTypes, std::vector<T*> & near) const{
+	void Octree<T>::findNearestThanByType(const T& point, float distance, std::initializer_list<Type> allowedTypes, std::vector<T*> & nearList) const{
 		if(hasPoints){
 			if (depth < MAX_DEPTH())
 			{
@@ -214,7 +214,7 @@ namespace nm
 					if (point.x > mid.x) octant |= X_SIDE;
 					if (point.y > mid.y) octant |= Y_SIDE;
 					if (point.z > mid.z) octant |= Z_SIDE;
-					children[octant].findNearestThanByType(point, distance, allowedTypes, near);
+					children[octant].findNearestThanByType(point, distance, allowedTypes, nearList);
 				}
 			}
 			else
@@ -234,7 +234,7 @@ namespace nm
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						if (dist < distance){
-							near.push_back(points[i]);
+							nearList.push_back(points[i]);
 						}
 					}
 				}

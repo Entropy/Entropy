@@ -103,14 +103,14 @@ void TextRenderer::update(nm::ParticleSystem & particles, State state){
 		case BARYOGENESIS:
 			for(size_t i=0;i<particles.getParticles().size();i++){
 				auto & particle = particles.getParticles()[i];
-				std::vector<nm::Particle*> near;
+				std::vector<nm::Particle*> nearList;
 				if(isAntiMatterQuark(particle)){
-					near = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::UP_QUARK, nm::Particle::DOWN_QUARK, nm::Particle::UP_DOWN_QUARK});
+					nearList = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::UP_QUARK, nm::Particle::DOWN_QUARK, nm::Particle::UP_DOWN_QUARK});
 				}else if(isMatterQuark(particle)){
-					near = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::ANTI_UP_QUARK, nm::Particle::ANTI_DOWN_QUARK});
+					nearList = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::ANTI_UP_QUARK, nm::Particle::ANTI_DOWN_QUARK});
 				}
-				if(!near.empty()){
-					relations.push_back(std::make_pair(i, near));
+				if(!nearList.empty()){
+					relations.push_back(std::make_pair(i, nearList));
 				}
 			}
 		break;
@@ -133,8 +133,8 @@ void TextRenderer::draw(nm::ParticleSystem & particles, nm::Environment & enviro
 		auto maxPDistance = (relDistance * worldSize) * (relDistance * worldSize);
 		for(auto & r: relations){
 			auto & p1 = particles.getParticles()[r.first];
-			auto & near = r.second;
-			for(auto * p2: near){
+			auto & nearp = r.second;
+			for(auto * p2: nearp){
 				auto distance = glm::distance2(cam.getPosition(), p1 * scale);
 				auto pDistance = glm::distance2(p1.xyz() * scale, p2->xyz() * scale);
 				auto pct = 1-ofClamp(distance / maxScreenDistance, 0, 1);
@@ -153,11 +153,11 @@ void TextRenderer::draw(nm::ParticleSystem & particles, nm::Environment & enviro
 		billboardShader.setUniformMatrix4f("modelViewProjectionMatrix", projection * modelview);
 		for(auto & r: relations){
 			auto & p1 = particles.getParticles()[r.first];
-			auto & near = r.second;
+			auto & nearp = r.second;
 			auto distance = glm::distance2(cam.getPosition(), p1 * scale);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
 			auto pctColor = 1-pctDistance;
-			for(auto * p2: near){
+			for(auto * p2: nearp){
 				auto midPoint = (p1 + *p2) / 2.;
 				auto pDistance = glm::distance2(p1.xyz() * scale, p2->xyz() * scale);
 				auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);

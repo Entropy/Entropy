@@ -193,6 +193,9 @@
     <ClCompile Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.cpp">
       <Filter>local_addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\entropy\particles\TextRenderer.cpp">
+      <Filter>src\entropy\particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -928,6 +931,9 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxTimeline\libs\sndfile\include\sndfile.h">
       <Filter>local_addons\ofxTimeline\libs\sndfile\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\particles\TextRenderer.h">
+      <Filter>src\entropy\particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

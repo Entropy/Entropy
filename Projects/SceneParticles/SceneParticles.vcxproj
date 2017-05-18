@@ -175,6 +175,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\entropy\particles\TextRenderer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\entropy\particles\Environment.cpp" />
@@ -239,6 +240,7 @@
     <ClCompile Include="..\..\addons\ofxTimeline\libs\ofOpenALSoundPlayer_TimelineAdditions\src\ofOpenALSoundPlayer_TimelineAdditions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entropy\particles\TextRenderer.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\entropy\particles\Environment.h" />
     <ClInclude Include="src\entropy\particles\Octree.h" />
