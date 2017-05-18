@@ -138,9 +138,9 @@ namespace nm
 		}
 	}
 
-	void Photons::update()
+	void Photons::update(double dt)
 	{
-		const float dt = ofGetLastFrameTime();
+		dt *= environment->systemSpeed;
 		const glm::vec3 min = environment->getMin();
 		const glm::vec3 max = environment->getMax();
 		const float expansionScalar = environment->getExpansionScalar();

@@ -12,33 +12,6 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
-            "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
-            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
-            "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
-            "../../Resources/data/entropy/render/PostEffects/shaders/frag_tonemap.glsl",
-            "../../Resources/data/entropy/render/PostEffects/shaders/fullscreenTriangle.vert",
-            "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
-            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
-            "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/clusteredShading.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/computeBrdfLut.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/math.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/ofDefaultUniforms.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/ofDefaultVertexInAttributes.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/pbr.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/toneMapping.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/inc/viewData.glsl",
-            "../../Resources/data/entropy/scene/Particles/shaders/particle.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/particle.vert",
-            "../../Resources/data/entropy/scene/Particles/shaders/photon_draw.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/photon_draw.vert",
-            "../../Resources/data/entropy/scene/Particles/shaders/photon_update.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/photon_update.vert",
-            "../../Resources/data/entropy/scene/Particles/shaders/skybox.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/skybox.vert",
-            "../../Resources/data/entropy/scene/Particles/shaders/wall.frag",
-            "../../Resources/data/entropy/scene/Particles/shaders/wall.vert",
-            "addons.make",
             "src/entropy/particles/Environment.cpp",
             "src/entropy/particles/Environment.h",
             "src/entropy/particles/Octree.cpp",
@@ -50,36 +23,68 @@ Project{
             "src/entropy/particles/ParticleSystem.h",
             "src/entropy/particles/Photons.cpp",
             "src/entropy/particles/Photons.h",
-            "src/entropy/scene/Particles.cpp",
-            "src/entropy/scene/Particles.h",
+//            "src/entropy/scene/Particles.cpp",
+//            "src/entropy/scene/Particles.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
         ]
 
+        Group{
+            name: "shaders"
+            files: [
+                "../../Resources/data/entropy/render/PostEffects/shaders/brightnessThreshold.frag",
+                "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.frag",
+                "../../Resources/data/entropy/render/PostEffects/shaders/directionalBlur.vert",
+                "../../Resources/data/entropy/render/PostEffects/shaders/frag_tonemap.glsl",
+                "../../Resources/data/entropy/render/PostEffects/shaders/fullscreenTriangle.vert",
+                "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
+                "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
+                "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/clusteredShading.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/computeBrdfLut.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/math.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/ofDefaultUniforms.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/ofDefaultVertexInAttributes.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/pbr.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/toneMapping.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/inc/viewData.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/particle.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/particle.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/photon_draw.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/photon_draw.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/photon_update.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/photon_update.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/skybox.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/skybox.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/wall.frag",
+                "../../Resources/data/entropy/scene/Particles/shaders/wall.vert",
+            ]
+        }
+
         of.addons: [
-            '../EntropyLib',
+            '../EntropyRender',
+            '../EntropyUtil',
+            '../../addons/ofxEasing',
             '../../addons/ofxRange',
-            '../../addons/ofxImGui',
-            '../../addons/ofxPreset',
+            '../../addons/ofxSerialize',
+            '../../addons/ofxTbb',
             '../../addons/ofxSet',
             '../../addons/ofxTextInputField',
             '../../addons/ofxTextureRecorder',
-            '../../addons/ofxVolumetrics',
+            '../../addons/ofxVideoRecorder',
             '../../addons/ofxTimeline',
             '../../addons/ofxTimecode',
-            '../../addons/ofxTween',
-            '../../addons/ofxMSATimer',
-            '../../addons/ofxWarp',
             '../../addons/ofxGpuParticles',
             '../../addons/ofxObjLoader',
+            'ofxGui',
             'ofxXmlSettings',
         ]
 
         // additional flags for the project. the of module sets some
         // flags by default to add the core libraries, search paths...
         // this flags can be augmented through the following properties:
-        of.pkgConfigs: ['tbb']       // list of additional system pkgs to include
+        of.pkgConfigs: []       // list of additional system pkgs to include
         of.includePaths: []     // include search paths
         of.cFlags: []           // flags passed to the c compiler
         of.cxxFlags: []         // flags passed to the c++ compiler

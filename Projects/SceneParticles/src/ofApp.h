@@ -86,6 +86,7 @@ public:
 		{
 			ofParameter<bool> colorsPerType{ "Color per Type", true };
 			ofParameter<bool> additiveBlending{ "Additive Blend", true };
+			ofParameter<bool> glOneBlending{ "GL_ONE", false };
 			ofParameter<bool> drawPhotons{ "Draw Photons", true };
 			ofParameter<float> ambientLight{ "Ambient Light", 0.001, 0, 0.02 };
 			ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.05 };
@@ -94,6 +95,7 @@ public:
 			PARAM_DECLARE("Rendering",
 				colorsPerType,
 				additiveBlending,
+				glOneBlending,
 				drawPhotons,
 				ambientLight,
 				attenuation);
@@ -101,10 +103,14 @@ public:
 
 		struct : ofParameterGroup
 		{
+			ofParameter<int>  fps{ "fps", 60, 20, 1200, ofParameterScale::Logarithmic};
+			ofParameter<bool> systemClock{"system clock", false};
 			ofParameter<bool> recordSequence{ "Record Sequence", false };
 			ofParameter<bool> recordVideo{ "Record Video", false };
 
 			PARAM_DECLARE("Recording",
+				fps,
+				systemClock,
 				recordSequence,
 				recordVideo);
 		} recording;
@@ -116,4 +122,7 @@ public:
 			rendering,
 			recording);
 	} parameters;
+
+	double now;
+	double dt;
 };

@@ -6,8 +6,8 @@ int main( ){
     ofGLFWWindowSettings settings;
     settings.setGLVersion(4, 5);
     //settings.windowMode = OF_FULLSCREEN;
-    settings.width = 1280;
-    settings.height = 720;
+	settings.width = 1920;
+	settings.height = 1080;
     //settings.depthBits = 16;
     
 #ifdef TWO_1080P_SCREENS

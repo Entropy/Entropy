@@ -38,17 +38,6 @@ namespace nm
 		, max(max)
 		, dims(max - min)
 	{
-		parameters.setName("Environment");
-		parameters.add(
-			energy,
-			forceMultiplierMin,
-			forceMultiplierMax,
-			annihilationThreshMin,
-			annihilationThreshMax,
-			fusionThresholdExponentMin,
-			fusionThresholdExponentMax,
-			pairProductionThresholdMin,
-			pairProductionThresholdMax);
 	}
 
 	float Environment::getExpansionScalar() const

@@ -70,9 +70,6 @@ namespace nm
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 
-		ofParameterGroup parameters;
-
-	private:
 		ofParameter<float> energy{ "Energy", 1.0f, 0.0f, 1.0f };
 		ofParameter<float> forceMultiplierMin{ "Force Multiplier Min", 1e7, 1e7, 1e8 };
 		ofParameter<float> forceMultiplierMax{ "Force Multiplier Max", 1e8, 1e7, 1e8 };
@@ -82,7 +79,23 @@ namespace nm
 		ofParameter<float> fusionThresholdExponentMax{ "Fusion Threshold Exponent Max", -5.593, -6.0f, -5.0f };
 		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
 		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+		ofParameter<float> systemSpeed{ "System speed", 0.5, 0, 3, ofParameterScale::Logarithmic};
 
+
+		ofParameterGroup parameters{
+			"Environment",
+			systemSpeed,
+			energy,
+			forceMultiplierMin,
+			forceMultiplierMax,
+			annihilationThreshMin,
+			annihilationThreshMax,
+			fusionThresholdExponentMin,
+			fusionThresholdExponentMax,
+			pairProductionThresholdMin,
+			pairProductionThresholdMax
+		};
+	private:
 		glm::vec3 min, max, dims;
     };
 }

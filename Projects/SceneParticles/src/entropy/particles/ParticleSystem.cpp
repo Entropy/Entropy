@@ -142,15 +142,15 @@ namespace nm
 		numParticles.fill(0);
 	}
 
-	void ParticleSystem::update()
+	void ParticleSystem::update(double dt)
 	{
+		dt *= environment->systemSpeed;
 		numDeadParticles = 0;
 		numNewPhotons = 0;
 		octree.clear();
 		octree.addPoints(particles.data(), totalNumParticles);
 		octree.updateCenterOfCharge();
 
-		const float dt = ofGetLastFrameTime();
 		tbb::atomic<unsigned> typeIndices[Particle::NUM_TYPES];
 		for (unsigned i = 0; i < Particle::NUM_TYPES; ++i) typeIndices[i] = 0;
 		const glm::vec3 min = environment->getMin();

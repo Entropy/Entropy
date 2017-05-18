@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "ofxSerialize.h"
+#include "Helpers.h"
 
 //--------------------------------------------------------------
 const string ofApp::kSceneName = "Particles";
@@ -28,10 +29,24 @@ void ofApp::setup()
 	feedbackVbo.setNormalBuffer(feedbackBuffer, stride, sizeof(glm::vec4) * 2);
 	glGenQueries(1, &numPrimitivesQuery);
 
+	// Init fbos
+	ofFbo::Settings fboSettings;
+	fboSettings.width = 1920;
+	fboSettings.height = entropy::GetSceneHeight() * fboSettings.width / entropy::GetSceneWidth();
+	fboSettings.internalformat = GL_RGBA32F;
+	fboSettings.numSamples = 4;
+
+	fboScene.allocate(fboSettings);
+	fboPost.allocate(fboSettings);
+
+	// Init post effects
+	this->postEffects.resize(fboSettings.width, fboSettings.height);
+	this->renderer.resize(fboSettings.width, fboSettings.height);
+
 	// Setup renderers.
 	this->renderer.setup(kHalfDim);
-	this->renderer.fogMaxDistance.setMax(kHalfDim * 100);
-	this->renderer.fogMinDistance.setMax(kHalfDim);
+	this->renderer.parameters.fogMaxDistance.setMax(kHalfDim * 100);
+	this->renderer.parameters.fogMinDistance.setMax(kHalfDim);
 
 	// Load shaders.
 	shaderSettings.bindDefaults = false;
@@ -75,30 +90,30 @@ void ofApp::setup()
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
-	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
-	{
-		if (ofGetKeyPressed(OF_KEY_SHIFT))
-		{
-			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
-			if (!name.empty())
-			{
-				return this->savePreset(name);
-			}
-		}
-		return this->savePreset(this->currPreset);
-	}));
-	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
-	{
-		if (ofGetKeyPressed(OF_KEY_SHIFT))
-		{
-			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
-			if (result.bSuccess)
-			{
-				return this->loadPreset(result.fileName);
-			}
-		}
-		return this->loadPreset(this->currPreset);
-	}));
+//	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
+//	{
+//		if (ofGetKeyPressed(OF_KEY_SHIFT))
+//		{
+//			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
+//			if (!name.empty())
+//			{
+//				return this->savePreset(name);
+//			}
+//		}
+//		return this->savePreset(this->currPreset);
+//	}));
+//	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
+//	{
+//		if (ofGetKeyPressed(OF_KEY_SHIFT))
+//		{
+//			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
+//			if (result.bSuccess)
+//			{
+//				return this->loadPreset(result.fileName);
+//			}
+//		}
+//		return this->loadPreset(this->currPreset);
+//	}));
 
 	this->timeline.setName("timeline");
 	this->timeline.setup();
@@ -157,7 +172,7 @@ void ofApp::setup()
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if (path.bSuccess)
 			{
-				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				ofxTextureRecorder::VideoSettings recorderSettings(fboScene.getTexture(), 60);
 				recorderSettings.videoPath = path.getPath();
 				//				recorderSettings.videoCodec = "libx264";
 				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
@@ -175,10 +190,91 @@ void ofApp::setup()
 #endif
 	}));
 
+	eventListeners.push_back(gui.savePressedE.newListener([this]{
+		auto saveTo = ofSystemSaveDialog(ofGetTimestampString() + ".json", "save settings");
+		if(saveTo.bSuccess){
+			auto path = std::filesystem::path(saveTo.getPath());
+			auto folder = path.parent_path();
+			auto basename = path.stem().filename().string();
+			auto extension = ofToLower(path.extension().string());
+			auto timelineDir = (folder / (basename + "_timeline")).string();
+			if(extension == ".xml"){
+				ofXml xml;
+				if(std::filesystem::exists(path)){
+					xml.load(path);
+				}
+				ofSerialize(xml, gui.getParameter());
+				timeline.saveTracksToFolder(timelineDir);
+				timeline.saveStructure(timelineDir);
+				xml.save(path);
+			}else if(extension == ".json"){
+				ofJson json = ofLoadJson(path);
+				ofSerialize(json, gui.getParameter());
+				timeline.saveTracksToFolder(timelineDir);
+				timeline.saveStructure(timelineDir);
+				ofSavePrettyJson(path, json);
+			}else{
+				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+			}
+		}
+		return true;
+	}));
+
+
+	eventListeners.push_back(gui.loadPressedE.newListener([this]{
+		auto loadFrom = ofSystemLoadDialog("load settings", false, ofToDataPath("presets"));
+		if(loadFrom.bSuccess){
+			auto path = std::filesystem::path(loadFrom.getPath());
+			auto folder = path.parent_path();
+			auto basename = path.stem().filename().string();
+			auto extension = ofToLower(path.extension().string());
+			auto timelineDir = (folder / (basename + "_timeline")).string();
+			if(extension == ".xml"){
+				ofXml xml;
+				xml.load(path);
+				ofDeserialize(xml, gui.getParameter());
+				timeline.loadStructure(timelineDir);
+				timeline.loadTracksFromFolder(timelineDir);
+				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+				gui.refreshTimelined(&timeline);
+			}else
+			if(extension == ".json"){
+				ofJson json;
+				ofFile jsonFile(path);
+				jsonFile >> json;
+				ofDeserialize(json, gui.getParameter());
+				timeline.loadStructure(timelineDir);
+				timeline.loadTracksFromFolder(timelineDir);
+				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+				gui.refreshTimelined(&timeline);
+			}else{
+				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+			}
+			reset();
+		}
+		return true;
+	}));
+
+	eventListeners.push_back(parameters.recording.fps.newListener([this](int & fps){
+		if(parameters.recording.systemClock){
+			ofSetTimeModeSystem();
+		}else{
+			ofSetTimeModeFixedRate(ofGetFixedStepForFps(fps));
+		}
+	}));
+
+	eventListeners.push_back(parameters.recording.systemClock.newListener([this](bool & systemClock){
+		if(systemClock){
+			ofSetTimeModeSystem();
+		}else{
+			ofSetTimeModeFixedRate(ofGetFixedStepForFps(parameters.recording.fps));
+		}
+	}));
+
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
-	this->loadPreset("_autosave");
+	//this->loadPreset("_autosave");
 	//this->reset();
 }
 
@@ -189,59 +285,57 @@ void ofApp::exit()
 	
 	// Clear transform feedback.
 	glDeleteQueries(1, &numPrimitivesQuery);
-
-	this->savePreset("_autosave");
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	if (ofGetFrameNum() % 2 == 0) 
+	dt = timeline.getCurrentTime() - now;
+	now = timeline.getCurrentTime();
+
+	photons.update(dt);
+	particleSystem.update(dt);
+
+	auto & photons = this->photons.getPosnsRef();
+
+	for (auto & light : pointLights)
 	{
-		photons.update();
-		particleSystem.update();
-
-		auto & photons = this->photons.getPosnsRef();
-
-		for (auto & light : pointLights) 
-		{
-			light.disable();
-			light.setPosition(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-		}
-
-		for (size_t i = 0, j = 0; i < photons.size() && j < kMaxLights; ++i)
-		{
-			if (photons[i].x > glm::vec3(-kHalfDim * 2).x  &&
-				photons[i].y > glm::vec3(-kHalfDim * 2).y  &&
-				photons[i].z > glm::vec3(-kHalfDim * 2).z  &&
-				photons[i].x < glm::vec3(kHalfDim * 2).x &&
-				photons[i].y < glm::vec3(kHalfDim * 2).y &&
-				photons[i].z < glm::vec3(kHalfDim * 2).z) {
-				auto & light = pointLights[j];
-				light.enable();
-				light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength);
-				light.setPointLight();
-				light.setPosition(photons[i]);
-				light.setAttenuation(0, 0, parameters.rendering.attenuation);
-				j++;
-			}
-		}
-
-		glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
-		this->shader.beginTransformFeedback(GL_TRIANGLES, feedbackBuffer);
-		{
-			std::array<ofFloatColor, nm::Particle::NUM_TYPES> colors;
-			std::transform(nm::Particle::DATA, nm::Particle::DATA + nm::Particle::NUM_TYPES, colors.begin(), [](const nm::Particle::Data & data) 
-			{
-				return data.color.get();
-			});
-			this->shader.setUniform4fv("colors", reinterpret_cast<float*>(colors.data()), nm::Particle::NUM_TYPES);
-			particleSystem.draw(this->shader);
-		}
-		this->shader.endTransformFeedback(feedbackBuffer);
-		glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
-		glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
+		light.disable();
+		light.setPosition(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 	}
+
+	for (size_t i = 0, j = 0; i < photons.size() && j < kMaxLights; ++i)
+	{
+		if (photons[i].x > glm::vec3(-kHalfDim * 2).x  &&
+			photons[i].y > glm::vec3(-kHalfDim * 2).y  &&
+			photons[i].z > glm::vec3(-kHalfDim * 2).z  &&
+			photons[i].x < glm::vec3(kHalfDim * 2).x &&
+			photons[i].y < glm::vec3(kHalfDim * 2).y &&
+			photons[i].z < glm::vec3(kHalfDim * 2).z) {
+			auto & light = pointLights[j];
+			light.enable();
+			light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength);
+			light.setPointLight();
+			light.setPosition(photons[i]);
+			light.setAttenuation(0, 0, parameters.rendering.attenuation);
+			j++;
+		}
+	}
+
+	glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
+	this->shader.beginTransformFeedback(GL_TRIANGLES, feedbackBuffer);
+	{
+		std::array<ofFloatColor, nm::Particle::NUM_TYPES> colors;
+		std::transform(nm::Particle::DATA, nm::Particle::DATA + nm::Particle::NUM_TYPES, colors.begin(), [](const nm::Particle::Data & data)
+		{
+			return data.color.get();
+		});
+		this->shader.setUniform4fv("colors", reinterpret_cast<float*>(colors.data()), nm::Particle::NUM_TYPES);
+		particleSystem.draw(this->shader);
+	}
+	this->shader.endTransformFeedback(feedbackBuffer);
+	glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+	glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
 }
 
 //--------------------------------------------------------------
@@ -275,6 +369,9 @@ void ofApp::draw()
 				if (this->parameters.rendering.additiveBlending)
 				{
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
+				}
+				if(this->parameters.rendering.glOneBlending){
+					glBlendFunc(GL_ONE, GL_ONE);
 				}
 
 				this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera, glm::mat4(1.0f));
@@ -311,6 +408,8 @@ void ofApp::draw()
 	// Draw the controls.
 	this->timeline.draw();
 	this->gui.draw();
+
+	ofDrawBitmapString(ofGetFrameRate(), ofGetWidth()-100, 20);
 }
 
 //--------------------------------------------------------------
@@ -364,21 +463,7 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-	this->camera.setAspectRatio(ofGetWidth() / static_cast<float>(ofGetHeight()));
-
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
-
-	auto fboSettings = ofFbo::Settings();
-	fboSettings.width = ofGetWidth();
-	fboSettings.height = ofGetHeight();
-	fboSettings.internalformat = GL_RGBA32F;
-	fboSettings.textureTarget = GL_TEXTURE_2D;
-	fboSettings.numSamples = 4;
-	this->fboScene.allocate(fboSettings);
-	this->fboPost.allocate(fboSettings);
-
-	this->postEffects.resize(fboSettings.width, fboSettings.height);
-	this->renderer.resize(fboSettings.width, fboSettings.height);
 }
 
 //--------------------------------------------------------------

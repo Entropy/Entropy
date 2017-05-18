@@ -67,7 +67,7 @@ namespace nm
 		void addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity);
 		void clearParticles();
 
-		void update();
+		void update(double dt);
 
         void draw(ofShader & shader);
 
