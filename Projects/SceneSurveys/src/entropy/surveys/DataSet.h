@@ -25,10 +25,12 @@ namespace entropy
 				{
 					ofParameter<float> size{ "Size", 8.0f, 0.01f, 32.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> attenuation{ "Attenuation", 600.0f, 1.0f, 1000.0f };
+					ofParameter<float> distanceFade{ "Distance Fade", 0.1f, 0.0f, 1.0f };
 
 					PARAM_DECLARE("Points",
 						size,
-						attenuation);
+						attenuation,
+						distanceFade);
 				} point;
 
 				struct : ofParameterGroup

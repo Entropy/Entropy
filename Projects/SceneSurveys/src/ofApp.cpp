@@ -399,6 +399,7 @@ void ofApp::draw()
 				ofSetColor(ofColor::white);
 
 				this->spriteShader.begin();
+				this->spriteShader.setUniform2f("uClipRange", this->camera.getFarClip() * (1.0f - this->sharedParams.point.distanceFade), this->camera.getFarClip());
 				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
 				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
 				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);

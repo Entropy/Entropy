@@ -6,6 +6,8 @@ uniform mat4 modelViewMatrix;
 uniform float uMaxSize;
 uniform mat4 uTransform;
 
+uniform vec2 uClipRange;
+
 uniform float uPointSize;
 uniform float uAttenuation;
 
@@ -34,7 +36,7 @@ void main()
 					   position.z * cos(position.y) * sin(position.x),
 					   position.z * sin(position.y),
 					   1.0);
-	
+
 	vec4 eyeCoord = modelViewMatrix * uTransform * vertex;
 	gl_Position = projectionMatrix * eyeCoord;
 
@@ -72,6 +74,15 @@ void main()
 		// Map radius from 0.0 to 1.0.
 		vAlpha = 1.0 - (position.z - uMinRadius) / (uMaxRadius - uMinRadius);
 	}
+
+	// Fade as we near the far clipping plane.
+	if (dist > uClipRange.x)
+	{
+		// Map distance from 0.0 to 1.0.
+		vAlpha *= (1.0 - (dist - uClipRange.x) / (uClipRange.y - uClipRange.x));
+	}
+
+	vAlpha = clamp(vAlpha, 0.0, 1.0);
 
 	// Used for flipping texture.
 	vID = gl_VertexID;

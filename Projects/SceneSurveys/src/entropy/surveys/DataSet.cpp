@@ -319,10 +319,10 @@ namespace entropy
 			ofSetColor(this->parameters.color.get());
 
 			cout << "Drawing " << count << " models" << endl;
-			mesh.drawInstanced(OF_MESH_POINTS, count);
+			//mesh.drawInstanced(OF_MESH_POINTS, count);
 
-			//static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
-			//simpleMesh.drawInstanced(OF_MESH_POINTS, count);
+			static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+			simpleMesh.drawInstanced(OF_MESH_POINTS, count);
 		}
 
 		//--------------------------------------------------------------
