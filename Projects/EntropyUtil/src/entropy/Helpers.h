@@ -19,6 +19,14 @@
 
 namespace entropy
 {
+	inline int GetSceneWidth(){
+		return 4200;
+	}
+
+	inline int GetSceneHeight(){
+		return 1080;
+	}
+
 	//--------------------------------------------------------------
 	inline void LoadTextureImage(const std::filesystem::path & path, ofTexture & texture)
 	{
