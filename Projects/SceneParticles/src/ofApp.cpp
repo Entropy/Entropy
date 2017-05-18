@@ -34,6 +34,8 @@ void ofApp::setup()
 	fboSettings.width = 1920;
 	fboSettings.height = entropy::GetSceneHeight() * fboSettings.width / entropy::GetSceneWidth();
 	fboSettings.internalformat = GL_RGBA32F;
+	fboSettings.useDepth = true;
+	fboSettings.useStencil = false;
 	fboSettings.numSamples = 4;
 
 	fboScene.allocate(fboSettings);
@@ -45,8 +47,11 @@ void ofApp::setup()
 
 	// Setup renderers.
 	this->renderer.setup(kHalfDim);
+	this->renderer.resize(fboSettings.width, fboSettings.height);
 	this->renderer.parameters.fogMaxDistance.setMax(kHalfDim * 100);
 	this->renderer.parameters.fogMinDistance.setMax(kHalfDim);
+
+	textRenderer.setup(kHalfDim);
 
 	// Load shaders.
 	shaderSettings.bindDefaults = false;
@@ -89,31 +94,34 @@ void ofApp::setup()
 	this->gui.add(nm::Particle::parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
+	this->gui.add(this->textRenderer.parameters);
 	this->gui.minimizeAll();
-//	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
-//	{
+	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
+	{
 //		if (ofGetKeyPressed(OF_KEY_SHIFT))
 //		{
-//			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
-//			if (!name.empty())
-//			{
-//				return this->savePreset(name);
-//			}
+			auto name = ofSystemTextBoxDialog("Enter a name for the preset", "");
+			if (!name.empty())
+			{
+				return this->savePreset(name);
+			}
 //		}
-//		return this->savePreset(this->currPreset);
-//	}));
-//	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
-//	{
+		this->savePreset(this->currPreset);
+		return true;
+	}));
+	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
+	{
 //		if (ofGetKeyPressed(OF_KEY_SHIFT))
 //		{
-//			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
-//			if (result.bSuccess)
-//			{
-//				return this->loadPreset(result.fileName);
-//			}
+			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
+			if (result.bSuccess)
+			{
+				return this->loadPreset(result.fileName);
+			}
 //		}
-//		return this->loadPreset(this->currPreset);
-//	}));
+		this->loadPreset(this->currPreset);
+		return true;
+	}));
 
 	this->timeline.setName("timeline");
 	this->timeline.setup();
@@ -131,12 +139,12 @@ void ofApp::setup()
 		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 	}));
 
-	const auto cameraTrackName = "Camera";
-	this->cameraTrack.setDampening(1.0f);
-	this->cameraTrack.setCamera(this->camera);
-	this->cameraTrack.setXMLFileName(this->timeline.nameToXMLName(cameraTrackName));
-	this->timeline.addTrack(cameraTrackName, &this->cameraTrack);
-	this->cameraTrack.setDisplayName(cameraTrackName);
+//	const auto cameraTrackName = "Camera";
+//	this->cameraTrack.setDampening(1.0f);
+//	this->cameraTrack.setCamera(this->camera);
+//	this->cameraTrack.setXMLFileName(this->timeline.nameToXMLName(cameraTrackName));
+//	this->timeline.addTrack(cameraTrackName, &this->cameraTrack);
+//	this->cameraTrack.setDisplayName(cameraTrackName);
 
 	this->gui.setTimeline(&this->timeline);
 
@@ -154,7 +162,7 @@ void ofApp::setup()
 				this->textureRecorder.setup(recorderSettings);
 
 				this->reset();
-				this->cameraTrack.lockCameraToTrack = true;
+//				this->cameraTrack.lockCameraToTrack = true;
 				this->timeline.play();
 			}
 			else
@@ -190,70 +198,73 @@ void ofApp::setup()
 #endif
 	}));
 
-	eventListeners.push_back(gui.savePressedE.newListener([this]{
-		auto saveTo = ofSystemSaveDialog(ofGetTimestampString() + ".json", "save settings");
-		if(saveTo.bSuccess){
-			auto path = std::filesystem::path(saveTo.getPath());
-			auto folder = path.parent_path();
-			auto basename = path.stem().filename().string();
-			auto extension = ofToLower(path.extension().string());
-			auto timelineDir = (folder / (basename + "_timeline")).string();
-			if(extension == ".xml"){
-				ofXml xml;
-				if(std::filesystem::exists(path)){
-					xml.load(path);
-				}
-				ofSerialize(xml, gui.getParameter());
-				timeline.saveTracksToFolder(timelineDir);
-				timeline.saveStructure(timelineDir);
-				xml.save(path);
-			}else if(extension == ".json"){
-				ofJson json = ofLoadJson(path);
-				ofSerialize(json, gui.getParameter());
-				timeline.saveTracksToFolder(timelineDir);
-				timeline.saveStructure(timelineDir);
-				ofSavePrettyJson(path, json);
-			}else{
-				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
-			}
-		}
-		return true;
-	}));
+//	eventListeners.push_back(gui.savePressedE.newListener([this]{
+//		auto saveTo = ofSystemSaveDialog(ofGetTimestampString() + ".json", "save settings");
+//		if(saveTo.bSuccess){
+//			auto path = std::filesystem::path(saveTo.getPath());
+//			auto folder = path.parent_path();
+//			auto basename = path.stem().filename().string();
+//			auto extension = ofToLower(path.extension().string());
+//			auto timelineDir = (folder / (basename + "_timeline")).string();
+//			if(extension == ".xml"){
+//				ofXml xml;
+//				if(std::filesystem::exists(path)){
+//					xml.load(path);
+//				}
+//				ofSerialize(xml, gui.getParameter());
+//				timeline.saveTracksToFolder(timelineDir);
+//				timeline.saveStructure(timelineDir);
+//				xml.save(path);
+//			}else if(extension == ".json"){
+//				ofJson json = ofLoadJson(path);
+//				ofSerialize(json, gui.getParameter());
+//				timeline.saveTracksToFolder(timelineDir);
+//				timeline.saveStructure(timelineDir);
+//				ofSavePrettyJson(path, json);
+//			}else{
+//				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+//			}
+//		}
+//		return true;
+//	}));
 
 
-	eventListeners.push_back(gui.loadPressedE.newListener([this]{
-		auto loadFrom = ofSystemLoadDialog("load settings", false, ofToDataPath("presets"));
-		if(loadFrom.bSuccess){
-			auto path = std::filesystem::path(loadFrom.getPath());
-			auto folder = path.parent_path();
-			auto basename = path.stem().filename().string();
-			auto extension = ofToLower(path.extension().string());
-			auto timelineDir = (folder / (basename + "_timeline")).string();
-			if(extension == ".xml"){
-				ofXml xml;
-				xml.load(path);
-				ofDeserialize(xml, gui.getParameter());
-				timeline.loadStructure(timelineDir);
-				timeline.loadTracksFromFolder(timelineDir);
-				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
-				gui.refreshTimelined(&timeline);
-			}else
-			if(extension == ".json"){
-				ofJson json;
-				ofFile jsonFile(path);
-				jsonFile >> json;
-				ofDeserialize(json, gui.getParameter());
-				timeline.loadStructure(timelineDir);
-				timeline.loadTracksFromFolder(timelineDir);
-				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
-				gui.refreshTimelined(&timeline);
-			}else{
-				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
-			}
-			reset();
-		}
-		return true;
-	}));
+//	eventListeners.push_back(gui.loadPressedE.newListener([this]{
+//		auto loadFrom = ofSystemLoadDialog("load settings", false, ofToDataPath("presets"));
+//		if(loadFrom.bSuccess){
+//			auto path = std::filesystem::path(loadFrom.getPath());
+//			auto folder = path.parent_path();
+//			auto basename = path.stem().filename().string();
+//			auto extension = ofToLower(path.extension().string());
+//			auto timelineDir = (folder / (basename + "_timeline")).string();
+//			if(!ofDirectory(timelineDir).exists()){
+//				timelineDir = folder;
+//			}
+//			if(extension == ".xml"){
+//				ofXml xml;
+//				xml.load(path);
+//				ofDeserialize(xml, gui.getParameter());
+//				timeline.loadStructure(timelineDir);
+//				timeline.loadTracksFromFolder(timelineDir);
+//				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+//				gui.refreshTimelined(&timeline);
+//			}else
+//			if(extension == ".json"){
+//				ofJson json;
+//				ofFile jsonFile(path);
+//				jsonFile >> json;
+//				ofDeserialize(json, gui.getParameter());
+//				timeline.loadStructure(timelineDir);
+//				timeline.loadTracksFromFolder(timelineDir);
+//				timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
+//				gui.refreshTimelined(&timeline);
+//			}else{
+//				ofLogError("ofxGui") << extension << " not recognized, only .xml and .json supported by now";
+//			}
+//			reset();
+//		}
+//		return true;
+//	}));
 
 	eventListeners.push_back(parameters.recording.fps.newListener([this](int & fps){
 		if(parameters.recording.systemClock){
@@ -271,11 +282,18 @@ void ofApp::setup()
 		}
 	}));
 
+	parameters.rendering.fov.ownListener([this](float & fov){
+		camera.setFov(fov);
+	});
+
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
 	//this->loadPreset("_autosave");
 	//this->reset();
+
+	ofSetMutuallyExclusive(parameters.rendering.additiveBlending, parameters.rendering.glOneBlending);
+
 }
 
 //--------------------------------------------------------------
@@ -336,6 +354,15 @@ void ofApp::update()
 	this->shader.endTransformFeedback(feedbackBuffer);
 	glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
 	glGetQueryObjectuiv(numPrimitivesQuery, GL_QUERY_RESULT, &numPrimitives);
+
+
+	if(parameters.rendering.drawText){
+		textRenderer.update(particleSystem, BARYOGENESIS);
+	}
+
+	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+	orbitAngle += dt * parameters.rendering.rotationSpeed;
+	orbitAngle = ofWrap(orbitAngle, 0, 360);
 }
 
 //--------------------------------------------------------------
@@ -364,21 +391,27 @@ void ofApp::draw()
 					}
 				}
 			}
-			else
-			{
-				if (this->parameters.rendering.additiveBlending)
-				{
-					ofEnableBlendMode(OF_BLENDMODE_ADD);
-				}
-				if(this->parameters.rendering.glOneBlending){
-					glBlendFunc(GL_ONE, GL_ONE);
-				}
 
-				this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera, glm::mat4(1.0f));
-				if (parameters.rendering.drawPhotons)
-				{
-					photons.draw();
-				}
+
+
+			if(parameters.rendering.drawText){
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+				textRenderer.draw(particleSystem, *environment, BARYOGENESIS, renderer, camera);
+			}
+
+			if (this->parameters.rendering.additiveBlending){
+				ofEnableBlendMode(OF_BLENDMODE_ADD);
+			}else if(this->parameters.rendering.glOneBlending){
+				glBlendFunc(GL_ONE, GL_ONE);
+			}else{
+				ofEnableAlphaBlending();
+			}
+			if(parameters.rendering.drawModels){
+				this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera);
+			}
+			if (parameters.rendering.drawPhotons)
+			{
+				photons.draw();
 			}
 		}
 		ofDisableDepthTest();
@@ -415,14 +448,14 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-	if (key == 'L')
-	{
-		this->cameraTrack.lockCameraToTrack ^= 1;
-	}
-	else if (key == 'T')
-	{
-		this->cameraTrack.addKeyframe();
-	}
+//	if (key == 'L')
+//	{
+//		this->cameraTrack.lockCameraToTrack ^= 1;
+//	}
+//	else if (key == 'T')
+//	{
+//		this->cameraTrack.addKeyframe();
+//	}
 }
 
 //--------------------------------------------------------------
@@ -516,7 +549,7 @@ bool ofApp::loadPreset(const string & presetName)
 		{
 			const auto json = ofLoadJson(paramsFile);
 			ofDeserialize(json, this->gui.getParameter());
-			ofDeserialize(json, this->camera, "ofEasyCam");
+			//ofDeserialize(json, this->camera, "ofEasyCam");
 		}
 
 		this->timeline.loadStructure(presetPath.string());

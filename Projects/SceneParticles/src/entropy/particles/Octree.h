@@ -77,6 +77,10 @@ namespace nm
 
 		// if close enough to another point to annihilate it, return that point
 		T* sumForces(T& point);// , float forceMultiplier);
+		void findNearestThan(const T& point, float distance, std::vector<T*> & near) const;
+
+		template<typename Type>
+		void findNearestThanByType(const T& point, float distance, std::initializer_list<Type> allowedTypes, std::vector<T*> & near) const;
 
 		void addPoint(T& point);
 

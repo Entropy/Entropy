@@ -170,6 +170,79 @@ namespace nm
 	}
 
 	template<class T>
+	void Octree<T>::findNearestThan(const T& point, float distance, std::vector<T*> & near) const{
+		if(hasPoints){
+			if (depth < MAX_DEPTH())
+			{
+				if (children)
+				{
+					unsigned char octant = 0x00;
+					if (point.x > mid.x) octant |= X_SIDE;
+					if (point.y > mid.y) octant |= Y_SIDE;
+					if (point.z > mid.z) octant |= Z_SIDE;
+					children[octant].findNearestThan(point, distance, near);
+				}
+			}
+			else
+			{
+				for (unsigned i = 0; i < numPoints; ++i)
+				{
+					if (&point != points[i])
+					{
+						ofVec3f direction = centerOfCharge - point;
+						float distSq = direction.lengthSquared();
+						float dist = sqrt(distSq);
+						if (dist < distance){
+							near.push_back(points[i]);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	template<class T>
+	template<typename Type>
+	void Octree<T>::findNearestThanByType(const T& point, float distance, std::initializer_list<Type> allowedTypes, std::vector<T*> & near) const{
+		if(hasPoints){
+			if (depth < MAX_DEPTH())
+			{
+				if (children)
+				{
+					unsigned char octant = 0x00;
+					if (point.x > mid.x) octant |= X_SIDE;
+					if (point.y > mid.y) octant |= Y_SIDE;
+					if (point.z > mid.z) octant |= Z_SIDE;
+					children[octant].findNearestThanByType(point, distance, allowedTypes, near);
+				}
+			}
+			else
+			{
+				for (unsigned i = 0; i < numPoints; ++i)
+				{
+					if (&point != points[i])
+					{
+						bool allowedType = false;
+						for(auto t: allowedTypes){
+							allowedType |= (t == points[i]->getType());
+						}
+						if(!allowedType){
+							continue;
+						}
+						ofVec3f direction = centerOfCharge - point;
+						float distSq = direction.lengthSquared();
+						float dist = sqrt(distSq);
+						if (dist < distance){
+							near.push_back(points[i]);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	template<class T>
 	void Octree<T>::clear()
 	{
 		hasPoints = false;

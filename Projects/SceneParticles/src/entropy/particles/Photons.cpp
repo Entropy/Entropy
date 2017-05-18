@@ -189,7 +189,6 @@ namespace nm
 
 	void Photons::draw()
 	{
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
 		ofEnablePointSprites();
 
 		trailParticles.draw();

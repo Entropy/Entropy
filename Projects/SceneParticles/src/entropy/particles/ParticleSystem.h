@@ -69,7 +69,7 @@ namespace nm
 
 		void update(double dt);
 
-        void draw(ofShader & shader);
+		void draw(ofShader & shader);
 
 		void drawWalls();
 
@@ -80,6 +80,10 @@ namespace nm
 
 		void serialize(nlohmann::json & json);
 		void deserialize(const nlohmann::json & json);
+
+		const std::array<nm::Particle, MAX_PARTICLES> & getParticles() const;
+		std::vector<Particle*> findNearestThan(const Particle & p, float distance) const;
+		std::vector<Particle*> findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const;
 
 	private:
 		void onPairProduction(PairProductionEventArgs& args);

@@ -11,6 +11,7 @@
 #include "entropy/particles/Environment.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
+#include "entropy/particles/TextRenderer.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -63,13 +64,14 @@ public:
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;
 	entropy::render::PostParameters postParams;
+	TextRenderer textRenderer;
 	ofFbo fboScene;
 	ofFbo fboPost;
 
 	vector<ofEventListener> eventListeners;
 	ofxPanel gui;
 	ofxTimeline timeline;
-	ofxTLCameraTrack cameraTrack;
+	//ofxTLCameraTrack cameraTrack;
 
 	ofxTextureRecorder textureRecorder;
 
@@ -87,18 +89,28 @@ public:
 			ofParameter<bool> colorsPerType{ "Color per Type", true };
 			ofParameter<bool> additiveBlending{ "Additive Blend", true };
 			ofParameter<bool> glOneBlending{ "GL_ONE", false };
+			ofParameter<bool> drawModels{"Draw models", true};
 			ofParameter<bool> drawPhotons{ "Draw Photons", true };
+			ofParameter<bool> drawText{ "Draw Text", false };
 			ofParameter<float> ambientLight{ "Ambient Light", 0.001, 0, 0.02 };
 			ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.05 };
 			ofParameter<float> lightStrength{ "Light Strength", 1, 0, 1 };
+			ofParameter<float> fov{ "Fov", 60, 1, 120 };
+			ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
+			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 
 			PARAM_DECLARE("Rendering",
 				colorsPerType,
 				additiveBlending,
 				glOneBlending,
+				drawModels,
 				drawPhotons,
+				drawText,
 				ambientLight,
-				attenuation);
+				attenuation,
+				fov,
+			  rotationRadius,
+			  rotationSpeed);
 		} rendering;
 
 		struct : ofParameterGroup
@@ -123,6 +135,7 @@ public:
 			recording);
 	} parameters;
 
-	double now;
-	double dt;
+	double now = 0;
+	double dt = 0;
+	double orbitAngle = 0;
 };

@@ -415,4 +415,24 @@ namespace nm
 			}
 		}
 	}
+
+
+	//--------------------------------------------------------------
+	const std::array<nm::Particle, ParticleSystem::MAX_PARTICLES> & ParticleSystem::getParticles() const{
+		return particles;
+	}
+
+	//--------------------------------------------------------------
+	std::vector<Particle*> ParticleSystem::findNearestThan(const Particle & p, float distance) const{
+		std::vector<Particle*> near;
+		octree.findNearestThan(p, distance, near);
+		return near;
+	}
+
+	//--------------------------------------------------------------
+	std::vector<Particle*> ParticleSystem::findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const{
+		std::vector<Particle*> near;
+		octree.findNearestThanByType(p, distance, allowedTypes, near);
+		return near;
+	}
 }
