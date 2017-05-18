@@ -158,9 +158,9 @@ namespace nm
 						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
 						// CHECK THAT ^ IS ACTUALLY XOR
 						if (dist < INTERACTION_DISTANCE() && 
-							((point.getAnnihilationFlag() ^ points[i]->getAnnihilationFlag()) == 0xFF) ||
+							(((point.getAnnihilationFlag() ^ points[i]->getAnnihilationFlag()) == 0xFF) ||
 							((point.getFusion1Flag() ^ points[i]->getFusion1Flag()) == 0xFF) ||
-							((point.getFusion2Flag() ^ points[i]->getFusion2Flag()) == 0xFF)) potentialInteractionPartner = points[i];
+							((point.getFusion2Flag() ^ points[i]->getFusion2Flag()) == 0xFF))) potentialInteractionPartner = points[i];
 					}
 				}
 			}
@@ -187,7 +187,7 @@ namespace nm
 			{
 				for (unsigned i = 0; i < numPoints; ++i)
 				{
-					if (&point != points[i])
+					if (&point > points[i])
 					{
 						ofVec3f direction = centerOfCharge - point;
 						float distSq = direction.lengthSquared();
@@ -221,7 +221,7 @@ namespace nm
 			{
 				for (unsigned i = 0; i < numPoints; ++i)
 				{
-					if (&point != points[i])
+					if (&point > points[i])
 					{
 						bool allowedType = false;
 						for(auto t: allowedTypes){
