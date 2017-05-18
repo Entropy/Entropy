@@ -518,6 +518,12 @@ void ofApp::reset()
 	// Use the same random seed for each run.
 	ofSeedRandom(3030);
 
+	int counts[6];
+	for (int i = 0; i < 6; ++i)
+	{
+		counts[i] = 0;
+	}
+
 	for (unsigned i = 0; i < 4000; ++i)
 	{
 		glm::vec3 position = glm::vec3(
@@ -529,8 +535,27 @@ void ofApp::reset()
 		float speed = glm::gaussRand(60.f, 20.f);
 		glm::vec3 velocity = glm::sphericalRand(speed);
 
-		particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
+		float coin = ofRandomuf();
+		nm::Particle::Type type;
+		if (coin < .11f) type = nm::Particle::Type::POSITRON;
+		else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
+		else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
+		else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
+		else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
+		else type = nm::Particle::Type::DOWN_QUARK;
+		counts[type]++;
+		particleSystem.addParticle(type, position, velocity);
+		//particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 	}
+
+	int numParticles = particleSystem.getParticles().size();
+	cout << "Reset system with " << numParticles << " particles: " << endl
+		<< "  " << counts[nm::Particle::Type::ELECTRON]        << " (" << ofToString(counts[nm::Particle::Type::ELECTRON] / (float)numParticles, 2)        << ") electrons" << endl
+		<< "  " << counts[nm::Particle::Type::POSITRON]        << " (" << ofToString(counts[nm::Particle::Type::POSITRON] / (float)numParticles, 2)        << ") positrons" << endl
+		<< "  " << counts[nm::Particle::Type::UP_QUARK]        << " (" << ofToString(counts[nm::Particle::Type::UP_QUARK] / (float)numParticles, 2)        << ") up quarks" << endl
+		<< "  " << counts[nm::Particle::Type::ANTI_UP_QUARK]   << " (" << ofToString(counts[nm::Particle::Type::ANTI_UP_QUARK] / (float)numParticles, 2)   << ") anti up quarks" << endl
+		<< "  " << counts[nm::Particle::Type::DOWN_QUARK]      << " (" << ofToString(counts[nm::Particle::Type::DOWN_QUARK] / (float)numParticles, 2)      << ") down quarks" << endl
+		<< "  " << counts[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(counts[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)numParticles, 2) << ") anti down quarks" << endl;
 }
 
 //--------------------------------------------------------------
