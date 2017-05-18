@@ -203,12 +203,12 @@ void TextRenderer::draw(nm::ParticleSystem & particles, nm::Environment & enviro
 					break;
 					case nm::Particle::ANTI_UP_QUARK:
 					case nm::Particle::ANTI_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = ofUTF8ToString(0x25cb);
+						if(state==BARYOGENESIS) text = "a";
 					break;
 					case nm::Particle::DOWN_QUARK:
 					case nm::Particle::UP_QUARK:
 					case nm::Particle::UP_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = ofUTF8ToString(0x25cf);
+						if(state==BARYOGENESIS) text = "q";
 					break;
 				}
 			}else{
@@ -221,12 +221,12 @@ void TextRenderer::draw(nm::ParticleSystem & particles, nm::Environment & enviro
 					break;
 					case nm::Particle::ANTI_UP_QUARK:
 					case nm::Particle::ANTI_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = ofUTF8ToString(0x25cb);
+						if(state==BARYOGENESIS) text = "a";
 					break;
 					case nm::Particle::DOWN_QUARK:
 					case nm::Particle::UP_QUARK:
 					case nm::Particle::UP_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = ofUTF8ToString(0x25cf);
+						if(state==BARYOGENESIS) text = "q";
 					break;
 					case nm::Particle::NEUTRON:
 						if(state!=BARYOGENESIS) text = "neutron";
@@ -241,6 +241,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles, nm::Environment & enviro
 				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
 				billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
 				particleTexts[fontSize][text].draw();
+				fonts[fontSize].getStringMesh(ofToString(p.getAnnihilationFlag()), 0,0).draw();
 			}
 			//font.getStringMesh(text, 0, 0).draw();
 			//billboard(font, text, cam.getProjectionMatrix(), modelview, p);

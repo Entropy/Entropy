@@ -106,7 +106,6 @@ void ofApp::setup()
 				return this->savePreset(name);
 			}
 //		}
-		this->savePreset(this->currPreset);
 		return true;
 	}));
 	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
@@ -116,10 +115,10 @@ void ofApp::setup()
 			auto result = ofSystemLoadDialog("Select a preset folder.", true, ofToDataPath("presets", true));
 			if (result.bSuccess)
 			{
-				return this->loadPreset(result.fileName);
+				this->loadPreset(result.fileName);
+				ofSetWindowTitle(ofFilePath::getBaseName(result.fileName));
 			}
 //		}
-		this->loadPreset(this->currPreset);
 		return true;
 	}));
 

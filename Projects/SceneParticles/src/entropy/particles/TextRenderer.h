@@ -30,7 +30,7 @@ public:
 	ofParameter<float> fulltextDistance{"fulltext distance", 0.05f, 0, 2};
 
 	ofParameterGroup parameters{
-		"parameters",
+		"Text Renderer",
 		maxDistance,
 		relDistance,
 		fulltextDistance,
