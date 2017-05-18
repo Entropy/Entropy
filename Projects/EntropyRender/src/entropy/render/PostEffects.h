@@ -66,9 +66,9 @@ namespace entropy
 			{
 				ofParameter<bool> enabled{ "Enabled", true };
 				ofParameter<bool> onlyAlpha{ "Only Alpha", true };
-				ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f };
-				ofParameter<float> outer{ "Outer", 1.1f, 0.5f, 6.0f };
-				ofParameter<float> power{ "Power", 1.1f, 0.1f, 20.0f };
+				ofParameter<float> inner{ "Inner", 0.8f, 0.0f, 1.0f, ofParameterScale::Logarithmic };
+				ofParameter<float> outer{ "Outer", 1.1f, 0.5f, 6.0f, ofParameterScale::Logarithmic };
+				ofParameter<float> power{ "Power", 1.1f, 0.1f, 20.0f, ofParameterScale::Logarithmic };
 				ofParameter<float> rotation{ "Rotation", 0.f, -90.f, 90.f };
 				ofParameter<float> ratio{ "Ratio", 1.f, 0.1f, 2.f };
 				ofParameter<bool> debug{ "Debug", false };

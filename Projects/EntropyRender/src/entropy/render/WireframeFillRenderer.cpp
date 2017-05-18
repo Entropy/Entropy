@@ -346,10 +346,12 @@ namespace entropy
 			settings.mode = mode;
 			settings.camera = &camera;
 			settings.model = model;
+			settings.parameters = parameters;
 			draw(geometry, settings);
 		}
 
 		void WireframeFillRenderer::draw(const ofVbo & geometry, WireframeFillRenderer::DrawSettings settings) const{
+			auto parameters = settings.parameters;
 			if(parameters.wobblyClip){
 				this->blobMask.updateWith(*settings.camera);
 			}
