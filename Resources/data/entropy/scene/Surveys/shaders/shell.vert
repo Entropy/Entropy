@@ -20,8 +20,6 @@ uniform float uMaxLongitude;
 
 in vec4 position;
 
-flat out int vEnabled;
-
 void main()
 {
 	// Convert position from spherical to Cartesian coordinates.
@@ -41,15 +39,11 @@ void main()
 	gl_PointSize = size;
 
 	// Enable fragment if we're within range and density.
-	if (gl_VertexID % int(uDensity) == 0 &&
-		uCutRadius <= position.z &&
-		uMinLongitude <= position.x && position.x <= uMaxLongitude &&
-		uMinLatitude <= position.y && position.y <= uMaxLatitude)
+	if (gl_VertexID % int(uDensity) > 0 ||
+	uCutRadius > position.z ||
+	uMinLongitude > position.x || position.x > uMaxLongitude ||
+	uMinLatitude > position.y || position.y > uMaxLatitude)
 	{
-		vEnabled = 1;
-	}
-	else
-	{
-		vEnabled = 0;
+		gl_Position.w = 0;  // Discards the vertex.
 	}
 }

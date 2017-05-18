@@ -23,7 +23,6 @@ in vec4 position;
 in float mass;
 in float starFormationRate;
 
-flat out int vEnabled;
 flat out int vID;
 flat out int vCell;
 
@@ -48,22 +47,18 @@ void main()
 	gl_PointSize = size;
 
 	// Enable fragment if we're within range.
-	if (uMaxSize > size &&
-		uCutRadius <= position.z &&
-		uMinLongitude <= position.x && position.x <= uMaxLongitude &&
-		uMinLatitude <= position.y && position.y <= uMaxLatitude)
+	if (uMaxSize < size ||
+		uCutRadius > position.z ||
+		uMinLongitude > position.x || position.x > uMaxLongitude ||
+		uMinLatitude > position.y || position.y > uMaxLatitude)
 	{
-		vEnabled = 1;
-	}
-	else
-	{
-		vEnabled = 0;
+		gl_Position.w = 0;  // Discards the vertex.
 	}
 
 	// Calculate alpha based on radius.
 	if (position.z >= uMaxRadius)
 	{
-		vEnabled = 0;
+		gl_Position.w = 0;
 	}
 	else if (position.z <= uMinRadius)
 	{

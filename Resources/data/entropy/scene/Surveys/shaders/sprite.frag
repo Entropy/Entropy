@@ -4,7 +4,6 @@ uniform vec4 globalColor;
 
 uniform sampler2D uTex0;
 
-flat in int vEnabled;
 flat in int vID;
 flat in int vCell;
 
@@ -14,8 +13,6 @@ out vec4 fragColor;
 
 void main(void)
 {
-	if (vEnabled == 0) discard;
-
 	vec2 texCoord = gl_PointCoord;
 
 	if (vCell == 0)
