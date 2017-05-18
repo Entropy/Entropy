@@ -1,0 +1,25 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Scene",
+            "tracks": [
+                {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                },
+                {
+                    "max": 10.0,
+                    "min": 0.0,
+                    "name": "Surveys/Post_Effects/Color/Exposure",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}
