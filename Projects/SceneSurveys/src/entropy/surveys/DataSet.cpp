@@ -179,12 +179,14 @@ namespace entropy
 			float foundTargetDist = std::numeric_limits<float>::max();
 			bool lockedTarget = false;
 			
+			float mappedMinMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
+
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
 
 				// Test that the point is within clipping mass.
-				if (this->masses[i] < ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass))
+				if (this->masses[i] < mappedMinMass)
 				{
 					continue;
 				}
