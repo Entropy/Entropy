@@ -3,6 +3,7 @@
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
+uniform float uMaxMass;
 uniform float uMaxSize;
 uniform mat4 uTransform;
 
@@ -36,18 +37,19 @@ void main()
 					   position.z * sin(position.y),
 					   1.0);
 
-	vec4 eyeCoord = modelViewMatrix * uTransform * vertex;
-	gl_Position = projectionMatrix * eyeCoord;
+	vec4 eyePos = modelViewMatrix * uTransform * vertex;
+	gl_Position = projectionMatrix * eyePos;
 
-	float dist = sqrt(eyeCoord.x * eyeCoord.x + eyeCoord.y * eyeCoord.y + eyeCoord.z * eyeCoord.z);
-	float attenuation = uAttenuation / dist;
+	float eyeDist = length(eyePos.xyz);
+	float attenuation = uAttenuation / eyeDist;
 	//float attenuation = 1.0;
 
 	float size = uPointSize * mass * attenuation;
 	gl_PointSize = size;
 
 	// Enable fragment if we're within range.
-	if (uMaxSize < size ||
+	if (//uMaxMass < mass ||
+		//uMaxSize < size ||
 		uCutRadius > position.z ||
 		uMinLongitude > position.x || position.x > uMaxLongitude ||
 		uMinLatitude > position.y || position.y > uMaxLatitude)
@@ -71,10 +73,10 @@ void main()
 	}
 
 	// Fade as we near the far clipping plane.
-	if (dist > uClipRange.x)
+	if (eyeDist > uClipRange.x)
 	{
 		// Map distance from 0.0 to 1.0.
-		vAlpha *= (1.0 - (dist - uClipRange.x) / (uClipRange.y - uClipRange.x));
+		vAlpha *= (1.0 - (eyeDist - uClipRange.x) / (uClipRange.y - uClipRange.x));
 	}
 
 	vAlpha = clamp(vAlpha, 0.0, 1.0);
