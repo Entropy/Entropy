@@ -86,7 +86,7 @@ namespace nm
 		std::vector<Particle*> findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const;
 
 	private:
-		void onPairProduction(PairProductionEventArgs& args);
+		ofEventListener pairProductionListener;
 
 		Environment::Ptr environment;
 		Octree<Particle> octree;

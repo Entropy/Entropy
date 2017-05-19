@@ -41,6 +41,11 @@ namespace nm
 		unsigned numPhotons;
 	};
 
+	struct DeadParticlesEventArgs
+	{
+		uint32_t numDead;
+	};
+
 	struct PairProductionEventArgs
 	{
 		glm::vec3 position;
@@ -69,6 +74,7 @@ namespace nm
 
 		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
+		ofEvent<DeadParticlesEventArgs> deadParticlesEvent;
 
 		ofParameter<float> energy{ "Energy", 1.0f, 0.0f, 1.0f };
 		ofParameter<float> forceMultiplierMin{ "Force Multiplier Min", 1e7, 1e7, 1e8 };

@@ -537,11 +537,19 @@ void ofApp::reset()
 
 		float coin = ofRandomuf();
 		nm::Particle::Type type;
-		if (coin < .11f) type = nm::Particle::Type::POSITRON;
+		// 2:1 ratio
+		//if (coin < .11f) type = nm::Particle::Type::POSITRON;
+		//else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
+		//else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
+		//else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
+		//else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
+		//else type = nm::Particle::Type::DOWN_QUARK;
+		// 3:1 ratio
+		if (coin < .0825f) type = nm::Particle::Type::POSITRON;
 		else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
-		else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
+		else if (coin < .4125f) type = nm::Particle::Type::ANTI_UP_QUARK;
 		else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
-		else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
+		else if (coin < .7425f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
 		else type = nm::Particle::Type::DOWN_QUARK;
 		counts[type]++;
 		particleSystem.addParticle(type, position, velocity);
@@ -549,7 +557,7 @@ void ofApp::reset()
 	}
 
 	int numParticles = particleSystem.getParticles().size();
-	cout << "Reset system with " << numParticles << " particles: " << endl
+	ofLog() << "Reset system with " << numParticles << " particles: " << endl
 		<< "  " << counts[nm::Particle::Type::ELECTRON]        << " (" << ofToString(counts[nm::Particle::Type::ELECTRON] / (float)numParticles, 2)        << ") electrons" << endl
 		<< "  " << counts[nm::Particle::Type::POSITRON]        << " (" << ofToString(counts[nm::Particle::Type::POSITRON] / (float)numParticles, 2)        << ") positrons" << endl
 		<< "  " << counts[nm::Particle::Type::UP_QUARK]        << " (" << ofToString(counts[nm::Particle::Type::UP_QUARK] / (float)numParticles, 2)        << ") up quarks" << endl

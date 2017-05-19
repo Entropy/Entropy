@@ -51,10 +51,10 @@ namespace nm
 		void update(double dt);
 		void draw();
 
+		bool tryPairProduction();
+
 	private:
-		void onPhoton(PhotonEventArgs& args);
-		void onParticlesUpdate(ofShader& shader);
-		void onParticlesDraw(ofShader& shader);
+		std::vector<ofEventListener> eventListeners;
 
 		Environment::Ptr environment;
 

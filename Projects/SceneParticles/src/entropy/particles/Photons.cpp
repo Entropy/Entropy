@@ -38,9 +38,9 @@ namespace nm
 	{
 	}
 
-	void Photons::init(Environment::Ptr environment)
+	void Photons::init(Environment::Ptr env)
 	{
-		this->environment = environment;
+		this->environment = env;
 
 		// photon stuff
 		posns.resize(MAX_PHOTONS);
@@ -107,35 +107,38 @@ namespace nm
 		particleImage.load("images/particle1.png");
 
 		// listen for ofxGpuParticle events to set additonal uniforms
-		ofAddListener(trailParticles.updateEvent, this, &Photons::onParticlesUpdate);
-		ofAddListener(trailParticles.drawEvent, this, &Photons::onParticlesDraw);
+		eventListeners.push_back(trailParticles.updateEvent.newListener([this](ofShader& shader)
+		{
+			ofVec3f mouse(ofGetMouseX() - .5f * ofGetWidth(), .5f * ofGetHeight() - ofGetMouseY(), 0.f);
+			shader.setUniform3fv("mouse", mouse.getPtr());
+			shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
+			shader.setUniform1f("frameTime", ofGetLastFrameTime());
+			shader.setUniformTexture("photonPosnTexture", photonPosnTexture, 4);
+		}));
+		eventListeners.push_back(trailParticles.drawEvent.newListener([this](ofShader& shader)
+		{
+			shader.setUniformTexture("tex", particleImage, 4);
+			shader.setUniform1f("energy", environment->getEnergy());
+		}));
+
+		// listen for dead particles events
+		eventListeners.push_back(environment->deadParticlesEvent.newListener([this](DeadParticlesEventArgs& args)
+		{
+			for (int i = 0; i < args.numDead; ++i)
+			{
+				tryPairProduction();
+			}
+		}));
 
 		// listen for photon events
-		ofAddListener(environment->photonEvent, this, &Photons::onPhoton);
-	}
-
-	void Photons::onParticlesUpdate(ofShader& shader)
-	{
-		ofVec3f mouse(ofGetMouseX() - .5f * ofGetWidth(), .5f * ofGetHeight() - ofGetMouseY(), 0.f);
-		shader.setUniform3fv("mouse", mouse.getPtr());
-		shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
-		shader.setUniform1f("frameTime", ofGetLastFrameTime());
-		shader.setUniformTexture("photonPosnTexture", photonPosnTexture, 4);
-	}
-
-	void Photons::onParticlesDraw(ofShader& shader)
-	{
-        shader.setUniformTexture("tex", particleImage, 4);
-		shader.setUniform1f("energy", environment->getEnergy());
-	}
-
-	void Photons::onPhoton(PhotonEventArgs& args)
-	{
-		for (unsigned i = 0; i < args.numPhotons; ++i)
+		eventListeners.push_back(environment->photonEvent.newListener([this](PhotonEventArgs& args)
 		{
-			currentPhotonIdx = (currentPhotonIdx + 1) % posns.size();
-			posns[currentPhotonIdx] = args.photons[i];
-		}
+			for (unsigned i = 0; i < args.numPhotons; ++i)
+			{
+				currentPhotonIdx = (currentPhotonIdx + 1) % posns.size();
+				posns[currentPhotonIdx] = args.photons[i];
+			}
+		}));
 	}
 
 	void Photons::update(double dt)
@@ -161,7 +164,11 @@ namespace nm
 			else scaledPosns[i] = posns[i];
 		}
 		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
-        trailParticles.update();
+		trailParticles.update();
+	}
+
+	bool Photons::tryPairProduction()
+	{
 		if (ofRandomuf() < environment->getPairProductionThresh())
 		{
 			// find a particle
@@ -183,8 +190,11 @@ namespace nm
 				args.velocity = vels[idx];
 				ofNotifyEvent(environment->pairProductionEvent, args, this);
 				posns[idx] = glm::vec3(numeric_limits<float>::max());
+
+				return true;
 			}
 		}
+		return false;
 	}
 
 	void Photons::draw()

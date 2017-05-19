@@ -84,14 +84,11 @@ namespace nm
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 
-		ofAddListener(universe->pairProductionEvent, this, &ParticleSystem::onPairProduction);
-	}
-
-	void ParticleSystem::onPairProduction(PairProductionEventArgs& args)
-	{
-		Particle::Type type1, type2;
-		switch (rand() % 3)
+		pairProductionListener = universe->pairProductionEvent.newListener([this](PairProductionEventArgs & args)
 		{
+			Particle::Type type1, type2;
+			switch (rand() % 3)
+			{
 			case 0:
 				type1 = Particle::UP_QUARK;
 				type2 = Particle::ANTI_UP_QUARK;
@@ -106,11 +103,12 @@ namespace nm
 				type1 = Particle::POSITRON;
 				type2 = Particle::ELECTRON;
 				break;
-		}
-		glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
-		float speed = glm::length(args.velocity);
-		addParticle(type1, args.position, .5f * speed * dir);
-		addParticle(type2, args.position, -.5f * speed * dir);
+			}
+			glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
+			float speed = glm::length(args.velocity);
+			addParticle(type1, args.position, .5f * speed * dir);
+			addParticle(type2, args.position, -.5f * speed * dir);
+		});
 	}
 
 	void ParticleSystem::addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity)
@@ -266,6 +264,15 @@ namespace nm
 			}
 		});
 
+		// We'll try for pair production as many times as particles are killed for this round.
+		// This should give a more even distribution than just trying every frame.
+		if (numDeadParticles > 0)
+		{
+			DeadParticlesEventArgs args;
+			args.numDead = numDeadParticles;
+			ofNotifyEvent(environment->deadParticlesEvent, args, this);
+		}
+
 		// start deleting particles at the end first so we don't swap out a particle
 		// that is actually dead and would be swapped out later in the iteration
 		std::sort(deadParticles.begin(), deadParticles.begin() + numDeadParticles, std::greater<float>());
@@ -283,7 +290,7 @@ namespace nm
 				numParticles[idx].fetch_and_decrement();
 				//cout << " to " << numParticles[idx] << endl;
 				// replace dead particle with one from the end of the array
-				if (endIdx >= 0 && deadIdx < totalNumParticles) particles[deadIdx] = particles[endIdx];
+				if (endIdx >= 0 && deadIdx < totalNumParticles) particles[deadIdx] = particles[endIdx];				
 			}
 		}
 
@@ -301,6 +308,20 @@ namespace nm
 		{
 			//cout << "Updating " << i << " w/ " << numParticles[i] << " particles" << endl;
 			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i].data());
+		}
+
+		if (ofGetKeyPressed('1'))
+		{
+			ofLog() << "Status system with " << totalNumParticles << " particles: " << endl
+				<< "  " << numParticles[nm::Particle::Type::ELECTRON] << " (" << ofToString(typeIndices[nm::Particle::Type::ELECTRON] / (float)totalNumParticles, 2) << ") electrons" << endl
+				<< "  " << numParticles[nm::Particle::Type::POSITRON] << " (" << ofToString(typeIndices[nm::Particle::Type::POSITRON] / (float)totalNumParticles, 2) << ") positrons" << endl
+				<< "  " << numParticles[nm::Particle::Type::UP_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::UP_QUARK] / (float)totalNumParticles, 2) << ") up quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::ANTI_UP_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::ANTI_UP_QUARK] / (float)totalNumParticles, 2) << ") anti up quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::DOWN_QUARK] / (float)totalNumParticles, 2) << ") down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)totalNumParticles, 2) << ") anti down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::UP_DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::UP_DOWN_QUARK] / (float)totalNumParticles, 2) << ") up down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::PROTON] << " (" << ofToString(typeIndices[nm::Particle::Type::PROTON] / (float)totalNumParticles, 2) << ") protons" << endl
+				<< "  " << numParticles[nm::Particle::Type::NEUTRON] << " (" << ofToString(typeIndices[nm::Particle::Type::NEUTRON] / (float)totalNumParticles, 2) << ") neutrons" << endl;
 		}
 	}
 
