@@ -44,6 +44,10 @@ namespace entropy
 			bool wasLoaded;
 			bool renderFrame;
 
+			uint64_t freePlayStartMillis;
+			int freePlayStartFrame;
+			bool freePlayInit;
+
 		protected:
 			BaseParameters & getParameters() override
 			{
