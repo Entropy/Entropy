@@ -67,6 +67,10 @@ void ofApp::setup()
 			}
 		}
 	}));
+	this->eventListeners.push_back(this->sharedParams.model.clipSize.newListener([this](float & val)
+	{
+		this->sharedParams.model.maxDensitySize.setMin(val + 0.001f);
+	}));
 
 	// Load the shaders.
 	this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
@@ -96,7 +100,10 @@ void ofApp::setup()
 	this->eventListeners.push_back(this->parameters.camera.farClip.newListener([this](float & val)
 	{
 		this->camera.setFarClip(val);
-		this->sharedParams.model.clipDistance.setMax(val);
+	}));
+	this->eventListeners.push_back(this->parameters.camera.fov.newListener([this](float & val)
+	{
+		this->camera.setFov(val);
 	}));
 
 	this->eventListeners.push_back(this->parameters.travel.enabled.newListener([this](bool &)
@@ -406,14 +413,11 @@ void ofApp::draw()
 				this->spriteShader.setUniformTexture("uTex0", this->spriteTexture, 1);
 				ofEnablePointSprites();
 				{
-					this->spriteShader.setUniform1f("uMaxSize", this->dataSetBoss.parameters.renderModels ? this->sharedParams.model.clipSize : std::numeric_limits<float>::max());
-					this->dataSetBoss.drawPoints(this->spriteShader);
+					this->dataSetBoss.drawPoints(this->spriteShader, this->sharedParams);
 
-					this->spriteShader.setUniform1f("uMaxSize", this->dataSetDes.parameters.renderModels ? this->sharedParams.model.clipSize : std::numeric_limits<float>::max());
-					this->dataSetDes.drawPoints(this->spriteShader);
+					this->dataSetDes.drawPoints(this->spriteShader, this->sharedParams);
 
-					this->spriteShader.setUniform1f("uMaxSize", std::numeric_limits<float>::max());
-					this->dataSetVizir.drawPoints(this->spriteShader);
+					this->dataSetVizir.drawPoints(this->spriteShader, this->sharedParams);
 				}
 				ofDisablePointSprites();
 				this->spriteShader.end();
@@ -440,8 +444,8 @@ void ofApp::draw()
 
 				this->modelShader.begin();
 				{
-					this->dataSetBoss.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
-					this->dataSetDes.drawModels(this->modelShader, worldTransform, this->scaledMesh, this->camera, this->sharedParams);
+					this->dataSetBoss.drawModels(this->modelShader, this->sharedParams, worldTransform, this->scaledMesh, this->camera);
+					this->dataSetDes.drawModels(this->modelShader, this->sharedParams, worldTransform, this->scaledMesh, this->camera);
 				}
 				this->modelShader.end();
 			}

@@ -168,7 +168,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params)
+		size_t DataSet::updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & sharedParams)
 		{
 			std::vector<InstanceData> data;
 
@@ -183,74 +183,102 @@ namespace entropy
 			{
 				const auto & coords = this->coordinates[i];
 
-				// Test that the point is within clipping bounds.
-				if (this->mappedRadiusRange.x <= coords.z &&
-					this->mappedLongitudeRange.x <= coords.x && coords.x <= this->mappedLongitudeRange.y &&
-					this->mappedLatitudeRange.x <= coords.y && coords.y <= this->mappedLatitudeRange.y)
+				// Test that the point is within clipping mass.
+				if (this->masses[i] < ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass))
 				{
-					// Convert from spherical to Cartesian coordinates.
-					const auto position = glm::vec4(coords.z * cos(coords.y) * cos(coords.x),
-						coords.z * cos(coords.y) * sin(coords.x),
-						coords.z * sin(coords.y),
-						1.0f);
+					continue;
+				}
 
-					// Test that the point is larger than the clipping size.
-					const auto eyePos = cameraModelView * worldTransform * position;
-					const float eyeDist = glm::length(eyePos.xyz());
-					const float attenuation = params.point.attenuation / eyeDist;
-					const float size = params.point.size * this->masses[i] * attenuation;
-					if (size >= params.model.clipSize)
-					{
-						// Test that the point is inside the visible frustum.
-						const auto camPos = cameraProjection * eyePos;
-						const auto clipPos = camPos.xyz() / camPos.w;
-						if (-1 <= clipPos.x && clipPos.x <= 1 &&
-							-1 <= clipPos.y && clipPos.y <= 1 &&
-							0 <= clipPos.z && clipPos.z <= 1)
-						{
-							// Passed all tests, build and add transform matrix!
-							auto scale = glm::vec3(this->masses[i] * params.model.geoScale);
-							scale.y *= (1.0f - (((i % 53) / 53.0f) * params.model.squashRange));
+				// Test that the point is within clipping bounds.
+				if (this->mappedRadiusRange.x > coords.z ||
+					this->mappedLongitudeRange.x > coords.x || coords.x > this->mappedLongitudeRange.y ||
+					this->mappedLatitudeRange.x > coords.y && coords.y > this->mappedLatitudeRange.y)
+				{
+					continue;
+				}
 
-							auto transform = glm::translate(worldTransform, position.xyz());
-							transform = glm::scale(transform, scale);
-							transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
-							// Hide the alpha value in the transform matrix.
-							//transform[3][3] = ofMap(position.z, this->mappedRadiusRange.x, this->mappedRadiusRange.y, 1.0f, 0.0f, true);
-							InstanceData instanceData;
-							instanceData.transform = transform;
-							if (this->mappedRadiusRange.y < this->mappedRadiusRange.z)
-							{
-								instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * params.model.alphaScale;
-							}
-							else
-							{
-								instanceData.alpha = 0.0f;
-							}
-							data.push_back(instanceData);
+				// Convert from spherical to Cartesian coordinates.
+				const auto position = glm::vec4(coords.z * cos(coords.y) * cos(coords.x),
+					coords.z * cos(coords.y) * sin(coords.x),
+					coords.z * sin(coords.y),
+					1.0f);
 
-							if (i == this->targetIndex && params.target.lockDistance > 0.0f && params.target.lockDistance < eyeDist)
-							{
-								// Keep the current target locked in.
-								// (This will set the foundTargetIndex to the current value and fail all subsequent tests)
-								foundTargetDist = eyeDist;
-								foundTargetIndex = i;
-								lockedTarget = true;
-								cout << "[DataSet] Keep it locked to " << this->targetIndex << endl;
-							}
-							else 
-								if (!lockedTarget &&
-								-0.5 <= clipPos.x && clipPos.x <= 0.5 &&
-								-0.5 <= clipPos.y && clipPos.y <= 0.5 &&
-								params.target.lockDistance < eyeDist && eyeDist < params.target.maxDistance && 
-								foundTargetDist > eyeDist && this->masses[i] > params.target.minMass)
-							{
-								// Found new target.
-								foundTargetDist = eyeDist;
-								foundTargetIndex = i;
-							}
-						}
-					}
+				// Test that the point is larger than the clipping size.
+				const auto eyePos = cameraModelView * worldTransform * position;
+				const float eyeDist = glm::length(eyePos.xyz());
+				const float attenuation = sharedParams.point.attenuation / eyeDist;
+				const float size = sharedParams.point.size * this->masses[i] * attenuation;
+				if (size < sharedParams.model.clipSize)
+				{
+					continue;
+				}
+				
+				// Test that the point is inside the visible frustum.
+				const auto camPos = cameraProjection * eyePos;
+				const auto clipPos = camPos.xyz() / camPos.w;
+				if (-1 > clipPos.x || clipPos.x > 1 ||
+					-1 > clipPos.y || clipPos.y > 1 ||
+					0 > clipPos.z || clipPos.z > 1)
+				{
+					continue;
+				}
+				
+				// Passed all tests, add this instance!
+				InstanceData instanceData;
+				
+				// Build and add transform matrix.
+				auto scale = glm::vec3(this->masses[i] * sharedParams.model.geoScale);
+				scale.y *= (1.0f - (((i % 53) / 53.0f) * sharedParams.model.squashRange));
+
+				auto transform = glm::translate(worldTransform, position.xyz());
+				transform = glm::scale(transform, scale);
+				transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
+				instanceData.transform = transform;
+
+				// Add the alpha value based on radius.
+				if (this->mappedRadiusRange.y <= this->mappedRadiusRange.z)
+				{
+					instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * sharedParams.model.alphaScale;
+				}
+				else
+				{
+					instanceData.alpha = 0.0f;
+				}
+
+				// Add the SFR although we don't use it yet.
+				instanceData.starFormationRate = this->starFormationRates[i];
+
+				// Add the density value based on point size.
+				if (size >= sharedParams.model.maxDensitySize)
+				{
+					instanceData.densityMod = 1;
+				}
+				else
+				{
+					instanceData.densityMod = ofMap(size, sharedParams.model.clipSize, sharedParams.model.maxDensitySize, sharedParams.model.minDensityMod, 1);
+				}
+
+				data.push_back(instanceData);
+
+				if (i == this->targetIndex && sharedParams.target.lockDistance > 0.0f && sharedParams.target.lockDistance < eyeDist)
+				{
+					// Keep the current target locked in.
+					// (This will set the foundTargetIndex to the current value and fail all subsequent tests)
+					foundTargetDist = eyeDist;
+					foundTargetIndex = i;
+					lockedTarget = true;
+					cout << "[DataSet] Keep it locked to " << this->targetIndex << endl;
+				}
+				else 
+					if (!lockedTarget &&
+					-0.5 <= clipPos.x && clipPos.x <= 0.5 &&
+					-0.5 <= clipPos.y && clipPos.y <= 0.5 &&
+					sharedParams.target.lockDistance < eyeDist && eyeDist < sharedParams.target.maxDistance &&
+					foundTargetDist > eyeDist && this->masses[i] > sharedParams.target.minMass)
+				{
+					// Found new target.
+					foundTargetDist = eyeDist;
+					foundTargetIndex = i;
 				}
 			}
 
@@ -268,10 +296,12 @@ namespace entropy
 		}
 		
 		//--------------------------------------------------------------
-		void DataSet::drawPoints(ofShader & shader)
+		void DataSet::drawPoints(ofShader & shader, SharedParams & sharedParams)
 		{
 			if (!this->parameters.renderPoints) return;
 
+			shader.setUniform1f("uMaxMass", this->parameters.renderModels ? ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass) : std::numeric_limits<float>::max());
+			shader.setUniform1f("uMaxSize", this->parameters.renderModels ? sharedParams.model.clipSize : std::numeric_limits<float>::max());
 			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
 			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
 			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);
@@ -303,15 +333,11 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params)
+		void DataSet::drawModels(ofShader & shader, SharedParams & sharedParams, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera)
 		{
 			if (!this->parameters.renderModels) return;
 			
-			if (params.model.clipDistance == 0.0f) return;
-
-			auto clipCamera = camera;
-			clipCamera.setFarClip(params.model.clipDistance);
-			int count = this->updateFilteredData(worldTransform, clipCamera, params);
+			int count = this->updateFilteredData(worldTransform, camera, sharedParams);
 			
 			if (count == 0) return;
 
@@ -321,7 +347,15 @@ namespace entropy
 			cout << "Drawing " << count << " models" << endl;
 			//mesh.drawInstanced(OF_MESH_POINTS, count);
 
-			static ofVboMesh simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+			static ofVboMesh simpleMesh;
+			if (simpleMesh.getNumVertices() == 0)
+			{
+				simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+				for (int i = 0; i < simpleMesh.getNumVertices(); ++i)
+				{
+					simpleMesh.addColor(ofFloatColor::white);
+				}
+			}
 			simpleMesh.drawInstanced(OF_MESH_POINTS, count);
 		}
 

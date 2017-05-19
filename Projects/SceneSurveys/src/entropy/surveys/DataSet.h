@@ -53,16 +53,18 @@ namespace entropy
 					ofParameter<float> alphaScale{ "Alpha Scale", 1.0f, 0.01f, 8.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> squashRange{ "Squash Range", 0.2f, 0.0f, 1.0f };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
-					ofParameter<float> clipDistance{ "Clip Distance", 1000.0f, 0.0f, 5000.0f };
+					ofParameter<float> clipMass{ "Clip Mass", 0.0f, 0.0f, 1.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> clipSize{ "Clip Size", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
+					ofParameter<float> maxDensitySize{ "Max Density Size", 10.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
+					ofParameter<int> minDensityMod{ "Min Density Mod", 10, 1, 1000, ofParameterScale::Logarithmic };
 
 					PARAM_DECLARE("Model",
 						geoScale,
 						alphaScale,
 						squashRange,
 						resolution,
-						clipDistance,
-						clipSize);
+						clipMass, clipSize,
+						maxDensitySize, minDensityMod);
 				} model;
 
 				struct : ofParameterGroup
@@ -91,9 +93,9 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
-			void drawPoints(ofShader & shader);
+			void drawPoints(ofShader & shader, SharedParams & sharedParams);
 			void drawShells(ofShader & shader, SharedParams & sharedParams);
-			void drawModels(ofShader & shader, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera, SharedParams & params);
+			void drawModels(ofShader & shader, SharedParams & sharedParams, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera);
 
 			int getTargetIndex() const;
 			glm::vec3 getTargetPosition() const;
@@ -128,7 +130,8 @@ namespace entropy
 				glm::mat4 transform;
 				float alpha;
 				float starFormationRate;
-				glm::vec2 dummy;
+				uint32_t densityMod;
+				float dummy;
 			};
 
 			std::size_t loadFragment(const std::string & filePath, const std::string & particleType);

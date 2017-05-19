@@ -54,10 +54,12 @@ protected:
 		{
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
+			ofParameter<float> fov{ "FOV", 60, 1, 120 };
 
 			PARAM_DECLARE("Camera",
 				nearClip,
-				farClip);
+				farClip,
+				fov);
 		} camera;
 
 		struct : ofParameterGroup
