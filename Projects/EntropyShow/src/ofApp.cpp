@@ -3,6 +3,7 @@
 
 #include "entropy/Helpers.h"
 #include "entropy/scene/Calibrate.h"
+#include "entropy/scene/Empty.h"
 #include "entropy/scene/Interlude.h"
 #include "entropy/util/App.h"
 
@@ -18,7 +19,8 @@ void ofApp::setup()
 	// Add all Scenes to the Playlist.
 	auto playlist = entropy::GetPlaylist();
 	playlist->addScene(std::make_shared<entropy::scene::Calibrate>());
-	playlist->addScene(std::make_shared<entropy::scene::Interlude>());
+    playlist->addScene(std::make_shared<entropy::scene::Empty>());
+//	playlist->addScene(std::make_shared<entropy::scene::Interlude>());
 }
 
 //--------------------------------------------------------------
