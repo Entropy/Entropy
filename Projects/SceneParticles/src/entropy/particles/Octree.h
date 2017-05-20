@@ -55,7 +55,8 @@ namespace nm
 		static constexpr unsigned MAX_DEPTH() { return 4; }
 		static constexpr float THETA() { return .5f; }
 		//static constexpr float FORCE_MULTIPLIER() { return 5e7; }
-		static constexpr float INTERACTION_DISTANCE() { return 2.f; }
+		static constexpr float CANDIDATE_DISTANCE() { return 50.f; }
+		static constexpr float INTERACTION_DISTANCE() { return 20.f; }
 
 		static void setForceMultiplier(float forceMultiplier) { Octree::forceMultiplier = forceMultiplier; }
 
@@ -76,7 +77,7 @@ namespace nm
 		void updateCenterOfCharge();
 
 		// if close enough to another point to annihilate it, return that point
-		T* sumForces(T& point);// , float forceMultiplier);
+		void sumForces(T& point);// , float forceMultiplier);
 		void findNearestThan(const T& point, float distance, std::vector<T*> & near) const;
 
 		template<typename Type>
@@ -84,12 +85,18 @@ namespace nm
 
 		void addPoint(T& point);
 
-		void addPoints(vector<T>& points) { addPointsParallel(points); }
-		void addPoints(T* points, unsigned numPoints) { addPointsParallel(points, numPoints); }
+		template<size_t N>
+		void addPoints(array<T,N>& points) { addPointsSerial(points); }
+		void addPoints(vector<T>& points) { addPointsSerial(points); }
+		void addPoints(T* points, unsigned numPoints) { addPointsSerial(points, numPoints); }
 
+		template<size_t N>
+		void addPointsSerial(array<T,N>& points);
 		void addPointsSerial(vector<T>& points);
 		void addPointsSerial(T* points, unsigned numPoints);
 
+		template<size_t N>
+		void addPointsParallel(array<T,N>& points);
 		void addPointsParallel(vector<T>& points);
 		void addPointsParallel(T* points, unsigned numPoints);
 
@@ -117,8 +124,6 @@ namespace nm
 
 		// hopefully after the first few iterations this shouldn't be resized too often
 		tbb::concurrent_vector<T*> points;
-		// save the number of points so that we don't have to keep reallocating the vector
-		tbb::atomic<unsigned> numPoints;
 		ofVec3f min, max, mid;
 		float size;
 		Octree* children;

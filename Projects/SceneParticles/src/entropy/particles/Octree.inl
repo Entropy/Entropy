@@ -37,7 +37,6 @@ namespace nm
 	template<class T>
 	Octree<T>::Octree() :
 		children(NULL),
-		numPoints(0),
 		hasPoints(false),
 		charge(0.f),
 		absCharge(0.f),
@@ -60,7 +59,7 @@ namespace nm
 		this->size = ((max.x - min.x) + (max.y - min.y) + (max.z - min.z)) / 3.f;
 		this->mid = .5f * (min + max);
 		this->depth = depth;
-		if (depth == MAX_DEPTH()) points.resize(POINTS_START_SIZE());
+		if (depth == MAX_DEPTH()) points.reserve(POINTS_START_SIZE());
 	}
 
 	template<class T>
@@ -70,11 +69,11 @@ namespace nm
 		{
 			if (depth == MAX_DEPTH())
 			{
-				for (unsigned i = 0; i < numPoints; ++i)
+				for (auto * point: points)
 				{
-					charge += points[i]->getCharge();
-					absCharge += abs(points[i]->getCharge());
-					centerOfCharge += *points[i] * abs(points[i]->getCharge());
+					charge += point->getCharge();
+					absCharge += abs(point->getCharge());
+					centerOfCharge += point->pos * abs(point->getCharge());
 				}
 			}
 			else if (children)
@@ -82,16 +81,11 @@ namespace nm
 				tbb::task_group taskGroup;
 				for (unsigned i = 0; i < 8; ++i)
 				{
-					taskGroup.run([i, this] { children[i].updateCenterOfCharge(); });
+					taskGroup.run([i, this] {
+						children[i].updateCenterOfCharge();
+					});
 				}
 				taskGroup.wait();
-
-				/*
-				tbb::parallel_for(tbb::blocked_range<size_t>(0, 8),
-				[&](const tbb::blocked_range<size_t>& r) {
-				for(size_t i = r.begin(); i != r.end(); ++i) children[i].updateCenterOfCharge();
-				});
-				*/
 
 				for (unsigned i = 0; i < 8; ++i)
 				{
@@ -122,14 +116,13 @@ namespace nm
 	}
 
 	template<class T>
-	T* Octree<T>::sumForces(T& point)//, float forceMultiplier)
+	void Octree<T>::sumForces(T& point)//, float forceMultiplier)
 	{
 		if (hasPoints)
 		{
-			T* potentialInteractionPartner = NULL;
 			if (depth < MAX_DEPTH())
 			{
-				ofVec3f direction = centerOfCharge - point;
+				ofVec3f direction = centerOfCharge - point.pos;
 				float distSq = direction.lengthSquared();
 				float dist = sqrt(distSq);
 				if (dist > INTERACTION_DISTANCE() && size / dist < THETA())
@@ -141,32 +134,33 @@ namespace nm
 				{
 					for (unsigned i = 0; i < 8; ++i)
 					{
-						if (potentialInteractionPartner) children[i].sumForces(point);// , forceMultiplier);
-						else potentialInteractionPartner = children[i].sumForces(point);// , forceMultiplier);
+						children[i].sumForces(point);// , forceMultiplier);
 					}
 				}
 			}
 			else
 			{
-				for (unsigned i = 0; i < numPoints; ++i)
+				auto i = 0;
+				for (auto * other: points)
 				{
-					if (&point != points[i])
+					i++;
+					if (&point != other)
 					{
-						ofVec3f direction = centerOfCharge - point;
+						ofVec3f direction = centerOfCharge - point.pos;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
 						// CHECK THAT ^ IS ACTUALLY XOR
-						if (dist < INTERACTION_DISTANCE() && 
-							(((point.getAnnihilationFlag() ^ points[i]->getAnnihilationFlag()) == 0xFF) ||
-							((point.getFusion1Flag() ^ points[i]->getFusion1Flag()) == 0xFF) ||
-							((point.getFusion2Flag() ^ points[i]->getFusion2Flag()) == 0xFF))) potentialInteractionPartner = points[i];
+						if (dist < CANDIDATE_DISTANCE() &&
+							(((point.getAnnihilationFlag() ^ other->getAnnihilationFlag()) == 0xFF) ||
+							((point.getFusion1Flag() ^ other->getFusion1Flag()) == 0xFF) ||
+							((point.getFusion2Flag() ^ other->getFusion2Flag()) == 0xFF))){
+							point.potentialInteractionPartners.push_back(other);
+						}
 					}
 				}
 			}
-			return potentialInteractionPartner;
 		}
-		return NULL;
 	}
 
 	template<class T>
@@ -177,23 +171,23 @@ namespace nm
 				if (children)
 				{
 					unsigned char octant = 0x00;
-					if (point.x > mid.x) octant |= X_SIDE;
-					if (point.y > mid.y) octant |= Y_SIDE;
-					if (point.z > mid.z) octant |= Z_SIDE;
+					if (point.pos.x > mid.x) octant |= X_SIDE;
+					if (point.pos.y > mid.y) octant |= Y_SIDE;
+					if (point.pos.z > mid.z) octant |= Z_SIDE;
 					children[octant].findNearestThan(point, distance, nearList);
 				}
 			}
 			else
 			{
-				for (unsigned i = 0; i < numPoints; ++i)
+				for (auto * other: points)
 				{
-					if (&point > points[i])
+					if (&point > other)
 					{
-						ofVec3f direction = centerOfCharge - point;
+						ofVec3f direction = centerOfCharge - point.pos;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						if (dist < distance){
-							nearList.push_back(points[i]);
+							nearList.push_back(other);
 						}
 					}
 				}
@@ -211,30 +205,30 @@ namespace nm
 				if (children)
 				{
 					unsigned char octant = 0x00;
-					if (point.x > mid.x) octant |= X_SIDE;
-					if (point.y > mid.y) octant |= Y_SIDE;
-					if (point.z > mid.z) octant |= Z_SIDE;
+					if (point.pos.x > mid.x) octant |= X_SIDE;
+					if (point.pos.y > mid.y) octant |= Y_SIDE;
+					if (point.pos.z > mid.z) octant |= Z_SIDE;
 					children[octant].findNearestThanByType(point, distance, allowedTypes, nearList);
 				}
 			}
 			else
 			{
-				for (unsigned i = 0; i < numPoints; ++i)
+				for (auto * other: points)
 				{
-					if (&point > points[i])
+					if (&point > other)
 					{
 						bool allowedType = false;
 						for(auto t: allowedTypes){
-							allowedType |= (t == points[i]->getType());
+							allowedType |= (t == other->getType());
 						}
 						if(!allowedType){
 							continue;
 						}
-						ofVec3f direction = centerOfCharge - point;
+						ofVec3f direction = centerOfCharge - point.pos;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
 						if (dist < distance){
-							nearList.push_back(points[i]);
+							nearList.push_back(other);
 						}
 					}
 				}
@@ -246,7 +240,6 @@ namespace nm
 	void Octree<T>::clear()
 	{
 		hasPoints = false;
-		numPoints = 0;
 		//points.clear();
 		//mass = 0.f;
 		charge = 0.f;
@@ -268,12 +261,23 @@ namespace nm
 			}
 			taskGroup.wait();*/
 		}
+		if(!points.empty()){
+			points.clear();
+		}
+	}
+
+
+	template<class T>
+	template<size_t N>
+	void Octree<T>::addPointsSerial(std::array<T,N>& points)
+	{
+		addPointsSerial(points.data(), points.size());
 	}
 
 	template<class T>
 	void Octree<T>::addPointsSerial(vector<T>& points)
 	{
-		addPointsSerial(points.getPtr(), numPoints);
+		addPointsSerial(points.data(), points.size());
 	}
 
 	template<class T>
@@ -288,7 +292,14 @@ namespace nm
 	template<class T>
 	void Octree<T>::addPointsParallel(vector<T>& points)
 	{
-		addPointsParallel(points.getPtr(), numPoints);
+		addPointsParallel(points.data(), points.size());
+	}
+
+	template<class T>
+	template<size_t N>
+	void Octree<T>::addPointsParallel(std::array<T,N>& points)
+	{
+		addPointsParallel(points.data(), points.size());
 	}
 
 	template<class T>
@@ -334,16 +345,9 @@ namespace nm
 	void Octree<T>::addPoint(T& point)
 	{
 		hasPoints = true;
-		//mass += point.getMass();
-		//charge += point.getCharge();
-		//centerOfMass += point.getMass() * point;
-		//centerOfCharge += point.getCharge() * point;
 		if (depth == MAX_DEPTH())
 		{
-			//points.push_back(&point);
-			unsigned idx = numPoints.fetch_and_increment();
-			points.grow_to_at_least(idx + 1);
-			points[idx] = &point;
+			points.push_back(&point);
 		}
 		else
 		{
@@ -368,9 +372,9 @@ namespace nm
 				}
 			}
 			unsigned char octant = 0x00;
-			if (point.x > mid.x) octant |= X_SIDE;
-			if (point.y > mid.y) octant |= Y_SIDE;
-			if (point.z > mid.z) octant |= Z_SIDE;
+			if (point.pos.x > mid.x) octant |= X_SIDE;
+			if (point.pos.y > mid.y) octant |= Y_SIDE;
+			if (point.pos.z > mid.z) octant |= Z_SIDE;
 			children[octant].addPoint(point);
 		}
 	}

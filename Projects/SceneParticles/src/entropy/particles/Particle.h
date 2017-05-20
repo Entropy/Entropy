@@ -32,10 +32,11 @@
 #pragma once
 
 #include "ofMain.h"
+#include <atomic>
 
 namespace nm
 {
-	class Particle : public glm::vec3
+	class Particle
 	{
 	public:
 		enum Type
@@ -83,7 +84,7 @@ namespace nm
 		inline void setCharge(float charge) { this->charge = charge; }
 		inline float getCharge() const { return charge; }
 
-		inline void setPosition(const glm::vec3& position) { this->x = position.x; this->y = position.y; this->z = position.z; }
+		inline void setPosition(const glm::vec3& position) { this->pos =  position; }
 		inline void setVelocity(const glm::vec3& velocity) { this->velocity = velocity; }
 		inline glm::vec3 getVelocity() const { return velocity; }
 
@@ -96,13 +97,107 @@ namespace nm
 		inline unsigned char getAnnihilationFlag() const { return DATA[type].annihilationFlag; }
 		inline unsigned char getFusion1Flag() const { return DATA[type].fusion1Flag; }
 		inline unsigned char getFusion2Flag() const { return DATA[type].fusion2Flag; }
-        
-    private:
+
+		bool isMatterQuark(){
+			switch(getType()){
+				case nm::Particle::UP_QUARK:
+				case nm::Particle::DOWN_QUARK:
+				case nm::Particle::UP_DOWN_QUARK:
+					return true;
+				case nm::Particle::ANTI_UP_QUARK:
+				case nm::Particle::ANTI_DOWN_QUARK:
+				default:
+					return false;
+			}
+		}
+
+		bool isAntiMatterQuark(){
+			switch(getType()){
+				case nm::Particle::ANTI_UP_QUARK:
+				case nm::Particle::ANTI_DOWN_QUARK:
+					return true;
+				case nm::Particle::UP_QUARK:
+				case nm::Particle::DOWN_QUARK:
+				case nm::Particle::UP_DOWN_QUARK:
+				default:
+					return false;
+			}
+		}
+
+		bool isQuark(){
+			switch(getType()){
+				case nm::Particle::ANTI_UP_QUARK:
+				case nm::Particle::ANTI_DOWN_QUARK:
+				case nm::Particle::UP_QUARK:
+				case nm::Particle::DOWN_QUARK:
+				case nm::Particle::UP_DOWN_QUARK:
+					return true;
+				default:
+					return false;
+			}
+		}
+		std::vector<Particle *> potentialInteractionPartners;
         Type type;
         float mass;
         float charge;
 		glm::vec3 velocity;
 		glm::vec3 force;
+		std::atomic<float> anihilationRatio{0};
 		float radius;
+		bool alive = true;
+		size_t id;
+		glm::vec3 pos;
+
+		Particle(const Particle & p)
+			:potentialInteractionPartners(p.potentialInteractionPartners)
+			,type(p.type)
+			,mass(p.mass)
+			,charge(p.charge)
+			,velocity(p.velocity)
+			,force(p.force)
+			,anihilationRatio(p.anihilationRatio.operator float())
+			,radius(p.radius)
+			,alive(p.alive)
+			,id(p.id)
+			,pos(p.pos)
+
+		{
+
+		}
+
+		Particle & operator=(const Particle & p){
+			if(&p==this) return *this;
+			potentialInteractionPartners = p.potentialInteractionPartners;
+			type = p.type;
+			mass = p.mass;
+			charge = p.charge;
+			velocity = p.velocity;
+			force = p.force;
+			anihilationRatio = anihilationRatio.operator float();
+			radius = p.radius;
+			alive = p.alive;
+			id = p.id;
+			pos = p.pos;
+			return *this;
+		}
     };
+}
+
+namespace std{
+	inline void swap(nm::Particle & p1, nm::Particle & p2){
+		std::swap(p1.potentialInteractionPartners, p2.potentialInteractionPartners);
+		std::swap(p1.type, p2.type);
+		std::swap(p1.mass, p2.mass);
+		std::swap(p1.charge, p2.charge);
+		std::swap(p1.velocity, p2.velocity);
+		std::swap(p1.force, p2.force);
+		std::swap(p1.radius, p2.radius);
+		std::swap(p1.alive, p2.alive);
+		std::swap(p1.id, p2.id);
+		std::swap(p1.pos, p2.pos);
+		float ani1 = p1.anihilationRatio;
+		float ani2 = p2.anihilationRatio;
+		p1.anihilationRatio = ani2;
+		p2.anihilationRatio = ani1;
+	}
 }

@@ -22,6 +22,7 @@ public:
 	void draw(nm::ParticleSystem & particles,
 			  nm::Environment & environment,
 			  State state,
+			  std::pair<nm::Particle*, nm::Particle*> lookAt,
 			  entropy::render::WireframeFillRenderer & renderer,
 			  ofCamera & cam);
 
@@ -40,8 +41,10 @@ private:
 	std::vector<std::pair<size_t,std::vector<nm::Particle*>>> relations;
 	std::vector<ofEventListener> listeners;
 	std::vector<ofTrueTypeFont> fonts;
-	ofShader billboardShader;
+	ofShader billboardShaderText;
+	ofShader billboardShaderPath;
 	std::vector<std::unordered_map<std::string, ofMesh>> particleTexts;
+	std::vector<std::unordered_map<std::string, ofPath>> particlePaths;
 	float worldSize;
 };
 

@@ -359,9 +359,211 @@ void ofApp::update()
 		textRenderer.update(particleSystem, BARYOGENESIS);
 	}
 
-	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
-	orbitAngle += dt * parameters.rendering.rotationSpeed;
-	orbitAngle = ofWrap(orbitAngle, 0, 360);
+
+	auto scale = environment->getExpansionScalar();
+	bool renewLookAt = true;
+	if(lookAt.first != lookAt.second){
+		auto * lookAt1 = particleSystem.getById(lookAt.first);
+		auto * lookAt2 = particleSystem.getById(lookAt.second);
+		if(lookAt1 && lookAt2){
+			renewLookAt = glm::distance(lookAt1->pos * scale, lookAt2->pos * scale) > nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+		}
+	}
+	if(renewLookAt && timeConnectionLost==0){
+		timeConnectionLost = now;
+		lookAt.first = lookAt.second = 0;
+	}
+
+	auto timesinceConnectionLost = now - timeConnectionLost;
+	if(renewLookAt && timesinceConnectionLost > 1){
+		auto particles = particleSystem.getParticles();
+		std::vector<nm::Particle*> sortedParticles(particles.size());
+		std::transform(particles.begin(),
+					   particles.end(),
+					   sortedParticles.begin(),
+					   [](nm::Particle & p){ return &p; });
+
+		std::sort(sortedParticles.begin(), sortedParticles.end(), [&](nm::Particle * p1, nm::Particle * p2){
+			return glm::distance2(p1->pos, camera.getGlobalPosition()) < glm::distance2(p2->pos, camera.getGlobalPosition());
+		});
+
+		for(auto * p1: sortedParticles){
+			for(auto * p2: p1->potentialInteractionPartners){
+				auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
+				travelDistance = glm::distance(p1->pos, camera.getGlobalPosition()) / kHalfDim;
+				auto minTravelTime = travelDistance / parameters.rendering.travelMaxSpeed;
+				auto annihilationPartners = std::count_if(p1->potentialInteractionPartners.begin(), p1->potentialInteractionPartners.end(), [&](nm::Particle * partner){
+					return (p1->getAnnihilationFlag() ^ partner->getAnnihilationFlag()) == 0xFF;
+				});
+				auto aproxAnnihilationTime = annihilationPartners * 1.f / environment->systemSpeed;
+
+				bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+				foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
+				foundNew &= ((p1->isMatterQuark() && p2->isAntiMatterQuark()) || (p1->isAntiMatterQuark() && p2->isMatterQuark()));
+				foundNew &= minTravelTime < aproxAnnihilationTime * 0.8;
+
+				if(foundNew){
+					if(p1->id<p2->id){
+						lookAt.first = p1->id;
+						lookAt.second = p2->id;
+					}else{
+						lookAt.first = p2->id;
+						lookAt.second = p1->id;
+					}
+					timeRenewLookAt = now;
+					prevLookAt = lerpedLookAt;
+					prevCameraPosition = camera.getGlobalPosition();
+					arrived = false;
+					timeConnectionLost = 0;
+					// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
+					break;
+				}
+			}
+		}
+	}
+
+	if(lookAt.first != lookAt.second){
+		auto * lookAt1 = particleSystem.getById(lookAt.first);
+		auto * lookAt2 = particleSystem.getById(lookAt.second);
+		if(lookAt1 && lookAt2){
+			lookAtPos = (lookAt1->pos + lookAt2->pos) / 2.;
+		}
+		currentLookAtParticles.first = lookAt1;
+		currentLookAtParticles.second = lookAt2;
+
+		auto timePassed = now - timeRenewLookAt;
+		auto animationTime = std::min(2.f, travelDistance / parameters.rendering.travelMaxSpeed);
+		auto pct = float(timePassed) / animationTime;
+		if(currentLookAtParticles.first){
+			annihilationPct = currentLookAtParticles.first->anihilationRatio / environment->getAnnihilationThresh();
+		}
+		if(pct>1){
+			pct = 1;
+			if(!arrived){
+				orbitAngle = 0;
+				arrived = true;
+			}
+		}
+		pct = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::quad::easeInOut);
+		lerpedLookAt = glm::lerp(prevLookAt, lookAtPos, pct);
+
+
+		auto newCameraPosition = glm::lerp(prevCameraPosition, lookAtPos + glm::vec3(0,0,50), pct);
+
+		if(!arrived){
+			camera.setPosition(newCameraPosition);
+			camera.lookAt(lerpedLookAt, glm::vec3(0,1,0));
+		}else{
+			camera.orbitDeg(orbitAngle, 0, 50, lookAtPos);
+			//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+			orbitAngle += dt * parameters.rendering.rotationSpeed;
+			orbitAngle = ofWrap(orbitAngle, 0, 360);
+		}
+	}else{
+		currentLookAtParticles.first = nullptr;
+		currentLookAtParticles.second = nullptr;
+	}
+
+
+
+//	camera.setPosition(lookAtPos + glm::vec3(0,0,50));
+//	camera.lookAt(lookAtPos, glm::vec3(0,1,0));
+
+
+
+//	auto findNewAnnihilation = [this]{
+//		std::pair<size_t, size_t> lookAt{0,0};
+//		auto scale = environment->getExpansionScalar();
+//		auto particles = particleSystem.getParticles();
+//		std::vector<nm::Particle*> particlesPtr(particles.size());
+//		std::transform(particles.begin(),
+//					   particles.end(),
+//					   particlesPtr.begin(),
+//					   [](nm::Particle & p){ return &p; });
+
+//		std::vector<nm::Particle*> sortedParticles;
+//		std::copy_if(particlesPtr.begin(), particlesPtr.end(), std::back_inserter(sortedParticles),
+//					 [](nm::Particle * p){ return p->isQuark(); });
+//		std::sort(sortedParticles.begin(), sortedParticles.end(), [&](nm::Particle * p1, nm::Particle * p2){
+//			return glm::distance2(p1->pos, camera.getGlobalPosition()) < glm::distance2(p2->pos, camera.getGlobalPosition());
+//		});
+
+//		std::vector<nm::Particle*> annihilationPartners;
+//		for(auto * p1: sortedParticles){
+//			annihilationPartners.clear();
+//			std::copy_if(p1->potentialInteractionPartners.begin(), p1->potentialInteractionPartners.end(), std::back_inserter(annihilationPartners), [&](nm::Particle * partner){
+//				return (p1->id < partner->id) && (p1->getAnnihilationFlag() ^ partner->getAnnihilationFlag()) == 0xFF;
+//			});
+//			for(auto * p2: annihilationPartners){
+//				auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
+//				travelDistance = glm::distance(p1->pos, camera.getPosition());
+//				auto minTravelTime = travelDistance / kHalfDim / parameters.rendering.travelMaxSpeed;
+//				auto aproxAnnihilationTime = annihilationPartners.size() * 1.f / environment->systemSpeed;
+//				travelSpeed = std::max(travelDistance / (aproxAnnihilationTime * 0.8f), parameters.rendering.travelMaxSpeed * kHalfDim);
+
+//				bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+//				foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
+//				foundNew &= minTravelTime < aproxAnnihilationTime * 0.5;
+
+//				if(foundNew){
+//					if(p1->id<p2->id){
+//						lookAt.first = p1->id;
+//						lookAt.second = p2->id;
+//					}else{
+//						lookAt.first = p2->id;
+//						lookAt.second = p1->id;
+//					}
+//					break;
+//				}
+//			}
+//		}
+//		return lookAt;
+//	};
+
+//	auto distanceToTarget = glm::distance(camera.getPosition(), lookAtPos);
+//	auto pctSpeed = travelDistance>0 ? ofMap(distanceToTarget / travelDistance, 0, 1, 2, 0.1, true) : 1;
+//	if(lookAt.first != lookAt.second){
+//		auto * lookAt1 = particleSystem.getById(lookAt.first);
+//		if(lookAt1){
+//			auto pctAnni = lookAt1->anihilationRatio / environment->getAnnihilationThresh();
+//			cout << pctAnni << endl;
+//		}
+//	}
+////	travelSpeed = /*travelSpeed * 0.9 + */parameters.rendering.travelMaxSpeed * kHalfDim * dt * pctSpeed/* * 0.1*/;
+//	traveledLength += travelSpeed * dt;// * pctSpeed;
+
+//	if(cameraPath.getVertices().empty() || traveledLength >= cameraPath.getPerimeter()){
+//		lookAt = findNewAnnihilation();
+//		if(lookAt.first != lookAt.second){
+//			auto * lookAt1 = particleSystem.getById(lookAt.first);
+//			auto * lookAt2 = particleSystem.getById(lookAt.second);
+//			if(lookAt1 && lookAt2){
+//				lookAtPos = (lookAt1->pos + lookAt2->pos) / 2.;
+//				cameraViewport.setPosition(lookAtPos + glm::vec3(0,0,50));
+//				cameraViewport.lookAt(lookAtPos, glm::vec3(0,1,0));
+//				float nextDistance = glm::distance(camera.getPosition(), lookAtPos);
+//				auto resolution = nextDistance * 10.;
+//				cameraPath.curveTo(lookAtPos, resolution);
+//				arrived = false;
+//				pct = 0;
+//				timeRenewLookAt = now;
+//				cout << "renewed to " << lookAtPos << " at distance " << nextDistance << " with reolution " << resolution << endl;
+//			}
+//		}
+//	}
+
+
+//	if(traveledLength < cameraPath.getPerimeter()){
+//		auto left = camera.getXAxis();
+//		auto next = cameraPath.getPointAtLength(traveledLength);
+//		auto nextLength = traveledLength + travelSpeed;
+//		auto lookAt = cameraPath.getPointAtLength(nextLength);
+//		auto up = glm::cross(left, glm::normalize(lookAt - next));
+//		camera.setPosition(next);
+//		camera.lookAt(lookAt, up);
+//	}
+
+//	cout << traveledLength << " / " << cameraPath.getPerimeter() <<  " @ " << pctSpeed << endl;
 }
 
 //--------------------------------------------------------------
@@ -372,7 +574,11 @@ void ofApp::draw()
 	{
 		ofClear(0, 255);
 
-		camera.begin();
+		if(parameters.rendering.useEasyCam){
+			easyCam.begin();
+		}else{
+			camera.begin();
+		}
 		ofEnableDepthTest();
 		{
 			if (this->parameters.debugLights)
@@ -395,8 +601,14 @@ void ofApp::draw()
 
 			if(parameters.rendering.drawText){
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
-				textRenderer.draw(particleSystem, *environment, BARYOGENESIS, renderer, camera);
+				if(parameters.rendering.useEasyCam){
+					textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, easyCam);
+				}else{
+					textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, camera);
+				}
 			}
+
+
 
 			if (this->parameters.rendering.additiveBlending){
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -406,7 +618,11 @@ void ofApp::draw()
 				ofEnableAlphaBlending();
 			}
 			if(parameters.rendering.drawModels){
-				this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera);
+				if(parameters.rendering.useEasyCam){
+					this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, easyCam);
+				}else{
+					this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera);
+				}
 			}
 			if (parameters.rendering.drawPhotons)
 			{
@@ -414,7 +630,32 @@ void ofApp::draw()
 			}
 		}
 		ofDisableDepthTest();
-		camera.end();
+
+		cameraPath.draw();
+
+		if(parameters.rendering.useEasyCam){
+			camera.draw();
+			easyCam.end();
+		}else{
+			camera.end();
+		}
+
+		ofFill();
+		ofSetColor(0);
+		ofDrawRectangle({fboScene.getWidth() - 320, fboScene.getHeight(), 320, -240});
+		ofSetColor(255);
+		cameraViewport.begin({fboScene.getWidth() - 320, 0, 320, 240});
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, cameraViewport);
+		if (this->parameters.rendering.additiveBlending){
+			ofEnableBlendMode(OF_BLENDMODE_ADD);
+		}else if(this->parameters.rendering.glOneBlending){
+			glBlendFunc(GL_ONE, GL_ONE);
+		}else{
+			ofEnableAlphaBlending();
+		}
+		this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, cameraViewport);
+		cameraViewport.end();
 	}
 	this->fboScene.end();
 
@@ -537,23 +778,23 @@ void ofApp::reset()
 
 		float coin = ofRandomuf();
 		nm::Particle::Type type;
-		// 2:1 ratio
-		//if (coin < .11f) type = nm::Particle::Type::POSITRON;
-		//else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
-		//else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
-		//else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
-		//else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
-		//else type = nm::Particle::Type::DOWN_QUARK;
-		// 3:1 ratio
-		if (coin < .0825f) type = nm::Particle::Type::POSITRON;
-		else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
-		else if (coin < .4125f) type = nm::Particle::Type::ANTI_UP_QUARK;
-		else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
-		else if (coin < .7425f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
-		else type = nm::Particle::Type::DOWN_QUARK;
-		counts[type]++;
-		particleSystem.addParticle(type, position, velocity);
-		//particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
+//		// 2:1 ratio
+//		//if (coin < .11f) type = nm::Particle::Type::POSITRON;
+//		//else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
+//		//else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
+//		//else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
+//		//else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
+//		//else type = nm::Particle::Type::DOWN_QUARK;
+//		// 3:1 ratio
+//		if (coin < .0825f) type = nm::Particle::Type::POSITRON;
+//		else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
+//		else if (coin < .4125f) type = nm::Particle::Type::ANTI_UP_QUARK;
+//		else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
+//		else if (coin < .7425f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
+//		else type = nm::Particle::Type::DOWN_QUARK;
+//		counts[type]++;
+//		particleSystem.addParticle(type, position, velocity);
+		particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 	}
 
 	int numParticles = particleSystem.getParticles().size();
