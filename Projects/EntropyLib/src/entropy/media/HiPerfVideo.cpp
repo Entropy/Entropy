@@ -29,6 +29,13 @@ namespace entropy
 			{
 				this->hpvPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 			}));
+			this->parameterListeners.push_back(this->parameters.syncToTimeline.newListener([this](bool & enabled)
+			{
+				if (!enabled)
+				{
+					this->freePlayInit = true;
+				}
+			}));
 		}
 
 		//--------------------------------------------------------------
@@ -85,21 +92,31 @@ namespace entropy
 				}
 				else
 				{
-					if (shouldPlay && this->hpvPlayer.isPaused())
+					if (shouldPlay)
 					{
-						// Set the starting position.
-						float positionMillis = this->switchMillis;
-						while (positionMillis > durationMillis)
+						if (this->freePlayInit)
 						{
-							positionMillis -= durationMillis;
-						}
+							// Get start time and frames for free play.
+							this->freePlayStartMillis = ofGetElapsedTimeMillis();
 
-						this->hpvPlayer.setPosition(positionMillis / durationMillis);
-						this->hpvPlayer.setPaused(false);
-					}
-					else if (!shouldPlay && !this->hpvPlayer.isPaused())
-					{
-						this->hpvPlayer.setPaused(true);
+							float positionMillis = this->switchMillis;
+							while (positionMillis > durationMillis)
+							{
+								positionMillis -= durationMillis;
+							}
+							this->freePlayStartFrame = ((positionMillis / 1000.0) * this->hpvPlayer.getFrameRate());
+
+							this->hpvPlayer.setFrame(this->freePlayStartFrame);
+
+							this->freePlayInit = false;
+						}
+						else
+						{
+							// Use system time to figure out what frame to sync.
+							uint64_t deltaMillis = ofGetElapsedTimeMillis() - this->freePlayStartMillis;
+							int deltaFrames = ((deltaMillis / 1000.0) * this->hpvPlayer.getFrameRate());
+							this->hpvPlayer.setFrame(this->freePlayStartFrame + deltaFrames);
+						}
 					}
 				}
 			}

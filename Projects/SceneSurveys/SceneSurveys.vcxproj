@@ -175,6 +175,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\entropy\surveys\Travel.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\entropy\surveys\DataSet.cpp" />
@@ -243,6 +244,7 @@
     <ClCompile Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entropy\surveys\Travel.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\entropy\surveys\DataSet.h" />
     <ClInclude Include="src\entropy\surveys\GaussianMapTexture.h" />

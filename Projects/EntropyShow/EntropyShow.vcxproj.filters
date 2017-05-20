@@ -307,6 +307,9 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Sequence.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\scene\Empty.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -973,6 +976,9 @@
     </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\Sequence.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\scene\Empty.h">
+      <Filter>local_addons\EntropyLib\src\entropy\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

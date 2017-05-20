@@ -1,7 +1,5 @@
 #pragma once
 
-#include <unordered_set>
-
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxTextureRecorder.h"
@@ -12,6 +10,7 @@
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
 #include "entropy/surveys/DataSet.h"
+#include "entropy/surveys/Travel.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -64,22 +63,6 @@ protected:
 
 		struct : ofParameterGroup
 		{
-			ofParameter<bool> enabled{ "Enable Travel", false };
-			ofParameter<float> camCutoff{ "Cam Cutoff", 1.0f, 0.0f, 1000.0f };
-			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.2f, 0.0f, 1.0f };
-			ofParameter<float> moveLerp{ "Move Lerp", 0.1f, 0.0f, 1.0f };
-			ofParameter<float> maxSpeed{ "Max Speed", 10.0f, 0.0f, 100.0f };
-
-			PARAM_DECLARE("Travel",
-				enabled,
-				camCutoff,
-				lookAtLerp,
-				moveLerp,
-				maxSpeed);
-		} travel;
-
-		struct : ofParameterGroup
-		{
 			ofParameter<bool> recordSequence{ "Record Sequence", false };
 			ofParameter<bool> recordVideo{ "Record Video", false };
 			ofParameter<int> renderWidth{ "Render Width", 4200, 1920, 5760 };
@@ -96,7 +79,6 @@ protected:
 			worldScale,
 			orbitSpeed,
 			camera,
-			travel,
 			recording);
 	} parameters;
 
@@ -116,6 +98,8 @@ protected:
 	entropy::surveys::DataSet dataSetBoss;
 	entropy::surveys::DataSet dataSetDes;
 	entropy::surveys::DataSet dataSetVizir;
+
+	entropy::surveys::Travel travel;
 
 	entropy::geom::Sphere sphereGeom;
 	ofTexture sphereTexture;
@@ -141,8 +125,6 @@ protected:
 
 	ofEasyCam camera;
 	glm::vec3 orbitOffset;
-	int prevTargetIndex;
-	std::unordered_set<int> travelLog;
 
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;

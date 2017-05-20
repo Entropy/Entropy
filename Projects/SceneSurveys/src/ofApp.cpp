@@ -106,12 +106,6 @@ void ofApp::setup()
 		this->camera.setFov(val);
 	}));
 
-	this->eventListeners.push_back(this->parameters.travel.enabled.newListener([this](bool &)
-	{
-		this->prevTargetIndex = -1;
-		this->travelLog.clear();
-	}));
-
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
@@ -125,6 +119,7 @@ void ofApp::setup()
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
+	this->gui.add(this->travel.parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
@@ -304,43 +299,8 @@ void ofApp::update()
 	}
 	*/
 
-	if (this->parameters.travel.enabled)
-	{
-		// Get the data target.
-		int currTargetIndex = this->dataSetDes.getTargetIndex();
-		glm::vec3 targetPos;
-		const auto camPos = this->camera.getPosition();
-		if (glm::length(camPos) > this->parameters.travel.camCutoff &&
-			(this->prevTargetIndex == currTargetIndex ||
-			 this->travelLog.find(currTargetIndex) == this->travelLog.end()))
-		{
-			// Camera is far enough from the origin.
-			// Target is either the same as previous frame, or it's never been visited on this travel.
-			targetPos = this->dataSetDes.getTargetPosition() * this->parameters.worldScale.get();
-			this->prevTargetIndex = currTargetIndex;
-			this->travelLog.insert(currTargetIndex);
-			cout << "[ofApp] Travel target index = " << this->prevTargetIndex << endl;
-		}
-		else
-		{
-			// Using default target at origin.
-			this->prevTargetIndex = -1;
-			cout << "[ofApp] Default target index = " << this->prevTargetIndex << endl;
-		}
-		
-		const auto toTarget = targetPos - camPos;
-		const auto lerpedDir = glm::normalize(glm::mix(this->camera.getLookAtDir(), glm::normalize(toTarget), this->parameters.travel.lookAtLerp.get()));
-		const auto targetDist = glm::length(toTarget);
-
-		this->camera.lookAt(camPos + lerpedDir * targetDist);
-		auto lerpPos = glm::mix(camPos, targetPos, this->parameters.travel.moveLerp.get());
-		if (this->parameters.travel.maxSpeed > 0.0f && this->parameters.travel.maxSpeed < glm::distance(camPos, lerpPos))
-		{
-			// Clamp the new position if it's too big of a jump.
-			lerpPos = camPos + glm::normalize(toTarget) * this->parameters.travel.maxSpeed.get();
-		}
-		this->camera.setPosition(lerpPos);
-	}
+	const auto worldTransform = this->getWorldTransform();
+	this->travel.update(this->dataSetDes, this->camera, worldTransform);
 	
 	// Auto-reload shaders.
 	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
@@ -450,13 +410,8 @@ void ofApp::draw()
 				this->modelShader.end();
 			}
 
-			//ofNoFill();
-			//const auto targetPos = this->dataSetDes.getTargetPosition() * this->parameters.worldScale.get();
-			//ofSetColor(ofColor::red);
-			//ofDrawLine(glm::vec3(0), targetPos);
-			//ofDrawBox(targetPos, this->sharedParams.target.lockDistance * 2.0f);
-			//ofFill();
-			
+			this->travel.draw(this->sharedParams);
+
 			ofPushMatrix();
 			ofMultMatrix(worldTransform);
 			{
