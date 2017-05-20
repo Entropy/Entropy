@@ -203,11 +203,11 @@ namespace entropy
 					}
 					else if (transition == Transition::Strobe)
 					{
-						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? 1.0f : 0.0f;
+						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? parameters.base.fade : 0.0f;
 					}
 					else
 					{
-						this->frontAlpha = 1.0f;
+						this->frontAlpha = parameters.base.fade;
 					}
 				}
 				else
@@ -261,7 +261,8 @@ namespace entropy
 
 					// Draw the content.
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
-					ofSetColor(255, this->frontAlpha * 255);
+					//ofSetColor(255, this->frontAlpha * 255);
+					ofSetColor(255 * this->frontAlpha);
 					this->renderContent();
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
@@ -286,6 +287,7 @@ namespace entropy
 				if (ofxImGui::BeginTree(parameters.base, settings))
 				{
 					ofxImGui::AddParameter(parameters.base.background);
+					ofxImGui::AddParameter(parameters.base.fade);
 					static std::vector<std::string> layoutLabels{ "Back", "Front" };
 					ofxImGui::AddRadio(parameters.base.layout, layoutLabels, 2);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
