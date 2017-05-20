@@ -11,6 +11,7 @@ ofxXmlSettings
 ../../addons/ofxGStreamer
 ../../addons/ofxHPVPlayer
 ../../addons/ofxImageSequence
+../../addons/ofxParameterTwister
 ../../addons/ofxPreset
 ../../addons/ofxRange
 ../../addons/ofxTextInputField

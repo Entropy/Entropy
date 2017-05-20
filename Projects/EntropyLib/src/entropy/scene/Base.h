@@ -176,6 +176,11 @@ namespace entropy
 
 			// Messenger
 			void messageReceived_(ofxOscMessage & message);
+
+#ifdef OFX_PARAMETER_TWISTER
+			// Twister
+			void resetMediaTwister();
+#endif
 		};
 	}
 }

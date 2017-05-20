@@ -197,11 +197,16 @@ namespace entropy
 			// Save default preset.
 			this->savePreset(kPresetDefaultName);
 
-			// Clear pop-ups.
+			// Clear media.
 			while (!this->medias.empty())
 			{
 				this->removeMedia();
 			}
+
+#ifdef OFX_PARAMETER_TWISTER
+			// Clear twister sync.
+			GetApp()->getTwister()->clear();
+#endif
 
 			this->ready = false;
 		}
@@ -628,7 +633,7 @@ namespace entropy
 				}
 			}
 
-			// Clear previous Pop-ups.
+			// Clear previous Media.
 			while (!this->medias.empty())
 			{
 				this->removeMedia();
@@ -1116,6 +1121,10 @@ namespace entropy
 			media->init_(idx, this->timeline);
 			this->medias.push_back(media);
 
+#ifdef OFX_PARAMETER_TWISTER
+			this->resetMediaTwister();
+#endif
+
 			return media;
 		}
 
@@ -1125,7 +1134,41 @@ namespace entropy
 			auto media = this->medias.back();
 			media->clear_();
 			this->medias.pop_back();
+
+#ifdef OFX_PARAMETER_TWISTER
+			this->resetMediaTwister();
+#endif
 		}
+
+#ifdef OFX_PARAMETER_TWISTER
+		//--------------------------------------------------------------
+		void Base::resetMediaTwister()
+		{
+			auto twister = GetApp()->getTwister();
+			twister->clear();
+
+			size_t row = 0;
+			size_t col = 0;
+			for (auto media : this->medias)
+			{
+				auto encoder = row * 4 + col;
+				auto & param = media->getParameters().base.fade;
+				twister->setParam(encoder, param);
+
+				// Add parameters by column for similar mapping as timeline.
+				++row;
+				if (row >= 4)
+				{
+					++col;
+					row = 0;
+				}
+				if (col >= 4)
+				{
+					break;
+				}
+			}
+		}
+#endif
 
 		//--------------------------------------------------------------
 		std::shared_ptr<world::Camera> Base::getCamera(render::Layout layout)
