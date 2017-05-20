@@ -118,7 +118,7 @@
             },
             "Points": {
                 "Attenuation": "600",
-                "Size": "0.177741"
+                "Size": "0.189696"
             },
             "Shells": {
                 "Alpha": "1",
@@ -160,8 +160,8 @@
         }
     },
     "ofEasyCam": {
-        "aspectRatio": 1.77777779102325,
-        "distance": 979.862365722656,
+        "aspectRatio": 3.88888883590698,
+        "distance": 1373.43981933594,
         "drag": 0.899999976158142,
         "farClip": 100000.0,
         "forceAspectRatio": true,
@@ -171,9 +171,9 @@
         "mouseInputEnabled": true,
         "mouseMiddleButtonEnabled": true,
         "nearClip": 9.99999974737875e-05,
-        "orientation": "0.891052, 0.027681, -0.440902, -0.104242",
+        "orientation": "0.993913, 1.732e-06, 0.000730963, 0.110169",
         "ortho": false,
-        "position": "-775.565, 41.7321, 597.401",
+        "position": "2.56491, 0.210609, 1373.44",
         "relativeYAxis": false,
         "scale": "1, 1, 1",
         "target": "0, 0, 0",
