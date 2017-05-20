@@ -70,9 +70,9 @@ namespace nm
 		float getForceMultiplier() const;
 		float getAnnihilationThresh() const;
 		float getFusionThresh() const;
-		float getPairProductionThresh() const;
+//		float getPairProductionThresh() const;
 
-		ofEvent<PairProductionEventArgs> pairProductionEvent;
+//		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 		ofEvent<DeadParticlesEventArgs> deadParticlesEvent;
 
@@ -83,8 +83,9 @@ namespace nm
 		ofParameter<float> annihilationThreshMax{ "Annihiliation Threshold Max", 0.5f, 0.0f, 1.0f };
 		ofParameter<float> fusionThresholdExponentMin{ "Fusion Threshold Exponent Min", -5.237f, -6.0f, -5.0f };
 		ofParameter<float> fusionThresholdExponentMax{ "Fusion Threshold Exponent Max", -5.593, -6.0f, -5.0f };
-		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
-		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+//		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
+//		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+		ofParameter<float> matterSurveivesChance{"Matter survives chance", 0.5, 0, 1};
 		ofParameter<float> systemSpeed{ "System speed", 0.5, 0, 3, ofParameterScale::Logarithmic};
 
 
@@ -98,8 +99,8 @@ namespace nm
 			annihilationThreshMax,
 			fusionThresholdExponentMin,
 			fusionThresholdExponentMax,
-			pairProductionThresholdMin,
-			pairProductionThresholdMax
+//			pairProductionThresholdMin,
+//			pairProductionThresholdMax
 		};
 	private:
 		glm::vec3 min, max, dims;

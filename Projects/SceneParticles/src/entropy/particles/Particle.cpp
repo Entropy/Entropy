@@ -46,6 +46,8 @@ namespace nm
 	};
 	*/
 
+	size_t nextParticleId = 0;
+
 	Particle::Data Particle::DATA[NUM_TYPES] = {
 		{	0x01,	0,		0,		500.f,		-1.f,			{"Electron",		{0.5f, 0.5f, 0.5f, 0.5f}},	"sphere_electron_positron.obj"}, // ELECTRON
 		{	~0x01,	0,		0,		500.f,		1.f,			{"Positron",		{0.0f, 0.1f, 0.5f, 0.5f}},	"sphere_electron_positron.obj"}, // POSITRON
@@ -71,12 +73,12 @@ namespace nm
 		DATA[PROTON].color
 	};
 
-    Particle::Particle() :
-        glm::vec3(0.0f),
+	Particle::Particle():
         mass(1.f),
         velocity(1.f, 0.f, 0.f),
         charge(1.f),
-		radius(10.f)
+		radius(10.f),
+		id(nextParticleId++)
     {
     }
 }

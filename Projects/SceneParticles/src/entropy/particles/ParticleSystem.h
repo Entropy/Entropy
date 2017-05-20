@@ -35,6 +35,7 @@
 #include "Octree.h"
 #include "Particle.h"
 #include "Environment.h"
+#include <gsl>
 
 namespace nm
 {
@@ -81,10 +82,11 @@ namespace nm
 		void serialize(nlohmann::json & json);
 		void deserialize(const nlohmann::json & json);
 
-		const std::array<nm::Particle, MAX_PARTICLES> & getParticles() const;
+		gsl::span<nm::Particle> getParticles();
 		std::vector<Particle*> findNearestThan(const Particle & p, float distance) const;
 		std::vector<Particle*> findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const;
 
+		nm::Particle * getById(size_t id);
 	private:
 		ofEventListener pairProductionListener;
 

@@ -122,13 +122,13 @@ namespace nm
 		}));
 
 		// listen for dead particles events
-		eventListeners.push_back(environment->deadParticlesEvent.newListener([this](DeadParticlesEventArgs& args)
-		{
-			for (int i = 0; i < args.numDead; ++i)
-			{
-				tryPairProduction();
-			}
-		}));
+//		eventListeners.push_back(environment->deadParticlesEvent.newListener([this](DeadParticlesEventArgs& args)
+//		{
+//			for (int i = 0; i < args.numDead; ++i)
+//			{
+//				tryPairProduction();
+//			}
+//		}));
 
 		// listen for photon events
 		eventListeners.push_back(environment->photonEvent.newListener([this](PhotonEventArgs& args)
@@ -167,35 +167,35 @@ namespace nm
 		trailParticles.update();
 	}
 
-	bool Photons::tryPairProduction()
-	{
-		if (ofRandomuf() < environment->getPairProductionThresh())
-		{
-			// find a particle
-			const unsigned numTries = 100;
-			unsigned idx = numeric_limits<unsigned>::max();
-			for (unsigned i = 0; i < numTries; ++i)
-			{
-				unsigned randIdx = rand() % MAX_PHOTONS;
-				if (posns[randIdx].x != numeric_limits<float>::max())
-				{
-					idx = randIdx;
-					break;
-				}
-			}
-			if (idx != numeric_limits<unsigned>::max())
-			{
-				PairProductionEventArgs args;
-				args.position = posns[idx];
-				args.velocity = vels[idx];
-				ofNotifyEvent(environment->pairProductionEvent, args, this);
-				posns[idx] = glm::vec3(numeric_limits<float>::max());
+//	bool Photons::tryPairProduction()
+//	{
+//		if (ofRandomuf() < environment->getPairProductionThresh())
+//		{
+//			// find a particle
+//			const unsigned numTries = 100;
+//			unsigned idx = numeric_limits<unsigned>::max();
+//			for (unsigned i = 0; i < numTries; ++i)
+//			{
+//				unsigned randIdx = rand() % MAX_PHOTONS;
+//				if (posns[randIdx].x != numeric_limits<float>::max())
+//				{
+//					idx = randIdx;
+//					break;
+//				}
+//			}
+//			if (idx != numeric_limits<unsigned>::max())
+//			{
+//				PairProductionEventArgs args;
+//				args.position = posns[idx];
+//				args.velocity = vels[idx];
+//				ofNotifyEvent(environment->pairProductionEvent, args, this);
+//				posns[idx] = glm::vec3(numeric_limits<float>::max());
 
-				return true;
-			}
-		}
-		return false;
-	}
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	void Photons::draw()
 	{

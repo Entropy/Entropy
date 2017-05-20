@@ -48,7 +48,9 @@ public:
 	static const float kHalfDim;
 	static const unsigned int kMaxLights;
 
-	ofEasyCam camera;
+	ofCamera camera;
+	ofCamera cameraViewport;
+	ofEasyCam easyCam;
 
 	nm::ParticleSystem particleSystem;
 	nm::Photons photons;
@@ -98,6 +100,8 @@ public:
 			ofParameter<float> fov{ "Fov", 60, 1, 120 };
 			ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
 			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
+			ofParameter<float> travelMaxSpeed{"Travel max speed", 0.1, 0.001, 2, ofParameterScale::Logarithmic};
+			ofParameter<bool> useEasyCam{"use easy cam", false};
 
 			PARAM_DECLARE("Rendering",
 				colorsPerType,
@@ -109,8 +113,10 @@ public:
 				ambientLight,
 				attenuation,
 				fov,
-			  rotationRadius,
-			  rotationSpeed);
+				rotationRadius,
+				rotationSpeed,
+				travelMaxSpeed,
+				useEasyCam);
 		} rendering;
 
 		struct : ofParameterGroup
@@ -138,4 +144,18 @@ public:
 	double now = 0;
 	double dt = 0;
 	double orbitAngle = 0;
+
+	std::pair<size_t, size_t> lookAt{0,0};
+	std::pair<nm::Particle*, nm::Particle*> currentLookAtParticles{nullptr,nullptr};
+	glm::vec3 lookAtPos, prevLookAt, lerpedLookAt, prevCameraPosition;
+	bool arrived;
+	double timeConnectionLost = 0;
+	double timeRenewLookAt = 0;
+	float travelDistance = 0;
+	float annihilationPct = 0;
+	float pct = 0;
+	ofPolyline cameraPath;
+	std::deque<glm::vec3> currentPath;
+	float traveledLength = 0;
+	float travelSpeed = 0;
 };

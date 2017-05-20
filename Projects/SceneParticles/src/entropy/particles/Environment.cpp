@@ -62,8 +62,8 @@ namespace nm
 		//return fusionThresholdMin + energy * (fusionThresholdMax - fusionThresholdMin);
 	}
 
-	float Environment::getPairProductionThresh() const
-	{
-		return pairProductionThresholdMin + energy * (pairProductionThresholdMax - pairProductionThresholdMin);
-	}
+//	float Environment::getPairProductionThresh() const
+//	{
+//		return pairProductionThresholdMin + energy * (pairProductionThresholdMax - pairProductionThresholdMin);
+//	}
 }

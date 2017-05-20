@@ -55,6 +55,10 @@ namespace nm
 		octree.addChildren(true);
 
 		particles.fill(Particle());
+		int i = 0;
+		for(auto &p : particles){
+			p.id = i++;
+		}
 		deadParticles.fill(0);
 		newPhotons.fill(glm::vec3(0));
 
@@ -84,31 +88,31 @@ namespace nm
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 
-		pairProductionListener = universe->pairProductionEvent.newListener([this](PairProductionEventArgs & args)
-		{
-			Particle::Type type1, type2;
-			switch (rand() % 3)
-			{
-			case 0:
-				type1 = Particle::UP_QUARK;
-				type2 = Particle::ANTI_UP_QUARK;
-				break;
+//		pairProductionListener = universe->pairProductionEvent.newListener([this](PairProductionEventArgs & args)
+//		{
+//			Particle::Type type1, type2;
+//			switch (rand() % 3)
+//			{
+//			case 0:
+//				type1 = Particle::UP_QUARK;
+//				type2 = Particle::ANTI_UP_QUARK;
+//				break;
 
-			case 1:
-				type1 = Particle::DOWN_QUARK;
-				type2 = Particle::ANTI_DOWN_QUARK;
-				break;
+//			case 1:
+//				type1 = Particle::DOWN_QUARK;
+//				type2 = Particle::ANTI_DOWN_QUARK;
+//				break;
 
-			case 2:
-				type1 = Particle::POSITRON;
-				type2 = Particle::ELECTRON;
-				break;
-			}
-			glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
-			float speed = glm::length(args.velocity);
-			addParticle(type1, args.position, .5f * speed * dir);
-			addParticle(type2, args.position, -.5f * speed * dir);
-		});
+//			case 2:
+//				type1 = Particle::POSITRON;
+//				type2 = Particle::ELECTRON;
+//				break;
+//			}
+//			glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
+//			float speed = glm::length(args.velocity);
+//			addParticle(type1, args.position, .5f * speed * dir);
+//			addParticle(type2, args.position, -.5f * speed * dir);
+//		});
 	}
 
 	void ParticleSystem::addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity)
@@ -124,6 +128,7 @@ namespace nm
 			p.setCharge(Particle::DATA[type].charge);
 			p.setMass(Particle::DATA[type].mass);
 			p.setRadius(radius);
+			p.anihilationRatio = 0;
 
 			totalNumParticles++;
 			numParticles[type]++;
@@ -142,6 +147,7 @@ namespace nm
 
 	void ParticleSystem::update(double dt)
 	{
+		if(dt == 0) return;
 		dt *= environment->systemSpeed;
 		numDeadParticles = 0;
 		numNewPhotons = 0;
@@ -170,7 +176,8 @@ namespace nm
 				particles[i].zeroForce();
 
 				// sum all forces acting on particle
-				Particle* potentialInteractionPartner = octree.sumForces(particles[i]);// , forceMultiplier);
+				particles[i].potentialInteractionPartners.clear();
+				octree.sumForces(particles[i]);// , forceMultiplier);
 
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());
@@ -181,19 +188,19 @@ namespace nm
 				if (velocity2 > MAX_SPEED_SQUARED) particles[i].setVelocity(MAX_SPEED * glm::normalize(particles[i].getVelocity()));
 
 				// add position (TODO: improved Euler integration)
-				particles[i] += particles[i].getVelocity() * dt;
+				particles[i].pos += particles[i].getVelocity() * dt;
 
 				// check whether particle is out of bounds
 				for (unsigned j = 0; j < 3; ++j)
 				{
 					// add a little bit so things don't get stuck teleporting on the edges
-					if (particles[i][j] > max[j]) particles[i][j] = min[j] + 10.f;
-					if (particles[i][j] < min[j]) particles[i][j] = max[j] - 10.f;
+					if (particles[i].pos[j] > max[j]) particles[i].pos[j] = min[j] + 10.f;
+					if (particles[i].pos[j] < min[j]) particles[i].pos[j] = max[j] - 10.f;
 				}
 
 				unsigned idx = typeIndices[particles[i].getType()].fetch_and_increment();
 				positions[particles[i].getType()][idx].transform =
-					glm::translate(expansionScalar * particles[i]) *
+					glm::translate(expansionScalar * particles[i].pos) *
 					glm::scale(glm::vec3(particles[i].getRadius())) *
 					glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), particles[i].getVelocity(), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -201,64 +208,109 @@ namespace nm
 				// particle interactions
 				/////////////////////////////////////////////////////////////
 
-				// make the particle with the lower address in memory
-				// the one that is responsible for the interaction
-				if (potentialInteractionPartner && &particles[i] < potentialInteractionPartner)
-				{
-					// have this so later on can have different likelihoods of different
-					// interactions occurring 
-					bool killParticles = false;
-					
-					// see what type of interaction we have
-					// already doing this check in sumForces() so maybe could remove to optimize but
-					// doesn't seem like it would save a worthwhile amount of time
-					if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
+				for(auto * potentialInteractionPartner: particles[i].potentialInteractionPartners){
+					// make the particle with the lower address in memory
+					// the one that is responsible for the interaction
+					if (potentialInteractionPartner && particles[i].id < potentialInteractionPartner->id)
 					{
-						if (ofRandomuf() < annihilationThreshold)
-						{
-							unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
-							newPhotons[newPhotonIdx] = particles[i];
-							killParticles = true;
-						}
-					}
-					else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
-					{
-						if (ofRandomuf() < fusionThreshold)
-						{
-							addParticle(
-								Particle::UP_DOWN_QUARK,
-								particles[i],
-								.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-							);
-							killParticles = true;
-						}
-					}
-					else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
-					{
-						// we always want this to happen if there it's possible to that the
-						// hacky up-down compound particles exist for as shorter time as possible
-						Particle::Type newType = Particle::PROTON;
-						if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
-						{
-							newType = Particle::NEUTRON;
-						}
-						addParticle(
-							newType,
-							particles[i],
-							.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-						);
-						killParticles = true;
-					}
+						float distance = glm::distance(potentialInteractionPartner->pos, particles[i].pos);
 
-					if (killParticles)
-					{
-						// interaction is annihilation so kill particle
-						unsigned deadIdx = numDeadParticles.fetch_and_increment();
-						deadParticles[deadIdx] = i;
+						if(distance < Octree<Particle>::INTERACTION_DISTANCE()){
+							// have this so later on can have different likelihoods of different
+							// interactions occurring
+							bool killParticles = false;
 
-						// kill partner (idx of partner is potentialInteractionPartner - particles)
-						deadIdx = numDeadParticles.fetch_and_increment();
-						deadParticles[deadIdx] = potentialInteractionPartner - particles.data();
+							// see what type of interaction we have
+							// already doing this check in sumForces() so maybe could remove to optimize but
+							// doesn't seem like it would save a worthwhile amount of time
+							if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
+							{
+								particles[i].anihilationRatio = particles[i].anihilationRatio + dt;// / environment->systemSpeed;
+								if (particles[i].anihilationRatio > annihilationThreshold)
+								{
+									unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
+									newPhotons[newPhotonIdx] = particles[i].pos;
+									killParticles = true;
+								}
+							}
+							else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
+							{
+								if (ofRandomuf() < fusionThreshold)
+								{
+									addParticle(
+										Particle::UP_DOWN_QUARK,
+										particles[i].pos,
+										.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+									);
+									killParticles = true;
+								}
+							}
+							else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
+							{
+								// we always want this to happen if there it's possible to that the
+								// hacky up-down compound particles exist for as shorter time as possible
+								Particle::Type newType = Particle::PROTON;
+								if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
+								{
+									newType = Particle::NEUTRON;
+								}
+								addParticle(
+									newType,
+									particles[i].pos,
+									.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+								);
+								killParticles = true;
+							}
+
+							if (killParticles)
+							{
+								if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
+								{
+									// Super hack to simulate matter surviving anihilation
+									if(ofRandomuf()<environment->matterSurveivesChance){
+										if(particles[i].isAntiMatterQuark()){
+											deadParticles[numDeadParticles.fetch_and_increment()] = i;
+											particles[i].alive = false;
+										}else{
+											// If matter survives teleport it to the other side of the universe
+											// so we can't see it
+											particles[i].pos = -particles[i].pos;
+											particles[i].potentialInteractionPartners.clear();
+										}
+
+										if(potentialInteractionPartner->isAntiMatterQuark()){
+											// kill partner (idx of partner is potentialInteractionPartner - particles)
+											deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
+											potentialInteractionPartner->alive = false;
+										}else{
+											// If matter survives teleport it to the other side of the universe
+											// so we can't see it
+											potentialInteractionPartner->pos = -potentialInteractionPartner->pos;
+										}
+									}else{
+										// interaction is annihilation so kill particle
+										deadParticles[numDeadParticles.fetch_and_increment()] = i;
+										particles[i].alive = false;
+
+										// kill partner (idx of partner is potentialInteractionPartner - particles)
+										deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
+										potentialInteractionPartner->alive = false;
+									}
+								}else{
+
+									// interaction is annihilation so kill particle
+									deadParticles[numDeadParticles.fetch_and_increment()] = i;
+									particles[i].alive = false;
+
+									// kill partner (idx of partner is potentialInteractionPartner - particles)
+									deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
+									potentialInteractionPartner->alive = false;
+								}
+
+								// The particle is probably dead, don't look for more interactions;
+								break;
+							}
+						}
 					}
 				}
 			}
@@ -290,7 +342,7 @@ namespace nm
 				numParticles[idx].fetch_and_decrement();
 				//cout << " to " << numParticles[idx] << endl;
 				// replace dead particle with one from the end of the array
-				if (endIdx >= 0 && deadIdx < totalNumParticles) particles[deadIdx] = particles[endIdx];				
+				if (endIdx >= 0 && deadIdx < totalNumParticles) std::swap(particles[deadIdx], particles[endIdx]);
 			}
 		}
 
@@ -398,7 +450,7 @@ namespace nm
 			nlohmann::json jsonParticle;
 			Particle & p = particles[i];
 
-			jsonParticle["position"] = ofToString(p);
+			jsonParticle["position"] = ofToString(p.pos);
 			jsonParticle["type"] = p.getType();
 			//jsonParticle["mass"] = p.getMass();
 			//jsonParticle["charge"] = p.getCharge();
@@ -439,8 +491,8 @@ namespace nm
 
 
 	//--------------------------------------------------------------
-	const std::array<nm::Particle, ParticleSystem::MAX_PARTICLES> & ParticleSystem::getParticles() const{
-		return particles;
+	gsl::span<nm::Particle> ParticleSystem::getParticles(){
+		return gsl::span<nm::Particle>(particles.begin(), particles.begin() + totalNumParticles);
 	}
 
 	//--------------------------------------------------------------
@@ -455,5 +507,14 @@ namespace nm
 		std::vector<Particle*> nearList;
 		octree.findNearestThanByType(p, distance, allowedTypes, nearList);
 		return nearList;
+	}
+
+	nm::Particle * ParticleSystem::getById(size_t id){
+		for(auto & p: getParticles()){
+			if(p.id == id){
+				return &p;
+			}
+		}
+		return nullptr;
 	}
 }

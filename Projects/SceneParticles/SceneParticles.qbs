@@ -23,8 +23,8 @@ Project{
             "src/entropy/particles/ParticleSystem.h",
             "src/entropy/particles/Photons.cpp",
             "src/entropy/particles/Photons.h",
-//            "src/entropy/scene/Particles.cpp",
-//            "src/entropy/scene/Particles.h",
+            "src/entropy/particles/TextRenderer.cpp",
+            "src/entropy/particles/TextRenderer.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
@@ -41,6 +41,8 @@ Project{
                 "../../Resources/data/entropy/render/PostEffects/shaders/passthrough_vert.glsl",
                 "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.frag",
                 "../../Resources/data/entropy/render/Renderers/shaders/wireframeFillRender.vert",
+                "../../Resources/data/entropy/scene/Particles/shaders/billboard.frag.glsl",
+                "../../Resources/data/entropy/scene/Particles/shaders/billboard.vert.glsl",
                 "../../Resources/data/entropy/scene/Particles/shaders/inc/clusteredShading.glsl",
                 "../../Resources/data/entropy/scene/Particles/shaders/inc/computeBrdfLut.frag",
                 "../../Resources/data/entropy/scene/Particles/shaders/inc/math.glsl",
@@ -77,6 +79,7 @@ Project{
             '../../addons/ofxTimecode',
             '../../addons/ofxGpuParticles',
             '../../addons/ofxObjLoader',
+            '../../addons/ofxGSL',
             'ofxGui',
             'ofxXmlSettings',
         ]
@@ -86,8 +89,8 @@ Project{
         // this flags can be augmented through the following properties:
         of.pkgConfigs: []       // list of additional system pkgs to include
         of.includePaths: []     // include search paths
-        of.cFlags: []           // flags passed to the c compiler
-        of.cxxFlags: []         // flags passed to the c++ compiler
+        of.cFlags: ['-g3']           // flags passed to the c compiler
+        of.cxxFlags: ['-g3']         // flags passed to the c++ compiler
         of.linkerFlags: []      // flags passed to the linker
         of.defines: []          // defines are passed as -D to the compiler
                                 // and can be checked with #ifdef or #if in the code
