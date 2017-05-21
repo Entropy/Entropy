@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include "ofxSerialize.h"
 #include "Helpers.h"
+#include "Octree.h"
 
 //--------------------------------------------------------------
 const string ofApp::kSceneName = "Particles";
@@ -91,6 +92,7 @@ void ofApp::setup()
 	this->gui.setup(kSceneName, "parameters.json");
 	this->gui.add(this->parameters);
 	this->gui.add(this->environment->parameters);
+	this->gui.add(nm::Octree<nm::Particle>::PARAMETERS());
 	this->gui.add(nm::Particle::parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
@@ -312,8 +314,18 @@ void ofApp::update()
 
 	photons.update(dt);
 	particleSystem.update(dt);
+	auto scale = environment->getExpansionScalar();
 
-	auto & photons = this->photons.getPosnsRef();
+	photonsAlive.clear();
+	std::copy_if(this->photons.getPosnsRef().begin(),
+				 this->photons.getPosnsRef().end(),
+				 std::back_inserter(photonsAlive),
+				 [](nm::Photon & p){
+					return p.alive;
+				 });
+	std::sort(photonsAlive.begin(), photonsAlive.end(), [&](nm::Photon & p1, nm::Photon & p2){
+		return p1.age < p2.age;
+	});
 
 	for (auto & light : pointLights)
 	{
@@ -321,22 +333,15 @@ void ofApp::update()
 		light.setPosition(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 	}
 
-	for (size_t i = 0, j = 0; i < photons.size() && j < kMaxLights; ++i)
+
+	for (size_t i = 0; i < photonsAlive.size() && i < kMaxLights; ++i)
 	{
-		if (photons[i].x > glm::vec3(-kHalfDim * 2).x  &&
-			photons[i].y > glm::vec3(-kHalfDim * 2).y  &&
-			photons[i].z > glm::vec3(-kHalfDim * 2).z  &&
-			photons[i].x < glm::vec3(kHalfDim * 2).x &&
-			photons[i].y < glm::vec3(kHalfDim * 2).y &&
-			photons[i].z < glm::vec3(kHalfDim * 2).z) {
-			auto & light = pointLights[j];
-			light.enable();
-			light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength);
-			light.setPointLight();
-			light.setPosition(photons[i]);
-			light.setAttenuation(0, 0, parameters.rendering.attenuation);
-			j++;
-		}
+		auto & light = pointLights[i];
+		light.enable();
+		light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength *  (1 - ofClamp(photonsAlive[i].age / 3.f / environment->systemSpeed, 0, 1)));
+		light.setPointLight();
+		light.setPosition(photonsAlive[i].pos * scale);
+		light.setAttenuation(0, 0, parameters.rendering.attenuation);
 	}
 
 	glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, numPrimitivesQuery);
@@ -360,22 +365,25 @@ void ofApp::update()
 	}
 
 
-	auto scale = environment->getExpansionScalar();
-	bool renewLookAt = true;
-	if(lookAt.first != lookAt.second){
+	// Camera position tracking next annihilation
+	auto renewLookAt = arrived;
+	if(arrived && lookAt.first != lookAt.second){
 		auto * lookAt1 = particleSystem.getById(lookAt.first);
 		auto * lookAt2 = particleSystem.getById(lookAt.second);
 		if(lookAt1 && lookAt2){
 			renewLookAt = glm::distance(lookAt1->pos * scale, lookAt2->pos * scale) > nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+			cout << "arrived and renew " << renewLookAt << endl;
 		}
 	}
 	if(renewLookAt && timeConnectionLost==0){
 		timeConnectionLost = now;
 		lookAt.first = lookAt.second = 0;
+		cout << "renew started counter" << endl;
 	}
 
 	auto timesinceConnectionLost = now - timeConnectionLost;
-	if(renewLookAt && timesinceConnectionLost > 1){
+	if(renewLookAt && timesinceConnectionLost > parameters.rendering.minTimeBetweenTravels){
+		cout << "trying to renew" << endl;
 		auto particles = particleSystem.getParticles();
 		std::vector<nm::Particle*> sortedParticles(particles.size());
 		std::transform(particles.begin(),
@@ -384,7 +392,7 @@ void ofApp::update()
 					   [](nm::Particle & p){ return &p; });
 
 		std::sort(sortedParticles.begin(), sortedParticles.end(), [&](nm::Particle * p1, nm::Particle * p2){
-			return glm::distance2(p1->pos, camera.getGlobalPosition()) < glm::distance2(p2->pos, camera.getGlobalPosition());
+			return glm::distance2(p1->pos, camera.getGlobalPosition()) > glm::distance2(p2->pos, camera.getGlobalPosition());
 		});
 
 		for(auto * p1: sortedParticles){
@@ -401,6 +409,10 @@ void ofApp::update()
 				foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
 				foundNew &= ((p1->isMatterQuark() && p2->isAntiMatterQuark()) || (p1->isAntiMatterQuark() && p2->isMatterQuark()));
 				foundNew &= minTravelTime < aproxAnnihilationTime * 0.8;
+				foundNew &= p1->anihilationRatio + p2->anihilationRatio > 0.2;
+				foundNew &= p1->pos.x > -kHalfDim * 0.5 && p1->pos.x < kHalfDim * 0.5;
+				foundNew &= p1->pos.y > -kHalfDim * 0.5 && p1->pos.y < kHalfDim * 0.5;
+				foundNew &= p1->pos.z > -kHalfDim * 0.5 && p1->pos.z < kHalfDim * 0.5;
 
 				if(foundNew){
 					if(p1->id<p2->id){
@@ -415,14 +427,17 @@ void ofApp::update()
 					prevCameraPosition = camera.getGlobalPosition();
 					arrived = false;
 					timeConnectionLost = 0;
+					rotationDirection = round(ofRandomf());
 					// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
 					break;
 				}
 			}
 		}
+
+		cout << "renewed " << !arrived << endl;
 	}
 
-	if(lookAt.first != lookAt.second){
+	if(!arrived){
 		auto * lookAt1 = particleSystem.getById(lookAt.first);
 		auto * lookAt2 = particleSystem.getById(lookAt.second);
 		if(lookAt1 && lookAt2){
@@ -432,15 +447,11 @@ void ofApp::update()
 		currentLookAtParticles.second = lookAt2;
 
 		auto timePassed = now - timeRenewLookAt;
-		auto animationTime = std::min(2.f, travelDistance / parameters.rendering.travelMaxSpeed);
+		auto animationTime = travelDistance / parameters.rendering.travelMaxSpeed;
 		auto pct = float(timePassed) / animationTime;
-		if(currentLookAtParticles.first){
-			annihilationPct = currentLookAtParticles.first->anihilationRatio / environment->getAnnihilationThresh();
-		}
 		if(pct>1){
 			pct = 1;
 			if(!arrived){
-				orbitAngle = 0;
 				arrived = true;
 			}
 		}
@@ -448,23 +459,25 @@ void ofApp::update()
 		lerpedLookAt = glm::lerp(prevLookAt, lookAtPos, pct);
 
 
-		auto newCameraPosition = glm::lerp(prevCameraPosition, lookAtPos + glm::vec3(0,0,50), pct);
+//		auto newCameraPosition = glm::lerp(prevCameraPosition, lookAtPos + glm::vec3(0,0,50), pct);
 
-		if(!arrived){
-			camera.setPosition(newCameraPosition);
-			camera.lookAt(lerpedLookAt, glm::vec3(0,1,0));
-		}else{
-			camera.orbitDeg(orbitAngle, 0, 50, lookAtPos);
-			//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
-			orbitAngle += dt * parameters.rendering.rotationSpeed;
-			orbitAngle = ofWrap(orbitAngle, 0, 360);
-		}
+//		camera.setPosition(newCameraPosition);
+//		camera.lookAt(lerpedLookAt, glm::vec3(0,1,0));
 	}else{
 		currentLookAtParticles.first = nullptr;
 		currentLookAtParticles.second = nullptr;
+//		camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
+//		//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+//		orbitAngle += dt * parameters.rendering.rotationSpeed * rotationDirection;
+//		orbitAngle = ofWrap(orbitAngle, 0, 360);
 	}
 
 
+	camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
+	//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+	rotationSpeed = rotationSpeed * 0.9 + dt * parameters.rendering.rotationSpeed * rotationDirection * 0.1;
+	orbitAngle += rotationSpeed;
+	orbitAngle = ofWrap(orbitAngle, 0, 360);
 
 //	camera.setPosition(lookAtPos + glm::vec3(0,0,50));
 //	camera.lookAt(lookAtPos, glm::vec3(0,1,0));
@@ -602,9 +615,21 @@ void ofApp::draw()
 			if(parameters.rendering.drawText){
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				if(parameters.rendering.useEasyCam){
-					textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, easyCam);
+					textRenderer.draw(particleSystem,
+									  photonsAlive,
+									  *environment,
+									  BARYOGENESIS,
+									  currentLookAtParticles,
+									  renderer,
+									  easyCam);
 				}else{
-					textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, camera);
+					textRenderer.draw(particleSystem,
+									  photonsAlive,
+									  *environment,
+									  BARYOGENESIS,
+									  currentLookAtParticles,
+									  renderer,
+									  camera);
 				}
 			}
 
@@ -631,7 +656,7 @@ void ofApp::draw()
 		}
 		ofDisableDepthTest();
 
-		cameraPath.draw();
+		//cameraPath.draw();
 
 		if(parameters.rendering.useEasyCam){
 			camera.draw();
@@ -640,22 +665,22 @@ void ofApp::draw()
 			camera.end();
 		}
 
-		ofFill();
-		ofSetColor(0);
-		ofDrawRectangle({fboScene.getWidth() - 320, fboScene.getHeight(), 320, -240});
-		ofSetColor(255);
-		cameraViewport.begin({fboScene.getWidth() - 320, 0, 320, 240});
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
-		textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, cameraViewport);
-		if (this->parameters.rendering.additiveBlending){
-			ofEnableBlendMode(OF_BLENDMODE_ADD);
-		}else if(this->parameters.rendering.glOneBlending){
-			glBlendFunc(GL_ONE, GL_ONE);
-		}else{
-			ofEnableAlphaBlending();
-		}
-		this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, cameraViewport);
-		cameraViewport.end();
+//		ofFill();
+//		ofSetColor(0);
+//		ofDrawRectangle({fboScene.getWidth() - 320, fboScene.getHeight(), 320, -240});
+//		ofSetColor(255);
+//		cameraViewport.begin({fboScene.getWidth() - 320, 0, 320, 240});
+//		ofEnableBlendMode(OF_BLENDMODE_ADD);
+//		textRenderer.draw(particleSystem, *environment, BARYOGENESIS, currentLookAtParticles, renderer, cameraViewport);
+//		if (this->parameters.rendering.additiveBlending){
+//			ofEnableBlendMode(OF_BLENDMODE_ADD);
+//		}else if(this->parameters.rendering.glOneBlending){
+//			glBlendFunc(GL_ONE, GL_ONE);
+//		}else{
+//			ofEnableAlphaBlending();
+//		}
+//		this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, cameraViewport);
+//		cameraViewport.end();
 	}
 	this->fboScene.end();
 
@@ -696,6 +721,7 @@ void ofApp::keyPressed(int key)
 //	{
 //		this->cameraTrack.addKeyframe();
 //	}
+	ofSetFullscreen(true);
 }
 
 //--------------------------------------------------------------

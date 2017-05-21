@@ -7,6 +7,7 @@
 #include "ofParameter.h"
 #include "ofTrueTypeFont.h"
 #include "ParticleSystem.h"
+#include "Photons.h"
 
 enum State{
 	BARYOGENESIS,
@@ -20,6 +21,7 @@ public:
 	void setup(float worldSize);
 	void update(nm::ParticleSystem & particles, State state);
 	void draw(nm::ParticleSystem & particles,
+			  std::vector<nm::Photon> & photons,
 			  nm::Environment & environment,
 			  State state,
 			  std::pair<nm::Particle*, nm::Particle*> lookAt,
@@ -29,12 +31,18 @@ public:
 	ofParameter<float> maxDistance{"max distance", 1, 0, 4};
 	ofParameter<float> relDistance{"relation distance", 0.05f, 0, 2};
 	ofParameter<float> fulltextDistance{"fulltext distance", 0.05f, 0, 2};
+	ofParameter<float> lightStrenght{"light strenght", 100.f, 1.f, 2000.f};
+	ofParameter<float> ambient{"ambient", .1f, 0.f, 1.f};
+	ofParameter<float> photonsStrenght{"photons strenght", 0.5f, 0.1f, 300.f};
 
 	ofParameterGroup parameters{
 		"Text Renderer",
 		maxDistance,
 		relDistance,
 		fulltextDistance,
+		lightStrenght,
+		ambient,
+		photonsStrenght,
 	};
 
 private:

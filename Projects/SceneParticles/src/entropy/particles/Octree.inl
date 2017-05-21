@@ -128,7 +128,9 @@ namespace nm
 				if (dist > INTERACTION_DISTANCE() && size / dist < THETA())
 				{
 					// far enough away to use this node
-					point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
+					//if(point.anihilationRatio>0.001){
+						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
+					//}
 				}
 				else if (children)
 				{
@@ -149,18 +151,25 @@ namespace nm
 						ofVec3f direction = centerOfCharge - point.pos;
 						float distSq = direction.lengthSquared();
 						float dist = sqrt(distSq);
-						point.setForce(point.getForce() - forceMultiplier * direction * point.getCharge() * charge / (distSq * dist));
-						// CHECK THAT ^ IS ACTUALLY XOR
+						glm::vec3 force = point.getForce();
+						//if(point.anihilationRatio>0.001){
+							force -= forceMultiplier * direction * point.getCharge() * charge / (distSq * dist);
+						//}
 						if (dist < CANDIDATE_DISTANCE() &&
 							(((point.getAnnihilationFlag() ^ other->getAnnihilationFlag()) == 0xFF) ||
 							((point.getFusion1Flag() ^ other->getFusion1Flag()) == 0xFF) ||
 							((point.getFusion2Flag() ^ other->getFusion2Flag()) == 0xFF))){
+//							if(dist < INTERACTION_DISTANCE()){
+//								force += (other->pos - point.pos) * 100000;
+//							}
 							point.potentialInteractionPartners.push_back(other);
 						}
+						point.setForce(force);
 					}
 				}
 			}
 		}
+
 	}
 
 	template<class T>

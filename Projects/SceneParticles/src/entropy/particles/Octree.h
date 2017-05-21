@@ -55,8 +55,22 @@ namespace nm
 		static constexpr unsigned MAX_DEPTH() { return 4; }
 		static constexpr float THETA() { return .5f; }
 		//static constexpr float FORCE_MULTIPLIER() { return 5e7; }
-		static constexpr float CANDIDATE_DISTANCE() { return 50.f; }
-		static constexpr float INTERACTION_DISTANCE() { return 20.f; }
+
+		static ofParameter<float> & CANDIDATE_DISTANCE(){
+			static ofParameter<float> p{"canditate distance", 50.f, 1.f, 100.f, ofParameterScale::Logarithmic};
+			return p;
+		}
+		static ofParameter<float> & INTERACTION_DISTANCE(){
+			static ofParameter<float> p{"interaction distance", 20.f, 1.f, 50.f, ofParameterScale::Logarithmic};
+			return p;
+		}
+		static ofParameterGroup PARAMETERS(){
+			return {
+				"Octree",
+				CANDIDATE_DISTANCE(),
+				INTERACTION_DISTANCE(),
+			};
+		}
 
 		static void setForceMultiplier(float forceMultiplier) { Octree::forceMultiplier = forceMultiplier; }
 

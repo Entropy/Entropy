@@ -101,6 +101,7 @@ public:
 			ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
 			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 			ofParameter<float> travelMaxSpeed{"Travel max speed", 0.1, 0.001, 2, ofParameterScale::Logarithmic};
+			ofParameter<float> minTimeBetweenTravels{"min time between travels", 5, 0, 20, ofParameterScale::Logarithmic};
 			ofParameter<bool> useEasyCam{"use easy cam", false};
 
 			PARAM_DECLARE("Rendering",
@@ -116,6 +117,7 @@ public:
 				rotationRadius,
 				rotationSpeed,
 				travelMaxSpeed,
+				minTimeBetweenTravels,
 				useEasyCam);
 		} rendering;
 
@@ -148,14 +150,18 @@ public:
 	std::pair<size_t, size_t> lookAt{0,0};
 	std::pair<nm::Particle*, nm::Particle*> currentLookAtParticles{nullptr,nullptr};
 	glm::vec3 lookAtPos, prevLookAt, lerpedLookAt, prevCameraPosition;
-	bool arrived;
+	bool arrived = true;
 	double timeConnectionLost = 0;
 	double timeRenewLookAt = 0;
 	float travelDistance = 0;
-	float annihilationPct = 0;
-	float pct = 0;
-	ofPolyline cameraPath;
-	std::deque<glm::vec3> currentPath;
-	float traveledLength = 0;
-	float travelSpeed = 0;
+	std::vector<nm::Photon> photonsAlive;
+	float rotationDirection = 1;
+	float rotationSpeed = 0;
+
+//	float annihilationPct = 0;
+//	float pct = 0;
+//	ofPolyline cameraPath;
+//	std::deque<glm::vec3> currentPath;
+//	float traveledLength = 0;
+//	float travelSpeed = 0;
 };

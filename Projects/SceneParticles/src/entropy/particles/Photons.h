@@ -37,6 +37,14 @@
 
 namespace nm
 {
+
+	struct Photon{
+		glm::vec3 pos;
+		glm::vec3 vel = glm::sphericalRand(300.f);
+		float age = 0;
+		bool alive = false;
+	};
+
 	class Photons
 	{
 	public:
@@ -45,7 +53,7 @@ namespace nm
 
 		Photons();
 
-		vector<glm::vec3>& getPosnsRef() { return posns; }
+		vector<Photon>& getPosnsRef() { return photons; }
 
 		void init(Environment::Ptr environment);
 		void update(double dt);
@@ -61,9 +69,8 @@ namespace nm
 		ofxGpuParticles trailParticles;
 		ofImage particleImage;
 
-		vector<glm::vec3> posns;
-		vector<glm::vec3> scaledPosns; // scale positions to simulate universe expanding
-		vector<glm::vec3> vels;
+		vector<Photon> photons;
+		vector<glm::vec3> scaledPosns;
 
 		ofBufferObject photonPosnBuffer;
 		ofTexture photonPosnTexture;
