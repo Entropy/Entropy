@@ -76,3 +76,6 @@ url=https://github.com/Entropy/ofxEasing
 [submodule "addons/ofxParameterTwister"]
 	path = addons/ofxParameterTwister
 	url = https://github.com/Entropy/ofxParameterTwister
+[submodule "addons/ofxGSL"]
+	path = addons/ofxGSL
+	url = https://github.com/arturoc/ofxGSL
