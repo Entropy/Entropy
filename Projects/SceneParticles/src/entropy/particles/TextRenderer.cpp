@@ -38,6 +38,18 @@ void TextRenderer::setup(float worldSize){
 	fonts.emplace_back();
 	fonts.back().load(fontSettings);
 
+	fontSettings.fontSize = 6;
+	fonts.emplace_back();
+	fonts.back().load(fontSettings);
+
+	fontSettings.fontSize = 4;
+	fonts.emplace_back();
+	fonts.back().load(fontSettings);
+
+	fontSettings.fontSize = 2;
+	fonts.emplace_back();
+	fonts.back().load(fontSettings);
+
 	ofShader::Settings shaderSettings;
 	shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/billboard.vert.glsl";
 	shaderSettings.shaderFiles[GL_FRAGMENT_SHADER] = "shaders/billboard.frag.glsl";
@@ -105,6 +117,7 @@ void TextRenderer::update(nm::ParticleSystem & particles, State state){
 }
 
 void TextRenderer::draw(nm::ParticleSystem & particles,
+						std::vector<nm::Photon> & photons,
 						nm::Environment & environment,
 						State state,
 						std::pair<nm::Particle*, nm::Particle*> lookAt,
@@ -128,17 +141,26 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			auto pct = 1-ofClamp(distance / maxScreenDistance, 0, 1);
 			for(auto * p2: p1.potentialInteractionPartners){
 				//if((p2->getAnnihilationFlag() ^ p1.getAnnihilationFlag()) == 0xFF){
-				if(p1.id < p2->id && (p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
+				if(p1.id < p2->id && ((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark()))){
 					auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
 					auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-					auto ppct = 1-ofClamp(pDistance / maxPDistance, 0, 1);
+					auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
+					auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+						if(ph.alive){
+							auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+							return acc + strength;
+						}else{
+							return acc;
+						}
+					});
+					ppct += light;
 					auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
-					auto pct2 = 1-ofClamp(distancep2 / maxScreenDistance, 0, 1);
+					auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
 					line.getVertices()[0] = p1.pos;
-					/*if((&p1 == lookAt.first && p2 == lookAt.second) || (&p1 == lookAt.second && p2 == lookAt.first)){
+					/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
 						line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
 						line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
-					}else*/ if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+					}else */if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
 						auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
 						line.getColors()[0] = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
 						line.getColors()[1] = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
@@ -168,7 +190,16 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 				if(!p2->alive) continue;
 				//if((p2->getAnnihilationFlag() ^ p1.getAnnihilationFlag()) == 0xFF){
 				if((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
-					auto pctColor = 1-pctDistance;
+					auto pctColor = (1-pctDistance) * ambient;
+					auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+						if(ph.alive){
+							auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+							return acc + strength;
+						}else{
+							return acc;
+						}
+					});
+					pctColor += light;
 					auto midPoint = (p1.pos + p2->pos) / 2.;
 					auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
 					auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
@@ -205,7 +236,16 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			if(!p.alive) continue;
 			auto distance = glm::distance2(cam.getPosition(), p.pos * scale);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
-			auto pctColor = 1-pctDistance;
+			auto pctColor = (1-pctDistance) * ambient;
+			auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+				if(ph.alive){
+					auto strength = lightStrenght / glm::distance2(p.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+					return acc + strength;
+				}else{
+					return acc;
+				}
+			});
+			pctColor += light;
 			billboardShader.setUniform1f("pctColor", pctColor);
 			billboardShader.setUniform1f("accumValue", accumValue);
 			billboardShader.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
@@ -269,6 +309,25 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			}
 			//font.getStringMesh(text, 0, 0).draw();
 			//billboard(font, text, cam.getProjectionMatrix(), modelview, p);
+		}
+
+
+		for(auto & p: photons){
+			if(!p.alive) continue;
+			auto distance = glm::distance2(cam.getPosition(), p.pos * scale);
+			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
+			auto pctColor = (1-pctDistance) * photonsStrenght * (1 - ofClamp(p.age/3/environment.systemSpeed, 0, 1));
+			billboardShader.setUniform1f("pctColor", pctColor);
+			billboardShader.setUniform1f("accumValue", accumValue);
+			billboardShader.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
+			auto concentrics = int(ofMap(p.age / environment.systemSpeed, 0, 1.5, 0, 3)) % 3 + 1;
+			int fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+			fontSize = ofClamp(fontSize-2, 2, particlePaths.size()-1);
+			for(int i = 0; i < concentrics; i++){
+				particlePaths[fontSize]["a"].draw();
+				fontSize -= 2;
+				fontSize %= particlePaths.size();
+			}
 		}
 		billboardShader.end();
 	});

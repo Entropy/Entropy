@@ -55,7 +55,9 @@ void ofApp::setup()
 	settings.numSamples = 4;
 
 	fbo.allocate(settings);
+	fboCooldown.allocate(settings);
 	postFbo.allocate(settings);
+	postFboCooldown.allocate(settings);
 	postEffects.resize(ofGetWidth(), ofGetHeight());
 
 	parameters.render.record.setSerializable(false);
@@ -67,6 +69,10 @@ void ofApp::setup()
 	gui.add(gpuMarchingCubes.parameters);
 	gui.add(renderer.parameters);
 	gui.add(postParameters);
+	coolDownParameters.setName("Cooldown Renderer");
+	coolDownParameters.add(parameters.enableCooldown);
+	coolDownParameters.add(parameters.showCooldown);
+	gui.add(coolDownParameters);
 	gui.add(parameters);
 
 
@@ -97,12 +103,23 @@ void ofApp::setup()
 		if(record){
 			auto path = ofSystemLoadDialog("Record to folder:",true);
 			if(path.bSuccess){
+				recorderPath = path.getPath();
 				ofxTextureRecorder::Settings recorderSettings(fbo.getTexture());
 				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
 				recorderSettings.folderPath = path.getPath();
 				recorder.setup(recorderSettings);
+				if(parameters.enableCooldown){
+					auto path = recorderPath + "_cooleddown";
+					recorderSettings.folderPath = path;
+					recorderCooldown.setup(recorderSettings);
+				}
 			}else{
 				this->parameters.render.record = false;
+			}
+		}else{
+			recorder.stop();
+			if(parameters.enableCooldown){
+				recorderCooldown.stop();
 			}
 		}
 	}));
@@ -112,18 +129,61 @@ void ofApp::setup()
 		if(record){
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if(path.bSuccess){
+				videoRecorderPath = path.getPath();
 				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), parameters.render.fps);
-				recorderSettings.videoPath = path.getPath();
+				recorderSettings.videoPath = videoRecorderPath;
 //				recorderSettings.videoCodec = "libx264";
 //				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
 				recorderSettings.videoCodec = "prores";
 				recorderSettings.extrasettings = "-profile:v 0";
 				recorder.setup(recorderSettings);
+
+				if(parameters.enableCooldown){
+					auto path = ofFilePath::join(
+								ofFilePath::getEnclosingDirectory(videoRecorderPath),
+								ofFilePath::getBaseName(videoRecorderPath) + "_cooleddown.mov");
+					recorderSettings.videoPath = path;
+					recorderCooldown.setup(recorderSettings);
+				}
 			}else{
 				this->parameters.render.recordVideo = false;
 			}
 		}else{
 			recorder.stop();
+			if(parameters.enableCooldown){
+				recorderCooldown.stop();
+			}
+		}
+	}));
+
+	listeners.push_back(parameters.enableCooldown.newListener([this](bool&enabled){
+		if(parameters.render.recordVideo){
+			if(enabled){
+				auto path = ofFilePath::join(
+							ofFilePath::getEnclosingDirectory(videoRecorderPath),
+							ofFilePath::getBaseName(videoRecorderPath) + "_cooleddown.mov");
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), parameters.render.fps);
+				recorderSettings.videoPath = path;
+	//				recorderSettings.videoCodec = "libx264";
+	//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				recorderSettings.videoCodec = "prores";
+				recorderSettings.extrasettings = "-profile:v 0";
+				recorderCooldown.setup(recorderSettings);
+			}else{
+				recorderCooldown.stop();
+			}
+		}
+		if(parameters.render.record){
+			if(enabled){
+				auto path = recorderPath + "_cooleddown";
+				ofxTextureRecorder::Settings recorderSettings(fbo.getTexture());
+				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettings.folderPath = path;
+				recorder.setup(recorderSettings);
+				recorderCooldown.setup(recorderSettings);
+			}else{
+				recorderCooldown.stop();
+			}
 		}
 	}));
 
@@ -775,12 +835,74 @@ void ofApp::draw(){
 
 		postFbo.end();
 
-		forceRedraw = false;
+		if(parameters.render.record || parameters.render.recordVideo){
+			recorder.save(postFbo.getTexture());
+		}
 	}
 
-	ofDisableAlphaBlending();
-	ofSetColor(255);
-	postFbo.draw(0,0);
+	if(!parameters.showCooldown){
+		ofDisableAlphaBlending();
+		ofSetColor(255);
+		postFbo.draw(0,0);
+	}
+
+	if((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw){
+
+		if(parameters.enableCooldown || parameters.showCooldown){
+			fboCooldown.begin();
+			cout << "redrawing as cooldowned " << endl;
+			ofClear(0,255);
+			camera.begin();
+			ofDisableAlphaBlending();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
+			auto hasNegativeSpace = false;
+			for(auto & cluster: clusters){
+				hasNegativeSpace |= cluster.negativeSpace;
+			}
+
+			auto first = true;
+			for(auto & cluster: clusters){
+				if(!cluster.negativeSpace){
+					ofNode node;
+					node.setScale(cluster.scale);
+					node.setPosition(cluster.origin);
+					if(!first){
+						node.setOrientation(cluster.rotation);
+					}
+					entropy::render::WireframeFillRenderer::DrawSettings drawSettings;
+					drawSettings.camera = &camera;
+					drawSettings.mode = GL_TRIANGLES;
+					drawSettings.model = node.getLocalTransformMatrix();
+					drawSettings.numVertices = gpuMarchingCubes.getNumVertices();
+					drawSettings.offset = 0;
+					drawSettings.parameters = coolDownParameters;
+					renderer.draw(gpuMarchingCubes.getGeometry(), drawSettings);
+
+				}
+				first = false;
+			}
+
+			camera.end();
+			fboCooldown.end();
+
+			postEffects.process(fboCooldown.getTexture(), postFboCooldown, postParameters);
+
+			if(parameters.render.record || parameters.render.recordVideo){
+				recorderCooldown.save(postFboCooldown.getTexture());
+			}
+		}
+	}
+
+	forceRedraw = false;
+
+
+	if(parameters.showCooldown){
+		ofDisableAlphaBlending();
+		ofSetColor(255);
+		postFboCooldown.draw(0,0);
+	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	if(showTimeline){
@@ -803,10 +925,6 @@ void ofApp::draw(){
 
 	renderer.getBokehShape().draw();
 	ofPopMatrix();
-
-	if(parameters.render.record || parameters.render.recordVideo){
-		recorder.save(postFbo.getTexture());
-	}
 
 }
 

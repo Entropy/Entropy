@@ -86,7 +86,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 	for(auto & particle: particles){
 		if(!coordsRange.contains(particle.getMaxPos()) ||
 		   !coordsRange.contains(particle.getMinPos()) ||
-		   particle.size * scale > MAX_PARTICLE_SIZE ){
+		   (MAX_PARTICLE_SIZE > -1 && particle.size * scale > MAX_PARTICLE_SIZE) ){
 			continue;
 		}else{
 			particlesInBox.push_back(particle);

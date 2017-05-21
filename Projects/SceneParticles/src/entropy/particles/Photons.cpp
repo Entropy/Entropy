@@ -43,16 +43,11 @@ namespace nm
 		this->environment = env;
 
 		// photon stuff
-		posns.resize(MAX_PHOTONS);
+		photons.resize(MAX_PHOTONS);
 		scaledPosns.resize(MAX_PHOTONS);
-		vels.resize(MAX_PHOTONS);
-
-		for (auto& p : posns) p = glm::vec3(numeric_limits<float>::max());
-		for (auto& p : scaledPosns) p = glm::vec3(numeric_limits<float>::max());
-		for (auto& v : vels) v = glm::sphericalRand(300.f);
 		
 		photonPosnBuffer.allocate();
-		photonPosnBuffer.setData(sizeof(scaledPosns[0]) * MAX_PHOTONS, &scaledPosns[0].x, GL_DYNAMIC_DRAW);
+		photonPosnBuffer.setData(scaledPosns, GL_DYNAMIC_DRAW);
 		photonPosnTexture.allocateAsBufferTexture(photonPosnBuffer, GL_RGB32F);
 
 		// particle stuff
@@ -131,12 +126,13 @@ namespace nm
 //		}));
 
 		// listen for photon events
-		eventListeners.push_back(environment->photonEvent.newListener([this](PhotonEventArgs& args)
-		{
-			for (unsigned i = 0; i < args.numPhotons; ++i)
-			{
-				currentPhotonIdx = (currentPhotonIdx + 1) % posns.size();
-				posns[currentPhotonIdx] = args.photons[i];
+		eventListeners.push_back(environment->photonEvent.newListener([this](PhotonEventArgs& args){
+			for (unsigned i = 0; i < args.numPhotons; ++i){
+				currentPhotonIdx = (currentPhotonIdx + 1) % photons.size();
+				auto & photon = photons[currentPhotonIdx];
+				photon.pos = args.photons[i];
+				photon.age = 0;
+				photon.alive = true;
 			}
 		}));
 	}
@@ -148,23 +144,24 @@ namespace nm
 		const glm::vec3 max = environment->getMax();
 		const float expansionScalar = environment->getExpansionScalar();
 
-		for (unsigned i = 0; i < posns.size(); ++i)
+		for (unsigned i = 0; i < photons.size(); ++i)
 		{
-			if (posns[i].x != numeric_limits<float>::max())
+			if (photons[i].alive)
 			{
-				posns[i] += vels[i] * dt;
+				photons[i].pos += photons[i].vel * dt;
 				// check whether photon is out of bounds
 				for (unsigned j = 0; j < 3; ++j)
 				{
-					if (posns[i][j] > max[j]) posns[i][j] = min[j];
-					if (posns[i][j] < min[j]) posns[i][j] = max[j];
+					if (photons[i].pos[j] > max[j]) photons[i].pos[j] = min[j];
+					if (photons[i].pos[j] < min[j]) photons[i].pos[j] = max[j];
 				}
-				scaledPosns[i] = expansionScalar * posns[i];
+				scaledPosns[i] = expansionScalar * photons[i].pos;
+				photons[i].age += dt;
 			}
-			else scaledPosns[i] = posns[i];
+			else scaledPosns[i] = std::numeric_limits<glm::vec3>::max();
 		}
 		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
-		trailParticles.update();
+		//trailParticles.update();
 	}
 
 //	bool Photons::tryPairProduction()
@@ -201,7 +198,9 @@ namespace nm
 	{
 		ofEnablePointSprites();
 
-		trailParticles.draw();
+		for(auto & p: scaledPosns){
+			ofDrawSphere(p, 3);
+		}
 
 		ofDisablePointSprites();
 		ofDisableBlendMode();

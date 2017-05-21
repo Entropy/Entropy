@@ -17,6 +17,7 @@ namespace ent
         ~SequenceRamses();
 
         void setup(const std::string& folder, int startIndex, int endIndex);
+		void setupRemote(const std::string& urlFolder, const std::string& folder, int startIndex, int endIndex);
 		void clear();
 
         void update();
@@ -57,10 +58,13 @@ namespace ent
 		}
 
     protected:
+		void setup(int startIndex, int endIndex);
+
 		// Data
-		std::vector<SnapshotRamses> m_snapshots;
+		SnapshotRamses m_snapshot;
 
 		std::string m_folder;
+		std::string m_urlFolder;
 		int m_startIndex;
 		int m_endIndex;
 		int m_currentIndex;

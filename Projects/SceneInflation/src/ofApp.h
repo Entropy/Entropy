@@ -122,6 +122,8 @@ public:
 		ofParameter<float> rotationRadiusSpeed{"Rotation radius speed", 0.1, -1, 1, ofParameterScale::Logarithmic};
 		ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 		ofParameter<float> state{"state", 0, 0, 5};
+		ofParameter<bool> enableCooldown{"Enable cooldown renderer", false};
+		ofParameter<bool> showCooldown{"Show cooldown renderer", false};
 
 		struct : ofParameterGroup{
 			ofParameter<ofFloatColor> color1{"color 1", ofColor::white};
@@ -202,16 +204,21 @@ public:
 			equations);
 	} parameters;
 
+
 	ofEasyCam camera;
 	void resetWavelengths();
 	void resetWavelength(size_t octave);
 
 	ofFbo fbo, postFbo;
+	ofFbo fboCooldown, postFboCooldown;
 	entropy::render::PostEffects postEffects;
 	entropy::render::PostParameters postParameters;
+	entropy::render::WireframeFillRenderer::Parameters coolDownParameters;
 
 	ofxPanel gui;
-	ofxTextureRecorder recorder;
+	ofxTextureRecorder recorder, recorderCooldown;
+	std::string recorderPath, videoRecorderPath;
+
 	ofPolyline cameraPath;
 	glm::vec3 dofTarget;
 	double dofTimeStart = 0;

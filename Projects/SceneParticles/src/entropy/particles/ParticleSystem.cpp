@@ -189,6 +189,9 @@ namespace nm
 
 				// add position (TODO: improved Euler integration)
 				particles[i].pos += particles[i].getVelocity() * dt;
+				if(particles[i].potentialInteractionPartners.empty()){
+					particles[i].anihilationRatio = 0;
+				}
 
 				// check whether particle is out of bounds
 				for (unsigned j = 0; j < 3; ++j)
@@ -229,7 +232,7 @@ namespace nm
 								if (particles[i].anihilationRatio > annihilationThreshold)
 								{
 									unsigned newPhotonIdx = numNewPhotons.fetch_and_increment();
-									newPhotons[newPhotonIdx] = particles[i].pos;
+									newPhotons[newPhotonIdx] = (particles[i].pos + potentialInteractionPartner->pos) / 2.f;
 									killParticles = true;
 								}
 							}
