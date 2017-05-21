@@ -13,3 +13,4 @@ ofxXmlSettings
 ../../addons/ofxTextureRecorder
 ../../addons/ofxTimecode
 ../../addons/ofxTimeline
+../../addons/ofxGSL
