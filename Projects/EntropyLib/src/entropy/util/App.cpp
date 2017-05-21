@@ -18,6 +18,11 @@ namespace entropy
 			this->messenger = make_shared<util::Messenger>();
 			this->playlist = make_shared<scene::Playlist>();
 
+#ifdef OFX_PARAMETER_TWISTER
+			this->twister = make_shared<pal::Kontrol::ofxParameterTwister>();
+			this->twister->setup();
+#endif
+
 			// Setup gui.
 			this->imGui.setup();
 			this->controlsVisible = true;
@@ -139,22 +144,30 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<render::Canvas> App_::getCanvas(render::Layout layout)
+		std::shared_ptr<render::Canvas> App_::getCanvas(render::Layout layout)
 		{
 			return this->canvas[layout];
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<util::Messenger> App_::getMessenger() const
+		std::shared_ptr<util::Messenger> App_::getMessenger() const
 		{
 			return this->messenger;
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<scene::Playlist> App_::getPlaylist() const
+		std::shared_ptr<scene::Playlist> App_::getPlaylist() const
 		{
 			return this->playlist;
 		}
+
+#ifdef OFX_PARAMETER_TWISTER
+		//--------------------------------------------------------------
+		std::shared_ptr<pal::Kontrol::ofxParameterTwister> App_::getTwister() const
+		{
+			return this->twister;
+		}
+#endif
 
 		//--------------------------------------------------------------
 		const ofRectangle & App_::getScreenBounds(render::Layout layout)

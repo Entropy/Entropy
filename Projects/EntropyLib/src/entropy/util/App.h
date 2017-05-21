@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ofFileUtils.h"
+#ifdef OFX_PARAMETER_TWISTER
+#include "ofxParameterTwister.h"
+#endif
 
 #include "entropy/render/Canvas.h"
 #include "entropy/scene/Playlist.h"
@@ -24,9 +27,12 @@ namespace entropy
 			App_();
 			~App_();
 
-			shared_ptr<render::Canvas> getCanvas(render::Layout layout);
-			shared_ptr<util::Messenger> getMessenger() const;
-			shared_ptr<scene::Playlist> getPlaylist() const;
+			std::shared_ptr<render::Canvas> getCanvas(render::Layout layout);
+			std::shared_ptr<util::Messenger> getMessenger() const;
+			std::shared_ptr<scene::Playlist> getPlaylist() const;
+#ifdef OFX_PARAMETER_TWISTER
+			std::shared_ptr<pal::Kontrol::ofxParameterTwister> getTwister() const;
+#endif
 
 			const ofRectangle & getScreenBounds(render::Layout layout);
 			const ofRectangle & getBoundsControl() const;
@@ -68,9 +74,12 @@ namespace entropy
 			void updateOutline(render::Layout layout);
 
 		protected:
-			std::map<render::Layout, shared_ptr<render::Canvas>> canvas;
-			shared_ptr<util::Messenger> messenger;
-			shared_ptr<scene::Playlist> playlist;
+			std::map<render::Layout, std::shared_ptr<render::Canvas>> canvas;
+			std::shared_ptr<util::Messenger> messenger;
+			std::shared_ptr<scene::Playlist> playlist;
+#ifdef OFX_PARAMETER_TWISTER
+			std::shared_ptr<pal::Kontrol::ofxParameterTwister> twister;
+#endif
 
 			std::map<render::Layout, ofRectangle> screenBounds;
 			std::map<render::Layout, ofRectangle> previewBounds;
