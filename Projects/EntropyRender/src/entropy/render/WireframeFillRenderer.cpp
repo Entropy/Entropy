@@ -323,18 +323,25 @@ namespace entropy
 		}
 
 		void WireframeFillRenderer::drawWithDOF(ofCamera & camera, std::function<void(float accumValue, glm::mat4 projection, glm::mat4 modelview)> drawFunc) const{
-			auto accumValue = 1.0 / float(bokehshape.getVertices().size());
+			if(parameters.enableDOF){
+				auto accumValue = 1.0 / float(bokehshape.getVertices().size());
 
-			auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
-			auto object = camera.getPosition() - camera.getZAxis() * parameters.dofDistance.get() * sceneSize;
-			auto eye = camera.getPosition();
-			auto up = camera.getYAxis();
-			auto right = glm::normalize(glm::cross(object - eye, up));
-			auto numSamples = bokehshape.getVertices().size();
-			for(size_t i = 0; i < numSamples; i++){
-				auto p = bokehshape.getVertices()[i];
-				glm::vec3 bokeh = right * p.x + up * p.y;
-				auto modelview = glm::lookAt(eye + bokeh * parameters.dofAperture.get() * sceneSize, object, up);
+				auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
+				auto object = camera.getPosition() - camera.getZAxis() * parameters.dofDistance.get() * sceneSize;
+				auto eye = camera.getPosition();
+				auto up = camera.getYAxis();
+				auto right = glm::normalize(glm::cross(object - eye, up));
+				auto numSamples = bokehshape.getVertices().size();
+				for(size_t i = 0; i < numSamples; i++){
+					auto p = bokehshape.getVertices()[i];
+					glm::vec3 bokeh = right * p.x + up * p.y;
+					auto modelview = glm::lookAt(eye + bokeh * parameters.dofAperture.get() * sceneSize, object, up);
+					drawFunc(accumValue, projection, modelview);
+				}
+			}else{
+				auto accumValue = 1;
+				auto projection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
+				auto modelview = camera.getModelViewMatrix();
 				drawFunc(accumValue, projection, modelview);
 			}
 		}
