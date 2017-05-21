@@ -1,6 +1,8 @@
 #include "SnapshotRamses.h"
 #include "Constants.h"
 #include <numeric>
+#include "H5Cpp.h"
+#include <curl/curl.h>
 
 #ifdef TARGET_LINUX
 #include <sys/mman.h>
@@ -12,6 +14,18 @@
 
 namespace ent
 {
+
+
+	void sftpDownload(const std::string & from, const std::string & to){
+		auto startServer = from.find("@");
+		auto server = from.substr(0, from.find(":",startServer));
+		auto file = from.substr(from.find(":",startServer) + 1, from.npos);
+		auto localdir = ofFilePath::getEnclosingDirectory(to);
+
+		auto command = "cd " + localdir + "; lftp -c 'open " + server + " && get " + file + "'";
+		cout << command << endl;
+		ofSystem(command);
+	}
 
 	void readToMemory(const std::string & path, size_t size, char * buffer){
     #if defined(TARGET_LINUX) && FAST_READ
@@ -58,11 +72,11 @@ namespace ent
 		std::vector<float> density;
 
 		auto then = ofGetElapsedTimeMicros();
-		loadhdf5(folder + "x/seq_" + ofToString(frameIndex) + "_x.h5", posX);
-		loadhdf5(folder + "y/seq_" + ofToString(frameIndex) + "_y.h5", posY);
-		loadhdf5(folder + "z/seq_" + ofToString(frameIndex) + "_z.h5", posZ);
-		loadhdf5(folder + "dx/seq_" + ofToString(frameIndex) + "_dx.h5", cellSize);
-		loadhdf5(folder + "density/seq_" + ofToString(frameIndex) + "_density.h5", density);
+		loadhdf5(folder + "/hdf5/"  +  getXHDF5Path(frameIndex), posX);
+		loadhdf5(folder + "/hdf5/"  +  getYHDF5Path(frameIndex), posY);
+		loadhdf5(folder + "/hdf5/"  +  getZHDF5Path(frameIndex), posZ);
+		loadhdf5(folder + "/hdf5/"  +  getDXHDF5Path(frameIndex), cellSize);
+		loadhdf5(folder + "/hdf5/"  +  getDensityHDF5Path(frameIndex), density);
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to load original files " << float(now - then)/1000 << "ms." << endl;
 
@@ -364,34 +378,71 @@ namespace ent
 		const float * data = nullptr;
 		void * filedata = nullptr;
 		size_t filedatalen = 0;
-		rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + ".raw";
-		particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) +".particles";
-		metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + "_meta.raw";
-		voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + "_voxels.raw";
-		particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "_" + ofToString(settings.frameIndex) + ".groups";
+		rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + ".raw";
+		particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) +".particles";
+		metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + "_meta.raw";
+		voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + "_voxels.raw";
+		particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + ".groups";
 
 
+		cout << "metadata " << metaFileName << endl;
 		auto voxelsSize = 0;
 		std::vector<size_t> particleGroups;
+
+		auto metadataPrecalculated = ofFile(metaFileName, ofFile::Reference).exists();
+		auto particlesPrecalculated = ofFile(particlesFileName, ofFile::Reference).exists();
+		auto voxelsPrecalculated = ofFile(voxelsFileName, ofFile::Reference).exists();
+		auto rawPrecalculated = ofFile(rawFileName, ofFile::Reference).exists();
+
+		if(settings.urlFolder!=""){
+			bool needsDownload = false;
+
+			needsDownload |= !metadataPrecalculated;
+#if USE_PARTICLES_COMPUTE_SHADER
+			needsDownload |= particlesPrecalculated;
+#endif
+#if USE_VOXELS_COMPUTE_SHADER
+			needsDownload |= voxelsPrecalculated;
+#endif
+#if USE_RAW
+			needsDownload |= rawPrecalculated;
+#endif
+
+			if(!ofFile(settings.folder + "/hdf5/" + getXHDF5Path(settings.frameIndex), ofFile::Reference).exists()){
+				sftpDownload(settings.urlFolder + "/" + getXHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getXHDF5Path(settings.frameIndex));
+			}
+			if(!ofFile(settings.folder + "/hdf5/" + getYHDF5Path(settings.frameIndex), ofFile::Reference).exists()){
+				sftpDownload(settings.urlFolder + "/" + getYHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getYHDF5Path(settings.frameIndex));
+			}
+			if(!ofFile(settings.folder + "/hdf5/" + getZHDF5Path(settings.frameIndex), ofFile::Reference).exists()){
+				sftpDownload(settings.urlFolder + "/" + getZHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getZHDF5Path(settings.frameIndex));
+			}
+			if(!ofFile(settings.folder + "/hdf5/" + getDXHDF5Path(settings.frameIndex), ofFile::Reference).exists()){
+				sftpDownload(settings.urlFolder + "/" + getDXHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getDXHDF5Path(settings.frameIndex));
+			}
+			if(!ofFile(settings.folder + "/hdf5/" + getDensityHDF5Path(settings.frameIndex), ofFile::Reference).exists()){
+				sftpDownload(settings.urlFolder + "/" + getDensityHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getDensityHDF5Path(settings.frameIndex));
+			}
+		}
 		
-		if(!ofFile(metaFileName, ofFile::Reference).exists()){
+		if(!metadataPrecalculated){
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 
 #if USE_PARTICLES_COMPUTE_SHADER
-		if(!ofFile(particlesFileName, ofFile::Reference).exists()){
+		if(!particlesPrecalculated){
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 #endif
 
 #if USE_VOXELS_COMPUTE_SHADER
-		if(!ofFile(voxelsFileName, ofFile::Reference).exists()){
+		if(!voxelsPrecalculated){
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 #endif
 
 #if USE_RAW
-		if(!ofFile(rawFileName, ofFile::Reference).exists()){
+		if(!rawPrecalculated){
 			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
 		}
 #endif
@@ -489,7 +540,7 @@ namespace ent
 					data = (const float*)filedata;
                 #else
 				    ofFile texture3dRaw(rawFileName, ofFile::ReadOnly, true);
-					this->vaporPixelsBuffer = ofBuffer(texture3dRaw, 1024*1024*5);
+					this->vaporPixelsBuffer = ofBuffer(texture3dRaw, settings.worldsize * settings.worldsize * settings.worldsize * sizeof(float));
 					data = (float*)this->vaporPixelsBuffer.getData();
                 #endif
 				auto now = ofGetElapsedTimeMicros();
@@ -550,15 +601,15 @@ namespace ent
 				textureBuffer.unmap();
 				settings.volumeTexture.loadData(textureBuffer, GL_RED);
             #else
-		        settings.volumeTexture.loadData(data, settings.worldsize, settings.worldsize, settings.worldsize, 0, 0, 0, GL_RED);
+				settings.volumeTexture.loadData(data, settings.worldsize, settings.worldsize, settings.worldsize, 0, 0, 0, GL_RED);
             #endif
         #endif
 
         #if USE_TEXTURE_3D_MIPMAPS
-				settings.volumeTexture.generateMipmaps();
+			settings.volumeTexture.generateMipmaps();
 			settings.volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
         #else
-				settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
+			settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
         #endif
 
 		auto now = ofGetElapsedTimeMicros();
@@ -586,6 +637,7 @@ namespace ent
         #endif
 
 
+#if USE_PARTICLES_COMPUTE_SHADER
 		vector<Particle> particles;
 		auto pptr = settings.particlesBuffer.map<Particle>(GL_READ_ONLY);
 		particles.assign(pptr, pptr + m_numCells);
@@ -599,6 +651,7 @@ namespace ent
 		now = ofGetElapsedTimeMicros();
 		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
 		cout << "octree maxlevel: " << vaporOctree.getMaxLevel() << endl;
+#endif
 
 		m_bLoaded = true;
 	}
@@ -691,5 +744,31 @@ namespace ent
 	bool SnapshotRamses::isLoaded() const
 	{
 		return m_bLoaded;
+	}
+
+	//--------------------------------------------------------------
+	std::string SnapshotRamses::getXHDF5Path(int frameIndex){
+		return "x_nout=" + ofToString(frameIndex,0,4,'0') + "_hdf5.h5";
+	}
+
+	//--------------------------------------------------------------
+	std::string SnapshotRamses::getYHDF5Path(int frameIndex){
+		return "y_nout=" + ofToString(frameIndex,0,4,'0') + "_hdf5.h5";
+	}
+
+	//--------------------------------------------------------------
+	std::string SnapshotRamses::getZHDF5Path(int frameIndex){
+		return "z_nout=" + ofToString(frameIndex,0,4,'0') + "_hdf5.h5";
+	}
+
+	//--------------------------------------------------------------
+	std::string SnapshotRamses::getDensityHDF5Path(int frameIndex){
+		return "density_nout=" + ofToString(frameIndex,0,4,'0') + "_hdf5.h5";
+	}
+
+	//--------------------------------------------------------------
+	std::string SnapshotRamses::getDXHDF5Path(int frameIndex){
+		return "dx_nout=" + ofToString(frameIndex,0,4,'0') + "_hdf5.h5";
+
 	}
 }

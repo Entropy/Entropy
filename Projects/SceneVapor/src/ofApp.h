@@ -48,6 +48,7 @@ public:
 	ofParameter<bool> m_vboTex{"vbo texture", false};
 	ofParameter<bool> m_bSyncPlayback{"sync playback", false};
 	ofParameter<bool> m_bExportFrames{"record", false};
+	ofParameter<bool> m_bRecordVideo{"record video", false};
 	ofParameter<bool> m_bShowTimeline{"show timeline", true};
 	ofParameter<string> m_exportPath{ofToDataPath("",true)};
 	ofParameterGroup appParameters{
@@ -69,6 +70,7 @@ public:
 		//m_vboTex,
 		m_bSyncPlayback,
 		m_bExportFrames,
+		m_bRecordVideo,
 		m_bShowTimeline,
 		m_exportPath,
 	};

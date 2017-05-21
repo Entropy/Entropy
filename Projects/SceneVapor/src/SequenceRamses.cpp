@@ -17,24 +17,36 @@ namespace ent
 		clear();
     }
 
-    //--------------------------------------------------------------
-    void SequenceRamses::setup(const std::string& folder, int startIndex, int endIndex)
-    {
+	//--------------------------------------------------------------
+	void SequenceRamses::setupRemote(const std::string& urlFolder, const std::string& folder, int startIndex, int endIndex){
 		clear();
+		m_folder = folder;
+		m_urlFolder = urlFolder;
+		setup(startIndex, endIndex);
+	}
 
+	//--------------------------------------------------------------
+	void SequenceRamses::setup(const std::string& folder, int startIndex, int endIndex)
+	{
+		clear();
+		m_folder = folder;
+		setup(startIndex, endIndex);
+	}
+
+
+	//--------------------------------------------------------------
+	void SequenceRamses::setup(int startIndex, int endIndex){
 		int numFiles = endIndex - startIndex + 1;
 		if (numFiles <= 0) {
 			ofLogError("SequenceRamses::loadSequence") << "Invalid range [" << startIndex << ", " << endIndex << "]";
 			return;
 		}
-		m_snapshots.resize(numFiles);
 
-		m_folder = folder;
 		m_startIndex = startIndex;
 		m_endIndex = endIndex;
 
-        // Load the shaders.
-        m_renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
+		// Load the shaders.
+		m_renderShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/render.vert");
 		m_renderShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "shaders/render.frag");
 		m_renderShader.bindAttribute(POSITION_ATTRIBUTE, "position");
 		m_renderShader.bindAttribute(SIZE_ATTRIBUTE, "size");
@@ -62,7 +74,7 @@ namespace ent
 #if USE_PARTICLES_COMPUTE_SHADER
 		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
 		frameSettings.particles2texture.linkProgram();
-		auto maxNumParticles = 3000000;
+		auto maxNumParticles = 6000000;
 		int maxBufferTextureSize;
 		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
 #ifdef USE_HALF_PARTICLE
@@ -97,8 +109,8 @@ namespace ent
 		m_clearData.assign(frameSettings.worldsize*frameSettings.worldsize*frameSettings.worldsize,0);
 		frameSettings.volumeTexture.allocate(frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, GL_R16F);
 		frameSettings.volumeTexture.loadData(
-		    m_clearData.data(),
-		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
+			m_clearData.data(),
+			frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
 		);
 
 		volumetrics.setup(&frameSettings.volumeTexture, ofVec3f(1,1,1), m_volumetricsShader);
@@ -118,12 +130,13 @@ namespace ent
 		listeners.push_back(m_densityMax.newListener(reload));
 
 		m_bReady = true;
-    }
+	}
 
 	//--------------------------------------------------------------
 	void SequenceRamses::clear()
 	{
-		m_snapshots.clear();
+		m_folder = "";
+		m_urlFolder = "";
 		m_startIndex = 0;
 		m_endIndex = 0;
 
@@ -241,6 +254,7 @@ namespace ent
 		ofFill();*/
 	}
 
+	//--------------------------------------------------------------
 	ofMesh SequenceRamses::getOctreeMesh(float scale) const{
 		auto mesh = getSnapshot().getOctreeMesh(m_densityMin * m_densityRange.getSpan(), m_densityMax * m_densityRange.getSpan());
 		glm::mat4 model = glm::scale(glm::vec3(scale/m_normalizeFactor));
@@ -263,26 +277,30 @@ namespace ent
 	//--------------------------------------------------------------
 	void SequenceRamses::loadFrame(int index)
 	{
-		if (0 > index || index >= m_snapshots.size()) 
+		if (0 > index || index >= getTotalFrames())
 		{
-			ofLogError("SequenceRamses::loadFrame") << "Index " << index << " out of range [0, " << m_snapshots.size() << "]";
+			ofLogError("SequenceRamses::loadFrame") << "Index " << index << " out of range [0, " << getTotalFrames() << "]";
 			return;
 		}
-
+		m_currentIndex = index;
 		frameSettings.folder = m_folder;
-		frameSettings.frameIndex = m_currentIndex = m_startIndex + index;
+		frameSettings.urlFolder = m_urlFolder;
+		frameSettings.frameIndex = m_startIndex + index;
 		frameSettings.minDensity = m_densityMin;
 		frameSettings.maxDensity = m_densityMax;
 		frameSettings.volumeTexture.loadData(
 		    m_clearData.data(),
 		    frameSettings.worldsize, frameSettings.worldsize, frameSettings.worldsize, 0,0,0, GL_RED
 		);
-		m_snapshots[index].setup(frameSettings);
+		m_coordRange.clear();
+		m_sizeRange.clear();
+		m_densityRange.clear();
+		m_snapshot.setup(frameSettings);
 
 		// Adjust the ranges.
-		m_coordRange.include(m_snapshots[index].getCoordRange());
-		m_sizeRange.include(m_snapshots[index].getSizeRange());
-		m_densityRange.include(m_snapshots[index].getDensityRange());
+		m_coordRange.include(m_snapshot.getCoordRange());
+		m_sizeRange.include(m_snapshot.getSizeRange());
+		m_densityRange.include(m_snapshot.getDensityRange());
 
 		// Set normalization values to remap to [-0.5, 0.5]
 		glm::vec3 coordSpan = m_coordRange.getSpan();
@@ -358,13 +376,13 @@ namespace ent
 			percent -= floor(percent);
 		}
 
-		return MIN((int)(percent * m_snapshots.size()), m_snapshots.size() - 1);
+		return MIN((int)(percent * getTotalFrames()), getTotalFrames() - 1);
 	}
 
 	//--------------------------------------------------------------
 	float SequenceRamses::getPercentAtFrameIndex(int index)
 	{
-		return ofMap(index, 0, m_snapshots.size() - 1, 0.0f, 1.0f, true);
+		return ofMap(index, 0, getTotalFrames() - 1, 0.0f, 1.0f, true);
 	}
 
 	//--------------------------------------------------------------
@@ -376,7 +394,7 @@ namespace ent
 	//--------------------------------------------------------------
 	int SequenceRamses::getTotalFrames() const
 	{
-		return m_snapshots.size();
+		return m_endIndex - m_startIndex + 1;
 	}
 
 	//--------------------------------------------------------------
@@ -388,7 +406,7 @@ namespace ent
 	//--------------------------------------------------------------
 	SnapshotRamses& SequenceRamses::getSnapshot()
 	{
-		return m_snapshots[m_currFrame];
+		return m_snapshot;
 	}
 
 	//--------------------------------------------------------------
@@ -415,7 +433,7 @@ namespace ent
 	//--------------------------------------------------------------
 	const SnapshotRamses& SequenceRamses::getSnapshot() const
 	{
-		return m_snapshots[m_currFrame];
+		return m_snapshot;
 	}
 
 	//--------------------------------------------------------------

@@ -49,11 +49,11 @@ struct HalfParticle{
 	}
 
 	inline glm::vec3 getMaxPos() const{
-		return pos.xyz() + glm::vec3{size*0.5f, size*0.5f, size*0.5f};
+		return pos.xyz() + glm::tvec3<half_float::half>{size*0.5f, size*0.5f, size*0.5f};
 	}
 
 	inline glm::vec3 getMinPos() const{
-		return pos.xyz() - glm::vec3{size*0.5f, size*0.5f, size*0.5f};
+		return pos.xyz() - glm::tvec3<half_float::half>{size*0.5f, size*0.5f, size*0.5f};
 	}
 };
 

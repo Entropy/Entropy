@@ -26,6 +26,7 @@ namespace ent
 
 		struct Settings{
 			std::string folder;
+			std::string urlFolder;
 			int frameIndex;
 			float minDensity;
 			float maxDensity;
@@ -63,6 +64,11 @@ namespace ent
 	protected:
 		void loadhdf5(const std::string& file, std::vector<float>& elements);
 		void precalculate(const std::string folder, int frameIndex, float minDensity, float maxDensity, size_t worldsize);
+		static std::string getXHDF5Path(int frameIndex);
+		static std::string getYHDF5Path(int frameIndex);
+		static std::string getZHDF5Path(int frameIndex);
+		static std::string getDensityHDF5Path(int frameIndex);
+		static std::string getDXHDF5Path(int frameIndex);
 
 
 		ofxRange3f m_coordRange;

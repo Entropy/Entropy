@@ -12,7 +12,9 @@ void ofApp::setup()
 	ofSetVerticalSync(false);
 
 	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
-	m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
+	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads",
+								 "/media/arturo/elements/entropy/vapor_download_tests", 1160, 1160);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -80,10 +82,32 @@ void ofApp::setup()
 
 	fbo.allocate(fboSettings);
 
-	ofxTextureRecorder::Settings settings(fbo.getTexture());
-	settings.imageFormat = OF_IMAGE_FORMAT_JPEG;
-	settings.folderPath = "render";
-	recorder.setup(settings);
+//	ofxTextureRecorder::Settings settings(fbo.getTexture());
+//	settings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+//	settings.folderPath = "render";
+//	recorder.setup(settings);
+
+
+
+	listeners.push_back(m_bRecordVideo.newListener([this](bool & record){
+		if(record){
+			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
+			if(path.bSuccess){
+				auto videoRecorderPath = path.getPath();
+				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				recorderSettings.videoPath = videoRecorderPath;
+//				recorderSettings.videoCodec = "libx264";
+//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				recorderSettings.videoCodec = "prores";
+				recorderSettings.extrasettings = "-profile:v 0";
+				recorder.setup(recorderSettings);
+			}else{
+				m_bRecordVideo = false;
+			}
+		}else{
+			recorder.stop();
+		}
+	}));
 }
 
 //--------------------------------------------------------------
@@ -201,7 +225,7 @@ void ofApp::draw()
 
 	fbo.draw(0,0);
 
-	if (m_bExportFrames)
+	if (m_bExportFrames || m_bRecordVideo)
 	{
 		recorder.save(fbo.getTexture());
 	}
