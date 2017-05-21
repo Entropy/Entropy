@@ -186,4 +186,14 @@ namespace entropy
 			outVertices.addVertex({v4.x,v4.y,0.0f});
 		}
 	}
+
+	//--------------------------------------------------------------
+	inline float focalLengthToFovDeg(float focalLengthmm, float aspectRatio){
+		return ofRadToDeg(2. * atan(0.5 * 35. / focalLengthmm) / aspectRatio);
+	}
+
+	//--------------------------------------------------------------
+	inline float fovDegToFocalLength(float fovDeg, float aspectRatio){
+		return 0.5 * 35. /tan(ofDegToRad(fovDeg) * aspectRatio / 2.);
+	}
 }
