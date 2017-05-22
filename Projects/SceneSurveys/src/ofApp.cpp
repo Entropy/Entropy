@@ -95,15 +95,18 @@ void ofApp::setup()
 	// Setup the camera.
 	this->eventListeners.push_back(this->parameters.camera.nearClip.newListener([this](float & val)
 	{
-		this->camera.setNearClip(val);
+		this->easyCam.setNearClip(val);
+		this->travelCamPath.copyCamera(this->easyCam, false);
 	}));
 	this->eventListeners.push_back(this->parameters.camera.farClip.newListener([this](float & val)
 	{
-		this->camera.setFarClip(val);
+		this->easyCam.setFarClip(val);
+		this->travelCamPath.copyCamera(this->easyCam, false);
 	}));
 	this->eventListeners.push_back(this->parameters.camera.fov.newListener([this](float & val)
 	{
-		this->camera.setFov(val);
+		this->easyCam.setFov(val);
+		this->travelCamPath.copyCamera(this->easyCam, false);
 	}));
 
 	// Setup renderer and post effects using resize callback.
@@ -119,7 +122,7 @@ void ofApp::setup()
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
-	this->gui.add(this->travel.parameters);
+	this->gui.add(this->travelCamPath.parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
@@ -166,7 +169,7 @@ void ofApp::setup()
 
 	const auto cameraTrackName = "Camera";
 	this->cameraTrack.setDampening(1.0f);
-	this->cameraTrack.setCamera(this->camera);
+	this->cameraTrack.setCamera(this->easyCam);
 	this->cameraTrack.setXMLFileName(this->timeline.nameToXMLName(cameraTrackName));
 	this->timeline.addTrack(cameraTrackName, &this->cameraTrack);
 	this->cameraTrack.setDisplayName(cameraTrackName);
@@ -300,7 +303,12 @@ void ofApp::update()
 	*/
 
 	const auto worldTransform = this->getWorldTransform();
-	this->travel.update(this->dataSetDes, this->camera, worldTransform);
+
+	// Update the galaxy data sets.
+	this->dataSetBoss.update(worldTransform, this->getActiveCamera(), this->sharedParams, this->travelCamPath.addPoints);
+	this->dataSetDes.update(worldTransform, this->getActiveCamera(), this->sharedParams, this->travelCamPath.addPoints);
+
+	this->travelCamPath.update(this->easyCam);
 	
 	// Auto-reload shaders.
 	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
@@ -349,7 +357,7 @@ void ofApp::draw()
 	{
 		ofClear(0, 255);
 
-		this->camera.begin();
+		this->getActiveCamera().begin();
 		{
 			//renderer.draw(galaxy.getVbo(), 0, galaxy.getNumVertices(), GL_POINTS, camera);
 
@@ -366,7 +374,7 @@ void ofApp::draw()
 				ofSetColor(ofColor::white);
 
 				this->spriteShader.begin();
-				this->spriteShader.setUniform2f("uClipRange", this->camera.getFarClip() * (1.0f - this->sharedParams.point.distanceFade), this->camera.getFarClip());
+				this->spriteShader.setUniform2f("uClipRange", this->getActiveCamera().getFarClip() * (1.0f - this->sharedParams.point.distanceFade), this->getActiveCamera().getFarClip());
 				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
 				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
 				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);
@@ -404,13 +412,13 @@ void ofApp::draw()
 
 				this->modelShader.begin();
 				{
-					this->dataSetBoss.drawModels(this->modelShader, this->sharedParams, worldTransform, this->scaledMesh, this->camera);
-					this->dataSetDes.drawModels(this->modelShader, this->sharedParams, worldTransform, this->scaledMesh, this->camera);
+					this->dataSetBoss.drawModels(this->modelShader, this->sharedParams, this->scaledMesh);
+					this->dataSetDes.drawModels(this->modelShader, this->sharedParams, this->scaledMesh);
 				}
 				this->modelShader.end();
 			}
 
-			this->travel.draw(this->sharedParams);
+			this->travelCamPath.draw();
 
 			ofPushMatrix();
 			ofMultMatrix(worldTransform);
@@ -429,7 +437,7 @@ void ofApp::draw()
 			}
 			ofPopMatrix();
 		}
-		this->camera.end();
+		this->getActiveCamera().end();
 	}
 	this->fboScene.end();
 
@@ -482,6 +490,33 @@ void ofApp::keyPressed(int key)
 	{
 		this->timelineVisible ^= 1;
 	}
+	else if (this->travelCamPath.editPoints)
+	{
+		if (key == 'w')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Forward);
+		}
+		else if (key == 's')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Back);
+		}
+		else if (key == 'a')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Left);
+		}
+		else if (key == 'd')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Right);
+		}
+		else if (key == 'e')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Up);
+		}
+		else if (key == 'c')
+		{
+			this->travelCamPath.nudgeEditPoint(entropy::surveys::Nudge::Down);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -505,8 +540,23 @@ void ofApp::mousePressed(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
+void ofApp::mouseReleased(int x, int y, int button)
+{
+	if (ofGetKeyPressed(OF_KEY_SHIFT))
+	{
+		if (this->travelCamPath.addPoints)
+		{
+			const auto pt = this->dataSetDes.getNearestScreenPoint(glm::vec2(x, y));
+			if (pt != glm::vec3(0.0f))
+			{
+				this->travelCamPath.addPointToPath(pt);
+			}
+		}
+		else if (this->travelCamPath.editPoints)
+		{
+			this->travelCamPath.editNearScreenPoint(this->easyCam, glm::vec2(x, y));
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -525,8 +575,9 @@ void ofApp::windowResized(int w, int h)
 	int canvasWidth = w;
 	int canvasHeight = h;
 
-	this->camera.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
-
+	this->easyCam.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
+	this->travelCamPath.copyCamera(this->easyCam, false);
+	
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
 
 	auto fboSettings = ofFbo::Settings();
@@ -578,6 +629,13 @@ glm::mat4 ofApp::getWorldTransform() const
 }
 
 //--------------------------------------------------------------
+ofCamera & ofApp::getActiveCamera()
+{
+	//return (this->travelCamPath.enabled? this->travelCamPath.getCamera() : this->easyCam);
+	return this->easyCam;
+}
+
+//--------------------------------------------------------------
 bool ofApp::loadPreset(const string & presetName)
 {
 	// Make sure file exists.
@@ -592,7 +650,8 @@ bool ofApp::loadPreset(const string & presetName)
 		{
 			const auto json = ofLoadJson(paramsFile);
 			ofDeserialize(json, this->gui.getParameter());
-			ofDeserialize(json, this->camera, "ofEasyCam");
+			ofDeserialize(json, this->easyCam, "ofEasyCam");
+			this->travelCamPath.deserialize(json);
 		}
 
 		this->timeline.loadStructure(presetPath.string());
@@ -627,7 +686,8 @@ bool ofApp::savePreset(const string & presetName)
 	const auto paramsPath = presetPath / "parameters.json";
 	nlohmann::json json;
 	ofSerialize(json, this->gui.getParameter());
-	ofSerialize(json, this->camera, "ofEasyCam");
+	ofSerialize(json, this->easyCam, "ofEasyCam");
+	this->travelCamPath.serialize(json);
 	ofSavePrettyJson(paramsPath, json);
 
 	this->timeline.saveTracksToFolder(presetPath.string());

@@ -205,7 +205,7 @@
     <ClCompile Include="..\EntropyRender\src\entropy\render\WireframeFillRenderer.cpp">
       <Filter>local_addons\EntropyRender\src\entropy\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\entropy\surveys\Travel.cpp">
+    <ClCompile Include="src\entropy\surveys\TravelCamPath.cpp">
       <Filter>src\entropy\surveys</Filter>
     </ClCompile>
   </ItemGroup>
@@ -635,7 +635,7 @@
     <ClInclude Include="..\EntropyUtil\src\entropy\Helpers.h">
       <Filter>local_addons\EntropyUtil\src\entropy</Filter>
     </ClInclude>
-    <ClInclude Include="src\entropy\surveys\Travel.h">
+    <ClInclude Include="src\entropy\surveys\TravelCamPath.h">
       <Filter>src\entropy\surveys</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,7 @@
 #include "entropy/render/PostEffects.h"
 #include "entropy/render/WireframeFillRenderer.h"
 #include "entropy/surveys/DataSet.h"
-#include "entropy/surveys/Travel.h"
+#include "entropy/surveys/TravelCamPath.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -37,6 +37,7 @@ public:
 	void reset();
 
 	glm::mat4 getWorldTransform() const;
+	ofCamera & getActiveCamera();
 
 	bool loadPreset(const string & presetName);
 	bool savePreset(const string & presetName);
@@ -54,7 +55,7 @@ protected:
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
 			ofParameter<float> fov{ "FOV", 60, 1, 120 };
-
+			
 			PARAM_DECLARE("Camera",
 				nearClip,
 				farClip,
@@ -99,7 +100,7 @@ protected:
 	entropy::surveys::DataSet dataSetDes;
 	entropy::surveys::DataSet dataSetVizir;
 
-	entropy::surveys::Travel travel;
+	entropy::surveys::TravelCamPath travelCamPath;
 
 	entropy::geom::Sphere sphereGeom;
 	ofTexture sphereTexture;
@@ -123,7 +124,7 @@ protected:
 	ofVboMesh masterMesh;
 	ofVboMesh scaledMesh;
 
-	ofEasyCam camera;
+	ofEasyCam easyCam;
 	glm::vec3 orbitOffset;
 
 	entropy::render::WireframeFillRenderer renderer;

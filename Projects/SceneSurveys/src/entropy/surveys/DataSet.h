@@ -67,23 +67,10 @@ namespace entropy
 						maxDensitySize, minDensityMod);
 				} model;
 
-				struct : ofParameterGroup
-				{
-					ofParameter<float> maxDistance{ "Max Distance", 100.0f, 1.0f, 5000.0f };
-					ofParameter<float> lockDistance{ "Min Lock Distance", 1.0f, 0.0f, 1000.0f };
-					ofParameter<float> minMass{ "Min Mass", 1.0f, 0.0f, 1000.0f, ofParameterScale::Logarithmic };
-					
-					PARAM_DECLARE("Target",
-						maxDistance,
-						lockDistance,
-						minMass);
-				} target;
-
 				PARAM_DECLARE("Shared",
 					point,
 					shell,
-					model,
-					target);
+					model);
 			};
 
 		public:
@@ -93,13 +80,12 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
+			void update(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params, bool updatePicking);
+			glm::vec3 getNearestScreenPoint(const glm::vec2 & pt) const;
+
 			void drawPoints(ofShader & shader, SharedParams & sharedParams);
 			void drawShells(ofShader & shader, SharedParams & sharedParams);
-			void drawModels(ofShader & shader, SharedParams & sharedParams, const glm::mat4 & worldTransform, ofVboMesh & mesh, const ofCamera & camera);
-
-			int getTargetIndex() const;
-			glm::vec3 getTargetPosition() const;
-			float getTargetMass() const;
+			void drawModels(ofShader & shader, SharedParams & sharedParams, ofVboMesh & mesh);
 
 			struct : ofParameterGroup
 			{
@@ -135,11 +121,12 @@ namespace entropy
 			};
 
 			std::size_t loadFragment(const std::string & filePath, const std::string & particleType);
-			std::size_t updateFilteredData(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params);
-
+			
 			std::vector<glm::vec3> coordinates;
 			std::vector<float> masses;
 			std::vector<float> starFormationRates;
+
+			std::vector<std::pair<glm::vec2, glm::vec3>> pickingData;
 
 			float minRadius;
 			float maxRadius;
@@ -148,14 +135,13 @@ namespace entropy
 			float maxMass;
 			float avgMass;
 
-			int targetIndex;
-
 			glm::vec3 mappedRadiusRange;
 			glm::vec2 mappedLatitudeRange;
 			glm::vec2 mappedLongitudeRange;
 
 			ofVbo vbo;
 			ofBufferObject bufferObj;
+			int modelCount;
 
 			std::vector<ofEventListener> paramListeners;
 		};
