@@ -81,7 +81,6 @@ public:
 
 	struct : ofParameterGroup
 	{
-		ofParameter<void> resetScene{ "Reset Scene" };
 		ofParameter<bool> debugLights{ "Debug Lights", false };
 
 		//ofParameter<string> stateFile;
@@ -102,6 +101,7 @@ public:
 			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 			ofParameter<float> travelMaxSpeed{"Travel max speed", 0.1, 0.001, 2, ofParameterScale::Logarithmic};
 			ofParameter<float> minTimeBetweenTravels{"min time between travels", 5, 0, 20, ofParameterScale::Logarithmic};
+			ofParameter<bool> doCameraTracking{"camera tracking", false};
 			ofParameter<bool> useEasyCam{"use easy cam", false};
 
 			PARAM_DECLARE("Rendering",
@@ -118,6 +118,7 @@ public:
 				rotationSpeed,
 				travelMaxSpeed,
 				minTimeBetweenTravels,
+				doCameraTracking,
 				useEasyCam);
 		} rendering;
 
@@ -135,13 +136,49 @@ public:
 				recordVideo);
 		} recording;
 
+		struct : ofParameterGroup
+		{
+			ofParameter<int>  electrons{ "electrons", 300, 0, 5000};
+			ofParameter<int>  positrons{ "positrons", 300, 0, 5000};
+			ofParameter<int>  anti_up_quarks{ "anti up quarks", 300, 0, 5000};
+			ofParameter<int>  up_quarks{ "up quarks", 300, 0, 5000};
+			ofParameter<int>  anti_down_quarks{ "anti down quarks", 300, 0, 5000};
+			ofParameter<int>  down_quarks{ "down quarks", 300, 0, 5000};
+			ofParameter<int>  neutrons{ "neutrons", 0, 0, 5000};
+			ofParameter<int>  protons{ "protons", 0, 0, 5000};
+			ofParameter<void> resetScene{ "Reset Scene" };
+
+			PARAM_DECLARE("Reset",
+			  electrons,
+			  positrons,
+			  anti_up_quarks,
+			  up_quarks,
+			  anti_down_quarks,
+			  down_quarks,
+			  neutrons,
+			  protons,
+			  resetScene);
+		} reset;
+
 		PARAM_DECLARE("Scene",
-			resetScene,
 			debugLights,
 			//stateFile,
 			rendering,
-			recording);
+			recording,
+			reset);
 	} parameters;
+
+	std::array<ofParameter<int>, 8> particleTypesInitialNumbers{{
+		parameters.reset.electrons,
+		parameters.reset.positrons,
+		parameters.reset.anti_up_quarks,
+		parameters.reset.up_quarks,
+		parameters.reset.anti_down_quarks,
+		parameters.reset.down_quarks,
+		parameters.reset.neutrons,
+		parameters.reset.protons,					\
+	}};
+
 
 	double now = 0;
 	double dt = 0;

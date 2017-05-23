@@ -142,10 +142,9 @@ namespace nm
 			}
 			else
 			{
-				auto i = 0;
 				for (auto * other: points)
 				{
-					i++;
+					if(!other->alive) continue;
 					if (&point != other)
 					{
 						ofVec3f direction = centerOfCharge - point.pos;
@@ -294,7 +293,7 @@ namespace nm
 	{
 		for (unsigned i = 0; i < numPoints; ++i)
 		{
-			addPoint(points[i]);
+			if(points[i].alive) addPoint(points[i]);
 		}
 	}
 

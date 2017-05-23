@@ -162,6 +162,25 @@ namespace nm
 		}
 		photonPosnBuffer.updateData(0, sizeof(scaledPosns[0]) * scaledPosns.size(), &scaledPosns[0].x);
 		//trailParticles.update();
+
+		if (ofRandomuf() < environment->getPairProductionThresh())
+		{
+			// find a particle
+			const unsigned numTries = 100;
+			for (unsigned i = 0; i < numTries; ++i)
+			{
+				unsigned randIdx = ofRandom(photons.size() - 1);
+				if (photons[randIdx].alive && photons[randIdx].age > 10)
+				{
+					PairProductionEventArgs args;
+					args.position = photons[randIdx].pos;
+					args.velocity = photons[randIdx].vel;
+					ofNotifyEvent(environment->pairProductionEvent, args, this);
+					photons[randIdx].alive = false;
+					break;
+				}
+			}
+		}
 	}
 
 //	bool Photons::tryPairProduction()

@@ -183,10 +183,13 @@ void ofApp::setup()
 			{
 				ofxTextureRecorder::VideoSettings recorderSettings(fboScene.getTexture(), 60);
 				recorderSettings.videoPath = path.getPath();
-				//				recorderSettings.videoCodec = "libx264";
-				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
-				recorderSettings.videoCodec = "prores";
-				recorderSettings.extrasettings = "-profile:v 0";
+				if(ofFilePath::getFileExt(path.getPath()) == ".mov"){
+					recorderSettings.videoCodec = "prores";
+					recorderSettings.extrasettings = "-profile:v 0";
+				}else{
+					recorderSettings.videoCodec = "libx264";
+					recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+				}
 				textureRecorder.setup(recorderSettings);
 			}
 			else {
@@ -295,6 +298,8 @@ void ofApp::setup()
 
 	ofSetMutuallyExclusive(parameters.rendering.additiveBlending, parameters.rendering.glOneBlending);
 
+	eventListeners.push_back(parameters.reset.resetScene.newListener(this, &ofApp::reset));
+
 }
 
 //--------------------------------------------------------------
@@ -312,6 +317,7 @@ void ofApp::update()
 	dt = timeline.getCurrentTime() - now;
 	now = timeline.getCurrentTime();
 
+	environment->update();
 	photons.update(dt);
 	particleSystem.update(dt);
 	auto scale = environment->getExpansionScalar();
@@ -361,117 +367,166 @@ void ofApp::update()
 
 
 	if(parameters.rendering.drawText){
-		textRenderer.update(particleSystem, BARYOGENESIS);
+		textRenderer.update(particleSystem, *environment);
 	}
 
 
 	// Camera position tracking next annihilation
-	auto renewLookAt = arrived;
-	if(arrived && lookAt.first != lookAt.second){
-		auto * lookAt1 = particleSystem.getById(lookAt.first);
-		auto * lookAt2 = particleSystem.getById(lookAt.second);
-		if(lookAt1 && lookAt2){
-			renewLookAt = glm::distance(lookAt1->pos * scale, lookAt2->pos * scale) > nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
-			cout << "arrived and renew " << renewLookAt << endl;
+	if(parameters.rendering.doCameraTracking){
+		auto renewLookAt = arrived;
+		if(arrived && lookAt.first != lookAt.second){
+			auto * lookAt1 = particleSystem.getById(lookAt.first);
+			auto * lookAt2 = particleSystem.getById(lookAt.second);
+			if(lookAt1 && lookAt2){
+				renewLookAt = glm::distance(lookAt1->pos * scale, lookAt2->pos * scale) > nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+				//cout << "arrived and renew " << renewLookAt << endl;
+			}
 		}
-	}
-	if(renewLookAt && timeConnectionLost==0){
-		timeConnectionLost = now;
-		lookAt.first = lookAt.second = 0;
-		cout << "renew started counter" << endl;
-	}
+		if(renewLookAt && timeConnectionLost==0){
+			timeConnectionLost = now;
+			lookAt.first = lookAt.second = 0;
+			//cout << "renew started counter" << endl;
+		}
 
-	auto timesinceConnectionLost = now - timeConnectionLost;
-	if(renewLookAt && timesinceConnectionLost > parameters.rendering.minTimeBetweenTravels){
-		cout << "trying to renew" << endl;
-		auto particles = particleSystem.getParticles();
-		std::vector<nm::Particle*> sortedParticles(particles.size());
-		std::transform(particles.begin(),
-					   particles.end(),
-					   sortedParticles.begin(),
-					   [](nm::Particle & p){ return &p; });
+		auto timesinceConnectionLost = now - timeConnectionLost;
+		if(renewLookAt && timesinceConnectionLost > parameters.rendering.minTimeBetweenTravels){
+			//cout << "trying to renew" << endl;
+			auto particles = particleSystem.getParticles();
+			std::vector<nm::Particle*> sortedParticles(particles.size());
+			std::transform(particles.begin(),
+						   particles.end(),
+						   sortedParticles.begin(),
+						   [](nm::Particle & p){ return &p; });
 
-		std::sort(sortedParticles.begin(), sortedParticles.end(), [&](nm::Particle * p1, nm::Particle * p2){
-			return glm::distance2(p1->pos, camera.getGlobalPosition()) > glm::distance2(p2->pos, camera.getGlobalPosition());
-		});
+			std::sort(sortedParticles.begin(), sortedParticles.end(), [&](nm::Particle * p1, nm::Particle * p2){
+				return glm::distance2(p1->pos, camera.getGlobalPosition()) > glm::distance2(p2->pos, camera.getGlobalPosition());
+			});
 
-		for(auto * p1: sortedParticles){
-			for(auto * p2: p1->potentialInteractionPartners){
-				auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
-				travelDistance = glm::distance(p1->pos, camera.getGlobalPosition()) / kHalfDim;
-				auto minTravelTime = travelDistance / parameters.rendering.travelMaxSpeed;
-				auto annihilationPartners = std::count_if(p1->potentialInteractionPartners.begin(), p1->potentialInteractionPartners.end(), [&](nm::Particle * partner){
-					return (p1->getAnnihilationFlag() ^ partner->getAnnihilationFlag()) == 0xFF;
-				});
-				auto aproxAnnihilationTime = annihilationPartners * 1.f / environment->systemSpeed;
 
-				bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
-				foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
-				foundNew &= ((p1->isMatterQuark() && p2->isAntiMatterQuark()) || (p1->isAntiMatterQuark() && p2->isMatterQuark()));
-				foundNew &= minTravelTime < aproxAnnihilationTime * 0.8;
-				foundNew &= p1->anihilationRatio + p2->anihilationRatio > 0.2;
-				foundNew &= p1->pos.x > -kHalfDim * 0.5 && p1->pos.x < kHalfDim * 0.5;
-				foundNew &= p1->pos.y > -kHalfDim * 0.5 && p1->pos.y < kHalfDim * 0.5;
-				foundNew &= p1->pos.z > -kHalfDim * 0.5 && p1->pos.z < kHalfDim * 0.5;
+			switch(environment->state.get()){
+				case nm::Environment::BARYOGENESIS:
+					for(auto * p1: sortedParticles){
+						for(auto * p2: p1->potentialInteractionPartners){
+							auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
+							travelDistance = glm::distance(p1->pos, camera.getGlobalPosition()) / kHalfDim;
+							auto minTravelTime = travelDistance / parameters.rendering.travelMaxSpeed;
+							auto annihilationPartners = std::count_if(p1->potentialInteractionPartners.begin(), p1->potentialInteractionPartners.end(), [&](nm::Particle * partner){
+								return (p1->getAnnihilationFlag() ^ partner->getAnnihilationFlag()) == 0xFF;
+							});
+							auto aproxAnnihilationTime = annihilationPartners * 1.f / environment->systemSpeed;
 
-				if(foundNew){
-					if(p1->id<p2->id){
-						lookAt.first = p1->id;
-						lookAt.second = p2->id;
-					}else{
-						lookAt.first = p2->id;
-						lookAt.second = p1->id;
+							bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+							foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
+							foundNew &= ((p1->isMatterQuark() && p2->isAntiMatterQuark()) || (p1->isAntiMatterQuark() && p2->isMatterQuark()));
+							foundNew &= minTravelTime < aproxAnnihilationTime * 0.8;
+							foundNew &= p1->anihilationRatio + p2->anihilationRatio > 0.2;
+							foundNew &= p1->pos.x > -kHalfDim * 0.5 && p1->pos.x < kHalfDim * 0.5;
+							foundNew &= p1->pos.y > -kHalfDim * 0.5 && p1->pos.y < kHalfDim * 0.5;
+							foundNew &= p1->pos.z > -kHalfDim * 0.5 && p1->pos.z < kHalfDim * 0.5;
+
+							if(foundNew){
+								if(p1->id<p2->id){
+									lookAt.first = p1->id;
+									lookAt.second = p2->id;
+								}else{
+									lookAt.first = p2->id;
+									lookAt.second = p1->id;
+								}
+								timeRenewLookAt = now;
+								prevLookAt = lerpedLookAt;
+								prevCameraPosition = camera.getGlobalPosition();
+								arrived = false;
+								timeConnectionLost = 0;
+								rotationDirection = round(ofRandomf());
+								// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
+								break;
+							}
+						}
 					}
-					timeRenewLookAt = now;
-					prevLookAt = lerpedLookAt;
-					prevCameraPosition = camera.getGlobalPosition();
-					arrived = false;
-					timeConnectionLost = 0;
-					rotationDirection = round(ofRandomf());
-					// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
-					break;
+				break;
+				case nm::Environment::STANDARD_MODEL:
+					for(auto * p1: sortedParticles){
+						for(auto * p2: p1->potentialInteractionPartners){
+							auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
+							travelDistance = glm::distance(p1->pos, camera.getGlobalPosition()) / kHalfDim;
+							auto minTravelTime = travelDistance / parameters.rendering.travelMaxSpeed;
+							auto fussionPartners = std::count_if(p1->potentialInteractionPartners.begin(), p1->potentialInteractionPartners.end(), [&](nm::Particle * partner){
+								return (p1->getFusion1Flag() ^ partner->getFusion1Flag()) == 0xFF ||
+									   (p1->getFusion2Flag() ^ partner->getFusion2Flag()) == 0xFF;
+							});
+							auto aproxFussionTime = fussionPartners * 1.f / environment->systemSpeed;
+
+							bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+							foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
+							foundNew &= minTravelTime < aproxFussionTime * 0.8;
+							//foundNew &= p1->anihilationRatio + p2->anihilationRatio > 0.2;
+							foundNew &= p1->pos.x > -kHalfDim * 0.5 && p1->pos.x < kHalfDim * 0.5;
+							foundNew &= p1->pos.y > -kHalfDim * 0.5 && p1->pos.y < kHalfDim * 0.5;
+							foundNew &= p1->pos.z > -kHalfDim * 0.5 && p1->pos.z < kHalfDim * 0.5;
+
+							if(foundNew){
+								if(p1->id<p2->id){
+									lookAt.first = p1->id;
+									lookAt.second = p2->id;
+								}else{
+									lookAt.first = p2->id;
+									lookAt.second = p1->id;
+								}
+								timeRenewLookAt = now;
+								prevLookAt = lerpedLookAt;
+								prevCameraPosition = camera.getGlobalPosition();
+								arrived = false;
+								timeConnectionLost = 0;
+								rotationDirection = round(ofRandomf());
+								// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
+								break;
+							}
+						}
+					}
+				break;
+				case nm::Environment::NUCLEOSYNTHESIS:
+				break;
+
+			}
+
+				//cout << "renewed " << !arrived << endl;
+		}
+
+		if(!arrived){
+			auto * lookAt1 = particleSystem.getById(lookAt.first);
+			auto * lookAt2 = particleSystem.getById(lookAt.second);
+			if(lookAt1 && lookAt2){
+				lookAtPos = (lookAt1->pos + lookAt2->pos) / 2.;
+			}
+			currentLookAtParticles.first = lookAt1;
+			currentLookAtParticles.second = lookAt2;
+
+			auto timePassed = now - timeRenewLookAt;
+			auto animationTime = travelDistance / parameters.rendering.travelMaxSpeed;
+			auto pct = float(timePassed) / animationTime;
+			if(pct>1){
+				pct = 1;
+				if(!arrived){
+					arrived = true;
 				}
 			}
-		}
+			pct = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::quad::easeInOut);
+			lerpedLookAt = glm::lerp(prevLookAt, lookAtPos, pct);
 
-		cout << "renewed " << !arrived << endl;
+
+	//		auto newCameraPosition = glm::lerp(prevCameraPosition, lookAtPos + glm::vec3(0,0,50), pct);
+
+	//		camera.setPosition(newCameraPosition);
+	//		camera.lookAt(lerpedLookAt, glm::vec3(0,1,0));
+		}else{
+			currentLookAtParticles.first = nullptr;
+			currentLookAtParticles.second = nullptr;
+	//		camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
+	//		//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+	//		orbitAngle += dt * parameters.rendering.rotationSpeed * rotationDirection;
+	//		orbitAngle = ofWrap(orbitAngle, 0, 360);
+		}
 	}
-
-	if(!arrived){
-		auto * lookAt1 = particleSystem.getById(lookAt.first);
-		auto * lookAt2 = particleSystem.getById(lookAt.second);
-		if(lookAt1 && lookAt2){
-			lookAtPos = (lookAt1->pos + lookAt2->pos) / 2.;
-		}
-		currentLookAtParticles.first = lookAt1;
-		currentLookAtParticles.second = lookAt2;
-
-		auto timePassed = now - timeRenewLookAt;
-		auto animationTime = travelDistance / parameters.rendering.travelMaxSpeed;
-		auto pct = float(timePassed) / animationTime;
-		if(pct>1){
-			pct = 1;
-			if(!arrived){
-				arrived = true;
-			}
-		}
-		pct = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::quad::easeInOut);
-		lerpedLookAt = glm::lerp(prevLookAt, lookAtPos, pct);
-
-
-//		auto newCameraPosition = glm::lerp(prevCameraPosition, lookAtPos + glm::vec3(0,0,50), pct);
-
-//		camera.setPosition(newCameraPosition);
-//		camera.lookAt(lerpedLookAt, glm::vec3(0,1,0));
-	}else{
-		currentLookAtParticles.first = nullptr;
-		currentLookAtParticles.second = nullptr;
-//		camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
-//		//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
-//		orbitAngle += dt * parameters.rendering.rotationSpeed * rotationDirection;
-//		orbitAngle = ofWrap(orbitAngle, 0, 360);
-	}
-
 
 	camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
 	//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
@@ -618,7 +673,6 @@ void ofApp::draw()
 					textRenderer.draw(particleSystem,
 									  photonsAlive,
 									  *environment,
-									  BARYOGENESIS,
 									  currentLookAtParticles,
 									  renderer,
 									  easyCam);
@@ -626,7 +680,6 @@ void ofApp::draw()
 					textRenderer.draw(particleSystem,
 									  photonsAlive,
 									  *environment,
-									  BARYOGENESIS,
 									  currentLookAtParticles,
 									  renderer,
 									  camera);
@@ -707,7 +760,11 @@ void ofApp::draw()
 	this->timeline.draw();
 	this->gui.draw();
 
+	ofSetColor(0,120);
+	ofDrawRectangle(ofGetWidth() - 300, 0, 300, 500);
+	ofSetColor(255);
 	ofDrawBitmapString(ofGetFrameRate(), ofGetWidth()-100, 20);
+	ofDrawBitmapString(particleSystem.getStatsStr(), ofGetWidth() - 280, 40);
 }
 
 //--------------------------------------------------------------
@@ -721,7 +778,6 @@ void ofApp::keyPressed(int key)
 //	{
 //		this->cameraTrack.addKeyframe();
 //	}
-	ofSetFullscreen(true);
 }
 
 //--------------------------------------------------------------
@@ -791,46 +847,32 @@ void ofApp::reset()
 		counts[i] = 0;
 	}
 
-	for (unsigned i = 0; i < 4000; ++i)
-	{
-		glm::vec3 position = glm::vec3(
-			ofRandom(-kHalfDim, kHalfDim),
-			ofRandom(-kHalfDim, kHalfDim),
-			ofRandom(-kHalfDim, kHalfDim)
-		);
+	for(int i=0;i<particleTypesInitialNumbers.size();i++){
+		for (int j = 0; j < particleTypesInitialNumbers[i]; ++j)
+		{
+			glm::vec3 position = glm::vec3(
+				ofRandom(-kHalfDim, kHalfDim),
+				ofRandom(-kHalfDim, kHalfDim),
+				ofRandom(-kHalfDim, kHalfDim)
+			);
 
-		float speed = glm::gaussRand(60.f, 20.f);
-		glm::vec3 velocity = glm::sphericalRand(speed);
+			float speed = glm::gaussRand(60.f, 20.f);
+			glm::vec3 velocity = glm::sphericalRand(speed);
 
-		float coin = ofRandomuf();
-		nm::Particle::Type type;
-//		// 2:1 ratio
-//		//if (coin < .11f) type = nm::Particle::Type::POSITRON;
-//		//else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
-//		//else if (coin < .44f) type = nm::Particle::Type::ANTI_UP_QUARK;
-//		//else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
-//		//else if (coin < .78f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
-//		//else type = nm::Particle::Type::DOWN_QUARK;
-//		// 3:1 ratio
-//		if (coin < .0825f) type = nm::Particle::Type::POSITRON;
-//		else if (coin < .33f) type = nm::Particle::Type::ELECTRON;
-//		else if (coin < .4125f) type = nm::Particle::Type::ANTI_UP_QUARK;
-//		else if (coin < .67f) type = nm::Particle::Type::UP_QUARK;
-//		else if (coin < .7425f) type = nm::Particle::Type::ANTI_DOWN_QUARK;
-//		else type = nm::Particle::Type::DOWN_QUARK;
-//		counts[type]++;
-//		particleSystem.addParticle(type, position, velocity);
-		particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
+			particleSystem.addParticle((nm::Particle::Type)i, position, velocity);
+
+			//particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
+		}
 	}
 
-	int numParticles = particleSystem.getParticles().size();
-	ofLog() << "Reset system with " << numParticles << " particles: " << endl
-		<< "  " << counts[nm::Particle::Type::ELECTRON]        << " (" << ofToString(counts[nm::Particle::Type::ELECTRON] / (float)numParticles, 2)        << ") electrons" << endl
-		<< "  " << counts[nm::Particle::Type::POSITRON]        << " (" << ofToString(counts[nm::Particle::Type::POSITRON] / (float)numParticles, 2)        << ") positrons" << endl
-		<< "  " << counts[nm::Particle::Type::UP_QUARK]        << " (" << ofToString(counts[nm::Particle::Type::UP_QUARK] / (float)numParticles, 2)        << ") up quarks" << endl
-		<< "  " << counts[nm::Particle::Type::ANTI_UP_QUARK]   << " (" << ofToString(counts[nm::Particle::Type::ANTI_UP_QUARK] / (float)numParticles, 2)   << ") anti up quarks" << endl
-		<< "  " << counts[nm::Particle::Type::DOWN_QUARK]      << " (" << ofToString(counts[nm::Particle::Type::DOWN_QUARK] / (float)numParticles, 2)      << ") down quarks" << endl
-		<< "  " << counts[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(counts[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)numParticles, 2) << ") anti down quarks" << endl;
+//	int numParticles = particleSystem.getParticles().size();
+//	ofLog() << "Reset system with " << numParticles << " particles: " << endl
+//		<< "  " << counts[nm::Particle::Type::ELECTRON]        << " (" << ofToString(counts[nm::Particle::Type::ELECTRON] / (float)numParticles, 2)        << ") electrons" << endl
+//		<< "  " << counts[nm::Particle::Type::POSITRON]        << " (" << ofToString(counts[nm::Particle::Type::POSITRON] / (float)numParticles, 2)        << ") positrons" << endl
+//		<< "  " << counts[nm::Particle::Type::UP_QUARK]        << " (" << ofToString(counts[nm::Particle::Type::UP_QUARK] / (float)numParticles, 2)        << ") up quarks" << endl
+//		<< "  " << counts[nm::Particle::Type::ANTI_UP_QUARK]   << " (" << ofToString(counts[nm::Particle::Type::ANTI_UP_QUARK] / (float)numParticles, 2)   << ") anti up quarks" << endl
+//		<< "  " << counts[nm::Particle::Type::DOWN_QUARK]      << " (" << ofToString(counts[nm::Particle::Type::DOWN_QUARK] / (float)numParticles, 2)      << ") down quarks" << endl
+//		<< "  " << counts[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(counts[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)numParticles, 2) << ") anti down quarks" << endl;
 }
 
 //--------------------------------------------------------------

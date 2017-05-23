@@ -59,7 +59,7 @@ namespace nm
 		void update(double dt);
 		void draw();
 
-		//bool tryPairProduction();
+		bool tryPairProduction();
 
 	private:
 		std::vector<ofEventListener> eventListeners;

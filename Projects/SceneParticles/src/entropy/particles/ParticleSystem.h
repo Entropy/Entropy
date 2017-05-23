@@ -87,6 +87,24 @@ namespace nm
 		std::vector<Particle*> findNearestThanByType(const Particle & p, float distance, std::initializer_list<Particle::Type> allowedTypes) const;
 
 		nm::Particle * getById(size_t id);
+
+		std::string getStatsStr() const{
+			std::stringstream sstr;
+			sstr << "Status system with " << totalNumParticles << " particles: " << endl
+				<< "  " << numParticles[nm::Particle::Type::ELECTRON] << " (" << ofToString(numParticles[nm::Particle::Type::ELECTRON] / (float)totalNumParticles, 2) << ") electrons" << endl
+				<< "  " << numParticles[nm::Particle::Type::POSITRON] << " (" << ofToString(numParticles[nm::Particle::Type::POSITRON] / (float)totalNumParticles, 2) << ") positrons" << endl
+				<< "  " << numParticles[nm::Particle::Type::UP_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::UP_QUARK] / (float)totalNumParticles, 2) << ") up quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::ANTI_UP_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::ANTI_UP_QUARK] / (float)totalNumParticles, 2) << ") anti up quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::DOWN_QUARK] / (float)totalNumParticles, 2) << ") down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)totalNumParticles, 2) << ") anti down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::UP_DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::UP_DOWN_QUARK] / (float)totalNumParticles, 2) << ") up down quarks" << endl
+				<< "  " << numParticles[nm::Particle::Type::PROTON] << " (" << ofToString(numParticles[nm::Particle::Type::PROTON] / (float)totalNumParticles, 2) << ") protons" << endl
+				<< "  " << numParticles[nm::Particle::Type::NEUTRON] << " (" << ofToString(numParticles[nm::Particle::Type::NEUTRON] / (float)totalNumParticles, 2) << ") neutrons" << endl
+				<< "  " << "anihilation threshold " << environment->getAnnihilationThresh() << endl
+				<< "  " << "fusion threshold " << environment->getFusionThresh() << endl;
+
+			return sstr.str();
+		}
 	private:
 		ofEventListener pairProductionListener;
 
