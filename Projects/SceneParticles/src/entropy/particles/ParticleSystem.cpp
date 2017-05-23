@@ -88,31 +88,43 @@ namespace nm
 			positionsTex[i].allocateAsBufferTexture(tbo[i], GL_RGBA32F);
 		}
 
-//		pairProductionListener = universe->pairProductionEvent.newListener([this](PairProductionEventArgs & args)
-//		{
-//			Particle::Type type1, type2;
-//			switch (rand() % 3)
-//			{
-//			case 0:
-//				type1 = Particle::UP_QUARK;
-//				type2 = Particle::ANTI_UP_QUARK;
-//				break;
+		pairProductionListener = universe->pairProductionEvent.newListener([this](PairProductionEventArgs & args)
+		{
+			Particle::Type type1, type2;
+			switch (rand() % 3)
+			{
+			case 0:
+				type1 = Particle::UP_QUARK;
+				if(ofRandomuf()<environment->matterSurveivesChance){
+					type2 = Particle::ANTI_UP_QUARK;
+				}else{
+					type2 = Particle::UP_QUARK;
+				}
+				break;
 
-//			case 1:
-//				type1 = Particle::DOWN_QUARK;
-//				type2 = Particle::ANTI_DOWN_QUARK;
-//				break;
+			case 1:
+				type1 = Particle::DOWN_QUARK;
+				 if(ofRandomuf()<environment->matterSurveivesChance){
+					 type2 = Particle::ANTI_DOWN_QUARK;
+				 }else{
+					 type2 = Particle::DOWN_QUARK;
+				 }
+				break;
 
-//			case 2:
-//				type1 = Particle::POSITRON;
-//				type2 = Particle::ELECTRON;
-//				break;
-//			}
-//			glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
-//			float speed = glm::length(args.velocity);
-//			addParticle(type1, args.position, .5f * speed * dir);
-//			addParticle(type2, args.position, -.5f * speed * dir);
-//		});
+			case 2:
+				type1 = Particle::ELECTRON;
+				if(ofRandomuf()<environment->matterSurveivesChance){
+					type2 = Particle::POSITRON;
+				}else{
+					type2 = Particle::ELECTRON;
+				}
+				break;
+			}
+			glm::vec3 dir = glm::normalize(glm::perp(args.velocity, glm::sphericalRand(1.f)));
+			float speed = glm::length(args.velocity);
+			addParticle(type1, args.position, .5f * speed * dir);
+			addParticle(type2, args.position, -.5f * speed * dir);
+		});
 	}
 
 	void ParticleSystem::addParticle(Particle::Type type, const glm::vec3& position, const glm::vec3& velocity)
@@ -129,6 +141,7 @@ namespace nm
 			p.setMass(Particle::DATA[type].mass);
 			p.setRadius(radius);
 			p.anihilationRatio = 0;
+			p.alive = true;
 
 			totalNumParticles++;
 			numParticles[type]++;
@@ -141,6 +154,9 @@ namespace nm
 		totalNumParticles = 0;
 		for(auto & pos: positions){
 			pos.fill(ParticleGpuData());
+		}
+		for(auto & p: particles){
+			p.alive = false;
 		}
 		numParticles.fill(0);
 	}
@@ -177,6 +193,9 @@ namespace nm
 
 				// sum all forces acting on particle
 				particles[i].potentialInteractionPartners.clear();
+
+				if(!particles[i].alive) continue;
+
 				octree.sumForces(particles[i]);// , forceMultiplier);
 
 				// add velocity (TODO: improved Euler integration)
@@ -191,6 +210,7 @@ namespace nm
 				particles[i].pos += particles[i].getVelocity() * dt;
 				if(particles[i].potentialInteractionPartners.empty()){
 					particles[i].anihilationRatio = 0;
+					particles[i].fusionRatio = 1;
 				}
 
 				// check whether particle is out of bounds
@@ -214,10 +234,16 @@ namespace nm
 				for(auto * potentialInteractionPartner: particles[i].potentialInteractionPartners){
 					// make the particle with the lower address in memory
 					// the one that is responsible for the interaction
+
+//					if(potentialInteractionPartner){
+//						float distance = glm::distance(potentialInteractionPartner->pos, particles[i].pos);
+//						if(distance < Octree<Particle>::INTERACTION_DISTANCE()){
+//							particles[i].pos += (potentialInteractionPartner->pos - particles[i].pos)*0.01;
+//						}
+//					}
 					if (potentialInteractionPartner && particles[i].id < potentialInteractionPartner->id)
 					{
 						float distance = glm::distance(potentialInteractionPartner->pos, particles[i].pos);
-
 						if(distance < Octree<Particle>::INTERACTION_DISTANCE()){
 							// have this so later on can have different likelihoods of different
 							// interactions occurring
@@ -238,31 +264,40 @@ namespace nm
 							}
 							else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
 							{
-								if (ofRandomuf() < fusionThreshold)
+								if(environment->state > nm::Environment::BARYOGENESIS)
 								{
-									addParticle(
-										Particle::UP_DOWN_QUARK,
-										particles[i].pos,
-										.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-									);
-									killParticles = true;
+									particles[i].fusionRatio = particles[i].fusionRatio + dt;// / environment->systemSpeed;
+									if (particles[i].fusionRatio > fusionThreshold)
+									{
+										addParticle(
+											Particle::UP_DOWN_QUARK,
+											particles[i].pos,
+											.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+										);
+										killParticles = true;
+									}
 								}
 							}
 							else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
 							{
 								// we always want this to happen if there it's possible to that the
 								// hacky up-down compound particles exist for as shorter time as possible
-								Particle::Type newType = Particle::PROTON;
-								if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
+//								particles[i].fusionRatio = particles[i].fusionRatio + dt;// / environment->systemSpeed;
+//								if (particles[i].fusionRatio > fusionThreshold) //TODO: this didn't have any condition before
+								if(environment->state > nm::Environment::BARYOGENESIS)
 								{
-									newType = Particle::NEUTRON;
+									Particle::Type newType = Particle::PROTON;
+									if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
+									{
+										newType = Particle::NEUTRON;
+									}
+									addParticle(
+										newType,
+										particles[i].pos,
+										.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
+									);
+									killParticles = true;
 								}
-								addParticle(
-									newType,
-									particles[i].pos,
-									.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-								);
-								killParticles = true;
 							}
 
 							if (killParticles)
@@ -281,15 +316,8 @@ namespace nm
 											particles[i].potentialInteractionPartners.clear();
 										}
 
-										if(potentialInteractionPartner->isAntiMatterQuark()){
-											// kill partner (idx of partner is potentialInteractionPartner - particles)
-											deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
-											potentialInteractionPartner->alive = false;
-										}else{
-											// If matter survives teleport it to the other side of the universe
-											// so we can't see it
-											potentialInteractionPartner->pos = -potentialInteractionPartner->pos;
-										}
+										deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
+										potentialInteractionPartner->alive = false;
 									}else{
 										// interaction is annihilation so kill particle
 										deadParticles[numDeadParticles.fetch_and_increment()] = i;
@@ -319,8 +347,6 @@ namespace nm
 			}
 		});
 
-		// We'll try for pair production as many times as particles are killed for this round.
-		// This should give a more even distribution than just trying every frame.
 		if (numDeadParticles > 0)
 		{
 			DeadParticlesEventArgs args;
@@ -347,6 +373,15 @@ namespace nm
 				// replace dead particle with one from the end of the array
 				if (endIdx >= 0 && deadIdx < totalNumParticles) std::swap(particles[deadIdx], particles[endIdx]);
 			}
+
+//			auto lastAlive = std::remove_if(particles.begin(), particles.begin() + totalNumParticles, [&](Particle & p){
+//				if(!p.alive){
+//					numParticles[p.getType()].fetch_and_decrement();
+//				}
+//				return !p.alive;
+//			});
+
+//			totalNumParticles = lastAlive - particles.begin();
 		}
 
 		if (numNewPhotons)
@@ -365,19 +400,38 @@ namespace nm
 			tbo[i].updateData(0, sizeof(ParticleGpuData) * numParticles[i], positions[i].data());
 		}
 
-		if (ofGetKeyPressed('1'))
-		{
-			ofLog() << "Status system with " << totalNumParticles << " particles: " << endl
-				<< "  " << numParticles[nm::Particle::Type::ELECTRON] << " (" << ofToString(typeIndices[nm::Particle::Type::ELECTRON] / (float)totalNumParticles, 2) << ") electrons" << endl
-				<< "  " << numParticles[nm::Particle::Type::POSITRON] << " (" << ofToString(typeIndices[nm::Particle::Type::POSITRON] / (float)totalNumParticles, 2) << ") positrons" << endl
-				<< "  " << numParticles[nm::Particle::Type::UP_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::UP_QUARK] / (float)totalNumParticles, 2) << ") up quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::ANTI_UP_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::ANTI_UP_QUARK] / (float)totalNumParticles, 2) << ") anti up quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::DOWN_QUARK] / (float)totalNumParticles, 2) << ") down quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)totalNumParticles, 2) << ") anti down quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::UP_DOWN_QUARK] << " (" << ofToString(typeIndices[nm::Particle::Type::UP_DOWN_QUARK] / (float)totalNumParticles, 2) << ") up down quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::PROTON] << " (" << ofToString(typeIndices[nm::Particle::Type::PROTON] / (float)totalNumParticles, 2) << ") protons" << endl
-				<< "  " << numParticles[nm::Particle::Type::NEUTRON] << " (" << ofToString(typeIndices[nm::Particle::Type::NEUTRON] / (float)totalNumParticles, 2) << ") neutrons" << endl;
+
+
+		std::array<unsigned,Particle::NUM_TYPES> typeIndicesCheck;
+		typeIndicesCheck.fill(0);
+		for(auto i = particles.begin(); i<particles.begin() + totalNumParticles; ++i){
+			auto & p = *i;
+			typeIndicesCheck[p.getType()]++;
 		}
+		for(size_t i=0;i<typeIndicesCheck.size();i++){
+			if(numParticles[i] != typeIndicesCheck[i]){
+				ofLogError() << "num particles for type " << i << " doesn' match " << " class " << numParticles[i] << " check " << typeIndicesCheck[i] << endl;
+			}
+		}
+		auto wrongAlive = std::count_if(particles.begin() + totalNumParticles, particles.end(), [&](Particle & p){
+			return (bool)p.alive;
+		});
+		if(wrongAlive>0){
+			ofLogError() << wrongAlive << " alive particles after dead zone";
+		}
+		auto wrongDead = std::count_if(particles.begin(), particles.begin() + totalNumParticles, [&](Particle & p){
+			return !p.alive;
+		});
+		if(wrongDead>0){
+			ofLogError() << wrongDead << " dead particles before dead zone";
+		}
+		auto totalFromTypes = std::accumulate(numParticles.begin(), numParticles.end(), 0, [&](int acc, unsigned num){
+			return acc + num;
+		});
+		if(totalFromTypes!=totalNumParticles){
+			ofLogError() << "total from types " << totalFromTypes << " != " << totalNumParticles;
+		}
+
 	}
 
     void ParticleSystem::draw(ofShader & shader)

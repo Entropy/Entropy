@@ -40,6 +40,21 @@ namespace nm
 	{
 	}
 
+	void Environment::update(){
+
+		switch(state.get()){
+			case BARYOGENESIS:
+				stateStr = "BARYOGENESIS";
+			break;
+			case STANDARD_MODEL:
+				stateStr = "STANDARD MODEL";
+			break;
+			case NUCLEOSYNTHESIS:
+				stateStr = "NUCLEOSYNTHESIS";
+			break;
+		}
+	}
+
 	float Environment::getExpansionScalar() const
 	{
 		return 1.f + (.5f - .5f * energy);
@@ -57,13 +72,21 @@ namespace nm
 
 	float Environment::getFusionThresh() const
 	{
-		float exponent = fusionThresholdExponentMin + energy * (fusionThresholdExponentMax - fusionThresholdExponentMin);
-		return pow(10, exponent);
+		if(state == BARYOGENESIS){
+			float exponent = fusionThresholdExponentMin + energy * (fusionThresholdExponentMax - fusionThresholdExponentMin);
+			return pow(100, exponent);
+		}else{
+//			float exponent = fusionThresholdExponentMin + energy * (fusionThresholdExponentMax - fusionThresholdExponentMin);
+//			return pow(10, exponent);
+
+			return fusionThresholdExponentMin + energy * (fusionThresholdExponentMax - fusionThresholdExponentMin);
+
+		}
 		//return fusionThresholdMin + energy * (fusionThresholdMax - fusionThresholdMin);
 	}
 
-//	float Environment::getPairProductionThresh() const
-//	{
-//		return pairProductionThresholdMin + energy * (pairProductionThresholdMax - pairProductionThresholdMin);
-//	}
+	float Environment::getPairProductionThresh() const
+	{
+		return pairProductionThresholdMin + energy * (pairProductionThresholdMax - pairProductionThresholdMin);
+	}
 }

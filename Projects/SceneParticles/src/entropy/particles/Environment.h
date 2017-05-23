@@ -56,8 +56,15 @@ namespace nm
 	{
 	public:
 		typedef shared_ptr<Environment> Ptr;
+		enum State{
+			BARYOGENESIS,
+			STANDARD_MODEL,
+			NUCLEOSYNTHESIS,
+		};
 
 		Environment(const glm::vec3& min, const glm::vec3& max);
+
+		void update();
 
 		inline glm::vec3 getMin() const { return min; }
 		inline glm::vec3 getMax() const { return max; }
@@ -70,27 +77,32 @@ namespace nm
 		float getForceMultiplier() const;
 		float getAnnihilationThresh() const;
 		float getFusionThresh() const;
-//		float getPairProductionThresh() const;
+		float getPairProductionThresh() const;
 
-//		ofEvent<PairProductionEventArgs> pairProductionEvent;
+		ofEvent<PairProductionEventArgs> pairProductionEvent;
 		ofEvent<PhotonEventArgs> photonEvent;
 		ofEvent<DeadParticlesEventArgs> deadParticlesEvent;
 
+		ofParameter<int> state{"state", 0, 0, 2};
+		ofParameter<string> stateStr{"BARYOGENESIS"};
 		ofParameter<float> energy{ "Energy", 1.0f, 0.0f, 1.0f };
 		ofParameter<float> forceMultiplierMin{ "Force Multiplier Min", 1e7, 1e7, 1e8 };
 		ofParameter<float> forceMultiplierMax{ "Force Multiplier Max", 1e8, 1e7, 1e8 };
 		ofParameter<float> annihilationThreshMin{ "Annihiliation Threshold Min", 0.3f, 0.0f, 1.0f };
 		ofParameter<float> annihilationThreshMax{ "Annihiliation Threshold Max", 0.5f, 0.0f, 1.0f };
-		ofParameter<float> fusionThresholdExponentMin{ "Fusion Threshold Exponent Min", -5.237f, -6.0f, -5.0f };
-		ofParameter<float> fusionThresholdExponentMax{ "Fusion Threshold Exponent Max", -5.593, -6.0f, -5.0f };
-//		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
-//		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+		ofParameter<float> fusionThresholdExponentMin{ "Fusion Threshold Exponent Min", 0.3f, 0.0f, 1.0f}; //-5.237f, -6.0f, -5.0f };
+		ofParameter<float> fusionThresholdExponentMax{ "Fusion Threshold Exponent Max", 0.5f, 0.0f, 1.0f };// -5.593, -6.0f, -5.0f };
+		ofParameter<float> pairProductionThresholdMin{ "Pair Production Threshold Min", 0.428f, 0.0f, 1.0f };
+		ofParameter<float> pairProductionThresholdMax{ "Pair Production Threshold Max", 0.572f, 0.0f, 1.0f };
+		ofParameter<float> quarkCreationChance{"quarkCreationChance", 0.2, 0, 1};
 		ofParameter<float> matterSurveivesChance{"Matter survives chance", 0.5, 0, 1};
 		ofParameter<float> systemSpeed{ "System speed", 0.5, 0, 3, ofParameterScale::Logarithmic};
 
 
 		ofParameterGroup parameters{
 			"Environment",
+			state,
+			stateStr,
 			systemSpeed,
 			energy,
 			forceMultiplierMin,
@@ -99,8 +111,10 @@ namespace nm
 			annihilationThreshMax,
 			fusionThresholdExponentMin,
 			fusionThresholdExponentMax,
-//			pairProductionThresholdMin,
-//			pairProductionThresholdMax
+			quarkCreationChance,
+			matterSurveivesChance,
+			pairProductionThresholdMin,
+			pairProductionThresholdMax
 		};
 	private:
 		glm::vec3 min, max, dims;

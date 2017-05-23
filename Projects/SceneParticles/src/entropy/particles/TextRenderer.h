@@ -9,21 +9,15 @@
 #include "ParticleSystem.h"
 #include "Photons.h"
 
-enum State{
-	BARYOGENESIS,
-	STANDARD_MODEL,
-	NUCLEOSYNTHESIS,
-};
 
 class TextRenderer
 {
 public:
-	void setup(float worldSize);
-	void update(nm::ParticleSystem & particles, State state);
+	void setup(float	 worldSize);
+	void update(nm::ParticleSystem & particles, nm::Environment & environment);
 	void draw(nm::ParticleSystem & particles,
 			  std::vector<nm::Photon> & photons,
 			  nm::Environment & environment,
-			  State state,
 			  std::pair<nm::Particle*, nm::Particle*> lookAt,
 			  entropy::render::WireframeFillRenderer & renderer,
 			  ofCamera & cam);
@@ -46,7 +40,6 @@ public:
 	};
 
 private:
-	std::vector<std::pair<size_t,std::vector<nm::Particle*>>> relations;
 	std::vector<ofEventListener> listeners;
 	std::vector<ofTrueTypeFont> fonts;
 	ofShader billboardShaderText;

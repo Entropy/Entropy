@@ -65,11 +65,19 @@ void TextRenderer::setup(float worldSize){
 		particleTexts[i]["q"] = fonts[i].getStringMesh("q", 0, 0);
 		particleTexts[i]["a"] = fonts[i].getStringMesh("a", 0, 0);
 		particleTexts[i]["n"] = fonts[i].getStringMesh("n", 0, 0);
+		particleTexts[i]["uq"] = fonts[i].getStringMesh("uq", 0, 0);
+		particleTexts[i]["dq"] = fonts[i].getStringMesh("dq", 0, 0);
+		particleTexts[i]["uq ________ dq"] = fonts[i].getStringMesh("uq ________ dq", 0, 0);
+
+
 		particleTexts[i]["electron"] = fonts[i].getStringMesh("electron", 0, 0);
 		particleTexts[i]["positron"] = fonts[i].getStringMesh("positron", 0, 0);
 
 		particleTexts[i]["quark"] = fonts[i].getStringMesh("quark", 0, 0);
 		particleTexts[i]["anti"] = fonts[i].getStringMesh("anti", 0, 0);
+		particleTexts[i]["up quark"] = fonts[i].getStringMesh("up quark", 0, 0);
+		particleTexts[i]["down quark"] = fonts[i].getStringMesh("down quark", 0, 0);
+		particleTexts[i]["up quark __________ down quark"] = fonts[i].getStringMesh("up quark __________ down quark", 0, 0);
 
 		particleTexts[i]["neutron"] = fonts[i].getStringMesh("neutron", 0, 0);
 		particleTexts[i]["proton"] = fonts[i].getStringMesh("proton", 0, 0);
@@ -91,35 +99,23 @@ void TextRenderer::setup(float worldSize){
 
 }
 
-void TextRenderer::update(nm::ParticleSystem & particles, State state){
-	relations.clear();
+void TextRenderer::update(nm::ParticleSystem & particles, nm::Environment & environment){
 	auto maxDistance = (relDistance * worldSize) * (relDistance * worldSize);
-	switch(state){
-		case BARYOGENESIS:
-			for(size_t i=0;i<particles.getParticles().size();i++){
-				auto & particle = particles.getParticles()[i];
-//				std::vector<nm::Particle*> nearList;
-//				if(isAntiMatterQuark(particle)){
-//					nearList = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::UP_QUARK, nm::Particle::DOWN_QUARK, nm::Particle::UP_DOWN_QUARK});
-//				}else if(isMatterQuark(particle)){
-//					nearList = particles.findNearestThanByType(particle, maxDistance, {nm::Particle::ANTI_UP_QUARK, nm::Particle::ANTI_DOWN_QUARK});
-//				}
-
-
-			}
+	switch(environment.state){
+		case nm::Environment::BARYOGENESIS:
 		break;
-		case STANDARD_MODEL:
+		case nm::Environment::STANDARD_MODEL:
 		break;
-		case NUCLEOSYNTHESIS:
+		case nm::Environment::NUCLEOSYNTHESIS:
 		break;
 	}
 
 }
 
+
 void TextRenderer::draw(nm::ParticleSystem & particles,
 						std::vector<nm::Photon> & photons,
 						nm::Environment & environment,
-						State state,
 						std::pair<nm::Particle*, nm::Particle*> lookAt,
 						entropy::render::WireframeFillRenderer & renderer,
 						ofCamera & cam){
@@ -131,49 +127,124 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
 		ofLoadMatrix(modelview);
 		auto maxPDistance = (relDistance * worldSize) * (relDistance * worldSize);
+
+		// Particle <-> particle relations
 		ofMesh line;
 		line.setMode(OF_PRIMITIVE_LINES);
 		line.getVertices().resize(2);
 		line.getColors().resize(2);
-		for(size_t i=0;i<particles.getParticles().size();i++){
-			auto & p1  = particles.getParticles()[i];
+		for(auto & p1: particles.getParticles()){
+			//if(!p1.alive) continue;
 			auto distance = glm::distance2(cam.getPosition(), p1.pos * scale);
 			auto pct = 1-ofClamp(distance / maxScreenDistance, 0, 1);
 			for(auto * p2: p1.potentialInteractionPartners){
-				//if((p2->getAnnihilationFlag() ^ p1.getAnnihilationFlag()) == 0xFF){
-				if(p1.id < p2->id && ((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark()))){
-					auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
-					auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-					auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
-					auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
-						if(ph.alive){
-							auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
-							return acc + strength;
-						}else{
-							return acc;
+				switch(environment.state.get()){
+					case nm::Environment::BARYOGENESIS:
+						if(p1.id < p2->id && ((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark()))){
+							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+							auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
+							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+								if(ph.alive){
+									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+									return acc + strength;
+								}else{
+									return acc;
+								}
+							});
+							ppct += light;
+							auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
+							auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
+							line.getVertices()[0] = p1.pos;
+							/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
+								line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
+								line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
+								line.getVertices()[1] = p2->pos;
+								line.draw();
+							}else */if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
+								line.getColors()[0] = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+								line.getColors()[1] = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+								line.getVertices()[1] = glm::lerp(p1.pos, p2->pos, aniPct);
+
+//								auto white0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+//								auto red0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+//								line.getColors()[0] = white0.lerp(red0, aniPct);
+
+//								auto white1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+//								auto red1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+
+//								line.getColors()[1] = white1.lerp(red1, aniPct);
+								line.getVertices()[1] = p2->pos;
+								line.draw();
+							}else{
+								line.getVertices()[1] = p2->pos;
+								line.getColors()[0] = ofFloatColor(pct*ppct, accumValue);
+								line.getColors()[1] = ofFloatColor(pct2*ppct, accumValue);
+								line.draw();
+							}
 						}
-					});
-					ppct += light;
-					auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
-					auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
-					line.getVertices()[0] = p1.pos;
-					/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
-						line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
-						line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
-					}else */if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
-						auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
-						line.getColors()[0] = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
-						line.getColors()[1] = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
-						line.getVertices()[1] = glm::lerp(p1.pos, p2->pos, aniPct);
-					}else{
-						line.getVertices()[1] = p2->pos;
-						line.getColors()[0] = ofFloatColor(pct*ppct, accumValue);
-						line.getColors()[1] = ofFloatColor(pct2*ppct, accumValue);
-					}
-					line.draw();
+					break;
+					case nm::Environment::STANDARD_MODEL:
+						if(p1.id < p2->id &&
+						   ((p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
+							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
+							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
+							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
+							(p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK) ||
+							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK))
+						   ){
+							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+							auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
+							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+								if(ph.alive){
+									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+									return acc + strength;
+								}else{
+									return acc;
+								}
+							});
+							ppct += light;
+							auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
+							auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
+							line.getVertices()[0] = p1.pos;
+							/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
+								line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
+								line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
+								line.getVertices()[1] = p2->pos;
+								line.draw();
+							}else */if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
+								line.getColors()[0] = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+								line.getColors()[1] = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+								line.getVertices()[1] = glm::lerp(p1.pos, p2->pos, aniPct);
+
+//								auto white0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+//								auto red0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
+//								line.getColors()[0] = white0.lerp(red0, aniPct);
+
+//								auto white1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+//								auto red1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
+
+//								line.getColors()[1] = white1.lerp(red1, aniPct);
+								line.getVertices()[1] = p2->pos;
+								line.draw();
+							}else{
+								line.getVertices()[1] = p2->pos;
+								line.getColors()[0] = ofFloatColor(pct*ppct, accumValue);
+								line.getColors()[1] = ofFloatColor(pct2*ppct, accumValue);
+								line.draw();
+							}
+						}
+					break;
+					case nm::Environment::NUCLEOSYNTHESIS:
+					break;
 				}
 			}
 		}
+
+		// Relation info text, currently distance but doesn't make a lot of sense
 		billboardShaderText.begin();
 		auto viewport = ofGetCurrentViewport();
 		auto viewportv4 = glm::vec4(viewport.position.xy(), viewport.width, viewport.height);
@@ -181,40 +252,75 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 		billboardShaderText.setUniformMatrix4f("projectionMatrix", projection);
 		billboardShaderText.setUniformMatrix4f("modelViewMatrix", modelview);
 		billboardShaderText.setUniformMatrix4f("modelViewProjectionMatrix", projection * modelview);
-		for(size_t i=0;i<particles.getParticles().size();i++){
-			auto & p1  = particles.getParticles()[i];
+		for(auto & p1: particles.getParticles()){
 			if(!p1.alive) continue;
 			auto distance = glm::distance2(cam.getPosition(), p1.pos * scale);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
 			for(auto * p2: p1.potentialInteractionPartners){
 				if(!p2->alive) continue;
 				//if((p2->getAnnihilationFlag() ^ p1.getAnnihilationFlag()) == 0xFF){
-				if((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
-					auto pctColor = (1-pctDistance) * ambient;
-					auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
-						if(ph.alive){
-							auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
-							return acc + strength;
-						}else{
-							return acc;
+
+				switch(environment.state.get()){
+					case nm::Environment::BARYOGENESIS:
+						if((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
+							auto pctColor = (1-pctDistance) * ambient;
+							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+								if(ph.alive){
+									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+									return acc + strength;
+								}else{
+									return acc;
+								}
+							});
+							pctColor += light;
+							auto midPoint = (p1.pos + p2->pos) / 2.;
+							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
+							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
+							billboardShaderText.setUniform1f("pctColor", pctColor);
+							billboardShaderText.setUniform1f("accumValue", accumValue);
+							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
+							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
+								fonts[fontSize].getStringMesh(ofToString(aniPct), 0,0).draw();
+							}else{
+								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
+							}
 						}
-					});
-					pctColor += light;
-					auto midPoint = (p1.pos + p2->pos) / 2.;
-					auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
-					auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-					auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
-					size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
-					billboardShaderText.setUniform1f("pctColor", pctColor);
-					billboardShaderText.setUniform1f("accumValue", accumValue);
-					billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
-					billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
-					if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
-						auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
-						fonts[fontSize].getStringMesh(ofToString(aniPct), 0,0).draw();
-					}else{
-						fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
-					}
+					break;
+					case nm::Environment::STANDARD_MODEL:
+						if((p2->getFusion1Flag() ^ p1.getFusion1Flag()) == 0xFF ||
+						   (p2->getFusion2Flag() ^ p1.getFusion2Flag()) == 0xFF){
+							auto pctColor = (1-pctDistance) * ambient;
+							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+								if(ph.alive){
+									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+									return acc + strength;
+								}else{
+									return acc;
+								}
+							});
+							pctColor += light;
+							auto midPoint = (p1.pos + p2->pos) / 2.;
+							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
+							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
+							billboardShaderText.setUniform1f("pctColor", pctColor);
+							billboardShaderText.setUniform1f("accumValue", accumValue);
+							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
+							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+								fonts[fontSize].getStringMesh(ofToString(p1.fusionRatio), 0,0).draw();
+							}else{
+								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
+							}
+						}
+					break;
+					case nm::Environment::NUCLEOSYNTHESIS:
+					break;
 				}
 			}
 		}
@@ -222,7 +328,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 	});
 
 
-	ofShader & billboardShader = (state == BARYOGENESIS) ? billboardShaderPath : billboardShaderText;
+	ofShader & billboardShader = (environment.state == nm::Environment::BARYOGENESIS) ? billboardShaderPath : billboardShaderText;
 	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
 		auto i = 0;
 		billboardShader.begin();
@@ -250,57 +356,91 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			billboardShader.setUniform1f("accumValue", accumValue);
 			billboardShader.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
 			std::string text = "";
-			if(pctDistance>fulltextDistance){
-				switch(p.getType()){
-					case nm::Particle::ELECTRON:
-						if(state!=BARYOGENESIS) text = "e";
-					break;
-					case nm::Particle::POSITRON:
-					case nm::Particle::PROTON:
-						if(state!=BARYOGENESIS) text = "p";
-					break;
-					case nm::Particle::NEUTRON:
-						if(state!=BARYOGENESIS) text = "n";
-					break;
-					case nm::Particle::ANTI_UP_QUARK:
-					case nm::Particle::ANTI_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = "a";
-					break;
-					case nm::Particle::DOWN_QUARK:
-					case nm::Particle::UP_QUARK:
-					case nm::Particle::UP_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = "q";
-					break;
-				}
-			}else{
-				switch(p.getType()){
-					case nm::Particle::ELECTRON:
-						if(state!=BARYOGENESIS) text = "electron";
-					break;
-					case nm::Particle::POSITRON:
-						if(state!=BARYOGENESIS) text = "positron";
-					break;
-					case nm::Particle::ANTI_UP_QUARK:
-					case nm::Particle::ANTI_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = "a";
-					break;
-					case nm::Particle::DOWN_QUARK:
-					case nm::Particle::UP_QUARK:
-					case nm::Particle::UP_DOWN_QUARK:
-						if(state==BARYOGENESIS) text = "q";
-					break;
-					case nm::Particle::NEUTRON:
-						if(state!=BARYOGENESIS) text = "neutron";
-					break;
-					case nm::Particle::PROTON:
-						if(state!=BARYOGENESIS) text = "proton";
-					break;
-					break;
-				}
+			switch(environment.state){
+				case nm::Environment::BARYOGENESIS:
+					switch(p.getType()){
+						case nm::Particle::ANTI_UP_QUARK:
+						case nm::Particle::ANTI_DOWN_QUARK:
+							text = "a";
+						break;
+						case nm::Particle::DOWN_QUARK:
+						case nm::Particle::UP_QUARK:
+						case nm::Particle::UP_DOWN_QUARK:
+							text = "q";
+						break;
+						case nm::Particle::ELECTRON:
+						case nm::Particle::POSITRON:
+						case nm::Particle::PROTON:
+						case nm::Particle::NEUTRON:
+							// wont render here
+						break;
+					}
+				break;
+				case nm::Environment::STANDARD_MODEL:
+					if(pctDistance>fulltextDistance){
+						switch(p.getType()){
+							case nm::Particle::ELECTRON:
+								text = "e";
+							break;
+							case nm::Particle::POSITRON:
+							break;
+							case nm::Particle::PROTON:
+								text = "p";
+							break;
+							case nm::Particle::NEUTRON:
+								text = "n";
+							break;
+							case nm::Particle::ANTI_UP_QUARK:
+							case nm::Particle::ANTI_DOWN_QUARK:
+								//text = "a"; // TODO: show this??
+							break;
+							case nm::Particle::DOWN_QUARK:
+								text = "dq"; // TODO: show this??
+							break;
+							case nm::Particle::UP_QUARK:
+								text = "uq";
+							break;
+							case nm::Particle::UP_DOWN_QUARK:
+								text = "uq ________ dq"; // TODO: show this??
+							break;
+						}
+					}else{
+						switch(p.getType()){
+							case nm::Particle::ELECTRON:
+								text = "electron";
+							break;
+							case nm::Particle::POSITRON:
+								//text = "positron";
+							break;
+							case nm::Particle::ANTI_UP_QUARK:
+							case nm::Particle::ANTI_DOWN_QUARK:
+								//text = "anti quark"; // TODO: show this??
+							break;
+							case nm::Particle::DOWN_QUARK:
+								text = "down quark"; // TODO: show this??
+							break;
+							case nm::Particle::UP_QUARK:
+								text = "up quark"; // TODO: show this??
+							break;
+							case nm::Particle::UP_DOWN_QUARK:
+								text = "up quark __________ down quark"; // TODO: show this??
+							break;
+							case nm::Particle::NEUTRON:
+								text = "neutron";
+							break;
+							case nm::Particle::PROTON:
+								text = "proton";
+							break;
+							break;
+						}
+					}
+				break;
+				case nm::Environment::NUCLEOSYNTHESIS:
+				break;
 			}
 			if(text!=""){
 				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
-				if(state==BARYOGENESIS) {
+				if(environment.state==nm::Environment::BARYOGENESIS) {
 					particlePaths[fontSize][text].draw();
 				}else{
 					billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);

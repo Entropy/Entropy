@@ -50,10 +50,10 @@ namespace nm
 			ANTI_DOWN_QUARK,
 			DOWN_QUARK,
 			
-			UP_DOWN_QUARK, // hacky composite particle
-			
 			NEUTRON,
 			PROTON,
+
+			UP_DOWN_QUARK, // hacky composite particle
 
 			NUM_TYPES
 		};
@@ -143,8 +143,9 @@ namespace nm
 		glm::vec3 velocity;
 		glm::vec3 force;
 		std::atomic<float> anihilationRatio{0};
+		std::atomic<float> fusionRatio{1};
 		float radius;
-		bool alive = true;
+		std::atomic<bool> alive{true};
 		size_t id;
 		glm::vec3 pos;
 
@@ -155,9 +156,9 @@ namespace nm
 			,charge(p.charge)
 			,velocity(p.velocity)
 			,force(p.force)
-			,anihilationRatio(p.anihilationRatio.operator float())
+			,anihilationRatio((float)p.anihilationRatio)
 			,radius(p.radius)
-			,alive(p.alive)
+			,alive((bool)p.alive)
 			,id(p.id)
 			,pos(p.pos)
 
@@ -175,12 +176,12 @@ namespace nm
 			force = p.force;
 			anihilationRatio = anihilationRatio.operator float();
 			radius = p.radius;
-			alive = p.alive;
+			alive = (bool)p.alive;
 			id = p.id;
 			pos = p.pos;
 			return *this;
 		}
-    };
+	};
 }
 
 namespace std{
@@ -192,7 +193,10 @@ namespace std{
 		std::swap(p1.velocity, p2.velocity);
 		std::swap(p1.force, p2.force);
 		std::swap(p1.radius, p2.radius);
-		std::swap(p1.alive, p2.alive);
+		bool alive1 = p1.alive;
+		bool alive2 = p2.alive;
+		p1.alive = alive2;
+		p2.alive = alive1;
 		std::swap(p1.id, p2.id);
 		std::swap(p1.pos, p2.pos);
 		float ani1 = p1.anihilationRatio;
