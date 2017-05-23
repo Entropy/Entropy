@@ -73,13 +73,16 @@ namespace entropy
 		{
 			this->polyline.clear();
 
+			const auto startPoint = this->startPosition;
+			const auto endPoint = glm::vec3(0.0f);
+			
 			// Start at the camera position.
-			const auto startPoint = this->camera.getGlobalPosition();
 			this->polyline.addVertex(startPoint);
+			const auto lookFrontDir = glm::normalize(endPoint - startPoint);
 			// Add a couple of points in front to get the curve going.
 			for (int i = 0; i < 2; ++i)
 			{
-				this->polyline.curveTo(startPoint + this->camera.getLookAtDir() * (i + 1), 100);
+				this->polyline.curveTo(startPoint + lookFrontDir * (i + 1), 100);
 			}
 
 			// Add all the galaxy points.
@@ -92,7 +95,6 @@ namespace entropy
 			}
 
 			// End at the origin, adding a couple of points to get a smooth finish.
-			const auto endPoint = glm::vec3(0.0f);
 			const auto lookBackDir = glm::normalize(startPoint - endPoint);
 			for (int i = 2; i > 0; --i)
 			{
@@ -190,6 +192,15 @@ namespace entropy
 				this->camera.setPosition(savedPosition);
 				this->camera.setOrientation(savedOrientation);
 			}
+			this->startPosition = this->camera.getGlobalPosition();
+			this->startOrientation = this->camera.getGlobalOrientation();
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::resetCamera()
+		{
+			this->camera.setPosition(this->startPosition);
+			this->camera.setOrientation(this->startOrientation);
 		}
 
 		//--------------------------------------------------------------
@@ -199,8 +210,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void TravelCamPath::serialize(nlohmann::json & json) const
+		void TravelCamPath::serialize(nlohmann::json & json)
 		{
+			// Reset the camera first.
+			cout << "pree cam pos " << this->camera.getGlobalPosition() << endl;
+			this->resetCamera();
+			cout << "post cam pos " << this->camera.getGlobalPosition() << endl;
+
 			auto & jsonGroup = json["travelCamPath"];
 			ofSerialize(jsonGroup, this->camera, "camera");
 			ofSerialize(jsonGroup, this->curvePoints, "curvePoints");
@@ -216,6 +232,9 @@ namespace entropy
 				const auto & jsonGroup = json["travelCamPath"];
 				ofDeserialize(jsonGroup, this->camera, "camera");
 				ofDeserialize(jsonGroup, this->curvePoints, "curvePoints");
+
+				this->startPosition = this->camera.getGlobalPosition();
+				this->startOrientation = this->camera.getGlobalOrientation();
 
 				this->buildPath();
 			}

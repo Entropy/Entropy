@@ -36,9 +36,10 @@ namespace entropy
 			void draw() const;
 
 			void copyCamera(const ofCamera & camera, bool copyTransform);
+			void resetCamera();
 			ofCamera & getCamera();
 
-			void serialize(nlohmann::json & json) const;
+			void serialize(nlohmann::json & json);
 			void deserialize(const nlohmann::json & json);
 
 			ofParameter<bool> enabled{ "Enable Travel", false };
@@ -80,6 +81,8 @@ namespace entropy
 
 			vector<ofEventListener> eventListeners;
 
+			glm::vec3 startPosition;
+			glm::quat startOrientation;
 			std::vector<glm::vec3> curvePoints;
 			size_t editPointIdx;
 
