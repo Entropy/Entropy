@@ -18,6 +18,9 @@ namespace entropy
 			, ready(false)
 			, cuesTrack(nullptr)
 			, messagesTrack(nullptr)
+			, linkMediaA(0)
+			, linkMediaB(1)
+			, linkDirection(true)
 		{}
 
 		//--------------------------------------------------------------
@@ -365,7 +368,7 @@ namespace entropy
 			ofxImGui::SetNextWindow(settings);
 			if (ofxImGui::BeginWindow("Media", settings))
 			{
-				ImGui::ListBoxHeader("List", 3);
+				ImGui::ListBoxHeader("List Media", 3);
 				for (auto i = 0; i < this->medias.size(); ++i)
 				{
 					const auto name = this->medias[i]->getTypeName() + " " + ofToString(i);
@@ -416,6 +419,50 @@ namespace entropy
 					if (ImGui::Button("Remove Media"))
 					{
 						this->removeMedia();
+					}
+				}
+
+				if (this->medias.size() > 1)
+				{
+					ImGui::Text("Links");
+					
+					ImGui::ListBoxHeader("List Links", 3);
+					for (auto i = 0; i < this->links.size(); ++i)
+					{
+						ImGui::Text(this->links[i]->getLabel().c_str());
+					}
+					ImGui::ListBoxFooter();
+					
+					std::vector<std::string> mediaNamesStr{ this->medias.size() };
+					std::vector<const char*> mediaNamesChr{ this->medias.size() };
+					int i = 0;
+					std::transform(this->medias.begin(), this->medias.end(), mediaNamesStr.begin(), [i] (std::shared_ptr<media::Base> & m) mutable
+					{
+						return m->getTypeName() + " " + ofToString(i++);
+					});
+					std::transform(mediaNamesStr.begin(), mediaNamesStr.end(), mediaNamesChr.begin(), [](std::string & str)
+					{
+						return str.c_str();
+					});
+
+					ImGui::PushItemWidth(80);
+					ImGui::ListBox("A", &this->linkMediaA, mediaNamesChr.data(), this->medias.size(), 3);
+					ImGui::SameLine();
+					ImGui::ListBox("B", &this->linkMediaB, mediaNamesChr.data(), this->medias.size(), 3);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+					ImGui::Checkbox("Direction", &this->linkDirection);
+					if (ImGui::Button("Add Link"))
+					{
+						this->addLink(this->linkMediaA, this->linkMediaB, this->linkDirection);
+					}
+					if (!this->links.empty())
+					{
+						ImGui::SameLine();
+						if (ImGui::Button("Remove Link"))
+						{
+							this->removeLink();
+						}
 					}
 				}
 			}
@@ -594,6 +641,17 @@ namespace entropy
 				jsonMedias.push_back(jsonMedia);
 			}
 
+			// Save Links.
+			auto & jsonLinks = json["Links"];
+			for (auto link : this->links)
+			{
+				nlohmann::json jsonLink;
+				jsonLink["idxA"] = link->getIdxA();
+				jsonLink["idxB"] = link->getIdxB();
+				jsonLink["direction"] = link->getDirection();
+				jsonLinks.push_back(jsonLink);
+			}
+
 			// Save child scene settings.
 			this->serialize(json);
 		}
@@ -655,6 +713,25 @@ namespace entropy
 				}
 			}
 
+			// Clear previous Links.
+			while (!this->links.empty())
+			{
+				this->removeLink();
+			}
+
+			// Restore Links.
+			if (json.count("Links"))
+			{
+				for (auto & jsonLink : json["Links"])
+				{
+					int idxA = jsonLink["idxA"];
+					int idxB = jsonLink["idxB"];
+					bool direction = jsonLink["direction"];
+					this->addLink(idxA, idxB, direction);
+				}
+			}
+
+			// Deserialize parameters.
 			this->deserialize(json);
 
 			// Clear previous mappings.
@@ -1088,28 +1165,28 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		shared_ptr<media::Base> Base::addMedia(media::Type type)
+		std::shared_ptr<media::Base> Base::addMedia(media::Type type)
 		{
-			shared_ptr<media::Base> media;
+			std::shared_ptr<media::Base> media;
 			if (type == media::Type::Image)
 			{
-				media = make_shared<media::Image>();
+				media = std::make_shared<media::Image>();
 			}
 			else if (type == media::Type::Movie)
 			{
-				media = make_shared<media::Movie>();
+				media = std::make_shared<media::Movie>();
 			}
 			else if (type == media::Type::HPV)
 			{
-				media = make_shared<media::HiPerfVideo>();
+				media = std::make_shared<media::HiPerfVideo>();
 			}
 			else if (type == media::Type::Sequence)
 			{
-				media = make_shared<media::Sequence>();
+				media = std::make_shared<media::Sequence>();
 			}
 			else if (type == media::Type::Sound)
 			{
-				media = make_shared<media::Sound>();
+				media = std::make_shared<media::Sound>();
 			}
 			else
 			{
@@ -1138,6 +1215,27 @@ namespace entropy
 #ifdef OFX_PARAMETER_TWISTER
 			this->resetMediaTwister();
 #endif
+		}
+
+		//--------------------------------------------------------------
+		std::shared_ptr<media::Link> Base::addLink(size_t idxA, size_t idxB, bool direction)
+		{
+			if (idxA >= this->medias.size() || idxB >= this->medias.size())
+			{
+				ofLogError(__FUNCTION__) << "Indices " << idxA << " and/or " << idxB << " out of range for size " << this->medias.size();
+				return nullptr;
+			}
+			
+			auto link = std::make_shared<media::Link>(idxA, idxB, direction, this->medias);
+			this->links.push_back(link);
+
+			return link;
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeLink()
+		{
+			this->links.pop_back();
 		}
 
 #ifdef OFX_PARAMETER_TWISTER

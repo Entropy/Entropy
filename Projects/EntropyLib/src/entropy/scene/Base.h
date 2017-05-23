@@ -8,6 +8,7 @@
 
 #include "entropy/geom/Box.h"
 #include "entropy/media/Base.h"
+#include "entropy/media/Link.h"
 #include "entropy/render/Layout.h"
 #include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"
@@ -173,6 +174,16 @@ namespace entropy
 			void removeMedia();
 
 			std::vector<std::shared_ptr<media::Base>> medias;
+
+			// Links
+			std::shared_ptr<media::Link> addLink(size_t idxA, size_t idxB, bool direction);
+			void removeLink();
+
+			std::vector<std::shared_ptr<media::Link>> links;
+
+			int linkMediaA;
+			int linkMediaB;
+			bool linkDirection;
 
 			// Messenger
 			void messageReceived_(ofxOscMessage & message);
