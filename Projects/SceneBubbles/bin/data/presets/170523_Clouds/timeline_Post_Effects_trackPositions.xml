@@ -1,0 +1,26 @@
+<positions>
+    <element name="Bubbles/Post_Effects/Bloom/Boost">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Post_Effects/Bloom/Brightness_Threshold">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Post_Effects/Color/Brightness">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Post_Effects/Color/Contrast">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

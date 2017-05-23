@@ -1,0 +1,72 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Bubbles",
+            "tracks": [
+                {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                }
+            ]
+        },
+        {
+            "name": "Geom",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Bubbles/Box/Alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.00100000004749745,
+                    "name": "Bubbles/Box/Edge_Ratio",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Pool",
+            "tracks": [
+                {
+                    "max": 60.0,
+                    "min": 1.0,
+                    "name": "Bubbles/Pool_GL_3D/Drop_Rate",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Bubbles/Pool_GL_3D/Dropping",
+                    "type": "Switches"
+                },
+                {
+                    "max": 120.0,
+                    "min": 1.0,
+                    "name": "Bubbles/Pool_GL_3D/Ripple_Rate",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Post_Effects",
+            "tracks": [
+                {
+                    "max": 6.0,
+                    "min": 0.00999999977648258,
+                    "name": "Bubbles/Post_Effects/Bloom/Boost",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}
