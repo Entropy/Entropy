@@ -631,8 +631,7 @@ glm::mat4 ofApp::getWorldTransform() const
 //--------------------------------------------------------------
 ofCamera & ofApp::getActiveCamera()
 {
-	//return (this->travelCamPath.enabled? this->travelCamPath.getCamera() : this->easyCam);
-	return this->easyCam;
+	return ((this->travelCamPath.enabled && this->travelCamPath.lookThrough)? this->travelCamPath.getCamera() : this->easyCam);
 }
 
 //--------------------------------------------------------------

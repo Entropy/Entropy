@@ -42,10 +42,12 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 			ofParameter<bool> enabled{ "Enable Travel", false };
+			ofParameter<bool> lookThrough{ "Look Through", true };
 			ofParameter<bool> reset{ "Reset Position", false };
 			ofParameter<float> speed{ "Speed", 1.0f, 0.0f, 100.0f };
 			ofParameterGroup travel{ "Travel",
 				enabled,
+				lookThrough,
 				reset,
 				speed 
 			};

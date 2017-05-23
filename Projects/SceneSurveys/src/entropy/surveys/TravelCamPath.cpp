@@ -73,8 +73,6 @@ namespace entropy
 		{
 			this->polyline.clear();
 
-			// TODO: curveTo resolution based on distance.
-
 			// Start at the camera position.
 			const auto startPoint = this->camera.getGlobalPosition();
 			this->polyline.addVertex(startPoint);
@@ -85,9 +83,12 @@ namespace entropy
 			}
 
 			// Add all the galaxy points.
-			for (auto & pt : this->curvePoints)
+			for (int i = 0; i < this->curvePoints.size(); ++i)
 			{
-				this->polyline.curveTo(pt, 100);
+				auto & currPoint = this->curvePoints[i];
+				float dist = glm::distance((i == 0) ? startPoint : this->curvePoints[i - 1], currPoint);
+				int resolution = dist;
+				this->polyline.curveTo(currPoint, resolution);
 			}
 
 			// End at the origin, adding a couple of points to get a smooth finish.
@@ -102,8 +103,6 @@ namespace entropy
 			this->totalDistance = this->polyline.getPerimeter();
 
 			this->reset = true;
-
-			cout << "num verts " << this->polyline.getVertices().size() << endl;
 		}
 
 		//--------------------------------------------------------------
@@ -126,13 +125,13 @@ namespace entropy
 			if (this->reset)
 			{
 				this->travelDistance = 0.0f;
-				this->reset = false;
 			}
-
-			if (this->enabled)
+			else if (this->enabled)
 			{
 				this->travelDistance += this->speed;
-
+			}
+			if (this->reset || this->enabled)
+			{
 				const auto currPoint = polyline.getPointAtLength(this->travelDistance);
 				const auto nextDistance = this->travelDistance + this->speed;
 				const auto nextPoint = polyline.getPointAtLength(nextDistance);
@@ -140,21 +139,9 @@ namespace entropy
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
 				const auto upDir = glm::normalize(glm::cross(xAxis, glm::normalize(nextPoint - currPoint)));
-
-				cout << "nextPoint = " << nextPoint << endl;
-				cout << "upDir = " << upDir << endl;
-
 				this->camera.lookAt(nextPoint, upDir);
 
-				//const auto currPct = this->travelDistance / this->totalDistance;
-				//const auto currIdx = polyline.getIndexAtPercent(currPct);
-				//const auto currPoint = polyline.getPointAtIndexInterpolated(currIdx);
-				//this->camera.setPosition(currPoint);
-				//const auto nextPct = (this->travelDistance + this->speed) / this->totalDistance;
-				//const auto nextPoint = polyline.getPointAtPercent(nextPct);
-				//const auto xAxis = this->camera.getXAxis();
-				//const auto upDir = glm::normalize(glm::cross(xAxis, glm::normalize(nextPoint - currPoint)));
-				//this->camera.lookAt(nextPoint, upDir);
+				this->reset = false;
 			}
 		}
 
@@ -183,7 +170,7 @@ namespace entropy
 				ofSetColor(ofColor::purple);
 				for (auto & v : this->polyline.getVertices())
 				{
-					ofDrawBox(v, 3.0f);
+					ofDrawBox(v, 2.0f);
 				}
 
 				ofSetColor(ofColor::blue);
