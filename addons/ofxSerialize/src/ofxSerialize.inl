@@ -1,4 +1,43 @@
-#include "ofxSerialize.h"
+//--------------------------------------------------------------
+template<typename DataType>
+inline nlohmann::json & ofSerialize(nlohmann::json & json, const vector<DataType> & values, const string & name)
+{
+	auto & jsonGroup = name.empty() ? json : json[name];
+
+	for (const auto & val : values)
+	{
+		ostringstream oss;
+		oss << val;
+		jsonGroup.push_back(oss.str());
+	}
+
+	return jsonGroup;
+}
+
+//--------------------------------------------------------------
+template<typename DataType>
+inline const nlohmann::json & ofDeserialize(const nlohmann::json & json, vector<DataType> & values, const string & name)
+{
+	if (!name.empty() && !json.count(name))
+	{
+		ofLogWarning("Serializer::Deserialize") << "Name " << name << " not found in JSON!";
+		return json;
+	}
+
+	const auto & jsonGroup = name.empty() ? json : json[name];
+	values.clear();
+
+	for (const auto & jsonValue : jsonGroup)
+	{
+		istringstream iss;
+		iss.str(jsonValue);
+		DataType val;
+		iss >> val;
+		values.push_back(val);
+	}
+
+	return jsonGroup;
+}
 
 //--------------------------------------------------------------
 inline nlohmann::json & ofSerialize(nlohmann::json & json, const ofEasyCam & easyCam, const string & name)

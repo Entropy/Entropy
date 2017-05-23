@@ -122,5 +122,11 @@ namespace entropy
 		{
 			this->image.drawSubsection(this->dstBounds, this->srcBounds);
 		}
+
+		//--------------------------------------------------------------
+		unsigned long long Image::getContentDurationMs() const
+		{
+			return 5 * 1000; // 5 seconds
+		}
 	}
 }

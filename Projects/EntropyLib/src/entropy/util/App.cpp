@@ -212,6 +212,10 @@ namespace entropy
 
 			this->messenger->update();
 
+#ifdef OFX_PARAMETER_TWISTER
+			this->twister->update();
+#endif
+
 			auto dt = ofGetLastFrameTime();
 			this->playlist->update(dt);
 		}

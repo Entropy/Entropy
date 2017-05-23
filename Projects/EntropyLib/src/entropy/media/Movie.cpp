@@ -47,6 +47,9 @@ namespace entropy
 		{
 			if (!wasLoaded && this->isLoaded())
 			{
+				// Add a new switch if none exist.
+				this->addDefaultSwitch();
+				
 				// Adjust the bounds once the video is loaded.
 				this->boundsDirty = true;
 				wasLoaded = true;
@@ -203,6 +206,16 @@ namespace entropy
 			{
 				this->videoPlayer.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
 			}
+		}
+
+		//--------------------------------------------------------------
+		unsigned long long Movie::getContentDurationMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->videoPlayer.getDuration() * 1000;
+			}
+			return 0;
 		}
 	}
 }

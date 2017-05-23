@@ -38,6 +38,8 @@ namespace entropy
 			float getContentHeight() const override;
 			void renderContent() override;
 
+			unsigned long long getContentDurationMs() const override;
+
 			ofxHPVPlayer hpvPlayer;
 
 			string fileName;

@@ -48,6 +48,9 @@ namespace entropy
 		{
 			if (!wasLoaded && this->isLoaded())
 			{
+				// Add a new switch if none exist.
+				this->addDefaultSwitch(); 
+				
 				wasLoaded = true;
 			}
 			
@@ -190,5 +193,15 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::renderContent()
 		{}
+
+		//--------------------------------------------------------------
+		unsigned long long Sound::getContentDurationMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->soundPlayer.getDuration() * 1000;
+			}
+			return 0;
+		}
 	}
 }

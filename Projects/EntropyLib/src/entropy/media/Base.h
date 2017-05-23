@@ -64,7 +64,7 @@ namespace entropy
 			{
 				struct : ofParameterGroup
 				{
-					ofParameter<ofFloatColor> background{ "Background", ofFloatColor::black };
+					ofParameter<ofFloatColor> background{ "Background", ofFloatColor(0.0f, 0.0f) };
 					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
 					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
@@ -168,6 +168,8 @@ namespace entropy
 			virtual float getContentHeight() const = 0;
 			virtual void renderContent() = 0;
 
+			virtual unsigned long long getContentDurationMs() const = 0;
+
 			Type type;
 			int index;
 
@@ -185,6 +187,7 @@ namespace entropy
 			// Timeline
 			void addTimelineTrack();
 			void removeTimelineTrack();
+			bool addDefaultSwitch();
 
 			// Per-frame attributes.
 			float frontAlpha;
