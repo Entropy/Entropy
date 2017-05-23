@@ -204,5 +204,15 @@ namespace entropy
 				this->videoPlayer.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
 			}
 		}
+
+		//--------------------------------------------------------------
+		unsigned long long Movie::getContentDurationMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->videoPlayer.getDuration() * 1000;
+			}
+			return 0;
+		}
 	}
 }

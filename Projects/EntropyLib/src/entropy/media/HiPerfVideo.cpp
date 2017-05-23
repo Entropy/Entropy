@@ -227,5 +227,15 @@ namespace entropy
 				this->hpvPlayer.drawSubsection(this->dstBounds, this->srcBounds);
 			}
 		}
+
+		//--------------------------------------------------------------
+		unsigned long long HiPerfVideo::getContentDurationMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->hpvPlayer.getDuration() * 1000;
+			}
+			return 0;
+		}
 	}
 }

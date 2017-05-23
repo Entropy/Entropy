@@ -223,5 +223,15 @@ namespace entropy
 				this->imageSequence.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
 			}
 		}
+
+		//--------------------------------------------------------------
+		unsigned long long Sequence::getContentDurationMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->imageSequence.getLengthInSeconds() * 1000;
+			}
+			return 0;
+		}
 	}
 }

@@ -168,6 +168,8 @@ namespace entropy
 			virtual float getContentHeight() const = 0;
 			virtual void renderContent() = 0;
 
+			virtual unsigned long long getContentDurationMs() const = 0;
+
 			Type type;
 			int index;
 
