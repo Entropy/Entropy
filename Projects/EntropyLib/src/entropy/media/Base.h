@@ -187,6 +187,7 @@ namespace entropy
 			// Timeline
 			void addTimelineTrack();
 			void removeTimelineTrack();
+			bool addDefaultSwitch();
 
 			// Per-frame attributes.
 			float frontAlpha;

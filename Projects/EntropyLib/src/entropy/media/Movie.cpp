@@ -47,6 +47,9 @@ namespace entropy
 		{
 			if (!wasLoaded && this->isLoaded())
 			{
+				// Add a new switch if none exist.
+				this->addDefaultSwitch();
+				
 				// Adjust the bounds once the video is loaded.
 				this->boundsDirty = true;
 				wasLoaded = true;

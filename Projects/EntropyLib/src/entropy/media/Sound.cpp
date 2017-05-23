@@ -48,6 +48,9 @@ namespace entropy
 		{
 			if (!wasLoaded && this->isLoaded())
 			{
+				// Add a new switch if none exist.
+				this->addDefaultSwitch(); 
+				
 				wasLoaded = true;
 			}
 			

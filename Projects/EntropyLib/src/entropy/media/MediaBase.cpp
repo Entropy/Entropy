@@ -412,6 +412,31 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		bool Base::addDefaultSwitch()
+		{
+			if (!this->timeline)
+			{
+				//ofLogWarning(__FUNCTION__) << "No timeline set.";
+				return false;
+			}
+
+			if (!this->switchesTrack)
+			{
+				//ofLogWarning(__FUNCTION__) << "Switches track for Media " << this->index << " does not exist.";
+				return false;
+			}
+
+			if (this->switchesTrack->getKeyframes().size())
+			{
+				//ofLogWarning(__FUNCTION__) << "Switches track for Media " << this->index << " already has a switch.";
+				return false;
+			}
+
+			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getInTimeInMillis(), this->getContentDurationMs());
+			return (addedSwitch != nullptr);
+		}
+
+		//--------------------------------------------------------------
 		void Base::updateBounds()
 		{
 			auto & parameters = this->getParameters();
