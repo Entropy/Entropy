@@ -49,6 +49,7 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
+					ofParameter<bool> useTestModel{ "Use Test Model", false };
 					ofParameter<float> geoScale{ "Geo Scale", 8.0f, 0.01f, 32.0f };
 					ofParameter<float> alphaScale{ "Alpha Scale", 1.0f, 0.01f, 8.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> squashRange{ "Squash Range", 0.2f, 0.0f, 1.0f };
@@ -59,6 +60,7 @@ namespace entropy
 					ofParameter<int> minDensityMod{ "Min Density Mod", 10, 1, 1000, ofParameterScale::Logarithmic };
 
 					PARAM_DECLARE("Model",
+						useTestModel,
 						geoScale,
 						alphaScale,
 						squashRange,

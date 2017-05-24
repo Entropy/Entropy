@@ -346,19 +346,24 @@ namespace entropy
 			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
-			//cout << "Drawing " << count << " models" << endl;
-			//mesh.drawInstanced(OF_MESH_POINTS, count);
-
-			static ofVboMesh simpleMesh;
-			if (simpleMesh.getNumVertices() == 0)
+			//cout << "Drawing " << this->modelCount << " models" << endl;
+			if (sharedParams.model.useTestModel)
 			{
-				simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
-				for (int i = 0; i < simpleMesh.getNumVertices(); ++i)
+				static ofVboMesh simpleMesh;
+				if (simpleMesh.getNumVertices() == 0)
 				{
-					simpleMesh.addColor(ofFloatColor::white);
+					simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+					for (int i = 0; i < simpleMesh.getNumVertices(); ++i)
+					{
+						simpleMesh.addColor(ofFloatColor::white);
+					}
 				}
+				simpleMesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
 			}
-			simpleMesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
+			else
+			{
+				mesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
+			}
 		}
 	}
 }
