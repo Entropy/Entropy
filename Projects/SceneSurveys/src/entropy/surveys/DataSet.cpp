@@ -182,6 +182,9 @@ namespace entropy
 			
 			float mappedMinMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
 
+			float clipFadeMin = camera.getFarClip() * (1.0f - sharedParams.point.distanceFade);
+			float clipFadeMax = camera.getFarClip();
+
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
@@ -241,7 +244,15 @@ namespace entropy
 				// Add the alpha value based on radius.
 				if (this->mappedRadiusRange.y <= this->mappedRadiusRange.z)
 				{
-					instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * sharedParams.model.alphaScale;
+					float alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true);
+				
+					if (eyeDist > clipFadeMin)
+					{
+						// Map distance from 0.0 to 1.0.
+						alpha *= ofMap(eyeDist, clipFadeMin, clipFadeMax, 1.0f, 0.0f);
+					}
+
+					instanceData.alpha = alpha * sharedParams.model.alphaScale;
 				}
 				else
 				{
