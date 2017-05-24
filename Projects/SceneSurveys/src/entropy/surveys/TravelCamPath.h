@@ -45,7 +45,7 @@ namespace entropy
 			ofParameter<bool> enabled{ "Enable Travel", false };
 			ofParameter<bool> lookThrough{ "Look Through", true };
 			ofParameter<bool> reset{ "Reset Position", false };
-			ofParameter<float> speed{ "Speed", 1.0f, 0.0f, 100.0f };
+			ofParameter<float> speed{ "Speed", 1.0f, 0.0f, 100.0f, ofParameterScale::Logarithmic };
 			ofParameterGroup travel{ "Travel",
 				enabled,
 				lookThrough,
@@ -54,6 +54,7 @@ namespace entropy
 			};
 
 			ofParameter<bool> clearPath{ "Clear Path", false };
+			ofParameter<float> curveResolution{ "Curve Resolution", 1.0f, 0.1f, 10.0f };
 			ofParameter<bool> startPath{ "Start Path", false };
 			ofParameter<bool> addPoints{ "Add Points", false };
 			ofParameter<bool> editPoints{ "Edit Points", false };
@@ -61,6 +62,7 @@ namespace entropy
 			ofParameter<bool> debugDraw{ "Debug Draw", false };
 			ofParameterGroup edit{ "Edit",
 				clearPath,
+				curveResolution,
 				startPath,
 				addPoints,
 				editPoints,
@@ -74,6 +76,8 @@ namespace entropy
 			};
 
 		protected:
+			void addCurvePointToPolyline(const glm::vec3 & point);
+
 			ofCamera camera;
 
 			float travelDistance;
