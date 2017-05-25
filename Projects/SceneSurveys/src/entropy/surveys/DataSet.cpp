@@ -178,7 +178,7 @@ namespace entropy
 			std::vector<InstanceData> data;
 
 			const auto cameraModelView = camera.getModelViewMatrix();
-			const auto cameraProjection = camera.getProjectionMatrix();
+			const auto cameraProjection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
 			
 			float mappedMinMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
 
@@ -198,7 +198,7 @@ namespace entropy
 				// Test that the point is within clipping bounds.
 				if (this->mappedRadiusRange.x > coords.z ||
 					this->mappedLongitudeRange.x > coords.x || coords.x > this->mappedLongitudeRange.y ||
-					this->mappedLatitudeRange.x > coords.y && coords.y > this->mappedLatitudeRange.y)
+					this->mappedLatitudeRange.x > coords.y || coords.y > this->mappedLatitudeRange.y)
 				{
 					continue;
 				}
