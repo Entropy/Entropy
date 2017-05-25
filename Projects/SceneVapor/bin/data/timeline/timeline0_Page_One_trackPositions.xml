@@ -1,0 +1,80 @@
+<positions>
+    <element name="Camera">
+        <x>0.000000000</x>
+        <y>573.000000000</y>
+        <width>1920.000000000</width>
+        <height>79.000000000</height>
+    </element>
+    <element name="vapor/Sequence_Ramses/density_max">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/Sequence_Ramses/volume_density">
+        <x>0.000000000</x>
+        <y>676.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/Sequence_Ramses/volume_density_0">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/camera_auto_magnification">
+        <x>0.000000000</x>
+        <y>740.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/camera_fov">
+        <x>0.000000000</x>
+        <y>804.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/octree_alpha">
+        <x>0.000000000</x>
+        <y>868.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/octree_anim_duration">
+        <x>0.000000000</x>
+        <y>932.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/octree_anim_duration_0">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/record">
+        <x>0.000000000</x>
+        <y>996.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/show_octree">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/show_octree_animation">
+        <x>0.000000000</x>
+        <y>996.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/show_octree_animation_0">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

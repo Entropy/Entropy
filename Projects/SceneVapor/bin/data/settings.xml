@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<vapor>
+	<application>
+		<world_scale>1</world_scale>
+		<camera_fov>30</camera_fov>
+		<debug_gl>0</debug_gl>
+		<show_octree>0</show_octree>
+		<show_octree_densities>0</show_octree_densities>
+		<show_axis>0</show_axis>
+		<show_octree_animation>1</show_octree_animation>
+		<octree_anim_duration>30</octree_anim_duration>
+		<sync_playback>0</sync_playback>
+		<record>0</record>
+		<UnknownName></UnknownName>
+		<octree_alpha>0.206065</octree_alpha>
+		<camera_orbit_start>60</camera_orbit_start>
+		<camera_orbit_end>360</camera_orbit_end>
+		<camera_final_radius>3</camera_final_radius>
+		<camera_auto_distance>1</camera_auto_distance>
+		<camera_auto_magnification>2.8225</camera_auto_magnification>
+		<show_timeline>1</show_timeline>
+		<record_video>0</record_video>
+	</application>
+	<Sequence_Ramses>
+		<render>1</render>
+		<density_min>0</density_min>
+		<density_max>0.0142464</density_max>
+		<volume_quality>5</volume_quality>
+		<volume_density>6.71471</volume_density>
+	</Sequence_Ramses>
+</vapor>

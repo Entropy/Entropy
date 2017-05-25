@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "ofxEasing.h"
+#include "Helpers.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -13,15 +14,15 @@ void ofApp::setup()
 
 	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
 	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
-	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads",
-								 "/media/arturo/elements/entropy/vapor_download_tests", 1160, 1160);
+	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_1024",
+								 "/media/arturo/elements/entropy/vapor_download_tests", 333, 333);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
 	m_timeline.setup();
 	m_timeline.setLoopType(OF_LOOP_NONE);
 	m_timeline.setFrameRate(60.0f);
-	m_timeline.setDurationInSeconds(120);
+	m_timeline.setDurationInSeconds(360);
 
 	m_cameraTrack = new ofxTLCameraTrack();
 	m_cameraTrack->setCamera(m_camera);
@@ -75,18 +76,30 @@ void ofApp::setup()
 	shader.load("octree.vert.glsl", "octree.frag.glsl");
 
 	ofFbo::Settings fboSettings;
-	fboSettings.width = ofGetWidth();
-	fboSettings.height = ofGetHeight();
+	fboSettings.width = entropy::GetSceneWidth();
+	fboSettings.height = entropy::GetSceneHeight();
 	fboSettings.numSamples = 8;
 	fboSettings.internalformat = GL_RGBA32F;
 
 	fbo.allocate(fboSettings);
 
-//	ofxTextureRecorder::Settings settings(fbo.getTexture());
-//	settings.imageFormat = OF_IMAGE_FORMAT_JPEG;
-//	settings.folderPath = "render";
-//	recorder.setup(settings);
 
+	listeners.push_back(m_bExportFrames.newListener([this](bool & record){
+		if(record){
+			auto path = ofSystemLoadDialog("Record to images:", true);
+			if(path.bSuccess){
+				auto folderPath = path.getPath();
+				ofxTextureRecorder::Settings settings(fbo.getTexture());
+				settings.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				settings.folderPath = folderPath;
+				recorder.setup(settings);
+			}else{
+				m_bExportFrames = false;
+			}
+		}else{
+			recorder.stop();
+		}
+	}));
 
 
 	listeners.push_back(m_bRecordVideo.newListener([this](bool & record){
@@ -223,7 +236,8 @@ void ofApp::draw()
 	m_camera.end();
 	fbo.end();
 
-	fbo.draw(0,0);
+	float h = float(entropy::GetSceneHeight()) *  ofGetWidth() / float(entropy::GetSceneWidth());
+	fbo.draw(0,0,ofGetWidth(),h);
 
 	if (m_bExportFrames || m_bRecordVideo)
 	{
