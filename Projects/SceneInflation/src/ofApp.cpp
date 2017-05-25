@@ -957,10 +957,10 @@ void ofApp::mousePressed(ofMouseEventArgs & mouse){
 	if(mouse.button==OF_MOUSE_BUTTON_LEFT && mouse.hasModifier(OF_KEY_CONTROL) && mouse.hasModifier(OF_KEY_SHIFT)){
 		auto geometry = gpuMarchingCubes.downloadGeometry();
 		auto v = camera.worldToScreen(geometry.getVertex(0));
-		auto nearest = glm::distance2(v.xy(), mouse);
+		auto nearest = glm::distance2(v.xy(), mouse.xy());
 		for(auto & v: geometry.getVertices()){
 			auto screenv = camera.worldToScreen(v);
-			auto d = glm::distance2(screenv.xy(), mouse);
+			auto d = glm::distance2(screenv.xy(), mouse.xy());
 			if(d<nearest){
 				nearest = d;
 				dofTarget = v;
