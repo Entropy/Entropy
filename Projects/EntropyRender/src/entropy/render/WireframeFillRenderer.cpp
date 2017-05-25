@@ -415,7 +415,7 @@ namespace entropy
 
 			auto * material = (parameters.clip && parameters.sphericalClip) ? &this->materialSphericalClip : &this->material;
 			if(parameters.useLights){
-				material->setCustomUniform1f("accumValue", accumValue);
+				material->setCustomUniform1f("accumValue", accumValue * parameters.alphaFactor);
 				material->setCustomUniform1f("fogStartDistance", parameters.fogStartDistance);
 				material->setCustomUniform1f("fogMinDistance", parameters.fogMinDistance);
 				material->setCustomUniform1f("fogMaxDistance", parameters.fogMaxDistance);
