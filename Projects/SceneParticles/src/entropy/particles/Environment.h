@@ -60,6 +60,7 @@ namespace nm
 			BARYOGENESIS,
 			STANDARD_MODEL,
 			NUCLEOSYNTHESIS,
+			TRANSITION_OUT,
 		};
 
 		Environment(const glm::vec3& min, const glm::vec3& max);
@@ -83,7 +84,7 @@ namespace nm
 		ofEvent<PhotonEventArgs> photonEvent;
 		ofEvent<DeadParticlesEventArgs> deadParticlesEvent;
 
-		ofParameter<int> state{"state", 0, 0, 2};
+		ofParameter<int> state{"state", 0, 0, 3};
 		ofParameter<string> stateStr{"BARYOGENESIS"};
 		ofParameter<float> energy{ "Energy", 1.0f, 0.0f, 1.0f };
 		ofParameter<float> forceMultiplierMin{ "Force Multiplier Min", 1e7, 1e7, 1e8 };

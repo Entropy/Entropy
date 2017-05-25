@@ -103,6 +103,11 @@ public:
 			ofParameter<float> minTimeBetweenTravels{"min time between travels", 5, 0, 20, ofParameterScale::Logarithmic};
 			ofParameter<bool> doCameraTracking{"camera tracking", false};
 			ofParameter<bool> useEasyCam{"use easy cam", false};
+			ofParameter<void> addCluster{"add cluster"};
+			ofParameter<float> scaleFactor{"scale factor", 0.99, 0.7, 0.999};
+			ofParameter<float> trailsAlpha{"trailsAlpha", 1, 0, 1};
+			ofParameter<float> particlesAlpha{"particlesAlpha", 1, 0, 1};
+
 
 			PARAM_DECLARE("Rendering",
 				colorsPerType,
@@ -119,7 +124,11 @@ public:
 				travelMaxSpeed,
 				minTimeBetweenTravels,
 				doCameraTracking,
-				useEasyCam);
+				useEasyCam,
+				addCluster,
+				scaleFactor,
+				trailsAlpha,
+				particlesAlpha);
 		} rendering;
 
 		struct : ofParameterGroup
@@ -194,6 +203,21 @@ public:
 	std::vector<nm::Photon> photonsAlive;
 	float rotationDirection = 1;
 	float rotationSpeed = 0;
+
+
+
+	struct Cluster{
+		float scale = 1;
+		glm::vec3 origin;
+		double startTime;
+		float startScale = 1;
+		glm::quat rotation;
+		float alpha = 1;
+	};
+
+	std::vector<Cluster> clusters{};
+
+	nm::Environment::State prevState;
 
 //	float annihilationPct = 0;
 //	float pct = 0;

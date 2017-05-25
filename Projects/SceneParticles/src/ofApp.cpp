@@ -300,6 +300,24 @@ void ofApp::setup()
 
 	eventListeners.push_back(parameters.reset.resetScene.newListener(this, &ofApp::reset));
 
+	eventListeners.push_back(environment->state.newListener([this](int & state){
+		if(prevState != state && state==nm::Environment::TRANSITION_OUT){
+			clusters.clear();
+			clusters.emplace_back();
+			clusters.front().alpha = 1;
+			clusters.front().startTime = now;
+		}
+		prevState = (nm::Environment::State)state;
+	}));
+
+	eventListeners.push_back(parameters.rendering.addCluster.newListener([&]{
+		clusters.emplace_back();
+		clusters.back().origin = camera.getPosition() - camera.getLookAtDir() * kHalfDim + camera.getXAxis() * ofRandom(-kHalfDim, kHalfDim) + camera.getYAxis() * ofRandom(-kHalfDim, kHalfDim);
+		clusters.back().alpha = 1;
+		clusters.back().startTime = now;
+		clusters.back().rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+	}));
+
 }
 
 //--------------------------------------------------------------
@@ -632,6 +650,21 @@ void ofApp::update()
 //	}
 
 //	cout << traveledLength << " / " << cameraPath.getPerimeter() <<  " @ " << pctSpeed << endl;
+
+
+	if(environment->state == nm::Environment::TRANSITION_OUT){
+		for(auto & cluster: clusters){
+			if(dt>0){
+				cluster.origin = cluster.origin * parameters.rendering.scaleFactor.get();
+				cluster.scale = cluster.scale * parameters.rendering.scaleFactor;
+				cluster.alpha = ofMap(cluster.scale, 0.01, 0.8, 0, 1, true);
+			}
+		}
+
+		clusters.erase(std::remove_if(clusters.begin(), clusters.end(),
+									  [&](Cluster & cluster){ return cluster.scale < 0.01; }),
+				clusters.end());
+	}
 }
 
 //--------------------------------------------------------------
@@ -640,7 +673,18 @@ void ofApp::draw()
 	// Draw the scene.
 	this->fboScene.begin();
 	{
-		ofClear(0, 255);
+		if(parameters.rendering.trailsAlpha<1){
+			ofMesh clearRect;
+			clearRect.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+			clearRect.addVertex({0, 0, 0});
+			clearRect.addVertex({fboScene.getWidth(), 0, 0});
+			clearRect.addVertex({fboScene.getWidth(), fboScene.getHeight(), 0});
+			clearRect.addVertex({0, fboScene.getHeight(), 0});
+			clearRect.getColors().assign(4, ofFloatColor(0, parameters.rendering.trailsAlpha));
+			clearRect.draw();
+		}else{
+			ofClear(0, 255);
+		}
 
 		if(parameters.rendering.useEasyCam){
 			easyCam.begin();
@@ -696,10 +740,31 @@ void ofApp::draw()
 				ofEnableAlphaBlending();
 			}
 			if(parameters.rendering.drawModels){
-				if(parameters.rendering.useEasyCam){
-					this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, easyCam);
+				if(environment->state != nm::Environment::TRANSITION_OUT){
+					if(parameters.rendering.useEasyCam){
+						this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, easyCam);
+					}else{
+						this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera);
+					}
 				}else{
-					this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera);
+					float alpha = renderer.parameters.alphaFactor;
+					bool first = true;
+//					for(int i=0;i<1;i++){
+//						auto & cluster = clusters[i];
+
+					for(auto & cluster: clusters){
+						ofNode node;
+						node.setScale(cluster.scale);
+						node.setPosition(cluster.origin);
+						if(!first){
+							//node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
+							node.setOrientation(cluster.rotation);
+						}
+						first = false;
+						renderer.parameters.alphaFactor = alpha * cluster.alpha * parameters.rendering.particlesAlpha;
+						this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, camera, node.getLocalTransformMatrix());
+					}
+					renderer.parameters.alphaFactor = alpha;
 				}
 			}
 			if (parameters.rendering.drawPhotons)
@@ -741,7 +806,8 @@ void ofApp::draw()
 
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
-	this->fboPost.draw(0, 0);
+	auto h = ofGetWidth() * fboPost.getHeight() / fboPost.getWidth();
+	this->fboPost.draw(0, 0, ofGetWidth(), h);
 
 	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
 	{
@@ -778,6 +844,10 @@ void ofApp::keyPressed(int key)
 //	{
 //		this->cameraTrack.addKeyframe();
 //	}
+
+	if(key == 'f'){
+		ofToggleFullscreen();
+	}
 }
 
 //--------------------------------------------------------------
