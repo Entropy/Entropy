@@ -53,8 +53,6 @@ namespace nm
 			NEUTRON,
 			PROTON,
 
-			UP_DOWN_QUARK, // hacky composite particle
-
 			NUM_TYPES
 		};
 
@@ -102,7 +100,6 @@ namespace nm
 			switch(getType()){
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 					return true;
 				case nm::Particle::ANTI_UP_QUARK:
 				case nm::Particle::ANTI_DOWN_QUARK:
@@ -118,7 +115,6 @@ namespace nm
 					return true;
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 				default:
 					return false;
 			}
@@ -130,7 +126,6 @@ namespace nm
 				case nm::Particle::ANTI_DOWN_QUARK:
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 					return true;
 				default:
 					return false;

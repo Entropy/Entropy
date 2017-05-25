@@ -188,12 +188,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 					case nm::Environment::STANDARD_MODEL:
 						if(p1.id < p2->id &&
 						   ((p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
-							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
-							(p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK))
-						   ){
+							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::DOWN_QUARK))){
 							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
 							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
 							auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
@@ -365,7 +360,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 						break;
 						case nm::Particle::DOWN_QUARK:
 						case nm::Particle::UP_QUARK:
-						case nm::Particle::UP_DOWN_QUARK:
 							text = "q";
 						break;
 						case nm::Particle::ELECTRON:
@@ -400,9 +394,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							case nm::Particle::UP_QUARK:
 								text = "uq";
 							break;
-							case nm::Particle::UP_DOWN_QUARK:
-								text = "uq ________ dq"; // TODO: show this??
-							break;
 						}
 					}else{
 						switch(p.getType()){
@@ -421,9 +412,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							break;
 							case nm::Particle::UP_QUARK:
 								text = "up quark"; // TODO: show this??
-							break;
-							case nm::Particle::UP_DOWN_QUARK:
-								text = "up quark __________ down quark"; // TODO: show this??
 							break;
 							case nm::Particle::NEUTRON:
 								text = "neutron";

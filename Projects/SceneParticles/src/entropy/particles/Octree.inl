@@ -31,6 +31,7 @@
  */
 
 #include "Octree.h"
+#include "Particle.h"
 
 namespace nm
 {        
@@ -156,8 +157,10 @@ namespace nm
 						//}
 						if (dist < CANDIDATE_DISTANCE() &&
 							(((point.getAnnihilationFlag() ^ other->getAnnihilationFlag()) == 0xFF) ||
-							((point.getFusion1Flag() ^ other->getFusion1Flag()) == 0xFF) ||
-							((point.getFusion2Flag() ^ other->getFusion2Flag()) == 0xFF))){
+							/*((point.getFusion1Flag() ^ other->getFusion1Flag()) == 0xFF) ||
+							((point.getFusion2Flag() ^ other->getFusion2Flag()) == 0xFF)))*/
+							 (point.isQuark() && other->isQuark())))
+						{
 //							if(dist < INTERACTION_DISTANCE()){
 //								force += (other->pos - point.pos) * 100000;
 //							}
