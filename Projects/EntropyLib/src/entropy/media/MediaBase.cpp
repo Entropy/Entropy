@@ -54,9 +54,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		render::Layout Base::getLayout()
+		bool Base::renderLayout(render::Layout layout)
 		{
-			return static_cast<render::Layout>(this->getParameters().base.layout.get());
+			if (layout == render::Layout::Back && this->parameters.render.renderBack)
+			{
+				return true;
+			}
+			if (layout == render::Layout::Front && this->parameters.render.renderFront)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		//--------------------------------------------------------------
@@ -288,8 +296,9 @@ namespace entropy
 				{
 					ofxImGui::AddParameter(parameters.base.background);
 					ofxImGui::AddParameter(parameters.base.fade);
-					static std::vector<std::string> layoutLabels{ "Back", "Front" };
-					ofxImGui::AddRadio(parameters.base.layout, layoutLabels, 2);
+					ofxImGui::AddParameter(this->parameters.render.renderBack);
+					ImGui::SameLine();
+					ofxImGui::AddParameter(this->parameters.render.renderFront);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
 					ofxImGui::AddRadio(parameters.base.surface, surfaceLabels, 2);
 					ofxImGui::AddParameter(parameters.base.size);

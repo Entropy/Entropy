@@ -274,7 +274,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Base)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
 				{
 					media->draw_();
 				}
@@ -321,7 +321,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Overlay)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
 				{
 					media->draw_();
 				}

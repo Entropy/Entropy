@@ -66,7 +66,8 @@ namespace entropy
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor(0.0f, 0.0f) };
 					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
-					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+					ofParameter<bool> renderBack{ "Render Back", true };
+					ofParameter<bool> renderFront{ "Render Front", false };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
 					ofParameter<float> size{ "Size", 1.0f, 0.0f, 1.0f };
 					ofParameter<glm::vec2> anchor{ "Anchor", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
@@ -76,7 +77,7 @@ namespace entropy
 					PARAM_DECLARE("Base",
 						background,
 						fade,
-						layout,
+						renderBack, renderFront,
 						surface,
 						size,
 						anchor,
@@ -118,7 +119,7 @@ namespace entropy
 
 			Type getType() const;
 			std::string getTypeName() const;
-			render::Layout getLayout();
+			bool renderLayout(render::Layout layout);
 			Surface getSurface();
 			HorzAlign getHorzAlign();
 			VertAlign getVertAlign();
