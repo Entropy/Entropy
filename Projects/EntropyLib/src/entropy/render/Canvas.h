@@ -76,6 +76,8 @@ namespace entropy
 			void updateSize();
 			void updateStitches();
 
+			void resetWarpSizes();
+
 			struct WarpParameters
 				: ofParameterGroup
 			{

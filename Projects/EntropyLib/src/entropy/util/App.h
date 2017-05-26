@@ -14,13 +14,6 @@ namespace entropy
 {
 	namespace util
 	{
-		enum class Preview
-		{
-			None,
-			Warp,
-			Full
-		};
-		
 		class App_
 		{
 		public:
@@ -81,9 +74,14 @@ namespace entropy
 			std::shared_ptr<pal::Kontrol::ofxParameterTwister> twister;
 #endif
 
+			struct PreviewData
+			{
+				ofRectangle warpBounds;
+				ofRectangle canvasBounds;
+				ofVboMesh warpOutlines;
+			};
 			std::map<render::Layout, ofRectangle> screenBounds;
-			std::map<render::Layout, ofRectangle> previewBounds;
-			std::map<render::Layout, ofVboMesh> previewOutlines;
+			std::map<render::Layout, PreviewData> previewData;
 			ofRectangle boundsControl;
 
 			ofxImGui::Gui imGui;
@@ -101,11 +99,16 @@ namespace entropy
 
 					struct : ofParameterGroup
 					{
-						ofParameter<int> modeBack{ "Back", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
-						ofParameter<int> modeFront{ "Front", static_cast<int>(util::Preview::Full), static_cast<int>(util::Preview::None), static_cast<int>(util::Preview::Full) };
+						ofParameter<bool> backWarp{ "Back Warp", false, };
+						ofParameter<bool> backCanvas{ "Back Canvas", false, };
+						ofParameter<bool> frontWarp{ "Front Warp", false, };
+						ofParameter<bool> frontCanvas{ "Front Canvas", false, };
 						ofParameter<float> scale{ "Scale", 0.5f, 0.1f, 1.0f };
 
-						PARAM_DECLARE("Preview", modeBack, modeFront, scale);
+						PARAM_DECLARE("Preview", 
+							backWarp, backCanvas,
+							frontWarp, frontCanvas,
+							scale);
 					} preview;
 					
 					PARAM_DECLARE("Control Screen", enabled, screenWidth, screenHeight, preview);
