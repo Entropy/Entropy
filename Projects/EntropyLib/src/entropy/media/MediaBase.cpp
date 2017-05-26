@@ -44,8 +44,6 @@ namespace entropy
 				return "Movie";
 			case Type::HPV:
 				return "HPV";
-			case Type::Sequence:
-				return "Sequence";
 			case Type::Sound:
 				return "Sound";
 			default:

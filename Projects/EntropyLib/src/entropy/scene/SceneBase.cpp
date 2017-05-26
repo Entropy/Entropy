@@ -383,7 +383,7 @@ namespace entropy
 				}
 				if (ImGui::BeginPopup("Media Types"))
 				{
-					static vector<string> mediaNames{ "Image", "Movie", "HPV", "Sequence", "Sound" };
+					static vector<string> mediaNames{ "Image", "Movie", "HPV", "Sound" };
 					for (auto i = 0; i < mediaNames.size(); ++i)
 					{
 						if (ImGui::Selectable(mediaNames[i].c_str()))
@@ -400,11 +400,7 @@ namespace entropy
 							{
 								this->addMedia(media::Type::HPV);
 							}
-							else if (i == 3)
-							{
-								this->addMedia(media::Type::Sequence);
-							}
-							else // if (i == 4)
+							else // if (i == 3)
 							{
 								this->addMedia(media::Type::Sound);
 							}
@@ -1179,10 +1175,6 @@ namespace entropy
 			else if (type == media::Type::HPV)
 			{
 				media = std::make_shared<media::HiPerfVideo>();
-			}
-			else if (type == media::Type::Sequence)
-			{
-				media = std::make_shared<media::Sequence>();
 			}
 			else if (type == media::Type::Sound)
 			{
