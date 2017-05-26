@@ -28,7 +28,10 @@ namespace entropy
 		{
 			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
 			{
-				this->hpvPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+				if (this->hpvPlayer.isLoaded())
+				{
+					this->hpvPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+				}
 			}));
 			this->parameterListeners.push_back(this->parameters.syncToTimeline.newListener([this](bool & enabled)
 			{
@@ -193,6 +196,7 @@ namespace entropy
 			}
 			
 			this->hpvPlayer.close();
+			this->hpvPlayer.init(HPV::NewPlayer());
 			this->hpvPlayer.loadAsync(filePath.string());
 			
 			this->hpvPlayer.play();

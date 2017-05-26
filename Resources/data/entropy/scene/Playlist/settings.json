@@ -5,28 +5,12 @@
             "scene": "Calibrate"
         },
         {
-            "preset": "Intro_0920",
-            "scene": "Inflation"
+            "preset": "001",
+            "scene": "Empty"
         },
         {
-            "preset": "Colours_0919",
-            "scene": "Particles"
-        },
-        {
-            "preset": "CMB_0921",
-            "scene": "Bubbles"
-        },
-        {
-            "preset": "EAGLE",
-            "scene": "Interlude"
-        },
-        {
-            "preset": "Expand_0923",
-            "scene": "Surveys"
-        },
-        {
-            "preset": "Outro_0921",
-            "scene": "Inflation"
+            "preset": "Particles",
+            "scene": "Empty"
         }
     ]
 }

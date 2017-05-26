@@ -56,11 +56,12 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Base::renderLayout(render::Layout layout)
 		{
-			if (layout == render::Layout::Back && this->parameters.render.renderBack)
+			auto & parameters = this->getParameters();
+			if (layout == render::Layout::Back && parameters.base.renderBack)
 			{
 				return true;
 			}
-			if (layout == render::Layout::Front && this->parameters.render.renderFront)
+			if (layout == render::Layout::Front && parameters.base.renderFront)
 			{
 				return true;
 			}
@@ -94,7 +95,11 @@ namespace entropy
 			this->addTimelineTrack();
 
 			auto & parameters = this->getParameters();
-			this->parameterListeners.push_back(parameters.base.layout.newListener([this](int &)
+			this->parameterListeners.push_back(parameters.base.renderBack.newListener([this](bool &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(parameters.base.renderFront.newListener([this](bool &)
 			{
 				this->boundsDirty = true;
 			}));
@@ -296,9 +301,9 @@ namespace entropy
 				{
 					ofxImGui::AddParameter(parameters.base.background);
 					ofxImGui::AddParameter(parameters.base.fade);
-					ofxImGui::AddParameter(this->parameters.render.renderBack);
+					ofxImGui::AddParameter(parameters.base.renderBack);
 					ImGui::SameLine();
-					ofxImGui::AddParameter(this->parameters.render.renderFront);
+					ofxImGui::AddParameter(parameters.base.renderFront);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
 					ofxImGui::AddRadio(parameters.base.surface, surfaceLabels, 2);
 					ofxImGui::AddParameter(parameters.base.size);
@@ -450,8 +455,15 @@ namespace entropy
 		{
 			auto & parameters = this->getParameters();
 
-			const auto layout = this->getLayout();
-			const auto canvasSize = glm::vec2(GetCanvasWidth(layout), GetCanvasHeight(layout));
+			glm::vec2 canvasSize;
+			if (parameters.base.renderBack)
+			{
+				canvasSize = glm::vec2(GetCanvasWidth(render::Layout::Back), GetCanvasHeight(render::Layout::Back));
+			}
+			else
+			{
+				canvasSize = glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
+			}
 			const auto viewportAnchor = canvasSize * parameters.base.anchor.get();
 			const auto viewportHeight = canvasSize.y * parameters.base.size;
 			if (this->isLoaded())
