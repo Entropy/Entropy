@@ -13,10 +13,8 @@ namespace entropy
 		Sound::Sound()
 			: Base(Type::Sound)
 			, wasLoaded(false)
-		{
-			// Use a video player because it has better playback functionality.
-			this->soundPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
-		}
+			, freePlayInit(false)
+		{}
 
 		//--------------------------------------------------------------
 		Sound::~Sound()
@@ -27,7 +25,14 @@ namespace entropy
 		{
 			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
 			{
-				this->soundPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+				this->soundPlayer.setLoop(enabled);
+			}));
+			this->parameterListeners.push_back(this->parameters.syncToTimeline.newListener([this](bool & enabled)
+			{
+				if (!enabled)
+				{
+					this->freePlayInit = true;
+				}
 			}));
 		}
 
@@ -40,7 +45,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::exit()
 		{
-			this->soundPlayer.close();
+			this->soundPlayer.unload();
 		}
 
 		//--------------------------------------------------------------
@@ -50,57 +55,33 @@ namespace entropy
 			{
 				// Add a new switch if none exist.
 				this->addDefaultSwitch(); 
-				
 				wasLoaded = true;
 			}
 			
-			this->soundPlayer.update();
-
 			if (!this->isLoaded())
 			{
 				return;
 			}
 
-			if (this->switchMillis >= 0.0f)
+			float durationMillis = this->soundPlayer.getDurationMS();
+			bool shouldPlay = (this->switchMillis >= 0.0f) && (durationMillis > 0.0f) &&
+				(this->parameters.loop || durationMillis >= this->switchMillis) && 
+				(this->timeline->getIsPlaying() || !this->parameters.syncToTimeline);
+			if (shouldPlay && !this->soundPlayer.isPlaying())
 			{
-				float durationMillis = this->soundPlayer.getDuration() * 1000.0f;
-				bool shouldPlay = durationMillis > 0.0 && (this->parameters.loop || durationMillis >= this->switchMillis);
-
-				if (this->timeline->getIsPlaying())
+				// Set the starting position.
+				float positionMillis = this->switchMillis;
+				while (positionMillis > durationMillis)
 				{
-					if (shouldPlay && this->soundPlayer.isPaused())
-					{
-						// Set the starting position.
-						float positionMillis = this->switchMillis;
-						while (positionMillis > durationMillis)
-						{
-							positionMillis -= durationMillis;
-						}
-
-						this->soundPlayer.setPosition(positionMillis / durationMillis);
-						this->soundPlayer.setPaused(false);
-					}
-					else if (!shouldPlay && !this->soundPlayer.isPaused())
-					{
-						this->soundPlayer.setPaused(true);
-					}
+					positionMillis -= durationMillis;
 				}
-				else if (shouldPlay)
-				{
-					// Scrub the video.
-					float positionMillis = this->switchMillis;
-					while (positionMillis > durationMillis)
-					{
-						positionMillis -= durationMillis;
-					}
 
-					this->soundPlayer.setPosition(positionMillis / durationMillis);
-					this->soundPlayer.setPaused(false);
-				}
+				this->soundPlayer.play();
+				this->soundPlayer.setPositionMS(positionMillis);
 			}
-			else if (this->switchMillis < 0.0f && !this->soundPlayer.isPaused())
+			else if (!shouldPlay && this->soundPlayer.isPlaying())
 			{
-				this->soundPlayer.setPaused(true);
+				this->soundPlayer.stop();
 			}
 		}
 
@@ -135,6 +116,7 @@ namespace entropy
 			}
 
 			ofxImGui::AddParameter(this->parameters.loop);
+			ofxImGui::AddParameter(this->parameters.syncToTimeline);
 		}
 
 		//--------------------------------------------------------------
@@ -164,7 +146,7 @@ namespace entropy
 			}
 
 			this->soundPlayer.load(filePath.string());
-			this->soundPlayer.setLoopState(this->parameters.loop ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+			this->soundPlayer.setLoop(this->parameters.loop);
 
 			this->fileName = ofFilePath::getFileName(filePath);
 			this->wasLoaded = false;
@@ -199,7 +181,7 @@ namespace entropy
 		{
 			if (this->isLoaded())
 			{
-				return this->soundPlayer.getDuration() * 1000;
+				return this->soundPlayer.getDurationMS();
 			}
 			return 0;
 		}

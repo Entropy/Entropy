@@ -178,9 +178,12 @@ namespace entropy
 			std::vector<InstanceData> data;
 
 			const auto cameraModelView = camera.getModelViewMatrix();
-			const auto cameraProjection = camera.getProjectionMatrix();
+			const auto cameraProjection = ofGetCurrentOrientationMatrix() * camera.getProjectionMatrix();
 			
 			float mappedMinMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
+
+			float clipFadeMin = camera.getFarClip() * (1.0f - sharedParams.point.distanceFade);
+			float clipFadeMax = camera.getFarClip();
 
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
@@ -195,7 +198,7 @@ namespace entropy
 				// Test that the point is within clipping bounds.
 				if (this->mappedRadiusRange.x > coords.z ||
 					this->mappedLongitudeRange.x > coords.x || coords.x > this->mappedLongitudeRange.y ||
-					this->mappedLatitudeRange.x > coords.y && coords.y > this->mappedLatitudeRange.y)
+					this->mappedLatitudeRange.x > coords.y || coords.y > this->mappedLatitudeRange.y)
 				{
 					continue;
 				}
@@ -241,7 +244,15 @@ namespace entropy
 				// Add the alpha value based on radius.
 				if (this->mappedRadiusRange.y <= this->mappedRadiusRange.z)
 				{
-					instanceData.alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true) * sharedParams.model.alphaScale;
+					float alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true);
+				
+					if (eyeDist > clipFadeMin)
+					{
+						// Map distance from 0.0 to 1.0.
+						alpha *= ofMap(eyeDist, clipFadeMin, clipFadeMax, 1.0f, 0.0f);
+					}
+
+					instanceData.alpha = alpha * sharedParams.model.alphaScale;
 				}
 				else
 				{
@@ -346,19 +357,24 @@ namespace entropy
 			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 
-			//cout << "Drawing " << count << " models" << endl;
-			//mesh.drawInstanced(OF_MESH_POINTS, count);
-
-			static ofVboMesh simpleMesh;
-			if (simpleMesh.getNumVertices() == 0)
+			//cout << "Drawing " << this->modelCount << " models" << endl;
+			if (sharedParams.model.useTestModel)
 			{
-				simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
-				for (int i = 0; i < simpleMesh.getNumVertices(); ++i)
+				static ofVboMesh simpleMesh;
+				if (simpleMesh.getNumVertices() == 0)
 				{
-					simpleMesh.addColor(ofFloatColor::white);
+					simpleMesh = ofVboMesh::sphere(1, 12, OF_PRIMITIVE_POINTS);
+					for (int i = 0; i < simpleMesh.getNumVertices(); ++i)
+					{
+						simpleMesh.addColor(ofFloatColor::white);
+					}
 				}
+				simpleMesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
 			}
-			simpleMesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
+			else
+			{
+				mesh.drawInstanced(OF_MESH_POINTS, this->modelCount);
+			}
 		}
 	}
 }

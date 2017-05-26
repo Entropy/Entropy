@@ -14,6 +14,10 @@ namespace entropy
 			, editPointIdx(-1)
 		{
 			ofSetMutuallyExclusive(addPoints, editPoints);
+			this->eventListeners.push_back(this->curveResolution.newListener([this](float &)
+			{
+				this->buildPath();
+			}));
 			this->eventListeners.push_back(this->editPoints.newListener([this](bool &)
 			{
 				this->editPointIdx = -1;
@@ -74,35 +78,44 @@ namespace entropy
 			this->polyline.clear();
 
 			// Start at the camera position.
-			const auto startPoint = this->camera.getGlobalPosition();
-			this->polyline.addVertex(startPoint);
-			// Add a couple of points in front to get the curve going.
-			for (int i = 0; i < 2; ++i)
-			{
-				this->polyline.curveTo(startPoint + this->camera.getLookAtDir() * (i + 1), 100);
-			}
-
-			// Add all the galaxy points.
-			for (int i = 0; i < this->curvePoints.size(); ++i)
-			{
-				auto & currPoint = this->curvePoints[i];
-				float dist = glm::distance((i == 0) ? startPoint : this->curvePoints[i - 1], currPoint);
-				int resolution = dist;
-				this->polyline.curveTo(currPoint, resolution);
-			}
-
-			// End at the origin, adding a couple of points to get a smooth finish.
+			const auto startPoint = this->startPosition;
+			// End at the origin.
 			const auto endPoint = glm::vec3(0.0f);
-			const auto lookBackDir = glm::normalize(startPoint - endPoint);
-			for (int i = 2; i > 0; --i)
+			
+			this->polyline.addVertex(startPoint);
+
+			if (!this->curvePoints.empty())
 			{
-				this->polyline.curveTo(endPoint + lookBackDir * i, 100);
+				this->polyline.curveTo(startPoint);
+				this->polyline.curveTo(startPoint);
+
+				// Add all the galaxy points.
+				for (int i = 0; i < this->curvePoints.size(); ++i)
+				{
+					const auto & currPoint = this->curvePoints[i];
+					this->addCurvePointToPolyline(currPoint);
+				}
+
+				// Add a couple of points in back to get a smooth finish.
+				this->addCurvePointToPolyline(endPoint);
+				this->addCurvePointToPolyline(endPoint);
 			}
+
 			this->polyline.lineTo(endPoint);
 
 			this->totalDistance = this->polyline.getPerimeter();
 
 			this->reset = true;
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::addCurvePointToPolyline(const glm::vec3 & point)
+		{
+			auto tempPolyline = this->polyline;
+			tempPolyline.curveTo(point);
+			float segmentLength = tempPolyline.getPerimeter() - this->polyline.getPerimeter();
+			int resolution = segmentLength * this->curveResolution;
+			this->polyline.curveTo(point, resolution);
 		}
 
 		//--------------------------------------------------------------
@@ -170,7 +183,7 @@ namespace entropy
 				ofSetColor(ofColor::purple);
 				for (auto & v : this->polyline.getVertices())
 				{
-					ofDrawBox(v, 2.0f);
+					ofDrawBox(v, 1.0f / this->curveResolution);
 				}
 
 				ofSetColor(ofColor::blue);
@@ -190,6 +203,15 @@ namespace entropy
 				this->camera.setPosition(savedPosition);
 				this->camera.setOrientation(savedOrientation);
 			}
+			this->startPosition = this->camera.getGlobalPosition();
+			this->startOrientation = this->camera.getGlobalOrientation();
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::resetCamera()
+		{
+			this->camera.setPosition(this->startPosition);
+			this->camera.setOrientation(this->startOrientation);
 		}
 
 		//--------------------------------------------------------------
@@ -199,8 +221,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void TravelCamPath::serialize(nlohmann::json & json) const
+		void TravelCamPath::serialize(nlohmann::json & json)
 		{
+			// Reset the camera first.
+			cout << "pree cam pos " << this->camera.getGlobalPosition() << endl;
+			this->resetCamera();
+			cout << "post cam pos " << this->camera.getGlobalPosition() << endl;
+
 			auto & jsonGroup = json["travelCamPath"];
 			ofSerialize(jsonGroup, this->camera, "camera");
 			ofSerialize(jsonGroup, this->curvePoints, "curvePoints");
@@ -216,6 +243,9 @@ namespace entropy
 				const auto & jsonGroup = json["travelCamPath"];
 				ofDeserialize(jsonGroup, this->camera, "camera");
 				ofDeserialize(jsonGroup, this->curvePoints, "curvePoints");
+
+				this->startPosition = this->camera.getGlobalPosition();
+				this->startOrientation = this->camera.getGlobalOrientation();
 
 				this->buildPath();
 			}

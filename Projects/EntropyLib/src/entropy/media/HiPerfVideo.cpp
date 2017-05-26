@@ -12,6 +12,7 @@ namespace entropy
 		HiPerfVideo::HiPerfVideo()
 			: Base(Type::HPV)
 			, wasLoaded(false)
+			, freePlayInit(false)
 		{
 			// Engine initialized in ofApp::setup().
 			//HPV::InitHPVEngine();

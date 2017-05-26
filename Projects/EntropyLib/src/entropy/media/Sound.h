@@ -3,7 +3,7 @@
 #include "Base.h"
 
 #include "ofFileUtils.h"
-#include "ofVideoPlayer.h"
+#include "ofSoundPlayer.h"
 
 #include "entropy/Helpers.h"
 
@@ -40,10 +40,12 @@ namespace entropy
 
 			unsigned long long getContentDurationMs() const override;
 
-			ofVideoPlayer soundPlayer;
+			ofSoundPlayer soundPlayer;
 
 			string fileName;
 			bool wasLoaded;
+
+			bool freePlayInit;
 
 		protected:
 			BaseParameters & getParameters() override
@@ -55,10 +57,12 @@ namespace entropy
 			{
 				ofParameter<string> filePath{ "File Path", "" };
 				ofParameter<bool> loop{ "Loop", false };
+				ofParameter<bool> syncToTimeline{ "Sync To Timeline", true };
 
 				PARAM_DECLARE("Sound",
 					filePath,
-					loop);
+					loop,
+					syncToTimeline);
 			} parameters;
 		};
 	}

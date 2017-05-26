@@ -1,0 +1,171 @@
+{
+    "Bubbles": {
+        "Box": {
+            "Alpha": "0",
+            "Auto_Draw": "1",
+            "Blend_Mode": "1",
+            "Color": "0.376471, 0.376471, 0.376471, 1",
+            "Cull_Face": "1",
+            "Depth_Test": "0",
+            "Edge_Ratio": "0.001",
+            "Enabled": "1",
+            "Size": "12000",
+            "Subdivisions": "5"
+        },
+        "Bubbles": {
+            "Camera": {
+                "Dolly_Speed": "0",
+                "Far_Clip": "200000",
+                "Near_Clip": "0.001",
+                "Pan_Speed": "0",
+                "Roll_Speed": "0",
+                "Tilt_Speed": "0"
+            },
+            "Render": {
+                "Record_Sequence": "0",
+                "Record_Video": "0",
+                "Render_Height": "1080",
+                "Render_Width": "4200"
+            },
+            "SphereExtra": {
+                "Mask_Mix": "0.000102303",
+                "Tint_Color": "1, 1, 1, 1"
+            }
+        },
+        "Pool_GL_2D": {
+            "Alpha": "0",
+            "Damping": "0.995",
+            "Draw_Enabled": "0",
+            "Drop_Color_1": "0.937255, 0.819608, 0.670588, 1",
+            "Drop_Color_2": "0.658824, 0.509804, 0.435294, 1",
+            "Drop_Rate": "1",
+            "Dropping": "1",
+            "Radius": "30",
+            "Ring_Size": "5",
+            "Ripple_Rate": "1",
+            "Run_Simulation": "0"
+        },
+        "Pool_GL_3D": {
+            "Alpha": "1",
+            "Bursts": {
+                "Color": "0.498039, 0.498039, 0.498039, 1",
+                "Enabled": "0",
+                "Force_Multiplier": "1",
+                "Force_Random": "0.2",
+                "Max_Age": "5",
+                "Max_Distance": "0.15",
+                "Max_Links": "2",
+                "Min_Distance": "0.05",
+                "Resolution": "6",
+                "World_Bounds": "12000"
+            },
+            "Damping": "0.999",
+            "Draw_Enabled": "1",
+            "Drop_Color_1": "0.937255, 0.82046, 0.668943, 1",
+            "Drop_Color_2": "0.658824, 0.508092, 0.434048, 1",
+            "Drop_Rate": "60",
+            "Dropping": "0",
+            "Filter_Mode": "0",
+            "Radius": "20",
+            "Ring_Size": "1.25",
+            "Ripple_Rate": "120",
+            "Run_Simulation": "1",
+            "Volume_Size": "12000"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "0.01",
+                "Brightness_Threshold": "0.01",
+                "Debug_Blur": "0",
+                "Enabled": "1",
+                "Num_Passes": "1",
+                "Sigma": "0.951"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "5.206",
+                "Gamma": "2.2",
+                "Tonemapping": "0"
+            },
+            "Tonemapping": {
+                "linear_angle": "0.1",
+                "linear_strenght": "0.3",
+                "shoulder_strenght": "0.22",
+                "toe_denominator": "0.3",
+                "toe_numerator": "0.01",
+                "toe_strenght": "0.2"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "0",
+                "Inner": "0.8",
+                "Only_Alpha": "1",
+                "Outer": "1.1",
+                "Power": "1.1",
+                "Ratio": "1",
+                "Rotation": "0"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.0005",
+            "DOF_distance": "1",
+            "DOF_samples": "1",
+            "Fade_From": "0.8",
+            "Fade_Power": "2",
+            "Fade_To": "1",
+            "Fill": "1",
+            "Fill_Alpha": "0.5",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.5",
+            "Fog_Min_Distance": "0.1",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0.1",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "0",
+            "Use_Lights": "0",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.25",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "0"
+        },
+        "Sphere": {
+            "Alpha": "1.33228e-05",
+            "Arc_Horizontal": "1",
+            "Arc_Vertical": "1",
+            "Auto_Draw": "1",
+            "Blend_Mode": "1",
+            "Color": "1, 1, 1, 1",
+            "Cull_Face": "1",
+            "Depth_Test": "0",
+            "Enabled": "1",
+            "Radius": "6000",
+            "Resolution": "16"
+        }
+    },
+    "ofEasyCam": {
+        "aspectRatio": 1.7740740776062,
+        "distance": 6544.01318359375,
+        "drag": 0.899999976158142,
+        "farClip": 200000.0,
+        "forceAspectRatio": true,
+        "fov": 45.0,
+        "inertiaEnabled": false,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": true,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 0.00100000004749745,
+        "orientation": "0.986645, -0.078913, -0.0233032, 0.140576",
+        "ortho": false,
+        "position": "-413.334, 983.602, 6456.45",
+        "relativeYAxis": false,
+        "scale": "1, 1, 1",
+        "target": "0, 0, 0",
+        "translationKey": 109,
+        "upAxis": "0, 1, 0"
+    }
+}
