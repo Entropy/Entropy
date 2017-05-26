@@ -840,10 +840,13 @@ void ofApp::draw(){
 		}
 	}
 
+	auto w = ofGetWidth();
+	auto h = w * postFbo.getHeight() / postFbo.getWidth();
+
 	if(!parameters.showCooldown){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
-		postFbo.draw(0,0);
+		postFbo.draw(0,0,w,h);
 	}
 
 	if((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw){
@@ -901,7 +904,7 @@ void ofApp::draw(){
 	if(parameters.showCooldown){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
-		postFboCooldown.draw(0,0);
+		postFboCooldown.draw(0,0,w,h);
 	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
