@@ -464,7 +464,9 @@ void ofApp::update()
 				break;
 				case nm::Environment::STANDARD_MODEL:
 					for(auto * p1: sortedParticles){
-						for(auto * p2: p1->potentialInteractionPartners){
+						auto * p2 = p1->fusionPartners.first;
+						auto * p3 = p1->fusionPartners.second;
+						if(p2 && p3){
 							auto distance = glm::distance(p1->pos * scale, p2->pos * scale);
 							travelDistance = glm::distance(p1->pos, camera.getGlobalPosition()) / kHalfDim;
 							auto minTravelTime = travelDistance / parameters.rendering.travelMaxSpeed;
@@ -474,9 +476,9 @@ void ofApp::update()
 							});
 							auto aproxFussionTime = fussionPartners * 1.f / environment->systemSpeed;
 
-							bool foundNew = distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
-							foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
-							foundNew &= minTravelTime < aproxFussionTime * 0.8;
+							bool foundNew = true;//distance < nm::Octree<nm::Particle>::INTERACTION_DISTANCE();
+//							foundNew &= distance > nm::Octree<nm::Particle>::INTERACTION_DISTANCE() * 1. / 2.;
+//							foundNew &= minTravelTime < aproxFussionTime * 0.8;
 							//foundNew &= p1->anihilationRatio + p2->anihilationRatio > 0.2;
 							foundNew &= p1->pos.x > -kHalfDim * 0.5 && p1->pos.x < kHalfDim * 0.5;
 							foundNew &= p1->pos.y > -kHalfDim * 0.5 && p1->pos.y < kHalfDim * 0.5;
@@ -493,9 +495,14 @@ void ofApp::update()
 								timeRenewLookAt = now;
 								prevLookAt = lerpedLookAt;
 								prevCameraPosition = camera.getGlobalPosition();
-								arrived = false;
 								timeConnectionLost = 0;
 								rotationDirection = round(ofRandomf());
+								if(parameters.rendering.cutToInteraction){
+									arrived = true;
+									lerpedLookAt = (p1->pos + p2->pos + p3->pos)/3.f;
+								}else{
+									arrived = false;
+								}
 								// cout << "renewed to " << p1->id << "  " << p2->id << " " << &p1 << " " << p2 << " at distance " << distance << endl;
 								break;
 							}
@@ -546,11 +553,13 @@ void ofApp::update()
 		}
 	}
 
-	camera.orbitDeg(orbitAngle, 0, 50, lerpedLookAt);
-	//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
-	rotationSpeed = rotationSpeed * 0.9 + dt * parameters.rendering.rotationSpeed * rotationDirection * 0.1;
-	orbitAngle += rotationSpeed;
-	orbitAngle = ofWrap(orbitAngle, 0, 360);
+	if(environment->state<nm::Environment::TRANSITION_OUT){
+		camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius, lerpedLookAt);
+		//	camera.orbitDeg(orbitAngle, 0, parameters.rendering.rotationRadius * kHalfDim);
+		rotationSpeed = rotationSpeed * 0.9 + dt * parameters.rendering.rotationSpeed * rotationDirection * 0.1;
+		orbitAngle += rotationSpeed;
+		orbitAngle = ofWrap(orbitAngle, 0, 360);
+	}
 
 //	camera.setPosition(lookAtPos + glm::vec3(0,0,50));
 //	camera.lookAt(lookAtPos, glm::vec3(0,1,0));

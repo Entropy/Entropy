@@ -142,6 +142,7 @@ namespace nm
 			p.setRadius(radius);
 			p.anihilationRatio = 0;
 			p.alive = true;
+			p.age = 0;
 
 			totalNumParticles++;
 			numParticles[type]++;
@@ -179,6 +180,11 @@ namespace nm
 		const float annihilationThreshold = environment->getAnnihilationThresh(); // was 0.5
 		const float fusionThreshold = environment->getFusionThresh(); // was 0.00001
 		Octree<Particle>::setForceMultiplier(environment->getForceMultiplier());
+
+		for(auto & particle: particles){
+			particle.fusing = false;
+		}
+
 		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
@@ -190,6 +196,7 @@ namespace nm
 
 				// zero particle forces
 				particles[i].zeroForce();
+				particles[i].age += dt;
 
 				// sum all forces acting on particle
 				particles[i].potentialInteractionPartners.clear();
@@ -297,19 +304,31 @@ namespace nm
 				}
 
 
-
-				if(!killParticles && environment->state > nm::Environment::BARYOGENESIS){
+				particles[i].fusionPartners.first = nullptr;
+				particles[i].fusionPartners.second = nullptr;
+				if(!killParticles && !particles[i].fusing && environment->state > nm::Environment::BARYOGENESIS){
 					auto type = particles[i].getType();
 					if(type==Particle::DOWN_QUARK || type==Particle::UP_QUARK){
 						const auto & partners = particles[i].potentialInteractionPartners;
 						auto down = std::find_if(partners.begin(), partners.end(), [&](const Particle * p){
-							return p->getType() == Particle::DOWN_QUARK && p->alive;
+							return p->getType() == Particle::DOWN_QUARK && p->alive &&
+									glm::distance(particles[i].pos, p->pos) < Octree<Particle>::INTERACTION_DISTANCE() &&
+									particles[i].id < p->id &&
+									!p->fusing;
 						});
 						auto up = std::find_if(partners.begin(), partners.end(), [&](const Particle * p){
-							return p->getType() == Particle::UP_QUARK && p->alive;
+							return p->getType() == Particle::UP_QUARK && p->alive &&
+									glm::distance(particles[i].pos, p->pos) < Octree<Particle>::INTERACTION_DISTANCE() &&
+									particles[i].id < p->id &&
+									!p->fusing;
 						});
 						if (up != partners.end() && down != partners.end())
 						{
+							particles[i].fusing = true;
+							(*up)->fusing = true;
+							(*down)->fusing = true;
+							particles[i].fusionPartners.first = *down;
+							particles[i].fusionPartners.second = *up;
 							particles[i].fusionRatio = particles[i].fusionRatio + dt;
 							if (particles[i].fusionRatio > fusionThreshold)
 							{
@@ -320,11 +339,13 @@ namespace nm
 								}
 								addParticle(
 									newType,
-									particles[i].pos,
+									(particles[i].pos + (*down)->pos + (*up)->pos) / 3.f,
 									((*up)->getVelocity() + (*down)->getVelocity() + particles[i].getVelocity()) / 3.f
 								);
 								killParticles = true;
 							}
+						}else{
+							particles[i].fusionRatio = 0;
 						}
 
 						if(killParticles){

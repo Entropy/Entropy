@@ -72,9 +72,9 @@ namespace nm
 	};
 
 	Particle::Particle():
-        mass(1.f),
-        velocity(1.f, 0.f, 0.f),
+		mass(1.f),
         charge(1.f),
+		velocity(1.f, 0.f, 0.f),
 		radius(10.f),
 		id(nextParticleId++)
     {
