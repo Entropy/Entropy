@@ -1,0 +1,62 @@
+<positions>
+    <element name="Cues">
+        <x>0.000000000</x>
+        <y>52.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Environment/Energy">
+        <x>0.000000000</x>
+        <y>428.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Environment/state">
+        <x>0.000000000</x>
+        <y>492.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Renderer/Alpha_factor">
+        <x>0.000000000</x>
+        <y>876.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Renderer/Fog_Max_Distance">
+        <x>0.000000000</x>
+        <y>556.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/Ambient_Light">
+        <x>0.000000000</x>
+        <y>620.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/add_cluster">
+        <x>0.000000000</x>
+        <y>684.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/particlesAlpha">
+        <x>0.000000000</x>
+        <y>876.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/scale_factor">
+        <x>0.000000000</x>
+        <y>748.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/trailsAlpha">
+        <x>0.000000000</x>
+        <y>812.000000000</y>
+        <width>1280.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

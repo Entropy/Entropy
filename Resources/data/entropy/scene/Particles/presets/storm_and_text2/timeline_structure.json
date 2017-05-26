@@ -1,0 +1,14 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Scene",
+            "tracks": [
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                }
+            ]
+        }
+    ]
+}

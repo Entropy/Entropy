@@ -19,7 +19,13 @@
     </element>
     <element name="Particles/Environment/Energy">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>740.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Environment/state">
+        <x>0.000000000</x>
+        <y>996.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -43,13 +49,19 @@
     </element>
     <element name="Particles/Renderer/Fog_Max_Distance">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>804.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Particles/Scene/Rendering/Ambient_Light">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>868.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Particles/Scene/Rendering/add_cluster">
+        <x>0.000000000</x>
+        <y>932.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

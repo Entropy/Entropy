@@ -1,25 +1,19 @@
 <positions>
+    <element name="Camera">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Cues">
         <x>0.000000000</x>
         <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Particles/Environment/Energy">
+    <element name="Particles/parameters/relation_distance">
         <x>0.000000000</x>
-        <y>868.000000000</y>
-        <width>1920.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Particles/Renderer/Fog_Max_Distance">
-        <x>0.000000000</x>
-        <y>932.000000000</y>
-        <width>1920.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Particles/Scene/Rendering/Ambient_Light">
-        <x>0.000000000</x>
-        <y>996.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

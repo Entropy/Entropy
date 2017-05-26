@@ -1,0 +1,67 @@
+<keyframes>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:05:000</time>
+        <value>0.475000024</value>
+    </key>
+    <key>
+        <flag>play baryo</flag>
+        <time>00:00:10:000</time>
+        <value>0.574999988</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:01:00:312</time>
+        <value>0.574999988</value>
+    </key>
+    <key>
+        <flag>play inflaton</flag>
+        <time>00:01:30:000</time>
+        <value>0.875000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:01:40:937</time>
+        <value>0.225000024</value>
+    </key>
+    <key>
+        <flag>play motion</flag>
+        <time>00:02:00:000</time>
+        <value>0.274999976</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:02:10:937</time>
+        <value>0.199999988</value>
+    </key>
+    <key>
+        <flag>play nucleo</flag>
+        <time>00:04:00:000</time>
+        <value>0.750000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:04:45:000</time>
+        <value>0.649999976</value>
+    </key>
+    <key>
+        <flag>play graph</flag>
+        <time>00:06:00:000</time>
+        <value>0.824999988</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:06:20:000</time>
+        <value>0.149999976</value>
+    </key>
+    <key>
+        <flag>play outro</flag>
+        <time>00:08:00:312</time>
+        <value>0.125000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:08:10:107</time>
+        <value>0.524999976</value>
+    </key>
+</keyframes>
