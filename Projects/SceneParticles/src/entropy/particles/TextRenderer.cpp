@@ -336,6 +336,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 	});
 
 
+	// Render actual particles
 	ofShader & billboardShader = (environment.state == nm::Environment::BARYOGENESIS) ? billboardShaderPath : billboardShaderText;
 	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
 		auto i = 0;
@@ -453,15 +454,16 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 		}
 
 
+		// Phtons
 		for(auto & p: photons){
 			if(!p.alive) continue;
 			auto distance = glm::distance2(cam.getPosition(), p.pos * scale);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
-			auto pctColor = (1-pctDistance) * photonsStrenght * (1 - ofClamp(p.age/3/environment.systemSpeed, 0, 1));
+			auto pctColor = (1-pctDistance) * photonsStrenght * (1 - ofClamp(p.age/nm::Photons::LIVE()/environment.systemSpeed, 0, 1));
 			billboardShader.setUniform1f("pctColor", pctColor);
 			billboardShader.setUniform1f("accumValue", accumValue);
 			billboardShader.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
-			auto concentrics = int(ofMap(p.age / environment.systemSpeed, 0, 1.5, 0, 3)) % 3 + 1;
+			auto concentrics = int(ofMap(p.age / environment.systemSpeed, 0, 0.5, 0, 3)) % 3 + 1;
 			int fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
 			fontSize = ofClamp(fontSize-2, 2, particlePaths.size()-1);
 			for(int i = 0; i < concentrics; i++){

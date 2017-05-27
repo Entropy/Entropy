@@ -94,10 +94,10 @@ public:
 			ofParameter<bool> drawPhotons{ "Draw Photons", true };
 			ofParameter<bool> drawText{ "Draw Text", false };
 			ofParameter<float> ambientLight{ "Ambient Light", 0.001, 0, 0.02 };
-			ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.05 };
-			ofParameter<float> lightStrength{ "Light Strength", 1, 0, 1 };
+			ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.1 };
+			ofParameter<float> lightStrength{ "Light Strength", 1, 0, 5 };
 			ofParameter<float> fov{ "Fov", 60, 1, 120 };
-			ofParameter<float> rotationRadius{"Rotation radius", 50, 5, 200, ofParameterScale::Logarithmic};
+			ofParameter<float> rotationRadius{"Rotation radius", 50, 5, 400, ofParameterScale::Logarithmic};
 			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 			ofParameter<float> travelMaxSpeed{"Travel max speed", 0.1, 0.001, 2, ofParameterScale::Logarithmic};
 			ofParameter<float> minTimeBetweenTravels{"min time between travels", 5, 0, 20, ofParameterScale::Logarithmic};
@@ -119,6 +119,7 @@ public:
 				drawText,
 				ambientLight,
 				attenuation,
+				lightStrength,
 				fov,
 				rotationRadius,
 				rotationSpeed,
@@ -130,7 +131,9 @@ public:
 				addCluster,
 				scaleFactor,
 				trailsAlpha,
-				particlesAlpha);
+				particlesAlpha,
+				nm::Photons::LIVE()
+			);
 		} rendering;
 
 		struct : ofParameterGroup

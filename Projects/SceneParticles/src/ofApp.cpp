@@ -32,8 +32,8 @@ void ofApp::setup()
 
 	// Init fbos
 	ofFbo::Settings fboSettings;
-	fboSettings.width = 1920;
-	fboSettings.height = entropy::GetSceneHeight() * fboSettings.width / entropy::GetSceneWidth();
+	fboSettings.width = entropy::GetSceneWidth();
+	fboSettings.height = entropy::GetSceneHeight();
 	fboSettings.internalformat = GL_RGBA32F;
 	fboSettings.useDepth = true;
 	fboSettings.useStencil = false;
@@ -273,16 +273,20 @@ void ofApp::setup()
 	eventListeners.push_back(parameters.recording.fps.newListener([this](int & fps){
 		if(parameters.recording.systemClock){
 			ofSetTimeModeSystem();
+			ofSetVerticalSync(true);
 		}else{
 			ofSetTimeModeFixedRate(ofGetFixedStepForFps(fps));
+			ofSetVerticalSync(false);
 		}
 	}));
 
 	eventListeners.push_back(parameters.recording.systemClock.newListener([this](bool & systemClock){
 		if(systemClock){
 			ofSetTimeModeSystem();
+			ofSetVerticalSync(true);
 		}else{
 			ofSetTimeModeFixedRate(ofGetFixedStepForFps(parameters.recording.fps));
+			ofSetVerticalSync(false);
 		}
 	}));
 
@@ -345,7 +349,7 @@ void ofApp::update()
 				 this->photons.getPosnsRef().end(),
 				 std::back_inserter(photonsAlive),
 				 [](nm::Photon & p){
-					return p.alive;
+					return p.alive && p.age < nm::Photons::LIVE();
 				 });
 	std::sort(photonsAlive.begin(), photonsAlive.end(), [&](nm::Photon & p1, nm::Photon & p2){
 		return p1.age < p2.age;
@@ -362,7 +366,7 @@ void ofApp::update()
 	{
 		auto & light = pointLights[i];
 		light.enable();
-		light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength *  (1 - ofClamp(photonsAlive[i].age / 3.f / environment->systemSpeed, 0, 1)));
+		light.setDiffuseColor(ofFloatColor::white * parameters.rendering.lightStrength );//*  (1 - ofClamp(photonsAlive[i].age / nm::Photons::LIVE() / environment->systemSpeed, 0, 1))
 		light.setPointLight();
 		light.setPosition(photonsAlive[i].pos * scale);
 		light.setAttenuation(0, 0, parameters.rendering.attenuation);
@@ -926,7 +930,7 @@ void ofApp::reset()
 		counts[i] = 0;
 	}
 
-	for(int i=0;i<particleTypesInitialNumbers.size();i++){
+	for(size_t i=0;i<particleTypesInitialNumbers.size();i++){
 		for (int j = 0; j < particleTypesInitialNumbers[i]; ++j)
 		{
 			glm::vec3 position = glm::vec3(
@@ -943,15 +947,6 @@ void ofApp::reset()
 			//particleSystem.addParticle((nm::Particle::Type)(i % 6), position, velocity);
 		}
 	}
-
-//	int numParticles = particleSystem.getParticles().size();
-//	ofLog() << "Reset system with " << numParticles << " particles: " << endl
-//		<< "  " << counts[nm::Particle::Type::ELECTRON]        << " (" << ofToString(counts[nm::Particle::Type::ELECTRON] / (float)numParticles, 2)        << ") electrons" << endl
-//		<< "  " << counts[nm::Particle::Type::POSITRON]        << " (" << ofToString(counts[nm::Particle::Type::POSITRON] / (float)numParticles, 2)        << ") positrons" << endl
-//		<< "  " << counts[nm::Particle::Type::UP_QUARK]        << " (" << ofToString(counts[nm::Particle::Type::UP_QUARK] / (float)numParticles, 2)        << ") up quarks" << endl
-//		<< "  " << counts[nm::Particle::Type::ANTI_UP_QUARK]   << " (" << ofToString(counts[nm::Particle::Type::ANTI_UP_QUARK] / (float)numParticles, 2)   << ") anti up quarks" << endl
-//		<< "  " << counts[nm::Particle::Type::DOWN_QUARK]      << " (" << ofToString(counts[nm::Particle::Type::DOWN_QUARK] / (float)numParticles, 2)      << ") down quarks" << endl
-//		<< "  " << counts[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(counts[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)numParticles, 2) << ") anti down quarks" << endl;
 }
 
 //--------------------------------------------------------------
