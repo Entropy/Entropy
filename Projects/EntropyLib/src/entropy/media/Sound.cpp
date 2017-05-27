@@ -63,13 +63,13 @@ namespace entropy
 				if (!this->soundPlayer.isPlaying())
 				{
 					this->soundPlayer.play();
-					if (syncMode == SyncMode::FreePlay)
+					if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
 					{
 						this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
 					}
 				}
 
-				if (syncMode != SyncMode::FreePlay)
+				if (syncMode != SyncMode::FreePlay && syncMode != SyncMode::FadeControl)
 				{
 					this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
 				}

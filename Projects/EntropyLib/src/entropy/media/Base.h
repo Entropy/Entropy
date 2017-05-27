@@ -53,6 +53,7 @@ namespace entropy
 		{
 			FreePlay,
 			Timeline,
+			FadeControl,
 			LinkedMedia
 		};
 		
@@ -208,6 +209,7 @@ namespace entropy
 
 			float transitionPct;
 			float switchMillis;
+			float prevFade;
 
 			uint64_t freePlayStartElapsedMs;
 			uint64_t freePlayStartMediaMs;

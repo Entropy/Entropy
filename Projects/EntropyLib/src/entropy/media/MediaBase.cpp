@@ -20,6 +20,7 @@ namespace entropy
 			, transitionPct(0.0f)
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
+			, prevFade(0.0f)
 			, freePlayNeedsInit(false)
 		{
 			this->parameters.setName(this->getTypeName());
@@ -150,7 +151,24 @@ namespace entropy
 
 			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int &)
 			{
-				this->freePlayNeedsInit = true;
+				const auto syncMode = this->getSyncMode();
+				if (syncMode == SyncMode::FreePlay)
+				{
+					this->freePlayNeedsInit = true;
+				}
+				else if (syncMode == SyncMode::FadeControl && this->parameters.playback.fade > 0.0f)
+				{
+					this->freePlayNeedsInit = true;
+				}
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fade.newListener([this](float & val)
+			{
+				const auto syncMode = this->getSyncMode();
+				if (syncMode == SyncMode::FadeControl && this->prevFade == 0.0f && val > 0.0f)
+				{
+					this->freePlayNeedsInit = true;
+				}
+				this->prevFade = val;
 			}));
 
 			this->init();
@@ -379,8 +397,8 @@ namespace entropy
 				{
 					ofxImGui::AddParameter(this->parameters.playback.fade);
 					ofxImGui::AddParameter(this->parameters.playback.loop);
-					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Linked Media" };
-					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 3);
+					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Fade Control", "Linked Media" };
+					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 2);
 
 					ofxImGui::EndTree(settings);
 				}
@@ -446,10 +464,20 @@ namespace entropy
 			}
 			else if (syncMode == SyncMode::FreePlay)
 			{
-				uint64_t deltaMillis = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				uint64_t deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
 
 				// No loop and time is passed duration.
-				if (!this->parameters.playback.loop && durationMs < deltaMillis) return false;
+				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
+			}
+			else if (syncMode == SyncMode::FadeControl)
+			{
+				// Fade value at 0.
+				if (this->parameters.playback.fade == 0.0f) return false;
+
+				uint64_t deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+
+				// No loop and time is passed duration.
+				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
 			}
 			else // SyncMode::LinkedMedia
 			{

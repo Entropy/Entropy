@@ -20,8 +20,8 @@ namespace entropy
 			this->mediaA = medias[idxA];
 			this->mediaB = medias[idxB];
 
-			//this->mediaA->setLinkedMedia(this->mediaB);
-			//this->mediaB->setLinkedMedia(this->mediaA);
+			this->mediaA->setLinkedMedia(this->mediaB);
+			this->mediaB->setLinkedMedia(this->mediaA);
 
 			this->label = this->mediaA->getTypeName() + " " + ofToString(idxA) + " <=> " + this->mediaB->getTypeName() + " " + ofToString(idxB) + " " + (direction ? "[+]" : "[-]");
 			

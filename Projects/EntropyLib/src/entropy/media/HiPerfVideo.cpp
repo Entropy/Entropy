@@ -193,7 +193,7 @@ namespace entropy
 				return positionMs;
 			}
 
-			if (syncMode == SyncMode::FreePlay)
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
 			{
 				if (this->initFreePlay())
 				{
@@ -222,7 +222,7 @@ namespace entropy
 				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
 			}
 
-			if (syncMode == SyncMode::FreePlay)
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
 			{
 				if (this->initFreePlay())
 				{
