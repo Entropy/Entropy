@@ -1,0 +1,127 @@
+{
+    "Particles": {
+        "Environment": {
+            "Annihiliation_Threshold_Max": "0.5",
+            "Annihiliation_Threshold_Min": "0.3",
+            "Energy": "1",
+            "Force_Multiplier_Max": "1e+08",
+            "Force_Multiplier_Min": "1e+07",
+            "Fusion_Threshold_Exponent_Max": "-5.593",
+            "Fusion_Threshold_Exponent_Min": "-5.237",
+            "System_speed": "0.05"
+        },
+        "Particle": {
+            "Anti_down_quark": "0, 0.1, 0.5, 0.5",
+            "Anti_up_quark": "0.2, 0.2, 0.2, 0.5",
+            "Down_quark": "0.5, 0.5, 0.5, 0.5",
+            "Electron": "0.5, 0.5, 0.5, 0.5",
+            "Neutron": "0.2, 0.2, 0.2, 0.5",
+            "Positron": "0, 0.1, 0.5, 0.5",
+            "Proton": "0, 0.1, 0.5, 0.5",
+            "Up_down_quark": "0, 0.1, 0.5, 0.5",
+            "Up_quark": "0.1, 0.1, 0.1, 0.5"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "1",
+                "Brightness_Threshold": "1",
+                "Debug_Blur": "0",
+                "Enabled": "1",
+                "Num_Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Tonemapping": {
+                "linear_angle": "0.1",
+                "linear_strenght": "0.3",
+                "shoulder_strenght": "0.22",
+                "toe_denominator": "0.3",
+                "toe_numerator": "0.01",
+                "toe_strenght": "0.2"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "1",
+                "Inner": "0.8",
+                "Only_Alpha": "1",
+                "Outer": "2.24467",
+                "Power": "1.1",
+                "Ratio": "1",
+                "Rotation": "0"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.0005",
+            "DOF_distance": "1",
+            "DOF_samples": "1",
+            "Fade_From": "0.8",
+            "Fade_Power": "2",
+            "Fade_To": "1",
+            "Fill": "1",
+            "Fill_Alpha": "0.5",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.5",
+            "Fog_Min_Distance": "0.1",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0.1",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "0",
+            "Use_Lights": "1",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.25",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "0"
+        },
+        "Scene": {
+            "Debug_Lights": "0",
+            "Recording": {
+                "Record_Sequence": "0",
+                "Record_Video": "0",
+                "fps": "60",
+                "system_clock": "1"
+            },
+            "Rendering": {
+                "Additive_Blend": "0",
+                "Ambient_Light": "0.001",
+                "Attenuation": "0.01",
+                "Color_per_Type": "1",
+                "Draw_Photons": "0",
+                "Draw_Text": "1",
+                "Draw_models": "1",
+                "Fov": "60",
+                "GL_ONE": "1",
+                "Rotation_radius": "1",
+                "Rotation_speed": "1",
+                "Travel_max_speed": "0.1",
+                "use_easy_cam": "0"
+            }
+        },
+        "Text_Renderer": {
+            "fulltext_distance": "0.05",
+            "max_distance": "1",
+            "relation_distance": "0.408163"
+        }
+    },
+    "ofEasyCam": {
+        "aspectRatio": 1.33333337306976,
+        "farClip": 4269.5048828125,
+        "forceAspectRatio": false,
+        "fov": 60.0,
+        "lensOffset": "0, 0",
+        "nearClip": 4.2695050239563,
+        "orientation": "1, 0, 0, 0",
+        "ortho": false,
+        "position": "0, 0, 0",
+        "scale": "1, 1, 1"
+    }
+}

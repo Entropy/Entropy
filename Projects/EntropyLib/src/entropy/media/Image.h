@@ -20,36 +20,26 @@ namespace entropy
 
 			void exit() override;
 			
-			void gui(ofxImGui::Settings & settings) override;
+			uint64_t getCurrentTimeMs() const override;
+			uint64_t getCurrentFrame() const override;
 
-			void deserialize(const nlohmann::json & json) override;
+			uint64_t getPlaybackTimeMs() override;
+			uint64_t getPlaybackFrame() override;
+
+			uint64_t getDurationMs() const override;
+			uint64_t getDurationFrames() const override;
 
 		protected:
-			bool loadImage(const std::filesystem::path & filePath);
-
+			bool loadMedia(const std::filesystem::path & filePath) override;
 			bool isLoaded() const override;
 
 			float getContentWidth() const override;
 			float getContentHeight() const override;
 			void renderContent() override;
 
-			unsigned long long getContentDurationMs() const override;
+			bool initFreePlay() override;
 
 			ofTexture image;
-			string fileName;
-
-		protected:
-			BaseParameters & getParameters() override
-			{
-				return this->parameters;
-			}
-
-			struct : BaseParameters
-			{
-				ofParameter<string> filePath{ "File Path", "" };
-
-				PARAM_DECLARE("Image", filePath);
-			} parameters;
 		};
 	}
 }

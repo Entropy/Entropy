@@ -12,7 +12,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		Movie::Movie()
 			: Base(Type::Movie)
-			, wasLoaded(false)
 		{
 			this->videoPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
@@ -24,7 +23,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Movie::init()
 		{
-			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
+			this->parameterListeners.push_back(this->parameters.playback.loop.newListener([this](bool & enabled)
 			{
 				this->videoPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 			}));
@@ -57,107 +56,31 @@ namespace entropy
 			
 			this->videoPlayer.update();
 
-			if (!this->isLoaded())
+			if (!this->isLoaded()) return;
+
+			const bool shouldPlay = this->shouldPlay();
+			if (shouldPlay)
 			{
-				return;
-			}
-
-			if (this->switchMillis >= 0.0f)
-			{
-				float durationMillis = this->videoPlayer.getDuration() * 1000.0f;
-				bool shouldPlay = durationMillis > 0.0 && (this->parameters.loop || durationMillis >= this->switchMillis);
-				
-				if (this->timeline->getIsPlaying())
+				if (this->videoPlayer.isPaused())
 				{
-					if (shouldPlay && this->videoPlayer.isPaused())
-					{
-						// Set the starting position.
-						float positionMillis = this->switchMillis;
-						while (positionMillis > durationMillis)
-						{
-							positionMillis -= durationMillis;
-						}
-
-						this->videoPlayer.setPosition(positionMillis / durationMillis);
-						this->videoPlayer.setPaused(false);
-					}
-					else if (!shouldPlay && !this->videoPlayer.isPaused())
-					{
-						this->videoPlayer.setPaused(true);
-					}
-				}
-				else if (shouldPlay && this->parameters.scrubToTimeline)
-				{
-					// Scrub the video.
-					float positionMillis = this->switchMillis;
-					while (positionMillis > durationMillis)
-					{
-						positionMillis -= durationMillis;
-					}
-
-					this->videoPlayer.setPosition(positionMillis / durationMillis);
+					this->videoPlayer.setFrame(this->getPlaybackFrame());
 					this->videoPlayer.setPaused(false);
 				}
+
+				const auto syncMode = this->getSyncMode();
+				if (syncMode != SyncMode::FreePlay && syncMode != SyncMode::FadeControl)
+				{
+					this->videoPlayer.setFrame(this->getPlaybackFrame());
+				}
 			}
-			else if (this->switchMillis < 0.0f && !this->videoPlayer.isPaused())
+			else if (!this->videoPlayer.isPaused())
 			{
 				this->videoPlayer.setPaused(true);
 			}
 		}
 
 		//--------------------------------------------------------------
-		void Movie::gui(ofxImGui::Settings & settings)
-		{
-			if (ofxImGui::BeginTree("File", settings))
-			{
-				if (ImGui::Button("Load..."))
-				{
-					auto result = ofSystemLoadDialog("Select a movie file.", false, GetSharedAssetsPath().string());
-					if (result.bSuccess)
-					{
-						if (this->loadVideo(result.filePath))
-						{
-							const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
-							const auto testPath = GetSharedAssetsPath().append(relativePath);
-							if (ofFile::doesFileExist(testPath.string()))
-							{
-								this->parameters.filePath = relativePath;
-							}
-							else
-							{
-								this->parameters.filePath = result.filePath;
-							}
-						}
-					}
-				}
-				ImGui::Text("Filename: %s", this->fileName.c_str());
-
-				ofxImGui::EndTree(settings);
-			}
-
-			ofxImGui::AddParameter(this->parameters.loop);
-			ofxImGui::AddParameter(this->parameters.scrubToTimeline);
-		}
-
-		//--------------------------------------------------------------
-		void Movie::deserialize(const nlohmann::json & json)
-		{
-			if (!this->parameters.filePath->empty())
-			{
-				const auto filePath = this->parameters.filePath.get();
-				if (ofFilePath::isAbsolute(filePath))
-				{
-					this->loadVideo(filePath);
-				}
-				else
-				{
-					this->loadVideo(GetSharedAssetsPath().string() + filePath);
-				}
-			}
-		}
-
-		//--------------------------------------------------------------
-		bool Movie::loadVideo(const std::filesystem::path & filePath)
+		bool Movie::loadMedia(const std::filesystem::path & filePath)
 		{
 			if (!ofFile::doesFileExist(filePath))
 			{
@@ -173,7 +96,7 @@ namespace entropy
 			if (wasUsingArbTex) ofEnableArbTex();
 
 			this->videoPlayer.play();
-			this->videoPlayer.setLoopState(this->parameters.loop ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+			this->videoPlayer.setLoopState(this->parameters.playback.loop ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 
 			this->fileName = ofFilePath::getFileName(filePath);
 			this->wasLoaded = false;
@@ -209,11 +132,131 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		unsigned long long Movie::getContentDurationMs() const
+		bool Movie::initFreePlay()
+		{
+			if (this->freePlayNeedsInit)
+			{
+				// Get start time and frames for free play.
+				this->freePlayStartElapsedMs = ofGetElapsedTimeMillis();
+
+				const uint64_t durationMs = this->getDurationMs();
+				this->freePlayStartMediaMs = std::max(0.0f, this->switchMillis);
+				while (this->freePlayStartMediaMs > durationMs)
+				{
+					this->freePlayStartMediaMs -= durationMs;
+				}
+
+				this->freePlayStartMediaFrame = (this->freePlayStartMediaMs / static_cast<float>(durationMs)) * this->videoPlayer.getTotalNumFrames();
+
+				this->freePlayNeedsInit = false;
+
+				return true;
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getCurrentTimeMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->videoPlayer.getPosition() * this->videoPlayer.getDuration() * 1000.0f;
+			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getCurrentFrame() const
+		{
+			if (this->isLoaded())
+			{
+				return this->videoPlayer.getCurrentFrame();
+			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getPlaybackTimeMs()
+		{
+			const auto syncMode = this->getSyncMode();
+
+			if (syncMode == SyncMode::Timeline)
+			{
+				const uint64_t durationMs = this->getDurationMs();
+				if (durationMs == 0) return 0;
+
+				uint64_t positionMs = this->switchMillis;
+				while (positionMs > durationMs)
+				{
+					positionMs -= durationMs;
+				}
+				return positionMs;
+			}
+
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+			{
+				if (this->initFreePlay())
+				{
+					return this->freePlayStartMediaMs;
+				}
+
+				return ofGetElapsedTimeMillis() - this->freePlayStartMediaMs;
+			}
+
+			//else SyncMode::LinkedMedia
+			if (this->linkedMedia != nullptr)
+			{
+				return this->linkedMedia->getPlaybackTimeMs();
+			}
+
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getPlaybackFrame()
+		{
+			const auto syncMode = this->getSyncMode();
+
+			if (syncMode == SyncMode::Timeline)
+			{
+				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
+			}
+
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+			{
+				if (this->initFreePlay())
+				{
+					return this->freePlayStartMediaFrame;
+				}
+
+				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
+			}
+
+			//else SyncMode::LinkedMedia
+			if (this->linkedMedia != nullptr)
+			{
+				return this->linkedMedia->getPlaybackFrame();
+			}
+
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getDurationMs() const
 		{
 			if (this->isLoaded())
 			{
 				return this->videoPlayer.getDuration() * 1000;
+			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getDurationFrames() const
+		{
+			if (this->isLoaded())
+			{
+				return this->videoPlayer.getTotalNumFrames();
 			}
 			return 0;
 		}

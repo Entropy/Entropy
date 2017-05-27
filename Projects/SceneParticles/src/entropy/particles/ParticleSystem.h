@@ -97,7 +97,6 @@ namespace nm
 				<< "  " << numParticles[nm::Particle::Type::ANTI_UP_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::ANTI_UP_QUARK] / (float)totalNumParticles, 2) << ") anti up quarks" << endl
 				<< "  " << numParticles[nm::Particle::Type::DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::DOWN_QUARK] / (float)totalNumParticles, 2) << ") down quarks" << endl
 				<< "  " << numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::ANTI_DOWN_QUARK] / (float)totalNumParticles, 2) << ") anti down quarks" << endl
-				<< "  " << numParticles[nm::Particle::Type::UP_DOWN_QUARK] << " (" << ofToString(numParticles[nm::Particle::Type::UP_DOWN_QUARK] / (float)totalNumParticles, 2) << ") up down quarks" << endl
 				<< "  " << numParticles[nm::Particle::Type::PROTON] << " (" << ofToString(numParticles[nm::Particle::Type::PROTON] / (float)totalNumParticles, 2) << ") protons" << endl
 				<< "  " << numParticles[nm::Particle::Type::NEUTRON] << " (" << ofToString(numParticles[nm::Particle::Type::NEUTRON] / (float)totalNumParticles, 2) << ") neutrons" << endl
 				<< "  " << "anihilation threshold " << environment->getAnnihilationThresh() << endl

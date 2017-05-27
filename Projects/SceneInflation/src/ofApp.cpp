@@ -840,10 +840,13 @@ void ofApp::draw(){
 		}
 	}
 
+	auto w = ofGetWidth();
+	auto h = w * postFbo.getHeight() / postFbo.getWidth();
+
 	if(!parameters.showCooldown){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
-		postFbo.draw(0,0);
+		postFbo.draw(0,0,w,h);
 	}
 
 	if((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw){
@@ -901,7 +904,7 @@ void ofApp::draw(){
 	if(parameters.showCooldown){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
-		postFboCooldown.draw(0,0);
+		postFboCooldown.draw(0,0,w,h);
 	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
@@ -957,10 +960,10 @@ void ofApp::mousePressed(ofMouseEventArgs & mouse){
 	if(mouse.button==OF_MOUSE_BUTTON_LEFT && mouse.hasModifier(OF_KEY_CONTROL) && mouse.hasModifier(OF_KEY_SHIFT)){
 		auto geometry = gpuMarchingCubes.downloadGeometry();
 		auto v = camera.worldToScreen(geometry.getVertex(0));
-		auto nearest = glm::distance2(v.xy(), mouse);
+		auto nearest = glm::distance2(v.xy(), mouse.xy());
 		for(auto & v: geometry.getVertices()){
 			auto screenv = camera.worldToScreen(v);
-			auto d = glm::distance2(screenv.xy(), mouse);
+			auto d = glm::distance2(screenv.xy(), mouse.xy());
 			if(d<nearest){
 				nearest = d;
 				dofTarget = v;

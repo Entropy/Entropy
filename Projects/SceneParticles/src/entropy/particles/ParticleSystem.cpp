@@ -142,6 +142,7 @@ namespace nm
 			p.setRadius(radius);
 			p.anihilationRatio = 0;
 			p.alive = true;
+			p.age = 0;
 
 			totalNumParticles++;
 			numParticles[type]++;
@@ -179,6 +180,11 @@ namespace nm
 		const float annihilationThreshold = environment->getAnnihilationThresh(); // was 0.5
 		const float fusionThreshold = environment->getFusionThresh(); // was 0.00001
 		Octree<Particle>::setForceMultiplier(environment->getForceMultiplier());
+
+		for(auto & particle: particles){
+			particle.fusing = false;
+		}
+
 		//const float forceMultiplier = universe->getForceMultiplier();
 		tbb::parallel_for(tbb::blocked_range<size_t>(0, totalNumParticles),
 			[&](const tbb::blocked_range<size_t>& r) {
@@ -190,6 +196,7 @@ namespace nm
 
 				// zero particle forces
 				particles[i].zeroForce();
+				particles[i].age += dt;
 
 				// sum all forces acting on particle
 				particles[i].potentialInteractionPartners.clear();
@@ -231,6 +238,7 @@ namespace nm
 				// particle interactions
 				/////////////////////////////////////////////////////////////
 
+				bool killParticles = false;
 				for(auto * potentialInteractionPartner: particles[i].potentialInteractionPartners){
 					// make the particle with the lower address in memory
 					// the one that is responsible for the interaction
@@ -247,7 +255,6 @@ namespace nm
 						if(distance < Octree<Particle>::INTERACTION_DISTANCE()){
 							// have this so later on can have different likelihoods of different
 							// interactions occurring
-							bool killParticles = false;
 
 							// see what type of interaction we have
 							// already doing this check in sumForces() so maybe could remove to optimize but
@@ -262,73 +269,24 @@ namespace nm
 									killParticles = true;
 								}
 							}
-							else if ((potentialInteractionPartner->getFusion1Flag() ^ particles[i].getFusion1Flag()) == 0xFF)
-							{
-								if(environment->state > nm::Environment::BARYOGENESIS)
-								{
-									particles[i].fusionRatio = particles[i].fusionRatio + dt;// / environment->systemSpeed;
-									if (particles[i].fusionRatio > fusionThreshold)
-									{
-										addParticle(
-											Particle::UP_DOWN_QUARK,
-											particles[i].pos,
-											.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-										);
-										killParticles = true;
-									}
-								}
-							}
-							else if ((potentialInteractionPartner->getFusion2Flag() ^ particles[i].getFusion2Flag()) == 0xFF)
-							{
-								// we always want this to happen if there it's possible to that the
-								// hacky up-down compound particles exist for as shorter time as possible
-//								particles[i].fusionRatio = particles[i].fusionRatio + dt;// / environment->systemSpeed;
-//								if (particles[i].fusionRatio > fusionThreshold) //TODO: this didn't have any condition before
-								if(environment->state > nm::Environment::BARYOGENESIS)
-								{
-									Particle::Type newType = Particle::PROTON;
-									if (potentialInteractionPartner->getType() == Particle::DOWN_QUARK || particles[i].getType() == Particle::DOWN_QUARK)
-									{
-										newType = Particle::NEUTRON;
-									}
-									addParticle(
-										newType,
-										particles[i].pos,
-										.5f * (potentialInteractionPartner->getVelocity() + particles[i].getVelocity())
-									);
-									killParticles = true;
-								}
-							}
 
 							if (killParticles)
 							{
-								if ((potentialInteractionPartner->getAnnihilationFlag() ^ particles[i].getAnnihilationFlag()) == 0xFF)
-								{
-									// Super hack to simulate matter surviving anihilation
-									if(ofRandomuf()<environment->matterSurveivesChance){
-										if(particles[i].isAntiMatterQuark()){
-											deadParticles[numDeadParticles.fetch_and_increment()] = i;
-											particles[i].alive = false;
-										}else{
-											// If matter survives teleport it to the other side of the universe
-											// so we can't see it
-											particles[i].pos = -particles[i].pos;
-											particles[i].potentialInteractionPartners.clear();
-										}
-
-										deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
-										potentialInteractionPartner->alive = false;
-									}else{
-										// interaction is annihilation so kill particle
+								// Super hack to simulate matter surviving anihilation
+								if(ofRandomuf()<environment->matterSurveivesChance){
+									if(particles[i].isAntiMatterQuark()){
 										deadParticles[numDeadParticles.fetch_and_increment()] = i;
 										particles[i].alive = false;
-
-										// kill partner (idx of partner is potentialInteractionPartner - particles)
-										deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
-										potentialInteractionPartner->alive = false;
+									}else{
+										// If matter survives teleport it to the other side of the universe
+										// so we can't see it
+										particles[i].pos = -particles[i].pos;
+										particles[i].potentialInteractionPartners.clear();
 									}
-								}else{
 
+									deadParticles[numDeadParticles.fetch_and_increment()] = potentialInteractionPartner - particles.data();
+									potentialInteractionPartner->alive = false;
+								}else{
 									// interaction is annihilation so kill particle
 									deadParticles[numDeadParticles.fetch_and_increment()] = i;
 									particles[i].alive = false;
@@ -341,6 +299,66 @@ namespace nm
 								// The particle is probably dead, don't look for more interactions;
 								break;
 							}
+						}
+					}
+				}
+
+
+				particles[i].fusionPartners.first = nullptr;
+				particles[i].fusionPartners.second = nullptr;
+				if(!killParticles && !particles[i].fusing && environment->state > nm::Environment::BARYOGENESIS){
+					auto type = particles[i].getType();
+					if(type==Particle::DOWN_QUARK || type==Particle::UP_QUARK){
+						const auto & partners = particles[i].potentialInteractionPartners;
+						auto down = std::find_if(partners.begin(), partners.end(), [&](const Particle * p){
+							return p->getType() == Particle::DOWN_QUARK && p->alive &&
+									glm::distance(particles[i].pos, p->pos) < Octree<Particle>::INTERACTION_DISTANCE() &&
+									particles[i].id < p->id &&
+									!p->fusing;
+						});
+						auto up = std::find_if(partners.begin(), partners.end(), [&](const Particle * p){
+							return p->getType() == Particle::UP_QUARK && p->alive &&
+									glm::distance(particles[i].pos, p->pos) < Octree<Particle>::INTERACTION_DISTANCE() &&
+									particles[i].id < p->id &&
+									!p->fusing;
+						});
+						if (up != partners.end() && down != partners.end())
+						{
+							particles[i].fusing = true;
+							(*up)->fusing = true;
+							(*down)->fusing = true;
+							particles[i].fusionPartners.first = *down;
+							particles[i].fusionPartners.second = *up;
+							particles[i].fusionRatio = particles[i].fusionRatio + dt;
+							if (particles[i].fusionRatio > fusionThreshold)
+							{
+								Particle::Type newType = Particle::PROTON;
+								if (particles[i].getType() == Particle::DOWN_QUARK)
+								{
+									newType = Particle::NEUTRON;
+								}
+								addParticle(
+									newType,
+									(particles[i].pos + (*down)->pos + (*up)->pos) / 3.f,
+									((*up)->getVelocity() + (*down)->getVelocity() + particles[i].getVelocity()) / 3.f
+								);
+								killParticles = true;
+							}
+						}else{
+							particles[i].fusionRatio = 0;
+						}
+
+						if(killParticles){
+							// interaction is fusion so kill particle
+							deadParticles[numDeadParticles.fetch_and_increment()] = i;
+							particles[i].alive = false;
+
+							// kill partners (idx of partner is partner - particles)
+							deadParticles[numDeadParticles.fetch_and_increment()] = *up - particles.data();
+							(*up)->alive = false;
+
+							deadParticles[numDeadParticles.fetch_and_increment()] = *down - particles.data();
+							(*down)->alive = false;
 						}
 					}
 				}

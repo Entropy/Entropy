@@ -52,6 +52,9 @@ namespace nm
 			case NUCLEOSYNTHESIS:
 				stateStr = "NUCLEOSYNTHESIS";
 			break;
+			case TRANSITION_OUT:
+				stateStr = "TRANSITION OUT";
+			break;
 		}
 	}
 

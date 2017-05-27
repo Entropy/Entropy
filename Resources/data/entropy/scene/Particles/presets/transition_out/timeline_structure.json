@@ -1,0 +1,58 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Scene",
+            "tracks": [
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                }
+            ]
+        },
+        {
+            "name": "Particles",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Particles/Environment/Energy",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.0,
+                    "name": "Particles/Environment/state",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 40000.0,
+                    "min": 0.200000002980232,
+                    "name": "Particles/Renderer/Fog_Max_Distance",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 0.0199999995529652,
+                    "min": 0.0,
+                    "name": "Particles/Scene/Rendering/Ambient_Light",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Particles/Scene/Rendering/add_cluster",
+                    "type": "Bangs"
+                },
+                {
+                    "max": 0.999000012874603,
+                    "min": 0.699999988079071,
+                    "name": "Particles/Scene/Rendering/scale_factor",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

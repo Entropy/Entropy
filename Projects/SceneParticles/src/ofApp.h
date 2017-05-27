@@ -97,12 +97,18 @@ public:
 			ofParameter<float> attenuation{ "Attenuation", 0.01, 0.0000001, 0.05 };
 			ofParameter<float> lightStrength{ "Light Strength", 1, 0, 1 };
 			ofParameter<float> fov{ "Fov", 60, 1, 120 };
-			ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
+			ofParameter<float> rotationRadius{"Rotation radius", 50, 5, 200, ofParameterScale::Logarithmic};
 			ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
 			ofParameter<float> travelMaxSpeed{"Travel max speed", 0.1, 0.001, 2, ofParameterScale::Logarithmic};
 			ofParameter<float> minTimeBetweenTravels{"min time between travels", 5, 0, 20, ofParameterScale::Logarithmic};
 			ofParameter<bool> doCameraTracking{"camera tracking", false};
+			ofParameter<bool> cutToInteraction{"cut to interaction", false};
 			ofParameter<bool> useEasyCam{"use easy cam", false};
+			ofParameter<void> addCluster{"add cluster"};
+			ofParameter<float> scaleFactor{"scale factor", 0.99, 0.7, 0.999};
+			ofParameter<float> trailsAlpha{"trailsAlpha", 1, 0, 1};
+			ofParameter<float> particlesAlpha{"particlesAlpha", 1, 0, 1};
+
 
 			PARAM_DECLARE("Rendering",
 				colorsPerType,
@@ -119,7 +125,12 @@ public:
 				travelMaxSpeed,
 				minTimeBetweenTravels,
 				doCameraTracking,
-				useEasyCam);
+				cutToInteraction,
+				useEasyCam,
+				addCluster,
+				scaleFactor,
+				trailsAlpha,
+				particlesAlpha);
 		} rendering;
 
 		struct : ofParameterGroup
@@ -194,6 +205,21 @@ public:
 	std::vector<nm::Photon> photonsAlive;
 	float rotationDirection = 1;
 	float rotationSpeed = 0;
+
+
+
+	struct Cluster{
+		float scale = 1;
+		glm::vec3 origin;
+		double startTime;
+		float startScale = 1;
+		glm::quat rotation;
+		float alpha = 1;
+	};
+
+	std::vector<Cluster> clusters{};
+
+	nm::Environment::State prevState;
 
 //	float annihilationPct = 0;
 //	float pct = 0;

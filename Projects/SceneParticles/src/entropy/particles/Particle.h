@@ -53,8 +53,6 @@ namespace nm
 			NEUTRON,
 			PROTON,
 
-			UP_DOWN_QUARK, // hacky composite particle
-
 			NUM_TYPES
 		};
 
@@ -102,7 +100,6 @@ namespace nm
 			switch(getType()){
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 					return true;
 				case nm::Particle::ANTI_UP_QUARK:
 				case nm::Particle::ANTI_DOWN_QUARK:
@@ -118,7 +115,6 @@ namespace nm
 					return true;
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 				default:
 					return false;
 			}
@@ -130,24 +126,26 @@ namespace nm
 				case nm::Particle::ANTI_DOWN_QUARK:
 				case nm::Particle::UP_QUARK:
 				case nm::Particle::DOWN_QUARK:
-				case nm::Particle::UP_DOWN_QUARK:
 					return true;
 				default:
 					return false;
 			}
 		}
 		std::vector<Particle *> potentialInteractionPartners;
+		std::pair<Particle*, Particle*> fusionPartners;
         Type type;
         float mass;
         float charge;
 		glm::vec3 velocity;
 		glm::vec3 force;
 		std::atomic<float> anihilationRatio{0};
-		std::atomic<float> fusionRatio{1};
+		std::atomic<float> fusionRatio{0};
 		float radius;
 		std::atomic<bool> alive{true};
 		size_t id;
 		glm::vec3 pos;
+		bool fusing = false;
+		float age;
 
 		Particle(const Particle & p)
 			:potentialInteractionPartners(p.potentialInteractionPartners)
@@ -157,10 +155,13 @@ namespace nm
 			,velocity(p.velocity)
 			,force(p.force)
 			,anihilationRatio((float)p.anihilationRatio)
+			,fusionRatio((float)p.fusionRatio)
 			,radius(p.radius)
 			,alive((bool)p.alive)
 			,id(p.id)
 			,pos(p.pos)
+			,fusing(p.fusing)
+			,age(p.age)
 
 		{
 
@@ -175,10 +176,13 @@ namespace nm
 			velocity = p.velocity;
 			force = p.force;
 			anihilationRatio = anihilationRatio.operator float();
+			fusionRatio = fusionRatio.operator float();
 			radius = p.radius;
 			alive = (bool)p.alive;
 			id = p.id;
 			pos = p.pos;
+			fusing = p.fusing;
+			age = p.age;
 			return *this;
 		}
 	};
@@ -203,5 +207,11 @@ namespace std{
 		float ani2 = p2.anihilationRatio;
 		p1.anihilationRatio = ani2;
 		p2.anihilationRatio = ani1;
+		float fus1 = p1.fusionRatio;
+		float fus2 = p2.fusionRatio;
+		p1.fusionRatio = fus2;
+		p2.fusionRatio = fus1;
+		std::swap(p1.fusing, p2.fusing);
+		std::swap(p1.age, p2.age);
 	}
 }

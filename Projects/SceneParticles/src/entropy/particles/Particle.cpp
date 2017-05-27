@@ -57,7 +57,6 @@ namespace nm
 		{	~0x02,	0x01,	0x01,	4800.f,		-1.f / 3.f,		{"Down quark",		{0.5f, 0.5f, 0.5f, 0.5f}},	"particle_1.obj"              }, // DOWN_QUARK
 		{	0,		0,		0,		14000.f,	0.f,			{"Neutron",			{0.2f, 0.2f, 0.2f, 0.5f}},	"particle_0_1_1.obj"              }, // NEUTRON
 		{	0,		0,		0,		14000.f,	1.f,			{"Proton",			{0.0f, 0.1f, 0.5f, 0.5f}},	"particle_0_0_1.obj"			  },  // PROTON
-		{	0,		0,		~0x01,	7100.f,		0.f,			{"Up down quark",	{0.0f, 0.1f, 0.5f, 0.5f}},	"particle_0_1.obj"			  }, // UP_DOWN_QUARK
 	};
 
 	ofParameterGroup Particle::parameters{
@@ -70,13 +69,12 @@ namespace nm
 		DATA[DOWN_QUARK].color,
 		DATA[NEUTRON].color,
 		DATA[PROTON].color,
-		DATA[UP_DOWN_QUARK].color,
 	};
 
 	Particle::Particle():
-        mass(1.f),
-        velocity(1.f, 0.f, 0.f),
+		mass(1.f),
         charge(1.f),
+		velocity(1.f, 0.f, 0.f),
 		radius(10.f),
 		id(nextParticleId++)
     {

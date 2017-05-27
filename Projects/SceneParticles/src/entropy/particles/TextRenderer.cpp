@@ -129,17 +129,17 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 		auto maxPDistance = (relDistance * worldSize) * (relDistance * worldSize);
 
 		// Particle <-> particle relations
-		ofMesh line;
-		line.setMode(OF_PRIMITIVE_LINES);
-		line.getVertices().resize(2);
-		line.getColors().resize(2);
-		for(auto & p1: particles.getParticles()){
-			//if(!p1.alive) continue;
-			auto distance = glm::distance2(cam.getPosition(), p1.pos * scale);
-			auto pct = 1-ofClamp(distance / maxScreenDistance, 0, 1);
-			for(auto * p2: p1.potentialInteractionPartners){
-				switch(environment.state.get()){
-					case nm::Environment::BARYOGENESIS:
+		switch(environment.state.get()){
+			case nm::Environment::BARYOGENESIS:{
+				ofMesh line;
+				line.setMode(OF_PRIMITIVE_LINES);
+				line.getVertices().resize(2);
+				line.getColors().resize(2);
+				for(auto & p1: particles.getParticles()){
+					//if(!p1.alive) continue;
+					auto distance = glm::distance2(cam.getPosition(), p1.pos * scale);
+					auto pct = 1-ofClamp(distance / maxScreenDistance, 0, 1);
+					for(auto * p2: p1.potentialInteractionPartners){
 						if(p1.id < p2->id && ((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark()))){
 							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
 							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
@@ -184,64 +184,72 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 								line.draw();
 							}
 						}
-					break;
-					case nm::Environment::STANDARD_MODEL:
-						if(p1.id < p2->id &&
-						   ((p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
-							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_DOWN_QUARK && p2->getType() == nm::Particle::UP_QUARK) ||
-							(p1.getType() == nm::Particle::DOWN_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK) ||
-							(p1.getType() == nm::Particle::UP_QUARK && p2->getType() == nm::Particle::UP_DOWN_QUARK))
-						   ){
-							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
-							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-							auto ppct = (1-ofClamp(pDistance / maxPDistance, 0, 1)) * ambient;
-							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
-								if(ph.alive){
-									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
-									return acc + strength;
-								}else{
-									return acc;
-								}
-							});
-							ppct += light;
-							auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
-							auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
-							line.getVertices()[0] = p1.pos;
-							/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
-								line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
-								line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
-								line.getVertices()[1] = p2->pos;
-								line.draw();
-							}else */if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
-								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
-								line.getColors()[0] = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
-								line.getColors()[1] = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
-								line.getVertices()[1] = glm::lerp(p1.pos, p2->pos, aniPct);
-
-//								auto white0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
-//								auto red0 = ofFloatColor(pct*ppct*aniPct, 0, 0, accumValue);
-//								line.getColors()[0] = white0.lerp(red0, aniPct);
-
-//								auto white1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
-//								auto red1 = ofFloatColor(pct2*ppct*aniPct, 0, 0, accumValue);
-
-//								line.getColors()[1] = white1.lerp(red1, aniPct);
-								line.getVertices()[1] = p2->pos;
-								line.draw();
-							}else{
-								line.getVertices()[1] = p2->pos;
-								line.getColors()[0] = ofFloatColor(pct*ppct, accumValue);
-								line.getColors()[1] = ofFloatColor(pct2*ppct, accumValue);
-								line.draw();
-							}
-						}
-					break;
-					case nm::Environment::NUCLEOSYNTHESIS:
-					break;
+					}
 				}
-			}
+			}break;
+			case nm::Environment::STANDARD_MODEL:{
+				ofMesh line;
+				line.setMode(OF_PRIMITIVE_LINES);
+				line.getVertices().resize(6);
+				line.getColors().resize(6);//.assign(6, ofFloatColor(1));
+				for(auto & p1: particles.getParticles()){
+					auto distancep1 = glm::distance2(cam.getPosition(), p1.pos * scale);
+					auto * p2 = p1.fusionPartners.first;
+					auto * p3 = p1.fusionPartners.second;
+					if(p2 && p3){
+						auto midPoint = (p1.pos + p2->pos + p3->pos) / 3.;
+						float ppct = ambient;
+						auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+							if(ph.alive){
+								auto strength = lightStrenght / glm::distance2(midPoint * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+								return acc + strength;
+							}else{
+								return acc;
+							}
+						});
+						ppct += light;
+						auto distancep2 = glm::distance2(cam.getPosition(), p2->pos * scale);
+						auto distancep3 = glm::distance2(cam.getPosition(), p3->pos * scale);
+						auto pct1 = (1-ofClamp(distancep1 / maxScreenDistance, 0, 1)) * ambient + light;
+						auto pct2 = (1-ofClamp(distancep2 / maxScreenDistance, 0, 1)) * ambient + light;
+						auto pct3 = (1-ofClamp(distancep3 / maxScreenDistance, 0, 1)) * ambient + light;
+						line.getVertices()[0] = p1.pos;
+						line.getVertices()[1] = midPoint;
+						/*if(lookAt.first && lookAt.second && ((p1.id == lookAt.first->id && p2->id == lookAt.second->id) || (p1.id == lookAt.second->id && p2->id == lookAt.first->id))){
+							line.getColors()[0] = ofFloatColor(0, pct*ppct, 0, accumValue);
+							line.getColors()[1] = ofFloatColor(0, pct2*ppct, 0, accumValue);
+							line.getVertices()[1] = p2->pos;
+							line.draw();
+						}else if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){*/
+							auto fusPct = p1.fusionRatio/environment.getFusionThresh();
+							line.getColors()[0] = ofFloatColor(pct1*ppct, accumValue)
+													.lerp(ofFloatColor(pct1*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[1] = ofFloatColor(pct1*ppct, accumValue)
+													.lerp(ofFloatColor(pct1*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[2] = ofFloatColor(pct2*ppct, accumValue)
+													.lerp(ofFloatColor(pct2*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[3] = ofFloatColor(pct2*ppct, accumValue)
+													.lerp(ofFloatColor(pct2*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[4] = ofFloatColor(pct3*ppct, accumValue)
+													.lerp(ofFloatColor(pct3*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[5] = ofFloatColor(pct3*ppct, accumValue)
+													.lerp(ofFloatColor(pct3*ppct, 0, 0, accumValue), fusPct);
+							line.getVertices()[2] = p2->pos;
+							line.getVertices()[3] = midPoint;
+							line.getVertices()[4] = p3->pos;
+							line.getVertices()[5] = midPoint;
+							line.draw();
+//						}else{
+//							line.getVertices()[1] = p2->pos;
+//							line.getColors()[0] = ofFloatColor(pct*ppct, accumValue);
+//							line.getColors()[1] = ofFloatColor(pct2*ppct, accumValue);
+//							line.draw();
+//						}
+					}
+				}
+			}break;
+			case nm::Environment::NUCLEOSYNTHESIS:
+			break;
 		}
 
 		// Relation info text, currently distance but doesn't make a lot of sense
@@ -291,33 +299,33 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 						}
 					break;
 					case nm::Environment::STANDARD_MODEL:
-						if((p2->getFusion1Flag() ^ p1.getFusion1Flag()) == 0xFF ||
-						   (p2->getFusion2Flag() ^ p1.getFusion2Flag()) == 0xFF){
-							auto pctColor = (1-pctDistance) * ambient;
-							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
-								if(ph.alive){
-									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
-									return acc + strength;
-								}else{
-									return acc;
-								}
-							});
-							pctColor += light;
-							auto midPoint = (p1.pos + p2->pos) / 2.;
-							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
-							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
-							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
-							billboardShaderText.setUniform1f("pctColor", pctColor);
-							billboardShaderText.setUniform1f("accumValue", accumValue);
-							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
-							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
-							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
-								fonts[fontSize].getStringMesh(ofToString(p1.fusionRatio), 0,0).draw();
-							}else{
-								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
-							}
-						}
+//						if((p2->getFusion1Flag() ^ p1.getFusion1Flag()) == 0xFF ||
+//						   (p2->getFusion2Flag() ^ p1.getFusion2Flag()) == 0xFF){
+//							auto pctColor = (1-pctDistance) * ambient;
+//							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+//								if(ph.alive){
+//									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+//									return acc + strength;
+//								}else{
+//									return acc;
+//								}
+//							});
+//							pctColor += light;
+//							auto midPoint = (p1.pos + p2->pos) / 2.;
+//							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+//							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+//							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
+//							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
+//							billboardShaderText.setUniform1f("pctColor", pctColor);
+//							billboardShaderText.setUniform1f("accumValue", accumValue);
+//							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
+//							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+//							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+//								fonts[fontSize].getStringMesh(ofToString(p1.fusionRatio), 0,0).draw();
+//							}else{
+//								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
+//							}
+//						}
 					break;
 					case nm::Environment::NUCLEOSYNTHESIS:
 					break;
@@ -365,7 +373,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 						break;
 						case nm::Particle::DOWN_QUARK:
 						case nm::Particle::UP_QUARK:
-						case nm::Particle::UP_DOWN_QUARK:
 							text = "q";
 						break;
 						case nm::Particle::ELECTRON:
@@ -377,7 +384,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 					}
 				break;
 				case nm::Environment::STANDARD_MODEL:
-					if(pctDistance>fulltextDistance){
+					if(pctDistance > fulltextDistance && p.age > 1){
 						switch(p.getType()){
 							case nm::Particle::ELECTRON:
 								text = "e";
@@ -400,9 +407,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							case nm::Particle::UP_QUARK:
 								text = "uq";
 							break;
-							case nm::Particle::UP_DOWN_QUARK:
-								text = "uq ________ dq"; // TODO: show this??
-							break;
 						}
 					}else{
 						switch(p.getType()){
@@ -421,9 +425,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							break;
 							case nm::Particle::UP_QUARK:
 								text = "up quark"; // TODO: show this??
-							break;
-							case nm::Particle::UP_DOWN_QUARK:
-								text = "up quark __________ down quark"; // TODO: show this??
 							break;
 							case nm::Particle::NEUTRON:
 								text = "neutron";
