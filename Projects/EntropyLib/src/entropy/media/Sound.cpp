@@ -58,12 +58,17 @@ namespace entropy
 			const bool shouldPlay = this->shouldPlay();
 			if (shouldPlay)
 			{
+				const auto syncMode = this->getSyncMode();
+
 				if (!this->soundPlayer.isPlaying())
 				{
 					this->soundPlayer.play();
+					if (syncMode == SyncMode::FreePlay)
+					{
+						this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
+					}
 				}
 
-				const auto syncMode = this->getSyncMode();
 				if (syncMode != SyncMode::FreePlay)
 				{
 					this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
