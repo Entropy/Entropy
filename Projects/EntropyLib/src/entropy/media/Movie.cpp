@@ -76,6 +76,7 @@ namespace entropy
 			else if (!this->videoPlayer.isPaused())
 			{
 				this->videoPlayer.setPaused(true);
+				this->freePlayNeedsInit = true;
 			}
 		}
 
