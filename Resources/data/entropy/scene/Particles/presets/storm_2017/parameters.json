@@ -11,10 +11,10 @@
             "Matter_survives_chance": "0.5",
             "Pair_Production_Threshold_Max": "0.567",
             "Pair_Production_Threshold_Min": "0.562",
-            "System_speed": "0.5",
-            "UnknownName": "NUCLEOSYNTHESIS",
+            "System_speed": "1",
+            "UnknownName": "BARYOGENESIS",
             "quarkCreationChance": "0.2",
-            "state": "2"
+            "state": "0"
         },
         "Octree": {
             "canditate_distance": "50",
@@ -84,7 +84,7 @@
             "Fog_Power": "1",
             "Fog_Start_Distance": "0.1",
             "Shade_Normals": "0",
-            "Spherical_Clip": "1",
+            "Spherical_Clip": "0",
             "Use_Lights": "1",
             "Wireframe": "1",
             "Wireframe_Alpha": "0",
@@ -101,35 +101,36 @@
             },
             "Rendering": {
                 "Additive_Blend": "1",
-                "Ambient_Light": "0.02",
-                "Attenuation": "0.002",
+                "Ambient_Light": "0.000174928",
+                "Attenuation": "0.05",
                 "Color_per_Type": "1",
                 "Draw_Photons": "0",
                 "Draw_Text": "0",
                 "Draw_models": "1",
                 "Fov": "60",
                 "GL_ONE": "0",
-                "Rotation_radius": "175",
-                "Rotation_speed": "1",
+                "Light_Strength": "1",
+                "Rotation_radius": "231.352",
+                "Rotation_speed": "3",
                 "Travel_max_speed": "0.1",
                 "camera_tracking": "0",
                 "cut_to_interaction": "0",
                 "min_time_between_travels": "5",
                 "particlesAlpha": "1",
-                "photons_life": "10",
+                "photons_life": "0.5",
                 "scale_factor": "0.99",
                 "trailsAlpha": "1",
                 "use_easy_cam": "0"
             },
             "Reset": {
-                "anti_down_quarks": "10",
-                "anti_up_quarks": "10",
-                "down_quarks": "600",
-                "electrons": "600",
-                "neutrons": "600",
-                "positrons": "10",
-                "protons": "600",
-                "up_quarks": "600"
+                "anti_down_quarks": "300",
+                "anti_up_quarks": "300",
+                "down_quarks": "300",
+                "electrons": "300",
+                "neutrons": "0",
+                "positrons": "300",
+                "protons": "0",
+                "up_quarks": "300"
             }
         },
         "Text_Renderer": {
@@ -148,9 +149,9 @@
         "fov": 60.0,
         "lensOffset": "0, 0",
         "nearClip": 9.3530740737915,
-        "orientation": "1, 0, 0, 0",
+        "orientation": "-1, 0, 0.000113161, 0",
         "ortho": false,
-        "position": "0, 0, 175",
+        "position": "-0.0523602, 0, 231.352",
         "scale": "1, 1, 1"
     }
 }
