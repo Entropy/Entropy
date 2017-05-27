@@ -13,6 +13,10 @@ void ofApp::setup()
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofBackground(ofColor::black);
 
+	// Set time mode to follow DSP clock.
+	ofFmodSetSamplerate(48000);
+	ofSetTimeModeExternalFiltered(ofFmodGetDSPTime, ofTime(), 0.99f);
+
 	// Start the HPV engine.
 	HPV::InitHPVEngine();
 
