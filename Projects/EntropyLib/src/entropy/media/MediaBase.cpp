@@ -446,7 +446,13 @@ namespace entropy
 			if (!this->isLoaded()) return false;
 
 			// No switch at current time.
-			if (this->switchMillis < 0.0f) return false;
+			if (this->switchMillis < 0.0f)
+			{
+				// Reset free play start point.
+				this->freePlayNeedsInit = true;
+
+				return false;
+			}
 
 			const auto durationMs = this->getDurationMs();
 
@@ -464,7 +470,15 @@ namespace entropy
 			}
 			else if (syncMode == SyncMode::FreePlay)
 			{
-				uint64_t deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				uint64_t deltaMs;
+				if (this->initFreePlay())
+				{
+					deltaMs = this->freePlayStartElapsedMs;
+				}
+				else
+				{
+					deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				}
 
 				// No loop and time is passed duration.
 				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
@@ -474,7 +488,15 @@ namespace entropy
 				// Fade value at 0.
 				if (this->parameters.playback.fade == 0.0f) return false;
 
-				uint64_t deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				uint64_t deltaMs;
+				if (this->initFreePlay())
+				{
+					deltaMs = this->freePlayStartElapsedMs;
+				}
+				else
+				{
+					deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				}
 
 				// No loop and time is passed duration.
 				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;

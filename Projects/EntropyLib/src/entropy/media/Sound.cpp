@@ -55,7 +55,8 @@ namespace entropy
 				this->wasLoaded = true;
 			}
 			
-			const bool shouldPlay = this->shouldPlay();
+			// Sound is special because it's the master.
+			const bool shouldPlay = this->shouldPlay() && this->timeline->getIsPlaying();
 			if (shouldPlay)
 			{
 				const auto syncMode = this->getSyncMode();
@@ -77,6 +78,7 @@ namespace entropy
 			else if (this->soundPlayer.isPlaying())
 			{
 				this->soundPlayer.stop();
+				this->freePlayNeedsInit = true;
 			}
 		}
 
@@ -183,7 +185,7 @@ namespace entropy
 					return this->freePlayStartMediaMs;
 				}
 
-				return ofGetElapsedTimeMillis() - this->freePlayStartMediaMs;
+				return (ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs + this->freePlayStartMediaMs);
 			}
 			
 			//else SyncMode::LinkedMedia

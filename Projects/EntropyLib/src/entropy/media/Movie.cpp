@@ -200,7 +200,7 @@ namespace entropy
 					return this->freePlayStartMediaMs;
 				}
 
-				return ofGetElapsedTimeMillis() - this->freePlayStartMediaMs;
+				return (ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs + this->freePlayStartMediaMs);
 			}
 
 			//else SyncMode::LinkedMedia

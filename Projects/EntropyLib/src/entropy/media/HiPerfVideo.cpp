@@ -59,25 +59,24 @@ namespace entropy
 				this->boundsDirty = true;
 				wasLoaded = true;
 			}
+
+			if (this->switchMillis >= 0.0f)
+			{
+				this->renderFrame = true;
+			}
 			
 			const bool shouldPlay = this->shouldPlay();
 			if (shouldPlay)
 			{
-				this->renderFrame = true;
-
 				const auto syncMode = this->getSyncMode();
 				if (syncMode == SyncMode::Timeline)
 				{
-					this->hpvPlayer.setPosition(this->getPlaybackTimeMs() / this->getDurationMs());
+					this->hpvPlayer.setPosition(this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs()));
 				}
 				else
 				{
 					this->hpvPlayer.setFrame(this->getPlaybackFrame());
 				}
-			}
-			else
-			{
-				this->renderFrame = false;
 			}
 		}
 
@@ -200,7 +199,7 @@ namespace entropy
 					return this->freePlayStartMediaMs;
 				}
 
-				return ofGetElapsedTimeMillis() - this->freePlayStartMediaMs;
+				return (ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs + this->freePlayStartMediaMs);
 			}
 
 			//else SyncMode::LinkedMedia
@@ -228,7 +227,6 @@ namespace entropy
 				{
 					return this->freePlayStartMediaFrame;
 				}
-
 
 				return (this->getPlaybackTimeMs() / 1000.0f * this->hpvPlayer.getFrameRate());
 			}
