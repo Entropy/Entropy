@@ -1,0 +1,12 @@
+<keyframes>
+    <key>
+        <flag>play intro</flag>
+        <time>00:00:00:260</time>
+        <value>0.625000000</value>
+    </key>
+    <key>
+        <flag>play slow</flag>
+        <time>00:03:00:310</time>
+        <value>0.600000024</value>
+    </key>
+</keyframes>
