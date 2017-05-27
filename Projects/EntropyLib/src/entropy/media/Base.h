@@ -166,7 +166,7 @@ namespace entropy
 				{
 					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
-					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::LinkedMedia) };
+					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
 
 					PARAM_DECLARE("Playback",
 						fade,

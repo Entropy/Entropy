@@ -244,6 +244,8 @@ namespace entropy
 			auto scene = GetCurrentScene();
 			if (scene)
 			{
+				ofSetColor(ofColor::white);
+
 				// Back screen.
 				if (this->parameters.backScreen.enabled || this->parameters.controlScreen.enabled)
 				{

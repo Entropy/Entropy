@@ -1236,10 +1236,22 @@ namespace entropy
 			auto twister = GetApp()->getTwister();
 			twister->clear();
 
+			//size_t rowVideo = 0;
+			//size_t colVideo = 0;
+			//size_t rowSound = 0;
+			//size_t colSound = 2;
 			size_t row = 0;
 			size_t col = 0;
 			for (auto media : this->medias)
 			{
+				//if (media->getType() == media::Type::Sound)
+				//{
+				//	auto encoder = rowSound * 4 + colSound;
+				//	if (encoder < 16)
+				//	{
+				//		twister->setParam(encoder, media->parameters.playback.fade);
+				//	}
+				//}
 				auto encoder = row * 4 + col;
 				twister->setParam(encoder, media->parameters.playback.fade);
 
