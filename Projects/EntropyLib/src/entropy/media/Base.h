@@ -125,7 +125,6 @@ namespace entropy
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor(0.0f, 0.0f) };
-					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> renderBack{ "Render Back", true };
 					ofParameter<bool> renderFront{ "Render Front", false };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
@@ -136,7 +135,6 @@ namespace entropy
 
 					PARAM_DECLARE("Base",
 						background,
-						fade,
 						renderBack, renderFront,
 						surface,
 						size, anchor,
@@ -165,10 +163,12 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
+					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::LinkedMedia) };
 
 					PARAM_DECLARE("Playback",
+						fade,
 						loop,
 						syncMode);
 				} playback;
@@ -222,7 +222,6 @@ namespace entropy
 			bool addDefaultSwitch();
 
 			// Per-frame attributes.
-			float frontAlpha;
 			ofRectangle srcBounds;
 			ofRectangle dstBounds;
 			ofVboMesh borderMesh;

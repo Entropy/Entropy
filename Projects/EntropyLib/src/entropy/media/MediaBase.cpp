@@ -231,29 +231,18 @@ namespace entropy
 				}
 			}
 
-			if (this->enabled || this->editing)
+			if (this->enabled)
 			{
 				auto transition = static_cast<Transition>(this->parameters.transition.type.get());
 				
-				// Set front color value.
-				if (this->enabled)
+				// Adjust fade.
+				if (transition == Transition::Mix)
 				{
-					if (transition == Transition::Mix)
-					{
-						this->frontAlpha = this->transitionPct;
-					}
-					else if (transition == Transition::Strobe)
-					{
-						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? this->parameters.render.fade : 0.0f;
-					}
-					else
-					{
-						this->frontAlpha = this->parameters.render.fade;
-					}
+					this->parameters.playback.fade = this->transitionPct;
 				}
-				else
+				else if (transition == Transition::Strobe)
 				{
-					this->frontAlpha = 0.5f;
+					this->parameters.playback.fade = (ofRandomuf() < this->transitionPct) ? 1.0f : 0.0f;
 				}
 
 				// Set subsection bounds.
@@ -282,7 +271,7 @@ namespace entropy
 		{
 			ofPushStyle();
 			{
-				if (this->isLoaded() && (this->enabled || this->editing))
+				if (this->isLoaded() && this->enabled && this->switchMillis >= 0.0f)
 				{
 					// Draw the background.
 					if (this->parameters.render.background->a > 0)
@@ -294,14 +283,14 @@ namespace entropy
 					// Draw the border.
 					if (this->parameters.border.width > 0.0f)
 					{
-						ofSetColor(this->parameters.border.color.get(), this->frontAlpha * 255);
+						ofSetColor(this->parameters.border.color.get(), 255 * this->parameters.playback.fade);
 						this->borderMesh.draw();
 					}
 
 					// Draw the content.
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
 					//ofSetColor(255, this->frontAlpha * 255);
-					ofSetColor(255 * this->frontAlpha);
+					ofSetColor(255 * this->parameters.playback.fade);
 					this->renderContent();
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
@@ -350,7 +339,6 @@ namespace entropy
 				if (ofxImGui::BeginTree(this->parameters.render, settings))
 				{
 					ofxImGui::AddParameter(this->parameters.render.background);
-					ofxImGui::AddParameter(this->parameters.render.fade);
 					ofxImGui::AddParameter(this->parameters.render.renderBack);
 					ImGui::SameLine();
 					ofxImGui::AddParameter(this->parameters.render.renderFront);
@@ -389,6 +377,7 @@ namespace entropy
 
 				if (ofxImGui::BeginTree(this->parameters.playback, settings))
 				{
+					ofxImGui::AddParameter(this->parameters.playback.fade);
 					ofxImGui::AddParameter(this->parameters.playback.loop);
 					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Linked Media" };
 					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 3);

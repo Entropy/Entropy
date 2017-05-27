@@ -25,17 +25,17 @@ namespace entropy
 
 			this->label = this->mediaA->getTypeName() + " " + ofToString(idxA) + " <=> " + this->mediaB->getTypeName() + " " + ofToString(idxB) + " " + (direction ? "[+]" : "[-]");
 			
-			this->listeners.push_back(this->mediaA->parameters.render.fade.newListener([this](float & val)
+			this->listeners.push_back(this->mediaA->parameters.playback.fade.newListener([this](float & val)
 			{
-				this->mediaB->parameters.render.fade = (this->direction ? val : (1.0f - val));
+				this->mediaB->parameters.playback.fade = (this->direction ? val : (1.0f - val));
 			}));
-			this->listeners.push_back(this->mediaB->parameters.render.fade.newListener([this](float & val)
+			this->listeners.push_back(this->mediaB->parameters.playback.fade.newListener([this](float & val)
 			{
-				this->mediaA->parameters.render.fade = (this->direction ? val : (1.0f - val));
+				this->mediaA->parameters.playback.fade = (this->direction ? val : (1.0f - val));
 			}));
 
 			// Set the first time.
-			this->mediaB->parameters.render.fade = (this->direction ? this->mediaA->parameters.render.fade : (1.0f - this->mediaA->parameters.render.fade));
+			this->mediaB->parameters.playback.fade = (this->direction ? this->mediaA->parameters.playback.fade : (1.0f - this->mediaA->parameters.playback.fade));
 		}
 		
 		//--------------------------------------------------------------

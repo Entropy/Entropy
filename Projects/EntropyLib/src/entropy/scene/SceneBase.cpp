@@ -1241,7 +1241,7 @@ namespace entropy
 			for (auto media : this->medias)
 			{
 				auto encoder = row * 4 + col;
-				twister->setParam(encoder, media->parameters.render.fade);
+				twister->setParam(encoder, media->parameters.playback.fade);
 
 				// Add parameters by column for similar mapping as timeline.
 				++row;
