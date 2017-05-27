@@ -190,9 +190,10 @@ namespace entropy
 				const auto & coords = this->coordinates[i];
 
 				// Test that the point is within clipping mass.
+				//if (i < 10) cout << "update() comparing mass " << this->masses[i] << " < " << mappedMinMass << endl;
 				if (this->masses[i] < mappedMinMass)
 				{
-					continue;
+					//continue;
 				}
 
 				// Test that the point is within clipping bounds.
@@ -231,6 +232,15 @@ namespace entropy
 				
 				// Passed all tests, add this instance!
 				InstanceData instanceData;
+
+				if (this->masses[i] < mappedMinMass)
+				{
+					instanceData.dummy = 1.0;
+				}
+				else
+				{
+					instanceData.dummy = 0.0;
+				}
 				
 				// Build and add transform matrix.
 				auto scale = glm::vec3(this->masses[i] * sharedParams.model.geoScale);
@@ -315,7 +325,10 @@ namespace entropy
 		{
 			if (!this->parameters.renderPoints) return;
 
-			shader.setUniform1f("uMaxMass", this->parameters.renderModels ? ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass) : std::numeric_limits<float>::max());
+			float mappedClipMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
+
+			//shader.setUniform1f("uMaxMass", this->parameters.renderModels ? mappedClipMass : std::numeric_limits<float>::max());
+			shader.setUniform1f("uMaxMass", mappedClipMass);
 			shader.setUniform1f("uMaxSize", this->parameters.renderModels ? sharedParams.model.clipSize : std::numeric_limits<float>::max());
 			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
 			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
@@ -325,6 +338,9 @@ namespace entropy
 			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
 			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
 			ofSetColor(this->parameters.color.get());
+
+			//for (int i = 0; i < 10; ++i)
+				//cout << "drawPoints() comparing mass " << this->masses[i] << " < " << mappedClipMass << endl;
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
 		}

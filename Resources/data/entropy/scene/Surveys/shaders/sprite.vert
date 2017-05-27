@@ -27,6 +27,7 @@ in float starFormationRate;
 flat out int vID;
 flat out int vCell;
 
+out vec4 vColor;
 out float vAlpha;
 
 void main()
@@ -48,8 +49,8 @@ void main()
 	gl_PointSize = size;
 
 	// Enable fragment if we're within range.
-	if (//uMaxMass < mass ||
-		//uMaxSize < size ||
+	if (uMaxMass < mass ||
+		uMaxSize < size ||
 		uCutRadius > position.z ||
 		uMinLongitude > position.x || position.x > uMaxLongitude ||
 		uMinLatitude > position.y || position.y > uMaxLatitude)
@@ -98,5 +99,14 @@ void main()
 	{
 		// Spiral, boxes 8-15.
 		vCell = gl_VertexID % 8 + 8;
+	}
+
+	if (uMaxMass < mass)
+	{
+		vColor = vec4(1.0);
+	}
+	else
+	{
+	  vColor = vec4(0.0, 1.0, 0.0, 1.0);
 	}
 }

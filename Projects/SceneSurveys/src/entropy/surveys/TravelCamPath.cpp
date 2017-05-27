@@ -152,7 +152,7 @@ namespace entropy
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
 				const auto upDir = glm::normalize(glm::cross(xAxis, glm::normalize(nextPoint - currPoint)));
-				this->camera.lookAt(nextPoint, upDir);
+				//this->camera.lookAt(nextPoint, upDir);
 
 				this->reset = false;
 			}
@@ -180,11 +180,11 @@ namespace entropy
 					ofDrawBox(this->curvePoints[i], 3.0f);
 				}
 
-				ofSetColor(ofColor::purple);
-				for (auto & v : this->polyline.getVertices())
-				{
-					ofDrawBox(v, 1.0f / this->curveResolution);
-				}
+				//ofSetColor(ofColor::purple);
+				//for (auto & v : this->polyline.getVertices())
+				//{
+				//	ofDrawBox(v, 1.0f / this->curveResolution);
+				//}
 
 				ofSetColor(ofColor::blue);
 				this->camera.draw();
