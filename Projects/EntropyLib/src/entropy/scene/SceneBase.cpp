@@ -4,7 +4,6 @@
 #include "entropy/media/HiPerfVideo.h"
 #include "entropy/media/Image.h"
 #include "entropy/media/Movie.h"
-#include "entropy/media/Sequence.h"
 #include "entropy/media/Sound.h"
 #include "entropy/util/App.h"
 
@@ -274,7 +273,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Base)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
 				{
 					media->draw_();
 				}
@@ -321,7 +320,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Overlay)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
 				{
 					media->draw_();
 				}
@@ -1242,7 +1241,7 @@ namespace entropy
 			for (auto media : this->medias)
 			{
 				auto encoder = row * 4 + col;
-				twister->setParam(encoder, media->getParameters().base.fade);
+				twister->setParam(encoder, media->parameters.render.fade);
 
 				// Add parameters by column for similar mapping as timeline.
 				++row;

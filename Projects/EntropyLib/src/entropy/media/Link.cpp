@@ -20,28 +20,36 @@ namespace entropy
 			this->mediaA = medias[idxA];
 			this->mediaB = medias[idxB];
 
+			//this->mediaA->setLinkedMedia(this->mediaB);
+			//this->mediaB->setLinkedMedia(this->mediaA);
+
 			this->label = this->mediaA->getTypeName() + " " + ofToString(idxA) + " <=> " + this->mediaB->getTypeName() + " " + ofToString(idxB) + " " + (direction ? "[+]" : "[-]");
 			
-			auto & paramsA = this->mediaA->getParameters();
-			this->listeners.push_back(paramsA.base.fade.newListener([this](float & val)
+			this->listeners.push_back(this->mediaA->parameters.render.fade.newListener([this](float & val)
 			{
-				auto & paramsB = this->mediaB->getParameters();
-				paramsB.base.fade = (this->direction ? val : (1.0f - val));
+				this->mediaB->parameters.render.fade = (this->direction ? val : (1.0f - val));
 			}));
-			auto & paramsB = this->mediaB->getParameters();
-			this->listeners.push_back(paramsB.base.fade.newListener([this](float & val)
+			this->listeners.push_back(this->mediaB->parameters.render.fade.newListener([this](float & val)
 			{
-				auto & paramsA = this->mediaA->getParameters();
-				paramsA.base.fade = (this->direction ? val : (1.0f - val));
+				this->mediaA->parameters.render.fade = (this->direction ? val : (1.0f - val));
 			}));
 
 			// Set the first time.
-			paramsB.base.fade = (this->direction ? paramsA.base.fade : (1.0f - paramsA.base.fade));
+			this->mediaB->parameters.render.fade = (this->direction ? this->mediaA->parameters.render.fade : (1.0f - this->mediaA->parameters.render.fade));
 		}
 		
 		//--------------------------------------------------------------
 		Link::~Link()
-		{}
+		{
+			if (this->mediaA != nullptr)
+			{
+				this->mediaA->clearLinkedMedia();
+			}
+			if (this->mediaB != nullptr)
+			{
+				this->mediaB->clearLinkedMedia();
+			}
+		}
 		
 		//--------------------------------------------------------------
 		size_t Link::getIdxA() const

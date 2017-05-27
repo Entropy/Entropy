@@ -16,10 +16,14 @@ namespace entropy
 			, editing(false)
 			, boundsDirty(false)
 			, borderDirty(false)
+			, wasLoaded(false)
 			, transitionPct(0.0f)
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
-		{}
+			, freePlayNeedsInit(false)
+		{
+			this->parameters.setName(this->getTypeName());
+		}
 
 		//--------------------------------------------------------------
 		Base::~Base()
@@ -52,27 +56,59 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		render::Layout Base::getLayout()
+		bool Base::renderLayout(render::Layout layout)
 		{
-			return static_cast<render::Layout>(this->getParameters().base.layout.get());
+			if (layout == render::Layout::Back && this->parameters.render.renderBack)
+			{
+				return true;
+			}
+			if (layout == render::Layout::Front && this->parameters.render.renderFront)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		//--------------------------------------------------------------
 		Surface Base::getSurface()
 		{
-			return static_cast<Surface>(this->getParameters().base.surface.get());
+			return static_cast<Surface>(this->parameters.render.surface.get());
 		}
 
 		//--------------------------------------------------------------
 		HorzAlign Base::getHorzAlign()
 		{
-			return static_cast<HorzAlign>(this->getParameters().base.alignHorz.get());
+			return static_cast<HorzAlign>(this->parameters.render.alignHorz.get());
 		}
 
 		//--------------------------------------------------------------
 		VertAlign Base::getVertAlign()
 		{
-			return static_cast<VertAlign>(this->getParameters().base.alignVert.get());
+			return static_cast<VertAlign>(this->parameters.render.alignVert.get());
+		}
+
+		//--------------------------------------------------------------
+		SyncMode Base::getSyncMode()
+		{
+			return static_cast<SyncMode>(this->parameters.playback.syncMode.get());
+		}
+
+		//--------------------------------------------------------------
+		std::shared_ptr<Base> Base::getLinkedMedia() const
+		{
+			return this->linkedMedia;
+		}
+
+		//--------------------------------------------------------------
+		void Base::setLinkedMedia(std::shared_ptr<Base> linkedMedia)
+		{
+			this->linkedMedia = linkedMedia;
+		}
+		
+		//--------------------------------------------------------------
+		void Base::clearLinkedMedia()
+		{
+			this->linkedMedia.reset();
 		}
 
 		//--------------------------------------------------------------
@@ -83,30 +119,38 @@ namespace entropy
 
 			this->addTimelineTrack();
 
-			auto & parameters = this->getParameters();
-			this->parameterListeners.push_back(parameters.base.layout.newListener([this](int &)
+			this->parameterListeners.push_back(this->parameters.render.renderBack.newListener([this](bool &)
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.base.size.newListener([this](float &)
+			this->parameterListeners.push_back(this->parameters.render.renderFront.newListener([this](bool &)
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.base.anchor.newListener([this](glm::vec2 &)
+			this->parameterListeners.push_back(this->parameters.render.size.newListener([this](float &)
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.base.alignHorz.newListener([this](int &)
+			this->parameterListeners.push_back(this->parameters.render.anchor.newListener([this](glm::vec2 &)
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.base.alignVert.newListener([this](int &)
+			this->parameterListeners.push_back(this->parameters.render.alignHorz.newListener([this](int &)
 			{
 				this->boundsDirty = true;
 			}));
-			this->parameterListeners.push_back(parameters.border.width.newListener([this](float &)
+			this->parameterListeners.push_back(this->parameters.render.alignVert.newListener([this](int &)
+			{
+				this->boundsDirty = true;
+			}));
+			this->parameterListeners.push_back(this->parameters.border.width.newListener([this](float &)
 			{
 				this->borderDirty = true;
+			}));
+
+			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int &)
+			{
+				this->freePlayNeedsInit = true;
 			}));
 
 			this->init();
@@ -166,7 +210,7 @@ namespace entropy
 					this->switchMillis = trackTime - activeSwitch->timeRange.min;
 
 					auto kEasingFunction = ofxeasing::quad::easeIn;
-					long transitionDuration = this->getParameters().transition.duration * 1000; 
+					long transitionDuration = this->parameters.transition.duration * 1000; 
 					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
 					{
 						// Transitioning in.
@@ -189,8 +233,7 @@ namespace entropy
 
 			if (this->enabled || this->editing)
 			{
-				auto & parameters = this->getParameters();
-				auto transition = static_cast<Transition>(parameters.transition.type.get());
+				auto transition = static_cast<Transition>(this->parameters.transition.type.get());
 				
 				// Set front color value.
 				if (this->enabled)
@@ -201,11 +244,11 @@ namespace entropy
 					}
 					else if (transition == Transition::Strobe)
 					{
-						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? parameters.base.fade : 0.0f;
+						this->frontAlpha = (ofRandomuf() < this->transitionPct) ? this->parameters.render.fade : 0.0f;
 					}
 					else
 					{
-						this->frontAlpha = parameters.base.fade;
+						this->frontAlpha = this->parameters.render.fade;
 					}
 				}
 				else
@@ -237,23 +280,21 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::draw_()
 		{
-			auto & parameters = this->getParameters();
-
 			ofPushStyle();
 			{
 				if (this->isLoaded() && (this->enabled || this->editing))
 				{
 					// Draw the background.
-					if (parameters.base.background->a > 0)
+					if (this->parameters.render.background->a > 0)
 					{
-						ofSetColor(parameters.base.background.get());
+						ofSetColor(this->parameters.render.background.get());
 						ofDrawRectangle(this->dstBounds);
 					}
 
 					// Draw the border.
-					if (parameters.border.width > 0.0f)
+					if (this->parameters.border.width > 0.0f)
 					{
-						ofSetColor(parameters.border.color.get(), this->frontAlpha * 255);
+						ofSetColor(this->parameters.border.color.get(), this->frontAlpha * 255);
 						this->borderMesh.draw();
 					}
 
@@ -275,54 +316,85 @@ namespace entropy
 		{
 			if (!this->editing) return;
 
-			auto & parameters = this->getParameters();
-
 			// Add a GUI window for the parameters.
 			ofxImGui::SetNextWindow(settings);
 			if (ofxImGui::BeginWindow("Media " + ofToString(this->index) + ": " + parameters.getName(), settings, false, &this->editing))
 			{
-				// Add sections for the base parameters.
-				if (ofxImGui::BeginTree(parameters.base, settings))
+				if (ofxImGui::BeginTree("File", settings))
 				{
-					ofxImGui::AddParameter(parameters.base.background);
-					ofxImGui::AddParameter(parameters.base.fade);
-					static std::vector<std::string> layoutLabels{ "Back", "Front" };
-					ofxImGui::AddRadio(parameters.base.layout, layoutLabels, 2);
+					if (ImGui::Button("Load..."))
+					{
+						auto result = ofSystemLoadDialog("Select a file.", false, GetSharedAssetsPath().string());
+						if (result.bSuccess)
+						{
+							if (this->loadMedia(result.filePath))
+							{
+								const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
+								const auto testPath = GetSharedAssetsPath().append(relativePath);
+								if (ofFile::doesFileExist(testPath.string()))
+								{
+									this->parameters.filePath = relativePath;
+								}
+								else
+								{
+									this->parameters.filePath = result.filePath;
+								}
+							}
+						}
+					}
+					ImGui::Text("Filename: %s", this->fileName.c_str());
+
+					ofxImGui::EndTree(settings);
+				}
+
+				if (ofxImGui::BeginTree(this->parameters.render, settings))
+				{
+					ofxImGui::AddParameter(this->parameters.render.background);
+					ofxImGui::AddParameter(this->parameters.render.fade);
+					ofxImGui::AddParameter(this->parameters.render.renderBack);
+					ImGui::SameLine();
+					ofxImGui::AddParameter(this->parameters.render.renderFront);
 					static std::vector<std::string> surfaceLabels{ "Base", "Overlay" };
-					ofxImGui::AddRadio(parameters.base.surface, surfaceLabels, 2);
-					ofxImGui::AddParameter(parameters.base.size);
-					ofxImGui::AddParameter(parameters.base.anchor);
+					ofxImGui::AddRadio(this->parameters.render.surface, surfaceLabels, 2);
+					ofxImGui::AddParameter(this->parameters.render.size);
+					ofxImGui::AddParameter(this->parameters.render.anchor);
 					static std::vector<std::string> horzLabels{ "Left", "Center", "Right" };
-					ofxImGui::AddRadio(parameters.base.alignHorz, horzLabels, 3);
+					ofxImGui::AddRadio(this->parameters.render.alignHorz, horzLabels, 3);
 					static std::vector<std::string> vertLabels{ "Top", "Middle", "Bottom" };
-					ofxImGui::AddRadio(parameters.base.alignVert, vertLabels, 3);
+					ofxImGui::AddRadio(this->parameters.render.alignVert, vertLabels, 3);
 
 					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxImGui::BeginTree(parameters.border, settings))
+				if (ofxImGui::BeginTree(this->parameters.border, settings))
 				{
-					ofxImGui::AddParameter(parameters.border.width);
-					ofxImGui::AddParameter(parameters.border.color);
+					ofxImGui::AddParameter(this->parameters.border.width);
+					ofxImGui::AddParameter(this->parameters.border.color);
 
 					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxImGui::BeginTree(parameters.transition, settings))
+				if (ofxImGui::BeginTree(this->parameters.transition, settings))
 				{
 					static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
-					ofxImGui::AddRadio(parameters.transition.type, labels, 2);
+					ofxImGui::AddRadio(this->parameters.transition.type, labels, 2);
 
-					if (static_cast<Transition>(parameters.transition.type.get()) != Transition::Cut)
+					if (static_cast<Transition>(this->parameters.transition.type.get()) != Transition::Cut)
 					{
-						ofxImGui::AddParameter(parameters.transition.duration);
+						ofxImGui::AddParameter(this->parameters.transition.duration);
 					}
 
 					ofxImGui::EndTree(settings);
 				}
 
-				// Let the child class handle its child parameters.
-				this->gui(settings);
+				if (ofxImGui::BeginTree(this->parameters.playback, settings))
+				{
+					ofxImGui::AddParameter(this->parameters.playback.loop);
+					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Linked Media" };
+					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 3);
+
+					ofxImGui::EndTree(settings);
+				}
 			}
 			ofxImGui::EndWindow(settings);
 		}
@@ -332,7 +404,7 @@ namespace entropy
 		{
 			json["type"] = static_cast<int>(this->type);
 
-			ofxPreset::Serializer::Serialize(json, this->getParameters());
+			ofxPreset::Serializer::Serialize(json, this->parameters);
 
 			this->serialize(json);
 		}
@@ -340,11 +412,64 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::deserialize_(const nlohmann::json & json)
 		{
-			ofxPreset::Serializer::Deserialize(json, this->getParameters());
+			ofxPreset::Serializer::Deserialize(json, this->parameters);
 
 			this->deserialize(json);
 
 			this->boundsDirty = true;
+
+			if (!this->parameters.filePath->empty())
+			{
+				const auto filePath = this->parameters.filePath.get();
+				if (ofFilePath::isAbsolute(filePath))
+				{
+					this->loadMedia(filePath);
+				}
+				else
+				{
+					this->loadMedia(GetSharedAssetsPath().string() + filePath);
+				}
+			}
+		}
+
+		//--------------------------------------------------------------
+		bool Base::shouldPlay()
+		{
+			// Not loaded.
+			if (!this->isLoaded()) return false;
+
+			// No switch at current time.
+			if (this->switchMillis < 0.0f) return false;
+
+			const auto durationMs = this->getDurationMs();
+
+			// No duration.
+			if (durationMs <= 0.0f) return false;
+
+			const auto syncMode = static_cast<SyncMode>(this->parameters.playback.syncMode.get());
+			if (syncMode == SyncMode::Timeline)
+			{
+				// No loop and switch is passed duration.
+				if (!this->parameters.playback.loop && durationMs < this->switchMillis) return false;
+
+				// Timeline is not playing.
+				if (!this->timeline->getIsPlaying()) return false;
+			}
+			else if (syncMode == SyncMode::FreePlay)
+			{
+				uint64_t deltaMillis = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+
+				// No loop and time is passed duration.
+				if (!this->parameters.playback.loop && durationMs < deltaMillis) return false;
+			}
+			else // SyncMode::LinkedMedia
+			{
+				if (this->linkedMedia == nullptr) return false;
+
+				return this->linkedMedia->shouldPlay();
+			}
+
+			return true;
 		}
 
 		//--------------------------------------------------------------
@@ -430,19 +555,24 @@ namespace entropy
 				return false;
 			}
 
-			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getInTimeInMillis(), this->getContentDurationMs());
+			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getInTimeInMillis(), this->getDurationMs());
 			return (addedSwitch != nullptr);
 		}
 
 		//--------------------------------------------------------------
 		void Base::updateBounds()
 		{
-			auto & parameters = this->getParameters();
-
-			const auto layout = this->getLayout();
-			const auto canvasSize = glm::vec2(GetCanvasWidth(layout), GetCanvasHeight(layout));
-			const auto viewportAnchor = canvasSize * parameters.base.anchor.get();
-			const auto viewportHeight = canvasSize.y * parameters.base.size;
+			glm::vec2 canvasSize;
+			if (this->parameters.render.renderBack)
+			{
+				canvasSize = glm::vec2(GetCanvasWidth(render::Layout::Back), GetCanvasHeight(render::Layout::Back));
+			}
+			else
+			{
+				canvasSize = glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
+			}
+			const auto viewportAnchor = canvasSize * this->parameters.render.anchor.get();
+			const auto viewportHeight = canvasSize.y * this->parameters.render.size;
 			if (this->isLoaded())
 			{
 				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
@@ -499,7 +629,7 @@ namespace entropy
 		{
 			this->borderMesh.clear();
 			
-			float borderWidth = this->getParameters().border.width;
+			float borderWidth = this->parameters.border.width;
 			if (borderWidth > 0.0f)
 			{
 				// Rebuild the border mesh.

@@ -23,55 +23,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Image::gui(ofxImGui::Settings & settings)
-		{
-			if (ofxImGui::BeginTree("File", settings))
-			{
-				if (ImGui::Button("Load..."))
-				{
-					auto result = ofSystemLoadDialog("Select an image file.", false, GetSharedAssetsPath().string());
-					if (result.bSuccess)
-					{
-						if (this->loadImage(result.filePath))
-						{
-							const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
-							const auto testPath = GetSharedAssetsPath().append(relativePath);
-							if (ofFile::doesFileExist(testPath.string()))
-							{
-								this->parameters.filePath = relativePath;
-							}
-							else
-							{
-								this->parameters.filePath = result.filePath;
-							}
-						}
-					}
-				}
-				ImGui::Text("Filename: %s", this->fileName.c_str());
-
-				ofxImGui::EndTree(settings);
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Image::deserialize(const nlohmann::json & json)
-		{
-			if (!this->parameters.filePath->empty())
-			{
-				const auto filePath = this->parameters.filePath.get();
-				if (ofFilePath::isAbsolute(filePath))
-				{
-					this->loadImage(filePath);
-				}
-				else
-				{
-					this->loadImage(GetSharedAssetsPath() / filePath);
-				}
-			}
-		}
-
-		//--------------------------------------------------------------
-		bool Image::loadImage(const std::filesystem::path & filePath)
+		bool Image::loadMedia(const std::filesystem::path & filePath)
 		{
 			ofPixels pixels;
 			ofLoadImage(pixels, filePath);
@@ -124,9 +76,45 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		unsigned long long Image::getContentDurationMs() const
+		bool Image::initFreePlay()
 		{
-			return 5 * 1000; // 5 seconds
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getCurrentTimeMs() const
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getCurrentFrame() const
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getPlaybackTimeMs()
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getPlaybackFrame()
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getDurationMs() const
+		{
+			return 5 * 1000;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getDurationFrames() const
+		{
+			return 1;
 		}
 	}
 }

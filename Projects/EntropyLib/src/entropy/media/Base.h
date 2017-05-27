@@ -48,24 +48,86 @@ namespace entropy
 			Wipe,
 			Strobe
 		};
+
+		enum class SyncMode
+		{
+			FreePlay,
+			Timeline,
+			LinkedMedia
+		};
 		
 		class Base
 		{
-		protected:
-			// Timeline
-			std::shared_ptr<ofxTimeline> timeline;
-			ofxTLSwitches * switchesTrack;
-			bool enabled;
+		public:
+			Base(Type type = Type::Unknown);
+			virtual ~Base();
 
+			Type getType() const;
+			std::string getTypeName() const;
+			bool renderLayout(render::Layout layout);
+			Surface getSurface();
+			HorzAlign getHorzAlign();
+			VertAlign getVertAlign();
+			SyncMode getSyncMode();
+
+			std::shared_ptr<Base> getLinkedMedia() const;
+			void setLinkedMedia(std::shared_ptr<Base> linkedMedia);
+			void clearLinkedMedia();
+
+			bool editing;
+
+			// Base methods
+			void init_(int index, std::shared_ptr<ofxTimeline> timeline);
+			void clear_();
+
+			void setup_();
+			void exit_();
+			void resize_(ofResizeEventArgs & args);
+
+			void update_(double dt);
+			void draw_();
+
+			void gui_(ofxImGui::Settings & settings);
+			
+			void serialize_(nlohmann::json & json);
+			void deserialize_(const nlohmann::json & json);
+
+			// Override methods
+			virtual void init() {}
+			virtual void clear() {}
+
+			virtual void setup() {}
+			virtual void exit() {}
+
+			virtual void resize(ofResizeEventArgs & args) {}
+
+			virtual void update(double dt) {}
+
+			virtual void draw() {}
+
+			virtual void serialize(nlohmann::json & json) {}
+			virtual void deserialize(const nlohmann::json & json) {}
+
+			virtual uint64_t getCurrentTimeMs() const = 0;
+			virtual uint64_t getCurrentFrame() const = 0;
+
+			virtual uint64_t getPlaybackTimeMs() = 0;
+			virtual uint64_t getPlaybackFrame() = 0;
+
+			virtual uint64_t getDurationMs() const = 0;
+			virtual uint64_t getDurationFrames() const = 0;
+			
 			// Parameters
-			struct BaseParameters
-				: ofParameterGroup
+			struct : ofParameterGroup
 			{
+				ofParameter<string> filePath{ "File Path", "" };
+
 				struct : ofParameterGroup
 				{
 					ofParameter<ofFloatColor> background{ "Background", ofFloatColor(0.0f, 0.0f) };
 					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
-					ofParameter<int> layout{ "Layout", static_cast<int>(render::Layout::Front), static_cast<int>(render::Layout::Back), static_cast<int>(render::Layout::Front) };
+					ofParameter<bool> renderBack{ "Render Back", true };
+					ofParameter<bool> renderFront{ "Render Front", false };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
 					ofParameter<float> size{ "Size", 1.0f, 0.0f, 1.0f };
 					ofParameter<glm::vec2> anchor{ "Anchor", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
@@ -75,13 +137,11 @@ namespace entropy
 					PARAM_DECLARE("Base",
 						background,
 						fade,
-						layout,
+						renderBack, renderFront,
 						surface,
-						size,
-						anchor,
-						alignHorz,
-						alignVert);
-				} base;
+						size, anchor,
+						alignHorz, alignVert);
+				} render;
 
 				struct : ofParameterGroup
 				{
@@ -103,71 +163,34 @@ namespace entropy
 						duration);
 				} transition;
 
-				PARAM_DECLARE("Pop-up",
-					base,
+				struct : ofParameterGroup
+				{
+					ofParameter<bool> loop{ "Loop", false };
+					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::LinkedMedia) };
+
+					PARAM_DECLARE("Playback",
+						loop,
+						syncMode);
+				} playback;
+
+				PARAM_DECLARE("Media",
+					filePath,
+					render,
 					border,
-					transition);
-			};
-
-			std::vector<ofEventListener> parameterListeners;
-
-		public:
-			Base(Type type = Type::Unknown);
-			virtual ~Base();
-
-			Type getType() const;
-			std::string getTypeName() const;
-			render::Layout getLayout();
-			Surface getSurface();
-			HorzAlign getHorzAlign();
-			VertAlign getVertAlign();
-
-			bool editing;
-
-			// Base methods
-			void init_(int index, std::shared_ptr<ofxTimeline> timeline);
-			void clear_();
-
-			void setup_();
-			void exit_();
-			void resize_(ofResizeEventArgs & args);
-
-			void update_(double dt);
-			void draw_();
-
-			void gui_(ofxImGui::Settings & settings);
-			
-			void serialize_(nlohmann::json & json);
-			void deserialize_(const nlohmann::json & json);
-
-			virtual BaseParameters & getParameters() = 0;
-
-			// Override methods
-			virtual void init() {}
-			virtual void clear() {}
-
-			virtual void setup() {}
-			virtual void exit() {}
-
-			virtual void resize(ofResizeEventArgs & args) {}
-
-			virtual void update(double dt) {}
-
-			virtual void draw() {}
-
-			virtual void gui(ofxImGui::Settings & settings) {}
-
-			virtual void serialize(nlohmann::json & json) {}
-			virtual void deserialize(const nlohmann::json & json) {}
+					transition,
+					playback);
+			} parameters;
 
 		protected:
+			virtual bool loadMedia(const std::filesystem::path & filePath) = 0;
 			virtual bool isLoaded() const = 0;
 
 			virtual float getContentWidth() const = 0;
 			virtual float getContentHeight() const = 0;
 			virtual void renderContent() = 0;
 
-			virtual unsigned long long getContentDurationMs() const = 0;
+			bool shouldPlay();
+			virtual bool initFreePlay() = 0;
 
 			Type type;
 			int index;
@@ -180,8 +203,18 @@ namespace entropy
 			void updateBorder();
 			bool borderDirty;
 
+			string fileName;
+			bool wasLoaded;
+
 			float transitionPct;
 			float switchMillis;
+
+			uint64_t freePlayStartElapsedMs;
+			uint64_t freePlayStartMediaMs;
+			uint64_t freePlayStartMediaFrame;
+			bool freePlayNeedsInit;
+
+			std::shared_ptr<Base> linkedMedia;
 
 			// Timeline
 			void addTimelineTrack();
@@ -193,6 +226,13 @@ namespace entropy
 			ofRectangle srcBounds;
 			ofRectangle dstBounds;
 			ofVboMesh borderMesh;
+
+			// Timeline
+			std::shared_ptr<ofxTimeline> timeline;
+			ofxTLSwitches * switchesTrack;
+			bool enabled;
+
+			std::vector<ofEventListener> parameterListeners;
 		};
 	}
 }
