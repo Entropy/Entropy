@@ -49,8 +49,8 @@ void ofApp::setup()
 	needsParticlesUpdate = true;
 
 	ofFbo::Settings settings;
-	settings.width = 1920;
-	settings.height = 1080/3;
+	settings.width = entropy::GetSceneWidth();
+	settings.height = entropy::GetSceneHeight();
 	settings.internalformat = GL_RGBA32F;
 	settings.numSamples = 4;
 
@@ -58,7 +58,7 @@ void ofApp::setup()
 	fboCooldown.allocate(settings);
 	postFbo.allocate(settings);
 	postFboCooldown.allocate(settings);
-	postEffects.resize(ofGetWidth(), ofGetHeight());
+	postEffects.resize(fbo.getWidth(), fbo.getHeight());
 
 	parameters.render.record.setSerializable(false);
 	parameters.render.recordVideo.setSerializable(false);
@@ -304,10 +304,25 @@ void ofApp::setup()
 			cluster.startTime = now;
 			cluster.startScale = cluster.scale;
 			cluster.negativeSpace = false;
-			cluster.alpha = 1;
+			cluster.alpha = 0;
 			cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
 		}
 	}));
+
+//	listeners.push_back(parameters.equations.newNegativeCluster.newListener([this]{
+//		int state = parameters.state;
+//		if(state == BigBang){
+//			clusters.emplace_back();
+//			auto & cluster = clusters.back();
+//			cluster.origin = glm::vec3(ofSignedNoise(now) * 0.25, ofSignedNoise(now * glm::pi<float>()) * 0.25, ofSignedNoise(now * 2.71828) * 0.25);
+//			cluster.scale = parameters.rotationRadius * 0.6;
+//			cluster.startTime = now;
+//			cluster.startScale = cluster.scale;
+//			cluster.negativeSpace = true;
+//			cluster.alpha = 0;
+//			cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+//		}
+//	}));
 
 	listeners.push_back(parameters.offsetTimeline.newListener([this]{
 		auto answer = ofSystemTextBoxDialog("offset in ms","");
@@ -449,7 +464,11 @@ void ofApp::update(){
 					auto prevScale = logScale.get();
 					cluster.scale += currentScale - prevScale;
 					if(cluster.alpha<1){
-						cluster.alpha = ofxeasing::map_clamp(cluster.scale, 2, 5, 0, 1, ofxeasing::sine::easeIn);
+						if(cluster.negativeSpace){
+							cluster.alpha = ofxeasing::map_clamp(cluster.scale, 2, 5, 0, 1, ofxeasing::sine::easeIn);
+						}else{
+							cluster.alpha = ofxeasing::map_clamp(cluster.scale, parameters.colors.alphaScaleStart, parameters.colors.alphaScaleEnd, 0, 1, ofxeasing::sine::easeIn);
+						}
 					}
 				}
 				auto negative = std::count_if(clusters.begin(), clusters.end(),
@@ -681,10 +700,10 @@ void ofApp::draw(){
 				//renderer.fillAlpha = 0;
 			}
 
-			noiseField.octaves[0].color = ofFloatColor::black;
-			noiseField.octaves[1].color = ofFloatColor::black;
-			noiseField.octaves[2].color = ofFloatColor::darkRed;
-			noiseField.octaves[3].color = ofFloatColor::brown;
+			noiseField.octaves[0].color = parameters.negativeColors.color1;
+			noiseField.octaves[1].color = parameters.negativeColors.color2;
+			noiseField.octaves[2].color = parameters.negativeColors.color3;
+			noiseField.octaves[3].color = parameters.negativeColors.color4;
 			noiseField.update(0);
 			if (renderer.parameters.alphaFactor > 0.001) {
 				gpuMarchingCubes.update(noiseField.getTexture());
@@ -696,6 +715,7 @@ void ofApp::draw(){
 				needsParticlesUpdate = false;
 			}
 			auto first = true;
+			renderer.parameters.wireframeColor = true;
 			for(auto & cluster: clusters){
 		//		glm::mat4 model = glm::translate(cluster.origin);
 		//		model = glm::scale(model, glm::vec3(cluster.scale));
@@ -717,6 +737,7 @@ void ofApp::draw(){
 				}
 				first = false;
 			}
+			renderer.parameters.wireframeColor = false;
 			noiseField.octaves[0].color = colors[0];
 			noiseField.octaves[1].color = colors[1];
 			noiseField.octaves[2].color = colors[2];
@@ -740,6 +761,9 @@ void ofApp::draw(){
 		}
 
 		auto first = true;
+		float alphaFactor = renderer.parameters.alphaFactor;
+		bool wire = renderer.parameters.wireframe;
+		float fillAlpha = renderer.parameters.fillAlpha;
 		for(auto & cluster: clusters){
 	//		glm::mat4 model = glm::translate(cluster.origin);
 	//		model = glm::sc255ale(model, glm::vec3(cluster.scale));
@@ -751,6 +775,7 @@ void ofApp::draw(){
 					//node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
 					node.setOrientation(cluster.rotation);
 				}
+				renderer.parameters.alphaFactor = cluster.alpha;
 				const auto & model = node.getLocalTransformMatrix();
 				//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
 				renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
@@ -758,6 +783,9 @@ void ofApp::draw(){
 			}
 			first = false;
 		}
+		renderer.parameters.alphaFactor = alphaFactor;
+		renderer.parameters.wireframe = wire;
+		renderer.parameters.fillAlpha = fillAlpha;
 
 
 	//	switch (state) {
@@ -860,11 +888,6 @@ void ofApp::draw(){
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ONE);
 			//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
-			auto hasNegativeSpace = false;
-			for(auto & cluster: clusters){
-				hasNegativeSpace |= cluster.negativeSpace;
-			}
-
 			auto first = true;
 			for(auto & cluster: clusters){
 				if(!cluster.negativeSpace){

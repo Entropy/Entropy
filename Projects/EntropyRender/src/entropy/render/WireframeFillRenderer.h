@@ -21,6 +21,7 @@ namespace entropy
 			struct Parameters : public ofParameterGroup{
 				ofParameter<bool> wireframe{ "Wireframe", true };
 				ofParameter<bool> fill{ "Fill", true };
+				ofParameter<bool> wireframeColor{ "Wireframe color", false };
 				ofParameter<float> fogMaxDistance{ "Fog Max Distance", 1.5f, 0.2f, 3.f, ofParameterScale::Logarithmic };
 				ofParameter<float> fogMinDistance{ "Fog Min Distance", 0.1f, 0.0f, 1.f, ofParameterScale::Logarithmic };
 				ofParameter<float> fogStartDistance{ "Fog Start Distance", 0.1f, 0.0f, 1.f, ofParameterScale::Logarithmic };

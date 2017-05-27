@@ -484,6 +484,14 @@ namespace entropy
 						geometry.draw(mode, offset, numVertices);
 					}
 					material->end();
+				}else if(parameters.wireframeColor){
+					shaderFill.begin();
+					for(size_t i = 0; i < numSamples; i++){
+						shaderWireframe.setUniformMatrix4f("modelViewMatrix", modelview[i]);
+						shaderWireframe.setUniformMatrix4f("modelViewProjectionMatrix", mvp[i]);
+						geometry.draw(mode, offset, numVertices);
+					}
+					shaderFill.end();
 				}else{
 					shaderWireframe.begin();
 					for(size_t i = 0; i < numSamples; i++){
