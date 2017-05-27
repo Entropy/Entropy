@@ -21,6 +21,10 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::init()
 		{
+			this->parameterListeners.push_back(this->parameters.playback.fade.newListener([this](float & val)
+			{
+				this->soundPlayer.setVolume(val);
+			}));
 			this->parameterListeners.push_back(this->parameters.playback.loop.newListener([this](bool & enabled)
 			{
 				this->soundPlayer.setLoop(enabled);
