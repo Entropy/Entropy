@@ -15,6 +15,7 @@ namespace entropy
 		Base::Base()
 			: initialized(false)
 			, ready(false)
+			, mediaPage(0)
 			, cuesTrack(nullptr)
 			, messagesTrack(nullptr)
 			, linkMediaA(0)
@@ -375,6 +376,7 @@ namespace entropy
 				}
 				ImGui::ListBoxFooter();
 
+				ImGui::InputInt("Media Page", &this->mediaPage);
 				if (ImGui::Button("Add Media..."))
 				{
 					ImGui::OpenPopup("Media Types");
@@ -389,19 +391,19 @@ namespace entropy
 						{
 							if (i == 0)
 							{
-								this->addMedia(media::Type::Image);
+								this->addMedia(media::Type::Image, this->mediaPage);
 							}
 							else if (i == 1)
 							{
-								this->addMedia(media::Type::Movie);
+								this->addMedia(media::Type::Movie, this->mediaPage);
 							}
 							else if (i == 2)
 							{
-								this->addMedia(media::Type::HPV);
+								this->addMedia(media::Type::HPV, this->mediaPage);
 							}
 							else // if (i == 3)
 							{
-								this->addMedia(media::Type::Sound);
+								this->addMedia(media::Type::Sound, this->mediaPage);
 							}
 						}
 					}
@@ -700,7 +702,8 @@ namespace entropy
 					int typeAsInt = jsonMedia["type"];
 					media::Type type = static_cast<media::Type>(typeAsInt);
 
-					auto media = this->addMedia(type);
+					int page = (jsonMedia.count("page") ? jsonMedia["page"] : 0);
+					auto media = this->addMedia(type, page);
 					if (media)
 					{
 						media->deserialize_(jsonMedia);
@@ -1160,7 +1163,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<media::Base> Base::addMedia(media::Type type)
+		std::shared_ptr<media::Base> Base::addMedia(media::Type type, int page)
 		{
 			std::shared_ptr<media::Base> media;
 			if (type == media::Type::Image)
@@ -1186,7 +1189,7 @@ namespace entropy
 			}
 
 			auto idx = this->medias.size();
-			media->init_(idx, this->timeline);
+			media->init_(idx, page, this->timeline);
 			this->medias.push_back(media);
 
 #ifdef OFX_PARAMETER_TWISTER
