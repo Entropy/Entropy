@@ -470,36 +470,26 @@ namespace entropy
 			}
 			else if (syncMode == SyncMode::FreePlay)
 			{
-				uint64_t deltaMs;
-				if (this->initFreePlay())
+				if (!this->initFreePlay())
 				{
-					deltaMs = this->freePlayStartElapsedMs;
+					auto deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
+				
+					// No loop and time is passed duration.
+					if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
 				}
-				else
-				{
-					deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
-				}
-
-				// No loop and time is passed duration.
-				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
 			}
 			else if (syncMode == SyncMode::FadeControl)
 			{
 				// Fade value at 0.
 				if (this->parameters.playback.fade == 0.0f) return false;
 
-				uint64_t deltaMs;
-				if (this->initFreePlay())
+				if (!this->initFreePlay())
 				{
-					deltaMs = this->freePlayStartElapsedMs;
-				}
-				else
-				{
-					deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
-				}
+					auto deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
 
-				// No loop and time is passed duration.
-				if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
+					// No loop and time is passed duration.
+					if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
+				}
 			}
 			else // SyncMode::LinkedMedia
 			{

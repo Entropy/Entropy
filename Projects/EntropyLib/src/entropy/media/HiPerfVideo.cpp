@@ -142,14 +142,23 @@ namespace entropy
 				// Get start time and frames for free play.
 				this->freePlayStartElapsedMs = ofGetElapsedTimeMillis();
 
-				const uint64_t durationMs = this->getDurationMs();
-				this->freePlayStartMediaMs = std::max(0.0f, this->switchMillis);
-				while (this->freePlayStartMediaMs > durationMs)
+				const auto syncMode = this->getSyncMode();
+				if (syncMode == SyncMode::FreePlay)
 				{
-					this->freePlayStartMediaMs -= durationMs;
-				}
+					const uint64_t durationMs = this->getDurationMs();
+					this->freePlayStartMediaMs = std::max(0.0f, this->switchMillis);
+					while (this->freePlayStartMediaMs > durationMs)
+					{
+						this->freePlayStartMediaMs -= durationMs;
+					}
 
-				this->freePlayStartMediaFrame = (this->freePlayStartMediaMs / 1000.0f) * this->hpvPlayer.getFrameRate();
+					this->freePlayStartMediaFrame = (this->freePlayStartMediaMs / 1000.0f) * this->hpvPlayer.getFrameRate();
+				}
+				else if (syncMode == SyncMode::FadeControl)
+				{
+					this->freePlayStartMediaMs = 0;
+					this->freePlayStartMediaFrame = 0;
+				}
 
 				this->freePlayNeedsInit = false;
 
