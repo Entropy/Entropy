@@ -149,16 +149,17 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofParameter<float> fadeBase{ "Fade Base", 1.0f, 0.0f, 1.0f };
+					ofParameter<bool> useFadeTrack{ "Use Fade Track", true };
+					ofParameter<float> fadeTrack{ "Fade Track", 1.0f, 0.0f, 1.0f };
+					ofParameter<bool> useFadeTwist{ "Use Fade Twist", false };
+					ofParameter<int> fadeKnob{ "Fade Knob", 15, 0, 15 };
 					ofParameter<float> fadeTwist{ "Fade Twist", 1.0f, 0.0f, 1.0f };
-					ofParameter<bool> fadeTrack{ "Fade Track", true };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
 
 					PARAM_DECLARE("Playback",
-						fadeBase,
-						fadeTwist,
-						fadeTrack,
+						useFadeTrack, fadeTrack,
+						useFadeTwist, fadeKnob, fadeTwist,
 						loop,
 						syncMode);
 				} playback;
@@ -213,6 +214,12 @@ namespace entropy
 
 			void addCurvesTrack();
 			void removeCurvesTrack();
+
+			// Twister
+			void addTwisterSync();
+			void removeTwisterSync();
+
+			int twisterKnob;
 
 			// Per-frame attributes.
 			ofRectangle srcBounds;

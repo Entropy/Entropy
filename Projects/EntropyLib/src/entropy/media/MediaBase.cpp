@@ -17,6 +17,7 @@ namespace entropy
 			, boundsDirty(false)
 			, borderDirty(false)
 			, wasLoaded(false)
+			, twisterKnob(-1)
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
 			, curvesTrack(nullptr)
@@ -97,8 +98,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		float Base::getTotalFade() const
 		{
-			cout << "total fade is " << this->parameters.playback.fadeBase << " x " << this->parameters.playback.fadeTwist << endl;
-			return (this->parameters.playback.fadeBase * this->parameters.playback.fadeTwist);
+			return (this->parameters.playback.fadeTrack * this->parameters.playback.fadeTwist);
 		}
 
 		//--------------------------------------------------------------
@@ -127,6 +127,10 @@ namespace entropy
 			this->timeline = timeline;
 
 			this->addSwitchesTrack();
+			if (this->parameters.playback.useFadeTrack)
+			{
+				this->addCurvesTrack();
+			}
 
 			this->parameterListeners.push_back(this->parameters.render.renderBack.newListener([this](bool &)
 			{
@@ -157,7 +161,18 @@ namespace entropy
 				this->borderDirty = true;
 			}));
 
-			this->parameterListeners.push_back(this->parameters.playback.fadeBase.newListener([this](float &)
+			this->parameterListeners.push_back(this->parameters.playback.useFadeTrack.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->addCurvesTrack();
+				}
+				else
+				{
+					this->removeCurvesTrack();
+				}
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fadeTrack.newListener([this](float &)
 			{
 				const auto syncMode = this->getSyncMode();
 				const auto totalFade = this->getTotalFade();
@@ -166,6 +181,24 @@ namespace entropy
 					this->freePlayNeedsInit = true;
 				}
 				this->prevFade = totalFade;
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.useFadeTwist.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->addTwisterSync();
+				}
+				else
+				{
+					this->removeTwisterSync();
+				}
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fadeKnob.newListener([this](int &)
+			{
+				if (this->parameters.playback.useFadeTwist)
+				{
+					this->addTwisterSync();
+				}
 			}));
 			this->parameterListeners.push_back(this->parameters.playback.fadeTwist.newListener([this](float &)
 			{
@@ -176,17 +209,6 @@ namespace entropy
 					this->freePlayNeedsInit = true;
 				}
 				this->prevFade = totalFade;
-			}));
-			this->parameterListeners.push_back(this->parameters.playback.fadeTrack.newListener([this](bool & enabled)
-			{
-				if (enabled)
-				{
-					this->addCurvesTrack();
-				}
-				else
-				{
-					this->removeCurvesTrack();
-				}
 			}));
 			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int &)
 			{
@@ -249,7 +271,7 @@ namespace entropy
 
 			if (this->curvesTrack != nullptr && !this->curvesTrack->getKeyframes().empty())
 			{
-				this->parameters.playback.fadeBase = this->curvesTrack->getValue();
+				this->parameters.playback.fadeTrack = this->curvesTrack->getValue();
 			}
 
 			this->switchMillis = -1.0f;
@@ -372,9 +394,17 @@ namespace entropy
 
 				if (ofxImGui::BeginTree(this->parameters.playback, settings))
 				{
-					ofxImGui::AddParameter(this->parameters.playback.fadeBase);
-					ofxImGui::AddParameter(this->parameters.playback.fadeTwist);
-					ofxImGui::AddParameter(this->parameters.playback.fadeTrack);
+					ofxImGui::AddParameter(this->parameters.playback.useFadeTrack);
+					if (this->parameters.playback.useFadeTrack)
+					{
+						ofxImGui::AddParameter(this->parameters.playback.fadeTrack);
+					}
+					ofxImGui::AddParameter(this->parameters.playback.useFadeTwist);
+					ofxImGui::AddStepper(this->parameters.playback.fadeKnob);
+					if (this->parameters.playback.useFadeTwist)
+					{
+						ofxImGui::AddParameter(this->parameters.playback.fadeTwist);
+					}
 					ofxImGui::AddParameter(this->parameters.playback.loop);
 					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Fade Control", "Linked Media" };
 					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 2);
@@ -418,7 +448,7 @@ namespace entropy
 				}
 			}
 
-			if (this->parameters.playback.fadeTrack)
+			if (this->parameters.playback.useFadeTrack)
 			{
 				this->addCurvesTrack();
 			}
@@ -557,7 +587,7 @@ namespace entropy
 				return false;
 			}
 
-			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getInTimeInMillis(), this->getDurationMs());
+			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getCurrentTimeMillis(), this->getDurationMs());
 			return (addedSwitch != nullptr);
 		}
 
@@ -609,6 +639,31 @@ namespace entropy
 			//	cout << "Removing page " << page->getName() << endl;
 			//	this->timeline->removePage(page);
 			//}
+		}
+
+		//--------------------------------------------------------------
+		void Base::addTwisterSync()
+		{
+#ifdef OFX_PARAMETER_TWISTER
+			auto twister = GetApp()->getTwister();
+
+			this->removeTwisterSync();
+			this->twisterKnob = this->parameters.playback.fadeKnob;
+			twister->setParam(this->twisterKnob, this->parameters.playback.fadeTwist);
+#endif
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeTwisterSync()
+		{
+#ifdef OFX_PARAMETER_TWISTER
+			if (this->twisterKnob != -1)
+			{
+				auto twister = GetApp()->getTwister();
+				twister->clearParam(this->twisterKnob);
+				this->twisterKnob = -1;
+			}
+#endif
 		}
 
 		//--------------------------------------------------------------

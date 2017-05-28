@@ -1192,10 +1192,6 @@ namespace entropy
 			media->init_(idx, page, this->timeline);
 			this->medias.push_back(media);
 
-#ifdef OFX_PARAMETER_TWISTER
-			this->resetMediaTwister();
-#endif
-
 			return media;
 		}
 
@@ -1205,10 +1201,6 @@ namespace entropy
 			auto media = this->medias.back();
 			media->clear_();
 			this->medias.pop_back();
-
-#ifdef OFX_PARAMETER_TWISTER
-			this->resetMediaTwister();
-#endif
 		}
 
 		//--------------------------------------------------------------
@@ -1231,83 +1223,6 @@ namespace entropy
 		{
 			this->links.pop_back();
 		}
-
-#ifdef OFX_PARAMETER_TWISTER
-		//--------------------------------------------------------------
-		void Base::resetMediaTwister()
-		{
-			auto twister = GetApp()->getTwister();
-			twister->clear();
-
-			size_t row = 0;
-			size_t col = 0;
-			for (auto media : this->medias)
-			{
-				if (media->getType() == media::Type::HPV)
-				{
-					auto encoder = row * 4 + col;
-					twister->setParam(encoder, media->parameters.playback.fadeTwist);
-
-					// Add parameters by column for similar mapping as timeline.
-					++row;
-					if (row >= 4)
-					{
-						++col;
-						row = 0;
-					}
-					if (col >= 4)
-					{
-						break;
-					}
-				}
-
-			}
-
-			/*
-			size_t rowVideo = 0;
-			size_t colVideo = 0;
-			size_t rowSound = 0;
-			size_t colSound = 2;
-			for (auto media : this->medias)
-			{
-				if (media->getType() == media::Type::HPV)
-				{
-					auto encoder = rowVideo * 4 + colVideo;
-					if (encoder < 8)
-					{
-						cout << "adding hpv with idx " << encoder << endl;
-						twister->setParam(encoder, media->parameters.playback.fade);
-					}
-
-					// Add parameters by column for similar mapping as timeline.
-					++rowVideo;
-					if (rowVideo >= 4)
-					{
-						++colVideo;
-						rowVideo = 0;
-					}
-				}
-				else if (media->getType() == media::Type::Sound)
-				{
-					auto encoder = rowSound * 4 + colSound;
-					if (encoder < 16)
-					{
-						cout << "adding hpv with idx " << encoder << endl;
-						twister->setParam(encoder, media->parameters.playback.fade);
-					}
-
-					// Add parameters by column for similar mapping as timeline.
-					++rowSound;
-					if (rowSound >= 4)
-					{
-						++colSound;
-						rowSound = 0;
-					}
-				}
-			}
-			*/
-		}
-#endif
 
 		//--------------------------------------------------------------
 		std::shared_ptr<world::Camera> Base::getCamera(render::Layout layout)

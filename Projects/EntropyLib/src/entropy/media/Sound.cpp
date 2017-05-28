@@ -21,7 +21,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::init()
 		{
-			this->parameterListeners.push_back(this->parameters.playback.fadeBase.newListener([this](float &)
+			this->parameterListeners.push_back(this->parameters.playback.fadeTrack.newListener([this](float &)
 			{
 				this->soundPlayer.setVolume(this->getTotalFade());
 			}));
