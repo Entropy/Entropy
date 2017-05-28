@@ -216,15 +216,13 @@
                 },
                 "File Path": "E:\\mp3\\Part 2_Particles_TOTAL_ V1.mp3",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "0"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 0,
             "type": 4
         },
         {
@@ -243,17 +241,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Particles_storm.hpv",
+                "File Path": "E:\\hpv\\old_storm.hpv",
                 "Playback": {
-                    "Fade": "1",
-                    "Loop": "0",
+                    "Fade Base": "0.45",
+                    "Fade Twist": "1",
+                    "Loop": "1",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 0,
             "type": 3
         },
         {
@@ -272,104 +268,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Particles_standard_model_text.hpv",
+                "File Path": "E:\\hpv\\Particles_BaryoText_Front.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Particles_baryogenesis_text.hpv",
-                "Playback": {
-                    "Fade": "0",
-                    "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Particles_transition_out.hpv",
-                "Playback": {
-                    "Fade": "1",
-                    "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Particles_ZoomOut_r1.hpv",
-                "Playback": {
-                    "Fade": "1",
-                    "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
+            "page": 0,
             "type": 3
         },
         {
@@ -390,15 +297,13 @@
                 },
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 1,
             "type": 3
         },
         {
@@ -417,17 +322,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "",
+                "File Path": "E:\\hpv\\Particles_BaryoText_Back.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 1,
             "type": 3
         },
         {
@@ -446,17 +349,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "",
+                "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 2,
             "type": 3
         },
         {
@@ -465,36 +366,7 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
-                "Playback": {
-                    "Fade": "1",
-                    "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
+                    "Render Back": "0",
                     "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
@@ -504,17 +376,123 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "File Path": "E:\\hpv\\Particles_standard_model_text.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 2,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\transition_out.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 3,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Particles_ZoomOut_r1.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 3,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.6, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Front_Timeline_003.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2"
+                }
+            },
+            "page": 2,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 3,
             "type": 3
         },
         {
@@ -535,15 +513,13 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_CountDown_r2.hpv",
                 "Playback": {
-                    "Fade": "0.905512",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 3,
             "type": 3
         },
         {
@@ -564,15 +540,13 @@
                 },
                 "File Path": "entropy\\scene\\PopUps\\sounds\\bubble THOMAS EDIT V1.wav",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 3,
             "type": 4
         },
         {
@@ -581,8 +555,8 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
+                    "Render Back": "0",
+                    "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -593,15 +567,121 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_CMB_170523.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 4,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Bubbles_ElectroWave_r1.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2"
+                }
+            },
+            "page": 4,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\old_storm.hpv",
+                "Playback": {
+                    "Fade Base": "0",
+                    "Fade Twist": "1",
+                    "Loop": "1",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 0,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Particles_standard_model.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 1,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "Playback": {
+                    "Fade Base": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1"
+                }
+            },
+            "page": 3,
             "type": 3
         }
     ],

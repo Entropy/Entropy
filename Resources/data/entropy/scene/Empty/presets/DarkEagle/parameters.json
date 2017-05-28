@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, -0.000172633",
+                "orientation": "1, 0, 0, 0.000244141",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000126377",
+                "orientation": "1, 0, 0, 0.000488282",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -199,38 +199,10 @@
     },
     "Media": [
         {
-            "Movie": {
-                "Base": {
-                    "Anchor": "0.5, 0.42",
-                    "Background": "0, 0, 0, 0",
-                    "Fade": "1",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "0.809",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\mov\\test_baryogenesis_text_light_smaller_photons.mov",
-                "Loop": "1",
-                "Scrub To Timeline": "1",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 2
-        },
-        {
-            "Movie": {
+            "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
-                    "Fade": "1",
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
@@ -242,22 +214,22 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mov\\test_baryogenesis.mov",
-                "Loop": "0",
-                "Scrub To Timeline": "1",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                "File Path": "E:\\hpv\\VAPOR_NoAnimation_170524.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "1",
+                    "Sync Mode": "1"
                 }
             },
-            "type": 2
+            "page": 0,
+            "type": 3
         },
         {
-            "Movie": {
+            "Sound": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
-                    "Fade": "0.811024",
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
@@ -269,49 +241,130 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mov\\testDOF.mov",
-                "Loop": "1",
-                "Scrub To Timeline": "1",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                "File Path": "E:\\mp3\\doppler live DARK AGES.mp3",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
                 }
             },
+            "page": 0,
+            "type": 4
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mp3\\doppler live EAGLE.mp3",
+                "Playback": {
+                    "Fade Base": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mov\\EAGLE_Intro_160923.mov",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
+                }
+            },
+            "page": 0,
             "type": 2
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mov\\EAGLE_GasStars_160922.mov",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
+                }
+            },
+            "page": 0,
+            "type": 2
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\flash THOMAS EDIT V3.wav",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
         },
         {
             "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
-                    "Fade": "1",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "",
-                "Loop": "0",
-                "Sync To Timeline": "1",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 3
-        },
-        {
-            "Movie": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Fade": "1",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
@@ -323,15 +376,16 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mov\\faster_particles.mov",
-                "Loop": "1",
-                "Scrub To Timeline": "1",
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                "File Path": "E:\\hpv\\Front_Timeline_008.hpv",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Twist": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2"
                 }
             },
-            "type": 2
+            "page": 1,
+            "type": 3
         }
     ],
     "Post Effects": {

@@ -9,7 +9,19 @@
             "scene": "Empty"
         },
         {
-            "preset": "Particles",
+            "preset": "PartyBubbles",
+            "scene": "Empty"
+        },
+        {
+            "preset": "DarkEagle",
+            "scene": "Empty"
+        },
+        {
+            "preset": "Surveys",
+            "scene": "Empty"
+        },
+        {
+            "preset": "TestFade",
             "scene": "Empty"
         }
     ]
