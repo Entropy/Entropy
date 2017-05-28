@@ -349,6 +349,18 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Canvas::resetWarpSizes()
+		{
+			float scaleX = 1.0f / this->warps.size();
+			float offsetX = 0.0f;
+			for (int i = 0; i < this->warps.size(); ++i)
+			{
+				this->warps[i]->reset(glm::vec2(scaleX, 1.0f), glm::vec2(offsetX, 0.0f));
+				offsetX += scaleX;
+			}
+		}
+
+		//--------------------------------------------------------------
 		bool Canvas::isEditing() const
 		{
 			for (auto i = 0; i < this->warps.size(); ++i)
@@ -432,6 +444,11 @@ namespace entropy
 
 					if (!this->parameters.fillWindow)
 					{
+						if (ImGui::Button("Reset Warp Sizes"))
+						{
+							this->resetWarpSizes();
+						}
+							
 						ImGui::ListBoxHeader("List", 3);
 						for (auto i = 0; i < this->warps.size(); ++i)
 						{

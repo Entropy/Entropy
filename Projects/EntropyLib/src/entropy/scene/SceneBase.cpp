@@ -4,7 +4,6 @@
 #include "entropy/media/HiPerfVideo.h"
 #include "entropy/media/Image.h"
 #include "entropy/media/Movie.h"
-#include "entropy/media/Sequence.h"
 #include "entropy/media/Sound.h"
 #include "entropy/util/App.h"
 
@@ -274,7 +273,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Base)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
 				{
 					media->draw_();
 				}
@@ -321,7 +320,7 @@ namespace entropy
 
 			for (auto media : this->medias)
 			{
-				if (media->getLayout() == layout && media->getSurface() == media::Surface::Overlay)
+				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
 				{
 					media->draw_();
 				}
@@ -383,7 +382,7 @@ namespace entropy
 				}
 				if (ImGui::BeginPopup("Media Types"))
 				{
-					static vector<string> mediaNames{ "Image", "Movie", "HPV", "Sequence", "Sound" };
+					static vector<string> mediaNames{ "Image", "Movie", "HPV", "Sound" };
 					for (auto i = 0; i < mediaNames.size(); ++i)
 					{
 						if (ImGui::Selectable(mediaNames[i].c_str()))
@@ -400,11 +399,7 @@ namespace entropy
 							{
 								this->addMedia(media::Type::HPV);
 							}
-							else if (i == 3)
-							{
-								this->addMedia(media::Type::Sequence);
-							}
-							else // if (i == 4)
+							else // if (i == 3)
 							{
 								this->addMedia(media::Type::Sound);
 							}
@@ -1180,10 +1175,6 @@ namespace entropy
 			{
 				media = std::make_shared<media::HiPerfVideo>();
 			}
-			else if (type == media::Type::Sequence)
-			{
-				media = std::make_shared<media::Sequence>();
-			}
 			else if (type == media::Type::Sound)
 			{
 				media = std::make_shared<media::Sound>();
@@ -1245,12 +1236,24 @@ namespace entropy
 			auto twister = GetApp()->getTwister();
 			twister->clear();
 
+			//size_t rowVideo = 0;
+			//size_t colVideo = 0;
+			//size_t rowSound = 0;
+			//size_t colSound = 2;
 			size_t row = 0;
 			size_t col = 0;
 			for (auto media : this->medias)
 			{
+				//if (media->getType() == media::Type::Sound)
+				//{
+				//	auto encoder = rowSound * 4 + colSound;
+				//	if (encoder < 16)
+				//	{
+				//		twister->setParam(encoder, media->parameters.playback.fade);
+				//	}
+				//}
 				auto encoder = row * 4 + col;
-				twister->setParam(encoder, media->getParameters().base.fade);
+				twister->setParam(encoder, media->parameters.playback.fade);
 
 				// Add parameters by column for similar mapping as timeline.
 				++row;

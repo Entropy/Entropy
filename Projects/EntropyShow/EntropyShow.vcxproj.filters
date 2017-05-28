@@ -85,9 +85,6 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\Sequence.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
@@ -183,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxHPVPlayer\src\ofxHPVPlayer.cpp">
       <Filter>local_addons\ofxHPVPlayer\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\addons\ofxImageSequence\src\ofxImageSequence.cpp">
-      <Filter>local_addons\ofxImageSequence\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\addons\ofxParameterTwister\src\ofxParameterTwister.cpp">
       <Filter>local_addons\ofxParameterTwister\src</Filter>
@@ -474,12 +468,6 @@
     <Filter Include="local_addons\ofxHPVPlayer\src">
       <UniqueIdentifier>{EAAE9F07-32AE-6381-E085-BDAA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="local_addons\ofxImageSequence">
-      <UniqueIdentifier>{2A70EDF2-FD46-64F2-4704-7876}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="local_addons\ofxImageSequence\src">
-      <UniqueIdentifier>{FC3752C4-F9C8-A3FD-987C-585E}</UniqueIdentifier>
-    </Filter>
     <Filter Include="local_addons\ofxParameterTwister">
       <UniqueIdentifier>{3E0FCE50-C3A5-C68A-6426-51F4}</UniqueIdentifier>
     </Filter>
@@ -689,9 +677,6 @@
     <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Sequence.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\Sound.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
@@ -838,9 +823,6 @@
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxHPVPlayer\src\Timer.h">
       <Filter>local_addons\ofxHPVPlayer\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\addons\ofxImageSequence\src\ofxImageSequence.h">
-      <Filter>local_addons\ofxImageSequence\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\addons\ofxParameterTwister\src\ofxParameterTwister.h">
       <Filter>local_addons\ofxParameterTwister\src</Filter>

@@ -359,8 +359,6 @@ void ofApp::draw()
 
 		this->getActiveCamera().begin();
 		{
-			//renderer.draw(galaxy.getVbo(), 0, galaxy.getNumVertices(), GL_POINTS, camera);
-
 			auto worldTransform = this->getWorldTransform();
 
 			// Draw the data set.

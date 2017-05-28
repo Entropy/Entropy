@@ -12,8 +12,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		Sound::Sound()
 			: Base(Type::Sound)
-			, wasLoaded(false)
-			, freePlayInit(false)
 		{}
 
 		//--------------------------------------------------------------
@@ -23,16 +21,13 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::init()
 		{
-			this->parameterListeners.push_back(this->parameters.loop.newListener([this](bool & enabled)
+			this->parameterListeners.push_back(this->parameters.playback.fade.newListener([this](float & val)
+			{
+				this->soundPlayer.setVolume(val);
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.loop.newListener([this](bool & enabled)
 			{
 				this->soundPlayer.setLoop(enabled);
-			}));
-			this->parameterListeners.push_back(this->parameters.syncToTimeline.newListener([this](bool & enabled)
-			{
-				if (!enabled)
-				{
-					this->freePlayInit = true;
-				}
 			}));
 		}
 
@@ -51,93 +46,44 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Sound::update(double dt)
 		{
-			if (!wasLoaded && this->isLoaded())
+			if (!this->isLoaded()) return;
+			
+			if (!this->wasLoaded)
 			{
 				// Add a new switch if none exist.
 				this->addDefaultSwitch(); 
-				wasLoaded = true;
+				this->wasLoaded = true;
 			}
 			
-			if (!this->isLoaded())
+			// Sound is special because it's the master.
+			const bool shouldPlay = this->shouldPlay() && this->timeline->getIsPlaying();
+			if (shouldPlay)
 			{
-				return;
-			}
+				const auto syncMode = this->getSyncMode();
 
-			float durationMillis = this->soundPlayer.getDurationMS();
-			bool shouldPlay = (this->switchMillis >= 0.0f) && (durationMillis > 0.0f) &&
-				(this->parameters.loop || durationMillis >= this->switchMillis) && 
-				(this->timeline->getIsPlaying() || !this->parameters.syncToTimeline);
-			if (shouldPlay && !this->soundPlayer.isPlaying())
-			{
-				// Set the starting position.
-				float positionMillis = this->switchMillis;
-				while (positionMillis > durationMillis)
+				if (!this->soundPlayer.isPlaying())
 				{
-					positionMillis -= durationMillis;
-				}
-
-				this->soundPlayer.play();
-				this->soundPlayer.setPositionMS(positionMillis);
-			}
-			else if (!shouldPlay && this->soundPlayer.isPlaying())
-			{
-				this->soundPlayer.stop();
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Sound::gui(ofxImGui::Settings & settings)
-		{
-			if (ofxImGui::BeginTree("File", settings))
-			{
-				if (ImGui::Button("Load..."))
-				{
-					auto result = ofSystemLoadDialog("Select a sound file.", false, GetSharedAssetsPath().string());
-					if (result.bSuccess)
+					this->soundPlayer.play();
+					if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
 					{
-						if (this->loadSound(result.filePath))
-						{
-							const auto relativePath = ofFilePath::makeRelative(GetSharedAssetsPath(), result.filePath);
-							const auto testPath = GetSharedAssetsPath().append(relativePath);
-							if (ofFile::doesFileExist(testPath.string()))
-							{
-								this->parameters.filePath = relativePath;
-							}
-							else
-							{
-								this->parameters.filePath = result.filePath;
-							}
-						}
+						this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
 					}
 				}
-				ImGui::Text("Filename: %s", this->fileName.c_str());
 
-				ofxImGui::EndTree(settings);
+				if (syncMode != SyncMode::FreePlay && syncMode != SyncMode::FadeControl)
+				{
+					this->soundPlayer.setPositionMS(this->getPlaybackTimeMs());
+				}
 			}
-
-			ofxImGui::AddParameter(this->parameters.loop);
-			ofxImGui::AddParameter(this->parameters.syncToTimeline);
-		}
-
-		//--------------------------------------------------------------
-		void Sound::deserialize(const nlohmann::json & json)
-		{
-			if (!this->parameters.filePath->empty())
+			else if (this->soundPlayer.isPlaying())
 			{
-				const auto filePath = this->parameters.filePath.get();
-				if (ofFilePath::isAbsolute(filePath))
-				{
-					this->loadSound(filePath);
-				}
-				else
-				{
-					this->loadSound(GetSharedAssetsPath().string() + filePath);
-				}
+				this->soundPlayer.stop();
+				this->freePlayNeedsInit = true;
 			}
 		}
 
 		//--------------------------------------------------------------
-		bool Sound::loadSound(const std::filesystem::path & filePath)
+		bool Sound::loadMedia(const std::filesystem::path & filePath)
 		{
 			if (!ofFile::doesFileExist(filePath))
 			{
@@ -146,7 +92,7 @@ namespace entropy
 			}
 
 			this->soundPlayer.load(filePath.string());
-			this->soundPlayer.setLoop(this->parameters.loop);
+			this->soundPlayer.setLoop(this->parameters.playback.loop);
 
 			this->fileName = ofFilePath::getFileName(filePath);
 			this->wasLoaded = false;
@@ -177,12 +123,99 @@ namespace entropy
 		{}
 
 		//--------------------------------------------------------------
-		unsigned long long Sound::getContentDurationMs() const
+		bool Sound::initFreePlay()
+		{
+			if (this->freePlayNeedsInit)
+			{
+				// Get start time and frames for free play.
+				this->freePlayStartElapsedMs = ofGetElapsedTimeMillis();
+
+				const uint64_t durationMs = this->getDurationMs();
+				this->freePlayStartMediaMs = std::max(0.0f, this->switchMillis);
+				while (this->freePlayStartMediaMs > durationMs)
+				{
+					this->freePlayStartMediaMs -= durationMs;
+				}
+
+				this->freePlayStartMediaFrame = 0;
+				
+				this->freePlayNeedsInit = false;
+
+				return true;
+			}
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Sound::getCurrentTimeMs() const
+		{
+			if (this->isLoaded())
+			{
+				return this->soundPlayer.getPositionMS();
+			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Sound::getCurrentFrame() const
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Sound::getPlaybackTimeMs()
+		{
+			const auto syncMode = this->getSyncMode();
+
+			if (syncMode == SyncMode::Timeline)
+			{
+				const uint64_t durationMs = this->getDurationMs();
+				uint64_t positionMs = this->switchMillis;
+				while (positionMs > durationMs)
+				{
+					positionMs -= durationMs;
+				}
+				return positionMs;
+			}
+			
+			if (syncMode == SyncMode::FreePlay)
+			{
+				if (this->initFreePlay())
+				{
+					return this->freePlayStartMediaMs;
+				}
+
+				return (ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs + this->freePlayStartMediaMs);
+			}
+			
+			//else SyncMode::LinkedMedia
+			if (this->linkedMedia != nullptr)
+			{
+				return this->linkedMedia->getPlaybackTimeMs();
+			}
+
+			return 0;
+		}
+		
+		//--------------------------------------------------------------
+		uint64_t Sound::getPlaybackFrame()
+		{
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Sound::getDurationMs() const
 		{
 			if (this->isLoaded())
 			{
 				return this->soundPlayer.getDurationMS();
 			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Sound::getDurationFrames() const
+		{
 			return 0;
 		}
 	}

@@ -1,0 +1,22 @@
+<keyframes>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:05:335</time>
+        <value>0.274999976</value>
+    </key>
+    <key>
+        <flag>play show</flag>
+        <time>00:00:51:096</time>
+        <value>0.574999988</value>
+    </key>
+    <key>
+        <flag>play fs</flag>
+        <time>00:01:49:900</time>
+        <value>0.475000024</value>
+    </key>
+    <key>
+        <flag>play slow</flag>
+        <time>00:03:00:310</time>
+        <value>0.600000024</value>
+    </key>
+</keyframes>
