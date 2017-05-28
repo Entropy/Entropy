@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0",
+                "orientation": "1, 0, 0, 0.000416775",
                 "ortho": false,
                 "position": "0, 0, 867.995",
                 "relativeYAxis": false,
@@ -98,7 +98,13 @@
         }
     },
     "Empty": null,
-    "Links": null,
+    "Links": [
+        {
+            "direction": true,
+            "idxA": 13,
+            "idxB": 23
+        }
+    ],
     "Mappings": {
         "Box_Back::Alpha": "0",
         "Box_Back::Auto Draw": "0",
@@ -311,7 +317,7 @@
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
             },
@@ -341,7 +347,7 @@
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
             },
@@ -461,7 +467,7 @@
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
             },
@@ -471,7 +477,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.6, 0.5",
+                    "Anchor": "0.55, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
@@ -484,15 +490,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Front_Timeline_003.hpv",
+                "File Path": "E:\\hpv\\Front_Timeline_004.hpv",
                 "Playback": {
-                    "Fade Knob": "15",
+                    "Fade Knob": "9",
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 3,
@@ -516,13 +522,13 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
                 "Playback": {
-                    "Fade Knob": "15",
+                    "Fade Knob": "4",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 4,
@@ -581,7 +587,7 @@
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
             },
@@ -606,13 +612,13 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_CMB_170523.hpv",
                 "Playback": {
-                    "Fade Knob": "15",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Knob": "5",
+                    "Fade Track": "0",
+                    "Fade Twist": "0.992126",
                     "Loop": "0",
                     "Sync Mode": "1",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 5,
@@ -642,7 +648,7 @@
                     "Loop": "0",
                     "Sync Mode": "2",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 5,
@@ -727,7 +733,7 @@
                 "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
                 "Playback": {
                     "Fade Knob": "15",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1",
@@ -827,6 +833,96 @@
             },
             "page": 0,
             "type": 4
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.55, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Front_Timeline_003.hpv",
+                "Playback": {
+                    "Fade Knob": "8",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 2,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.55, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Front_Timeline_005.hpv",
+                "Playback": {
+                    "Fade Knob": "10",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 3,
+            "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1.5",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\img\\Planck-CMB-SMICA.png",
+                "Playback": {
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
+                    "Fade Twist": "0.992126",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 5,
+            "type": 1
         }
     ],
     "Post Effects": {

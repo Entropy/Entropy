@@ -13,7 +13,7 @@
     </element>
     <element name="Fade_0_Sound">
         <x>0.000000000</x>
-        <y>592.000000000</y>
+        <y>606.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -61,13 +61,13 @@
     </element>
     <element name="Fade_18_Sound">
         <x>0.000000000</x>
-        <y>720.000000000</y>
+        <y>734.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_19_Sound">
         <x>0.000000000</x>
-        <y>848.000000000</y>
+        <y>862.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -91,9 +91,9 @@
     </element>
     <element name="Fade_20_Sound">
         <x>0.000000000</x>
-        <y>976.000000000</y>
+        <y>990.000000000</y>
         <width>1680.000000000</width>
-        <height>54.000000000</height>
+        <height>40.000000000</height>
     </element>
     <element name="Fade_2_HPV">
         <x>0.000000000</x>
@@ -193,7 +193,7 @@
     </element>
     <element name="Media_0_Sound">
         <x>0.000000000</x>
-        <y>528.000000000</y>
+        <y>542.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -241,13 +241,13 @@
     </element>
     <element name="Media_18_Sound">
         <x>0.000000000</x>
-        <y>656.000000000</y>
+        <y>670.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_19_Sound">
         <x>0.000000000</x>
-        <y>784.000000000</y>
+        <y>798.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -271,7 +271,7 @@
     </element>
     <element name="Media_20_Sound">
         <x>0.000000000</x>
-        <y>912.000000000</y>
+        <y>926.000000000</y>
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>

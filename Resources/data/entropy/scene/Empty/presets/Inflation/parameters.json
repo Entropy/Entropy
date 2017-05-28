@@ -222,11 +222,13 @@
                 },
                 "File Path": "E:\\mp3\\Part 1_Blobs_TOTAL_ V1.mp3",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "0",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -250,11 +252,13 @@
                 },
                 "File Path": "E:\\hpv\\bigbang_darker.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 1,
@@ -278,11 +282,13 @@
                 },
                 "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 2,
@@ -306,11 +312,13 @@
                 },
                 "File Path": "E:\\hpv\\Inflation_Slowdown_Cooldown_170526.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 2,
@@ -334,11 +342,13 @@
                 },
                 "File Path": "E:\\hpv\\Front_Timeline_001.hpv",
                 "Playback": {
-                    "Fade Base": "1",
-                    "Fade Track": "0",
+                    "Fade Knob": "12",
+                    "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "2"
+                    "Sync Mode": "2",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 1,
@@ -362,11 +372,13 @@
                 },
                 "File Path": "E:\\hpv\\Front_Timeline_002.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "0",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "2"
+                    "Sync Mode": "2",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 2,
@@ -390,11 +402,13 @@
                 },
                 "File Path": "E:\\hpv\\parent_particles.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
                     "Fade Track": "0",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 3,
