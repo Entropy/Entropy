@@ -41,7 +41,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.11203694343567,
-                "distance": 935.307006835938,
+                "distance": 867.994995117188,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -53,7 +53,7 @@
                 "nearClip": 9.3530740737915,
                 "orientation": "1, 0, 0, 0",
                 "ortho": false,
-                "position": "0, 0, 935.307",
+                "position": "0, 0, 867.995",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -76,7 +76,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.24351859092712,
-                "distance": 935.307006835938,
+                "distance": 867.994995117188,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -88,7 +88,7 @@
                 "nearClip": 9.3530740737915,
                 "orientation": "1, 0, 0, 0",
                 "ortho": false,
-                "position": "0, 0, 935.307",
+                "position": "0, 0, 867.995",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -214,12 +214,15 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mp3\\Part 2_Particles_TOTAL_ V1.mp3",
+                "File Path": "E:\\mp3\\Part 2 mood 1 V2.mp3",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -243,13 +246,16 @@
                 },
                 "File Path": "E:\\hpv\\old_storm.hpv",
                 "Playback": {
-                    "Fade Base": "0.45",
+                    "Fade Knob": "15",
+                    "Fade Track": "0.45",
                     "Fade Twist": "1",
                     "Loop": "1",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 0,
+            "page": 1,
             "type": 3
         },
         {
@@ -270,13 +276,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_BaryoText_Front.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 0,
+            "page": 1,
             "type": 3
         },
         {
@@ -297,13 +306,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 1,
+            "page": 2,
             "type": 3
         },
         {
@@ -324,13 +336,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_BaryoText_Back.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 1,
+            "page": 2,
             "type": 3
         },
         {
@@ -351,13 +366,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 2,
+            "page": 3,
             "type": 3
         },
         {
@@ -378,13 +396,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_standard_model_text.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 2,
+            "page": 3,
             "type": 3
         },
         {
@@ -405,13 +426,16 @@
                 },
                 "File Path": "E:\\hpv\\transition_out.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 4,
             "type": 3
         },
         {
@@ -432,13 +456,16 @@
                 },
                 "File Path": "E:\\hpv\\Particles_ZoomOut_r1.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 4,
             "type": 3
         },
         {
@@ -459,13 +486,16 @@
                 },
                 "File Path": "E:\\hpv\\Front_Timeline_003.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "2"
+                    "Sync Mode": "2",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 2,
+            "page": 3,
             "type": 3
         },
         {
@@ -486,13 +516,16 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 4,
             "type": 3
         },
         {
@@ -513,13 +546,16 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_CountDown_r2.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 4,
             "type": 3
         },
         {
@@ -540,13 +576,16 @@
                 },
                 "File Path": "entropy\\scene\\PopUps\\sounds\\bubble THOMAS EDIT V1.wav",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 4,
             "type": 4
         },
         {
@@ -567,13 +606,16 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_CMB_170523.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 4,
+            "page": 5,
             "type": 3
         },
         {
@@ -594,13 +636,16 @@
                 },
                 "File Path": "E:\\hpv\\Bubbles_ElectroWave_r1.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "2"
+                    "Sync Mode": "2",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 4,
+            "page": 5,
             "type": 3
         },
         {
@@ -621,37 +666,13 @@
                 },
                 "File Path": "E:\\hpv\\old_storm.hpv",
                 "Playback": {
-                    "Fade Base": "0",
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Loop": "1",
-                    "Sync Mode": "1"
-                }
-            },
-            "page": 0,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Particles_standard_model.hpv",
-                "Playback": {
-                    "Fade Base": "1",
-                    "Fade Twist": "1",
-                    "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 1,
@@ -673,16 +694,139 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
-                    "Fade Base": "0",
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 2,
             "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "Playback": {
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 4,
+            "type": 3
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mp3\\Part 2 mood 2 V2.mp3",
+                "Playback": {
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mp3\\Part 2 mood 3 V2.mp3",
+                "Playback": {
+                    "Fade Knob": "15",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mp3\\zoomout V1.mp3",
+                "Playback": {
+                    "Fade Knob": "15",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
         }
     ],
     "Post Effects": {
