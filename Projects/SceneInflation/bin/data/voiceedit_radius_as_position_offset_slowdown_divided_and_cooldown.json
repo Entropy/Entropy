@@ -7,7 +7,7 @@
             "DOF_aperture": "0.0005",
             "DOF_distance": "1",
             "DOF_samples": "1",
-            "Enable_cooldown_renderer": "1",
+            "Enable_cooldown_renderer": "0",
             "Fade_From": "0.0653061",
             "Fade_Power": "2.14098",
             "Fade_To": "0.546939",
@@ -34,17 +34,17 @@
                 "outer_radius": "1"
             },
             "Colors": {
-                "color_1": "1, 0.913726, 0, 1",
-                "color_2": "1, 0.0941177, 0, 1",
-                "color_3": "1, 0.560784, 0.0588235, 1",
-                "color_4": "1, 0.145098, 0, 1",
+                "color_1": "0.960784, 0.819608, 0.0980392, 1",
+                "color_2": "0.960784, 0.698039, 0.0980392, 1",
+                "color_3": "0.964706, 0.513726, 0.0980392, 1",
+                "color_4": "0.992157, 0.109804, 0.156863, 1",
                 "negative_wire": "1"
             },
             "Control_Camera": "0",
             "Equations": {
-                "Current_rate_of_expansion": "2.5",
+                "Current_rate_of_expansion": "3.6",
                 "Hubble__min__wavelength_for_any_octave": "4",
-                "Main_cluster_scale_after_bb": "1.76177",
+                "Main_cluster_scale_after_bb": "0",
                 "Max_scale_for_any_cluster": "30",
                 "New_cluster_at_scale": "4.5",
                 "transition_blobs_out___s_": "1",
@@ -52,31 +52,31 @@
             },
             "Render": {
                 "Debug_Noise": "0",
-                "fps": "30",
-                "system_clock": "0"
+                "fps": "60",
+                "system_clock": "1"
             },
             "Rotating": "1",
-            "Rotation_radius": "0.88914",
+            "Rotation_radius": "0.87947",
             "Rotation_radius_speed": "0.1",
-            "Rotation_speed": "0.6",
+            "Rotation_speed": "1.40986",
             "Rotation_use_speed": "0",
             "Run_Simulation": "1",
-            "state": "2"
+            "state": "0"
         },
         "Marching_Cubes": {
-            "IsoLevel": "0.35",
+            "IsoLevel": "0.34407",
             "Resolution": "256",
             "Shade_Normals": "0",
             "subdivisions": "0"
         },
         "Noise_Field": {
             "Fill_Edges": "1",
-            "Noise_Speed": "2",
-            "Norm__Factor": "1.0255",
+            "Noise_Speed": "5.89855",
+            "Norm__Factor": "1.04374",
             "Octave_0": {
                 "Advance_Time_0": "1",
                 "Amplitude_0": "1",
-                "Color_0": "1, 0.913726, 0, 1",
+                "Color_0": "0.960784, 0.819608, 0.0980392, 1",
                 "Enabled_0": "1",
                 "Freq__Hz_0": "0.015625",
                 "Freq_time_0": "0.015625",
@@ -86,7 +86,7 @@
             "Octave_1": {
                 "Advance_Time_1": "1",
                 "Amplitude_1": "0.5",
-                "Color_1": "1, 0.0941177, 0, 1",
+                "Color_1": "0.960784, 0.698039, 0.0980392, 1",
                 "Enabled_1": "1",
                 "Freq__Hz_1": "0.03125",
                 "Freq_time_1": "0.03125",
@@ -96,7 +96,7 @@
             "Octave_2": {
                 "Advance_Time_2": "1",
                 "Amplitude_2": "0.25",
-                "Color_2": "1, 0.560784, 0.0588235, 1",
+                "Color_2": "0.964706, 0.513726, 0.0980392, 1",
                 "Enabled_2": "1",
                 "Freq__Hz_2": "0.0625",
                 "Freq_time_2": "0.0625",
@@ -106,7 +106,7 @@
             "Octave_3": {
                 "Advance_Time_3": "1",
                 "Amplitude_3": "0.125",
-                "Color_3": "1, 0.145098, 0, 1",
+                "Color_3": "0.992157, 0.109804, 0.156863, 1",
                 "Enabled_3": "1",
                 "Freq__Hz_3": "0.125",
                 "Freq_time_3": "0.125",
@@ -159,12 +159,12 @@
         },
         "Post_Effects": {
             "Bloom": {
-                "Boost": "1.2",
+                "Boost": "3.80576",
                 "Brightness_Threshold": "0.01",
                 "Debug_Blur": "0",
                 "Enabled": "1",
                 "Num_Passes": "10",
-                "Sigma": "5.5"
+                "Sigma": "18"
             },
             "Color": {
                 "Brightness": "0",
@@ -185,11 +185,11 @@
             "Vignette": {
                 "Debug": "0",
                 "Enabled": "1",
-                "Inner": "0.903357",
+                "Inner": "0.208056",
                 "Only_Alpha": "0",
-                "Outer": "4.58323",
-                "Power": "1.02906",
-                "Ratio": "0.179925",
+                "Outer": "1.38575",
+                "Power": "1.97174",
+                "Ratio": "0.398538",
                 "Rotation": "90"
             }
         },
@@ -197,18 +197,18 @@
             "Alpha_factor": "1",
             "Bokeh_sides": "6",
             "Clip": "0",
-            "DOF_aperture": "0.0203012",
-            "DOF_distance": "0.901327",
-            "DOF_samples": "51",
+            "DOF_aperture": "0",
+            "DOF_distance": "0.93128",
+            "DOF_samples": "1",
             "Fade_From": "0.0653061",
             "Fade_Power": "1.18367",
             "Fade_To": "0.546939",
             "Fill": "1",
-            "Fill_Alpha": "0.402372",
+            "Fill_Alpha": "0.471",
             "Fog_Enabled": "1",
-            "Fog_Max_Distance": "2.21603",
+            "Fog_Max_Distance": "2.78886",
             "Fog_Min_Distance": "0.22449",
-            "Fog_Power": "1",
+            "Fog_Power": "0.614702",
             "Fog_Start_Distance": "0",
             "Shade_Normals": "0",
             "Spherical_Clip": "1",

@@ -74,7 +74,7 @@ public:
 		float startScale = 1;
 		bool negativeSpace = false;
 		glm::quat rotation;
-		float alpha;
+		float alpha = 1;
 	};
 	std::vector<Cluster> clusters{Cluster()};
 	float cameraDistanceBeforeBB;
@@ -130,17 +130,36 @@ public:
 			ofParameter<ofFloatColor> color2{"color 2", ofColor::white};
 			ofParameter<ofFloatColor> color3{"color 3", ofColor::white};
 			ofParameter<ofFloatColor> color4{"color 4", ofColor::white};
+			ofParameter<float> alphaScaleStart{"alpha start scale", 0.3, 0, 2};
+			ofParameter<float> alphaScaleEnd{"alpha end scale", 0.5, 0, 5};
 			ofParameter<bool> negativeWire{"negative wire", false};
 			PARAM_DECLARE("Colors",
 			  color1,
 			  color2,
 			  color3,
 			  color4,
+			  alphaScaleStart,
+			  alphaScaleEnd,
 			  negativeWire)
 		} colors;
 
 		struct : ofParameterGroup{
+			ofParameter<ofFloatColor> color1{"color 1", ofFloatColor::black};
+			ofParameter<ofFloatColor> color2{"color 2", ofFloatColor::black};
+			ofParameter<ofFloatColor> color3{"color 3", ofFloatColor::darkRed};
+			ofParameter<ofFloatColor> color4{"color 4", ofFloatColor::brown};
+			ofParameter<bool> negativeWire{"negative wire", false};
+			PARAM_DECLARE("Negative colors",
+			  color1,
+			  color2,
+			  color3,
+			  color4,
+			  negativeWire)
+		} negativeColors;
+
+		struct : ofParameterGroup{
 			ofParameter<void> newCluster{"Trigger new cluster"};
+			ofParameter<void> newNegativeCluster{"Trigger new negative cluster"};
 			ofParameter<float> newClusterAt{ "New cluster at scale", 3, 1, 30};
 			ofParameter<float> mainClusterScaleAfterBigbang{ "Main cluster scale after bb", 0, 0, 30, ofParameterScale::Logarithmic};
 			ofParameter<float> transitionParticlesDuration{"transition particles in. (s)", 1, 0, 5};
@@ -151,6 +170,7 @@ public:
 
 			PARAM_DECLARE("Equations",
 				  newCluster,
+				  newNegativeCluster,
 				  newClusterAt,
 				  mainClusterScaleAfterBigbang,
 				  transitionParticlesDuration,
@@ -201,6 +221,7 @@ public:
 			render,
 			circle,
 			colors,
+			negativeColors,
 			equations);
 	} parameters;
 

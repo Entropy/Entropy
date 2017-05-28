@@ -28,7 +28,6 @@
             "Neutron": "0.2, 0.2, 0.2, 0.5",
             "Positron": "0.372549, 0.372549, 0.372549, 0.501961",
             "Proton": "0.251626, 0.265607, 0.317647, 0.501961",
-            "Up_down_quark": "0.501961, 0.444875, 0.444875, 0.501961",
             "Up_quark": "0.1, 0.1, 0.1, 0.5"
         },
         "Post_Effects": {
@@ -102,7 +101,7 @@
             },
             "Rendering": {
                 "Additive_Blend": "1",
-                "Ambient_Light": "0",
+                "Ambient_Light": "0.02",
                 "Attenuation": "0.002",
                 "Color_per_Type": "1",
                 "Draw_Photons": "0",
@@ -110,12 +109,14 @@
                 "Draw_models": "1",
                 "Fov": "60",
                 "GL_ONE": "0",
-                "Rotation_radius": "1",
+                "Rotation_radius": "175",
                 "Rotation_speed": "1",
                 "Travel_max_speed": "0.1",
                 "camera_tracking": "0",
+                "cut_to_interaction": "0",
                 "min_time_between_travels": "5",
                 "particlesAlpha": "1",
+                "photons_life": "10",
                 "scale_factor": "0.99",
                 "trailsAlpha": "1",
                 "use_easy_cam": "0"
@@ -142,14 +143,14 @@
     },
     "ofEasyCam": {
         "aspectRatio": 1.33333337306976,
-        "farClip": 4269.5048828125,
+        "farClip": 9353.07421875,
         "forceAspectRatio": false,
         "fov": 60.0,
         "lensOffset": "0, 0",
-        "nearClip": 4.2695050239563,
+        "nearClip": 9.3530740737915,
         "orientation": "1, 0, 0, 0",
         "ortho": false,
-        "position": "0, 0, 50",
+        "position": "0, 0, 175",
         "scale": "1, 1, 1"
     }
 }

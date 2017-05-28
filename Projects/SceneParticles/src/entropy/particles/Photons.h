@@ -50,6 +50,10 @@ namespace nm
 	public:
 		static const unsigned MAX_PHOTONS = 500;
 		static const unsigned PARTICLES_PER_PHOTON = 200;
+		static ofParameter<float> & LIVE(){
+			static ofParameter<float> live{"photons life", 1, 0, 10};
+			return live;
+		}
 
 		Photons();
 

@@ -304,6 +304,9 @@ namespace nm
 				}
 
 
+				if(particles[i].fusionPartners.first!=nullptr && particles[i].fusionPartners.second!=nullptr){
+					//TODO: try to keep the same connection
+				}
 				particles[i].fusionPartners.first = nullptr;
 				particles[i].fusionPartners.second = nullptr;
 				if(!killParticles && !particles[i].fusing && environment->state > nm::Environment::BARYOGENESIS){

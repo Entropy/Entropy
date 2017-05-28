@@ -12,9 +12,9 @@
             "Pair_Production_Threshold_Max": "0.567",
             "Pair_Production_Threshold_Min": "0.562",
             "System_speed": "0.5",
-            "UnknownName": "NUCLEOSYNTHESIS",
+            "UnknownName": "TRANSITION OUT",
             "quarkCreationChance": "0.2",
-            "state": "2"
+            "state": "3"
         },
         "Octree": {
             "canditate_distance": "50",
@@ -58,10 +58,10 @@
             "Vignette": {
                 "Debug": "0",
                 "Enabled": "1",
-                "Inner": "0",
+                "Inner": "0.8",
                 "Only_Alpha": "1",
-                "Outer": "4",
-                "Power": "3.3",
+                "Outer": "3",
+                "Power": "1.1",
                 "Ratio": "1",
                 "Rotation": "0"
             }
@@ -101,7 +101,7 @@
             },
             "Rendering": {
                 "Additive_Blend": "1",
-                "Ambient_Light": "0",
+                "Ambient_Light": "0.02",
                 "Attenuation": "0.002",
                 "Color_per_Type": "1",
                 "Draw_Photons": "0",
@@ -109,15 +109,16 @@
                 "Draw_models": "1",
                 "Fov": "60",
                 "GL_ONE": "0",
-                "Rotation_radius": "150",
+                "Rotation_radius": "175",
                 "Rotation_speed": "1",
                 "Travel_max_speed": "0.1",
                 "camera_tracking": "0",
                 "cut_to_interaction": "0",
                 "min_time_between_travels": "5",
                 "particlesAlpha": "1",
-                "scale_factor": "0.981117",
-                "trailsAlpha": "1",
+                "photons_life": "10",
+                "scale_factor": "0.956274",
+                "trailsAlpha": "0.723997",
                 "use_easy_cam": "0"
             },
             "Reset": {
@@ -142,14 +143,14 @@
     },
     "ofEasyCam": {
         "aspectRatio": 1.33333337306976,
-        "farClip": 4269.5048828125,
+        "farClip": 9353.07421875,
         "forceAspectRatio": false,
         "fov": 60.0,
         "lensOffset": "0, 0",
-        "nearClip": 4.2695050239563,
-        "orientation": "0.998977, 0, 0.0452177, 0",
+        "nearClip": 9.3530740737915,
+        "orientation": "0.997811, 0, 0.0661294, 0",
         "ortho": false,
-        "position": "13.5514, 0, 149.387",
+        "position": "23.0946, 0, 173.469",
         "scale": "1, 1, 1"
     }
 }
