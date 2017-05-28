@@ -124,7 +124,7 @@ namespace entropy
 					ofParameter<bool> renderBack{ "Render Back", true };
 					ofParameter<bool> renderFront{ "Render Front", false };
 					ofParameter<int> surface{ "Surface", static_cast<int>(Surface::Overlay), static_cast<int>(Surface::Base), static_cast<int>(Surface::Overlay) };
-					ofParameter<float> size{ "Size", 1.0f, 0.0f, 1.0f };
+					ofParameter<float> size{ "Size", 1.0f, 0.0f, 3.0f };
 					ofParameter<glm::vec2> anchor{ "Anchor", glm::vec2(0.5f), glm::vec2(0.0f), glm::vec2(1.0f) };
 					ofParameter<int> alignHorz{ "Horz Align", static_cast<int>(HorzAlign::Center), static_cast<int>(HorzAlign::Left), static_cast<int>(HorzAlign::Right) };
 					ofParameter<int> alignVert{ "Vert Align", static_cast<int>(VertAlign::Middle), static_cast<int>(VertAlign::Top), static_cast<int>(VertAlign::Bottom) };
@@ -152,7 +152,7 @@ namespace entropy
 					ofParameter<bool> useFadeTrack{ "Use Fade Track", true };
 					ofParameter<float> fadeTrack{ "Fade Track", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> useFadeTwist{ "Use Fade Twist", false };
-					ofParameter<int> fadeKnob{ "Fade Knob", 15, 0, 15 };
+					ofParameter<int> fadeKnob{ "Fade Knob", 16, 0, 15 };
 					ofParameter<float> fadeTwist{ "Fade Twist", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };

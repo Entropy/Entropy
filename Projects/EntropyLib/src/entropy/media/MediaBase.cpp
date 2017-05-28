@@ -645,11 +645,14 @@ namespace entropy
 		void Base::addTwisterSync()
 		{
 #ifdef OFX_PARAMETER_TWISTER
-			auto twister = GetApp()->getTwister();
+			if (this->parameters.playback.fadeKnob < 16)
+			{
+				auto twister = GetApp()->getTwister();
 
-			this->removeTwisterSync();
-			this->twisterKnob = this->parameters.playback.fadeKnob;
-			twister->setParam(this->twisterKnob, this->parameters.playback.fadeTwist);
+				this->removeTwisterSync();
+				this->twisterKnob = this->parameters.playback.fadeKnob;
+				twister->setParam(this->twisterKnob, this->parameters.playback.fadeTwist);
+			}
 #endif
 		}
 
