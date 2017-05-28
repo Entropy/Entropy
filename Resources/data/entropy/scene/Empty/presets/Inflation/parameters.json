@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000244141",
+                "orientation": "1, 0, 0, 0.000416775",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -205,6 +205,34 @@
     },
     "Media": [
         {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mp3\\Part 1_Blobs_TOTAL_ V1.mp3",
+                "Playback": {
+                    "Fade Base": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Loop": "0",
+                    "Sync Mode": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
+        },
+        {
             "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.65",
@@ -220,17 +248,16 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Intro_BigBang_170526.hpv",
+                "File Path": "E:\\hpv\\bigbang_darker.hpv",
                 "Playback": {
-                    "Fade": "0.944882",
+                    "Fade Base": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 1,
             "type": 3
         },
         {
@@ -251,15 +278,14 @@
                 },
                 "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 2,
             "type": 3
         },
         {
@@ -280,45 +306,15 @@
                 },
                 "File Path": "E:\\hpv\\Inflation_Slowdown_Cooldown_170526.hpv",
                 "Playback": {
-                    "Fade": "0",
+                    "Fade Base": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
                     "Loop": "0",
                     "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
                 }
             },
+            "page": 2,
             "type": 3
-        },
-        {
-            "Sound": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\mp3\\Part 1_Blobs_TOTAL_ V1.mp3",
-                "Playback": {
-                    "Fade": "1",
-                    "Loop": "0",
-                    "Sync Mode": "0"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
-                }
-            },
-            "type": 4
         },
         {
             "HPV": {
@@ -336,17 +332,16 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Front_Measure_r3_001.hpv",
+                "File Path": "E:\\hpv\\Front_Timeline_001.hpv",
                 "Playback": {
-                    "Fade": "0.905512",
+                    "Fade Base": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Sync Mode": "2"
                 }
             },
+            "page": 1,
             "type": 3
         },
         {
@@ -365,21 +360,20 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Front_Measure_r3_002.hpv",
+                "File Path": "E:\\hpv\\Front_Timeline_002.hpv",
                 "Playback": {
-                    "Fade": "0.913386",
+                    "Fade Base": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "0",
                     "Loop": "0",
-                    "Sync Mode": "1"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Sync Mode": "2"
                 }
             },
+            "page": 2,
             "type": 3
         },
         {
-            "Movie": {
+            "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
@@ -394,18 +388,17 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mov\\bigbang_darker.mov",
+                "File Path": "E:\\hpv\\parent_particles.hpv",
                 "Playback": {
-                    "Fade": "1",
+                    "Fade Base": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
                     "Loop": "0",
-                    "Sync Mode": "0"
-                },
-                "Transition": {
-                    "Duration": "0.5",
-                    "Type": "0"
+                    "Sync Mode": "1"
                 }
             },
-            "type": 2
+            "page": 3,
+            "type": 3
         }
     ],
     "Post Effects": {

@@ -6,17 +6,17 @@
     </key>
     <key>
         <flag>play show</flag>
-        <time>00:00:51:096</time>
-        <value>0.574999988</value>
-    </key>
-    <key>
-        <flag>play fs</flag>
-        <time>00:01:49:900</time>
-        <value>0.475000024</value>
+        <time>00:00:30:187</time>
+        <value>0.625000000</value>
     </key>
     <key>
         <flag>play slow</flag>
         <time>00:03:00:310</time>
         <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>play</flag>
+        <time>00:08:29:835</time>
+        <value>0.824999988</value>
     </key>
 </keyframes>
