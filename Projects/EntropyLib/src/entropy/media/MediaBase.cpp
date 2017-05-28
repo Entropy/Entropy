@@ -17,9 +17,9 @@ namespace entropy
 			, boundsDirty(false)
 			, borderDirty(false)
 			, wasLoaded(false)
-			, transitionPct(0.0f)
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
+			, curvesTrack(nullptr)
 			, prevFade(0.0f)
 			, freePlayNeedsInit(false)
 		{
@@ -95,6 +95,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		float Base::getTotalFade() const
+		{
+			cout << "total fade is " << this->parameters.playback.fadeBase << " x " << this->parameters.playback.fadeTwist << endl;
+			return (this->parameters.playback.fadeBase * this->parameters.playback.fadeTwist);
+		}
+
+		//--------------------------------------------------------------
 		std::shared_ptr<Base> Base::getLinkedMedia() const
 		{
 			return this->linkedMedia;
@@ -113,12 +120,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::init_(int index, std::shared_ptr<ofxTimeline> timeline)
+		void Base::init_(int index, int page, std::shared_ptr<ofxTimeline> timeline)
 		{
 			this->index = index;
+			this->page = page;
 			this->timeline = timeline;
 
-			this->addTimelineTrack();
+			this->addSwitchesTrack();
 
 			this->parameterListeners.push_back(this->parameters.render.renderBack.newListener([this](bool &)
 			{
@@ -149,6 +157,37 @@ namespace entropy
 				this->borderDirty = true;
 			}));
 
+			this->parameterListeners.push_back(this->parameters.playback.fadeBase.newListener([this](float &)
+			{
+				const auto syncMode = this->getSyncMode();
+				const auto totalFade = this->getTotalFade();
+				if (syncMode == SyncMode::FadeControl && this->prevFade == 0.0f && totalFade > 0.0f)
+				{
+					this->freePlayNeedsInit = true;
+				}
+				this->prevFade = totalFade;
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fadeTwist.newListener([this](float &)
+			{
+				const auto syncMode = this->getSyncMode();
+				const auto totalFade = this->getTotalFade();
+				if (syncMode == SyncMode::FadeControl && this->prevFade == 0.0f && totalFade > 0.0f)
+				{
+					this->freePlayNeedsInit = true;
+				}
+				this->prevFade = totalFade;
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fadeTrack.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->addCurvesTrack();
+				}
+				else
+				{
+					this->removeCurvesTrack();
+				}
+			}));
 			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int &)
 			{
 				const auto syncMode = this->getSyncMode();
@@ -156,19 +195,10 @@ namespace entropy
 				{
 					this->freePlayNeedsInit = true;
 				}
-				else if (syncMode == SyncMode::FadeControl && this->parameters.playback.fade > 0.0f)
+				else if (syncMode == SyncMode::FadeControl && this->getTotalFade() > 0.0f)
 				{
 					this->freePlayNeedsInit = true;
 				}
-			}));
-			this->parameterListeners.push_back(this->parameters.playback.fade.newListener([this](float & val)
-			{
-				const auto syncMode = this->getSyncMode();
-				if (syncMode == SyncMode::FadeControl && this->prevFade == 0.0f && val > 0.0f)
-				{
-					this->freePlayNeedsInit = true;
-				}
-				this->prevFade = val;
 			}));
 
 			this->init();
@@ -181,7 +211,8 @@ namespace entropy
 
 			this->parameterListeners.clear();
 
-			this->removeTimelineTrack();
+			this->removeSwitchesTrack();
+			this->removeCurvesTrack();
 			this->timeline.reset();
 		}
 
@@ -216,69 +247,27 @@ namespace entropy
 				this->updateBounds();
 			}
 
+			if (this->curvesTrack != nullptr && !this->curvesTrack->getKeyframes().empty())
+			{
+				this->parameters.playback.fadeBase = this->curvesTrack->getValue();
+			}
+
 			this->switchMillis = -1.0f;
 			this->enabled = this->switchesTrack->isOn();
 			if (this->enabled)
 			{
 				// Update the transition if any switch is currently active.
-				auto trackTime = this->switchesTrack->currentTrackTime();
-				auto activeSwitch = this->switchesTrack->getActiveSwitchAtMillis(trackTime);
+				const auto switchTime = this->switchesTrack->currentTrackTime();
+				auto activeSwitch = this->switchesTrack->getActiveSwitchAtMillis(switchTime);
 				if (activeSwitch)
 				{
-					this->switchMillis = trackTime - activeSwitch->timeRange.min;
-
-					auto kEasingFunction = ofxeasing::quad::easeIn;
-					long transitionDuration = this->parameters.transition.duration * 1000; 
-					if (trackTime - activeSwitch->timeRange.min < transitionDuration)
-					{
-						// Transitioning in.
-						this->transitionPct = ofxeasing::map_clamp(trackTime, activeSwitch->timeRange.min, activeSwitch->timeRange.min + transitionDuration, 0.0f, 1.0f ,kEasingFunction);
-						this->borderDirty = true;
-					}
-					else if (activeSwitch->timeRange.max - trackTime < transitionDuration)
-					{
-						// Transitioning out.
-						this->transitionPct = ofxeasing::map_clamp(trackTime, activeSwitch->timeRange.max - transitionDuration, activeSwitch->timeRange.max, 1.0f, 0.0f, kEasingFunction);
-						this->borderDirty = true;
-					}
-					else if (this->transitionPct != 1.0f)
-					{
-						this->transitionPct = 1.0f;
-						this->borderDirty = true;
-					}
+					this->switchMillis = switchTime - activeSwitch->timeRange.min;
 				}
 			}
 
-			if (this->enabled)
+			if (this->enabled && this->borderDirty)
 			{
-				auto transition = static_cast<Transition>(this->parameters.transition.type.get());
-				
-				// Adjust fade.
-				if (transition == Transition::Mix)
-				{
-					this->parameters.playback.fade = this->transitionPct;
-				}
-				else if (transition == Transition::Strobe)
-				{
-					this->parameters.playback.fade = (ofRandomuf() < this->transitionPct) ? 1.0f : 0.0f;
-				}
-
-				// Set subsection bounds.
-				this->dstBounds = this->viewport;
-				this->srcBounds = this->roi;
-				if (this->enabled && transition == Transition::Wipe && this->transitionPct < 1.0f)
-				{
-					this->dstBounds.height = this->transitionPct * this->viewport.height;
-					this->dstBounds.y = this->viewport.y + (1.0f - this->transitionPct) * this->viewport.height * 0.5f;
-
-					this->srcBounds.height = this->transitionPct * this->roi.height;
-					this->srcBounds.y = this->roi.y + (1.0f - this->transitionPct) * this->roi.height * 0.5f;
-				}
-
-				if (this->borderDirty)
-				{
-					this->updateBorder();
-				}
+				this->updateBorder();
 			}
 
 			this->update(dt);
@@ -298,17 +287,18 @@ namespace entropy
 						ofDrawRectangle(this->dstBounds);
 					}
 
+					const float totalFade = this->getTotalFade();
+
 					// Draw the border.
 					if (this->parameters.border.width > 0.0f)
 					{
-						ofSetColor(this->parameters.border.color.get(), 255 * this->parameters.playback.fade);
+						ofSetColor(this->parameters.border.color.get(), 255 * totalFade);
 						this->borderMesh.draw();
 					}
 
 					// Draw the content.
 					ofEnableBlendMode(OF_BLENDMODE_ADD);
-					//ofSetColor(255, this->frontAlpha * 255);
-					ofSetColor(255 * this->parameters.playback.fade);
+					ofSetColor(255 * totalFade);
 					this->renderContent();
 					ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				}
@@ -380,22 +370,11 @@ namespace entropy
 					ofxImGui::EndTree(settings);
 				}
 
-				if (ofxImGui::BeginTree(this->parameters.transition, settings))
-				{
-					static vector<string> labels{ "Cut", "Mix", "Wipe", "Strobe" };
-					ofxImGui::AddRadio(this->parameters.transition.type, labels, 2);
-
-					if (static_cast<Transition>(this->parameters.transition.type.get()) != Transition::Cut)
-					{
-						ofxImGui::AddParameter(this->parameters.transition.duration);
-					}
-
-					ofxImGui::EndTree(settings);
-				}
-
 				if (ofxImGui::BeginTree(this->parameters.playback, settings))
 				{
-					ofxImGui::AddParameter(this->parameters.playback.fade);
+					ofxImGui::AddParameter(this->parameters.playback.fadeBase);
+					ofxImGui::AddParameter(this->parameters.playback.fadeTwist);
+					ofxImGui::AddParameter(this->parameters.playback.fadeTrack);
 					ofxImGui::AddParameter(this->parameters.playback.loop);
 					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Fade Control", "Linked Media" };
 					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 2);
@@ -410,6 +389,7 @@ namespace entropy
 		void Base::serialize_(nlohmann::json & json)
 		{
 			json["type"] = static_cast<int>(this->type);
+			json["page"] = static_cast<int>(this->page);
 
 			ofxPreset::Serializer::Serialize(json, this->parameters);
 
@@ -436,6 +416,11 @@ namespace entropy
 				{
 					this->loadMedia(GetSharedAssetsPath().string() + filePath);
 				}
+			}
+
+			if (this->parameters.playback.fadeTrack)
+			{
+				this->addCurvesTrack();
 			}
 		}
 
@@ -481,7 +466,7 @@ namespace entropy
 			else if (syncMode == SyncMode::FadeControl)
 			{
 				// Fade value at 0.
-				if (this->parameters.playback.fade == 0.0f) return false;
+				if (this->getTotalFade() == 0.0f) return false;
 
 				if (!this->initFreePlay())
 				{
@@ -502,42 +487,33 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addTimelineTrack()
+		void Base::addSwitchesTrack()
 		{
 			if (!this->timeline)
 			{
 				ofLogError(__FUNCTION__) << "No timeline set, call init_() first!";
 				return;
 			}
-
-			if (this->switchesTrack)
-			{
-				ofLogWarning(__FUNCTION__) << "Switches track already exists.";
-				return;
-			}
 			
 			// Add Page if it doesn't already exist.
-			if (!this->timeline->hasPage(MediaTimelinePageName))
+			const string pageName = MediaTimelinePageName + "_" + ofToString(this->page);
+			if (!this->timeline->hasPage(pageName))
 			{
-				this->timeline->addPage(MediaTimelinePageName);
+				this->timeline->addPage(pageName);
 			}
-			auto page = this->timeline->getPage(MediaTimelinePageName);
+			auto page = this->timeline->getPage(pageName);
 
-			const auto trackName = "Media_" + ofToString(this->index) + "_" + this->getTypeName();
-			if (page->getTrack(trackName))
+			// Add track.
+			const auto switchName = "Media_" + ofToString(this->index) + "_" + this->getTypeName();
+			if (!page->getTrack(switchName))
 			{
-				//ofLogWarning(__FUNCTION__) << "Track for Pop-up " << this->index << " already exists!";
-				return;
+				this->timeline->setCurrentPage(pageName);
+				this->switchesTrack = this->timeline->addSwitches(switchName);
 			}
-
-			this->timeline->setCurrentPage(MediaTimelinePageName);
-
-			// Add Track.
-			this->switchesTrack = this->timeline->addSwitches(trackName);
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeTimelineTrack()
+		void Base::removeSwitchesTrack()
 		{
 			if (!this->timeline)
 			{
@@ -545,14 +521,11 @@ namespace entropy
 				return;
 			}
 
-			if (!this->switchesTrack)
+			if (this->switchesTrack)
 			{
-				//ofLogWarning(__FUNCTION__) << "Switches track for Pop-up " << this->index << " does not exist.";
-				return;
+				this->timeline->removeTrack(this->switchesTrack);
+				this->switchesTrack = nullptr;
 			}
-
-			this->timeline->removeTrack(this->switchesTrack);
-			this->switchesTrack = nullptr;
 
 			// TODO: Figure out why this is not working!
 			//auto page = this->timeline->getPage(kTimelinePageName);
@@ -586,6 +559,56 @@ namespace entropy
 
 			auto addedSwitch = this->switchesTrack->addSwitch(this->timeline->getInTimeInMillis(), this->getDurationMs());
 			return (addedSwitch != nullptr);
+		}
+
+		//--------------------------------------------------------------
+		void Base::addCurvesTrack()
+		{
+			if (!this->timeline)
+			{
+				ofLogError(__FUNCTION__) << "No timeline set, call init_() first!";
+				return;
+			}
+
+			// Add Page if it doesn't already exist.
+			const string pageName = MediaTimelinePageName + "_" + ofToString(this->page);
+			if (!this->timeline->hasPage(pageName))
+			{
+				this->timeline->addPage(pageName);
+			}
+			auto page = this->timeline->getPage(pageName);
+
+			// Add track.
+			const auto fadeName = "Fade_" + ofToString(this->index) + "_" + this->getTypeName();
+			if (!page->getTrack(fadeName))
+			{
+				this->timeline->setCurrentPage(pageName);
+				this->curvesTrack = this->timeline->addCurves(fadeName);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeCurvesTrack()
+		{
+			if (!this->timeline)
+			{
+				//ofLogWarning(__FUNCTION__) << "No timeline set.";
+				return;
+			}
+
+			if (this->curvesTrack)
+			{
+				this->timeline->removeTrack(this->curvesTrack);
+				this->curvesTrack = nullptr;
+			}
+
+			// TODO: Figure out why this is not working!
+			//auto page = this->timeline->getPage(kTimelinePageName);
+			//if (page && page->getTracks().empty())
+			//{
+			//	cout << "Removing page " << page->getName() << endl;
+			//	this->timeline->removePage(page);
+			//}
 		}
 
 		//--------------------------------------------------------------
@@ -647,6 +670,10 @@ namespace entropy
 			{
 				this->viewport.y -= this->viewport.height * 0.5f;
 			}
+
+			// Set subsection bounds.
+			this->dstBounds = this->viewport;
+			this->srcBounds = this->roi;
 
 			this->borderDirty = true;
 

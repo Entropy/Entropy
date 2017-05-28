@@ -170,9 +170,10 @@ namespace entropy
 			std::map<std::string, std::vector<std::shared_ptr<util::AbstractMapping>>> mappings;
 
 			// Media
-			std::shared_ptr<media::Base> addMedia(media::Type type);
+			std::shared_ptr<media::Base> addMedia(media::Type type, int page);
 			void removeMedia();
 
+			int mediaPage;
 			std::vector<std::shared_ptr<media::Base>> medias;
 
 			// Links

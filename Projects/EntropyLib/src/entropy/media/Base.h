@@ -2,6 +2,7 @@
 
 #include "ofParameter.h"
 #include "ofxPreset.h"
+#include "ofxTLCurves.h"
 #include "ofxTLSwitches.h"
 
 #include "entropy/render/Layout.h"
@@ -41,14 +42,6 @@ namespace entropy
 			Bottom
 		};
 
-		enum class Transition
-		{
-			Cut,
-			Mix,
-			Wipe,
-			Strobe
-		};
-
 		enum class SyncMode
 		{
 			FreePlay,
@@ -71,6 +64,8 @@ namespace entropy
 			VertAlign getVertAlign();
 			SyncMode getSyncMode();
 
+			float getTotalFade() const;
+
 			std::shared_ptr<Base> getLinkedMedia() const;
 			void setLinkedMedia(std::shared_ptr<Base> linkedMedia);
 			void clearLinkedMedia();
@@ -78,7 +73,7 @@ namespace entropy
 			bool editing;
 
 			// Base methods
-			void init_(int index, std::shared_ptr<ofxTimeline> timeline);
+			void init_(int index, int page, std::shared_ptr<ofxTimeline> timeline);
 			void clear_();
 
 			void setup_();
@@ -154,22 +149,16 @@ namespace entropy
 
 				struct : ofParameterGroup
 				{
-					ofParameter<int> type{ "Type", static_cast<int>(Type::Unknown), static_cast<int>(Type::Unknown), static_cast<int>(Type::Sound) };
-					ofParameter<float> duration{ "Duration", 0.5f, 0.1f, 5.0f };
-
-					PARAM_DECLARE("Transition",
-						type,
-						duration);
-				} transition;
-
-				struct : ofParameterGroup
-				{
-					ofParameter<float> fade{ "Fade", 1.0f, 0.0f, 1.0f };
+					ofParameter<float> fadeBase{ "Fade Base", 1.0f, 0.0f, 1.0f };
+					ofParameter<float> fadeTwist{ "Fade Twist", 1.0f, 0.0f, 1.0f };
+					ofParameter<bool> fadeTrack{ "Fade Track", true };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
 
 					PARAM_DECLARE("Playback",
-						fade,
+						fadeBase,
+						fadeTwist,
+						fadeTrack,
 						loop,
 						syncMode);
 				} playback;
@@ -178,7 +167,6 @@ namespace entropy
 					filePath,
 					render,
 					border,
-					transition,
 					playback);
 			} parameters;
 
@@ -195,6 +183,7 @@ namespace entropy
 
 			Type type;
 			int index;
+			int page;
 
 			void updateBounds();
 			ofRectangle viewport;
@@ -207,7 +196,6 @@ namespace entropy
 			string fileName;
 			bool wasLoaded;
 
-			float transitionPct;
 			float switchMillis;
 			float prevFade;
 
@@ -219,9 +207,12 @@ namespace entropy
 			std::shared_ptr<Base> linkedMedia;
 
 			// Timeline
-			void addTimelineTrack();
-			void removeTimelineTrack();
+			void addSwitchesTrack();
+			void removeSwitchesTrack();
 			bool addDefaultSwitch();
+
+			void addCurvesTrack();
+			void removeCurvesTrack();
 
 			// Per-frame attributes.
 			ofRectangle srcBounds;
@@ -231,6 +222,7 @@ namespace entropy
 			// Timeline
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLSwitches * switchesTrack;
+			ofxTLCurves * curvesTrack;
 			bool enabled;
 
 			std::vector<ofEventListener> parameterListeners;
