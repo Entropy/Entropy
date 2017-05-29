@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000471643",
+                "orientation": "1, 0, 0, 0.000644277",
                 "ortho": false,
                 "position": "0, 0, 867.995",
                 "relativeYAxis": false,
@@ -418,7 +418,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Particles_NucleoBack.hpv",
+                "File Path": "E:\\hpv\\front.hpv",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -851,7 +851,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.05",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -1012,7 +1012,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Particles_NucleoBack.hpv",
+                "File Path": "E:\\hpv\\back.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",

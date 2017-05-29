@@ -108,6 +108,11 @@
             "direction": true,
             "idxA": 6,
             "idxB": 8
+        },
+        {
+            "direction": true,
+            "idxA": 6,
+            "idxB": 0
         }
     ],
     "Mappings": {
@@ -258,7 +263,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\intro+bigbang.hpv",
+                "File Path": "E:\\hpv\\Inflation_IntroBigBang.hpv",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -283,7 +288,7 @@
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
-                    "Size": "0.75",
+                    "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -291,12 +296,12 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
+                "File Path": "E:\\hpv\\Inflation_Slowdown.hpv",
                 "Playback": {
                     "Fade Knob": "0",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "0.937008",
+                    "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
@@ -316,7 +321,7 @@
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
-                    "Size": "0.75",
+                    "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -324,12 +329,12 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_Cooldown_170526.hpv",
+                "File Path": "E:\\hpv\\Inflation_Slowdown.hpv",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "0.0629922",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
@@ -423,7 +428,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\parent_particles.hpv",
+                "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
@@ -456,7 +461,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
+                "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "0",
@@ -489,7 +494,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\parent_particles.hpv",
+                "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
