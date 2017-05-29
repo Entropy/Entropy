@@ -1,0 +1,26 @@
+<positions>
+    <element name="Bubbles/Box/Alpha">
+        <x>0.000000000</x>
+        <y>723.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Box/Edge_Ratio">
+        <x>0.000000000</x>
+        <y>787.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Bubbles/SphereExtra/Mask_Mix">
+        <x>0.000000000</x>
+        <y>851.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Sphere/Alpha">
+        <x>0.000000000</x>
+        <y>915.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

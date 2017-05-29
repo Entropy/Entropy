@@ -1,0 +1,47 @@
+<keyframes>
+    <key>
+        <flag>ffwd</flag>
+        <time>00:00:10:082</time>
+        <value>0.925000012</value>
+    </key>
+    <key>
+        <flag>explode</flag>
+        <time>00:00:30:088</time>
+        <value>0.475000024</value>
+    </key>
+    <key>
+        <flag>zoom</flag>
+        <time>00:00:33:268</time>
+        <value>0.649999976</value>
+    </key>
+    <key>
+        <flag>freeze start</flag>
+        <time>00:01:19:836</time>
+        <value>0.324999988</value>
+    </key>
+    <key>
+        <flag>freeze end</flag>
+        <time>00:01:38:135</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>cmb reveal</flag>
+        <time>00:01:59:799</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>cmb full</flag>
+        <time>00:02:15:081</time>
+        <value>0.774999976</value>
+    </key>
+    <key>
+        <flag>fade start</flag>
+        <time>00:03:10:625</time>
+        <value>0.350000024</value>
+    </key>
+    <key>
+        <flag>fade end</flag>
+        <time>00:03:30:089</time>
+        <value>0.300000012</value>
+    </key>
+</keyframes>
