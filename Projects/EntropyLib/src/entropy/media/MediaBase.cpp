@@ -21,7 +21,9 @@ namespace entropy
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
 			, curvesTrack(nullptr)
+			, lfoTrack(nullptr)
 			, prevFade(0.0f)
+			, lfoVal(0.0f)
 			, freePlayNeedsInit(false)
 		{
 			this->parameters.setName(this->getTypeName());
@@ -98,7 +100,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		float Base::getTotalFade() const
 		{
-			return (this->parameters.playback.fadeTrack * this->parameters.playback.fadeTwist);
+			return (this->parameters.playback.fadeTrack * this->parameters.playback.fadeTwist * this->parameters.playback.fadeLFO);
 		}
 
 		//--------------------------------------------------------------
@@ -130,6 +132,10 @@ namespace entropy
 			if (this->parameters.playback.useFadeTrack)
 			{
 				this->addCurvesTrack();
+			}
+			if (this->parameters.playback.useFadeLFO)
+			{
+				this->addLFOTrack();
 			}
 
 			this->parameterListeners.push_back(this->parameters.render.renderBack.newListener([this](bool &)
@@ -182,6 +188,7 @@ namespace entropy
 				}
 				this->prevFade = totalFade;
 			}));
+
 			this->parameterListeners.push_back(this->parameters.playback.useFadeTwist.newListener([this](bool & enabled)
 			{
 				if (enabled)
@@ -210,6 +217,31 @@ namespace entropy
 				}
 				this->prevFade = totalFade;
 			}));
+
+			this->parameterListeners.push_back(this->parameters.playback.useFadeLFO.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->addLFOTrack();
+				}
+				else
+				{
+					this->removeLFOTrack();
+				}
+
+				this->lfoVal = 0.0f;
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.fadeLFO.newListener([this](float &)
+			{
+				const auto syncMode = this->getSyncMode();
+				const auto totalFade = this->getTotalFade();
+				if (syncMode == SyncMode::FadeControl && this->prevFade == 0.0f && totalFade > 0.0f)
+				{
+					this->freePlayNeedsInit = true;
+				}
+				this->prevFade = totalFade;
+			}));
+
 			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int &)
 			{
 				const auto syncMode = this->getSyncMode();
@@ -235,6 +267,7 @@ namespace entropy
 
 			this->removeSwitchesTrack();
 			this->removeCurvesTrack();
+			this->removeLFOTrack();
 			this->timeline.reset();
 		}
 
@@ -272,6 +305,27 @@ namespace entropy
 			if (this->curvesTrack != nullptr && !this->curvesTrack->getKeyframes().empty())
 			{
 				this->parameters.playback.fadeTrack = this->curvesTrack->getValue();
+			}
+			else
+			{
+				this->parameters.playback.fadeTrack = 1.0f;
+			}
+			if (this->lfoTrack != nullptr && !this->lfoTrack->getKeyframes().empty())
+			{
+				float lfoSpeed = this->lfoTrack->getValue();
+				if (lfoSpeed == 0.0f)
+				{
+					this->lfoVal = 0.0f;
+				}
+				else
+				{
+					this->lfoVal += dt * lfoSpeed * 10;
+				}
+				this->parameters.playback.fadeLFO = (this->parameters.playback.flipLFO ? sinf(lfoVal - glm::half_pi<float>()) : cosf(lfoVal)) * 0.5f + 0.5f;
+			}
+			else
+			{
+				this->parameters.playback.fadeLFO = 1.0f;
 			}
 
 			this->switchMillis = -1.0f;
@@ -405,6 +459,12 @@ namespace entropy
 					{
 						ofxImGui::AddParameter(this->parameters.playback.fadeTwist);
 					}
+					ofxImGui::AddParameter(this->parameters.playback.useFadeLFO);
+					if (this->parameters.playback.useFadeLFO)
+					{
+						ofxImGui::AddParameter(this->parameters.playback.flipLFO);
+						ofxImGui::AddParameter(this->parameters.playback.fadeLFO);
+					}
 					ofxImGui::AddParameter(this->parameters.playback.loop);
 					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Fade Control", "Linked Media" };
 					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 2);
@@ -451,6 +511,10 @@ namespace entropy
 			if (this->parameters.playback.useFadeTrack)
 			{
 				this->addCurvesTrack();
+			}
+			if (this->parameters.playback.useFadeLFO)
+			{
+				this->addLFOTrack();
 			}
 		}
 
@@ -630,6 +694,56 @@ namespace entropy
 			{
 				this->timeline->removeTrack(this->curvesTrack);
 				this->curvesTrack = nullptr;
+			}
+
+			// TODO: Figure out why this is not working!
+			//auto page = this->timeline->getPage(kTimelinePageName);
+			//if (page && page->getTracks().empty())
+			//{
+			//	cout << "Removing page " << page->getName() << endl;
+			//	this->timeline->removePage(page);
+			//}
+		}
+
+		//--------------------------------------------------------------
+		void Base::addLFOTrack()
+		{
+			if (!this->timeline)
+			{
+				ofLogError(__FUNCTION__) << "No timeline set, call init_() first!";
+				return;
+			}
+
+			// Add Page if it doesn't already exist.
+			const string pageName = MediaTimelinePageName + "_" + ofToString(this->page);
+			if (!this->timeline->hasPage(pageName))
+			{
+				this->timeline->addPage(pageName);
+			}
+			auto page = this->timeline->getPage(pageName);
+
+			// Add track.
+			const auto lfoName = "LFO_" + ofToString(this->index) + "_" + this->getTypeName();
+			if (!page->getTrack(lfoName))
+			{
+				this->timeline->setCurrentPage(pageName);
+				this->lfoTrack = this->timeline->addCurves(lfoName);
+			}
+		}
+
+		//--------------------------------------------------------------
+		void Base::removeLFOTrack()
+		{
+			if (!this->timeline)
+			{
+				//ofLogWarning(__FUNCTION__) << "No timeline set.";
+				return;
+			}
+
+			if (this->lfoTrack)
+			{
+				this->timeline->removeTrack(this->lfoTrack);
+				this->lfoTrack = nullptr;
 			}
 
 			// TODO: Figure out why this is not working!

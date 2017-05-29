@@ -154,12 +154,16 @@ namespace entropy
 					ofParameter<bool> useFadeTwist{ "Use Fade Twist", false };
 					ofParameter<int> fadeKnob{ "Fade Knob", 16, 0, 15 };
 					ofParameter<float> fadeTwist{ "Fade Twist", 1.0f, 0.0f, 1.0f };
+					ofParameter<bool> useFadeLFO{ "Use Fade LFO", false };
+					ofParameter<bool> flipLFO{ "Flip LFO", false };
+					ofParameter<float> fadeLFO{ "Fade LFO", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
 
 					PARAM_DECLARE("Playback",
 						useFadeTrack, fadeTrack,
 						useFadeTwist, fadeKnob, fadeTwist,
+						useFadeLFO, flipLFO, fadeLFO,
 						loop,
 						syncMode);
 				} playback;
@@ -199,6 +203,7 @@ namespace entropy
 
 			float switchMillis;
 			float prevFade;
+			float lfoVal;
 
 			uint64_t freePlayStartElapsedMs;
 			uint64_t freePlayStartMediaMs;
@@ -215,6 +220,9 @@ namespace entropy
 			void addCurvesTrack();
 			void removeCurvesTrack();
 
+			void addLFOTrack();
+			void removeLFOTrack();
+
 			// Twister
 			void addTwisterSync();
 			void removeTwisterSync();
@@ -230,6 +238,7 @@ namespace entropy
 			std::shared_ptr<ofxTimeline> timeline;
 			ofxTLSwitches * switchesTrack;
 			ofxTLCurves * curvesTrack;
+			ofxTLCurves * lfoTrack;
 			bool enabled;
 
 			std::vector<ofEventListener> parameterListeners;
