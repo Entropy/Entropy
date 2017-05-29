@@ -1,0 +1,293 @@
+{
+    "name": "timeline0",
+    "pages": [
+        {
+            "name": "Page One",
+            "tracks": [
+                {
+                    "name": "subscene labels",
+                    "type": "Flags"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Post_Effects/Bloom",
+            "tracks": [
+                {
+                    "max": 6.0,
+                    "min": 0.00999999977648258,
+                    "name": "Inflation/Post_Effects/Bloom/Boost",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.00999999977648258,
+                    "name": "Inflation/Post_Effects/Bloom/Brightness_Threshold",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 18.0,
+                    "min": 0.5,
+                    "name": "Inflation/Post_Effects/Bloom/Sigma",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 10.0,
+                    "min": 0.0,
+                    "name": "Inflation/Post_Effects/Color/Exposure",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Post_Effects/Vignette",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Post_Effects/Vignette/Inner",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 6.0,
+                    "min": 0.5,
+                    "name": "Inflation/Post_Effects/Vignette/Outer",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 20.0,
+                    "min": 0.100000001490116,
+                    "name": "Inflation/Post_Effects/Vignette/Power",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 2.0,
+                    "min": 0.100000001490116,
+                    "name": "Inflation/Post_Effects/Vignette/Ratio",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Inflation/Colors",
+            "tracks": [
+                {
+                    "defaultColor": "0, 0, 0, 255",
+                    "name": "Inflation/Inflation/Colors/color_1",
+                    "type": "Colors"
+                },
+                {
+                    "defaultColor": "0, 0, 0, 255",
+                    "name": "Inflation/Inflation/Colors/color_2",
+                    "type": "Colors"
+                },
+                {
+                    "defaultColor": "0, 0, 0, 255",
+                    "name": "Inflation/Inflation/Colors/color_3",
+                    "type": "Colors"
+                },
+                {
+                    "defaultColor": "0, 0, 0, 255",
+                    "name": "Inflation/Inflation/Colors/color_4",
+                    "type": "Colors"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Noise_Field",
+            "tracks": [
+                {
+                    "max": 100.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Equations/Current_rate_of_expansion",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 30.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Equations/Main_cluster_scale_after_bb",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Inflation/Inflation/Equations/Trigger_new_cluster",
+                    "type": "Bangs"
+                },
+                {
+                    "name": "Inflation/Inflation/Equations/Trigger_new_negative_cluster",
+                    "type": "Bangs"
+                },
+                {
+                    "max": 5.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/state",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Marching_Cubes/IsoLevel",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 15.0,
+                    "min": 0.0,
+                    "name": "Inflation/Noise_Field/Noise_Speed",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.20000004768372,
+                    "min": 0.800000011920929,
+                    "name": "Inflation/Noise_Field/Norm__Factor",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Noise_Field/Oscillate",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1000.0,
+                    "min": 1.0,
+                    "name": "Inflation/Noise_Field/Oscillate_spatial_freq_",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 10.0,
+                    "min": 0.0,
+                    "name": "Inflation/Noise_Field/Oscillate_speed",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Renderer",
+            "tracks": [
+                {
+                    "name": "Inflation/Cooldown_Renderer/Enable_cooldown_renderer",
+                    "type": "Switches"
+                },
+                {
+                    "max": 5.0,
+                    "min": 0.5,
+                    "name": "Inflation/Inflation/Rotation_radius",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 100.0,
+                    "min": 0.100000001490116,
+                    "name": "Inflation/Inflation/Rotation_speed",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 0.0500000007450581,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/DOF_aperture",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 2.0,
+                    "min": 0.00999999977648258,
+                    "name": "Inflation/Renderer/DOF_distance",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 512.0,
+                    "min": 1.0,
+                    "name": "Inflation/Renderer/DOF_samples",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Fill_Alpha",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.200000002980232,
+                    "name": "Inflation/Renderer/Fog_Max_Distance",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Fog_Min_Distance",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.00100000004749745,
+                    "name": "Inflation/Renderer/Fog_Power",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Fog_Start_Distance",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Renderer/Wireframe_Alpha",
+                    "scale": 1,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Inflation/Inflation/Circle",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Circle/circle_pct",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Circle/inner_radius",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Inflation/Inflation/Circle/outer_radius",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}
