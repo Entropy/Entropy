@@ -24,7 +24,7 @@ namespace entropy
 	}
 
 	inline int GetSceneHeight(){
-		return 1080;
+		return 1280;
 	}
 
 	//--------------------------------------------------------------
