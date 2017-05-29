@@ -13,8 +13,18 @@
 class TextRenderer
 {
 public:
-	void setup(float	 worldSize);
+	enum Screen{
+		FrontScreen,
+		BackScreen,
+	};
+
+	void setup(float worldSize, int width, int height, Screen screen);
 	void update(nm::ParticleSystem & particles, nm::Environment & environment);
+	void renderLines(nm::ParticleSystem & particles,
+					 std::vector<nm::Photon> & photons,
+					 nm::Environment & environment,
+					 entropy::render::WireframeFillRenderer & renderer,
+					 ofCamera & cam);
 	void draw(nm::ParticleSystem & particles,
 			  std::vector<nm::Photon> & photons,
 			  nm::Environment & environment,
@@ -47,6 +57,10 @@ private:
 	std::vector<std::unordered_map<std::string, ofMesh>> particleTexts;
 	std::vector<std::unordered_map<std::string, ofPath>> particlePaths;
 	float worldSize;
+	int width;
+	int height;
+	Screen screen;
+	ofFbo fboLines;
 };
 
 #endif // TEXTRENDERER_H
