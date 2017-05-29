@@ -24,7 +24,7 @@ namespace entropy
 	}
 
 	inline int GetSceneHeight(){
-		return 1080;
+		return 1280;
 	}
 
 	//--------------------------------------------------------------
@@ -186,6 +186,7 @@ namespace entropy
 			outVertices.addVertex({v4.x,v4.y,0.0f});
 		}
 	}
+
 
 	//--------------------------------------------------------------
 	inline float focalLengthToFovDeg(float focalLengthmm, float aspectRatio){
