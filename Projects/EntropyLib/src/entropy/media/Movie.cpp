@@ -58,6 +58,11 @@ namespace entropy
 
 			if (!this->isLoaded()) return;
 
+			if (this->switchMillis >= 0.0f)
+			{
+				this->renderFrame = true;
+			}
+
 			const bool shouldPlay = this->shouldPlay();
 			if (shouldPlay)
 			{
@@ -126,7 +131,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Movie::renderContent()
 		{
-			if (this->isLoaded() && !this->videoPlayer.isPaused())
+			if (this->isLoaded() && this->renderFrame)
 			{
 				this->videoPlayer.getTexture().drawSubsection(this->dstBounds, this->srcBounds);
 			}

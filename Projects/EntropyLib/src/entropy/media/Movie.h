@@ -45,6 +45,8 @@ namespace entropy
 			bool initFreePlay() override;
 
 			ofVideoPlayer videoPlayer;
+
+			bool renderFrame;
 		};
 	}
 }
