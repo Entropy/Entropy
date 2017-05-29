@@ -216,10 +216,16 @@
                 },
                 "File Path": "E:\\hpv\\VAPOR_NoAnimation_170524.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "1",
-                    "Sync Mode": "1"
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -243,10 +249,16 @@
                 },
                 "File Path": "E:\\mp3\\doppler live DARK AGES.mp3",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -270,10 +282,16 @@
                 },
                 "File Path": "E:\\mp3\\doppler live EAGLE.mp3",
                 "Playback": {
-                    "Fade Base": "0",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -297,10 +315,16 @@
                 },
                 "File Path": "E:\\mov\\EAGLE_Intro_160923.mov",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -324,10 +348,16 @@
                 },
                 "File Path": "E:\\mov\\EAGLE_GasStars_160922.mov",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -351,10 +381,16 @@
                 },
                 "File Path": "E:\\wav\\flash THOMAS EDIT V3.wav",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0"
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 0,
@@ -378,10 +414,16 @@
                 },
                 "File Path": "E:\\hpv\\Front_Timeline_008.hpv",
                 "Playback": {
-                    "Fade Base": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
                     "Fade Twist": "0",
+                    "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "2"
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
                 }
             },
             "page": 1,

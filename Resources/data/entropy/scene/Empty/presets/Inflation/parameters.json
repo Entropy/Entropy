@@ -103,6 +103,11 @@
             "direction": false,
             "idxA": 2,
             "idxB": 3
+        },
+        {
+            "direction": true,
+            "idxA": 6,
+            "idxB": 8
         }
     ],
     "Mappings": {
@@ -220,7 +225,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mp3\\Part 1_Blobs_TOTAL_ V1.mp3",
+                "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V3.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -245,7 +250,7 @@
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
-                    "Size": "0.75",
+                    "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -253,11 +258,11 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\bigbang_darker.hpv",
+                "File Path": "E:\\hpv\\intro+bigbang.hpv",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.35",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -291,7 +296,7 @@
                     "Fade Knob": "0",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "0",
+                    "Fade Twist": "0.937008",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
@@ -323,8 +328,8 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
-                    "Fade Twist": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0.0629922",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
@@ -420,16 +425,16 @@
                 },
                 "File Path": "E:\\hpv\\parent_particles.hpv",
                 "Playback": {
-                    "Fade Knob": "15",
+                    "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 3,
@@ -462,6 +467,39 @@
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 3,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\parent_particles.hpv",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
             },
