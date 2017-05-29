@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -98,13 +98,7 @@
         }
     },
     "Empty": null,
-    "Links": [
-        {
-            "direction": false,
-            "idxA": 2,
-            "idxB": 3
-        }
-    ],
+    "Links": null,
     "Mappings": {
         "Box_Back::Alpha": "0",
         "Box_Back::Auto Draw": "0",
@@ -205,7 +199,7 @@
     },
     "Media": [
         {
-            "Sound": {
+            "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
@@ -220,153 +214,21 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mp3\\Part 1_Blobs_TOTAL_ V1.mp3",
+                "File Path": "E:\\hpv\\Particles_BaryoText_Back.hpv",
                 "Playback": {
-                    "Fade Knob": "15",
-                    "Fade LFO": "1",
+                    "Fade Knob": "16",
+                    "Fade LFO": "0.0503855",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
             },
             "page": 0,
-            "type": 4
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.65",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "0.75",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\bigbang_darker.hpv",
-                "Playback": {
-                    "Fade Knob": "15",
-                    "Fade LFO": "1",
-                    "Fade Track": "0.35",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
-                }
-            },
-            "page": 1,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.65",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "0.75",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
-                "Playback": {
-                    "Fade Knob": "0",
-                    "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "0",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
-                }
-            },
-            "page": 2,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.65",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "0.75",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_Cooldown_170526.hpv",
-                "Playback": {
-                    "Fade Knob": "15",
-                    "Fade LFO": "1",
-                    "Fade Track": "0",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "0",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
-                }
-            },
-            "page": 2,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.591, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Front_Timeline_001.hpv",
-                "Playback": {
-                    "Fade Knob": "8",
-                    "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "0",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "2",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
-                }
-            },
-            "page": 1,
             "type": 3
         },
         {
@@ -385,79 +247,13 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Front_Timeline_002.hpv",
-                "Playback": {
-                    "Fade Knob": "9",
-                    "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "0",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "2",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
-                }
-            },
-            "page": 2,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\parent_particles.hpv",
-                "Playback": {
-                    "Fade Knob": "15",
-                    "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "1",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
-                }
-            },
-            "page": 3,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Inflation_Slowdown_170526.hpv",
+                "File Path": "E:\\hpv\\Particles_BaryoText_Front.hpv",
                 "Playback": {
                     "Fade Knob": "16",
-                    "Fade LFO": "0",
+                    "Fade LFO": "0.889108",
                     "Fade Track": "1",
                     "Fade Twist": "1",
-                    "Flip LFO": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
@@ -465,7 +261,7 @@
                     "Use Fade Twist": "0"
                 }
             },
-            "page": 3,
+            "page": 0,
             "type": 3
         }
     ],

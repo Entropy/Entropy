@@ -11,11 +11,11 @@
     </key>
     <key>
         <flag>play slow</flag>
-        <time>00:03:00:310</time>
-        <value>0.600000024</value>
+        <time>00:04:00:345</time>
+        <value>0.500000000</value>
     </key>
     <key>
-        <flag>play</flag>
+        <flag>play oscillation</flag>
         <time>00:08:29:835</time>
         <value>0.824999988</value>
     </key>

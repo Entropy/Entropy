@@ -21,7 +21,7 @@
             "scene": "Empty"
         },
         {
-            "preset": "TestFade",
+            "preset": "TestLFO",
             "scene": "Empty"
         }
     ]
