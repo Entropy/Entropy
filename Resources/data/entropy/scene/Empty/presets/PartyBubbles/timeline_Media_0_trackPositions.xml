@@ -179,6 +179,18 @@
         <width>9360.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="LFO_0_HPV">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="LFO_1_HPV">
+        <x>0.000000000</x>
+        <y>262.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Media_0_HPV">
         <x>0.000000000</x>
         <y>70.000000000</y>

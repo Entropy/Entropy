@@ -223,10 +223,13 @@
                 "File Path": "E:\\mp3\\Part 2 mood 1 V2.mp3",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -253,10 +256,13 @@
                 "File Path": "E:\\hpv\\old_storm.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0.45",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "1",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -283,10 +289,13 @@
                 "File Path": "E:\\hpv\\Particles_BaryoText_Front.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -313,10 +322,13 @@
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
@@ -343,10 +355,13 @@
                 "File Path": "E:\\hpv\\Particles_BaryoText_Back.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
@@ -373,10 +388,13 @@
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -403,10 +421,13 @@
                 "File Path": "E:\\hpv\\Particles_standard_model_text.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -433,10 +454,13 @@
                 "File Path": "E:\\hpv\\transition_out.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -463,10 +487,13 @@
                 "File Path": "E:\\hpv\\Particles_ZoomOut_r1.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
@@ -493,10 +520,13 @@
                 "File Path": "E:\\hpv\\Front_Timeline_004.hpv",
                 "Playback": {
                     "Fade Knob": "9",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "0",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
@@ -520,13 +550,16 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "File Path": "E:\\hpv\\Bubbles_Square_170529.hpv",
                 "Playback": {
                     "Fade Knob": "4",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
@@ -553,10 +586,13 @@
                 "File Path": "E:\\hpv\\Bubbles_CountDown_r2.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -583,10 +619,13 @@
                 "File Path": "entropy\\scene\\PopUps\\sounds\\bubble THOMAS EDIT V1.wav",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "0"
                 }
@@ -613,10 +652,13 @@
                 "File Path": "E:\\hpv\\Bubbles_CMB_170523.hpv",
                 "Playback": {
                     "Fade Knob": "5",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "0.992126",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "1"
                 }
@@ -643,11 +685,14 @@
                 "File Path": "E:\\hpv\\Bubbles_ElectroWave_r1.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "0",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
-                    "Use Fade Track": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
             },
@@ -673,10 +718,13 @@
                 "File Path": "E:\\hpv\\old_storm.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "1",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -703,10 +751,13 @@
                 "File Path": "E:\\hpv\\Particles_standard_model.hpv",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -730,13 +781,16 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Bubbles_Clouds_170523.hpv",
+                "File Path": "E:\\hpv\\Bubbles_Square_170529.hpv",
                 "Playback": {
                     "Fade Knob": "15",
-                    "Fade Track": "1",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -763,10 +817,13 @@
                 "File Path": "E:\\mp3\\Part 2 mood 2 V2.mp3",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -793,10 +850,13 @@
                 "File Path": "E:\\mp3\\Part 2 mood 3 V2.mp3",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -823,10 +883,13 @@
                 "File Path": "E:\\mp3\\zoomout V1.mp3",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
@@ -853,10 +916,13 @@
                 "File Path": "E:\\hpv\\Front_Timeline_003.hpv",
                 "Playback": {
                     "Fade Knob": "8",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "0",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
@@ -883,10 +949,13 @@
                 "File Path": "E:\\hpv\\Front_Timeline_005.hpv",
                 "Playback": {
                     "Fade Knob": "10",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "0",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
@@ -913,10 +982,13 @@
                 "File Path": "E:\\img\\Planck-CMB-SMICA.png",
                 "Playback": {
                     "Fade Knob": "15",
+                    "Fade LFO": "1",
                     "Fade Track": "0",
                     "Fade Twist": "0.992126",
+                    "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
+                    "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
