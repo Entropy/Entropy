@@ -6,19 +6,19 @@
             "Energy": "1",
             "Force_Multiplier_Max": "1e+08",
             "Force_Multiplier_Min": "1e+07",
-            "Fusion_Threshold_Exponent_Max": "0.787755",
-            "Fusion_Threshold_Exponent_Min": "0.134694",
+            "Fusion_Threshold_Exponent_Max": "-5.593",
+            "Fusion_Threshold_Exponent_Min": "-5.237",
             "Matter_survives_chance": "0.5",
             "Pair_Production_Threshold_Max": "0.572",
             "Pair_Production_Threshold_Min": "0.428",
-            "System_speed": "0.1",
-            "UnknownName": "STANDARD MODEL",
+            "System_speed": "0.05",
+            "UnknownName": "BARYOGENESIS",
             "quarkCreationChance": "0.2",
-            "state": "1"
+            "state": "0"
         },
         "Octree": {
-            "canditate_distance": "100",
-            "interaction_distance": "50"
+            "canditate_distance": "30",
+            "interaction_distance": "20"
         },
         "Particle": {
             "Anti_down_quark": "0, 0.1, 0.5, 0.5",
@@ -94,7 +94,7 @@
         "Scene": {
             "Debug_Lights": "0",
             "Front___Back": {
-                "Render_back": "1",
+                "Render_back": "0",
                 "Render_front": "1"
             },
             "Recording": {
@@ -117,7 +117,7 @@
                 "Rotation_radius": "1",
                 "Rotation_speed": "1",
                 "Travel_max_speed": "0.02",
-                "camera_tracking": "1",
+                "camera_tracking": "0",
                 "cut_to_interaction": "0",
                 "min_time_between_travels": "5",
                 "particlesAlpha": "1",
@@ -127,18 +127,18 @@
                 "use_easy_cam": "0"
             },
             "Reset": {
-                "anti_down_quarks": "10",
-                "anti_up_quarks": "10",
-                "down_quarks": "1200",
-                "electrons": "300",
+                "anti_down_quarks": "600",
+                "anti_up_quarks": "600",
+                "down_quarks": "600",
+                "electrons": "150",
                 "neutrons": "0",
-                "positrons": "10",
+                "positrons": "150",
                 "protons": "0",
-                "up_quarks": "1200"
+                "up_quarks": "600"
             }
         },
         "Text_Renderer": {
-            "ambient": "0.36385",
+            "ambient": "0.212245",
             "fulltext_distance": "0.05",
             "light_strenght": "466.073",
             "max_distance": "1",
@@ -148,14 +148,14 @@
     },
     "ofEasyCam": {
         "aspectRatio": 1.33333337306976,
-        "farClip": 11085.125,
+        "farClip": 9353.07421875,
         "forceAspectRatio": false,
         "fov": 60.0,
         "lensOffset": "0, 0",
-        "nearClip": 11.0851249694824,
-        "orientation": "0.999999, 0, 0.00111775, 0",
+        "nearClip": 9.3530740737915,
+        "orientation": "0.999452, 0, 0.0331159, 0",
         "ortho": false,
-        "position": "0.0022355, 0, 0.999997",
+        "position": "0.0661956, 0, 0.997807",
         "scale": "1, 1, 1"
     }
 }
