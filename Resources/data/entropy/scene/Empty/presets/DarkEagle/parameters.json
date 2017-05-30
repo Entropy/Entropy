@@ -218,7 +218,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "1",
@@ -249,16 +249,16 @@
                 },
                 "File Path": "E:\\mp3\\doppler live DARK AGES.mp3",
                 "Playback": {
-                    "Fade Knob": "16",
+                    "Fade Knob": "11",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 0,
@@ -282,16 +282,16 @@
                 },
                 "File Path": "E:\\wav\\Part 5_Eagle_TOTAL_ V1.wav",
                 "Playback": {
-                    "Fade Knob": "16",
+                    "Fade Knob": "15",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "1"
                 }
             },
             "page": 1,
@@ -350,7 +350,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0.075",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -435,8 +435,8 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
+                    "Render Back": "0",
+                    "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -461,6 +461,39 @@
             },
             "page": 1,
             "type": 3
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Part 5_Eagle_flash short_V1.wav",
+                "Playback": {
+                    "Fade Knob": "14",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 1,
+            "type": 4
         }
     ],
     "Post Effects": {
