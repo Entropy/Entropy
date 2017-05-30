@@ -205,7 +205,7 @@
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
-                    "Render Front": "0",
+                    "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -214,7 +214,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\VAPOR_NoAnimation_170524.hpv",
+                "File Path": "E:\\hpv\\render_noanimation_final_res.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -331,7 +331,7 @@
             "type": 2
         },
         {
-            "Movie": {
+            "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
@@ -346,7 +346,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\mov\\EAGLE_GasStars_160922.mov",
+                "File Path": "E:\\hpv\\EAGLEOK1080.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -354,14 +354,14 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "0",
+                    "Sync Mode": "1",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
             },
             "page": 1,
-            "type": 2
+            "type": 3
         },
         {
             "HPV": {
@@ -453,7 +453,7 @@
                     "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "1",
+                    "Sync Mode": "2",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1"
@@ -486,7 +486,7 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "1"

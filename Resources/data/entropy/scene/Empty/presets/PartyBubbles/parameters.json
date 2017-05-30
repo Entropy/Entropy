@@ -653,7 +653,7 @@
                 "Playback": {
                     "Fade Knob": "5",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -983,7 +983,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.6",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -1127,6 +1127,171 @@
             },
             "page": 3,
             "type": 3
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.675, 0.674",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "0.52",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mov\\CMB anim size H264.mov",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 4,
+            "type": 2
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\bariogenesys-front screen.hpv",
+                "Playback": {
+                    "Fade Knob": "0",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 1,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\standarmodel-front screen.hpv",
+                "Playback": {
+                    "Fade Knob": "1",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 2,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\nucleosynthesis-front screen.hpv",
+                "Playback": {
+                    "Fade Knob": "2",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 3,
+            "type": 3
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Part 3_AcBubbles_Intro_ V1.wav",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
         }
     ],
     "Post Effects": {
