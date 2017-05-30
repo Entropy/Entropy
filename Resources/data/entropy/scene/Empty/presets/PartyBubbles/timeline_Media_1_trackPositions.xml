@@ -29,6 +29,12 @@
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Fade_2_Sound">
+        <x>0.000000000</x>
+        <y>134.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Fade_3_HPV">
         <x>0.000000000</x>
         <y>134.000000000</y>
@@ -41,9 +47,21 @@
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Fade_4_Movie">
+        <x>0.000000000</x>
+        <y>262.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Fade_5_Sound">
+        <x>0.000000000</x>
+        <y>390.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Fade_6_HPV">
         <x>0.000000000</x>
-        <y>134.000000000</y>
+        <y>518.000000000</y>
         <width>9360.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -77,6 +95,12 @@
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Media_2_Sound">
+        <x>0.000000000</x>
+        <y>70.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Media_3_HPV">
         <x>0.000000000</x>
         <y>70.000000000</y>
@@ -89,9 +113,21 @@
         <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Media_4_Movie">
+        <x>0.000000000</x>
+        <y>198.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Media_5_Sound">
+        <x>0.000000000</x>
+        <y>326.000000000</y>
+        <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Media_6_HPV">
         <x>0.000000000</x>
-        <y>70.000000000</y>
+        <y>454.000000000</y>
         <width>9360.000000000</width>
         <height>40.000000000</height>
     </element>

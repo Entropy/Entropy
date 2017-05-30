@@ -218,7 +218,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "1",
@@ -251,7 +251,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -317,7 +317,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0.741228",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -350,7 +350,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0.075",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -395,6 +395,39 @@
             },
             "page": 0,
             "type": 3
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Mid Dida V2.wav",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
         }
     ],
     "Post Effects": {

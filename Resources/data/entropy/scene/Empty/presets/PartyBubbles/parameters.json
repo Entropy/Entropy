@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000644277",
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
                 "position": "0, 0, 867.995",
                 "relativeYAxis": false,
@@ -220,7 +220,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 2_Particles_mood 1_ V2.wav",
+                "File Path": "E:\\wav\\Part 2_Particles_mood 1_ V3.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -257,7 +257,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.45",
+                    "Fade Track": "0.4",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "1",
@@ -309,8 +309,8 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
+                    "Render Back": "0",
+                    "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -375,8 +375,8 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
+                    "Render Back": "0",
+                    "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -455,7 +455,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -587,7 +587,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.95",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -657,7 +657,7 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "1"
@@ -719,7 +719,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.2",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "1",
@@ -738,8 +738,8 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -814,7 +814,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 2_Particles_mood 2_ V2.wav",
+                "File Path": "E:\\wav\\Part 2_Particles_mood 2_ V3.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -847,11 +847,11 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 2_Particles_mood 3_ V2.wav",
+                "File Path": "E:\\wav\\Part 2_Particles_mood 3_ V3.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0.05",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -880,7 +880,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 2_Zoomout_ V1.wav",
+                "File Path": "E:\\wav\\Part 2_Zoomout_ V2.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -983,7 +983,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.6",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -1045,22 +1045,88 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 2_AcBubbles_TOTAL_ V1.wav",
+                "File Path": "E:\\wav\\Part 3_AcBubbles_TOTAL_ V2.wav",
                 "Playback": {
                     "Fade Knob": "12",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Part 4_CMB_TOTAL_ V1.wav",
+                "Playback": {
+                    "Fade Knob": "12",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0.968504",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "1"
                 }
             },
             "page": 0,
             "type": 4
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\Particles_standard_model.hpv",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0.5",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 3,
+            "type": 3
         }
     ],
     "Post Effects": {

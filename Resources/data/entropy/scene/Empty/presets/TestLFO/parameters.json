@@ -199,6 +199,39 @@
     },
     "Media": [
         {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1.918",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 0, 1, 1",
+                    "Width": "5"
+                },
+                "File Path": "E:\\mov\\test yannick.mov",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "1",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 2
+        },
+        {
             "HPV": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
@@ -214,50 +247,17 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Particles_BaryoText_Back.hpv",
+                "File Path": "E:\\hpv\\Inflation_IntroBigBang.hpv",
                 "Playback": {
                     "Fade Knob": "16",
-                    "Fade LFO": "0.0503855",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "1",
-                    "Use Fade LFO": "1",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "0"
-                }
-            },
-            "page": 0,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "File Path": "E:\\hpv\\Particles_BaryoText_Front.hpv",
-                "Playback": {
-                    "Fade Knob": "16",
-                    "Fade LFO": "0.889108",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Loop": "0",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "1",
-                    "Use Fade Track": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
             },

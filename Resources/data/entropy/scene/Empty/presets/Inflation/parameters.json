@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "0.999998, 0, 0, -0.00179401",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -230,7 +230,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V3.wav",
+                "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V4.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -267,7 +267,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
@@ -329,7 +329,7 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Slowdown.hpv",
+                "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
@@ -510,6 +510,72 @@
             },
             "page": 3,
             "type": 3
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Part 1_Oscilliation_V2.wav",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 3,
+            "type": 4
+        },
+        {
+            "Sound": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\wav\\Intro Dida V2.wav",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 4
         }
     ],
     "Post Effects": {
