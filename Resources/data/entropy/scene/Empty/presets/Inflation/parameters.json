@@ -267,7 +267,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
