@@ -5,10 +5,6 @@
             "name": "Page One",
             "tracks": [
                 {
-                    "name": "Camera",
-                    "type": "CameraTrack"
-                },
-                {
                     "max": 50.0,
                     "min": 0.0,
                     "name": "vapor/Sequence_Ramses/volume_density",
@@ -16,15 +12,15 @@
                     "type": "Curves"
                 },
                 {
-                    "max": 10.0,
+                    "max": 40.0,
                     "min": 0.100000001490116,
                     "name": "vapor/application/camera_auto_magnification",
-                    "scale": 0,
+                    "scale": 1,
                     "type": "Curves"
                 },
                 {
                     "max": 100.0,
-                    "min": 0.100000001490116,
+                    "min": 0.00100000004749745,
                     "name": "vapor/application/camera_fov",
                     "scale": 1,
                     "type": "Curves"

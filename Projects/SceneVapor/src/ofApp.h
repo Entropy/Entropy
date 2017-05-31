@@ -32,13 +32,13 @@ public:
     ofEasyCam m_camera;
 
 	ofParameter<float> m_scale{"world scale", 1, 0.1, 100};
-	ofParameter<float> m_fov{"camera fov", 60, 0.1, 100, ofParameterScale::Logarithmic};
+	ofParameter<float> m_fov{"camera fov", 60, 0.001, 100, ofParameterScale::Logarithmic};
 	ofParameter<float> m_octreeAnimationDuration{"octree anim duration", 60, 1, 8000, ofParameterScale::Logarithmic};
 	ofParameter<float> m_orbitStart{"camera orbit start", 15, 0, 600, ofParameterScale::Logarithmic};
 	ofParameter<float> m_orbitEnd{"camera orbit end", 45, 0, 600, ofParameterScale::Logarithmic};
 	ofParameter<float> m_finalRadius{"camera final radius", 3, 0, 10, ofParameterScale::Logarithmic};
 	ofParameter<bool> m_cameraAutoDistance{"camera auto distance", false};
-	ofParameter<float> m_cameraAutoDistanceMagnification{"camera auto magnification", 1, 0.1, 10};
+	ofParameter<float> m_cameraAutoDistanceMagnification{"camera auto magnification", 1, 0.1, 40, ofParameterScale::Logarithmic};
 	ofParameter<bool> m_glDebug{"debug gl", false};
 	ofParameter<bool> m_showOctree{"show octree", false};
 	ofParameter<bool> m_showOctreeDensities{"show octree densities", false};
@@ -83,15 +83,15 @@ public:
 	};
 
 	ofxTimeline m_timeline;
-	ofxTLCameraTrack *m_cameraTrack;
+	//ofxTLCameraTrack *m_cameraTrack;
 
 	ofxPanel m_gui;
 	bool m_bGuiVisible = true;
 	ofxTextureRecorder recorder;
 
 	ofTrueTypeFont ttf;
-	ofTime octreeAnimationStart;
-	ofTime octreeAnimationIndexStart;
+	double octreeAnimationStart;
+	double octreeAnimationIndexStart;
 	float octreeTotalDistance;
 	std::vector<ofEventListener> listeners;
 	ofVbo octreeAnimationVbo;
@@ -101,5 +101,5 @@ public:
 	float orbitStartDistance = 0;
 
 	ofShader shader;
-	ofFbo fbo;
+	ofFbo fbo, fboLines;
 };

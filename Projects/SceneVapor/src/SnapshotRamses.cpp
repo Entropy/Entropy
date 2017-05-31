@@ -713,7 +713,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	ofMesh SnapshotRamses::getOctreeMesh(float minDensity, float maxDensity) const{
-		return vaporOctree.getMesh(minDensity, maxDensity);
+		return vaporOctree.getMesh(minDensity, maxDensity, VaporOctree::SizeLargerFirst);
 	}
 
 	//--------------------------------------------------------------

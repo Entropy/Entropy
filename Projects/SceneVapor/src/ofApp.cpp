@@ -14,8 +14,10 @@ void ofApp::setup()
 
 	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
 	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
-	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_1024",
-								 "/media/arturo/elements/entropy/vapor_download_tests", 333, 333);
+//	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_1024",
+//								 "/media/arturo/elements/entropy/vapor_download_tests", 333, 333);
+
+	m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor", 333, 421);
 	m_sequenceRamses.loadFrame(0);
 
 	// Setup timeline.
@@ -24,11 +26,11 @@ void ofApp::setup()
 	m_timeline.setFrameRate(60.0f);
 	m_timeline.setDurationInSeconds(360);
 
-	m_cameraTrack = new ofxTLCameraTrack();
-	m_cameraTrack->setCamera(m_camera);
-	m_timeline.addTrack("Camera", m_cameraTrack);
+//	m_cameraTrack = new ofxTLCameraTrack();
+//	m_cameraTrack->setCamera(m_camera);
+//	m_timeline.addTrack("Camera", m_cameraTrack);
 
-	m_cameraTrack->lockCameraToTrack = false;
+//	m_cameraTrack->lockCameraToTrack = false;
 	//m_timeline.play();
 
 	m_bSyncPlayback = false;
@@ -44,7 +46,7 @@ void ofApp::setup()
 
 	listeners.push_back(m_showOctreeAnimation.newListener([this](bool&show){
 		if(show){
-			octreeAnimationIndexStart = octreeAnimationStart = ofGetCurrentTime();
+			octreeAnimationIndexStart = octreeAnimationStart = m_timeline.getCurrentTime();
 			octreeAnimationMesh = m_sequenceRamses.getOctreeMesh(m_scale);
 			octreeAnimationVbo.setMesh(octreeAnimationMesh, GL_STATIC_DRAW);
 			octreeAnimationIndex = 0;
@@ -82,6 +84,11 @@ void ofApp::setup()
 	fboSettings.internalformat = GL_RGBA32F;
 
 	fbo.allocate(fboSettings);
+
+	fboSettings.width /= 2;
+	fboSettings.height /= 2;
+	fboSettings.numSamples = 16;
+	fboLines.allocate(fboSettings);
 
 
 	listeners.push_back(m_bExportFrames.newListener([this](bool & record){
@@ -160,9 +167,12 @@ void ofApp::draw()
 {
 //    cam.setNearClip(0);
 //    cam.setFarClip(FLT_MAX);
-	fbo.begin();
-	ofClear(0,255);
-	m_camera.begin();
+	if(m_showOctree || m_showOctreeAnimation){
+		fboLines.begin();
+		ofClear(0,0);
+		m_camera.begin();
+	}
+
 	if(m_showOctree){
 		ofNoFill();
 		shader.begin();
@@ -171,6 +181,92 @@ void ofApp::draw()
 		shader.end();
 		ofFill();
 	}
+
+	if(m_showOctreeAnimation){
+		shader.begin();
+		shader.setUniform1f("alpha", m_octreeAlpha);
+		if(octreeAnimationIndex+1 < octreeAnimationMesh.getNumIndices()){
+			auto now = m_timeline.getCurrentTime();
+			auto nextIndex = octreeAnimationIndex + 1;
+			auto i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
+			auto i2 = octreeAnimationMesh.getIndices()[nextIndex];
+			auto p = octreeAnimationMesh.getVertices()[i1];
+			auto nextP = octreeAnimationMesh.getVertices()[i2];
+			auto distance = glm::distance(p,nextP);
+			auto segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
+			auto elapsed = now - octreeAnimationIndexStart;
+			auto pct = elapsed / segmentDuration;
+
+
+			ofMesh mesh;
+			mesh.setMode(OF_PRIMITIVE_LINES);
+			float factor;
+			{
+				auto pctEasing = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::sine::easeOut);
+				auto pctP = glm::lerp(p, nextP, float(pctEasing));
+				factor = ofxeasing::map(pctEasing, 0, 1, 10, 1, ofxeasing::exp::easeIn);
+				auto c = octreeAnimationMesh.getColors()[i1];
+				c.a *= factor;
+				mesh.addVertex(p);
+				mesh.addVertex(pctP);
+				mesh.addColor(c);
+				mesh.addColor(c);
+			}
+			while(pct>1 && octreeAnimationIndex+3 < octreeAnimationMesh.getNumIndices()){
+				octreeAnimationIndexStart += segmentDuration;
+				octreeAnimationIndex += 2;
+				nextIndex = octreeAnimationIndex + 1;
+				i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
+				i2 = octreeAnimationMesh.getIndices()[nextIndex];
+				p = octreeAnimationMesh.getVertices()[i1];
+				nextP = octreeAnimationMesh.getVertices()[i2];
+				distance = glm::distance(p,nextP);
+				segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
+				elapsed = now - octreeAnimationIndexStart;
+				pct = elapsed / segmentDuration;
+
+
+				{
+					auto pctEasing = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::sine::easeOut);
+					auto pctP = glm::lerp(p, nextP, float(pctEasing));
+					auto c = octreeAnimationMesh.getColors()[i1];
+					c.a *= factor;
+					mesh.addVertex(p);
+					mesh.addVertex(pctP);
+					mesh.addColor(c);
+					mesh.addColor(c);
+				}
+			}
+//			pct = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::sine::easeOut);
+//			auto pctP = glm::lerp(p, nextP, float(pct));
+//			auto factor = ofxeasing::map(pct, 0, 1, 10, 1, ofxeasing::exp::easeIn);
+//			auto c = octreeAnimationMesh.getColors()[i1];
+//			c.a *= factor;
+//			mesh.addVertex(p);
+//			mesh.addVertex(pctP);
+//			mesh.addColor(c);
+//			mesh.addColor(c);
+			mesh.draw();
+		}
+		ofSetColor(255);
+		octreeAnimationIndex = ofClamp(octreeAnimationIndex, 0, octreeAnimationMesh.getNumIndices()-1);
+		octreeAnimationVbo.drawElements(GL_LINES, octreeAnimationIndex, 0);
+		shader.end();
+	}
+
+	if(m_showOctree || m_showOctreeAnimation){
+		m_camera.end();
+		fboLines.end();
+	}
+
+	fbo.begin();
+	ofClear(0,255);
+	if(m_showOctree || m_showOctreeAnimation){
+		fboLines.draw(0,fbo.getHeight(),fbo.getWidth(),-fbo.getHeight());
+	}
+
+	m_camera.begin();
+
 	if(m_showOctreeDensities){
 		m_sequenceRamses.drawOctreeDensities(ttf, m_camera, m_scale);
 	}
@@ -187,51 +283,6 @@ void ofApp::draw()
 		ofFill();
         
 		ofDrawAxis(0.2);
-    }
-	if(m_showOctreeAnimation){
-		shader.begin();
-		shader.setUniform1f("alpha", m_octreeAlpha);
-		if(octreeAnimationIndex+1 < octreeAnimationMesh.getNumIndices()){
-			auto now = ofGetCurrentTime();
-			auto nextIndex = octreeAnimationIndex + 1;
-			auto i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
-			auto i2 = octreeAnimationMesh.getIndices()[nextIndex];
-			auto p = octreeAnimationMesh.getVertices()[i1];
-			auto nextP = octreeAnimationMesh.getVertices()[i2];
-			auto distance = glm::distance(p,nextP);
-			auto segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
-			auto elapsed = std::chrono::duration<double>(now - octreeAnimationIndexStart);
-			auto pct = elapsed.count() / segmentDuration;
-			while(pct>1 && octreeAnimationIndex+3 < octreeAnimationMesh.getNumIndices()){
-				octreeAnimationIndexStart += std::chrono::duration<double>(segmentDuration);
-				octreeAnimationIndex += 2;
-				nextIndex = octreeAnimationIndex + 1;
-				i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
-				i2 = octreeAnimationMesh.getIndices()[nextIndex];
-				p = octreeAnimationMesh.getVertices()[i1];
-				nextP = octreeAnimationMesh.getVertices()[i2];
-				distance = glm::distance(p,nextP);
-				segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
-				elapsed = std::chrono::duration<double>(now - octreeAnimationIndexStart);
-				pct = elapsed.count() / segmentDuration;
-			}
-			auto c = octreeAnimationMesh.getColors()[i1];
-			pct = ofxeasing::map(pct, 0, 1, 0, 1, ofxeasing::quad::easeOut);
-			auto pctP = glm::lerp(p, nextP, float(pct));
-			//ofSetColor(c);
-			//ofDrawLine(p, pctP);
-			ofMesh mesh;
-			mesh.setMode(OF_PRIMITIVE_LINES);
-			mesh.addVertex(p);
-			mesh.addVertex(pctP);
-			mesh.addColor(c);
-			mesh.addColor(c);
-			mesh.draw();
-		}
-		ofSetColor(255);
-		octreeAnimationIndex = ofClamp(octreeAnimationIndex, 0, octreeAnimationMesh.getNumIndices()-1);
-		octreeAnimationVbo.drawElements(GL_LINES, octreeAnimationIndex, 0);
-		shader.end();
 	}
 	m_camera.end();
 	fbo.end();
@@ -268,13 +319,13 @@ void ofApp::keyPressed(int key)
             ofToggleFullscreen();
             break;
 
-		case 'L':
-			m_cameraTrack->lockCameraToTrack ^= 1;
-			break;
+//		case 'L':
+//			m_cameraTrack->lockCameraToTrack ^= 1;
+//			break;
 
-		case 'T':
-			m_cameraTrack->addKeyframe();
-			break;
+//		case 'T':
+//			m_cameraTrack->addKeyframe();
+//			break;
 
 		case 's':
 			m_bExportFrames = !m_bExportFrames;

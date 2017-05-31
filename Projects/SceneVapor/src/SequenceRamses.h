@@ -75,7 +75,7 @@ namespace ent
 
 		ofParameter<float> m_densityMin{"density min", 0.f, 0.f, 1.f, ofParameterScale::Logarithmic};
 		ofParameter<float> m_densityMax{"density max", 0.25f, 0.f, 1.f, ofParameterScale::Logarithmic};
-		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 5, ofParameterScale::Logarithmic};
+		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 10, ofParameterScale::Logarithmic};
 		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 50, ofParameterScale::Logarithmic};
 
 		// Playback

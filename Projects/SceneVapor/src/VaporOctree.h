@@ -23,7 +23,15 @@ class VaporOctree
 		std::vector<Particle> toVector() const;
 		ofFloatPixels getPixels(size_t z, float minDensity, float maxDensity) const;
 		float getDensity(size_t x, size_t y, size_t z) const;
-		ofMesh getMesh(float minDensity, float maxDensity) const;
+
+		enum MeshSort{
+			SizeLargerFirst,
+			SizeSmallerFirst,
+			DensityLargerFirst,
+			DensitySmallerFirst
+		};
+
+		ofMesh getMesh(float minDensity, float maxDensity, MeshSort meshsort) const;
 
 	private:
 		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);

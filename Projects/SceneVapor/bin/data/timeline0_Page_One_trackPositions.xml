@@ -1,8 +1,8 @@
 <positions>
     <element name="Camera">
         <x>0.000000000</x>
-        <y>837.000000000</y>
-        <width>1280.000000000</width>
+        <y>981.000000000</y>
+        <width>1920.000000000</width>
         <height>79.000000000</height>
     </element>
     <element name="vapor/Sequence_Ramses/density_max">
@@ -13,32 +13,32 @@
     </element>
     <element name="vapor/Sequence_Ramses/volume_density">
         <x>0.000000000</x>
-        <y>940.000000000</y>
-        <width>1280.000000000</width>
+        <y>1084.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_auto_magnification">
         <x>0.000000000</x>
-        <y>1004.000000000</y>
-        <width>1280.000000000</width>
+        <y>1148.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_fov">
         <x>0.000000000</x>
-        <y>1068.000000000</y>
-        <width>1280.000000000</width>
+        <y>1212.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_alpha">
         <x>0.000000000</x>
-        <y>1132.000000000</y>
-        <width>1280.000000000</width>
+        <y>1276.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_anim_duration">
         <x>0.000000000</x>
-        <y>1196.000000000</y>
-        <width>1280.000000000</width>
+        <y>1340.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree">
@@ -49,8 +49,8 @@
     </element>
     <element name="vapor/application/show_octree_animation">
         <x>0.000000000</x>
-        <y>1260.000000000</y>
-        <width>1280.000000000</width>
+        <y>1404.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

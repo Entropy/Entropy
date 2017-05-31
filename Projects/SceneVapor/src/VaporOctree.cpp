@@ -5,6 +5,7 @@
 #include "ofTrueTypeFont.h"
 #include "ofCamera.h"
 #include "ofUtils.h"
+#include "ofxEasing.h"
 #include <future>
 #include <numeric>
 
@@ -285,13 +286,13 @@ void VaporOctree::getChildrenRecursively(std::vector<const VaporOctree*> & child
 	}
 }
 
-ofMesh VaporOctree::getMesh(float minDensity, float maxDensity) const{
+ofMesh VaporOctree::getMesh(float minDensity, float maxDensity, MeshSort meshsort) const{
 	if(this->isLeaf()){
 		ofFloatColor color;
 		if(this->particlesIndex.empty()){
-			color.set(1, 20./255.);
+			color.set(1, 0.5);
 		}else{
-			auto alpha = ofMap(density, minDensity, maxDensity, 0, 1);
+			auto alpha = ofxeasing::map(density, minDensity, maxDensity, 0.5, 1, ofxeasing::sine::easeIn);
 			color.set(1., alpha);
 		}
 		return boxWireframe(bb.center, bb.size, color);
@@ -300,12 +301,31 @@ ofMesh VaporOctree::getMesh(float minDensity, float maxDensity) const{
 		mesh.setMode( OF_PRIMITIVE_LINES );
 		std::vector<const VaporOctree*> sortedChildren;
 		getChildrenRecursively(sortedChildren);
-		std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
-			return o1->density * o1->level > o2->density * o2->level;
-		});
+		switch (meshsort) {
+			case SizeLargerFirst:
+				std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
+					return o1->level < o2->level;
+				});
+			break;
+			case SizeSmallerFirst:
+				std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
+					return o1->level > o2->level;
+				});
+			break;
+			case DensityLargerFirst:
+				std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
+					return o1->density * o1->level > o2->density * o2->level;
+				});
+			break;
+			case DensitySmallerFirst:
+				std::sort(sortedChildren.begin(), sortedChildren.end(), [&](const VaporOctree * o1, const VaporOctree * o2){
+					return o1->density * o1->level < o2->density * o2->level;
+				});
+			break;
+		}
 
 		for(const auto * child: sortedChildren){
-			mesh.append(child->getMesh(minDensity, maxDensity));
+			mesh.append(child->getMesh(minDensity, maxDensity, meshsort));
 		}
 		return mesh;
 	}
@@ -325,7 +345,7 @@ void VaporOctree::drawLeafs(float minDensity, float maxDensity) const {
 //			child.drawLeafs(minDensity, maxDensity);
 //		}
 //	}
-	getMesh(minDensity, maxDensity).draw();
+	getMesh(minDensity, maxDensity, VaporOctree::DensityLargerFirst).draw();
 }
 
 void VaporOctree::drawDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity) const{
