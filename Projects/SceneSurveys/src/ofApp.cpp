@@ -443,7 +443,9 @@ void ofApp::draw()
 
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
-	this->fboPost.draw(0, 0);
+	//this->fboPost.draw(0, 0);
+	float scaledHeight = float(entropy::GetSceneHeight()) * ofGetWidth() / float(entropy::GetSceneWidth());
+	this->fboPost.draw(0, 0, ofGetWidth(), scaledHeight);
 
 	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
 	{
@@ -570,8 +572,10 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-	int canvasWidth = w;
-	int canvasHeight = h;
+	//int canvasWidth = w;
+	//int canvasHeight = h;
+	int canvasWidth = entropy::GetSceneWidth();
+	int canvasHeight = entropy::GetSceneHeight();
 
 	this->easyCam.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
 	this->travelCamPath.copyCamera(this->easyCam, false);

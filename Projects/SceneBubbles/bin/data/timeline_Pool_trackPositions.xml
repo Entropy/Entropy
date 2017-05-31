@@ -1,0 +1,32 @@
+<positions>
+    <element name="Bubbles/Pool_GL_3D/Alpha">
+        <x>0.000000000</x>
+        <y>779.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Pool_GL_3D/Bursts/Enabled">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Pool_GL_3D/Drop_Rate">
+        <x>0.000000000</x>
+        <y>843.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Pool_GL_3D/Dropping">
+        <x>0.000000000</x>
+        <y>907.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Bubbles/Pool_GL_3D/Ripple_Rate">
+        <x>0.000000000</x>
+        <y>971.000000000</y>
+        <width>1684.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

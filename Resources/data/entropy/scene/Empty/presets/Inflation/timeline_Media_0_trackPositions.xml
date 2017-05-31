@@ -143,6 +143,12 @@
         <width>9360.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Fade_32_Sound">
+        <x>0.000000000</x>
+        <y>1310.000000000</y>
+        <width>1680.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Fade_3_HPV">
         <x>0.000000000</x>
         <y>518.000000000</y>
@@ -381,6 +387,12 @@
         <x>0.000000000</x>
         <y>326.000000000</y>
         <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Media_32_Sound">
+        <x>0.000000000</x>
+        <y>926.000000000</y>
+        <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_3_HPV">

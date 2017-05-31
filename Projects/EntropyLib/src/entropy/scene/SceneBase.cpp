@@ -59,7 +59,7 @@ namespace entropy
 			this->timeline->setSpacebarTogglePlay(false);
 			this->timeline->setLoopType(OF_LOOP_NONE);
 			this->timeline->setFrameRate(30.0f);
-			this->timeline->setDurationInSeconds(16 * 60);
+			this->timeline->setDurationInSeconds(30 * 60);
 			this->timeline->setAutosave(false);
 			this->timeline->setPageName(parameters.getName());
 

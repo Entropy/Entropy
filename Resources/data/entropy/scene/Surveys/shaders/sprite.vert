@@ -101,12 +101,5 @@ void main()
 		vCell = gl_VertexID % 8 + 8;
 	}
 
-	if (uMaxMass < mass)
-	{
-		vColor = vec4(1.0);
-	}
-	else
-	{
-	  vColor = vec4(0.0, 1.0, 0.0, 1.0);
-	}
+	vColor = vec4(1.0);
 }

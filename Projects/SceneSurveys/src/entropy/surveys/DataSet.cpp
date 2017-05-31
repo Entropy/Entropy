@@ -193,7 +193,7 @@ namespace entropy
 				//if (i < 10) cout << "update() comparing mass " << this->masses[i] << " < " << mappedMinMass << endl;
 				if (this->masses[i] < mappedMinMass)
 				{
-					//continue;
+					continue;
 				}
 
 				// Test that the point is within clipping bounds.
