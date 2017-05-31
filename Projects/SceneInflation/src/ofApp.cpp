@@ -834,11 +834,13 @@ void ofApp::draw(){
 					glBlendFunc(GL_ONE, GL_ONE);
 					renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
 				}
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				ofDisableAlphaBlending();
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE, GL_ONE);
+				//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 				auto alphaBlobs = renderer.parameters.alphaFactor;
 				renderer.parameters.alphaFactor = 1;
 				renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), GL_TRIANGLES, camera, model);
-				cout << "rendering transition particles " << transitionParticles.getNumVertices() << endl;
 				renderer.parameters.alphaFactor = alphaBlobs;
 				break;
 			}break;
