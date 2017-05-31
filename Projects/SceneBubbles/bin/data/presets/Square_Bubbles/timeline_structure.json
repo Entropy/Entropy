@@ -1,0 +1,139 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Bubbles",
+            "tracks": [
+                {
+                    "name": "Bubbles/Bubbles/Camera/Auto_Distance",
+                    "type": "Switches"
+                },
+                {
+                    "max": 10.0,
+                    "min": 0.100000001490116,
+                    "name": "Bubbles/Bubbles/Camera/Auto_Magnification",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 180.0,
+                    "min": 0.100000001490116,
+                    "name": "Bubbles/Bubbles/Camera/FOV",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": -1.0,
+                    "name": "Bubbles/Bubbles/Camera/Pan_Speed",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                }
+            ]
+        },
+        {
+            "name": "Geom",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Bubbles/Box/Alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.00100000004749745,
+                    "name": "Bubbles/Box/Edge_Ratio",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Bubbles/Bubbles/SphereExtra/Mask_Mix",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Bubbles/Sphere/Alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Pool",
+            "tracks": [
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Bubbles/Pool_GL_3D/Alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 60.0,
+                    "min": 1.0,
+                    "name": "Bubbles/Pool_GL_3D/Drop_Rate",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Bubbles/Pool_GL_3D/Dropping",
+                    "type": "Switches"
+                },
+                {
+                    "max": 120.0,
+                    "min": 1.0,
+                    "name": "Bubbles/Pool_GL_3D/Ripple_Rate",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        },
+        {
+            "name": "Post_Effects",
+            "tracks": [
+                {
+                    "max": 6.0,
+                    "min": 0.00999999977648258,
+                    "name": "Bubbles/Post_Effects/Bloom/Boost",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.00999999977648258,
+                    "name": "Bubbles/Post_Effects/Bloom/Brightness_Threshold",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": -1.0,
+                    "name": "Bubbles/Post_Effects/Color/Brightness",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.5,
+                    "min": 0.5,
+                    "name": "Bubbles/Post_Effects/Color/Contrast",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

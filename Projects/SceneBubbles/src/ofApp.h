@@ -100,13 +100,17 @@ protected:
 		{
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 1000.0f, ofParameterScale::Logarithmic };
 			ofParameter<float> farClip{ "Far Clip", 1000.0f, 1.0f, 200000.0f };
+			ofParameter<float> fov{ "FOV", 60.0f, 0.1f, 180.0f };
+			ofParameter<bool> autoDistance{ "Auto Distance", false };
+			ofParameter<float> autoMagnification{ "Auto Magnification", 1.0f, 0.1f, 20.0f };
 			ofParameter<float> tiltSpeed{ "Tilt Speed", 0.0f, -1.0f, 1.0f };
 			ofParameter<float> panSpeed{ "Pan Speed", 0.0f, -1.0f, 1.0f };
 			ofParameter<float> rollSpeed{ "Roll Speed", 0.0f, -1.0f, 1.0f };
 			ofParameter<float> dollySpeed{ "Dolly Speed", 0.0f, -10.0f, 10.0f };
 
 			PARAM_DECLARE("Camera",
-				nearClip, farClip,
+				nearClip, farClip, fov,
+				autoDistance, autoMagnification,
 				tiltSpeed, panSpeed, rollSpeed,
 				dollySpeed);
 		} camera;

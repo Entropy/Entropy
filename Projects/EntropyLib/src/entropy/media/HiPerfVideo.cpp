@@ -78,10 +78,6 @@ namespace entropy
 					this->hpvPlayer.setFrame(this->getPlaybackFrame());
 				}
 			}
-			else
-			{
-				this->freePlayNeedsInit = true;
-			}
 		}
 
 		//--------------------------------------------------------------

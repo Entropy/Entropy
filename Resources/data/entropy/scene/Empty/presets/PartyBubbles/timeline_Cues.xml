@@ -1,1 +1,42 @@
-<keyframes />
+<keyframes>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:01:725</time>
+        <value>0.699999988</value>
+    </key>
+    <key>
+        <flag>play baryo</flag>
+        <time>00:00:05:158</time>
+        <value>0.699999988</value>
+    </key>
+    <key>
+        <flag>play standard</flag>
+        <time>00:02:30:616</time>
+        <value>0.699999988</value>
+    </key>
+    <key>
+        <flag>play nucleo</flag>
+        <time>00:04:00:813</time>
+        <value>0.500000000</value>
+    </key>
+    <key>
+        <flag>play zoom</flag>
+        <time>00:06:30:185</time>
+        <value>0.600000024</value>
+    </key>
+    <key>
+        <flag>play bubbles</flag>
+        <time>00:07:21:987</time>
+        <value>0.524999976</value>
+    </key>
+    <key>
+        <flag>play cmb</flag>
+        <time>00:09:42:200</time>
+        <value>0.899999976</value>
+    </key>
+    <key>
+        <flag>play out</flag>
+        <time>00:11:25:351</time>
+        <value>0.350000024</value>
+    </key>
+</keyframes>

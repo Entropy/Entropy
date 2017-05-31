@@ -36,6 +36,10 @@ void ofApp::setup()
 	{
 		this->camera.setFarClip(val);
 	}));
+	this->eventListeners.push_back(this->parameters.camera.fov.newListener([this](float & val)
+	{
+		this->camera.setFov(val);
+	}));
 
 	// Setup the gui and timeline.
 	ofxGuiSetDefaultWidth(250);
@@ -108,7 +112,7 @@ void ofApp::setup()
 			if (path.bSuccess) 
 			{
 				// Resize canvas.
-				this->windowResized(this->parameters.render.renderWidth, this->parameters.render.renderHeight);
+				//this->windowResized(this->parameters.render.renderWidth, this->parameters.render.renderHeight);
 				
 				// Setup texture recorder.
 				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
@@ -117,8 +121,8 @@ void ofApp::setup()
 				this->textureRecorder.setup(recorderSettings);
 
 				// Start scene.
-				this->reset();
-				this->cameraTrack.lockCameraToTrack = true;
+				//this->reset();
+				//this->cameraTrack.lockCameraToTrack = true;
 				this->timeline.play();
 			}
 			else 
@@ -181,6 +185,17 @@ void ofApp::update()
 	this->tumbleOffset.y += this->parameters.camera.panSpeed;
 	this->tumbleOffset.z += this->parameters.camera.rollSpeed;
 	this->dollyOffset += this->parameters.camera.dollySpeed;
+
+	if (this->parameters.camera.autoDistance) 
+	{
+		auto fov = this->camera.getFov();
+		float eyeY = this->pool3D.volumeSize / (2.0f * this->parameters.camera.autoMagnification);
+		float halfFov = PI * fov / 360.0f;
+		float theTan = tanf(halfFov);
+		float distance = eyeY / theTan;
+
+		this->camera.setDistance(distance);
+	}
 }
 
 //--------------------------------------------------------------
@@ -234,7 +249,9 @@ void ofApp::draw()
 
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
-	this->fboPost.draw(0, 0);
+	float h = float(entropy::GetSceneHeight()) *  ofGetWidth() / float(entropy::GetSceneWidth());
+	this->fboPost.draw(0, 0, ofGetWidth(), h);
+	//this->fboPost.draw(0, 0);
 
 	if (this->parameters.render.recordSequence || this->parameters.render.recordVideo)
 	{
@@ -305,8 +322,8 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-	int canvasWidth = w;
-	int canvasHeight = h;
+	int canvasWidth = entropy::GetSceneWidth();
+	int canvasHeight = entropy::GetSceneHeight();
 
 	this->pool2D.setDimensions(glm::vec2(canvasWidth, canvasHeight));
 

@@ -11,9 +11,9 @@
         "Control Screen": {
             "Enabled": "1",
             "Preview": {
-                "Back Canvas": "0",
+                "Back Canvas": "1",
                 "Back Warp": "0",
-                "Front Canvas": "0",
+                "Front Canvas": "1",
                 "Front Warp": "0",
                 "Scale": "0.397"
             },

@@ -1,0 +1,17 @@
+<keyframes>
+    <key>
+        <flag>stop</flag>
+        <time>00:00:05:010</time>
+        <value>0.725000024</value>
+    </key>
+    <key>
+        <flag>play dark</flag>
+        <time>00:00:09:982</time>
+        <value>0.250000000</value>
+    </key>
+    <key>
+        <flag>play flash</flag>
+        <time>00:04:00:465</time>
+        <value>0.500000000</value>
+    </key>
+</keyframes>
