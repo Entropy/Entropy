@@ -11,7 +11,7 @@
             "Matter_survives_chance": "0.5",
             "Pair_Production_Threshold_Max": "0.572",
             "Pair_Production_Threshold_Min": "0.428",
-            "System_speed": "0.0947582",
+            "System_speed": "0.1",
             "UnknownName": "STANDARD MODEL",
             "quarkCreationChance": "0.2",
             "state": "1"
@@ -93,11 +93,15 @@
         },
         "Scene": {
             "Debug_Lights": "0",
+            "Front___Back": {
+                "Render_back": "1",
+                "Render_front": "1"
+            },
             "Recording": {
                 "Record_Sequence": "0",
                 "Record_Video": "0",
                 "fps": "60",
-                "system_clock": "1"
+                "system_clock": "0"
             },
             "Rendering": {
                 "Additive_Blend": "0",
@@ -109,13 +113,15 @@
                 "Draw_models": "0",
                 "Fov": "60",
                 "GL_ONE": "1",
+                "Light_Strength": "1",
                 "Rotation_radius": "1",
                 "Rotation_speed": "1",
                 "Travel_max_speed": "0.02",
                 "camera_tracking": "1",
-                "cut_to_interaction": "1",
+                "cut_to_interaction": "0",
                 "min_time_between_travels": "5",
                 "particlesAlpha": "1",
+                "photons_life": "1",
                 "scale_factor": "0.99",
                 "trailsAlpha": "1",
                 "use_easy_cam": "0"
@@ -123,12 +129,12 @@
             "Reset": {
                 "anti_down_quarks": "10",
                 "anti_up_quarks": "10",
-                "down_quarks": "600",
-                "electrons": "600",
+                "down_quarks": "1200",
+                "electrons": "300",
                 "neutrons": "0",
                 "positrons": "10",
                 "protons": "0",
-                "up_quarks": "600"
+                "up_quarks": "1200"
             }
         },
         "Text_Renderer": {
@@ -142,14 +148,14 @@
     },
     "ofEasyCam": {
         "aspectRatio": 1.33333337306976,
-        "farClip": 4269.5048828125,
+        "farClip": 11085.125,
         "forceAspectRatio": false,
         "fov": 60.0,
         "lensOffset": "0, 0",
-        "nearClip": 4.2695050239563,
-        "orientation": "0.867164, 0, 0.498023, 0",
+        "nearClip": 11.0851249694824,
+        "orientation": "0.999999, 0, 0.00111775, 0",
         "ortho": false,
-        "position": "60.9768, -114.981, -122.514",
+        "position": "0.0022355, 0, 0.999997",
         "scale": "1, 1, 1"
     }
 }

@@ -187,6 +187,7 @@ namespace entropy
 		}
 	}
 
+
 	//--------------------------------------------------------------
 	inline float focalLengthToFovDeg(float focalLengthmm, float aspectRatio){
 		return ofRadToDeg(2. * atan(0.5 * 35. / focalLengthmm) / aspectRatio);

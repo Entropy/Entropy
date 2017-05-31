@@ -4,8 +4,11 @@ namespace{
 
 }
 
-void TextRenderer::setup(float worldSize){
+void TextRenderer::setup(float worldSize, int width, int height, Screen screen){
 	this->worldSize = worldSize;
+	this->width = width;
+	this->height = height;
+	this->screen = screen;
 
 
 	ofTtfSettings fontSettings("fonts/kontrapunkt-bob.light.ttf", 20);
@@ -14,41 +17,108 @@ void TextRenderer::setup(float worldSize){
 	fonts.emplace_back();
 	fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 18;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+	if(screen == FrontScreen){
+		fontSettings.fontSize = 36;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 16;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 34;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 14;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 32;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 12;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 30;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 10;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 28;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 8;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 26;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 6;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 24;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 4;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 22;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
 
-	fontSettings.fontSize = 2;
-	fonts.emplace_back();
-	fonts.back().load(fontSettings);
+		fontSettings.fontSize = 20;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 18;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 16;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 14;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 12;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 10;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 8;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 6;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+	}else{
+		fontSettings.fontSize = 20;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 18;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 16;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 14;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 12;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 10;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 8;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 6;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+
+		fontSettings.fontSize = 4;
+		fonts.emplace_back();
+		fonts.back().load(fontSettings);
+	}
+
 
 	ofShader::Settings shaderSettings;
 	shaderSettings.shaderFiles[GL_VERTEX_SHADER] = "shaders/billboard.vert.glsl";
@@ -67,7 +137,6 @@ void TextRenderer::setup(float worldSize){
 		particleTexts[i]["n"] = fonts[i].getStringMesh("n", 0, 0);
 		particleTexts[i]["uq"] = fonts[i].getStringMesh("uq", 0, 0);
 		particleTexts[i]["dq"] = fonts[i].getStringMesh("dq", 0, 0);
-		particleTexts[i]["uq ________ dq"] = fonts[i].getStringMesh("uq ________ dq", 0, 0);
 
 
 		particleTexts[i]["electron"] = fonts[i].getStringMesh("electron", 0, 0);
@@ -75,9 +144,8 @@ void TextRenderer::setup(float worldSize){
 
 		particleTexts[i]["quark"] = fonts[i].getStringMesh("quark", 0, 0);
 		particleTexts[i]["anti"] = fonts[i].getStringMesh("anti", 0, 0);
-		particleTexts[i]["up quark"] = fonts[i].getStringMesh("up quark", 0, 0);
-		particleTexts[i]["down quark"] = fonts[i].getStringMesh("down quark", 0, 0);
-		particleTexts[i]["up quark __________ down quark"] = fonts[i].getStringMesh("up quark __________ down quark", 0, 0);
+		particleTexts[i]["up quark"] = fonts[i].getStringMesh("up\nquark", 0, 0);
+		particleTexts[i]["down quark"] = fonts[i].getStringMesh("down\nquark", 0, 0);
 
 		particleTexts[i]["neutron"] = fonts[i].getStringMesh("neutron", 0, 0);
 		particleTexts[i]["proton"] = fonts[i].getStringMesh("proton", 0, 0);
@@ -86,15 +154,19 @@ void TextRenderer::setup(float worldSize){
 	particlePaths.resize(fonts.size());
 	for(size_t i = 0; i < fonts.size(); i++){
 		ofPath anti;
-		anti.setFilled(false);
-		anti.setStrokeWidth(1);
-		anti.circle(0,0,fonts[i].getStringBoundingBox("x",0,0).height);
+		anti.setFilled(true);
+		anti.circle(0,0,fonts[i].getStringBoundingBox("x",0,0).height + 1);
+		anti.circle(0,0,fonts[i].getStringBoundingBox("x",0,0).height - 2);
 		particlePaths[i]["a"] = anti;
 
 		ofPath matter;
 		matter.setFilled(true);
 		matter.circle(0,0,fonts[i].getStringBoundingBox("x",0,0).height);
 		particlePaths[i]["q"] = matter;
+	}
+
+	if(screen == FrontScreen){
+		fboLines.allocate(width/3, height/3, GL_RGBA, 16);
 	}
 
 }
@@ -113,18 +185,20 @@ void TextRenderer::update(nm::ParticleSystem & particles, nm::Environment & envi
 }
 
 
-void TextRenderer::draw(nm::ParticleSystem & particles,
-						std::vector<nm::Photon> & photons,
-						nm::Environment & environment,
-						std::pair<nm::Particle*, nm::Particle*> lookAt,
-						entropy::render::WireframeFillRenderer & renderer,
-						ofCamera & cam){
+void TextRenderer::renderLines(nm::ParticleSystem & particles,
+				 std::vector<nm::Photon> & photons,
+				 nm::Environment & environment,
+				 entropy::render::WireframeFillRenderer & renderer,
+				 ofCamera & cam){
+
 	auto maxScreenDistance = (maxDistance * worldSize) * (maxDistance * worldSize);
 	auto scale = environment.getExpansionScalar();
-
-//	glEnable(GL_BLEND);
-//	glBlendFunc(GL_ONE, GL_ONE);
 	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
+		if(screen == FrontScreen){
+			fboLines.begin();
+		}
+		ofClear(0,0);
+		cam.begin();
 		ofLoadMatrix(modelview);
 		auto maxPDistance = (relDistance * worldSize) * (relDistance * worldSize);
 
@@ -251,6 +325,33 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			case nm::Environment::NUCLEOSYNTHESIS:
 			break;
 		}
+		cam.end();
+		if(screen == FrontScreen){
+			fboLines.end();
+		}
+	});
+
+	if(screen == FrontScreen){
+		fboLines.draw(0,height,width,-height);
+	}
+}
+
+
+void TextRenderer::draw(nm::ParticleSystem & particles,
+						std::vector<nm::Photon> & photons,
+						nm::Environment & environment,
+						std::pair<nm::Particle*, nm::Particle*> lookAt,
+						entropy::render::WireframeFillRenderer & renderer,
+						ofCamera & cam){
+	auto maxScreenDistance = (maxDistance * worldSize) * (maxDistance * worldSize);
+	auto scale = environment.getExpansionScalar();
+
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_ONE, GL_ONE);
+
+
+	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
+		ofLoadMatrix(modelview);
 
 		// Relation info text, currently distance but doesn't make a lot of sense
 		billboardShaderText.begin();
@@ -270,33 +371,33 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 
 				switch(environment.state.get()){
 					case nm::Environment::BARYOGENESIS:
-						if((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
-							auto pctColor = (1-pctDistance) * ambient;
-							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
-								if(ph.alive){
-									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
-									return acc + strength;
-								}else{
-									return acc;
-								}
-							});
-							pctColor += light;
-							auto midPoint = (p1.pos + p2->pos) / 2.;
-							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
-							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
-							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
-							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
-							billboardShaderText.setUniform1f("pctColor", pctColor);
-							billboardShaderText.setUniform1f("accumValue", accumValue);
-							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
-							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
-							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
-								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
-								fonts[fontSize].getStringMesh(ofToString(aniPct), 0,0).draw();
-							}else{
-								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
-							}
-						}
+//						if((p1.isAntiMatterQuark() && p2->isMatterQuark()) || (p1.isMatterQuark() && p2->isAntiMatterQuark())){
+//							auto pctColor = (1-pctDistance) * ambient;
+//							auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+//								if(ph.alive){
+//									auto strength = lightStrenght / glm::distance2(p1.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+//									return acc + strength;
+//								}else{
+//									return acc;
+//								}
+//							});
+//							pctColor += light;
+//							auto midPoint = (p1.pos + p2->pos) / 2.;
+//							auto pDistance = glm::distance2(p1.pos * scale, p2->pos * scale);
+//							auto pDistance1 = glm::distance(p1.pos * scale, p2->pos * scale);
+//							auto ppct = ofClamp(pDistance / maxPDistance, 0, 1);
+//							size_t fontSize = ofClamp(size_t(round((particleTexts.size() - 1) * pctDistance)) + 1, 0, particleTexts.size() -1);
+//							billboardShaderText.setUniform1f("pctColor", pctColor);
+//							billboardShaderText.setUniform1f("accumValue", accumValue);
+//							billboardShaderText.setUniform4f("billboard_position", glm::vec4(midPoint, 1.0));
+//							billboardShaderText.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+//							if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){
+//								auto aniPct = p1.anihilationRatio/environment.getAnnihilationThresh();
+//								fonts[fontSize].getStringMesh(ofToString(aniPct), 0,0).draw();
+//							}else{
+//								fonts[fontSize].getStringMesh(ofToString(pDistance1), 0,0).draw();
+//							}
+//						}
 					break;
 					case nm::Environment::STANDARD_MODEL:
 //						if((p2->getFusion1Flag() ^ p1.getFusion1Flag()) == 0xFF ||
@@ -385,31 +486,31 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 					}
 				break;
 				case nm::Environment::STANDARD_MODEL:
-					if(pctDistance > fulltextDistance && p.age > 1){
-						switch(p.getType()){
-							case nm::Particle::ELECTRON:
-								text = "e";
-							break;
-							case nm::Particle::POSITRON:
-							break;
-							case nm::Particle::PROTON:
-								text = "p";
-							break;
-							case nm::Particle::NEUTRON:
-								text = "n";
-							break;
-							case nm::Particle::ANTI_UP_QUARK:
-							case nm::Particle::ANTI_DOWN_QUARK:
-								//text = "a"; // TODO: show this??
-							break;
-							case nm::Particle::DOWN_QUARK:
-								text = "dq"; // TODO: show this??
-							break;
-							case nm::Particle::UP_QUARK:
-								text = "uq";
-							break;
-						}
-					}else{
+//					if(pctDistance > fulltextDistance && p.age > 1){
+//						switch(p.getType()){
+//							case nm::Particle::ELECTRON:
+//								text = "e";
+//							break;
+//							case nm::Particle::POSITRON:
+//							break;
+//							case nm::Particle::PROTON:
+//								text = "p";
+//							break;
+//							case nm::Particle::NEUTRON:
+//								text = "n";
+//							break;
+//							case nm::Particle::ANTI_UP_QUARK:
+//							case nm::Particle::ANTI_DOWN_QUARK:
+//								//text = "a"; // TODO: show this??
+//							break;
+//							case nm::Particle::DOWN_QUARK:
+//								text = "dq"; // TODO: show this??
+//							break;
+//							case nm::Particle::UP_QUARK:
+//								text = "uq";
+//							break;
+//						}
+//					}else{
 						switch(p.getType()){
 							case nm::Particle::ELECTRON:
 								text = "electron";
@@ -435,16 +536,20 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							break;
 							break;
 						}
-					}
+//					}
 				break;
 				case nm::Environment::NUCLEOSYNTHESIS:
 				break;
 			}
 			if(text!=""){
-				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
 				if(environment.state==nm::Environment::BARYOGENESIS) {
+					size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
 					particlePaths[fontSize][text].draw();
 				}else{
+					size_t fontSize = size_t(round((particleTexts.size() - 2) * pctDistance));
+					if(text == "neutron" || text == "proton"){
+						fontSize += 1;
+					}
 					billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
 					particleTexts[fontSize][text].draw();
 				}

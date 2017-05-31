@@ -1,0 +1,21 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Scene",
+            "tracks": [
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                },
+                {
+                    "max": 3.0,
+                    "min": 0.0,
+                    "name": "Particles/Environment/System_speed",
+                    "scale": 1,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

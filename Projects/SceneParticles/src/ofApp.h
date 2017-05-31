@@ -21,6 +21,7 @@ public:
 	void exit();
 
 	void update();
+	void renderScene(ofFbo & fboScene, ofFbo & fboPost, TextRenderer & textRenderer);
 	void draw();
 
 	void keyPressed(int key);
@@ -66,16 +67,18 @@ public:
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;
 	entropy::render::PostParameters postParams;
-	TextRenderer textRenderer;
-	ofFbo fboScene;
-	ofFbo fboPost;
+	TextRenderer textRendererFront;
+	TextRenderer textRendererBack;
+	ofFbo fboSceneFront;
+	ofFbo fboSceneBack;
+	ofFbo fboPostFront, fboPostBack;
 
 	vector<ofEventListener> eventListeners;
 	ofxPanel gui;
 	ofxTimeline timeline;
 	//ofxTLCameraTrack cameraTrack;
 
-	ofxTextureRecorder textureRecorder;
+	ofxTextureRecorder textureRecorderFront, textureRecorderBack;
 
 	std::string currPreset;
 
@@ -138,6 +141,16 @@ public:
 
 		struct : ofParameterGroup
 		{
+			ofParameter<bool> front{ "Render front", false };
+			ofParameter<bool> back{ "Render back", true };
+			PARAM_DECLARE("Front / Back",
+						  front,
+						  back);
+
+		} frontBack;
+
+		struct : ofParameterGroup
+		{
 			ofParameter<int>  fps{ "fps", 60, 20, 1200, ofParameterScale::Logarithmic};
 			ofParameter<bool> systemClock{"system clock", false};
 			ofParameter<bool> recordSequence{ "Record Sequence", false };
@@ -178,6 +191,7 @@ public:
 			debugLights,
 			//stateFile,
 			rendering,
+			frontBack,
 			recording,
 			reset);
 	} parameters;

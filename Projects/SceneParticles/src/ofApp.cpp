@@ -39,8 +39,10 @@ void ofApp::setup()
 	fboSettings.useStencil = false;
 	fboSettings.numSamples = 4;
 
-	fboScene.allocate(fboSettings);
-	fboPost.allocate(fboSettings);
+	fboSceneFront.allocate(fboSettings);
+	fboSceneBack.allocate(fboSettings);
+	fboPostFront.allocate(fboSettings);
+	fboPostBack.allocate(fboSettings);
 
 	// Init post effects
 	this->postEffects.resize(fboSettings.width, fboSettings.height);
@@ -52,7 +54,8 @@ void ofApp::setup()
 	this->renderer.parameters.fogMaxDistance.setMax(kHalfDim * 100);
 	this->renderer.parameters.fogMinDistance.setMax(kHalfDim);
 
-	textRenderer.setup(kHalfDim);
+	textRendererFront.setup(kHalfDim, entropy::GetSceneWidth(), entropy::GetSceneHeight(), TextRenderer::FrontScreen);
+	textRendererBack.setup(kHalfDim, entropy::GetSceneWidth(), entropy::GetSceneHeight(), TextRenderer::BackScreen);
 
 	// Load shaders.
 	shaderSettings.bindDefaults = false;
@@ -96,7 +99,8 @@ void ofApp::setup()
 	this->gui.add(nm::Particle::parameters);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
-	this->gui.add(this->textRenderer.parameters);
+	this->gui.add(this->textRendererFront.parameters);
+	this->gui.add(this->textRendererBack.parameters);
 	this->gui.minimizeAll();
 	this->eventListeners.push_back(this->gui.savePressedE.newListener([this](void)
 	{
@@ -157,10 +161,23 @@ void ofApp::setup()
 			auto path = ofSystemLoadDialog("Record to folder:", true);
 			if (path.bSuccess)
 			{
-				ofxTextureRecorder::Settings recorderSettings(this->fboPost.getTexture());
-				recorderSettings.imageFormat = OF_IMAGE_FORMAT_JPEG;
-				recorderSettings.folderPath = path.getPath();
-				this->textureRecorder.setup(recorderSettings);
+				ofxTextureRecorder::Settings recorderSettingsFront(this->fboPostFront.getTexture());
+				recorderSettingsFront.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettingsFront.folderPath = path.getPath() + "/front";
+				ofDirectory front(recorderSettingsFront.folderPath);
+				if(!front.exists()){
+					front.create();
+				}
+				this->textureRecorderFront.setup(recorderSettingsFront);
+
+				ofxTextureRecorder::Settings recorderSettingsBack(this->fboPostBack.getTexture());
+				recorderSettingsBack.imageFormat = OF_IMAGE_FORMAT_JPEG;
+				recorderSettingsBack.folderPath = path.getPath() + "/back";
+				ofDirectory back(recorderSettingsBack.folderPath);
+				if(!back.exists()){
+					back.create();
+				}
+				this->textureRecorderBack.setup(recorderSettingsBack);
 
 				this->reset();
 //				this->cameraTrack.lockCameraToTrack = true;
@@ -170,6 +187,9 @@ void ofApp::setup()
 			{
 				this->parameters.recording.recordSequence = false;
 			}
+		}else{
+			textureRecorderFront.stop();
+			textureRecorderBack.stop();
 		}
 	}));
 
@@ -181,23 +201,35 @@ void ofApp::setup()
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if (path.bSuccess)
 			{
-				ofxTextureRecorder::VideoSettings recorderSettings(fboScene.getTexture(), 60);
-				recorderSettings.videoPath = path.getPath();
+				ofxTextureRecorder::VideoSettings recorderSettingsFront(fboPostFront.getTexture(), 60);
+				recorderSettingsFront.videoPath = ofFilePath::removeExt(path.getPath()) + "_front" + ofFilePath::getFileExt(path.getPath());
 				if(ofFilePath::getFileExt(path.getPath()) == ".mov"){
-					recorderSettings.videoCodec = "prores";
-					recorderSettings.extrasettings = "-profile:v 0";
+					recorderSettingsFront.videoCodec = "prores";
+					recorderSettingsFront.extrasettings = "-profile:v 0";
 				}else{
-					recorderSettings.videoCodec = "libx264";
-					recorderSettings.extrasettings = "-preset ultrafast -crf 0";
+					recorderSettingsFront.videoCodec = "libx264";
+					recorderSettingsFront.extrasettings = "-preset ultrafast -crf 0";
 				}
-				textureRecorder.setup(recorderSettings);
+				textureRecorderFront.setup(recorderSettingsFront);
+
+				ofxTextureRecorder::VideoSettings recorderSettingsBack(fboPostBack.getTexture(), 60);
+				recorderSettingsBack.videoPath = ofFilePath::removeExt(path.getPath()) + "_back" + ofFilePath::getFileExt(path.getPath());
+				if(ofFilePath::getFileExt(path.getPath()) == ".mov"){
+					recorderSettingsBack.videoCodec = "prores";
+					recorderSettingsBack.extrasettings = "-profile:v 0";
+				}else{
+					recorderSettingsBack.videoCodec = "libx264";
+					recorderSettingsBack.extrasettings = "-preset ultrafast -crf 0";
+				}
+				textureRecorderBack.setup(recorderSettingsBack);
 			}
 			else {
 				this->parameters.recording.recordVideo = false;
 			}
 		}
 		else {
-			textureRecorder.stop();
+			textureRecorderFront.stop();
+			textureRecorderBack.stop();
 		}
 #endif
 	}));
@@ -389,7 +421,8 @@ void ofApp::update()
 
 
 	if(parameters.rendering.drawText){
-		textRenderer.update(particleSystem, *environment);
+		textRendererFront.update(particleSystem, *environment);
+		textRendererBack.update(particleSystem, *environment);
 	}
 
 
@@ -681,23 +714,42 @@ void ofApp::update()
 }
 
 //--------------------------------------------------------------
-void ofApp::draw()
+void ofApp::renderScene(ofFbo & fboScene, ofFbo & fboPost, TextRenderer & textRenderer)
 {
-	// Draw the scene.
-	this->fboScene.begin();
-	{
-		if(parameters.rendering.trailsAlpha<1){
-			ofMesh clearRect;
-			clearRect.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
-			clearRect.addVertex({0, 0, 0});
-			clearRect.addVertex({fboScene.getWidth(), 0, 0});
-			clearRect.addVertex({fboScene.getWidth(), fboScene.getHeight(), 0});
-			clearRect.addVertex({0, fboScene.getHeight(), 0});
-			clearRect.getColors().assign(4, ofFloatColor(0, parameters.rendering.trailsAlpha));
-			clearRect.draw();
+	fboScene.begin();
+	if(parameters.rendering.trailsAlpha<1){
+		ofMesh clearRect;
+		clearRect.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+		clearRect.addVertex({0, 0, 0});
+		clearRect.addVertex({fboScene.getWidth(), 0, 0});
+		clearRect.addVertex({fboScene.getWidth(), fboScene.getHeight(), 0});
+		clearRect.addVertex({0, fboScene.getHeight(), 0});
+		clearRect.getColors().assign(4, ofFloatColor(0, parameters.rendering.trailsAlpha));
+		clearRect.draw();
+	}else{
+		ofClear(0, 255);
+	}
+	if(parameters.rendering.drawText){
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		if(parameters.rendering.useEasyCam){
+			textRenderer.renderLines(particleSystem,
+							  photonsAlive,
+							  *environment,
+							  renderer,
+							  easyCam);
 		}else{
-			ofClear(0, 255);
+			textRenderer.renderLines(particleSystem,
+							  photonsAlive,
+							  *environment,
+							  renderer,
+							  camera);
 		}
+	}
+	fboScene.end();
+
+	// Draw the scene.
+	fboScene.begin();
+	{
 
 		if(parameters.rendering.useEasyCam){
 			easyCam.begin();
@@ -813,18 +865,30 @@ void ofApp::draw()
 //		this->renderer.draw(feedbackVbo, 0, numPrimitives * 3, GL_TRIANGLES, cameraViewport);
 //		cameraViewport.end();
 	}
-	this->fboScene.end();
+	fboScene.end();
 
-	this->postEffects.process(this->fboScene.getTexture(), this->fboPost, this->postParams);
+	this->postEffects.process(fboScene.getTexture(), fboPost, this->postParams);
+}
 
+void ofApp::draw(){
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
-	auto h = ofGetWidth() * fboPost.getHeight() / fboPost.getWidth();
-	this->fboPost.draw(0, 0, ofGetWidth(), h);
+	if(parameters.frontBack.front){
+		renderScene(fboSceneFront, fboPostFront, textRendererFront);
+		auto h = ofGetWidth() * fboPostFront.getHeight() / fboPostFront.getWidth();
+		fboPostFront.draw(0, 0, ofGetWidth(), h);
+	}
+	if(parameters.frontBack.back){
+		renderScene(fboPostBack, fboPostBack, textRendererBack);
+		auto h = ofGetWidth() * fboPostBack.getHeight() / fboPostBack.getWidth();
+		fboPostBack.draw(0, 0, ofGetWidth(), h);
+	}
+
 
 	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
 	{
-		this->textureRecorder.save(this->fboPost.getTexture());
+		this->textureRecorderFront.save(this->fboPostFront.getTexture());
+		this->textureRecorderBack.save(this->fboPostBack.getTexture());
 
 		if (this->timeline.getCurrentFrame() == this->timeline.getOutFrame())
 		{

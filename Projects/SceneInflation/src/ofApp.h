@@ -73,6 +73,8 @@ public:
 		double startTime;
 		float startScale = 1;
 		bool negativeSpace = false;
+		bool negativeWire = true;
+		float negativeFill;
 		glm::quat rotation;
 		float alpha = 1;
 	};

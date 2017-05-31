@@ -86,7 +86,7 @@ void ofApp::setup()
 	timeline.setup();
 	timeline.setDefaultFontPath("Fira Code");
 	timeline.setOffset(glm::vec2(0, ofGetHeight() - timeline.getHeight()));
-	timeline.setDurationInSeconds(60*8);
+	timeline.setDurationInSeconds(60*10);
 	timeline.setAutosave(false);
 	timeline.addFlags("subscene labels");
 
@@ -475,19 +475,39 @@ void ofApp::update(){
 								[](const Cluster & cluster){ return cluster.negativeSpace; });
 				auto positive = std::count_if(clusters.begin(), clusters.end(),
 								[](const Cluster & cluster){ return !cluster.negativeSpace; });
-				if(positive>3 && negative < positive/3 && noiseField.noiseSpeed > 10){
-					auto newNegatives = positive/3 - negative;
-					for(auto i=0; i<newNegatives; i++){
-						cout << "adding negative" << endl;
-						clusters.emplace_back();
-						auto & cluster = clusters.back();
-						cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
-						cluster.scale = parameters.rotationRadius * 0.6;
-						cluster.startTime = now;
-						cluster.startScale = cluster.scale;
-						cluster.negativeSpace = true;
-						cluster.alpha = 0;
-						cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+				if(timeline.getCurrentTime()>60+41){
+					if(positive>2 && negative < positive && noiseField.noiseSpeed > 10){
+						auto newNegatives = positive - negative;
+						for(auto i=0; i<newNegatives; i++){
+							cout << "adding negative" << endl;
+							clusters.emplace_back();
+							auto & cluster = clusters.back();
+							cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
+							cluster.scale = parameters.rotationRadius * 0.6;
+							cluster.startTime = now;
+							cluster.startScale = cluster.scale;
+							cluster.negativeSpace = true;
+							cluster.negativeWire = ofRandomuf() < 0.8;
+							cluster.negativeFill = ofRandom(renderer.parameters.fillAlpha, renderer.parameters.fillAlpha * 2);
+							cluster.alpha = 0;
+							cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+						}
+					}
+				}else{
+					if(positive>4 && negative < positive/4 && noiseField.noiseSpeed > 10){
+						auto newNegatives = positive/4 - negative;
+						for(auto i=0; i<newNegatives; i++){
+							cout << "adding negative" << endl;
+							clusters.emplace_back();
+							auto & cluster = clusters.back();
+							cluster.origin = glm::vec3(ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25),ofRandom(-0.25, 0.25));
+							cluster.scale = parameters.rotationRadius * 0.6;
+							cluster.startTime = now;
+							cluster.startScale = cluster.scale;
+							cluster.negativeSpace = true;
+							cluster.alpha = 0;
+							cluster.rotation = glm::angleAxis(ofRandom(glm::two_pi<float>()), glm::normalize(glm::vec3(ofRandom(1),ofRandom(1),ofRandom(1))));
+						}
 					}
 				}
 				auto size = clusters.size();
@@ -612,18 +632,32 @@ void ofApp::update(){
 //				noiseField.scale = scale;
 //			}break;
 
-//			case ParticlesTransition:{
-//				float alphaParticles = (now - t_from_particles) / parameters.equations.transitionParticlesDuration;
-//				alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
-//				transitionParticles.color = ofFloatColor(transitionParticles.color, alphaParticles);
+			case ParticlesTransition:{
+				if(prevState!=state){
+					cout << "entering parent particles" << endl;
+					t_from_particles = now;
+					needsParticlesUpdate = true;
+					auto vertices = this->gpuMarchingCubes.getNumVertices();
+					auto size = vertices * sizeof(glm::vec4) * 2;
+					transitionParticlesPosition.allocate(size, GL_STATIC_DRAW);
+					this->gpuMarchingCubes.getGeometry().getVertexBuffer().copyTo(transitionParticlesPosition,0,0,size);
+					clearParticlesVel.begin();
+					transitionParticlesPosition.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+					clearParticlesVel.dispatchCompute(vertices / 1024 + 1, 1, 1);
+					clearParticlesVel.end();
 
-//				float alphaBlobs = (now - t_from_particles) / parameters.equations.transitionBlobsOutDuration;
-//				alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
-//				//noiseField.speedFactor = alphaBlobs;
-//				renderer.alphaFactor = alphaBlobs;
-//				renderer.alphaFactor = alphaBlobs;
-//				this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
-//			}break;
+					this->transitionParticles.setTotalVertices(vertices);
+				}
+				float alphaParticles = (now - t_from_particles) / parameters.equations.transitionParticlesDuration;
+				alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
+				transitionParticles.color = ofFloatColor(transitionParticles.color, alphaParticles);
+
+				float alphaBlobs = (now - t_from_particles) / parameters.equations.transitionBlobsOutDuration;
+				alphaBlobs = 1.0f - glm::clamp(alphaBlobs, 0.f, 1.f);
+				//noiseField.speedFactor = alphaBlobs;
+				renderer.parameters.alphaFactor = alphaBlobs;
+				this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
+			}break;
 		}
 		noiseField.update(dt);
 		if (renderer.parameters.alphaFactor > 0.001) {
@@ -631,6 +665,7 @@ void ofApp::update(){
 		}
 
 		if (needsParticlesUpdate) {
+
 			this->transitionParticles.setTotalVertices(this->gpuMarchingCubes.getNumVertices());
 			this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
 			needsParticlesUpdate = false;
@@ -694,11 +729,6 @@ void ofApp::draw(){
 			float alphaFactor = renderer.parameters.alphaFactor;
 			bool wire = renderer.parameters.wireframe;
 			float fillAlpha = renderer.parameters.fillAlpha;
-			if(!parameters.colors.negativeWire){
-				renderer.parameters.wireframe = false;
-			}else{
-				//renderer.fillAlpha = 0;
-			}
 
 			noiseField.octaves[0].color = parameters.negativeColors.color1;
 			noiseField.octaves[1].color = parameters.negativeColors.color2;
@@ -728,8 +758,9 @@ void ofApp::draw(){
 						node.setOrientation(cluster.rotation);
 					}
 					const auto & model = node.getLocalTransformMatrix();
-					if(!parameters.colors.negativeWire){
-						renderer.parameters.fillAlpha = ofMap(cluster.alpha, 0, 1, 0, 0.8);
+					if(!cluster.negativeWire){
+						renderer.parameters.wireframe = false;
+						renderer.parameters.fillAlpha = ofMap(cluster.alpha, 0, 0.8, 0, 1);
 					}else{
 						renderer.parameters.alphaFactor = cluster.alpha;
 					}
@@ -748,44 +779,70 @@ void ofApp::draw(){
 			camera.end();
 		};
 
-		fbo.begin();
-		ofClear(0,255);
-		camera.begin();
-		ofDisableAlphaBlending();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ONE);
-		//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
+
 		auto hasNegativeSpace = false;
 		for(auto & cluster: clusters){
 			hasNegativeSpace |= cluster.negativeSpace;
 		}
 
-		auto first = true;
-		float alphaFactor = renderer.parameters.alphaFactor;
-		bool wire = renderer.parameters.wireframe;
-		float fillAlpha = renderer.parameters.fillAlpha;
-		for(auto & cluster: clusters){
-	//		glm::mat4 model = glm::translate(cluster.origin);
-	//		model = glm::sc255ale(model, glm::vec3(cluster.scale));
-			if(!cluster.negativeSpace){
+		fbo.begin();
+		ofClear(0,255);
+		camera.begin();
+		int state = parameters.state;
+		switch (state) {
+			case PreBigBang:
+			case BigBang:
+			case Expansion:
+			case ExpansionTransition:{
+				ofDisableAlphaBlending();
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE, GL_ONE);
+
+				auto first = true;
+				float alphaFactor = renderer.parameters.alphaFactor;
+				bool wire = renderer.parameters.wireframe;
+				float fillAlpha = renderer.parameters.fillAlpha;
+				for(auto & cluster: clusters){
+					if(!cluster.negativeSpace){
+						ofNode node;
+						node.setScale(cluster.scale);
+						node.setPosition(cluster.origin);
+						if(!first){
+							node.setOrientation(cluster.rotation);
+						}
+						renderer.parameters.alphaFactor = cluster.alpha;
+						const auto & model = node.getLocalTransformMatrix();
+						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+
+					}
+					first = false;
+				}
+				renderer.parameters.alphaFactor = alphaFactor;
+				renderer.parameters.wireframe = wire;
+				renderer.parameters.fillAlpha = fillAlpha;
+			}break;
+			case ParticlesTransition:{
+				//renderer.clip = false;
+				auto & cluster = clusters[0];
 				ofNode node;
 				node.setScale(cluster.scale);
 				node.setPosition(cluster.origin);
-				if(!first){
-					//node.lookAt(camera.getPosition(), glm::vec3(0,1,0));
-					node.setOrientation(cluster.rotation);
-				}
-				renderer.parameters.alphaFactor = cluster.alpha;
 				const auto & model = node.getLocalTransformMatrix();
-				//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
-				renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
-
-			}
-			first = false;
+				if (renderer.parameters.alphaFactor > 0.001) {
+					ofDisableAlphaBlending();
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_ONE, GL_ONE);
+					renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+				}
+				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				auto alphaBlobs = renderer.parameters.alphaFactor;
+				renderer.parameters.alphaFactor = 1;
+				renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), GL_TRIANGLES, camera, model);
+				cout << "rendering transition particles " << transitionParticles.getNumVertices() << endl;
+				renderer.parameters.alphaFactor = alphaBlobs;
+				break;
+			}break;
 		}
-		renderer.parameters.alphaFactor = alphaFactor;
-		renderer.parameters.wireframe = wire;
-		renderer.parameters.fillAlpha = fillAlpha;
 
 
 	//	switch (state) {
