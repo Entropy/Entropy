@@ -263,21 +263,23 @@ namespace entropy
 					if (this->parameters.controlScreen.preview.backWarp)
 					{
 						this->canvas[render::Layout::Back]->render(this->previewData[render::Layout::Back].warpBounds);
-						this->previewData[render::Layout::Back].warpOutlines.draw();
+						this->previewData[render::Layout::Back].warpOutline.draw();
 					}
 					if (this->parameters.controlScreen.preview.backCanvas)
 					{
 						this->canvas[render::Layout::Back]->getRenderTexture().draw(this->previewData[render::Layout::Back].canvasBounds);
+						this->previewData[render::Layout::Back].canvasOutline.draw();
 					}
 
 					if (this->parameters.controlScreen.preview.frontWarp)
 					{
 						this->canvas[render::Layout::Front]->render(this->previewData[render::Layout::Front].warpBounds);
-						this->previewData[render::Layout::Front].warpOutlines.draw();
+						this->previewData[render::Layout::Front].warpOutline.draw();
 					}
 					if (this->parameters.controlScreen.preview.frontCanvas)
 					{
 						this->canvas[render::Layout::Front]->getRenderTexture().draw(this->previewData[render::Layout::Front].canvasBounds);
+						this->previewData[render::Layout::Front].canvasOutline.draw();
 					}
 				}
 			}
@@ -490,7 +492,7 @@ namespace entropy
 				tmpBounds.y = this->boundsControl.getMinY() + kImGuiMargin + currY;
 				this->previewData[render::Layout::Back].warpBounds = tmpBounds;
 
-				this->updateOutline(render::Layout::Back);
+				this->updateWarpOutline(render::Layout::Back);
 
 				if (this->parameters.controlScreen.preview.backWarp)
 				{
@@ -508,6 +510,8 @@ namespace entropy
 				tmpBounds.y = this->boundsControl.getMinY() + kImGuiMargin + currY;
 				this->previewData[render::Layout::Back].canvasBounds = tmpBounds;
 
+				this->updateCanvasOutline(render::Layout::Back);
+
 				if (this->parameters.controlScreen.preview.backCanvas)
 				{
 					// Set the Scene cameras to use the Control screen previews as mouse-enabled areas.
@@ -524,7 +528,7 @@ namespace entropy
 				tmpBounds.y = this->boundsControl.getMinY() + kImGuiMargin + currY;
 				this->previewData[render::Layout::Front].warpBounds = tmpBounds;
 
-				this->updateOutline(render::Layout::Front);
+				this->updateWarpOutline(render::Layout::Front);
 
 				if (this->parameters.controlScreen.preview.frontWarp)
 				{
@@ -541,6 +545,8 @@ namespace entropy
 				tmpBounds.x = (this->boundsControl.getWidth() - tmpBounds.getWidth()) * 0.5f;
 				tmpBounds.y = this->boundsControl.getMinY() + kImGuiMargin + currY;
 				this->previewData[render::Layout::Front].canvasBounds = tmpBounds;
+
+				this->updateCanvasOutline(render::Layout::Front);
 
 				if (this->parameters.controlScreen.preview.frontCanvas)
 				{
@@ -560,7 +566,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void App_::updateOutline(render::Layout layout)
+		void App_::updateWarpOutline(render::Layout layout)
 		{
 			const auto & bounds = this->previewData[layout].warpBounds;
 
@@ -605,7 +611,28 @@ namespace entropy
 				}
 			}
 
-			this->previewData[layout].warpOutlines = tmpOutline;
+			this->previewData[layout].warpOutline = tmpOutline;
+		}
+
+		//--------------------------------------------------------------
+		void App_::updateCanvasOutline(render::Layout layout)
+		{
+			const auto & bounds = this->previewData[layout].canvasBounds;
+
+			ofVboMesh tmpOutline;
+			tmpOutline.setMode(OF_PRIMITIVE_LINES);
+
+			// Outline.
+			tmpOutline.addVertex(glm::vec3(bounds.getMinX(), bounds.getMinY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMaxX(), bounds.getMinY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMaxX(), bounds.getMinY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMaxX(), bounds.getMaxY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMaxX(), bounds.getMaxY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMinX(), bounds.getMaxY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMinX(), bounds.getMaxY(), 0));
+			tmpOutline.addVertex(glm::vec3(bounds.getMinX(), bounds.getMinY(), 0));
+
+			this->previewData[layout].canvasOutline = tmpOutline;
 		}
 		
 		//--------------------------------------------------------------
