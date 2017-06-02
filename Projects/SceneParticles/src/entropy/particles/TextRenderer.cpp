@@ -261,7 +261,9 @@ void TextRenderer::renderLines(nm::ParticleSystem & particles,
 					}
 				}
 			}break;
-			case nm::Environment::STANDARD_MODEL:{
+			case nm::Environment::STANDARD_MODEL:
+			break;
+			case nm::Environment::NUCLEOSYNTHESIS:{
 				ofMesh line;
 				line.setMode(OF_PRIMITIVE_LINES);
 				line.getVertices().resize(6);
@@ -321,8 +323,7 @@ void TextRenderer::renderLines(nm::ParticleSystem & particles,
 //						}
 					}
 				}
-			}break;
-			case nm::Environment::NUCLEOSYNTHESIS:
+			}
 			break;
 		}
 		cam.end();
@@ -438,9 +439,8 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 
 
 	// Render actual particles
-	ofShader & billboardShader = (environment.state == nm::Environment::BARYOGENESIS) ? billboardShaderPath : billboardShaderText;
+	ofShader & billboardShader = (environment.state == nm::Environment::BARYOGENESIS || environment.state == nm::Environment::STANDARD_MODEL) ? billboardShaderPath : billboardShaderText;
 	renderer.drawWithDOF(cam, [&](float accumValue, glm::mat4 projection, glm::mat4 modelview){
-		auto i = 0;
 		billboardShader.begin();
 		auto viewport = ofGetCurrentViewport();
 		auto viewportv4 = glm::vec4(viewport.position.xy(), viewport.width, viewport.height);
@@ -468,10 +468,11 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 			std::string text = "";
 			switch(environment.state){
 				case nm::Environment::BARYOGENESIS:
+				case nm::Environment::STANDARD_MODEL:
 					switch(p.getType()){
 						case nm::Particle::ANTI_UP_QUARK:
 						case nm::Particle::ANTI_DOWN_QUARK:
-							text = "a";
+							if(environment.state==nm::Environment::BARYOGENESIS) text = "a";
 						break;
 						case nm::Particle::DOWN_QUARK:
 						case nm::Particle::UP_QUARK:
@@ -484,8 +485,34 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							// wont render here
 						break;
 					}
+					if(text!=""){
+						size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+						particlePaths[fontSize][text].draw();
+					}
 				break;
-				case nm::Environment::STANDARD_MODEL:
+					switch(p.getType()){
+						case nm::Particle::DOWN_QUARK:
+						case nm::Particle::UP_QUARK:{
+							text = "q";
+							size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+							particlePaths[fontSize][text].draw();
+						}
+						break;
+						case nm::Particle::ELECTRON:
+						case nm::Particle::ANTI_UP_QUARK:
+						case nm::Particle::ANTI_DOWN_QUARK:
+						case nm::Particle::POSITRON:
+						case nm::Particle::PROTON:
+						case nm::Particle::NEUTRON:
+							// wont render here
+						break;
+					}
+					if(text!=""){
+						size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+						particlePaths[fontSize][text].draw();
+					}
+				break;
+				case nm::Environment::NUCLEOSYNTHESIS:
 //					if(pctDistance > fulltextDistance && p.age > 1){
 //						switch(p.getType()){
 //							case nm::Particle::ELECTRON:
@@ -534,40 +561,67 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 							case nm::Particle::PROTON:
 								text = "proton";
 							break;
-							break;
+						}
+						if(text!=""){
+							size_t fontSize = size_t(round((particleTexts.size() - 2) * pctDistance));
+							if(text == "neutron" || text == "proton"){
+								fontSize += 1;
+							}
+							billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+							particleTexts[fontSize][text].draw();
 						}
 //					}
 				break;
-				case nm::Environment::NUCLEOSYNTHESIS:
-				break;
 			}
-			if(text!=""){
-				if(environment.state==nm::Environment::BARYOGENESIS) {
-					size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
-					particlePaths[fontSize][text].draw();
-				}else{
-					size_t fontSize = size_t(round((particleTexts.size() - 2) * pctDistance));
-					if(text == "neutron" || text == "proton"){
-						fontSize += 1;
+
+		}
+		billboardShader.end();
+
+		if(environment.state == nm::Environment::STANDARD_MODEL){
+			billboardShaderText.begin();
+			auto viewport = ofGetCurrentViewport();
+			auto viewportv4 = glm::vec4(viewport.position.xy(), viewport.width, viewport.height);
+			billboardShaderText.setUniform4f("viewport", viewportv4);
+			billboardShaderText.setUniformMatrix4f("projectionMatrix", projection);
+			billboardShaderText.setUniformMatrix4f("modelViewMatrix", modelview);
+			billboardShaderText.setUniformMatrix4f("modelViewProjectionMatrix", projection * modelview);
+			string text = "e";
+			for(auto & p: particles.getParticles()){
+				if(!p.alive) continue;
+				if(p.getType()!=nm::Particle::ELECTRON) continue;
+				auto distance = glm::distance2(cam.getPosition(), p.pos * scale);
+				auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
+				auto pctColor = (1-pctDistance) * ambient;
+				auto light = std::accumulate(photons.begin(), std::min(photons.begin() + 16, photons.end()), 0.f, [&](float acc, nm::Photon & ph){
+					if(ph.alive){
+						auto strength = lightStrenght / glm::distance2(p.pos * scale, ph.pos * scale) * (1 - ofClamp(ph.age / 3.f / environment.systemSpeed, 0, 1));
+						return acc + strength;
+					}else{
+						return acc;
 					}
-					billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
-					particleTexts[fontSize][text].draw();
-				}
+				});
+				pctColor += light;
+				billboardShaderText.setUniform1f("pctColor", pctColor);
+				billboardShaderText.setUniform1f("accumValue", accumValue);
+				billboardShaderText.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
+
+				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+				billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
+				particleTexts[fontSize][text].draw();
 			}
-			//font.getStringMesh(text, 0, 0).draw();
-			//billboard(font, text, cam.getProjectionMatrix(), modelview, p);
+			billboardShaderText.end();
 		}
 
-
 		// Phtons
+		billboardShaderPath.begin();
 		for(auto & p: photons){
 			if(!p.alive) continue;
 			auto distance = glm::distance2(cam.getPosition(), p.pos * scale);
 			auto pctDistance = ofClamp(distance / maxScreenDistance, 0, 1);
 			auto pctColor = (1-pctDistance) * photonsStrenght * (1 - ofClamp(p.age/nm::Photons::LIVE()/environment.systemSpeed, 0, 1));
-			billboardShader.setUniform1f("pctColor", pctColor);
-			billboardShader.setUniform1f("accumValue", accumValue);
-			billboardShader.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
+			billboardShaderPath.setUniform1f("pctColor", pctColor);
+			billboardShaderPath.setUniform1f("accumValue", accumValue);
+			billboardShaderPath.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
 			auto concentrics = int(ofMap(p.age / environment.systemSpeed, 0, 0.5, 0, 3)) % 3 + 1;
 			int fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
 			fontSize = ofClamp(fontSize-2, 2, particlePaths.size()-1);
@@ -577,6 +631,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 				fontSize %= particlePaths.size();
 			}
 		}
-		billboardShader.end();
+		billboardShaderPath.end();
 	});
 }

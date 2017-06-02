@@ -873,14 +873,14 @@ void ofApp::renderScene(ofFbo & fboScene, ofFbo & fboPost, TextRenderer & textRe
 void ofApp::draw(){
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
+	auto h = ofGetWidth() * fboPostFront.getHeight() / fboPostFront.getWidth();
+	easyCam.setControlArea({0, 0, float(ofGetWidth()), h});
 	if(parameters.frontBack.front){
 		renderScene(fboSceneFront, fboPostFront, textRendererFront);
-		auto h = ofGetWidth() * fboPostFront.getHeight() / fboPostFront.getWidth();
 		fboPostFront.draw(0, 0, ofGetWidth(), h);
 	}
 	if(parameters.frontBack.back){
 		renderScene(fboPostBack, fboPostBack, textRendererBack);
-		auto h = ofGetWidth() * fboPostBack.getHeight() / fboPostBack.getWidth();
 		fboPostBack.draw(0, 0, ofGetWidth(), h);
 	}
 
