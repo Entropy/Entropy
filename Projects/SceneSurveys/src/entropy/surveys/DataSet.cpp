@@ -67,6 +67,7 @@ namespace entropy
 			}
 
 			this->avgMass /= this->masses.size();
+			cout << "Radius range is " << this->minRadius << " to " << this->maxRadius << endl;
 			cout << "Mass range is " << this->minMass << " to " << this->maxMass << " with avg = " << this->avgMass << endl;
 
 			// Upload everything to the vbo.

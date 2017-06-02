@@ -26,7 +26,7 @@ void ofApp::setup()
 	this->sphereShader.setup(this->sphereSettings);
 
 	// Build the textures.
-	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/sprites.png"), this->spriteTexture);
+	entropy::LoadTextureImage(entropy::GetSceneAssetPath("Surveys", "images/sprites-brighter.png"), this->spriteTexture);
 	entropy::LoadTextureImage("textures/ring.png", this->shellTexture);
 
 	// Load the model.
@@ -136,7 +136,10 @@ void ofApp::setup()
 				return this->savePreset(name);
 			}
 		}
-		return this->savePreset(this->currPreset);
+		else
+		{
+			return this->savePreset(this->currPreset);
+		}
 	}));
 	this->eventListeners.push_back(this->gui.loadPressedE.newListener([this](void)
 	{
@@ -148,7 +151,10 @@ void ofApp::setup()
 				return this->loadPreset(result.fileName);
 			}
 		}
-		return this->loadPreset(this->currPreset);
+		else
+		{
+			return this->loadPreset(this->currPreset);
+		}
 	}));
 
 	this->timeline.setName("timeline");
