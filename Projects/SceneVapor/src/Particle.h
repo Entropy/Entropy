@@ -8,7 +8,6 @@ struct Particle{
 	glm::vec4 pos;
 	float size;
 	float density;
-	glm::vec2 padding;
 
 	Particle(){}
 
@@ -32,7 +31,6 @@ struct HalfParticle{
 	glm::tvec4<half_float::half> pos;
 	half_float::half size;
 	half_float::half density;
-	glm::tvec2<half_float::half> padding;
 
 	HalfParticle(){}
 

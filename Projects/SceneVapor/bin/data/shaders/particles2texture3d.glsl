@@ -57,8 +57,10 @@ void main()
 	int idx = int(idx_offset) + int(gl_GlobalInvocationID.x);
 	if(idx>=int(next)) return;
 
-	vec4 particlepos4 = texelFetch(particles, idx*2);
-	vec4 size_density = texelFetch(particles, idx*2+1);
+	vec2 particleposxy = texelFetch(particles, idx*3).rg;
+	vec2 particleposzw = texelFetch(particles, idx*3+1).rg;
+	vec4 particlepos4 = vec4(particleposxy, particleposzw);
+	vec2 size_density = texelFetch(particles, idx*3+2).rg;
 	float particle_size = size_density.x;
 	float particle_density = size_density.y;
 

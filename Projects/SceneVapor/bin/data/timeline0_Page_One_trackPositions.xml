@@ -7,49 +7,55 @@
     </element>
     <element name="vapor/Sequence_Ramses/density_max">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>1084.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/Sequence_Ramses/volume_density">
         <x>0.000000000</x>
-        <y>1084.000000000</y>
+        <y>1148.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_auto_magnification">
         <x>0.000000000</x>
-        <y>1148.000000000</y>
+        <y>1212.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_fov">
         <x>0.000000000</x>
-        <y>1212.000000000</y>
+        <y>1276.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_alpha">
         <x>0.000000000</x>
-        <y>1276.000000000</y>
+        <y>1340.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/octree_alpha_filter">
+        <x>0.000000000</x>
+        <y>1404.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_anim_duration">
         <x>0.000000000</x>
-        <y>1340.000000000</y>
+        <y>1468.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>1532.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree_animation">
         <x>0.000000000</x>
-        <y>1404.000000000</y>
+        <y>1596.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

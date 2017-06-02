@@ -74,13 +74,12 @@ namespace ent
 #if USE_PARTICLES_COMPUTE_SHADER
 		frameSettings.particles2texture.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/particles2texture3d.glsl");
 		frameSettings.particles2texture.linkProgram();
-		auto maxNumParticles = 6000000;
 		int maxBufferTextureSize;
 		glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &maxBufferTextureSize);
-#ifdef USE_HALF_PARTICLE
-		auto maxNumParticlesBytes = maxNumParticles*sizeof(HalfParticle);
+#if USE_HALF_PARTICLE
+		auto maxNumParticlesBytes = MAX_NUM_PARTICLES*sizeof(HalfParticle);
 #else
-		auto maxNumParticlesBytes = maxNumParticles*sizeof(Particle);
+		auto maxNumParticlesBytes = MAX_NUM_PARTICLES*sizeof(Particle);
 #endif
 		if(maxNumParticlesBytes>maxBufferTextureSize){
 			cout << "voxels buffer size " << maxNumParticlesBytes/1024/1024 << "MB > max buffer texture size " << maxBufferTextureSize/1024./1024. << "MB" << endl;
@@ -88,9 +87,9 @@ namespace ent
 		}
 		frameSettings.particlesBuffer.allocate(maxNumParticlesBytes, GL_STATIC_DRAW);
 #if USE_HALF_PARTICLE
-		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA16F);
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RG16F);
 #else
-		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RGBA32F);
+		frameSettings.particlesTexture.allocateAsBufferTexture(frameSettings.particlesBuffer, GL_RG32F);
 #endif
 #endif
 
@@ -122,12 +121,20 @@ namespace ent
 		glTexParameteri(frameSettings.volumeTexture.texData.textureTarget, GL_TEXTURE_SWIZZLE_A, GL_GREEN);
 		glBindTexture(frameSettings.volumeTexture.texData.textureTarget,0);
 
-		auto reload = [this](float&){
-			loadFrame(m_currentIndex);
-		};
 
-		listeners.push_back(m_densityMin.newListener(reload));
-		listeners.push_back(m_densityMax.newListener(reload));
+		listeners.push_back(m_densityMin.newListener([this](float & density){
+			if(density != prevMinDensity){
+				loadFrame(m_currentIndex);
+			}
+			prevMinDensity = density;
+		}));
+		listeners.push_back(m_densityMax.newListener([this](float & density){
+			if(density != prevMaxDensity){
+				cout << density << " " << prevMaxDensity << endl;
+				loadFrame(m_currentIndex);
+			}
+			prevMaxDensity = density;
+		}));
 
 		m_bReady = true;
 	}
@@ -317,6 +324,8 @@ namespace ent
 		m_volumetricsShader.end();
 		cout << "min density " << m_densityMin * m_densityRange.getSpan() <<
 		        " max density " << m_densityMax * m_densityRange.getSpan() << endl;
+		cout << "min coord " << m_coordRange.getMin() <<
+				" max coord " << m_coordRange.getMax() << endl;
 	}
 
 	//--------------------------------------------------------------

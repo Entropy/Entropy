@@ -28,7 +28,7 @@ namespace ent
 	}
 
 	void readToMemory(const std::string & path, size_t size, char * buffer){
-    #if defined(TARGET_LINUX) && FAST_READ
+	#if defined(TARGET_LINUX) && FAST_READ
 		auto fd = open (ofToDataPath(path).c_str(), O_RDONLY, S_IRUSR);
 		char * data = (char*)mmap (nullptr, size, PROT_READ, MAP_PRIVATE, fd, 0);
 		if(data == (const char *)-1){
@@ -38,10 +38,10 @@ namespace ent
 		memcpy(buffer, data, size);
 		munmap(data, size);
 		close(fd);
-    #else
+	#else
 		ofFile file(path, ofFile::ReadOnly, true);
 		file.read(buffer, size);
-    #endif
+	#endif
 	}
 
 	void readToBuffer(const std::string & path, size_t size, ofBufferObject & buffer){
@@ -55,7 +55,7 @@ namespace ent
 	{
 		clear();
 	}
-	
+
 	//--------------------------------------------------------------
 	SnapshotRamses::~SnapshotRamses()
 	{
@@ -90,50 +90,57 @@ namespace ent
 		{
 			m_numCells = posX.size();
 
-			// Set the ranges for all data.
-			for (size_t i = 0; i < posX.size(); ++i)
-			{
-				m_densityRange.add(density[i]);
-				m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
-				m_sizeRange.add(cellSize[i]);
-			}
+			if(firstFrame){
+				m_densityRange.clear();
+				m_coordRange.clear();
+				m_sizeRange.clear();
 
-			auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.001f;
-			ofxRange3f range;
-			range.clear();
-			range = std::accumulate(particles.begin(), particles.end(), range, [&](ofxRange3f range, const Particle & p){
-				if(p.density>threshold){
-			        range.add(p.pos.xyz());
+				// Set the ranges for all data.
+				for (size_t i = 0; i < posX.size(); ++i)
+				{
+					m_densityRange.add(density[i]);
+					m_coordRange.add(glm::vec3(posX[i], posY[i], posZ[i]));
+					m_sizeRange.add(cellSize[i]);
 				}
-			    return range;
-		    });
 
-			cout << "num particles after filter: " << particles.size() << endl;
-			auto min = m_coordRange.getMin();
-			auto max = m_coordRange.getMax();
-			cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
-			cout << "size range " << m_sizeRange.getMin() << " - " << m_sizeRange.getMax() << endl;
+				auto threshold = minDensity * m_densityRange.getMin() + (maxDensity * m_densityRange.getMax() - minDensity * m_densityRange.getMin()) * 0.001f;
+				ofxRange3f range;
+				range.clear();
+				range = std::accumulate(particles.begin(), particles.end(), range, [&](ofxRange3f range, const Particle & p){
+					if(p.density>threshold){
+						range.add(p.pos.xyz());
+					}
+					return range;
+				});
 
-			// Expand coord range taking cell size into account.
-			m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
-			m_coordRange.add(m_coordRange.getMax() + m_sizeRange.getMax());
-			range.add(range.getMin() - m_sizeRange.getMax());
-			range.add(range.getMax() + m_sizeRange.getMax());
+				cout << "num particles after filter: " << particles.size() << endl;
+				auto min = m_coordRange.getMin();
+				auto max = m_coordRange.getMax();
+				cout << min.x << ", " << min.y << ", " << min.z << " - " << max.x << ", " << max.y << ", " << max.z << endl;
+				cout << "size range " << m_sizeRange.getMin() << " - " << m_sizeRange.getMax() << endl;
 
-			// Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
-			glm::vec3 coordSpan = m_coordRange.getSpan();
-			float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
-			glm::vec3 boxCoordSpan = range.getSpan();
-			float maxBoxSpan = std::max(boxCoordSpan.x, std::max(boxCoordSpan.y, boxCoordSpan.z));
-			float minBoxSpan = std::min(boxCoordSpan.x, std::min(boxCoordSpan.y, boxCoordSpan.z));
-			glm::vec3 spanOffset(maxSpan * 0.5);
-			glm::vec3 coordMid = m_coordRange.getCenter();
-			m_coordRange.add(coordMid - spanOffset);
-			m_coordRange.add(coordMid + spanOffset);
-			//range.add(range.getCenter() - maxBoxSpan);
-			//range.add(range.getCenter() + maxBoxSpan);
+				// Expand coord range taking cell size into account.
+				m_coordRange.add(m_coordRange.getMin() - m_sizeRange.getMax());
+				m_coordRange.add(m_coordRange.getMax() + m_sizeRange.getMax());
+				range.add(range.getMin() - m_sizeRange.getMax());
+				range.add(range.getMax() + m_sizeRange.getMax());
 
-			m_boxRange = BoundingBox(m_coordRange.getCenter(), glm::vec3(minBoxSpan));
+				// Find the dimension with the max span, and set all spans to be the same (since we're rendering a cube).
+				glm::vec3 coordSpan = m_coordRange.getSpan();
+				float maxSpan = MAX(coordSpan.x, MAX(coordSpan.y, coordSpan.z));
+				glm::vec3 boxCoordSpan = range.getSpan();
+				float maxBoxSpan = std::max(boxCoordSpan.x, std::max(boxCoordSpan.y, boxCoordSpan.z));
+				float minBoxSpan = std::min(boxCoordSpan.x, std::min(boxCoordSpan.y, boxCoordSpan.z));
+				glm::vec3 spanOffset(maxSpan * 0.5);
+				glm::vec3 coordMid = m_coordRange.getCenter();
+				m_coordRange.add(coordMid - spanOffset);
+				m_coordRange.add(coordMid + spanOffset);
+				//range.add(range.getCenter() - maxBoxSpan);
+				//range.add(range.getCenter() + maxBoxSpan);
+
+				m_boxRange = BoundingBox(m_coordRange.getCenter(), glm::vec3(minBoxSpan));
+			}
+			firstFrame = false;
 		}
 
 		//------------------------------------
@@ -160,30 +167,30 @@ namespace ent
 		//------------------------------------
 		// Write data to files
 		{
-            #if USE_RAW
+			#if USE_RAW
 			ofFile texture3dRaw(rawFileName, ofFile::WriteOnly, true);
 			texture3dRaw.write((const char*)this->vaporPixels.data().data(), this->vaporPixels.data().size() * sizeof(float));
-            #endif
+			#endif
 
 			ofFile texture3dMeta(metaFileName, ofFile::WriteOnly, true);
 			texture3dMeta << m_densityRange.getMin() << " " << m_densityRange.getMax() << " " <<
-			                m_coordRange.getMin() << " " << m_coordRange.getMax() << " " <<
-			                m_sizeRange.getMin() << " " << m_sizeRange.getMax() << " " <<
-			                m_boxRange.min << " " << m_boxRange.max << " " <<
-			                vaporPixels.getParticlesInBox().size() << " " <<
-			                vaporPixels.getGroupIndices().size();
+							m_coordRange.getMin() << " " << m_coordRange.getMax() << " " <<
+							m_sizeRange.getMin() << " " << m_sizeRange.getMax() << " " <<
+							m_boxRange.min << " " << m_boxRange.max << " " <<
+							vaporPixels.getParticlesInBox().size() << " " <<
+							vaporPixels.getGroupIndices().size();
 
 
-            #if USE_PARTICLES_COMPUTE_SHADER
+			#if USE_PARTICLES_COMPUTE_SHADER
 			ofFile particlesFile(particlesFileName, ofFile::WriteOnly, true);
-            #if USE_HALF_PARTICLE
-			    particlesFile.write((const char*)vaporPixels.getHalfParticlesInBox().data(), vaporPixels.getHalfParticlesInBox().size() * sizeof(HalfParticle));
-            #else
-			    particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
-            #endif
+			#if USE_HALF_PARTICLE
+				particlesFile.write((const char*)vaporPixels.getHalfParticlesInBox().data(), vaporPixels.getHalfParticlesInBox().size() * sizeof(HalfParticle));
+			#else
+				particlesFile.write((const char*)vaporPixels.getParticlesInBox().data(), vaporPixels.getParticlesInBox().size() * sizeof(Particle));
+			#endif
 			ofFile particlesGroupsFile(particlesGroupsFileName, ofFile::WriteOnly, true);
 			particlesGroupsFile.write((const char*)vaporPixels.getGroupIndices().data(), sizeof(size_t) * vaporPixels.getGroupIndices().size());
-            #endif
+			#endif
 		}
 
 
@@ -192,10 +199,10 @@ namespace ent
 		// Find out voxels that contribute more
 		// to the final texture and remove the rest
 		// as a form of lossy compression
-        #if USE_VOXELS_COMPUTE_SHADER
+		#if USE_VOXELS_COMPUTE_SHADER
 
 
-        #if USE_VOXELS_DCT_COMPRESSION
+		#if USE_VOXELS_DCT_COMPRESSION
 
 
 		ofFloatPixels pixels;
@@ -216,7 +223,7 @@ namespace ent
 
 
 
-        #else
+		#else
 
 
 
@@ -367,22 +374,23 @@ namespace ent
 				cout << "No voxels are above the compression threshold" << endl;
 			}
 		}
-        #endif
-        #endif
+		#endif
+		#endif
 	}
 
 	//--------------------------------------------------------------
 	void SnapshotRamses::setup(Settings & settings)
 	{
-		clear();
 		const float * data = nullptr;
 		void * filedata = nullptr;
 		size_t filedatalen = 0;
+		metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + "_meta.raw";
 		rawFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + ".raw";
 		particlesFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) +".particles";
-		metaFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + "_meta.raw";
 		voxelsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + "_voxels.raw";
 		particlesGroupsFileName = ofFilePath::removeTrailingSlash(settings.folder) + "/" + ofToString(settings.frameIndex) + ".groups";
+
+		clear();
 
 
 		cout << "metadata " << metaFileName << endl;
@@ -424,59 +432,33 @@ namespace ent
 				sftpDownload(settings.urlFolder + "/" + getDensityHDF5Path(settings.frameIndex), settings.folder + "/hdf5/" + getDensityHDF5Path(settings.frameIndex));
 			}
 		}
-		
-		if(!metadataPrecalculated){
-			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
-		}
 
-#if USE_PARTICLES_COMPUTE_SHADER
-		if(!particlesPrecalculated){
-			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
-		}
-#endif
-
-#if USE_VOXELS_COMPUTE_SHADER
-		if(!voxelsPrecalculated){
-			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
-		}
-#endif
-
-#if USE_RAW
-		if(!rawPrecalculated){
-			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
-		}
-#endif
-
-
-
-		// Load data from precalculated files
-		{
-			// Load metadata
-			{
-				auto then = ofGetElapsedTimeMicros();
-				ofFile texture3dMeta(metaFileName, ofFile::ReadOnly, true);
-				float min_density, max_density, min_size, max_size;
-				glm::vec3 min_coords, max_coords, min_box, max_box;
-				size_t numGroups;
-				texture3dMeta >> min_density;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_density;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_coords;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_coords;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_size;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_size;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> min_box;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> max_box;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> m_numCells;
-				texture3dMeta.ignore(1);
-				texture3dMeta >> numGroups;
+		if(metadataPrecalculated){
+			auto then = ofGetElapsedTimeMicros();
+			ofFile texture3dMeta(metaFileName, ofFile::ReadOnly, true);
+			glm::vec3 min_coords, max_coords, min_box, max_box;
+			float min_density, max_density, min_size, max_size;
+			size_t numGroups;
+			texture3dMeta >> min_density;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_density;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_coords;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_coords;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_size;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_size;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_box;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_box;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> m_numCells;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> numGroups;
+			if(firstFrame){
 				m_densityRange.add(min_density);
 				m_densityRange.add(max_density);
 				m_coordRange.add(min_coords);
@@ -484,10 +466,83 @@ namespace ent
 				m_sizeRange.add(min_size);
 				m_sizeRange.add(max_size);
 				m_boxRange = BoundingBox::fromMinMax(min_box, max_box);
-				particleGroups.resize(numGroups);
-				auto now = ofGetElapsedTimeMicros();
-				cout << "time to load metadata " << float(now - then)/1000 << "ms." << endl;
 			}
+			particleGroups.resize(numGroups);
+			auto now = ofGetElapsedTimeMicros();
+			cout << "time to load metadata " << float(now - then)/1000 << "ms." << endl;
+
+//			if(min_density != settings.minDensity || max_density != settings.maxDensity){
+//				ofFile(rawFileName, ofFile::Reference).remove();
+//				ofFile(particlesFileName, ofFile::Reference).remove();
+//				ofFile(metaFileName, ofFile::Reference).remove();
+//				ofFile(voxelsFileName, ofFile::Reference).remove();
+//				ofFile(particlesGroupsFileName, ofFile::Reference).remove();
+
+//				metadataPrecalculated = false;
+//				particlesPrecalculated = false;
+//				voxelsPrecalculated = false;
+//				rawPrecalculated = false;
+//			}
+		}
+
+		auto needsPrecalculate = !metadataPrecalculated;
+#if USE_PARTICLES_COMPUTE_SHADER
+		needsPrecalculate |= !particlesPrecalculated;
+#endif
+#if USE_VOXELS_COMPUTE_SHADER
+		needsPrecalculate |= !voxelsPrecalculated;
+#endif
+#if USE_RAW
+		needsPrecalculate |= !rawPrecalculated;
+#endif
+#if HDF5_DIRECT
+		needsPrecalculate = true;
+#endif
+
+
+		if(needsPrecalculate){
+			precalculate(settings.folder, settings.frameIndex, settings.minDensity, settings.maxDensity, settings.worldsize);
+			auto then = ofGetElapsedTimeMicros();
+			ofFile texture3dMeta(metaFileName, ofFile::ReadOnly, true);
+			glm::vec3 min_coords, max_coords, min_box, max_box;
+			float min_density, max_density, min_size, max_size;
+			size_t numGroups;
+			texture3dMeta >> min_density;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_density;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_coords;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_coords;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_size;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_size;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> min_box;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> max_box;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> m_numCells;
+			texture3dMeta.ignore(1);
+			texture3dMeta >> numGroups;
+			if(firstFrame){
+				m_densityRange.add(min_density);
+				m_densityRange.add(max_density);
+				m_coordRange.add(min_coords);
+				m_coordRange.add(max_coords);
+				m_sizeRange.add(min_size);
+				m_sizeRange.add(max_size);
+				m_boxRange = BoundingBox::fromMinMax(min_box, max_box);
+			}
+			particleGroups.resize(numGroups);
+			auto now = ofGetElapsedTimeMicros();
+			cout << "time to load metadata " << float(now - then)/1000 << "ms." << endl;
+		}
+
+
+		// Load data from precalculated files
+		{
 
 #if USE_VOXELS_COMPUTE_SHADER
 			// Load voxels
@@ -499,37 +554,41 @@ namespace ent
 				readToBuffer(voxelsFileName, voxelsSize, settings.voxelsBuffer);
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load voxels file " << float(now - then)/1000 << "ms. " <<
-				        "for " << voxelsSize << " bytes" << endl;
+						"for " << voxelsSize << " bytes" << endl;
 			}
 #elif USE_PARTICLES_COMPUTE_SHADER || USE_VBO
 			// Load particles
 			{
 				auto then = ofGetElapsedTimeMicros();
-                #if USE_HALF_PARTICLE
-				    readToBuffer(particlesFileName, m_numCells*sizeof(HalfParticle), settings.particlesBuffer);
-                #else
-				    readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
-                #endif
+				#if USE_HALF_PARTICLE
+					readToBuffer(particlesFileName, m_numCells*sizeof(HalfParticle), settings.particlesBuffer);
+				#else
+					readToBuffer(particlesFileName, m_numCells*sizeof(Particle), settings.particlesBuffer);
+				#endif
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load particles file " << float(now - then)/1000 << "ms. " <<
-				        "for " << m_numCells << " particles" << endl;
+						"for " << m_numCells << " particles" << endl;
 			}
-    #if USE_PARTICLES_COMPUTE_SHADER
+	#if USE_PARTICLES_COMPUTE_SHADER
 			// Load particle groups
 			{
 				auto then = ofGetElapsedTimeMicros();
 				readToMemory(particlesGroupsFileName, particleGroups.size() * sizeof(size_t), (char*)particleGroups.data());
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load groups file " << float(now - then)/1000 << "ms. " <<
-				        "for " << particleGroups.size() << " groups" << endl;
+						"for " << particleGroups.size() << " groups" << endl;
 			}
-    #endif
+	#endif
+#elif HDF5_DIRECT
+			{
+				data = vaporPixels.data().data();
+			}
 #else
 			// Load raw texture
 			{
 				auto then = ofGetElapsedTimeMicros();
-                #if defined(TARGET_LINUX) && FAST_READ
-				    auto fd = open (ofToDataPath(rawFileName).c_str(), O_RDONLY, S_IRUSR);
+				#if defined(TARGET_LINUX) && FAST_READ
+					auto fd = open (ofToDataPath(rawFileName).c_str(), O_RDONLY, S_IRUSR);
 					filedatalen = ofFile(rawFileName, ofFile::Reference).getSize();
 					filedata = mmap (nullptr, filedatalen, PROT_READ, MAP_PRIVATE, fd, 0);
 					if(filedata == (const void *)-1){
@@ -538,11 +597,11 @@ namespace ent
 					}
 					//filedata += 16*sizeof(float) + 8;
 					data = (const float*)filedata;
-                #else
-				    ofFile texture3dRaw(rawFileName, ofFile::ReadOnly, true);
+				#else
+					ofFile texture3dRaw(rawFileName, ofFile::ReadOnly, true);
 					this->vaporPixelsBuffer = ofBuffer(texture3dRaw, settings.worldsize * settings.worldsize * settings.worldsize * sizeof(float));
 					data = (float*)this->vaporPixelsBuffer.getData();
-                #endif
+				#endif
 				auto now = ofGetElapsedTimeMicros();
 				cout << "time to load raw file " << float(now - then)/1000 << "ms." << endl;
 			}
@@ -551,8 +610,8 @@ namespace ent
 
 		auto then = ofGetElapsedTimeMicros();
 
-        #if USE_VOXELS_COMPUTE_SHADER
-		    size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
+		#if USE_VOXELS_COMPUTE_SHADER
+			size_t numInstances = voxelsSize / (sizeof(uint32_t) * 2);
 			cout << "dispatching compute shader with " << numInstances << " instances" << endl;
 			settings.voxels2texture.begin();
 			settings.voxels2texture.setUniformTexture("voxels",settings.voxelsTexture,0);
@@ -563,8 +622,8 @@ namespace ent
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
 			glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
-        #elif USE_PARTICLES_COMPUTE_SHADER
-		    glm::vec3 coordSpan = m_boxRange.getSpan();
+		#elif USE_PARTICLES_COMPUTE_SHADER
+			glm::vec3 coordSpan = m_boxRange.getSpan();
 			auto normalizeFactor = std::max(std::max(coordSpan.x, coordSpan.y), coordSpan.z);
 			auto scale = settings.worldsize / normalizeFactor;
 			auto offset = -m_boxRange.min;
@@ -591,37 +650,37 @@ namespace ent
 			}
 			settings.particles2texture.end();
 			glBindImageTexture(0,0,0,0,0,GL_READ_WRITE,GL_R16F);
-        #else
+		#else
 
-            #if READ_TO_BUFFER
-		        ofBufferObject textureBuffer;
+			#if READ_TO_BUFFER
+				ofBufferObject textureBuffer;
 				textureBuffer.allocate(settings.worldsize*settings.worldsize*settings.worldsize*4, GL_STATIC_DRAW);
 				char * gpudata = (char *)textureBuffer.map(GL_WRITE_ONLY);
 				memcpy(gpudata, data, settings.worldsize*settings.worldsize*settings.worldsize*4);
 				textureBuffer.unmap();
 				settings.volumeTexture.loadData(textureBuffer, GL_RED);
-            #else
+			#else
 				settings.volumeTexture.loadData(data, settings.worldsize, settings.worldsize, settings.worldsize, 0, 0, 0, GL_RED);
-            #endif
-        #endif
+			#endif
+		#endif
 
-        #if USE_TEXTURE_3D_MIPMAPS
+		#if USE_TEXTURE_3D_MIPMAPS
 			settings.volumeTexture.generateMipmaps();
 			settings.volumeTexture.setMinMagFilters(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-        #else
+		#else
 			settings.volumeTexture.setMinMagFilters(GL_LINEAR, GL_LINEAR);
-        #endif
+		#endif
 
 		auto now = ofGetElapsedTimeMicros();
 		cout << "time to load texture and generate mipmaps " << float(now - then)/1000 << "ms." << endl;
 
 		cout << "loaded " << m_numCells << " particles" << endl;
 
-        #if defined(TARGET_LINUX) && FAST_READ && USE_RAW
-		    if(filedata!=nullptr){
+		#if defined(TARGET_LINUX) && FAST_READ && USE_RAW
+			if(filedata!=nullptr){
 				munmap(filedata, filedatalen);
 			}
-        #endif
+		#endif
 
 		/*GLint num_textures;
 		glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &num_textures);
@@ -630,38 +689,42 @@ namespace ent
 		for(auto format: formats){
 			cout << format << endl;
 		}*/
-        #if USE_VBO
+		#if USE_VBO
 			m_vboMesh.setAttributeBuffer(POSITION_ATTRIBUTE, settings.particlesBuffer, 4, sizeof(Particle), 0);
 			m_vboMesh.setAttributeBuffer(SIZE_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*4);
 			m_vboMesh.setAttributeBuffer(DENSITY_ATTRIBUTE, settings.particlesBuffer, 1, sizeof(Particle), sizeof(float)*5);
-        #endif
+		#endif
 
 
 #if USE_PARTICLES_COMPUTE_SHADER
-		vector<Particle> particles;
-		auto pptr = settings.particlesBuffer.map<Particle>(GL_READ_ONLY);
-		particles.assign(pptr, pptr + m_numCells);
-		settings.particlesBuffer.unmap();
+		{
+			vector<Particle> particles;
+			auto pptr = settings.particlesBuffer.map<Particle>(GL_READ_ONLY);
+			particles.assign(pptr, pptr + m_numCells);
+			settings.particlesBuffer.unmap();
 
 
-		then = ofGetElapsedTimeMicros();
-		cout << "calculating octree with " << log2(settings.worldsize*2) << " levels" << endl;
-		this->vaporOctree.setup(particles);
-		this->vaporOctree.compute(log2(settings.worldsize*2), settings.minDensity * m_densityRange.getMin(), settings.maxDensity * m_densityRange.getMin());//settings.maxDensity * m_densityRange.getMax());
-		now = ofGetElapsedTimeMicros();
-		cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
-		cout << "octree maxlevel: " << vaporOctree.getMaxLevel() << endl;
+			auto then = ofGetElapsedTimeMicros();
+			cout << "calculating octree with " << log2(settings.worldsize*2) << " levels" << endl;
+			this->vaporOctree.setup(particles);
+			this->vaporOctree.compute(log2(settings.worldsize*2), settings.minDensity * m_densityRange.getMin(), settings.maxDensity * m_densityRange.getMin());//settings.maxDensity * m_densityRange.getMax());
+			auto now = ofGetElapsedTimeMicros();
+			cout << "time to compute octree " << float(now - then)/1000 << "ms." << endl;
+			cout << "octree maxlevel: " << vaporOctree.getMaxLevel() << endl;
+		}
 #endif
 
 		m_bLoaded = true;
 	}
-	
+
 	//--------------------------------------------------------------
 	void SnapshotRamses::clear()
 	{
-		m_coordRange.clear();
-		m_sizeRange.clear();
-		m_densityRange.clear();
+		if(firstFrame){
+			m_coordRange.clear();
+			m_sizeRange.clear();
+			m_densityRange.clear();
+		}
 
 		m_numCells = 0;
 
@@ -675,7 +738,7 @@ namespace ent
 		h5File.open(file, true);
 		ofLogVerbose() << "File '" << file << "' has " << h5File.getNumDataSets() << " datasets";
 
-		for (int i = 0; i < h5File.getNumDataSets(); ++i) 
+		for (int i = 0; i < h5File.getNumDataSets(); ++i)
 		{
 			ofLogVerbose("SnapshotRamses::load") << "  DataSet " << i << ": " << h5File.getDataSetName(i);
 		}
@@ -713,7 +776,7 @@ namespace ent
 
 	//--------------------------------------------------------------
 	ofMesh SnapshotRamses::getOctreeMesh(float minDensity, float maxDensity) const{
-		return vaporOctree.getMesh(minDensity, maxDensity, VaporOctree::SizeLargerFirst);
+		return vaporOctree.getMesh(minDensity, maxDensity, VaporOctree::SizeSmallerFirst);
 	}
 
 	//--------------------------------------------------------------
@@ -721,13 +784,13 @@ namespace ent
 	{
 		return m_coordRange;
 	}
-	
+
 	//--------------------------------------------------------------
 	ofxRange1f& SnapshotRamses::getSizeRange()
 	{
 		return m_sizeRange;
 	}
-	
+
 	//--------------------------------------------------------------
 	ofxRange1f& SnapshotRamses::getDensityRange()
 	{

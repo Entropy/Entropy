@@ -33,12 +33,14 @@ public:
 
 	ofParameter<float> m_scale{"world scale", 1, 0.1, 100};
 	ofParameter<float> m_fov{"camera fov", 60, 0.001, 100, ofParameterScale::Logarithmic};
-	ofParameter<float> m_octreeAnimationDuration{"octree anim duration", 60, 1, 8000, ofParameterScale::Logarithmic};
+	ofParameter<float> m_octreeAnimationDuration{"octree anim duration", 60, 1, 15000, ofParameterScale::Logarithmic};
 	ofParameter<float> m_orbitStart{"camera orbit start", 15, 0, 600, ofParameterScale::Logarithmic};
 	ofParameter<float> m_orbitEnd{"camera orbit end", 45, 0, 600, ofParameterScale::Logarithmic};
+	ofParameter<float> m_alphaInitial{"octree anim alpha", 10, 0, 10};
+	ofParameter<float> m_alphaFilter{"octree alpha filter", 0.999, 0.9, 0.99};
 	ofParameter<float> m_finalRadius{"camera final radius", 3, 0, 10, ofParameterScale::Logarithmic};
 	ofParameter<bool> m_cameraAutoDistance{"camera auto distance", false};
-	ofParameter<float> m_cameraAutoDistanceMagnification{"camera auto magnification", 1, 0.1, 40, ofParameterScale::Logarithmic};
+	ofParameter<float> m_cameraAutoDistanceMagnification{"camera auto magnification", 1, 0.1, 100, ofParameterScale::Logarithmic};
 	ofParameter<bool> m_glDebug{"debug gl", false};
 	ofParameter<bool> m_showOctree{"show octree", false};
 	ofParameter<bool> m_showOctreeDensities{"show octree densities", false};
@@ -61,6 +63,8 @@ public:
 		m_showOctreeAnimation,
 		m_octreeAlpha,
 		m_octreeAnimationDuration,
+		m_alphaInitial,
+		m_alphaFilter,
 		m_showAxis,
 		m_orbitStart,
 		m_orbitEnd,
@@ -91,15 +95,26 @@ public:
 
 	ofTrueTypeFont ttf;
 	double octreeAnimationStart;
-	double octreeAnimationIndexStart;
-	float octreeTotalDistance;
+	double octreeAnimationIndexStartH, octreeAnimationIndexStartV;
+	float octreeTotalDistanceH, octreeTotalDistanceV;
 	std::vector<ofEventListener> listeners;
-	ofVbo octreeAnimationVbo;
-	ofMesh octreeAnimationMesh;
-	ofIndexType octreeAnimationIndex;
+	ofVbo octreeAnimationVboH, octreeAnimationVboV;
+	ofMesh octreeAnimationMeshH, octreeAnimationMeshV, octreeAnimationLinesH, octreeAnimationLinesV;
+	ofIndexType octreeAnimationIndexH = 0, octreeAnimationIndexV = 0;
+
+	struct Range{
+		double startTime;
+		ofIndexType index;
+		ofIndexType startIndex;
+		ofIndexType endIndex;
+	};
+
+	std::vector<Range> rangesH;
+	std::vector<Range> rangesV;
 
 	float orbitStartDistance = 0;
 
 	ofShader shader;
 	ofFbo fbo, fboLines;
+	bool autoMode = false;
 };

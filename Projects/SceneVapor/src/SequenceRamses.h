@@ -74,9 +74,10 @@ namespace ent
 		ofxRange1f m_densityRange;
 
 		ofParameter<float> m_densityMin{"density min", 0.f, 0.f, 1.f, ofParameterScale::Logarithmic};
-		ofParameter<float> m_densityMax{"density max", 0.25f, 0.f, 1.f, ofParameterScale::Logarithmic};
+		ofParameter<float> m_densityMax{"density max", 0.2f, 0.f, 1.f, ofParameterScale::Logarithmic};
 		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 10, ofParameterScale::Logarithmic};
 		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 50, ofParameterScale::Logarithmic};
+		float prevMinDensity, prevMaxDensity;
 
 		// Playback
 		float m_frameRate;

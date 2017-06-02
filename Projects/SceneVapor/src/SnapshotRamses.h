@@ -88,5 +88,7 @@ namespace ent
 		std::string particlesGroupsFileName;
 
 		VaporOctree vaporOctree;
+
+		bool firstFrame = true;
 	};
 }
