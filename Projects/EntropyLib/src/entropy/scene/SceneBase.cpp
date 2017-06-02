@@ -212,6 +212,11 @@ namespace entropy
 			//	this->removeMedia();
 			//}
 
+			for (auto media : this->medias)
+			{
+				media->exit_();
+			}
+
 #ifdef OFX_PARAMETER_TWISTER
 			// Clear twister sync.
 			GetApp()->getTwister()->clear();
