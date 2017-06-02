@@ -331,26 +331,11 @@ namespace entropy
 			auto scene = GetCurrentScene();
 			if (scene)
 			{
-				scene->getPostParameters(layout).screenRatio = this->screenBounds[layout].getAspectRatio();
-
 				// Draw the base and world content.
 				this->canvas[layout]->beginDraw();
 				{
 					this->playlist->drawSceneBase(layout);
 					this->playlist->drawSceneWorld(layout);
-				}
-				this->canvas[layout]->endDraw();
-
-				// Post-process the content, either directly in the Scene or in the Canvas.
-				const auto postProcessing = this->playlist->postProcess(layout, this->canvas[layout]->getDrawTexture(), this->canvas[layout]->getPostFbo());
-				if (!postProcessing)
-				{
-					this->canvas[layout]->postProcess(scene->getPostParameters(layout));
-				}
-
-				// Draw the overlay content.
-				this->canvas[layout]->beginDraw();
-				{
 					this->playlist->drawSceneOverlay(layout);
 				}
 				this->canvas[layout]->endDraw();

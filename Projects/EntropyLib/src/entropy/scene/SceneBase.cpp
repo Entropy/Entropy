@@ -98,11 +98,6 @@ namespace entropy
 			this->populateMappings(this->boxes[render::Layout::Back].parameters);
 			this->populateMappings(this->boxes[render::Layout::Front].parameters);
 
-			this->postEffects[render::Layout::Back].setName("Post Effects Back");
-			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			this->populateMappings(this->postEffects[render::Layout::Back], render::PostEffectsTimelinePageName);
-			this->populateMappings(this->postEffects[render::Layout::Front], render::PostEffectsTimelinePageName);
-
 			// List presets.
 			this->populatePresets();
 			this->currPreset.clear();
@@ -549,46 +544,6 @@ namespace entropy
 			}
 			ofxImGui::EndWindow(settings);
 
-			// Add gui window for Post Effects.
-			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Post Effects", settings))
-			{
-				for (auto & it : this->postEffects)
-				{
-					auto & postParameters = it.second;
-					if (ofxImGui::BeginTree(postParameters, settings))
-					{
-						ofxImGui::AddGroup(postParameters.bloom, settings);
-
-						if (ofxImGui::BeginTree(postParameters.color, settings))
-						{
-							ofxImGui::AddParameter(postParameters.color.exposure);
-							ofxImGui::AddParameter(postParameters.color.gamma);
-							static vector<string> labels =
-							{
-								"None",
-								"Gamma Only",
-								"Reinhard",
-								"Reinhard Lum",
-								"Filmic",
-								"ACES",
-								"Uncharted 2"
-							};
-							ofxImGui::AddRadio(postParameters.color.tonemapping, labels, 3);
-							ofxImGui::AddParameter(postParameters.color.brightness);
-							ofxImGui::AddParameter(postParameters.color.contrast);
-						
-							ofxImGui::EndTree(settings);
-						}
-
-						ofxImGui::AddGroup(postParameters.vignette, settings);
-
-						ofxImGui::EndTree(settings);
-					}
-				}
-			}
-			ofxImGui::EndWindow(settings);
-
 			// Let the child class handle its child parameters.
 			this->gui(settings);
 		}
@@ -610,13 +565,6 @@ namespace entropy
 			for (auto & it : this->boxes)
 			{
 				ofxPreset::Serializer::Serialize(jsonBoxes, it.second.parameters);
-			}
-
-			// Save PostEffects settings.
-			auto & jsonPostEffects = json["Post Effects"];
-			for (auto & it : this->postEffects)
-			{
-				ofxPreset::Serializer::Serialize(jsonPostEffects, it.second);
 			}
 
 			// Save Mappings.
@@ -675,16 +623,6 @@ namespace entropy
 				for (auto & it : this->boxes)
 				{
 					ofxPreset::Serializer::Deserialize(jsonBoxes, it.second.parameters);
-				}
-			}
-
-			// Restore PostEffects settings.
-			if (json.count("Post Effects"))
-			{
-				auto & jsonPostEffects = json["Post Effects"];
-				for (auto & it : this->postEffects)
-				{
-					ofxPreset::Serializer::Deserialize(jsonPostEffects, it.second);
 				}
 			}
 
@@ -1263,12 +1201,6 @@ namespace entropy
 		void Base::addCameraKeyframe(render::Layout layout)
 		{
 			this->cameras[layout]->addKeyframe();
-		}
-
-		//--------------------------------------------------------------
-		render::PostParameters & Base::getPostParameters(render::Layout layout)
-		{
-			return this->postEffects[layout];
 		}
 
 		//--------------------------------------------------------------
