@@ -131,7 +131,7 @@ namespace entropy
 		template<typename SceneType>
 		shared_ptr<SceneType> Playlist::getCurrentScene()
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				auto sceneTyped = dynamic_pointer_cast<SceneType>(this->currentScene);
 				if (sceneTyped)
@@ -146,7 +146,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::setCurrentScene(const string & name)
 		{
-			if (this->currentScene && this->currentScene->getName() == name)
+			if (this->currentScene != nullptr && this->currentScene->getName() == name)
 			{
 				ofLogNotice(__FUNCTION__) << "Scene " << name << " already set.";
 				return true;
@@ -163,16 +163,6 @@ namespace entropy
 				{
 					this->nextPreset = preset;
 				});
-				this->presetSavedListener = this->currentScene->presetSavedEvent.newListener([this](string & preset)
-				{
-					this->cameraSettings[render::Layout::Back] = this->currentScene->getCamera(render::Layout::Back)->fetchSettings();
-					this->cameraSettings[render::Layout::Front] = this->currentScene->getCamera(render::Layout::Front)->fetchSettings();
-				});
-
-				for (auto & it : this->cameraControlAreas)
-				{
-					this->currentScene->setCameraControlArea(it.first, it.second);
-				}
 
 				return true;
 			}
@@ -183,7 +173,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Playlist::unsetCurrent()
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				this->currentScene->exit_();
 			}
@@ -197,7 +187,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		const string & Playlist::getCurrentPresetName() const
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				return this->currentScene->getCurrentPresetName();
 			}
@@ -209,7 +199,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::setCurrentPreset(const string & name, bool showtime)
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				if (this->currentScene->loadPreset(name))
 				{
@@ -305,7 +295,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::update(double dt)
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				if (!this->nextPreset.empty())
 				{
@@ -321,33 +311,11 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::drawSceneBase(render::Layout layout)
+		bool Playlist::drawScene(render::Layout layout)
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
-				this->currentScene->drawBase_(layout);
-				return true;
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		bool Playlist::drawSceneWorld(render::Layout layout)
-		{
-			if (this->currentScene)
-			{
-				this->currentScene->drawWorld_(layout);
-				return true;
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		bool Playlist::drawSceneOverlay(render::Layout layout)
-		{
-			if (this->currentScene)
-			{
-				this->currentScene->drawOverlay_(layout);
+				this->currentScene->draw_(layout);
 				return true;
 			}
 			return false;
@@ -443,7 +411,7 @@ namespace entropy
 				ofxImGui::EndWindow(settings);
 			}
 			
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				if (this->scenes.size() > 1)
 				{
@@ -462,7 +430,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::drawTimeline(ofxImGui::Settings & settings)
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
 				this->currentScene->drawTimeline(settings);
 				return true;
@@ -471,39 +439,10 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const
-		{
-			if (this->currentScene)
-			{
-				if (layout == render::Layout::Back)
-				{
-					return this->currentScene->postProcessBack(srcTexture, dstFbo);
-				}
-				return this->currentScene->postProcessFront(srcTexture, dstFbo);
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
 		bool Playlist::keyPressed(ofKeyEventArgs & args)
 		{
-			if (this->currentScene)
+			if (this->currentScene != nullptr)
 			{
-				if (args.key == 'L')
-				{
-					this->currentScene->toggleCameraLocked();
-					return true;
-				}
-				if (args.key == 'B')
-				{
-					this->currentScene->addCameraKeyframe(render::Layout::Back);
-					return true;
-				}
-				if (args.key == 'F')
-				{
-					this->currentScene->addCameraKeyframe(render::Layout::Front);
-					return true;
-				}
 				if (args.key == ' ')
 				{
 					this->currentScene->goToNextTimelineFlag();
@@ -511,23 +450,6 @@ namespace entropy
 				}
 			}
 			return false;
-		}
-
-		//--------------------------------------------------------------
-		void Playlist::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
-		{
-			this->cameraControlAreas[layout] = controlArea;
-			
-			if (this->currentScene)
-			{
-				this->currentScene->setCameraControlArea(layout, controlArea);
-			}
-		}
-
-		//--------------------------------------------------------------
-		const world::Camera::Settings & Playlist::getCameraSettings(render::Layout layout)
-		{
-			return this->cameraSettings[layout];
 		}
 
 		//--------------------------------------------------------------

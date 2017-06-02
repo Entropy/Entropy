@@ -39,9 +39,7 @@ namespace entropy
 
 			void update_(double dt);
 
-			void drawBase_(render::Layout layout);
-			void drawWorld_(render::Layout layout);
-			void drawOverlay_(render::Layout layout);
+			void draw_(render::Layout layout);
 
 			void gui_(ofxImGui::Settings & settings);
 
@@ -51,10 +49,6 @@ namespace entropy
 			// State
 			bool isInitialized() const;
 			bool isReady() const;
-
-			// No post-processing by default, return true to override!
-			virtual bool postProcessBack(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; }
-			virtual bool postProcessFront(const ofTexture & srcTexture, const ofFbo & dstFbo) { return false; };
 
 			// Resources
 			std::filesystem::path getAssetsPath(const string & file = "");
@@ -79,17 +73,6 @@ namespace entropy
 			int getCurrentTimelineFrame();
 			bool goToNextTimelineFlag();
 
-			// Camera
-			std::shared_ptr<world::Camera> getCamera(render::Layout layout);
-
-			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
-
-			void setCameraLocked(bool cameraLocked);
-			void toggleCameraLocked();
-			bool isCameraLocked(render::Layout layout) const;
-
-			void addCameraKeyframe(render::Layout layout);
-
 			// Post Effects.
 			render::PostParameters & getPostParameters(render::Layout layout);
 
@@ -110,13 +93,8 @@ namespace entropy
 
 			virtual void update(double dt) {}
 
-			virtual void drawBackBase() {}
-			virtual void drawBackWorld() {}
-			virtual void drawBackOverlay() {}
-
-			virtual void drawFrontBase() {}
-			virtual void drawFrontWorld() {}
-			virtual void drawFrontOverlay() {}
+			virtual void drawBack() {}
+			virtual void drawFront() {}
 
 			virtual void gui(ofxImGui::Settings & settings) {}
 
@@ -129,15 +107,6 @@ namespace entropy
 			// State
 			bool initialized;
 			bool ready;
-
-			// Camera
-			std::map<render::Layout, std::shared_ptr<world::Camera>> cameras;
-
-			// Box
-			std::map<render::Layout, geom::Box> boxes;
-
-			// Post Effects
-			std::map<render::Layout, render::PostParameters> postEffects;
 
 			// Resources
 			void populatePresets();

@@ -69,39 +69,17 @@ namespace entropy
 			ofAddListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
 			ofAddListener(GetMessenger()->messageReceivedEvent, this, &Base::messageReceived_);
 
-			// Build the Back and Front cameras.
-			this->cameras.emplace(render::Layout::Back, std::make_shared<world::Camera>());
-			this->cameras[render::Layout::Back]->setup(render::Layout::Back, this->timeline);
-
-			this->cameras.emplace(render::Layout::Front, std::make_shared<world::Camera>());
-			this->cameras[render::Layout::Front]->setup(render::Layout::Front, this->timeline);
-			this->cameras[render::Layout::Front]->setParent(this->cameras[render::Layout::Back]);
-
 			// Initialize child class.
 			this->init();
 
 			// Force resize.
-			for (auto & it : this->cameras)
-			{
-				auto resizeArgs = ofResizeEventArgs(GetCanvasWidth(it.first), GetCanvasHeight(it.first));
-				this->resize_(it.first, resizeArgs);
-			}
+			auto backResizeArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Back), GetCanvasHeight(render::Layout::Back));
+			this->resize_(render::Layout::Back, backResizeArgs);
+			auto frontResizeArgs = ofResizeEventArgs(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
+			this->resize_(render::Layout::Back, frontResizeArgs);
 
 			// Configure and register parameters.
 			this->populateMappings(parameters);
-
-			this->populateMappings(this->cameras[render::Layout::Back]->parameters, world::CameraTimelinePageName);
-			this->populateMappings(this->cameras[render::Layout::Front]->parameters, world::CameraTimelinePageName);
-
-			this->boxes[render::Layout::Back].parameters.setName("Box Back");
-			this->boxes[render::Layout::Front].parameters.setName("Box Front");
-			this->populateMappings(this->boxes[render::Layout::Back].parameters);
-			this->populateMappings(this->boxes[render::Layout::Front].parameters);
-
-			this->postEffects[render::Layout::Back].setName("Post Effects Back");
-			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			this->populateMappings(this->postEffects[render::Layout::Back], render::PostEffectsTimelinePageName);
-			this->populateMappings(this->postEffects[render::Layout::Front], render::PostEffectsTimelinePageName);
 
 			// List presets.
 			this->populatePresets();
@@ -131,13 +109,6 @@ namespace entropy
 			this->clearMappings();
 			this->mappings.clear();
 
-			// Clear cameras.
-			for (auto & it : this->cameras)
-			{
-				it.second->clear();
-			}
-			this->cameras.clear();
-
 			// Clear any remaining timeline stuff.
 			ofRemoveListener(this->timeline->events().bangFired, this, &Base::timelineBangFired_);
 			ofRemoveListener(GetMessenger()->messageReceivedEvent, this, &Base::messageReceived_);
@@ -156,25 +127,6 @@ namespace entropy
 
 			// Reset the timeline.
 			this->timeline->setCurrentFrame(0);
-
-			// Reset cameras (but keep transform intact).
-			for (auto & it : this->cameras)
-			{
-				it.second->reset(false);
-			}
-
-			// Inherit the camera settings if necessary.
-			for (auto & it : this->cameras)
-			{
-				if (it.second->inheritsSettings)
-				{
-					const auto & cameraSettings = GetSavedCameraSettings(it.first);
-					if (cameraSettings.fov != 0.0f)
-					{
-						it.second->applySettings(cameraSettings);
-					}
-				}
-			}
 
 			// Setup child Scene.
 			this->setup();
@@ -217,8 +169,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::resize_(render::Layout layout, ofResizeEventArgs & args)
 		{
-			this->cameras[layout]->resize(args);
-
 			if (layout == render::Layout::Back)
 			{
 				this->resizeBack(args);
@@ -237,11 +187,6 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Base::update_(double dt)
 		{
-			for (auto & it : this->cameras)
-			{
-				it.second->update(GetApp()->isMouseOverGui());
-			}
-
 			for (auto & it : this->mappings)
 			{
 				for (auto mapping : it.second)
@@ -259,69 +204,22 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::drawBase_(render::Layout layout)
+		void Base::draw_(render::Layout layout)
 		{
 			ofClear(0, 255);
 
 			if (layout == render::Layout::Back)
 			{
-				this->drawBackBase();
+				this->drawBack();
 			}
 			else
 			{
-				this->drawFrontBase();
+				this->drawFront();
 			}
 
 			for (auto media : this->medias)
 			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
-				{
-					media->draw_();
-				}
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawWorld_(render::Layout layout)
-		{
-			auto & parameters = this->getParameters();
-			
-			this->cameras[layout]->begin();
-			ofEnableDepthTest();
-			{
-				if (this->boxes[layout].autoDraw)
-				{
-					this->boxes[layout].draw();
-				}
-
-				if (layout == render::Layout::Back)
-				{
-					this->drawBackWorld();
-				}
-				else
-				{
-					this->drawFrontWorld();
-				}
-			}
-			ofDisableDepthTest();
-			this->cameras[layout]->end();
-		}
-
-		//--------------------------------------------------------------
-		void Base::drawOverlay_(render::Layout layout)
-		{
-			if (layout == render::Layout::Back)
-			{
-				this->drawBackOverlay();
-			}
-			else
-			{
-				this->drawFrontOverlay();
-			}
-
-			for (auto media : this->medias)
-			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
+				if (media->renderLayout(layout))
 				{
 					media->draw_();
 				}
@@ -507,88 +405,6 @@ namespace entropy
 			}
 			ofxImGui::EndWindow(settings);
 
-			// Add gui window for Cameras.
-			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Cameras", settings))
-			{
-				for (auto & it : this->cameras)
-				{
-					it.second->gui(settings);
-				}
-			}
-			ofxImGui::EndWindow(settings);
-
-			// Add gui window for Boxes.
-			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Boxes", settings))
-			{
-				for (auto & it : this->boxes)
-				{
-					if (ofxImGui::BeginTree(it.second.parameters, settings))
-					{
-						ofxImGui::AddParameter(it.second.enabled);
-						if (it.second.enabled)
-						{
-							ImGui::SameLine();
-							ofxImGui::AddParameter(it.second.autoDraw);
-						}
-						static const vector<string> blendLabels{ "Disabled", "Alpha", "Add", "Subtract", "Multiply", "Screen" };
-						ofxImGui::AddRadio(it.second.blendMode, blendLabels, 3);
-						ofxImGui::AddParameter(it.second.depthTest);
-						static const vector<string> cullLabels{ "None", "Back", "Front" };
-						ofxImGui::AddRadio(it.second.cullFace, cullLabels, 3);
-						ofxImGui::AddParameter(it.second.color);
-						ofxImGui::AddParameter(it.second.alpha);
-						ofxImGui::AddParameter(it.second.size);
-						ofxImGui::AddParameter(it.second.edgeRatio);
-						ofxImGui::AddParameter(it.second.subdivisions); 
-						
-						ofxImGui::EndTree(settings);
-					}
-				}
-			}
-			ofxImGui::EndWindow(settings);
-
-			// Add gui window for Post Effects.
-			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Post Effects", settings))
-			{
-				for (auto & it : this->postEffects)
-				{
-					auto & postParameters = it.second;
-					if (ofxImGui::BeginTree(postParameters, settings))
-					{
-						ofxImGui::AddGroup(postParameters.bloom, settings);
-
-						if (ofxImGui::BeginTree(postParameters.color, settings))
-						{
-							ofxImGui::AddParameter(postParameters.color.exposure);
-							ofxImGui::AddParameter(postParameters.color.gamma);
-							static vector<string> labels =
-							{
-								"None",
-								"Gamma Only",
-								"Reinhard",
-								"Reinhard Lum",
-								"Filmic",
-								"ACES",
-								"Uncharted 2"
-							};
-							ofxImGui::AddRadio(postParameters.color.tonemapping, labels, 3);
-							ofxImGui::AddParameter(postParameters.color.brightness);
-							ofxImGui::AddParameter(postParameters.color.contrast);
-						
-							ofxImGui::EndTree(settings);
-						}
-
-						ofxImGui::AddGroup(postParameters.vignette, settings);
-
-						ofxImGui::EndTree(settings);
-					}
-				}
-			}
-			ofxImGui::EndWindow(settings);
-
 			// Let the child class handle its child parameters.
 			this->gui(settings);
 		}
@@ -598,27 +414,6 @@ namespace entropy
 		{
 			ofxPreset::Serializer::Serialize(json, this->getParameters());
 			
-			// Save Camera settings.
-			auto & jsonCameras = json["Cameras"];
-			for (auto & it : this->cameras)
-			{
-				it.second->serialize(jsonCameras);
-			}
-
-			// Save Box settings.
-			auto & jsonBoxes = json["Boxes"];
-			for (auto & it : this->boxes)
-			{
-				ofxPreset::Serializer::Serialize(jsonBoxes, it.second.parameters);
-			}
-
-			// Save PostEffects settings.
-			auto & jsonPostEffects = json["Post Effects"];
-			for (auto & it : this->postEffects)
-			{
-				ofxPreset::Serializer::Serialize(jsonPostEffects, it.second);
-			}
-
 			// Save Mappings.
 			auto & jsonMappings = json["Mappings"];
 			for (auto & it : this->mappings)
@@ -657,36 +452,6 @@ namespace entropy
 		void Base::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->getParameters());
-
-			// Restore Camera settings.
-			if (json.count("Cameras"))
-			{
-				auto & jsonCameras = json["Cameras"];
-				for (auto & it : this->cameras)
-				{
-					it.second->deserialize(jsonCameras);
-				}
-			}
-
-			// Restore Box settings.
-			if (json.count("Boxes"))
-			{
-				auto & jsonBoxes = json["Boxes"];
-				for (auto & it : this->boxes)
-				{
-					ofxPreset::Serializer::Deserialize(jsonBoxes, it.second.parameters);
-				}
-			}
-
-			// Restore PostEffects settings.
-			if (json.count("Post Effects"))
-			{
-				auto & jsonPostEffects = json["Post Effects"];
-				for (auto & it : this->postEffects)
-				{
-					ofxPreset::Serializer::Deserialize(jsonPostEffects, it.second);
-				}
-			}
 
 			// Clear previous Media.
 			while (!this->medias.empty())
@@ -767,7 +532,6 @@ namespace entropy
 		{
 			this->timeline->setCurrentTimeToInPoint();
 			this->timeline->setCurrentPage(0);
-			this->setCameraLocked(true);
 			//this->timeline->play();
 		}
 
@@ -1225,57 +989,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<world::Camera> Base::getCamera(render::Layout layout)
-		{
-			return this->cameras[layout];
-		}
-
-		//--------------------------------------------------------------
-		void Base::setCameraControlArea(render::Layout layout, const ofRectangle & controlArea)
-		{
-			this->cameras[layout]->setControlArea(controlArea);
-		}
-
-		//--------------------------------------------------------------
-		void Base::setCameraLocked(bool cameraLocked)
-		{
-			for (auto & it : this->cameras)
-			{
-				it.second->setLockedToTrack(cameraLocked);
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Base::toggleCameraLocked()
-		{
-			// Back camera takes the lead.
-			const auto backLocked = this->isCameraLocked(render::Layout::Back);
-			this->setCameraLocked(!backLocked);
-		}
-
-		//--------------------------------------------------------------
-		bool Base::isCameraLocked(render::Layout layout) const
-		{
-			return this->cameras.at(layout)->isLockedToTrack();
-		}
-
-		//--------------------------------------------------------------
-		void Base::addCameraKeyframe(render::Layout layout)
-		{
-			this->cameras[layout]->addKeyframe();
-		}
-
-		//--------------------------------------------------------------
-		render::PostParameters & Base::getPostParameters(render::Layout layout)
-		{
-			return this->postEffects[layout];
-		}
-
-		//--------------------------------------------------------------
 		void Base::beginExport()
 		{
 			this->timeline->setFrameBased(true);
-			this->setCameraLocked(true);
 			this->timeline->setCurrentTimeToInPoint();
 			this->timeline->play();
 		}
@@ -1285,7 +1001,6 @@ namespace entropy
 		{
 			this->timeline->stop();
 			this->timeline->setFrameBased(false);
-			this->setCameraLocked(false);
 		}
 	}
 }

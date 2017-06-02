@@ -42,20 +42,12 @@ namespace entropy
 
 			bool update(double dt);
 
-			bool drawSceneBase(render::Layout layout);
-			bool drawSceneWorld(render::Layout layout);
-			bool drawSceneOverlay(render::Layout layout);
+			bool drawScene(render::Layout layout);
 
 			bool drawGui(ofxImGui::Settings & settings);
 			bool drawTimeline(ofxImGui::Settings & settings);
 
-			bool postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const;
-
 			bool keyPressed(ofKeyEventArgs & args);
-
-			void setCameraControlArea(render::Layout layout, const ofRectangle & controlArea);
-
-			const world::Camera::Settings & getCameraSettings(render::Layout layout);
 
 			void canvasResized(render::Layout layout, ofResizeEventArgs & args);
 
@@ -84,9 +76,6 @@ namespace entropy
 			ofEventListener presetLoadedListener;
 			ofEventListener presetSavedListener;
 			string nextPreset;
-
-			map<render::Layout, ofRectangle> cameraControlAreas;
-			map<render::Layout, world::Camera::Settings> cameraSettings;
 		};
 	}
 }
