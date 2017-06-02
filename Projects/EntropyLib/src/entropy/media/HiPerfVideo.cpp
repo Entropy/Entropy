@@ -126,6 +126,9 @@ namespace entropy
 		{
 			if (this->isLoaded() && this->renderFrame)
 			{
+				this->hpvPlayer.m_brightness = this->parameters.color.brightness;
+				this->hpvPlayer.m_contrast = this->parameters.color.contrast;
+
 				this->hpvPlayer.drawSubsection(this->dstBounds, this->srcBounds);
 			}
 		}

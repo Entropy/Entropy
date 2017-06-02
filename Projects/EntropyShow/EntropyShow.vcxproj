@@ -180,6 +180,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Link.cpp" />
+    <ClCompile Include="src\entropy\post\ColorEffects.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
@@ -284,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\EntropyLib\src\entropy\media\Link.h" />
+    <ClInclude Include="src\entropy\post\ColorEffects.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />

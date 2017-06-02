@@ -9,6 +9,7 @@
 #include "entropy/geom/Box.h"
 #include "entropy/media/Base.h"
 #include "entropy/media/Link.h"
+#include "entropy/post/ColorEffects.h"
 #include "entropy/render/Layout.h"
 #include "entropy/util/Mapping.h"
 #include "entropy/world/Camera.h"
@@ -132,6 +133,8 @@ namespace entropy
 			// Box
 			std::map<render::Layout, geom::Box> boxes;
 
+			// Color Effects
+			entropy::post::ColorEffects colorEffects;
 
 			// Resources
 			void populatePresets();

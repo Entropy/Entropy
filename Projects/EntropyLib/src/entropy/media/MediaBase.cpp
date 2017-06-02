@@ -438,6 +438,14 @@ namespace entropy
 					ofxImGui::EndTree(settings);
 				}
 
+				if (ofxImGui::BeginTree(this->parameters.color, settings))
+				{
+					ofxImGui::AddParameter(this->parameters.color.contrast);
+					ofxImGui::AddParameter(this->parameters.color.brightness);
+
+					ofxImGui::EndTree(settings);
+				}
+
 				if (ofxImGui::BeginTree(this->parameters.border, settings))
 				{
 					ofxImGui::AddParameter(this->parameters.border.width);

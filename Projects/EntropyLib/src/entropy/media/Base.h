@@ -5,6 +5,7 @@
 #include "ofxTLCurves.h"
 #include "ofxTLSwitches.h"
 
+#include "entropy/post/ColorEffects.h"
 #include "entropy/render/Layout.h"
 
 namespace entropy
@@ -137,6 +138,8 @@ namespace entropy
 						alignHorz, alignVert);
 				} render;
 
+				entropy::post::ColorParameters color;
+
 				struct : ofParameterGroup
 				{
 					ofParameter<float> width{ "Width", 0.0f, 0.0f, 5.0f };
@@ -171,6 +174,7 @@ namespace entropy
 				PARAM_DECLARE("Media",
 					filePath,
 					render,
+					color,
 					border,
 					playback);
 			} parameters;

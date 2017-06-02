@@ -267,13 +267,18 @@ namespace entropy
 				this->drawFrontBase();
 			}
 
-			for (auto media : this->medias)
+			this->colorEffects.begin();
 			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
+				for (auto media : this->medias)
 				{
-					media->draw_();
+					if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
+					{
+						this->colorEffects.setParams(media->parameters.color);
+						media->draw_();
+					}
 				}
 			}
+			this->colorEffects.end();
 		}
 
 		//--------------------------------------------------------------
@@ -314,13 +319,18 @@ namespace entropy
 				this->drawFrontOverlay();
 			}
 
-			for (auto media : this->medias)
+			this->colorEffects.begin();
 			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
+				for (auto media : this->medias)
 				{
-					media->draw_();
+					if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
+					{
+						this->colorEffects.setParams(media->parameters.color);
+						media->draw_();
+					}
 				}
 			}
+			this->colorEffects.end();
 		}
 
 		//--------------------------------------------------------------
