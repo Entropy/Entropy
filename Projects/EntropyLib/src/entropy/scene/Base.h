@@ -24,6 +24,7 @@ namespace entropy
 		{
 		public:
 			virtual string getName() const = 0;
+			string getShortName() const;
 
 			Base();
 			virtual ~Base();
@@ -33,6 +34,7 @@ namespace entropy
 			void clear_();
 
 			void setup_();
+			void refresh_();
 			void exit_();
 
 			void resize_(render::Layout layout, ofResizeEventArgs & args);

@@ -71,6 +71,8 @@ namespace entropy
 			void setLinkedMedia(std::shared_ptr<Base> linkedMedia);
 			void clearLinkedMedia();
 
+			void refreshTwisterSync();
+
 			bool editing;
 
 			// Base methods

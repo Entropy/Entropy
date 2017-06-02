@@ -17,15 +17,7 @@ namespace entropy
 			Playlist();
 			~Playlist();
 
-			bool addScene(shared_ptr<Base> scene);
-			bool removeScene(shared_ptr<Base> scene);
-			bool removeScene(const string & name);
-
-			void previewScene();
-
-			shared_ptr<Base> getScene(const string & name);
-			template<typename SceneType>
-			shared_ptr<SceneType> getScene(const string & name);
+			bool isActive() const;
 
 			shared_ptr<Base> getCurrentScene() const;
 			template<typename SceneType>
@@ -33,8 +25,10 @@ namespace entropy
 
 			const string & getCurrentPresetName() const;
 
-			void addTrack(const string & sceneName, const string & presetName);
-			void removeTrack();
+			bool addTrack(const string & sceneName, const string & presetName);
+			bool removeTrack();
+
+			void preloadTracks();
 
 			bool playTrack(size_t index);
 			bool stopTrack();
@@ -48,8 +42,6 @@ namespace entropy
 
 			bool drawGui(ofxImGui::Settings & settings);
 			bool drawTimeline(ofxImGui::Settings & settings);
-
-			bool postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const;
 
 			bool keyPressed(ofKeyEventArgs & args);
 
@@ -69,16 +61,9 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 		protected:
-			bool setCurrentScene(const string & name);
-			bool setCurrentPreset(const string & name, bool showtime);
-			void unsetCurrent();
-
-			map<string, shared_ptr<Base>> scenes;
-			shared_ptr<Base> currentScene;
-
-			map<string, string> shortNames;
-			vector<pair<string, string>> tracks;
+			std::vector<std::pair<std::shared_ptr<Base>, std::string>> tracks;
 			size_t currentTrack;
+			std::shared_ptr<Base> currentScene;
 
 			ofEventListener presetCuedListener;
 			ofEventListener presetLoadedListener;

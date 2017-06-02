@@ -30,6 +30,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		std::string Base::getShortName() const
+		{
+			auto tokens = ofSplitString(this->getName(), "::", true, true);
+			if (tokens.empty())
+			{
+				return "Error";
+			}
+			return tokens.back();
+		}
+
+		//--------------------------------------------------------------
 		void Base::init_()
 		{
 			if (this->initialized)
@@ -196,10 +207,10 @@ namespace entropy
 			this->savePreset(kPresetDefaultName);
 
 			// Clear media.
-			while (!this->medias.empty())
-			{
-				this->removeMedia();
-			}
+			//while (!this->medias.empty())
+			//{
+			//	this->removeMedia();
+			//}
 
 #ifdef OFX_PARAMETER_TWISTER
 			// Clear twister sync.
@@ -207,6 +218,25 @@ namespace entropy
 #endif
 
 			this->ready = false;
+		}
+
+		//--------------------------------------------------------------
+		void Base::refresh_()
+		{
+			if (!this->ready)
+			{
+				ofLogWarning(__FUNCTION__) << "Scene is not set up!";
+				return;
+			}
+
+#ifdef OFX_PARAMETER_TWISTER
+			GetApp()->getTwister()->clear();
+#endif
+
+			for (auto media : this->medias)
+			{
+				media->refreshTwisterSync();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -716,7 +746,7 @@ namespace entropy
 			this->timeline->setCurrentTimeToInPoint();
 			this->timeline->setCurrentPage(0);
 			this->setCameraLocked(true);
-			//this->timeline->play();
+			this->timeline->play();
 		}
 
 		//--------------------------------------------------------------

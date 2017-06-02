@@ -764,6 +764,19 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void Base::refreshTwisterSync()
+		{
+			if (this->parameters.playback.useFadeTwist)
+			{
+				this->addTwisterSync();
+			}
+			else
+			{
+				this->removeTwisterSync();
+			}
+		}
+
+		//--------------------------------------------------------------
 		void Base::addTwisterSync()
 		{
 #ifdef OFX_PARAMETER_TWISTER

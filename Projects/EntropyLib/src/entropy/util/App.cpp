@@ -241,8 +241,7 @@ namespace entropy
 		{
 			ofBackground(this->parameters.background.get());
 
-			auto scene = GetCurrentScene();
-			if (scene)
+			if (this->playlist->isActive())
 			{
 				ofSetColor(ofColor::white);
 
@@ -328,8 +327,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void App_::processCanvas(render::Layout layout, bool renderEnabled)
 		{
-			auto scene = GetCurrentScene();
-			if (scene)
+			if (this->playlist->isActive())
 			{
 				// Draw the base and world content.
 				this->canvas[layout]->beginDraw();
