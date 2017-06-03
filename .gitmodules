@@ -67,9 +67,6 @@ url=https://github.com/Entropy/ofxEasing
 [submodule "addons/ofxHPVPlayer"]
 	path = addons/ofxHPVPlayer
 	url = https://github.com/Entropy/ofxHPVPlayer.git
-[submodule "addons/ofxImageSequence"]
-	path = addons/ofxImageSequence
-	url = https://github.com/Entropy/ofxImageSequence
 [submodule "addons/ofxVideoRecorder"]
 	path = addons/ofxVideoRecorder
 	url = https://github.com/Entropy/ofxVideoRecorder
