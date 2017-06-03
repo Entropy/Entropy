@@ -67,7 +67,7 @@
     </element>
     <element name="Fade_6_HPV">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>636.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -97,13 +97,13 @@
     </element>
     <element name="LFO_6_HPV">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>700.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="LFO_7_HPV">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -175,19 +175,19 @@
     </element>
     <element name="Media_6_HPV">
         <x>0.000000000</x>
-        <y>70.000000000</y>
-        <width>9600.000000000</width>
+        <y>572.000000000</y>
+        <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_7_HPV">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>764.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_8_HPV">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -199,7 +199,7 @@
     </element>
     <element name="Media_9_Sound">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
