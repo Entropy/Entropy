@@ -110,12 +110,14 @@ namespace entropy
 			virtual uint64_t getCurrentTimeMs() const = 0;
 			virtual uint64_t getCurrentFrame() const = 0;
 
-			virtual uint64_t getPlaybackTimeMs() = 0;
-			virtual uint64_t getPlaybackFrame() = 0;
-
 			virtual uint64_t getDurationMs() const = 0;
 			virtual uint64_t getDurationFrames() const = 0;
 			
+			virtual uint64_t getFrameRate() const = 0;
+
+			virtual uint64_t getPlaybackTimeMs(bool wrap = true);
+			virtual uint64_t getPlaybackFrame();
+
 			// Parameters
 			struct : ofParameterGroup
 			{
@@ -164,13 +166,15 @@ namespace entropy
 					ofParameter<float> fadeLFO{ "Fade LFO", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
+					ofParameter<float> freeSpeed{ "Free Speed", 1.0f, 0.0f, 10.0f, ofParameterScale::Logarithmic };
 
 					PARAM_DECLARE("Playback",
 						useFadeTrack, fadeTrack,
 						useFadeTwist, fadeKnob, fadeTwist,
 						useFadeLFO, flipLFO, fadeLFO,
 						loop,
-						syncMode);
+						syncMode,
+						freeSpeed);
 				} playback;
 
 				PARAM_DECLARE("Media",
@@ -211,9 +215,10 @@ namespace entropy
 			float prevFade;
 			float lfoVal;
 
-			uint64_t freePlayStartElapsedMs;
-			uint64_t freePlayStartMediaMs;
-			uint64_t freePlayStartMediaFrame;
+			uint64_t freePlayElapsedLastMs;
+			uint64_t freePlayMediaStartMs;
+			uint64_t freePlayMediaStartFrame;
+			uint64_t freePlayMediaLastMs;
 			bool freePlayNeedsInit;
 
 			std::shared_ptr<Base> linkedMedia;

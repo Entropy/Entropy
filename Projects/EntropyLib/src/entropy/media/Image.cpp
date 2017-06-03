@@ -94,7 +94,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		uint64_t Image::getPlaybackTimeMs()
+		uint64_t Image::getPlaybackTimeMs(bool wrap)
 		{
 			return 0;
 		}
@@ -108,11 +108,17 @@ namespace entropy
 		//--------------------------------------------------------------
 		uint64_t Image::getDurationMs() const
 		{
-			return 5 * 1000;
+			return 1;
 		}
 
 		//--------------------------------------------------------------
 		uint64_t Image::getDurationFrames() const
+		{
+			return 1;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Image::getFrameRate() const
 		{
 			return 1;
 		}

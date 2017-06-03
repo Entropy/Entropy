@@ -24,6 +24,7 @@ namespace entropy
 			, lfoTrack(nullptr)
 			, prevFade(0.0f)
 			, lfoVal(0.0f)
+			, freePlayMediaLastMs(0.0f)
 			, freePlayNeedsInit(false)
 		{
 			this->parameters.setName(this->getTypeName());
@@ -476,6 +477,11 @@ namespace entropy
 					ofxImGui::AddParameter(this->parameters.playback.loop);
 					static std::vector<std::string> syncLabels{ "Free Play", "Timeline", "Fade Control", "Linked Media" };
 					ofxImGui::AddRadio(this->parameters.playback.syncMode, syncLabels, 2);
+					const auto syncMode = this->getSyncMode();
+					if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+					{
+						ofxImGui::AddParameter(this->parameters.playback.freeSpeed);
+					}
 
 					ofxImGui::EndTree(settings);
 				}
@@ -546,7 +552,7 @@ namespace entropy
 			// No duration.
 			if (durationMs <= 0.0f) return false;
 
-			const auto syncMode = static_cast<SyncMode>(this->parameters.playback.syncMode.get());
+			const auto syncMode = this->getSyncMode();
 			if (syncMode == SyncMode::Timeline)
 			{
 				// No loop and switch is passed duration.
@@ -559,10 +565,9 @@ namespace entropy
 			{
 				if (!this->initFreePlay())
 				{
-					auto deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
-				
 					// No loop and time is passed duration.
-					if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
+					const auto positionMs = this->getPlaybackTimeMs(false);
+					if (!this->parameters.playback.loop && durationMs < positionMs) return false;
 				}
 			}
 			else if (syncMode == SyncMode::FadeControl)
@@ -572,10 +577,9 @@ namespace entropy
 
 				if (!this->initFreePlay())
 				{
-					auto deltaMs = ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs;
-
 					// No loop and time is passed duration.
-					if (!this->parameters.playback.loop && durationMs < deltaMs) return false;
+					const auto positionMs = this->getPlaybackTimeMs(false);
+					if (!this->parameters.playback.loop && durationMs < positionMs) return false;
 				}
 			}
 			else // SyncMode::LinkedMedia
@@ -586,6 +590,77 @@ namespace entropy
 			}
 
 			return true;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Base::getPlaybackTimeMs(bool wrap)
+		{
+			const uint64_t durationMs = this->getDurationMs();
+			if (durationMs == 0) return 0;
+
+			const auto syncMode = this->getSyncMode();
+			if (syncMode == SyncMode::Timeline)
+			{
+				uint64_t positionMs = this->switchMillis;
+				while (positionMs > durationMs)
+				{
+					positionMs -= durationMs;
+				}
+				return positionMs;
+			}
+
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+			{
+				if (this->initFreePlay())
+				{
+					return this->freePlayMediaStartMs;
+				}
+
+				uint64_t deltaMs = ofGetElapsedTimeMillis() - this->freePlayElapsedLastMs;
+				uint64_t positionMs = this->freePlayMediaLastMs + deltaMs * this->parameters.playback.freeSpeed;
+				while (wrap && positionMs > durationMs)
+				{
+					positionMs -= durationMs;
+				}
+				if (wrap)
+				{
+					this->freePlayElapsedLastMs += deltaMs;
+					this->freePlayMediaLastMs = positionMs;
+				}
+				return positionMs;
+			}
+
+			// SyncMode::LinkedMedia
+			if (this->linkedMedia != nullptr)
+			{
+				return this->linkedMedia->getPlaybackTimeMs();
+			}
+
+			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Base::getPlaybackFrame()
+		{
+			const auto syncMode = this->getSyncMode();
+
+			if (syncMode == SyncMode::Timeline)
+			{
+				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
+			}
+
+			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+			{
+				return (this->getPlaybackTimeMs() / 1000.0f * this->getFrameRate());
+			}
+
+			//else SyncMode::LinkedMedia
+			if (this->linkedMedia != nullptr)
+			{
+				return this->linkedMedia->getPlaybackFrame();
+			}
+
+			return 0;
 		}
 
 		//--------------------------------------------------------------
