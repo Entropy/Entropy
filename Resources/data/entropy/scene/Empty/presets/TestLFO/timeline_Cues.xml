@@ -1,1 +1,17 @@
-<keyframes />
+<keyframes>
+    <key>
+        <flag>stop</flag>
+        <time>00:02:31:341</time>
+        <value>0.675000012</value>
+    </key>
+    <key>
+        <flag>play</flag>
+        <time>00:03:00:312</time>
+        <value>0.675000012</value>
+    </key>
+    <key>
+        <flag>play</flag>
+        <time>00:04:30:556</time>
+        <value>0.449999988</value>
+    </key>
+</keyframes>

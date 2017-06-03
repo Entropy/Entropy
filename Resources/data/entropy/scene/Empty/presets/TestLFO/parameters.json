@@ -143,96 +143,11 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
-        "Camera_Front::Tumble Override": "0",
-        "Post_Effects_Back::Bloom::Boost": "0",
-        "Post_Effects_Back::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Back::Bloom::Debug Blur": "0",
-        "Post_Effects_Back::Bloom::Enabled": "0",
-        "Post_Effects_Back::Bloom::Num Passes": "0",
-        "Post_Effects_Back::Bloom::Sigma": "0",
-        "Post_Effects_Back::Color::Brightness": "0",
-        "Post_Effects_Back::Color::Contrast": "0",
-        "Post_Effects_Back::Color::Enabled": "0",
-        "Post_Effects_Back::Color::Exposure": "0",
-        "Post_Effects_Back::Color::Gamma": "0",
-        "Post_Effects_Back::Color::Tonemapping": "0",
-        "Post_Effects_Back::Tonemapping::linear angle": "0",
-        "Post_Effects_Back::Tonemapping::linear strenght": "0",
-        "Post_Effects_Back::Tonemapping::shoulder strenght": "0",
-        "Post_Effects_Back::Tonemapping::toe denominator": "0",
-        "Post_Effects_Back::Tonemapping::toe numerator": "0",
-        "Post_Effects_Back::Tonemapping::toe strenght": "0",
-        "Post_Effects_Back::Vignette::Debug": "0",
-        "Post_Effects_Back::Vignette::Enabled": "0",
-        "Post_Effects_Back::Vignette::Inner": "0",
-        "Post_Effects_Back::Vignette::Only Alpha": "0",
-        "Post_Effects_Back::Vignette::Outer": "0",
-        "Post_Effects_Back::Vignette::Power": "0",
-        "Post_Effects_Back::Vignette::Ratio": "0",
-        "Post_Effects_Back::Vignette::Rotation": "0",
-        "Post_Effects_Front::Bloom::Boost": "0",
-        "Post_Effects_Front::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Front::Bloom::Debug Blur": "0",
-        "Post_Effects_Front::Bloom::Enabled": "0",
-        "Post_Effects_Front::Bloom::Num Passes": "0",
-        "Post_Effects_Front::Bloom::Sigma": "0",
-        "Post_Effects_Front::Color::Brightness": "0",
-        "Post_Effects_Front::Color::Contrast": "0",
-        "Post_Effects_Front::Color::Enabled": "0",
-        "Post_Effects_Front::Color::Exposure": "0",
-        "Post_Effects_Front::Color::Gamma": "0",
-        "Post_Effects_Front::Color::Tonemapping": "0",
-        "Post_Effects_Front::Tonemapping::linear angle": "0",
-        "Post_Effects_Front::Tonemapping::linear strenght": "0",
-        "Post_Effects_Front::Tonemapping::shoulder strenght": "0",
-        "Post_Effects_Front::Tonemapping::toe denominator": "0",
-        "Post_Effects_Front::Tonemapping::toe numerator": "0",
-        "Post_Effects_Front::Tonemapping::toe strenght": "0",
-        "Post_Effects_Front::Vignette::Debug": "0",
-        "Post_Effects_Front::Vignette::Enabled": "0",
-        "Post_Effects_Front::Vignette::Inner": "0",
-        "Post_Effects_Front::Vignette::Only Alpha": "0",
-        "Post_Effects_Front::Vignette::Outer": "0",
-        "Post_Effects_Front::Vignette::Power": "0",
-        "Post_Effects_Front::Vignette::Ratio": "0",
-        "Post_Effects_Front::Vignette::Rotation": "0"
+        "Camera_Front::Tumble Override": "0"
     },
     "Media": [
         {
-            "Movie": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1.918",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 0, 1, 1",
-                    "Width": "5"
-                },
-                "File Path": "E:\\mov\\test yannick.mov",
-                "Playback": {
-                    "Fade Knob": "16",
-                    "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Loop": "1",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
-                }
-            },
-            "page": 0,
-            "type": 2
-        },
-        {
-            "HPV": {
+            "Sound": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
@@ -247,96 +162,27 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_IntroBigBang.hpv",
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\wav\\Part 3_AcBubbles_TOTAL_ V2.wav",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
                     "Loop": "0",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0"
                 }
             },
             "page": 0,
-            "type": 3
+            "type": 4
         }
-    ],
-    "Post Effects": {
-        "Post Effects Back": {
-            "Bloom": {
-                "Boost": "1",
-                "Brightness Threshold": "1",
-                "Debug Blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Enabled": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Tonemapping": {
-                "linear angle": "0.1",
-                "linear strenght": "0.3",
-                "shoulder strenght": "0.22",
-                "toe denominator": "0.3",
-                "toe numerator": "0.01",
-                "toe strenght": "0.2"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
-                "Ratio": "1",
-                "Rotation": "0"
-            }
-        },
-        "Post Effects Front": {
-            "Bloom": {
-                "Boost": "1",
-                "Brightness Threshold": "1",
-                "Debug Blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Enabled": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Tonemapping": {
-                "linear angle": "0.1",
-                "linear strenght": "0.3",
-                "shoulder strenght": "0.22",
-                "toe denominator": "0.3",
-                "toe numerator": "0.01",
-                "toe strenght": "0.2"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
-                "Ratio": "1",
-                "Rotation": "0"
-            }
-        }
-    }
+    ]
 }
