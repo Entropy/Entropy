@@ -163,6 +163,8 @@ namespace entropy
 					ofParameter<float> fadeTwist{ "Fade Twist", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> useFadeLFO{ "Use Fade LFO", false };
 					ofParameter<bool> flipLFO{ "Flip LFO", false };
+					ofParameter<bool> remapLFO{ "Remap LFO", false };
+					ofParameter<float> lfoScale{ "LFO Scale", 10.0f, 0.1f, 20.0f };
 					ofParameter<float> fadeLFO{ "Fade LFO", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
@@ -173,7 +175,7 @@ namespace entropy
 					PARAM_DECLARE("Playback",
 						useFadeTrack, fadeTrack,
 						useFadeTwist, fadeKnob, fadeTwist,
-						useFadeLFO, flipLFO, fadeLFO,
+						useFadeLFO, flipLFO, remapLFO, lfoScale, fadeLFO,
 						loop, syncMode,
 						freeSpeed, useSpeedTwist, speedKnob);
 				} playback;

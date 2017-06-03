@@ -340,9 +340,17 @@ namespace entropy
 				}
 				else
 				{
-					this->lfoVal += dt * lfoSpeed * 10;
+					this->lfoVal += dt * lfoSpeed * this->parameters.playback.lfoScale;
 				}
-				this->parameters.playback.fadeLFO = (this->parameters.playback.flipLFO ? sinf(lfoVal - glm::half_pi<float>()) : cosf(lfoVal)) * 0.5f + 0.5f;
+				float waveVal = (this->parameters.playback.flipLFO ? sinf(lfoVal - glm::half_pi<float>()) : cosf(lfoVal));
+				if (this->parameters.playback.remapLFO)
+				{
+					this->parameters.playback.fadeLFO = waveVal * 0.5f + 0.5f;
+				}
+				else
+				{
+					this->parameters.playback.fadeLFO = std::max(0.0f, waveVal);
+				}
 			}
 			else
 			{
@@ -492,6 +500,9 @@ namespace entropy
 					if (this->parameters.playback.useFadeLFO)
 					{
 						ofxImGui::AddParameter(this->parameters.playback.flipLFO);
+						ImGui::SameLine();
+						ofxImGui::AddParameter(this->parameters.playback.remapLFO);
+						ofxImGui::AddParameter(this->parameters.playback.lfoScale);
 						ofxImGui::AddParameter(this->parameters.playback.fadeLFO);
 					}
 					ofxImGui::AddParameter(this->parameters.playback.loop);
