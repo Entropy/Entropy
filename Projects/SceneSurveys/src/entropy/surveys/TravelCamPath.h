@@ -46,11 +46,13 @@ namespace entropy
 			ofParameter<bool> lookThrough{ "Look Through", true };
 			ofParameter<bool> reset{ "Reset Position", false };
 			ofParameter<float> speed{ "Speed", 1.0f, 0.0f, 100.0f, ofParameterScale::Logarithmic };
+			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.75f, 0.0f, 1.0f };
 			ofParameterGroup travel{ "Travel",
 				enabled,
 				lookThrough,
 				reset,
-				speed 
+				speed,
+				lookAtLerp
 			};
 
 			ofParameter<bool> clearPath{ "Clear Path", false };

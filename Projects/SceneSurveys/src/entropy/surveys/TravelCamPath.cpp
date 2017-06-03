@@ -152,7 +152,26 @@ namespace entropy
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
 				const auto upDir = glm::normalize(glm::cross(xAxis, glm::normalize(nextPoint - currPoint)));
-				//this->camera.lookAt(nextPoint, upDir);
+
+				if (this->lookAtLerp == 1.0f)
+				{
+					this->camera.lookAt(nextPoint, upDir);
+				}
+				else
+				{
+					const auto zAxis = glm::normalize(this->camera.getGlobalPosition() - nextPoint);
+					if (glm::length(zAxis) > 0.0f) 
+					{
+						const auto xAxis = glm::normalize(glm::cross(upDir, zAxis));
+						const auto yAxis = glm::cross(zAxis, xAxis);
+						glm::mat4 m;
+						m[0] = glm::vec4(xAxis, 0.f);
+						m[1] = glm::vec4(yAxis, 0.f);
+						m[2] = glm::vec4(zAxis, 0.f);
+						const auto targetOrientation = glm::mix(this->camera.getGlobalOrientation(), glm::toQuat(m), this->lookAtLerp.get());
+						this->camera.setGlobalOrientation(targetOrientation);
+					}
+				}
 
 				this->reset = false;
 			}
