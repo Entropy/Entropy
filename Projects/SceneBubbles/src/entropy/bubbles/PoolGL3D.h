@@ -40,7 +40,7 @@ namespace entropy
 			//void gui(ofxImGui::Settings & settings) override;
 
 			ofParameter<int> filterMode{ "Filter Mode", static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Linear), static_cast<int>(FilterMode::Nearest) };
-			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 1920.0f };
+			ofParameter<float> volumeSize{ "Volume Size", 800.0f, 512.0f, 12000.0f };
 
 			const ofxTexture & getDrawTexture() const;
 
