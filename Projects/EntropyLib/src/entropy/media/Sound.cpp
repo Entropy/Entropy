@@ -176,6 +176,7 @@ namespace entropy
 
 				this->freePlayMediaStartFrame = 0;
 				
+				this->freePlayMediaLastMs = this->freePlayMediaStartMs;
 				this->freePlayNeedsInit = false;
 
 				return true;
