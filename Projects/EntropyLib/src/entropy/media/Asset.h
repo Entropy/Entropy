@@ -166,15 +166,16 @@ namespace entropy
 					ofParameter<float> fadeLFO{ "Fade LFO", 1.0f, 0.0f, 1.0f };
 					ofParameter<bool> loop{ "Loop", false };
 					ofParameter<int> syncMode{ "Sync Mode", static_cast<int>(SyncMode::Timeline), static_cast<int>(SyncMode::FreePlay), static_cast<int>(SyncMode::LinkedMedia) };
-					ofParameter<float> freeSpeed{ "Free Speed", 1.0f, 0.0f, 10.0f, ofParameterScale::Logarithmic };
+					ofParameter<float> freeSpeed{ "Free Speed", 1.0f, 0.0f, 2.0f };
+					ofParameter<bool> useSpeedTwist{ "Use Speed Twist", false };
+					ofParameter<int> speedKnob{ "Speed Knob", 16, 0, 15 };
 
 					PARAM_DECLARE("Playback",
 						useFadeTrack, fadeTrack,
 						useFadeTwist, fadeKnob, fadeTwist,
 						useFadeLFO, flipLFO, fadeLFO,
-						loop,
-						syncMode,
-						freeSpeed);
+						loop, syncMode,
+						freeSpeed, useSpeedTwist, speedKnob);
 				} playback;
 
 				PARAM_DECLARE("Media",
@@ -235,10 +236,14 @@ namespace entropy
 			void removeLFOTrack();
 
 			// Twister
-			void addTwisterSync();
-			void removeTwisterSync();
+			void addTwisterFade();
+			void removeTwisterFade();
 
-			int twisterKnob;
+			void addTwisterSpeed();
+			void removeTwisterSpeed();
+
+			int twisterFade;
+			int twisterSpeed;
 
 			// Per-frame attributes.
 			ofRectangle srcBounds;

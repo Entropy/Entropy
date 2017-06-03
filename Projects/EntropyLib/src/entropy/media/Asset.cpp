@@ -17,7 +17,8 @@ namespace entropy
 			, boundsDirty(false)
 			, borderDirty(false)
 			, wasLoaded(false)
-			, twisterKnob(-1)
+			, twisterFade(-1)
+			, twisterSpeed(-1)
 			, switchMillis(-1.0f)
 			, switchesTrack(nullptr)
 			, curvesTrack(nullptr)
@@ -194,18 +195,18 @@ namespace entropy
 			{
 				if (enabled)
 				{
-					this->addTwisterSync();
+					this->addTwisterFade();
 				}
 				else
 				{
-					this->removeTwisterSync();
+					this->removeTwisterFade();
 				}
 			}));
 			this->parameterListeners.push_back(this->parameters.playback.fadeKnob.newListener([this](int &)
 			{
 				if (this->parameters.playback.useFadeTwist)
 				{
-					this->addTwisterSync();
+					this->addTwisterFade();
 				}
 			}));
 			this->parameterListeners.push_back(this->parameters.playback.fadeTwist.newListener([this](float &)
@@ -253,6 +254,25 @@ namespace entropy
 				else if (syncMode == SyncMode::FadeControl && this->getTotalFade() > 0.0f)
 				{
 					this->freePlayNeedsInit = true;
+				}
+			}));
+
+			this->parameterListeners.push_back(this->parameters.playback.useSpeedTwist.newListener([this](bool & enabled)
+			{
+				if (enabled)
+				{
+					this->addTwisterSpeed();
+				}
+				else
+				{
+					this->removeTwisterSpeed();
+				}
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.speedKnob.newListener([this](int &)
+			{
+				if (this->parameters.playback.useSpeedTwist)
+				{
+					this->addTwisterSpeed();
 				}
 			}));
 
@@ -481,6 +501,8 @@ namespace entropy
 					if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
 					{
 						ofxImGui::AddParameter(this->parameters.playback.freeSpeed);
+						ofxImGui::AddParameter(this->parameters.playback.useSpeedTwist);
+						ofxImGui::AddStepper(this->parameters.playback.speedKnob);
 					}
 
 					ofxImGui::EndTree(settings);
@@ -843,38 +865,73 @@ namespace entropy
 		{
 			if (this->parameters.playback.useFadeTwist)
 			{
-				this->addTwisterSync();
+				this->addTwisterFade();
 			}
 			else
 			{
-				this->removeTwisterSync();
+				this->removeTwisterFade();
+			}
+
+			if (this->parameters.playback.useSpeedTwist)
+			{
+				this->addTwisterSpeed();
+			}
+			else
+			{
+				this->removeTwisterSpeed();
 			}
 		}
 
 		//--------------------------------------------------------------
-		void Asset::addTwisterSync()
+		void Asset::addTwisterFade()
 		{
 #ifdef OFX_PARAMETER_TWISTER
 			if (this->parameters.playback.fadeKnob < 16)
 			{
 				auto twister = GetApp()->getTwister();
-
-				this->removeTwisterSync();
-				this->twisterKnob = this->parameters.playback.fadeKnob;
-				twister->setParam(this->twisterKnob, this->parameters.playback.fadeTwist);
+				this->removeTwisterFade();
+				this->twisterFade = this->parameters.playback.fadeKnob;
+				twister->setParam(this->twisterFade, this->parameters.playback.fadeTwist);
 			}
 #endif
 		}
 
 		//--------------------------------------------------------------
-		void Asset::removeTwisterSync()
+		void Asset::removeTwisterFade()
 		{
 #ifdef OFX_PARAMETER_TWISTER
-			if (this->twisterKnob != -1)
+			if (this->twisterFade != -1)
 			{
 				auto twister = GetApp()->getTwister();
-				twister->clearParam(this->twisterKnob);
-				this->twisterKnob = -1;
+				twister->clearParam(this->twisterFade);
+				this->twisterFade = -1;
+			}
+#endif
+		}
+
+		//--------------------------------------------------------------
+		void Asset::addTwisterSpeed()
+		{
+#ifdef OFX_PARAMETER_TWISTER
+			if (this->parameters.playback.speedKnob < 16)
+			{
+				auto twister = GetApp()->getTwister();
+				this->removeTwisterSpeed();
+				this->twisterSpeed = this->parameters.playback.speedKnob;
+				twister->setParam(this->twisterSpeed, this->parameters.playback.freeSpeed);
+			}
+#endif
+		}
+
+		//--------------------------------------------------------------
+		void Asset::removeTwisterSpeed()
+		{
+#ifdef OFX_PARAMETER_TWISTER
+			if (this->twisterSpeed != -1)
+			{
+				auto twister = GetApp()->getTwister();
+				twister->clearParam(this->twisterSpeed);
+				this->twisterSpeed = -1;
 			}
 #endif
 		}
