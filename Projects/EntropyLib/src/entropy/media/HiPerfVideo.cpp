@@ -10,7 +10,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		HiPerfVideo::HiPerfVideo()
-			: Base(Type::HPV)
+			: Asset(Type::HPV)
 		{
 			// Engine initialized in ofApp::setup().
 			//HPV::InitHPVEngine();

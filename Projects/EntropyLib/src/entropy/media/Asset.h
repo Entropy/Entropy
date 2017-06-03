@@ -51,11 +51,11 @@ namespace entropy
 			LinkedMedia
 		};
 		
-		class Base
+		class Asset
 		{
 		public:
-			Base(Type type = Type::Unknown);
-			virtual ~Base();
+			Asset(Type type = Type::Unknown);
+			virtual ~Asset();
 
 			Type getType() const;
 			std::string getTypeName() const;
@@ -67,8 +67,8 @@ namespace entropy
 
 			float getTotalFade() const;
 
-			std::shared_ptr<Base> getLinkedMedia() const;
-			void setLinkedMedia(std::shared_ptr<Base> linkedMedia);
+			std::shared_ptr<Asset> getLinkedMedia() const;
+			void setLinkedMedia(std::shared_ptr<Asset> linkedMedia);
 			void clearLinkedMedia();
 
 			void refreshTwisterSync();
@@ -221,7 +221,7 @@ namespace entropy
 			uint64_t freePlayMediaLastMs;
 			bool freePlayNeedsInit;
 
-			std::shared_ptr<Base> linkedMedia;
+			std::shared_ptr<Asset> linkedMedia;
 
 			// Timeline
 			void addSwitchesTrack();

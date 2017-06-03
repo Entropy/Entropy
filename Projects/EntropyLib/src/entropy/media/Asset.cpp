@@ -1,4 +1,4 @@
-#include "Base.h"
+#include "Asset.h"
 
 #include "entropy/Helpers.h"
 #include "entropy/util/App.h"
@@ -11,7 +11,7 @@ namespace entropy
 	namespace media
 	{
 		//--------------------------------------------------------------
-		Base::Base(Type type)
+		Asset::Asset(Type type)
 			: type(type)
 			, editing(false)
 			, boundsDirty(false)
@@ -31,19 +31,19 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		Base::~Base()
+		Asset::~Asset()
 		{
 			this->clear_();
 		}
 
 		//--------------------------------------------------------------
-		Type Base::getType() const
+		Type Asset::getType() const
 		{
 			return this->type;
 		}
 
 		//--------------------------------------------------------------
-		std::string Base::getTypeName() const
+		std::string Asset::getTypeName() const
 		{
 			switch (this->type)
 			{
@@ -61,7 +61,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Base::renderLayout(render::Layout layout)
+		bool Asset::renderLayout(render::Layout layout)
 		{
 			if (layout == render::Layout::Back && this->parameters.render.renderBack)
 			{
@@ -75,55 +75,55 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		Surface Base::getSurface()
+		Surface Asset::getSurface()
 		{
 			return static_cast<Surface>(this->parameters.render.surface.get());
 		}
 
 		//--------------------------------------------------------------
-		HorzAlign Base::getHorzAlign()
+		HorzAlign Asset::getHorzAlign()
 		{
 			return static_cast<HorzAlign>(this->parameters.render.alignHorz.get());
 		}
 
 		//--------------------------------------------------------------
-		VertAlign Base::getVertAlign()
+		VertAlign Asset::getVertAlign()
 		{
 			return static_cast<VertAlign>(this->parameters.render.alignVert.get());
 		}
 
 		//--------------------------------------------------------------
-		SyncMode Base::getSyncMode()
+		SyncMode Asset::getSyncMode()
 		{
 			return static_cast<SyncMode>(this->parameters.playback.syncMode.get());
 		}
 
 		//--------------------------------------------------------------
-		float Base::getTotalFade() const
+		float Asset::getTotalFade() const
 		{
 			return (this->parameters.playback.fadeTrack * this->parameters.playback.fadeTwist * this->parameters.playback.fadeLFO);
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<Base> Base::getLinkedMedia() const
+		std::shared_ptr<Asset> Asset::getLinkedMedia() const
 		{
 			return this->linkedMedia;
 		}
 
 		//--------------------------------------------------------------
-		void Base::setLinkedMedia(std::shared_ptr<Base> linkedMedia)
+		void Asset::setLinkedMedia(std::shared_ptr<Asset> linkedMedia)
 		{
 			this->linkedMedia = linkedMedia;
 		}
 		
 		//--------------------------------------------------------------
-		void Base::clearLinkedMedia()
+		void Asset::clearLinkedMedia()
 		{
 			this->linkedMedia.reset();
 		}
 
 		//--------------------------------------------------------------
-		void Base::init_(int index, int page, std::shared_ptr<ofxTimeline> timeline)
+		void Asset::init_(int index, int page, std::shared_ptr<ofxTimeline> timeline)
 		{
 			this->index = index;
 			this->page = page;
@@ -260,7 +260,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::clear_()
+		void Asset::clear_()
 		{
 			this->clear();
 
@@ -273,7 +273,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::setup_()
+		void Asset::setup_()
 		{
 			this->setup();
 
@@ -281,13 +281,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::exit_()
+		void Asset::exit_()
 		{
 			this->exit();
 		}
 
 		//--------------------------------------------------------------
-		void Base::resize_(ofResizeEventArgs & args)
+		void Asset::resize_(ofResizeEventArgs & args)
 		{
 			// Update right away so that event listeners can use the new bounds.
 			this->updateBounds();
@@ -296,7 +296,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::update_(double dt)
+		void Asset::update_(double dt)
 		{
 			if (this->boundsDirty)
 			{
@@ -351,7 +351,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::draw_()
+		void Asset::draw_()
 		{
 			ofPushStyle();
 			{
@@ -386,7 +386,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::gui_(ofxImGui::Settings & settings)
+		void Asset::gui_(ofxImGui::Settings & settings)
 		{
 			if (!this->editing) return;
 
@@ -490,7 +490,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::serialize_(nlohmann::json & json)
+		void Asset::serialize_(nlohmann::json & json)
 		{
 			json["type"] = static_cast<int>(this->type);
 			json["page"] = static_cast<int>(this->page);
@@ -501,7 +501,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::deserialize_(const nlohmann::json & json)
+		void Asset::deserialize_(const nlohmann::json & json)
 		{
 			ofxPreset::Serializer::Deserialize(json, this->parameters);
 
@@ -533,7 +533,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Base::shouldPlay()
+		bool Asset::shouldPlay()
 		{
 			// Not loaded.
 			if (!this->isLoaded()) return false;
@@ -593,7 +593,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		uint64_t Base::getPlaybackTimeMs(bool wrap)
+		uint64_t Asset::getPlaybackTimeMs(bool wrap)
 		{
 			const uint64_t durationMs = this->getDurationMs();
 			if (durationMs == 0) return 0;
@@ -640,7 +640,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		uint64_t Base::getPlaybackFrame()
+		uint64_t Asset::getPlaybackFrame()
 		{
 			const auto syncMode = this->getSyncMode();
 
@@ -664,7 +664,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addSwitchesTrack()
+		void Asset::addSwitchesTrack()
 		{
 			if (!this->timeline)
 			{
@@ -690,7 +690,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeSwitchesTrack()
+		void Asset::removeSwitchesTrack()
 		{
 			if (!this->timeline)
 			{
@@ -714,7 +714,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Base::addDefaultSwitch()
+		bool Asset::addDefaultSwitch()
 		{
 			if (!this->timeline)
 			{
@@ -739,7 +739,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addCurvesTrack()
+		void Asset::addCurvesTrack()
 		{
 			if (!this->timeline)
 			{
@@ -765,7 +765,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeCurvesTrack()
+		void Asset::removeCurvesTrack()
 		{
 			if (!this->timeline)
 			{
@@ -789,7 +789,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addLFOTrack()
+		void Asset::addLFOTrack()
 		{
 			if (!this->timeline)
 			{
@@ -815,7 +815,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeLFOTrack()
+		void Asset::removeLFOTrack()
 		{
 			if (!this->timeline)
 			{
@@ -839,7 +839,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::refreshTwisterSync()
+		void Asset::refreshTwisterSync()
 		{
 			if (this->parameters.playback.useFadeTwist)
 			{
@@ -852,7 +852,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::addTwisterSync()
+		void Asset::addTwisterSync()
 		{
 #ifdef OFX_PARAMETER_TWISTER
 			if (this->parameters.playback.fadeKnob < 16)
@@ -867,7 +867,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::removeTwisterSync()
+		void Asset::removeTwisterSync()
 		{
 #ifdef OFX_PARAMETER_TWISTER
 			if (this->twisterKnob != -1)
@@ -880,7 +880,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::updateBounds()
+		void Asset::updateBounds()
 		{
 			glm::vec2 canvasSize;
 			if (this->parameters.render.renderBack)
@@ -949,7 +949,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void Base::updateBorder()
+		void Asset::updateBorder()
 		{
 			this->borderMesh.clear();
 			

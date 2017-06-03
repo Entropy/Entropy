@@ -7,7 +7,7 @@
 #include "ofxTimeline.h"
 
 #include "entropy/geom/Box.h"
-#include "entropy/media/Base.h"
+#include "entropy/media/Asset.h"
 #include "entropy/media/Link.h"
 #include "entropy/post/ColorEffects.h"
 #include "entropy/render/Layout.h"
@@ -169,11 +169,11 @@ namespace entropy
 			std::map<std::string, std::vector<std::shared_ptr<util::AbstractMapping>>> mappings;
 
 			// Media
-			std::shared_ptr<media::Base> addMedia(media::Type type, int page);
+			std::shared_ptr<media::Asset> addMedia(media::Type type, int page);
 			void removeMedia();
 
 			int mediaPage;
-			std::vector<std::shared_ptr<media::Base>> medias;
+			std::vector<std::shared_ptr<media::Asset>> medias;
 
 			// Links
 			std::shared_ptr<media::Link> addLink(size_t idxA, size_t idxB, bool direction);

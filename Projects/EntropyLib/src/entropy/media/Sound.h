@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 #include "ofFileUtils.h"
 #include "ofSoundPlayer.h"
@@ -12,7 +12,7 @@ namespace entropy
 	namespace media
 	{
 		class Sound
-			: public Base
+			: public Asset
 		{
 		public:
 			Sound();

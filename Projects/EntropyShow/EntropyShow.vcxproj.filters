@@ -79,9 +79,6 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
@@ -315,6 +312,9 @@
     </ClCompile>
     <ClCompile Include="src\entropy\post\ColorEffects.cpp">
       <Filter>src\entropy\post</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Asset.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -674,9 +674,6 @@
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Stripes.h">
       <Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
@@ -1012,6 +1009,9 @@
     </ClInclude>
     <ClInclude Include="src\entropy\post\ColorEffects.h">
       <Filter>src\entropy\post</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Asset.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

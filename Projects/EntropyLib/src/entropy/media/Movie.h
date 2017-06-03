@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 #include "ofFileUtils.h"
 #include "ofVideoPlayer.h"
@@ -12,7 +12,7 @@ namespace entropy
 	namespace media
 	{
 		class Movie 
-			: public Base
+			: public Asset
 		{
 		public:
 			Movie();

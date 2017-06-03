@@ -473,7 +473,7 @@ namespace entropy
 					std::vector<std::string> mediaNamesStr{ this->medias.size() };
 					std::vector<const char*> mediaNamesChr{ this->medias.size() };
 					int i = 0;
-					std::transform(this->medias.begin(), this->medias.end(), mediaNamesStr.begin(), [i] (std::shared_ptr<media::Base> & m) mutable
+					std::transform(this->medias.begin(), this->medias.end(), mediaNamesStr.begin(), [i] (std::shared_ptr<media::Asset> & m) mutable
 					{
 						return m->getTypeName() + " " + ofToString(i++);
 					});
@@ -1146,9 +1146,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<media::Base> Base::addMedia(media::Type type, int page)
+		std::shared_ptr<media::Asset> Base::addMedia(media::Type type, int page)
 		{
-			std::shared_ptr<media::Base> media;
+			std::shared_ptr<media::Asset> media;
 			if (type == media::Type::Image)
 			{
 				media = std::make_shared<media::Image>();

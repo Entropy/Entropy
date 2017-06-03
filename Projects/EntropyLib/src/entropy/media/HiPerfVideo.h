@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 #include "ofFileUtils.h"
 #include "ofxHPVPlayer.h"
@@ -12,7 +12,7 @@ namespace entropy
 	namespace media
 	{
 		class HiPerfVideo
-			: public Base
+			: public Asset
 		{
 		public:
 			HiPerfVideo();

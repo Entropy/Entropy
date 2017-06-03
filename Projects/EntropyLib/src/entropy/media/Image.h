@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 #include "ofFileUtils.h"
 #include "ofTexture.h"
@@ -12,7 +12,7 @@ namespace entropy
 	namespace media
 	{
 		class Image 
-			: public Base
+			: public Asset
 		{
 		public:
 			Image();

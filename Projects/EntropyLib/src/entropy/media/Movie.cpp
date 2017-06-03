@@ -11,7 +11,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Movie::Movie()
-			: Base(Type::Movie)
+			: Asset(Type::Movie)
 		{
 			this->videoPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}

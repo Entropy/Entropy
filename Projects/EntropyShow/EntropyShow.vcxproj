@@ -205,7 +205,7 @@
     <ClCompile Include="..\EntropyGeom\src\entropy\geom\Stripes.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\HiPerfVideo.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp" />
-    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp" />
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Asset.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\media\Sound.cpp" />
     <ClCompile Include="..\EntropyLib\src\entropy\render\Canvas.cpp" />
@@ -313,7 +313,7 @@
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Shape.h" />
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Sphere.h" />
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Stripes.h" />
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h" />
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Asset.h" />
     <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h" />
     <ClInclude Include="..\EntropyLib\src\entropy\media\Image.h" />
     <ClInclude Include="..\EntropyLib\src\entropy\media\Movie.h" />
