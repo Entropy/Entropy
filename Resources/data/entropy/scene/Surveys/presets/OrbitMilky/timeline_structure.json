@@ -39,6 +39,13 @@
                     "name": "Surveys/Shared/Points/Size",
                     "scale": 1,
                     "type": "Curves"
+                },
+                {
+                    "max": 1000.0,
+                    "min": 0.00100000004749745,
+                    "name": "Surveys/Sphere/Radius",
+                    "scale": 0,
+                    "type": "Curves"
                 }
             ]
         }

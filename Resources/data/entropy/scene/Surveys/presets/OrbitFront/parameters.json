@@ -105,7 +105,7 @@
         "Shared": {
             "Model": {
                 "Alpha_Scale": "1",
-                "Clip_Mass": "0.0689615",
+                "Clip_Mass": "0.68",
                 "Clip_Size": "1000",
                 "Geo_Scale": "8",
                 "Max_Density_Size": "10",
@@ -117,7 +117,7 @@
             "Points": {
                 "Attenuation": "600",
                 "Distance_Fade": "0.133694",
-                "Size": "0.262416"
+                "Size": "0.175"
             },
             "Shells": {
                 "Alpha": "1",
@@ -136,7 +136,7 @@
             "Cull_Face": "0",
             "Depth_Test": "0",
             "Enabled": "0",
-            "Radius": "1000",
+            "Radius": "0.001",
             "Resolution": "16"
         },
         "Travel_Cam_Path": {
@@ -166,8 +166,8 @@
             "Min_Longitude": "0",
             "Min_Radius": "0.05",
             "Render_Models": "0",
-            "Render_Points": "1",
-            "Render_Shells": "1"
+            "Render_Points": "0",
+            "Render_Shells": "0"
         }
     },
     "ofEasyCam": {
@@ -181,7 +181,7 @@
         "lensOffset": "0, 0",
         "mouseInputEnabled": true,
         "mouseMiddleButtonEnabled": true,
-        "nearClip": 0.00100000004749745,
+        "nearClip": 9.99999974737875e-05,
         "orientation": "0.993913, 1.732e-06, 0.000730963, 0.110169",
         "ortho": false,
         "position": "2.56491, 0.210609, 1373.44",
@@ -198,7 +198,7 @@
             "forceAspectRatio": true,
             "fov": 60.0,
             "lensOffset": "0, 0",
-            "nearClip": 0.00100000004749745,
+            "nearClip": 9.99999974737875e-05,
             "orientation": "0.237001, -0.463632, 0.829747, 0.200993",
             "ortho": false,
             "position": "35.3457, 105.838, -167.182",

@@ -1,56 +1,62 @@
 <positions>
     <element name="Camera">
         <x>0.000000000</x>
-        <y>444.000000000</y>
-        <width>1920.000000000</width>
+        <y>700.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Cues">
         <x>0.000000000</x>
-        <y>380.000000000</y>
-        <width>1920.000000000</width>
+        <y>636.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/BOSS/Max_Radius">
         <x>0.000000000</x>
-        <y>508.000000000</y>
-        <width>1920.000000000</width>
+        <y>764.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Min_Radius">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/DES/Max_Longitude">
         <x>0.000000000</x>
         <y>572.000000000</y>
-        <width>1920.000000000</width>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/DES/Max_Radius">
         <x>0.000000000</x>
-        <y>636.000000000</y>
-        <width>1920.000000000</width>
+        <y>828.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/DES/Min_Longitude">
         <x>0.000000000</x>
         <y>700.000000000</y>
-        <width>1920.000000000</width>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/Post_Effects/Color/Exposure">
         <x>0.000000000</x>
-        <y>764.000000000</y>
-        <width>1920.000000000</width>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/Scene/World_Scale">
         <x>0.000000000</x>
-        <y>828.000000000</y>
-        <width>1920.000000000</width>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/Shared/Points/Size">
         <x>0.000000000</x>
-        <y>892.000000000</y>
-        <width>1920.000000000</width>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/Shared/Shells/Density">
@@ -61,14 +67,20 @@
     </element>
     <element name="Surveys/Sphere/Alpha">
         <x>0.000000000</x>
-        <y>956.000000000</y>
-        <width>1920.000000000</width>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Sphere/Radius">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Surveys/ViziR/Max_Radius">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
-        <width>1920.000000000</width>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>
