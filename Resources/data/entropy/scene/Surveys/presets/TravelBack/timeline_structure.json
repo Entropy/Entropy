@@ -11,6 +11,38 @@
                 {
                     "name": "Cues",
                     "type": "Flags"
+                },
+                {
+                    "max": 5000.0,
+                    "min": 0.00999999977648258,
+                    "name": "Surveys/Scene/Camera/Far_Clip",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Surveys/Scene/Camera_Mix",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 32.0,
+                    "min": 0.00999999977648258,
+                    "name": "Surveys/Shared/Points/Size",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "name": "Surveys/Travel_Cam_Path/Travel/Enable_Travel",
+                    "type": "Switches"
+                },
+                {
+                    "max": 0.5,
+                    "min": 0.0,
+                    "name": "Surveys/Travel_Cam_Path/Travel/Speed",
+                    "scale": 0,
+                    "type": "Curves"
                 }
             ]
         }

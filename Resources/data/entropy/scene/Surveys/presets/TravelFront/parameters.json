@@ -90,10 +90,10 @@
         "Scene": {
             "Camera": {
                 "FOV": "30",
-                "Far_Clip": "80",
+                "Far_Clip": "10",
                 "Near_Clip": "0.001"
             },
-            "Camera_Mix": "1",
+            "Camera_Mix": "0.0700199",
             "Orbit_Speed": "0",
             "Recording": {
                 "Record_Sequence": "0",
@@ -117,7 +117,7 @@
             "Points": {
                 "Attenuation": "600",
                 "Distance_Fade": "0.1",
-                "Size": "0.5"
+                "Size": "0.1"
             },
             "Shells": {
                 "Alpha": "1",
@@ -144,7 +144,7 @@
                 "Add_Points": "0",
                 "Clear_Path": "0",
                 "Curve_Resolution": "10",
-                "Debug_Draw": "1",
+                "Debug_Draw": "0",
                 "Edit_Points": "0",
                 "Nudge_Amount": "1",
                 "Start_Path": "0"
@@ -152,9 +152,9 @@
             "Travel": {
                 "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "1.08601",
+                "Percent": "0",
                 "Reset_Position": "0",
-                "Speed": "0.11"
+                "Speed": "0"
             }
         },
         "ViziR": {
@@ -175,7 +175,7 @@
         "aspectRatio": 3.28125,
         "distance": 1091.18933105469,
         "drag": 0.899999976158142,
-        "farClip": 80.0,
+        "farClip": 10.0,
         "forceAspectRatio": true,
         "fov": 30.0,
         "inertiaEnabled": false,
@@ -195,14 +195,14 @@
     "travelCamPath": {
         "camera": {
             "aspectRatio": 3.28125,
-            "farClip": 80.0,
+            "farClip": 10.0,
             "forceAspectRatio": true,
             "fov": 30.0,
             "lensOffset": "0, 0",
             "nearClip": 0.00100000004749745,
-            "orientation": "-0.0133763, 0.33824, 0.874771, 0.346684",
+            "orientation": "0.0343596, 0.351613, 0.846839, 0.397557",
             "ortho": false,
-            "position": "0, -3.05176e-05, 0",
+            "position": "143.621, 440.517, -587.708",
             "scale": "1, 1, 1"
         },
         "curvePoints": [
