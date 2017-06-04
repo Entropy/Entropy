@@ -167,7 +167,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void DataSet::update(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & sharedParams, bool updatePicking)
+		void DataSet::update(const glm::mat4 & worldTransform, const ofCamera & camera, const ofRectangle & viewport, SharedParams & sharedParams, bool updatePicking)
 		{
 			if (!this->parameters.renderModels) return;
 
@@ -186,6 +186,8 @@ namespace entropy
 			float clipFadeMin = camera.getFarClip() * (1.0f - sharedParams.point.distanceFade);
 			float clipFadeMax = camera.getFarClip();
 
+			float trackMinDist = std::numeric_limits<float>::max();
+
 			for (int i = 0; i < this->coordinates.size(); ++i)
 			{
 				const auto & coords = this->coordinates[i];
@@ -194,6 +196,7 @@ namespace entropy
 				//if (i < 10) cout << "update() comparing mass " << this->masses[i] << " < " << mappedMinMass << endl;
 				if (this->masses[i] < mappedMinMass)
 				{
+					if (i == this->trackIdx) cout << "MASS " << this->masses[i] << " OOB " << mappedMinMass << endl;
 					continue;
 				}
 
@@ -202,6 +205,7 @@ namespace entropy
 					this->mappedLongitudeRange.x > coords.x || coords.x > this->mappedLongitudeRange.y ||
 					this->mappedLatitudeRange.x > coords.y || coords.y > this->mappedLatitudeRange.y)
 				{
+					if (i == this->trackIdx) cout << "COORDS " << coords << " OOB" << endl;
 					continue;
 				}
 
@@ -211,46 +215,37 @@ namespace entropy
 					coords.z * sin(coords.y),
 					1.0f);
 
-				// Test that the point is larger than the clipping size.
-				const auto eyePos = cameraModelView * worldTransform * position;
-				const float eyeDist = glm::length(eyePos.xyz());
-				const float attenuation = sharedParams.point.attenuation / eyeDist;
-				const float size = sharedParams.point.size * this->masses[i] * attenuation;
-				if (size < sharedParams.model.clipSize)
-				{
-					continue;
-				}
-				
 				// Test that the point is inside the visible frustum.
+				const auto eyePos = cameraModelView * worldTransform * position;
 				const auto camPos = cameraProjection * eyePos;
 				const auto clipPos = camPos.xyz() / camPos.w;
 				if (-1 > clipPos.x || clipPos.x > 1 ||
 					-1 > clipPos.y || clipPos.y > 1 ||
 					0 > clipPos.z || clipPos.z > 1)
 				{
+					if (i == this->trackIdx) cout << "CLIPPOS " << clipPos << " OOB" << endl;
 					continue;
 				}
 				
 				// Passed all tests, add this instance!
 				InstanceData instanceData;
 
-				if (this->masses[i] < mappedMinMass)
-				{
-					instanceData.dummy = 1.0;
-				}
-				else
-				{
-					instanceData.dummy = 0.0;
-				}
+				instanceData.dummy = (i == this->trackIdx ? 1.0 : 0.0);
 				
 				// Build and add transform matrix.
-				auto scale = glm::vec3(this->masses[i] * sharedParams.model.geoScale);
+				const float modelSize = this->masses[i] * sharedParams.model.geoScale;
+				auto scale = glm::vec3(modelSize);
 				scale.y *= (1.0f - (((i % 53) / 53.0f) * sharedParams.model.squashRange));
 
 				auto transform = glm::translate(worldTransform, position.xyz());
 				transform = glm::scale(transform, scale);
 				transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
 				instanceData.transform = transform;
+
+				// Calculate the size on screen (approximatively).
+				const float eyeDist = glm::length(eyePos.xyz());
+				const float attenuation = sharedParams.point.attenuation / eyeDist;
+				const float screenSize = modelSize * attenuation * 0.33f; // this is crap, needs fixing.
 
 				// Add the alpha value based on radius.
 				if (this->mappedRadiusRange.y <= this->mappedRadiusRange.z)
@@ -260,7 +255,7 @@ namespace entropy
 					if (eyeDist > clipFadeMin)
 					{
 						// Map distance from 0.0 to 1.0.
-						alpha *= ofMap(eyeDist, clipFadeMin, clipFadeMax, 1.0f, 0.0f);
+						alpha *= ofMap(eyeDist, clipFadeMin, clipFadeMax, 1.0f, 0.0f, true);
 					}
 
 					instanceData.alpha = alpha * sharedParams.model.alphaScale;
@@ -273,14 +268,14 @@ namespace entropy
 				// Add the SFR although we don't use it yet.
 				instanceData.starFormationRate = this->starFormationRates[i];
 
-				// Add the density value based on point size.
-				if (size >= sharedParams.model.maxDensitySize)
+				// Add the density value based on screen size.
+				//if (screenSize >= sharedParams.model.maxDensitySize)
 				{
 					instanceData.densityMod = 1;
 				}
-				else
+				//else
 				{
-					instanceData.densityMod = ofMap(size, sharedParams.model.clipSize, sharedParams.model.maxDensitySize, sharedParams.model.minDensityMod, 1);
+					instanceData.alpha *= ofMap(screenSize, 1.0f, sharedParams.model.maxDensitySize, 0.5, 1);
 				}
 
 				data.push_back(instanceData);
@@ -288,10 +283,24 @@ namespace entropy
 				if (updatePicking)
 				{
 					const auto worldPos = (worldTransform * position).xyz();
-					const auto screenPos = camera.worldToScreen(worldPos).xy();
+					const auto screenPos = camera.worldToScreen(worldPos, viewport).xy();
 					this->pickingData.push_back(std::make_pair(screenPos, worldPos));
 				}
+
+				if (this->findTrackPt)
+				{
+					const auto worldPos = (worldTransform * position).xyz();
+					const auto screenPos = camera.worldToScreen(worldPos, viewport).xy();
+					const auto currDist = glm::distance(screenPos, this->trackScreenPt);
+					if (currDist < trackMinDist)
+					{
+						trackMinDist = currDist;
+						this->trackIdx = i;
+					}
+				}
 			}
+
+			this->findTrackPt = false;
 
 			if (data.empty())
 			{
@@ -322,15 +331,21 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		void DataSet::trackAtScreenPoint(const glm::vec2 & pt)
+		{
+			this->findTrackPt = true;
+			this->trackScreenPt = pt;
+		}
+
+		//--------------------------------------------------------------
 		void DataSet::drawPoints(ofShader & shader, SharedParams & sharedParams)
 		{
 			if (!this->parameters.renderPoints) return;
 
 			float mappedClipMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
 
-			//shader.setUniform1f("uMaxMass", this->parameters.renderModels ? mappedClipMass : std::numeric_limits<float>::max());
-			shader.setUniform1f("uMaxMass", mappedClipMass);
-			shader.setUniform1f("uMaxSize", this->parameters.renderModels ? sharedParams.model.clipSize : std::numeric_limits<float>::max());
+			shader.setUniform1f("uMaxMass", this->parameters.renderModels ? mappedClipMass : std::numeric_limits<float>::max());
+			//shader.setUniform1f("uMaxMass", mappedClipMass);
 			shader.setUniform1f("uCutRadius", this->mappedRadiusRange.x);
 			shader.setUniform1f("uMinRadius", this->mappedRadiusRange.y);
 			shader.setUniform1f("uMaxRadius", this->mappedRadiusRange.z);

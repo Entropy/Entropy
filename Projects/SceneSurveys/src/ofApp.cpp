@@ -67,10 +67,6 @@ void ofApp::setup()
 			}
 		}
 	}));
-	this->eventListeners.push_back(this->sharedParams.model.clipSize.newListener([this](float & val)
-	{
-		this->sharedParams.model.maxDensitySize.setMin(val + 0.001f);
-	}));
 
 	// Load the shaders.
 	this->spriteShader.setupShaderFromFile(GL_VERTEX_SHADER, "shaders/sprite.vert");
@@ -171,6 +167,14 @@ void ofApp::setup()
 	this->eventListeners.push_back(this->timeline.events().viewWasResized.newListener([this](ofEventArgs &)
 	{
 		this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
+	}));
+	this->eventListeners.push_back(this->timeline.events().bangFired.newListener([this](ofxTLBangEventArgs & args)
+	{
+		static const string kResetFlag = "reset";
+		if (args.flag.compare(0, kResetFlag.size(), kResetFlag) == 0)
+		{
+			this->travelCamPath.reset = true;
+		}
 	}));
 
 	const auto cameraTrackName = "Camera";
@@ -311,8 +315,8 @@ void ofApp::update()
 	const auto worldTransform = this->getWorldTransform();
 
 	// Update the galaxy data sets.
-	this->dataSetBoss.update(worldTransform, this->getActiveCamera(), this->sharedParams, this->travelCamPath.addPoints);
-	this->dataSetDes.update(worldTransform, this->getActiveCamera(), this->sharedParams, this->travelCamPath.addPoints);
+	this->dataSetBoss.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
+	this->dataSetDes.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
 
 	this->travelCamPath.update(this->easyCam);
 	
@@ -449,9 +453,7 @@ void ofApp::draw()
 
 	ofDisableBlendMode();
 	ofSetColor(ofColor::white);
-	//this->fboPost.draw(0, 0);
-	float scaledHeight = float(entropy::GetSceneHeight()) * ofGetWidth() / float(entropy::GetSceneWidth());
-	this->fboPost.draw(0, 0, ofGetWidth(), scaledHeight);
+	this->fboPost.draw(this->camViewport);
 
 	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
 	{
@@ -487,6 +489,11 @@ void ofApp::keyPressed(int key)
 	else if (key == 'T')
 	{
 		this->cameraTrack.addKeyframe();
+	}
+	else if (key == 'C')
+	{
+		this->easyCam.setPosition(this->travelCamPath.getCamera().getGlobalPosition());
+		this->easyCam.setOrientation(this->travelCamPath.getCamera().getGlobalOrientation());
 	}
 	else if (key == 'G')
 	{
@@ -560,7 +567,11 @@ void ofApp::mouseReleased(int x, int y, int button)
 		}
 		else if (this->travelCamPath.editPoints)
 		{
-			this->travelCamPath.editNearScreenPoint(this->easyCam, glm::vec2(x, y));
+			this->travelCamPath.editNearScreenPoint(this->easyCam, this->camViewport, glm::vec2(x, y));
+		}
+		else
+		{
+			this->dataSetDes.trackAtScreenPoint(glm::vec2(x, y));
 		}
 	}
 }
@@ -583,7 +594,11 @@ void ofApp::windowResized(int w, int h)
 	int canvasWidth = entropy::GetSceneWidth();
 	int canvasHeight = entropy::GetSceneHeight();
 
+	float scaledHeight = static_cast<float>(canvasHeight) * ofGetWidth() / static_cast<float>(canvasWidth);
+	this->camViewport = ofRectangle(0.0f, 0.0f, ofGetWidth(), scaledHeight);
+
 	this->easyCam.setAspectRatio(canvasWidth / static_cast<float>(canvasHeight));
+	this->easyCam.setControlArea(this->camViewport);
 	this->travelCamPath.copyCamera(this->easyCam, false);
 	
 	this->timeline.setOffset(glm::vec2(0, ofGetHeight() - this->timeline.getHeight()));
@@ -639,7 +654,20 @@ glm::mat4 ofApp::getWorldTransform() const
 //--------------------------------------------------------------
 ofCamera & ofApp::getActiveCamera()
 {
-	return ((this->travelCamPath.enabled && this->travelCamPath.lookThrough)? this->travelCamPath.getCamera() : this->easyCam);
+	if (this->parameters.cameraMix == 0.0f)
+	{
+		return this->easyCam;
+	}
+	if (this->parameters.cameraMix == 1.0f)
+	{
+		return this->travelCamPath.getCamera();
+	}
+	auto mixPosition = glm::mix(this->easyCam.getGlobalPosition(), this->travelCamPath.getCamera().getGlobalPosition(), this->parameters.cameraMix.get());
+	auto mixOrientation = glm::mix(this->easyCam.getGlobalOrientation(), this->travelCamPath.getCamera().getGlobalOrientation(), this->parameters.cameraMix.get());
+	this->mixCamera = this->easyCam;
+	this->mixCamera.setPosition(mixPosition);
+	this->mixCamera.setOrientation(mixOrientation);
+	return this->mixCamera;
 }
 
 //--------------------------------------------------------------

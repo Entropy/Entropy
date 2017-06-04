@@ -49,6 +49,7 @@ protected:
 	{
 		ofParameter<float> worldScale{ "World Scale", 1.0f, 0.01f, 100.0f, ofParameterScale::Logarithmic };
 		ofParameter<float> orbitSpeed{ "Orbit Speed", 0.0f, -100.0f, 100.0f };
+		ofParameter<float> cameraMix{ "Camera Mix", 0.0f, 0.0f, 1.0f };
 
 		struct : ofParameterGroup
 		{
@@ -79,6 +80,7 @@ protected:
 		PARAM_DECLARE("Scene",
 			worldScale,
 			orbitSpeed,
+			cameraMix,
 			camera,
 			recording);
 	} parameters;
@@ -125,7 +127,10 @@ protected:
 	ofVboMesh scaledMesh;
 
 	ofEasyCam easyCam;
+	ofCamera mixCamera;
 	glm::vec3 orbitOffset;
+
+	ofRectangle camViewport;
 
 	entropy::render::WireframeFillRenderer renderer;
 	entropy::render::PostEffects postEffects;

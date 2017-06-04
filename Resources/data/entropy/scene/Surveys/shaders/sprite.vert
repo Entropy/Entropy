@@ -4,7 +4,6 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
 uniform float uMaxMass;
-uniform float uMaxSize;
 uniform mat4 uTransform;
 
 uniform vec2 uClipRange;
@@ -50,7 +49,6 @@ void main()
 
 	// Enable fragment if we're within range.
 	if (uMaxMass < mass ||
-		uMaxSize < size ||
 		uCutRadius > position.z ||
 		uMinLongitude > position.x || position.x > uMaxLongitude ||
 		uMinLatitude > position.y || position.y > uMaxLatitude)

@@ -28,7 +28,7 @@ namespace entropy
 			TravelCamPath();
 
 			void addPointToPath(const glm::vec3 & point);
-			void editNearScreenPoint(const ofCamera & camera, const glm::vec2 & screenPoint);
+			void editNearScreenPoint(const ofCamera & camera, const ofRectangle & viewport, const glm::vec2 & screenPoint);
 			void nudgeEditPoint(Nudge nudge);
 			void buildPath();
 
@@ -43,15 +43,15 @@ namespace entropy
 			void deserialize(const nlohmann::json & json);
 
 			ofParameter<bool> enabled{ "Enable Travel", false };
-			ofParameter<bool> lookThrough{ "Look Through", true };
 			ofParameter<bool> reset{ "Reset Position", false };
-			ofParameter<float> speed{ "Speed", 1.0f, 0.0f, 100.0f, ofParameterScale::Logarithmic };
+			ofParameter<float> speed{ "Speed", 0.2f, 0.0f, 0.5f };
+			ofParameter<float> percent{ "Percent", 0.0f, 0.0f, 1.0f };
 			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.75f, 0.0f, 1.0f };
 			ofParameterGroup travel{ "Travel",
 				enabled,
-				lookThrough,
 				reset,
 				speed,
+				percent,
 				lookAtLerp
 			};
 
