@@ -85,10 +85,10 @@ namespace entropy
 			}
 			
 			// Sound is special because it's the master.
-			const bool shouldPlay = this->shouldPlay() && this->timeline->getIsPlaying();
+			const auto syncMode = this->getSyncMode();
+			const bool shouldPlay = this->shouldPlay() && (syncMode != SyncMode::Timeline || this->timeline->getIsPlaying());
 			if (shouldPlay)
 			{
-				const auto syncMode = this->getSyncMode();
 
 				if (!this->soundPlayer.isPlaying())
 				{
