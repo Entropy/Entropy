@@ -9,6 +9,7 @@ void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofBackground(ofColor::black);
+	ofDisableArbTex();
 
 	// Set time mode to follow DSP clock.
 	ofFmodSetSamplerate(48000);
