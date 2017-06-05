@@ -2,13 +2,16 @@
 #include "ofxEasing.h"
 #include "Helpers.h"
 
+constexpr int appfps = 30;
+
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {
     ofSetLogLevel(OF_LOG_NOTICE);
     ofDisableArbTex();
 //    ofSetDataPathRoot("../Resources/data/");
-	ofSetTimeModeFixedRate(ofGetFixedStepForFps(30));
+	ofSetTimeModeFixedRate(ofGetFixedStepForFps(appfps));
     ofBackground(ofColor::black);
 	//ofSetVerticalSync(false);
 
@@ -20,11 +23,6 @@ void ofApp::setup()
 	m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor", 333, 421);
 	m_sequenceRamses.loadFrame(0);
 
-	// Setup timeline.
-	m_timeline.setup();
-	m_timeline.setLoopType(OF_LOOP_NONE);
-	m_timeline.setFrameRate(60.0f);
-	m_timeline.setDurationInSeconds(360);
 
 //	m_cameraTrack = new ofxTLCameraTrack();
 //	m_cameraTrack->setCamera(m_camera);
@@ -39,18 +37,27 @@ void ofApp::setup()
 	m_camera.setNearClip(0.01);
 
 	ofxGuiSetFont("Fira Code", 11, true, true, 72);
-	ttf.load("Fira Code", 11, true, true, 72);
+	ttf.load("Kontrapunkt Bob, Light", 12, true, true, 72);
 	m_gui.setup(parameters);
+	m_gui.add(renderer.parameters);
 	m_gui.getGroup("Sequence Ramses").getFloatSlider("density min").setUpdateOnReleaseOnly(true);
 	m_gui.getGroup("Sequence Ramses").getFloatSlider("density max").setUpdateOnReleaseOnly(true);
 
+	// Setup timeline.
+	m_timeline.setup();
+	m_timeline.setLoopType(OF_LOOP_NONE);
+	m_timeline.setFrameRate(60.0f);
+	m_timeline.setDurationInSeconds(360);
+
+
 	listeners.push_back(m_showOctreeAnimation.newListener([this](bool&show){
+		constexpr size_t num_clusters = 4;
+		constexpr double cluster_offset = 0.3;
 		if(show){
-			cout << "recreaqting" << endl;
-			octreeAnimationLinesH.clear();
-			octreeAnimationLinesV.clear();
-			octreeAnimationIndexStartH = octreeAnimationStart = m_timeline.getCurrentTime();
-			octreeAnimationIndexStartV = octreeAnimationStart = m_timeline.getCurrentTime();
+			rangesH.clear();
+			rangesV.clear();
+			octreeAnimationStart = m_timeline.getCurrentTime();
+			octreeAnimationStart = m_timeline.getCurrentTime();
 			octreeAnimationMeshH = m_sequenceRamses.getOctreeMesh(m_scale);
 			octreeAnimationMeshV = octreeAnimationMeshH;
 
@@ -69,43 +76,71 @@ void ofApp::setup()
 					indicesV.emplace_back(i1, i2);
 				}
 			}
-			BoundingBox fustrum = BoundingBox::fromMinMax(glm::vec3(-0.2,-0.1,-0.001), glm::vec3(0.2,0.1,0.001));
 
+			BoundingBox fustrum = BoundingBox::fromMinMax(glm::vec3(-0.2,-0.05,-0.001), glm::vec3(0.2,0.05,0.001));
 			auto distanceFunction = [&](std::pair<ofIndexType, ofIndexType> & line){
 				auto & i1 = line.first;
 				auto & i2 = line.second;
 				auto & v1 = octreeAnimationMeshH.getVertices()[i1];
 				auto & v2 = octreeAnimationMeshH.getVertices()[i2];
-				auto inBox = int((!fustrum.inside(v1) || !fustrum.inside(v2)))		* 1000000000.;
-				auto zDistanceToCenter = std::max(abs(v1.z), abs(v2.z))				* 1000000.;
-				auto verticalDistanceToCenter = std::max(abs(v1.y), abs(v2.y))		* 1000.;
-//					auto horizontalDistance = 1. - std::max(v1.x, v2.x) / 0.5;
-				return inBox + zDistanceToCenter + verticalDistanceToCenter; // + horizontalDistance;
+				auto inBox = int((!fustrum.inside(v1) && !fustrum.inside(v2)))		* 1000000000000000.;
+				auto zDistanceToCenter = std::max(abs(v1.z), abs(v2.z))				* 1000.;
+				auto length = (1-glm::distance(v1,v2))								* 1.;
+//				auto verticalDistanceToCenter = std::max(abs(v1.y), abs(v2.y))		* 1000.;
+				// auto horizontalDistance = 1. - std::max(v1.x, v2.x) / 0.5;
+				return inBox + zDistanceToCenter + length;// + verticalDistanceToCenter; // + horizontalDistance;
 			};
+
+
 			std::sort(indicesH.begin(), indicesH.end(), [&](std::pair<ofIndexType, ofIndexType> & line1, std::pair<ofIndexType, ofIndexType> & line2){
 				return distanceFunction(line1) < distanceFunction(line2);
 			});
+
 			std::sort(indicesV.begin(), indicesV.end(), [&](std::pair<ofIndexType, ofIndexType> & line1, std::pair<ofIndexType, ofIndexType> & line2){
 				return distanceFunction(line1) < distanceFunction(line2);
 			});
 
 			octreeAnimationMeshH.getIndices().clear();
-			for(auto & pair: indicesH){
-				octreeAnimationMeshH.getIndices().push_back(pair.first);
-				octreeAnimationMeshH.getIndices().push_back(pair.second);
+			for(size_t cluster=0;cluster<num_clusters;cluster++){
+				for(size_t i=cluster;i<indicesH.size();i+=num_clusters){
+					auto & pair = indicesH[i];
+					octreeAnimationMeshH.getIndices().push_back(pair.first);
+					octreeAnimationMeshH.getIndices().push_back(pair.second);
+				}
 			}
 
 			octreeAnimationMeshV.getIndices().clear();
-			for(auto & pair: indicesV){
-				octreeAnimationMeshV.getIndices().push_back(pair.first);
-				octreeAnimationMeshV.getIndices().push_back(pair.second);
+			for(size_t cluster=0;cluster<num_clusters;cluster++){
+				for(size_t i=cluster;i<indicesV.size();i+=num_clusters){
+					auto & pair = indicesV[i];
+					octreeAnimationMeshV.getIndices().push_back(pair.first);
+					octreeAnimationMeshV.getIndices().push_back(pair.second);
+				}
+			}
+
+			for(size_t i=0;i<num_clusters;i++){
+				auto size = octreeAnimationMeshH.getIndices().size()/num_clusters;
+				auto begin = i*size;
+				auto end = begin + size;
+				rangesH.emplace_back(octreeAnimationStart + cluster_offset * i, begin, end);
+			}
+			if(rangesH.back().endIndex < octreeAnimationMeshH.getIndices().size()-1){
+				rangesH.emplace_back(octreeAnimationStart, rangesH.back().endIndex, octreeAnimationMeshH.getIndices().size());
+			}
+
+			for(size_t i=0;i<num_clusters;i++){
+				auto size = octreeAnimationMeshV.getIndices().size()/num_clusters;
+				auto begin = i*size;
+				auto end = begin + size;
+				rangesV.emplace_back(octreeAnimationStart + cluster_offset * (i + num_clusters), begin, end);
+			}
+			if(rangesV.back().endIndex < octreeAnimationMeshV.getIndices().size()-1){
+				rangesV.emplace_back(octreeAnimationStart, rangesV.back().endIndex, octreeAnimationMeshV.getIndices().size());
 			}
 
 
 			octreeAnimationVboH.setMesh(octreeAnimationMeshH, GL_STATIC_DRAW);
 			octreeAnimationVboV.setMesh(octreeAnimationMeshV, GL_STATIC_DRAW);
-			octreeAnimationIndexH = 0;
-			octreeAnimationIndexV = 0;
 			octreeTotalDistanceH = 0;
 			for(size_t i=0;i<octreeAnimationMeshH.getIndices().size();i+=2){
 				auto i1 = octreeAnimationMeshH.getIndex(i);
@@ -127,8 +162,10 @@ void ofApp::setup()
 		}
 	}));
 
-	octreeAnimationLinesH.setMode(OF_PRIMITIVE_LINES);
-	octreeAnimationLinesV.setMode(OF_PRIMITIVE_LINES);
+	autoMode.ownListener([this](bool &){
+		autoStartFrame = ofGetFrameNum();
+	});
+
 
 //	listeners.push_back(m_exportPath.newListener([this](string & path){
 //		if(ofDirectory(path).exists()){
@@ -152,6 +189,8 @@ void ofApp::setup()
 	fboSettings.internalformat = GL_RGBA32F;
 
 	fbo.allocate(fboSettings);
+	renderer.setup(1);
+	renderer.resize(fboSettings.width, fboSettings.height);
 
 //	fboSettings.width *= 0.8;
 //	fboSettings.height *= 0.8;
@@ -208,7 +247,13 @@ void ofApp::update()
 	{
 		m_sequenceRamses.setFrame(m_timeline.getCurrentFrame());
 	}else if(autoMode){
-		m_sequenceRamses.setFrame(m_sequenceRamses.getCurrentFrame() + 1);
+
+		auto frames = ofGetFrameNum() - autoStartFrame;
+		auto time = frames / double(appfps);
+		int animation_frames = time * animationFps;
+		if(m_sequenceRamses.getCurrentFrame() != animation_frames){
+			m_sequenceRamses.setFrame(animation_frames);
+		}
 	}
 
 	m_sequenceRamses.update();
@@ -236,17 +281,17 @@ void ofApp::update()
 	}
 
 	if(m_showOctreeAnimation){
-		auto animate = [&](ofMesh & octreeAnimationMesh, ofMesh & octreeAnimationLines, float octreeTotalDistance, ofIndexType & octreeAnimationIndex, double & octreeAnimationIndexStart){
-			if(octreeAnimationIndex+1 < octreeAnimationMesh.getNumIndices()){
+		auto animate = [&](ofMesh & octreeAnimationMesh, Range & range, float octreeTotalDistance){
+			if(range.index+1 < range.endIndex){
 				auto now = m_timeline.getCurrentTime();
-				auto nextIndex = octreeAnimationIndex + 1;
-				auto i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
+				auto nextIndex = range.index + 1;
+				auto i1 = octreeAnimationMesh.getIndices()[range.index];
 				auto i2 = octreeAnimationMesh.getIndices()[nextIndex];
 				auto p = octreeAnimationMesh.getVertices()[i1];
 				auto nextP = octreeAnimationMesh.getVertices()[i2];
 				auto distance = glm::distance(p,nextP);
 				auto segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
-				auto elapsed = now - octreeAnimationIndexStart;
+				auto elapsed = now - range.startTime;
 				auto pct = elapsed / segmentDuration;
 
 
@@ -257,29 +302,33 @@ void ofApp::update()
 					factor = ofxeasing::map(pctEasing, 0, 1, 10, 1, ofxeasing::exp::easeIn);
 					auto c = octreeAnimationMesh.getColors()[i1];
 					c.a *= factor;
-					if(octreeAnimationLines.getVertices().empty()){
-						octreeAnimationLines.addVertex(p);
-						octreeAnimationLines.addVertex(pctP);
-						octreeAnimationLines.addColor({1,m_alphaInitial});
-						octreeAnimationLines.addColor({1,m_alphaInitial});
+					if(range.lines.getVertices().empty()){
+						range.lines.addVertex(p);
+						range.lines.addVertex(pctP);
+						range.lines.addColor({1,m_alphaInitial});
+						range.lines.addColor({1,m_alphaInitial});
+						range.linesIndex.push_back(range.index);
+						range.linesIndex.push_back(range.index);
 					}else{
-						octreeAnimationLines.addVertex(octreeAnimationLines.getVertices().back());
-						octreeAnimationLines.addVertex(pctP);
-						octreeAnimationLines.addColor({1,m_alphaInitial});
-						octreeAnimationLines.addColor({1,m_alphaInitial});
+						range.lines.addVertex(range.lines.getVertices().back());
+						range.lines.addVertex(pctP);
+						range.lines.addColor({1,m_alphaInitial});
+						range.lines.addColor({1,m_alphaInitial});
+						range.linesIndex.push_back(range.index);
+						range.linesIndex.push_back(range.index);
 					}
 				}
-				while(pct>1 && octreeAnimationIndex+3 < octreeAnimationMesh.getNumIndices()){
-					octreeAnimationIndexStart += segmentDuration;
-					octreeAnimationIndex += 2;
-					nextIndex = octreeAnimationIndex + 1;
-					i1 = octreeAnimationMesh.getIndices()[octreeAnimationIndex];
+				while(pct>1 && range.index+3 < octreeAnimationMesh.getNumIndices()){
+					range.startTime += segmentDuration;
+					range.index += 2;
+					nextIndex = range.index + 1;
+					i1 = octreeAnimationMesh.getIndices()[range.index];
 					i2 = octreeAnimationMesh.getIndices()[nextIndex];
 					p = octreeAnimationMesh.getVertices()[i1];
 					nextP = octreeAnimationMesh.getVertices()[i2];
 					distance = glm::distance(p,nextP);
 					segmentDuration = distance * m_octreeAnimationDuration / octreeTotalDistance;
-					elapsed = now - octreeAnimationIndexStart;
+					elapsed = now - range.startTime;
 					pct = elapsed / segmentDuration;
 
 
@@ -288,31 +337,53 @@ void ofApp::update()
 						auto pctP = glm::lerp(p, nextP, float(pctEasing));
 						auto c = octreeAnimationMesh.getColors()[i1];
 						c.a *= factor;
-						octreeAnimationLines.addVertex(p);
-						octreeAnimationLines.addVertex(pctP);
-						octreeAnimationLines.addColor({1,m_alphaInitial});
-						octreeAnimationLines.addColor({1,m_alphaInitial});
+						range.lines.addVertex(p);
+						range.lines.addVertex(pctP);
+						range.lines.addColor({1,m_alphaInitial});
+						range.lines.addColor({1,m_alphaInitial});
+						range.linesIndex.push_back(range.index);
+						range.linesIndex.push_back(range.index);
 					}
 				}
 
-				for(auto & c: octreeAnimationLines.getColors()){
-					c.a *= m_alphaFilter;
-				}
+//				size_t i = 0;
+//				for(; range.lines.getColors()[i].a < octreeAnimationMesh.getColors()[i].a; i++){}
+//				if(i>0){
+//					range.lines.getColors().erase(range.lines.getColors().begin(), range.lines.getColors().begin() + i);
+//					range.lines.getVertices().erase(range.lines.getVertices().begin(), range.lines.getVertices().begin() + i);
+//				}
 
-	//			octreeAnimationLines.getColors().resize(octreeAnimationLines.getVertices().size());
-	//			for(size_t i=0; i < octreeAnimationLines.getNumColors(); i++){
-	//				auto pct = i / double(octreeAnimationLines.getNumColors());
+	//			range.lines.getColors().resize(range.lines.getVertices().size());
+	//			for(size_t i=0; i < range.lines.getNumColors(); i++){
+	//				auto pct = i / double(range.lines.getNumColors());
 	//				auto alpha = ofxeasing::map(pct, 0, 1, 0.2, 1, ofxeasing::exp::easeIn);
-	//				octreeAnimationLines.getColors()[i] = ofFloatColor(1, alpha);
+	//				range.lines.getColors()[i] = ofFloatColor(1, alpha);
 	//			}
 
+				range.index = ofClamp(range.index, range.startIndex, range.endIndex - 1);
+
+			}
+
+			for(size_t i=0; i<range.lines.getColors().size(); i++){
+				auto & c = range.lines.getColors()[i];
+				auto ii = range.linesIndex[i];
+				auto i1 = octreeAnimationMesh.getIndices()[ii];
+				auto & original = octreeAnimationMesh.getColors()[i1];
+				if(c.a > original.a){
+					c.a *= m_alphaFilter;
+				}
+				if(c.a < original.a){
+					c.a = original.a;
+				}
 			}
 		};
 
-		animate(octreeAnimationMeshH, octreeAnimationLinesH, octreeTotalDistanceH, octreeAnimationIndexH, octreeAnimationIndexStartH);
-		animate(octreeAnimationMeshV, octreeAnimationLinesV, octreeTotalDistanceV, octreeAnimationIndexV, octreeAnimationIndexStartV);
-		octreeAnimationIndexH = ofClamp(octreeAnimationIndexH, 0, octreeAnimationMeshH.getNumIndices()-1);
-		octreeAnimationIndexV = ofClamp(octreeAnimationIndexV, 0, octreeAnimationMeshV.getNumIndices()-1);
+		for(auto & range: rangesH){
+			animate(octreeAnimationMeshH, range, octreeTotalDistanceH);
+		}
+		for(auto & range: rangesV){
+			animate(octreeAnimationMeshV, range, octreeTotalDistanceH);
+		}
 	}
 }
 
@@ -344,12 +415,26 @@ void ofApp::draw()
 
 	m_camera.begin();
 	if(m_showOctreeAnimation){
+//		for(auto & range: rangesH){
+//			octreeAnimationVboH.setMesh(range.lines, GL_STATIC_DRAW);
+//			renderer.draw(octreeAnimationVboH, 0, range.lines.getNumVertices(), GL_LINES, m_camera);
+//		}
+//		for(auto & range: rangesV){
+//			octreeAnimationVboH.setMesh(range.lines, GL_STATIC_DRAW);
+//			renderer.draw(octreeAnimationVboH, 0, range.lines.getNumVertices(), GL_LINES, m_camera);
+//		}
 		shader.begin();
 		shader.setUniform1f("alpha", m_octreeAlpha);
-		octreeAnimationLinesH.draw();
-		octreeAnimationLinesV.draw();
-		octreeAnimationVboH.drawElements(GL_LINES, octreeAnimationIndexH, 0);
-		octreeAnimationVboV.drawElements(GL_LINES, octreeAnimationIndexV, 0);
+		for(auto & range: rangesH){
+			range.lines.draw();
+			cout << range.lines.getVertices().size() << endl;
+			//octreeAnimationVboH.drawElements(GL_LINES, range.index - range.startIndex, range.startIndex);
+		}
+		for(auto & range: rangesV){
+			range.lines.draw();
+			cout << range.lines.getVertices().size() << endl;
+			//octreeAnimationVboV.drawElements(GL_LINES, range.index - range.startIndex, range.startIndex);
+		}
 		shader.end();
 	}
 	if(m_showOctree){
@@ -395,7 +480,7 @@ void ofApp::draw()
 	if (m_bExportFrames || m_bRecordVideo)
 	{
 		recorder.save(fbo.getTexture());
-		if(m_timeline.getCurrentTime()>m_timeline.getOutTimeInSeconds()){
+		if(m_timeline.getCurrentTime()>m_timeline.getOutTimeInSeconds() || m_timeline.getCurrentTime()>m_timeline.getDurationInSeconds()){
 			recorder.stop();
 			ofExit(0);
 		}

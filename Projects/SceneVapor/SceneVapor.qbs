@@ -47,6 +47,7 @@ Project{
             '../../addons/ofxVideoRecorder',
             '../../addons/ofxEasing',
             '../../Projects/EntropyUtil',
+            '../../Projects/EntropyRender',
             'ofxXmlSettings',
             'ofxGui',
         ]

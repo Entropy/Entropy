@@ -6,6 +6,7 @@
 
 #include "SequenceRamses.h"
 #include "ofxTextureRecorder.h"
+#include "WireframeFillRenderer.h"
 
 class ofApp 
 	: public ofBaseApp
@@ -53,6 +54,8 @@ public:
 	ofParameter<bool> m_bRecordVideo{"record video", false};
 	ofParameter<bool> m_bShowTimeline{"show timeline", true};
 	ofParameter<string> m_exportPath{ofToDataPath("",true)};
+	ofParameter<bool> autoMode{"auto mode", false};
+	ofParameter<int> animationFps{"animation fps", 6, 0, 60};
 	ofParameterGroup appParameters{
 		"application",
 		m_scale,
@@ -77,6 +80,7 @@ public:
 		m_bRecordVideo,
 		m_bShowTimeline,
 		m_exportPath,
+		autoMode,
 	};
 
 
@@ -95,18 +99,28 @@ public:
 
 	ofTrueTypeFont ttf;
 	double octreeAnimationStart;
-	double octreeAnimationIndexStartH, octreeAnimationIndexStartV;
 	float octreeTotalDistanceH, octreeTotalDistanceV;
 	std::vector<ofEventListener> listeners;
 	ofVbo octreeAnimationVboH, octreeAnimationVboV;
-	ofMesh octreeAnimationMeshH, octreeAnimationMeshV, octreeAnimationLinesH, octreeAnimationLinesV;
-	ofIndexType octreeAnimationIndexH = 0, octreeAnimationIndexV = 0;
+	ofMesh octreeAnimationMeshH, octreeAnimationMeshV;
 
 	struct Range{
+		Range(double startTime,
+				ofIndexType startIndex,
+				ofIndexType endIndex)
+			:startTime(startTime)
+			,index(startIndex)
+			,startIndex(startIndex)
+			,endIndex(endIndex){
+			lines.setMode(OF_PRIMITIVE_LINES);
+		}
+
 		double startTime;
 		ofIndexType index;
 		ofIndexType startIndex;
 		ofIndexType endIndex;
+		ofMesh lines;
+		std::vector<size_t> linesIndex;
 	};
 
 	std::vector<Range> rangesH;
@@ -116,5 +130,7 @@ public:
 
 	ofShader shader;
 	ofFbo fbo, fboLines;
-	bool autoMode = false;
+	int autoStartFrame;
+
+	entropy::render::WireframeFillRenderer renderer;
 };

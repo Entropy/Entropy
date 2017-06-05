@@ -13,6 +13,12 @@
     </element>
     <element name="vapor/Sequence_Ramses/volume_density">
         <x>0.000000000</x>
+        <y>1084.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/auto_mode">
+        <x>0.000000000</x>
         <y>1148.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
@@ -49,13 +55,13 @@
     </element>
     <element name="vapor/application/show_octree">
         <x>0.000000000</x>
-        <y>1532.000000000</y>
+        <y>1468.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree_animation">
         <x>0.000000000</x>
-        <y>1596.000000000</y>
+        <y>1532.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
