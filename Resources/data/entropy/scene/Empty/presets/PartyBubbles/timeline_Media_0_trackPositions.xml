@@ -19,7 +19,7 @@
     </element>
     <element name="Fade_0_Sound">
         <x>0.000000000</x>
-        <y>316.000000000</y>
+        <y>444.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -79,13 +79,13 @@
     </element>
     <element name="Fade_18_Sound">
         <x>0.000000000</x>
-        <y>444.000000000</y>
+        <y>572.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_19_Sound">
         <x>0.000000000</x>
-        <y>572.000000000</y>
+        <y>700.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -121,13 +121,13 @@
     </element>
     <element name="Fade_25_Sound">
         <x>0.000000000</x>
-        <y>764.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_26_Sound">
         <x>0.000000000</x>
-        <y>892.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -157,7 +157,7 @@
     </element>
     <element name="Fade_32_Sound">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -283,7 +283,7 @@
     </element>
     <element name="Media_0_Sound">
         <x>0.000000000</x>
-        <y>252.000000000</y>
+        <y>380.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -343,13 +343,13 @@
     </element>
     <element name="Media_18_Sound">
         <x>0.000000000</x>
-        <y>380.000000000</y>
+        <y>508.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_19_Sound">
         <x>0.000000000</x>
-        <y>508.000000000</y>
+        <y>636.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -373,7 +373,7 @@
     </element>
     <element name="Media_20_Sound">
         <x>0.000000000</x>
-        <y>636.000000000</y>
+        <y>764.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -385,13 +385,13 @@
     </element>
     <element name="Media_25_Sound">
         <x>0.000000000</x>
-        <y>700.000000000</y>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_26_Sound">
         <x>0.000000000</x>
-        <y>828.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

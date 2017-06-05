@@ -1,4 +1,10 @@
 <positions>
+    <element name="Fade_11_HPV">
+        <x>0.000000000</x>
+        <y>390.000000000</y>
+        <width>9600.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Fade_16_HPV">
         <x>0.000000000</x>
         <y>326.000000000</y>
@@ -57,6 +63,12 @@
         <x>0.000000000</x>
         <y>390.000000000</y>
         <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Media_11_HPV">
+        <x>0.000000000</x>
+        <y>326.000000000</y>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_16_HPV">

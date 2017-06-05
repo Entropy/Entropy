@@ -182,11 +182,11 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V4.wav",
+                "File Path": "E:\\wav\\Master_PART_1_BLOBS_V1.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0.240389",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -207,7 +207,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -228,7 +228,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -249,7 +249,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -282,7 +282,7 @@
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
                     "Use Fade Twist": "1",
-                    "Use Speed Twist": "1"
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 2,
@@ -291,7 +291,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -312,7 +312,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -438,7 +438,7 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.136493",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -446,10 +446,10 @@
                     "Loop": "0",
                     "Remap LFO": "1",
                     "Speed Knob": "16",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "1",
+                    "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
             },
@@ -522,7 +522,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.0713151",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -530,7 +530,7 @@
                     "Loop": "0",
                     "Remap LFO": "0",
                     "Speed Knob": "16",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0",
@@ -560,7 +560,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Part 1_Oscilliation_V2.wav",
+                "File Path": "E:\\wav\\Master_PART_1_OSCILLATION_V1.wav",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -602,7 +602,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Intro Dida V2.wav",
+                "File Path": "E:\\wav\\Master_VOICE_DIDA_Intro_V1.wav",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
