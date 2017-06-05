@@ -20,21 +20,6 @@
         <value>0.399999976</value>
     </key>
     <key>
-        <flag>stop slow</flag>
-        <time>00:07:30:049</time>
-        <value>0.500000000</value>
-    </key>
-    <key>
-        <flag>play switch</flag>
-        <time>00:08:00:121</time>
-        <value>0.850000024</value>
-    </key>
-    <key>
-        <flag>stop switch</flag>
-        <time>00:08:30:192</time>
-        <value>0.350000024</value>
-    </key>
-    <key>
         <flag>play oscillation</flag>
         <time>00:09:30:191</time>
         <value>0.875000000</value>
