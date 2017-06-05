@@ -170,7 +170,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -208,11 +208,11 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Surveys_TravelBack.hpv",
+                "File Path": "E:\\hpv\\Surveys_TravelBack_170605b.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -222,7 +222,7 @@
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
@@ -338,7 +338,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -464,7 +464,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
