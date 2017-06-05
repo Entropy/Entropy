@@ -17,6 +17,8 @@ public:
 	void setTotalVertices(int totalVertices);
 	int getNumVertices() const;
 	const ofVbo & getVbo() const;
+	glm::vec3 getPosition(size_t index);
+	int getNumParticles();
 
 	ofParameter<int> every{"particle every x vertices", 100, 1, 10000};
 	ofParameter<float> scale{"scale", 1, 0.1f, 5};

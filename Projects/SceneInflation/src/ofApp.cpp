@@ -56,8 +56,10 @@ void ofApp::setup()
 
 	fbo.allocate(settings);
 	fboCooldown.allocate(settings);
+	fboReheating.allocate(settings);
 	postFbo.allocate(settings);
 	postFboCooldown.allocate(settings);
+	postFboReheating.allocate(settings);
 	postEffects.resize(fbo.getWidth(), fbo.getHeight());
 
 	parameters.render.record.setSerializable(false);
@@ -72,7 +74,16 @@ void ofApp::setup()
 	coolDownParameters.setName("Cooldown Renderer");
 	coolDownParameters.add(parameters.enableCooldown);
 	coolDownParameters.add(parameters.showCooldown);
+	coolDownParameters.add(parameters.coolDownColors);
 	gui.add(coolDownParameters);
+	gui.add(transitionParticles.parameters);
+
+	reheatingParameters.setName("Reheating Renderer");
+	reheatingParameters.add(parameters.showReheating);
+	reheatingParameters.add(parameters.onlyReheating);
+	reheatingParameters.add(parameters.reheatingColors);
+	gui.add(reheatingParameters);
+
 	gui.add(parameters);
 
 
@@ -112,6 +123,10 @@ void ofApp::setup()
 					auto path = recorderPath + "_cooleddown";
 					recorderSettings.folderPath = path;
 					recorderCooldown.setup(recorderSettings);
+
+					path = recorderPath + "_reheating";
+					recorderSettings.folderPath = path;
+					recorderReheating.setup(recorderSettings);
 				}
 			}else{
 				this->parameters.render.record = false;
@@ -120,6 +135,8 @@ void ofApp::setup()
 			recorder.stop();
 			if(parameters.enableCooldown){
 				recorderCooldown.stop();
+
+				recorderReheating.stop();
 			}
 		}
 	}));
@@ -144,6 +161,12 @@ void ofApp::setup()
 								ofFilePath::getBaseName(videoRecorderPath) + "_cooleddown.mov");
 					recorderSettings.videoPath = path;
 					recorderCooldown.setup(recorderSettings);
+
+					path = ofFilePath::join(
+								ofFilePath::getEnclosingDirectory(videoRecorderPath),
+								ofFilePath::getBaseName(videoRecorderPath) + "_reheating.mov");
+					recorderSettings.videoPath = path;
+					recorderReheating.setup(recorderSettings);
 				}
 			}else{
 				this->parameters.render.recordVideo = false;
@@ -152,6 +175,7 @@ void ofApp::setup()
 			recorder.stop();
 			if(parameters.enableCooldown){
 				recorderCooldown.stop();
+				recorderReheating.stop();
 			}
 		}
 	}));
@@ -169,8 +193,15 @@ void ofApp::setup()
 				recorderSettings.videoCodec = "prores";
 				recorderSettings.extrasettings = "-profile:v 0";
 				recorderCooldown.setup(recorderSettings);
+
+				path = ofFilePath::join(
+						ofFilePath::getEnclosingDirectory(videoRecorderPath),
+						ofFilePath::getBaseName(videoRecorderPath) + "_reheating.mov");
+				recorderSettings.videoPath = path;
+				recorderReheating.setup(recorderSettings);
 			}else{
 				recorderCooldown.stop();
+				recorderReheating.stop();
 			}
 		}
 		if(parameters.render.record){
@@ -181,8 +212,13 @@ void ofApp::setup()
 				recorderSettings.folderPath = path;
 				recorder.setup(recorderSettings);
 				recorderCooldown.setup(recorderSettings);
+
+				path = recorderPath + "_reheating";
+				recorderSettings.folderPath = path;
+				recorderReheating.setup(recorderSettings);
 			}else{
 				recorderCooldown.stop();
+				recorderReheating.stop();
 			}
 		}
 	}));
@@ -647,6 +683,7 @@ void ofApp::update(){
 					clearParticlesVel.end();
 
 					this->transitionParticles.setTotalVertices(vertices);
+					//particleToTrack = glm::vec3(0);
 				}
 				float alphaParticles = (now - t_from_particles) / parameters.equations.transitionParticlesDuration;
 				alphaParticles = glm::clamp(alphaParticles, 0.f, 1.f);
@@ -657,11 +694,32 @@ void ofApp::update(){
 				//noiseField.speedFactor = alphaBlobs;
 				renderer.parameters.alphaFactor = alphaBlobs;
 				this->transitionParticles.update(transitionParticlesPosition, noiseField.getTexture(), now);
+				//particleToTrack = particleToTrack * 0.9 + transitionParticles.getPosition(transitionParticles.getNumParticles()/2) * 0.1;
 			}break;
+		}
+
+		std::vector<ofFloatColor> colors;
+		if(parameters.onlyReheating){
+			colors.push_back(noiseField.octaves[0].color);
+			colors.push_back(noiseField.octaves[1].color);
+			colors.push_back(noiseField.octaves[2].color);
+			colors.push_back(noiseField.octaves[3].color);
+			noiseField.octaves[0].color = parameters.reheatingColors.color1;
+			noiseField.octaves[1].color = parameters.reheatingColors.color2;
+			noiseField.octaves[2].color = parameters.reheatingColors.color3;
+			noiseField.octaves[3].color = parameters.reheatingColors.color4;
+
 		}
 		noiseField.update(dt);
 		if (renderer.parameters.alphaFactor > 0.001) {
 			gpuMarchingCubes.update(noiseField.getTexture());
+		}
+
+		if(parameters.onlyReheating){
+			noiseField.octaves[0].color = colors[0];
+			noiseField.octaves[1].color = colors[1];
+			noiseField.octaves[2].color = colors[2];
+			noiseField.octaves[3].color = colors[3];
 		}
 
 		if (needsParticlesUpdate) {
@@ -691,17 +749,31 @@ void ofApp::update(){
 //		idx += 1;
 //	}
 
-	if((parameters.rotating && abs(dt) > 0.001) || forceRedraw){
-		if(parameters.rotatingUseSpeed){
-			parameters.rotationRadius -= dt * parameters.rotationRadiusSpeed;
-		}
-		camera.orbitDeg(orbitAngle, 0, parameters.rotationRadius);
-		orbitAngle += dt * parameters.rotationSpeed;
-		orbitAngle = ofWrap(orbitAngle, 0, 360);
+//	if(parameters.state == State::ParticlesTransition){
+//		if((parameters.rotating && abs(dt) > 0.001) || forceRedraw){
+//			if(parameters.rotatingUseSpeed){
+//				parameters.rotationRadius -= dt * parameters.rotationRadiusSpeed;
+//			}
+//			camera.orbitDeg(orbitAngle, 0, parameters.rotationRadius, particleToTrack);
+//			orbitAngle += dt * parameters.rotationSpeed;
+//			orbitAngle = ofWrap(orbitAngle, 0, 360);
 
-		/*camera.setPosition(cameraPath[ofGetFrameNum() % cameraPath.size()] * parameters.rotationRadius.get());
-		camera.lookAt(glm::vec3(0), glm::vec3(0,1,0));*/
-	}
+//			/*camera.setPosition(cameraPath[ofGetFrameNum() % cameraPath.size()] * parameters.rotationRadius.get());
+//			camera.lookAt(glm::vec3(0), glm::vec3(0,1,0));*/
+//		}
+//	}else{
+		if((parameters.rotating && abs(dt) > 0.001) || forceRedraw){
+			if(parameters.rotatingUseSpeed){
+				parameters.rotationRadius -= dt * parameters.rotationRadiusSpeed;
+			}
+			camera.orbitDeg(orbitAngle, 0, parameters.rotationRadius);
+			orbitAngle += dt * parameters.rotationSpeed;
+			orbitAngle = ofWrap(orbitAngle, 0, 360);
+
+			/*camera.setPosition(cameraPath[ofGetFrameNum() % cameraPath.size()] * parameters.rotationRadius.get());
+			camera.lookAt(glm::vec3(0), glm::vec3(0,1,0));*/
+		}
+//	}
 	
 	if(dofTimeStart > 0){
 		auto diff = std::chrono::duration<double>(now - dofTimeStart).count();
@@ -930,7 +1002,7 @@ void ofApp::draw(){
 	auto w = ofGetWidth();
 	auto h = w * postFbo.getHeight() / postFbo.getWidth();
 
-	if(!parameters.showCooldown){
+	if(!parameters.showCooldown && !parameters.showReheating){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
 		postFbo.draw(0,0,w,h);
@@ -939,8 +1011,21 @@ void ofApp::draw(){
 	if((parameters.runSimulation && abs(dt) > 0.001) || forceRedraw){
 
 		if(parameters.enableCooldown || parameters.showCooldown){
+			std::vector<ofFloatColor> colors;
+			colors.push_back(noiseField.octaves[0].color);
+			colors.push_back(noiseField.octaves[1].color);
+			colors.push_back(noiseField.octaves[2].color);
+			colors.push_back(noiseField.octaves[3].color);
+			noiseField.octaves[0].color = parameters.coolDownColors.color1;
+			noiseField.octaves[1].color = parameters.coolDownColors.color2;
+			noiseField.octaves[2].color = parameters.coolDownColors.color3;
+			noiseField.octaves[3].color = parameters.coolDownColors.color4;
+			noiseField.update(0);
+			if (renderer.parameters.alphaFactor > 0.001) {
+				gpuMarchingCubes.update(noiseField.getTexture());
+			}
 			fboCooldown.begin();
-			cout << "redrawing as cooldowned " << endl;
+
 			ofClear(0,255);
 			camera.begin();
 			ofDisableAlphaBlending();
@@ -977,6 +1062,68 @@ void ofApp::draw(){
 			if(parameters.render.record || parameters.render.recordVideo){
 				recorderCooldown.save(postFboCooldown.getTexture());
 			}
+			noiseField.octaves[0].color = colors[0];
+			noiseField.octaves[1].color = colors[1];
+			noiseField.octaves[2].color = colors[2];
+			noiseField.octaves[3].color = colors[3];
+		}
+
+		if(parameters.showReheating || parameters.enableCooldown){
+			std::vector<ofFloatColor> colors;
+			colors.push_back(noiseField.octaves[0].color);
+			colors.push_back(noiseField.octaves[1].color);
+			colors.push_back(noiseField.octaves[2].color);
+			colors.push_back(noiseField.octaves[3].color);
+			noiseField.octaves[0].color = parameters.reheatingColors.color1;
+			noiseField.octaves[1].color = parameters.reheatingColors.color2;
+			noiseField.octaves[2].color = parameters.reheatingColors.color3;
+			noiseField.octaves[3].color = parameters.reheatingColors.color4;
+			noiseField.update(0);
+			if (renderer.parameters.alphaFactor > 0.001) {
+				gpuMarchingCubes.update(noiseField.getTexture());
+			}
+			fboReheating.begin();
+
+			ofClear(0,255);
+			camera.begin();
+			ofDisableAlphaBlending();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			//gpuMarchingCubes.getGeometry().draw(GL_TRIANGLES, 0, gpuMarchingCubes.getNumVertices());
+			auto first = true;
+			for(auto & cluster: clusters){
+				if(!cluster.negativeSpace){
+					ofNode node;
+					node.setScale(cluster.scale);
+					node.setPosition(cluster.origin);
+					if(!first){
+						node.setOrientation(cluster.rotation);
+					}
+					entropy::render::WireframeFillRenderer::DrawSettings drawSettings;
+					drawSettings.camera = &camera;
+					drawSettings.mode = GL_TRIANGLES;
+					drawSettings.model = node.getLocalTransformMatrix();
+					drawSettings.numVertices = gpuMarchingCubes.getNumVertices();
+					drawSettings.offset = 0;
+					drawSettings.parameters = reheatingParameters;
+					renderer.draw(gpuMarchingCubes.getGeometry(), drawSettings);
+
+				}
+				first = false;
+			}
+
+			camera.end();
+			fboReheating.end();
+
+			postEffects.process(fboReheating.getTexture(), postFboReheating, postParameters);
+
+			if(parameters.render.record || parameters.render.recordVideo){
+				recorderReheating.save(postFboReheating.getTexture());
+			}
+			noiseField.octaves[0].color = colors[0];
+			noiseField.octaves[1].color = colors[1];
+			noiseField.octaves[2].color = colors[2];
+			noiseField.octaves[3].color = colors[3];
 		}
 	}
 
@@ -987,6 +1134,12 @@ void ofApp::draw(){
 		ofDisableAlphaBlending();
 		ofSetColor(255);
 		postFboCooldown.draw(0,0,w,h);
+	}
+
+	if(parameters.showReheating){
+		ofDisableAlphaBlending();
+		ofSetColor(255);
+		postFboReheating.draw(0,0,w,h);
 	}
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
@@ -1010,6 +1163,19 @@ void ofApp::draw(){
 
 	renderer.getBokehShape().draw();
 	ofPopMatrix();
+
+
+	if(parameters.render.record || parameters.render.recordVideo){
+		if(timeline.getCurrentTime() > timeline.getOutTimeInSeconds()){
+			cout << "existing after out poitn" << endl;
+			recorder.stop();
+			recorderCooldown.stop();
+			recorderReheating.stop();
+			parameters.render.record = false;
+			parameters.render.recordVideo = false;
+			ofExit(0);
+		}
+	}
 
 }
 

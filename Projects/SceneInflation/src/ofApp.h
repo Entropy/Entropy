@@ -120,12 +120,15 @@ public:
 		ofParameter<bool> controlCamera{ "Control Camera", false };
 		ofParameter<bool> rotating{"Rotating", true};
 		ofParameter<bool> rotatingUseSpeed{"Rotation use speed", true};
-		ofParameter<float> rotationRadius{"Rotation radius", 1, 0.5, 5, ofParameterScale::Logarithmic};
+		ofParameter<float> rotationRadius{"Rotation radius", 1, 0.05, 5, ofParameterScale::Logarithmic};
 		ofParameter<float> rotationRadiusSpeed{"Rotation radius speed", 0.1, -1, 1, ofParameterScale::Logarithmic};
 		ofParameter<float> rotationSpeed{"Rotation speed", 1, 0.1, 100, ofParameterScale::Logarithmic};
+		ofParameter<float> distanceToTrankingParticle{"Distance to tracking particle", 1, 0.1, 100, ofParameterScale::Logarithmic};
 		ofParameter<float> state{"state", 0, 0, 5};
 		ofParameter<bool> enableCooldown{"Enable cooldown renderer", false};
 		ofParameter<bool> showCooldown{"Show cooldown renderer", false};
+		ofParameter<bool> showReheating{"show reheating", false};
+		ofParameter<bool> onlyReheating{"only reheating", false};
 
 		struct : ofParameterGroup{
 			ofParameter<ofFloatColor> color1{"color 1", ofColor::white};
@@ -158,6 +161,30 @@ public:
 			  color4,
 			  negativeWire)
 		} negativeColors;
+
+		struct : ofParameterGroup{
+			ofParameter<ofFloatColor> color1{"color 1", ofColor::white};
+			ofParameter<ofFloatColor> color2{"color 2", ofColor::white};
+			ofParameter<ofFloatColor> color3{"color 3", ofColor::white};
+			ofParameter<ofFloatColor> color4{"color 4", ofColor::white};
+			PARAM_DECLARE("Colors",
+			  color1,
+			  color2,
+			  color3,
+			  color4)
+		} coolDownColors;
+
+		struct : ofParameterGroup{
+			ofParameter<ofFloatColor> color1{"color 1", ofColor::white};
+			ofParameter<ofFloatColor> color2{"color 2", ofColor::white};
+			ofParameter<ofFloatColor> color3{"color 3", ofColor::white};
+			ofParameter<ofFloatColor> color4{"color 4", ofColor::white};
+			PARAM_DECLARE("Reheating",
+			  color1,
+			  color2,
+			  color3,
+			  color4)
+		} reheatingColors;
 
 		struct : ofParameterGroup{
 			ofParameter<void> newCluster{"Trigger new cluster"};
@@ -234,12 +261,14 @@ public:
 
 	ofFbo fbo, postFbo;
 	ofFbo fboCooldown, postFboCooldown;
+	ofFbo fboReheating, postFboReheating;
 	entropy::render::PostEffects postEffects;
 	entropy::render::PostParameters postParameters;
 	entropy::render::WireframeFillRenderer::Parameters coolDownParameters;
+	entropy::render::WireframeFillRenderer::Parameters reheatingParameters;
 
 	ofxPanel gui;
-	ofxTextureRecorder recorder, recorderCooldown;
+	ofxTextureRecorder recorder, recorderCooldown, recorderReheating;
 	std::string recorderPath, videoRecorderPath;
 
 	ofPolyline cameraPath;
@@ -257,4 +286,5 @@ public:
 	bool forceRedraw = true;
 
 	ofMesh circle;
+	glm::vec3 particleToTrack;
 };

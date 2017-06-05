@@ -62,3 +62,14 @@ int TransitionParticles::getNumVertices() const {
 const ofVbo & TransitionParticles::getVbo() const {
 	return positions;
 }
+
+glm::vec3 TransitionParticles::getPosition(size_t index){
+	auto * particles = feedbackBuffer.map<glm::vec4>(GL_READ_ONLY);
+	auto pos =  particles[index].xyz();
+	feedbackBuffer.unmap();
+	return pos;
+}
+
+int TransitionParticles::getNumParticles(){
+	return totalVertices / every;
+}
