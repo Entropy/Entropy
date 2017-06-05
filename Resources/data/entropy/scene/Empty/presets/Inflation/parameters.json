@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "0.999998, 0, 0, -0.00179401",
+                "orientation": "0.999999, 0, 0, -0.00162138",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "1, 0, 0, 0.000589409",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -113,6 +113,11 @@
             "direction": true,
             "idxA": 6,
             "idxB": 0
+        },
+        {
+            "direction": true,
+            "idxA": 2,
+            "idxB": 11
         }
     ],
     "Mappings": {
@@ -190,7 +195,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
@@ -230,7 +237,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
@@ -266,15 +275,17 @@
                 "Playback": {
                     "Fade Knob": "0",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "0",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
                     "Flip LFO": "0",
-                    "Free Speed": "2.44094",
+                    "Free Speed": "2",
+                    "LFO Scale": "10",
                     "Loop": "0",
-                    "Speed Knob": "15",
+                    "Remap LFO": "0",
+                    "Speed Knob": "1",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "1",
                     "Use Speed Twist": "1"
                 }
@@ -285,7 +296,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -307,14 +318,16 @@
                     "Fade Knob": "15",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "3",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
@@ -350,7 +363,9 @@
                     "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "2",
                     "Use Fade LFO": "0",
@@ -390,7 +405,9 @@
                     "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "2",
                     "Use Fade LFO": "0",
@@ -426,11 +443,13 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "12",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
@@ -462,7 +481,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
+                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "0",
@@ -470,7 +489,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "1",
                     "Free Speed": "1",
+                    "LFO Scale": "12",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
@@ -506,11 +527,13 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
@@ -550,7 +573,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
@@ -590,7 +615,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
@@ -601,6 +628,48 @@
             },
             "page": 0,
             "type": 4
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
+                "Playback": {
+                    "Fade Knob": "2",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "3",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 2,
+            "type": 3
         }
     ]
 }
