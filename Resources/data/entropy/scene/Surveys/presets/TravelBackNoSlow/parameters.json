@@ -90,10 +90,10 @@
         "Scene": {
             "Camera": {
                 "FOV": "30",
-                "Far_Clip": "150",
+                "Far_Clip": "126.944",
                 "Near_Clip": "0.001"
             },
-            "Camera_Mix": "0",
+            "Camera_Mix": "1",
             "Orbit_Speed": "0",
             "Recording": {
                 "Record_Sequence": "0",
@@ -117,7 +117,7 @@
             "Points": {
                 "Attenuation": "600",
                 "Distance_Fade": "0.1",
-                "Size": "0.1"
+                "Size": "0.0801246"
             },
             "Shells": {
                 "Alpha": "1",
@@ -144,17 +144,17 @@
                 "Add_Points": "0",
                 "Clear_Path": "0",
                 "Curve_Resolution": "10",
-                "Debug_Draw": "1",
+                "Debug_Draw": "0",
                 "Edit_Points": "0",
                 "Nudge_Amount": "1",
                 "Start_Path": "0"
             },
             "Travel": {
-                "Enable_Travel": "0",
+                "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "0",
+                "Percent": "0.0946766",
                 "Reset_Position": "0",
-                "Speed": "0"
+                "Speed": "0.105"
             }
         },
         "ViziR": {
@@ -173,9 +173,9 @@
     },
     "ofEasyCam": {
         "aspectRatio": 3.28125,
-        "distance": 1046.60034179688,
+        "distance": 1091.18933105469,
         "drag": 0.899999976158142,
-        "farClip": 150.0,
+        "farClip": 126.944206237793,
         "forceAspectRatio": true,
         "fov": 30.0,
         "inertiaEnabled": false,
@@ -185,7 +185,7 @@
         "nearClip": 0.00100000004749745,
         "orientation": "-0.0270538, 0.330793, 0.888493, 0.316899",
         "ortho": false,
-        "position": "222.076, 629.669, -805.96",
+        "position": "229.294, 655.623, -841.592",
         "relativeYAxis": false,
         "scale": "1, 1, 1",
         "target": "0, 0, 0",
@@ -195,14 +195,14 @@
     "travelCamPath": {
         "camera": {
             "aspectRatio": 3.28125,
-            "farClip": 150.0,
+            "farClip": 126.944206237793,
             "forceAspectRatio": true,
             "fov": 30.0,
             "lensOffset": "0, 0",
             "nearClip": 0.00100000004749745,
-            "orientation": "-0.0297754, 0.335646, 0.885647, 0.319508",
+            "orientation": "-0.0352535, 0.334482, 0.888423, 0.312383",
             "ortho": false,
-            "position": "229.293, 655.62, -841.588",
+            "position": "214.895, 595.959, -757.912",
             "scale": "1, 1, 1"
         },
         "curvePoints": [

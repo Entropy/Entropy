@@ -1,0 +1,122 @@
+<positions>
+    <element name="Camera">
+        <x>0.000000000</x>
+        <y>757.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Cues">
+        <x>0.000000000</x>
+        <y>693.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Max_Radius">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Min_Radius">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/DES/Max_Longitude">
+        <x>0.000000000</x>
+        <y>572.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/DES/Max_Radius">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/DES/Min_Longitude">
+        <x>0.000000000</x>
+        <y>700.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Post_Effects/Color/Exposure">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Scene/Camera/Far_Clip">
+        <x>0.000000000</x>
+        <y>1077.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Scene/Camera_Mix">
+        <x>0.000000000</x>
+        <y>821.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Scene/World_Scale">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Shared/Points/Size">
+        <x>0.000000000</x>
+        <y>885.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Shared/Shells/Density">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Sphere/Alpha">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Sphere/Radius">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Enable_Travel">
+        <x>0.000000000</x>
+        <y>949.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Look_Through">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Percent">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Speed">
+        <x>0.000000000</x>
+        <y>1013.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/ViziR/Max_Radius">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>
