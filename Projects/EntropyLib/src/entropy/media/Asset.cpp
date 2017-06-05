@@ -342,13 +342,14 @@ namespace entropy
 				{
 					this->lfoVal += dt * lfoSpeed * this->parameters.playback.lfoScale;
 				}
-				float waveVal = (this->parameters.playback.flipLFO ? sinf(lfoVal - glm::half_pi<float>()) : cosf(lfoVal));
 				if (this->parameters.playback.remapLFO)
 				{
+					float waveVal = (this->parameters.playback.flipLFO ? sinf(lfoVal - glm::half_pi<float>()) : cosf(lfoVal));
 					this->parameters.playback.fadeLFO = waveVal * 0.5f + 0.5f;
 				}
 				else
 				{
+					float waveVal = (this->parameters.playback.flipLFO ? sinf(lfoVal) : cosf(lfoVal));
 					this->parameters.playback.fadeLFO = std::max(0.0f, waveVal);
 				}
 			}
