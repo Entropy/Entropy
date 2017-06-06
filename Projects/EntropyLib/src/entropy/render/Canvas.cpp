@@ -958,10 +958,17 @@ namespace entropy
 			this->screenWidth = args.width;
 			this->screenHeight = args.height;
 			
-			if (this->parameters.fillWindow)
-			{
-				if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
+			//if (this->parameters.fillWindow)
+			//{
+			//	if (this->fboDraw.getWidth() == args.width && this->fboDraw.getHeight() == args.height) return;
 
+			//	this->fboSettings.width = args.width;
+			//	this->fboSettings.height = args.height;
+			//	this->updateSize();
+			//}
+
+			if (this->fboDraw.getWidth() != args.width || this->fboDraw.getHeight() != args.height)
+			{
 				this->fboSettings.width = args.width;
 				this->fboSettings.height = args.height;
 				this->updateSize();
