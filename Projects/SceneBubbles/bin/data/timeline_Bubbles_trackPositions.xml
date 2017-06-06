@@ -1,38 +1,38 @@
 <positions>
     <element name="Bubbles/Bubbles/Camera/Auto_Distance">
         <x>0.000000000</x>
-        <y>779.000000000</y>
-        <width>1684.000000000</width>
+        <y>828.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Auto_Magnification">
         <x>0.000000000</x>
-        <y>843.000000000</y>
-        <width>1684.000000000</width>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/FOV">
         <x>0.000000000</x>
-        <y>907.000000000</y>
-        <width>1684.000000000</width>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Bubbles/Bubbles/Camera/Pan_Speed">
         <x>0.000000000</x>
-        <y>971.000000000</y>
-        <width>1684.000000000</width>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera">
         <x>0.000000000</x>
-        <y>779.000000000</y>
-        <width>1684.000000000</width>
+        <y>764.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Cues">
         <x>0.000000000</x>
-        <y>715.000000000</y>
-        <width>1684.000000000</width>
+        <y>700.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

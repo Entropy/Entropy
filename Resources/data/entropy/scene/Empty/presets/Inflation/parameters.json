@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.11203694343567,
+                "aspectRatio": 2.15730333328247,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -186,7 +186,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.240389",
+                    "Fade Track": "1",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -273,7 +273,7 @@
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
-                    "Free Speed": "2.44094",
+                    "Free Speed": "1",
                     "LFO Scale": "10",
                     "Loop": "0",
                     "Remap LFO": "0",
@@ -312,7 +312,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -438,7 +438,7 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "0.136493",
+                    "Fade Track": "0",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -522,7 +522,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0.0713151",
+                    "Fade Track": "0",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",

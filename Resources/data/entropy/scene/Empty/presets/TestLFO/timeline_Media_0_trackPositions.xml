@@ -13,8 +13,8 @@
     </element>
     <element name="Fade_0_Movie">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
-        <width>1920.000000000</width>
+        <y>70.000000000</y>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_0_Sound">
@@ -245,6 +245,12 @@
         <width>9360.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="Fade_9_Image">
+        <x>0.000000000</x>
+        <y>902.000000000</y>
+        <width>3840.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="Fade_9_Sound">
         <x>0.000000000</x>
         <y>926.000000000</y>
@@ -277,8 +283,8 @@
     </element>
     <element name="Media_0_Movie">
         <x>0.000000000</x>
-        <y>956.000000000</y>
-        <width>1920.000000000</width>
+        <y>70.000000000</y>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_0_Sound">
@@ -507,6 +513,12 @@
         <x>0.000000000</x>
         <y>1222.000000000</y>
         <width>9360.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Media_9_Image">
+        <x>0.000000000</x>
+        <y>838.000000000</y>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_9_Sound">

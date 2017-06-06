@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.11203694343567,
+                "aspectRatio": 2.15730333328247,
                 "distance": 867.994995117188,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -496,7 +496,7 @@
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.82",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -522,7 +522,7 @@
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
@@ -638,7 +638,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0.95",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -872,7 +872,7 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "0",
+                    "Render Back": "1",
                     "Render Front": "1",
                     "Size": "1",
                     "Surface": "1",
@@ -1310,7 +1310,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0.5",
+                    "Fade Track": "0.645998",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -1331,7 +1331,7 @@
         {
             "Movie": {
                 "Base": {
-                    "Anchor": "0.675, 0.505",
+                    "Anchor": "0.761, 0.505",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -1345,7 +1345,7 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.2",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\mov\\CMB anim size H264.mov",
@@ -1373,7 +1373,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.375, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -1387,7 +1387,7 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.2",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\hpv\\bariogenesys-front screen.hpv",
@@ -1415,7 +1415,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.375, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -1429,7 +1429,7 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.2",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\hpv\\standarmodel-front screen.hpv",
@@ -1457,7 +1457,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.675, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -1471,7 +1471,7 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.2",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\hpv\\nucleosynthesis-front screen.hpv",
@@ -1495,6 +1495,132 @@
             },
             "page": 3,
             "type": 3
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.2, 0.545",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "0.3",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\mov\\CMB countdown age.mov",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 4,
+            "type": 2
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.575, 0.55",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "0.8",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\img\\Info_CMB.png",
+                "Playback": {
+                    "Fade Knob": "3",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 5,
+            "type": 1
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.8, 0.545",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "0.3",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\mov\\CMB countdown temp.mov",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 4,
+            "type": 2
         }
     ]
 }

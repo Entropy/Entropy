@@ -2,10 +2,10 @@
     "App": {
         "Back Screen": {
             "Enabled": "1",
-            "Num Cols": "3",
+            "Num Cols": "1",
             "Num Rows": "1",
-            "Screen Height": "1024",
-            "Screen Width": "1280"
+            "Screen Height": "890",
+            "Screen Width": "1920"
         },
         "Background": "0, 0, 0, 1",
         "Control Screen": {
@@ -13,15 +13,15 @@
             "Preview": {
                 "Back Canvas": "1",
                 "Back Warp": "0",
-                "Front Canvas": "1",
+                "Front Canvas": "0",
                 "Front Warp": "0",
                 "Scale": "0.397"
             },
-            "Screen Height": "1080",
+            "Screen Height": "1200",
             "Screen Width": "1920"
         },
         "Front Screen": {
-            "Enabled": "1",
+            "Enabled": "0",
             "Num Cols": "2",
             "Num Rows": "1",
             "Screen Height": "1080",
