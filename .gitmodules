@@ -79,3 +79,6 @@ url=https://github.com/Entropy/ofxEasing
 [submodule "addons/ofxGSL"]
 	path = addons/ofxGSL
 	url = https://github.com/arturoc/ofxGSL
+[submodule "addons/ofxHPVEncoder"]
+	path = addons/ofxHPVEncoder
+	url = git@github.com:Entropy/ofxHPVEncoder.git
