@@ -54,42 +54,18 @@ namespace entropy
 			{
 				this->updateStitches();
 			}
-
-			// Reset post-processing flag, it will be set in postProcess() if called.
-			this->postApplied = false;
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::beginDraw()
 		{
-			if (this->postApplied)
-			{
-				this->fboPost.begin();
-			}
-			else
-			{
-				this->fboDraw.begin(ofFboBeginMode::Perspective);
-			}
+			this->fboDraw.begin(ofFboBeginMode::Perspective | ofFboBeginMode::MatrixFlip);
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
-			if (this->postApplied)
-			{
-				this->fboPost.end();
-			}
-			else
-			{
-				this->fboDraw.end();
-			}
-		}
-
-		//--------------------------------------------------------------
-		void Canvas::postProcess(PostParameters & parameters)
-		{
-			this->postEffects.process(this->fboDraw.getTexture(), this->fboPost, parameters);
-			this->postApplied = true;
+			this->fboDraw.end();
 		}
 
 		//--------------------------------------------------------------
@@ -146,21 +122,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		const ofTexture & Canvas::getDrawTexture() const
-		{
-			return this->fboDraw.getTexture();
-		}
-
-		//--------------------------------------------------------------
-		const ofFbo & Canvas::getPostFbo() const
-		{
-			return this->fboPost;
-		}
-
-		//--------------------------------------------------------------
 		const ofTexture & Canvas::getRenderTexture() const
 		{
-			return (this->postApplied ? this->fboPost.getTexture() : this->fboDraw.getTexture());
+			return this->fboDraw.getTexture();
 		}
 
 		//--------------------------------------------------------------
@@ -208,19 +172,11 @@ namespace entropy
 			this->fboSettings.numSamples = 4;
 			this->fboSettings.internalformat = GL_RGBA16F;
 			this->fboSettings.textureTarget = GL_TEXTURE_2D;
-
 			this->fboDraw.allocate(this->fboSettings);
 			//this->fboDraw.getTexture().texData.bFlipTexture = true;
 
-			this->fboSettings.numSamples = 0;			
-			this->fboPost.allocate(this->fboSettings);
-			//this->fboPost.getTexture().texData.bFlipTexture = true;
-
 			// Update viewport.
 			this->viewport = ofRectangle(0.0f, 0.0f, this->getWidth(), this->getHeight());
-
-			// Update post effects.
-			this->postEffects.resize(this->getWidth(), this->getHeight());
 
 			// Update all existing warps.
 			for (auto warp : this->warps)

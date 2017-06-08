@@ -46,5 +46,5 @@ void main(void)
 		}
 	}
 
-	fragColor = vec4((texture(uTex0, texCoord) * vColor).rgb, vAlpha);
+	fragColor = vec4((texture(uTex0, texCoord) * vColor).rgb * globalColor.rgb, vAlpha);
 }

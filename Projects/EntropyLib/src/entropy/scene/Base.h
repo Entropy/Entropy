@@ -7,10 +7,10 @@
 #include "ofxTimeline.h"
 
 #include "entropy/geom/Box.h"
-#include "entropy/media/Base.h"
+#include "entropy/media/Asset.h"
 #include "entropy/media/Link.h"
+#include "entropy/post/ColorEffects.h"
 #include "entropy/render/Layout.h"
-#include "entropy/render/PostEffects.h"
 #include "entropy/util/Mapping.h"
 #include "entropy/world/Camera.h"
 
@@ -24,6 +24,7 @@ namespace entropy
 		{
 		public:
 			virtual string getName() const = 0;
+			string getShortName() const;
 
 			Base();
 			virtual ~Base();
@@ -33,6 +34,7 @@ namespace entropy
 			void clear_();
 
 			void setup_();
+			void refresh_();
 			void exit_();
 
 			void resize_(render::Layout layout, ofResizeEventArgs & args);
@@ -90,9 +92,6 @@ namespace entropy
 
 			void addCameraKeyframe(render::Layout layout);
 
-			// Post Effects.
-			render::PostParameters & getPostParameters(render::Layout layout);
-
 			// Export
 			void beginExport();
 			void endExport();
@@ -136,8 +135,8 @@ namespace entropy
 			// Box
 			std::map<render::Layout, geom::Box> boxes;
 
-			// Post Effects
-			std::map<render::Layout, render::PostParameters> postEffects;
+			// Color Effects
+			entropy::post::ColorEffects colorEffects;
 
 			// Resources
 			void populatePresets();
@@ -170,11 +169,11 @@ namespace entropy
 			std::map<std::string, std::vector<std::shared_ptr<util::AbstractMapping>>> mappings;
 
 			// Media
-			std::shared_ptr<media::Base> addMedia(media::Type type, int page);
+			std::shared_ptr<media::Asset> addMedia(media::Type type, int page);
 			void removeMedia();
 
 			int mediaPage;
-			std::vector<std::shared_ptr<media::Base>> medias;
+			std::vector<std::shared_ptr<media::Asset>> medias;
 
 			// Links
 			std::shared_ptr<media::Link> addLink(size_t idxA, size_t idxB, bool direction);

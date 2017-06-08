@@ -4,7 +4,6 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
 uniform float uMaxMass;
-uniform float uMaxSize;
 uniform mat4 uTransform;
 
 uniform vec2 uClipRange;
@@ -50,7 +49,6 @@ void main()
 
 	// Enable fragment if we're within range.
 	if (uMaxMass < mass ||
-		uMaxSize < size ||
 		uCutRadius > position.z ||
 		uMinLongitude > position.x || position.x > uMaxLongitude ||
 		uMinLatitude > position.y || position.y > uMaxLatitude)
@@ -101,12 +99,5 @@ void main()
 		vCell = gl_VertexID % 8 + 8;
 	}
 
-	if (uMaxMass < mass)
-	{
-		vColor = vec4(1.0);
-	}
-	else
-	{
-	  vColor = vec4(0.0, 1.0, 0.0, 1.0);
-	}
+	vColor = vec4(1.0);
 }

@@ -55,7 +55,6 @@ namespace entropy
 					ofParameter<float> squashRange{ "Squash Range", 0.2f, 0.0f, 1.0f };
 					ofParameter<int> resolution{ "Resolution", 1, 1, 1000 };
 					ofParameter<float> clipMass{ "Clip Mass", 0.0f, 0.0f, 1.0f, ofParameterScale::Logarithmic };
-					ofParameter<float> clipSize{ "Clip Size", 0.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
 					ofParameter<float> maxDensitySize{ "Max Density Size", 10.0f, 1.0f, 1000.0f, ofParameterScale::Logarithmic };
 					ofParameter<int> minDensityMod{ "Min Density Mod", 10, 1, 1000, ofParameterScale::Logarithmic };
 
@@ -65,7 +64,7 @@ namespace entropy
 						alphaScale,
 						squashRange,
 						resolution,
-						clipMass, clipSize,
+						clipMass,
 						maxDensitySize, minDensityMod);
 				} model;
 
@@ -82,8 +81,10 @@ namespace entropy
 			void setup(const std::string & name, const std::string & format, size_t startIdx, size_t endIdx, const std::string & particleType);
 			void clear();
 
-			void update(const glm::mat4 & worldTransform, const ofCamera & camera, SharedParams & params, bool updatePicking);
+			void update(const glm::mat4 & worldTransform, const ofCamera & camera, const ofRectangle & viewport, SharedParams & params, bool updatePicking);
 			glm::vec3 getNearestScreenPoint(const glm::vec2 & pt) const;
+
+			void trackAtScreenPoint(const glm::vec2 & pt);
 
 			void drawPoints(ofShader & shader, SharedParams & sharedParams);
 			void drawShells(ofShader & shader, SharedParams & sharedParams);
@@ -129,6 +130,10 @@ namespace entropy
 			std::vector<float> starFormationRates;
 
 			std::vector<std::pair<glm::vec2, glm::vec3>> pickingData;
+
+			size_t trackIdx;
+			bool findTrackPt;
+			glm::vec2 trackScreenPt;
 
 			float minRadius;
 			float maxRadius;

@@ -336,7 +336,7 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
+                    "Render Back": "0",
                     "Render Front": "0",
                     "Size": "1",
                     "Surface": "1",
@@ -384,7 +384,7 @@
                     "Fade Knob": "8",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "0",
+                    "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Loop": "0",
                     "Sync Mode": "2",
@@ -488,12 +488,144 @@
                     "Loop": "0",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "1"
                 }
             },
             "page": 1,
             "type": 4
+        },
+        {
+            "Movie": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\mov\\EAGLE_OK_postprod_h264.mov",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0"
+                }
+            },
+            "page": 1,
+            "type": 2
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.5, 0.023",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\img\\Eaggle Info.png",
+                "Playback": {
+                    "Fade Knob": "4",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 1,
+            "type": 1
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\hpv\\bariogenesys-front screen.hpv",
+                "Playback": {
+                    "Fade Knob": "5",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 1,
+            "type": 3
+        },
+        {
+            "Image": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "File Path": "E:\\img\\RAMSES_vapor.png",
+                "Playback": {
+                    "Fade Knob": "7",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Loop": "0",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1"
+                }
+            },
+            "page": 0,
+            "type": 1
         }
     ],
     "Post Effects": {

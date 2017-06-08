@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "0.999998, 0, 0, -0.00179401",
+                "orientation": "0.999999, 0, 0, -0.00162138",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "1, 0, 0, 0.000589409",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -113,6 +113,11 @@
             "direction": true,
             "idxA": 6,
             "idxB": 0
+        },
+        {
+            "direction": true,
+            "idxA": 2,
+            "idxB": 11
         }
     ],
     "Mappings": {
@@ -159,59 +164,7 @@
         "Camera_Front::Relative Y Axis": "0",
         "Camera_Front::Roll Speed": "0",
         "Camera_Front::Tilt Speed": "0",
-        "Camera_Front::Tumble Override": "0",
-        "Post_Effects_Back::Bloom::Boost": "0",
-        "Post_Effects_Back::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Back::Bloom::Debug Blur": "0",
-        "Post_Effects_Back::Bloom::Enabled": "0",
-        "Post_Effects_Back::Bloom::Num Passes": "0",
-        "Post_Effects_Back::Bloom::Sigma": "0",
-        "Post_Effects_Back::Color::Brightness": "0",
-        "Post_Effects_Back::Color::Contrast": "0",
-        "Post_Effects_Back::Color::Enabled": "0",
-        "Post_Effects_Back::Color::Exposure": "0",
-        "Post_Effects_Back::Color::Gamma": "0",
-        "Post_Effects_Back::Color::Tonemapping": "0",
-        "Post_Effects_Back::Tonemapping::linear angle": "0",
-        "Post_Effects_Back::Tonemapping::linear strenght": "0",
-        "Post_Effects_Back::Tonemapping::shoulder strenght": "0",
-        "Post_Effects_Back::Tonemapping::toe denominator": "0",
-        "Post_Effects_Back::Tonemapping::toe numerator": "0",
-        "Post_Effects_Back::Tonemapping::toe strenght": "0",
-        "Post_Effects_Back::Vignette::Debug": "0",
-        "Post_Effects_Back::Vignette::Enabled": "0",
-        "Post_Effects_Back::Vignette::Inner": "0",
-        "Post_Effects_Back::Vignette::Only Alpha": "0",
-        "Post_Effects_Back::Vignette::Outer": "0",
-        "Post_Effects_Back::Vignette::Power": "0",
-        "Post_Effects_Back::Vignette::Ratio": "0",
-        "Post_Effects_Back::Vignette::Rotation": "0",
-        "Post_Effects_Front::Bloom::Boost": "0",
-        "Post_Effects_Front::Bloom::Brightness Threshold": "0",
-        "Post_Effects_Front::Bloom::Debug Blur": "0",
-        "Post_Effects_Front::Bloom::Enabled": "0",
-        "Post_Effects_Front::Bloom::Num Passes": "0",
-        "Post_Effects_Front::Bloom::Sigma": "0",
-        "Post_Effects_Front::Color::Brightness": "0",
-        "Post_Effects_Front::Color::Contrast": "0",
-        "Post_Effects_Front::Color::Enabled": "0",
-        "Post_Effects_Front::Color::Exposure": "0",
-        "Post_Effects_Front::Color::Gamma": "0",
-        "Post_Effects_Front::Color::Tonemapping": "0",
-        "Post_Effects_Front::Tonemapping::linear angle": "0",
-        "Post_Effects_Front::Tonemapping::linear strenght": "0",
-        "Post_Effects_Front::Tonemapping::shoulder strenght": "0",
-        "Post_Effects_Front::Tonemapping::toe denominator": "0",
-        "Post_Effects_Front::Tonemapping::toe numerator": "0",
-        "Post_Effects_Front::Tonemapping::toe strenght": "0",
-        "Post_Effects_Front::Vignette::Debug": "0",
-        "Post_Effects_Front::Vignette::Enabled": "0",
-        "Post_Effects_Front::Vignette::Inner": "0",
-        "Post_Effects_Front::Vignette::Only Alpha": "0",
-        "Post_Effects_Front::Vignette::Outer": "0",
-        "Post_Effects_Front::Vignette::Power": "0",
-        "Post_Effects_Front::Vignette::Ratio": "0",
-        "Post_Effects_Front::Vignette::Rotation": "0"
+        "Camera_Front::Tumble Override": "0"
     },
     "Media": [
         {
@@ -230,6 +183,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V4.wav",
                 "Playback": {
                     "Fade Knob": "15",
@@ -237,11 +194,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 0,
@@ -263,6 +225,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Inflation_IntroBigBang.hpv",
                 "Playback": {
                     "Fade Knob": "15",
@@ -270,11 +236,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 1,
@@ -296,18 +267,27 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Inflation_Slowdown.hpv",
                 "Playback": {
                     "Fade Knob": "0",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "2",
+                    "LFO Scale": "10",
                     "Loop": "0",
-                    "Sync Mode": "1",
+                    "Remap LFO": "0",
+                    "Speed Knob": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "1"
                 }
             },
             "page": 2,
@@ -316,7 +296,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -329,6 +309,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
                 "Playback": {
                     "Fade Knob": "15",
@@ -336,11 +320,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
-                    "Sync Mode": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "3",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 2,
@@ -362,6 +351,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Front_Timeline_001.hpv",
                 "Playback": {
                     "Fade Knob": "8",
@@ -369,11 +362,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "2",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 1,
@@ -395,6 +393,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Front_Timeline_002.hpv",
                 "Playback": {
                     "Fade Knob": "9",
@@ -402,11 +404,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "0",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "2",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
-                    "Use Fade Twist": "1"
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 2,
@@ -428,18 +435,27 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "12",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "1"
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 3,
@@ -461,18 +477,27 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
-                "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "0",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "1",
+                    "Free Speed": "1",
+                    "LFO Scale": "12",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "0",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 3,
@@ -494,18 +519,27 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 3,
@@ -526,6 +560,10 @@
                 "Border": {
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
                 },
                 "File Path": "E:\\wav\\Part 1_Oscilliation_V2.wav",
                 "Playback": {
@@ -534,11 +572,16 @@
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 3,
@@ -560,6 +603,10 @@
                     "Color": "1, 1, 1, 1",
                     "Width": "0"
                 },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
                 "File Path": "E:\\wav\\Intro Dida V2.wav",
                 "Playback": {
                     "Fade Knob": "16",
@@ -567,89 +614,62 @@
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "0",
-                    "Use Fade Twist": "0"
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 0,
             "type": 4
-        }
-    ],
-    "Post Effects": {
-        "Post Effects Back": {
-            "Bloom": {
-                "Boost": "1",
-                "Brightness Threshold": "1",
-                "Debug Blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
-            },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Enabled": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Tonemapping": {
-                "linear angle": "0.1",
-                "linear strenght": "0.3",
-                "shoulder strenght": "0.22",
-                "toe denominator": "0.3",
-                "toe numerator": "0.01",
-                "toe strenght": "0.2"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
-                "Ratio": "1",
-                "Rotation": "0"
-            }
         },
-        "Post Effects Front": {
-            "Bloom": {
-                "Boost": "1",
-                "Brightness Threshold": "1",
-                "Debug Blur": "0",
-                "Enabled": "1",
-                "Num Passes": "1",
-                "Sigma": "0.9"
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "1",
+                    "Render Front": "0",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
+                "Playback": {
+                    "Fade Knob": "2",
+                    "Fade LFO": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "3",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
+                }
             },
-            "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
-                "Enabled": "1",
-                "Exposure": "4",
-                "Gamma": "2.2",
-                "Tonemapping": "6"
-            },
-            "Tonemapping": {
-                "linear angle": "0.1",
-                "linear strenght": "0.3",
-                "shoulder strenght": "0.22",
-                "toe denominator": "0.3",
-                "toe numerator": "0.01",
-                "toe strenght": "0.2"
-            },
-            "Vignette": {
-                "Debug": "0",
-                "Enabled": "1",
-                "Inner": "0.8",
-                "Only Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
-                "Ratio": "1",
-                "Rotation": "0"
-            }
+            "page": 2,
+            "type": 3
         }
-    }
+    ]
 }

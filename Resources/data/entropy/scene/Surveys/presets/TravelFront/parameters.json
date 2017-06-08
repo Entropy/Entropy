@@ -1,0 +1,214 @@
+{
+    "Surveys": {
+        "BOSS": {
+            "Color": "1, 1, 1, 1",
+            "Cut_Radius": "0",
+            "Max_Latitude": "1",
+            "Max_Longitude": "1",
+            "Max_Radius": "1",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0",
+            "Min_Radius": "0",
+            "Render_Models": "0",
+            "Render_Points": "0",
+            "Render_Shells": "0"
+        },
+        "DES": {
+            "Color": "0.756314, 0.809732, 1, 1",
+            "Cut_Radius": "0",
+            "Max_Latitude": "0.412245",
+            "Max_Longitude": "0.269388",
+            "Max_Radius": "1",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0.0530612",
+            "Min_Radius": "1",
+            "Render_Models": "0",
+            "Render_Points": "1",
+            "Render_Shells": "0"
+        },
+        "Post_Effects": {
+            "Bloom": {
+                "Boost": "1",
+                "Brightness_Threshold": "1",
+                "Debug_Blur": "0",
+                "Enabled": "0",
+                "Num_Passes": "1",
+                "Sigma": "0.9"
+            },
+            "Color": {
+                "Brightness": "0",
+                "Contrast": "1",
+                "Enabled": "1",
+                "Exposure": "4",
+                "Gamma": "2.2",
+                "Tonemapping": "6"
+            },
+            "Tonemapping": {
+                "linear_angle": "0.1",
+                "linear_strenght": "0.3",
+                "shoulder_strenght": "0.22",
+                "toe_denominator": "0.3",
+                "toe_numerator": "0.01",
+                "toe_strenght": "0.2"
+            },
+            "Vignette": {
+                "Debug": "0",
+                "Enabled": "0",
+                "Inner": "0.8",
+                "Only_Alpha": "1",
+                "Outer": "1.1",
+                "Power": "1.1",
+                "Ratio": "1",
+                "Rotation": "0"
+            }
+        },
+        "Renderer": {
+            "Alpha_factor": "1",
+            "Bokeh_sides": "6",
+            "Clip": "0",
+            "DOF_aperture": "0.0005",
+            "DOF_distance": "1",
+            "DOF_samples": "1",
+            "Fade_From": "0.8",
+            "Fade_Power": "2",
+            "Fade_To": "1",
+            "Fill": "1",
+            "Fill_Alpha": "0.5",
+            "Fog_Enabled": "1",
+            "Fog_Max_Distance": "1.5",
+            "Fog_Min_Distance": "0.1",
+            "Fog_Power": "1",
+            "Fog_Start_Distance": "0.1",
+            "Shade_Normals": "0",
+            "Spherical_Clip": "0",
+            "Use_Lights": "0",
+            "Wireframe": "1",
+            "Wireframe_Alpha": "0.25",
+            "Wobbly_Clip": "0",
+            "enable_DOF": "0"
+        },
+        "Scene": {
+            "Camera": {
+                "FOV": "30",
+                "Far_Clip": "20",
+                "Near_Clip": "0.001"
+            },
+            "Camera_Mix": "1",
+            "Orbit_Speed": "0",
+            "Recording": {
+                "Record_Sequence": "0",
+                "Record_Video": "0",
+                "Render_Height": "1080",
+                "Render_Width": "4200"
+            },
+            "World_Scale": "0.01"
+        },
+        "Shared": {
+            "Model": {
+                "Alpha_Scale": "0.171597",
+                "Clip_Mass": "0.12",
+                "Geo_Scale": "1",
+                "Max_Density_Size": "1000",
+                "Min_Density_Mod": "12",
+                "Resolution": "1",
+                "Squash_Range": "0.33",
+                "Use_Test_Model": "0"
+            },
+            "Points": {
+                "Attenuation": "600",
+                "Distance_Fade": "0.1",
+                "Size": "0.0744021"
+            },
+            "Shells": {
+                "Alpha": "1",
+                "Attenuation": "600",
+                "Density": "100",
+                "Size": "32"
+            }
+        },
+        "Sphere": {
+            "Alpha": "0",
+            "Arc_Horizontal": "1",
+            "Arc_Vertical": "1",
+            "Auto_Draw": "1",
+            "Blend_Mode": "5",
+            "Color": "1, 1, 1, 1",
+            "Cull_Face": "0",
+            "Depth_Test": "0",
+            "Enabled": "0",
+            "Radius": "5",
+            "Resolution": "16"
+        },
+        "Travel_Cam_Path": {
+            "Edit": {
+                "Add_Points": "0",
+                "Clear_Path": "0",
+                "Curve_Resolution": "10",
+                "Debug_Draw": "0",
+                "Edit_Points": "0",
+                "Nudge_Amount": "1",
+                "Start_Path": "0"
+            },
+            "Travel": {
+                "Enable_Travel": "1",
+                "Look_At_Lerp": "0.1",
+                "Percent": "0.137181",
+                "Reset_Position": "0",
+                "Speed": "0.11"
+            }
+        },
+        "ViziR": {
+            "Color": "1, 1, 1, 1",
+            "Cut_Radius": "0.045",
+            "Max_Latitude": "1",
+            "Max_Longitude": "1",
+            "Max_Radius": "0",
+            "Min_Latitude": "0",
+            "Min_Longitude": "0",
+            "Min_Radius": "0.05",
+            "Render_Models": "0",
+            "Render_Points": "0",
+            "Render_Shells": "0"
+        }
+    },
+    "ofEasyCam": {
+        "aspectRatio": 3.28125,
+        "distance": 1091.18933105469,
+        "drag": 0.899999976158142,
+        "farClip": 20.0,
+        "forceAspectRatio": true,
+        "fov": 30.0,
+        "inertiaEnabled": false,
+        "lensOffset": "0, 0",
+        "mouseInputEnabled": true,
+        "mouseMiddleButtonEnabled": true,
+        "nearClip": 0.00100000004749745,
+        "orientation": "-0.0270538, 0.330793, 0.888493, 0.316899",
+        "ortho": false,
+        "position": "229.294, 655.623, -841.592",
+        "relativeYAxis": false,
+        "scale": "1, 1, 1",
+        "target": "0, 0, 0",
+        "translationKey": 109,
+        "upAxis": "0, 1, 0"
+    },
+    "travelCamPath": {
+        "camera": {
+            "aspectRatio": 3.28125,
+            "farClip": 20.0,
+            "forceAspectRatio": true,
+            "fov": 30.0,
+            "lensOffset": "0, 0",
+            "nearClip": 0.00100000004749745,
+            "orientation": "-0.0339986, 0.328971, 0.890754, 0.311736",
+            "ortho": false,
+            "position": "215.603, 598.766, -761.807",
+            "scale": "1, 1, 1"
+        },
+        "curvePoints": [
+            "195.091, 531.881, -673.972",
+            "130.476, 411.384, -553.531",
+            "77.2388, 225.514, -278.604"
+        ]
+    }
+}

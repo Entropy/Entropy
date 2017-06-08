@@ -1,8 +1,14 @@
 <positions>
     <element name="Cues">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
-        <width>1920.000000000</width>
+        <y>926.000000000</y>
+        <width>1680.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Messages">
+        <x>0.000000000</x>
+        <y>990.000000000</y>
+        <width>1680.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

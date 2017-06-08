@@ -32,8 +32,7 @@ void main()
 		gl_Position.w = 0;
 	}
 
-	//vColor = color;
-	if (uData[gl_InstanceID].dummy == 1.0)
+	if (uData[gl_InstanceID].dummy > 0.0)
 	{
 		vColor = vec4(1.0, 0.0, 0.0, 1.0);
 	}
@@ -41,5 +40,6 @@ void main()
 	{
 		vColor = color;
 	}
+	
 	vAlpha = uData[gl_InstanceID].alpha;
 }

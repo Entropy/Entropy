@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 #include "ofFileUtils.h"
 #include "ofSoundPlayer.h"
@@ -12,7 +12,7 @@ namespace entropy
 	namespace media
 	{
 		class Sound
-			: public Base
+			: public Asset
 		{
 		public:
 			Sound();
@@ -28,11 +28,12 @@ namespace entropy
 			uint64_t getCurrentTimeMs() const override;
 			uint64_t getCurrentFrame() const override;
 
-			uint64_t getPlaybackTimeMs() override;
 			uint64_t getPlaybackFrame() override;
 
 			uint64_t getDurationMs() const override;
 			uint64_t getDurationFrames() const override;
+
+			uint64_t getFrameRate() const override;
 
 		protected:
 			bool loadMedia(const std::filesystem::path & filePath) override;

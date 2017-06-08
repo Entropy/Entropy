@@ -2,9 +2,6 @@
 #include "ofxHPVPlayer.h"
 
 #include "entropy/Helpers.h"
-#include "entropy/scene/Calibrate.h"
-#include "entropy/scene/Empty.h"
-#include "entropy/scene/Interlude.h"
 #include "entropy/util/App.h"
 
 //--------------------------------------------------------------
@@ -12,6 +9,7 @@ void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofBackground(ofColor::black);
+	ofDisableArbTex();
 
 	// Set time mode to follow DSP clock.
 	ofFmodSetSamplerate(48000);
@@ -20,11 +18,8 @@ void ofApp::setup()
 	// Start the HPV engine.
 	HPV::InitHPVEngine();
 
-	// Add all Scenes to the Playlist.
-	auto playlist = entropy::GetPlaylist();
-	playlist->addScene(std::make_shared<entropy::scene::Calibrate>());
-    playlist->addScene(std::make_shared<entropy::scene::Empty>());
-//	playlist->addScene(std::make_shared<entropy::scene::Interlude>());
+	// Load the playlist.
+	entropy::GetPlaylist()->loadSettings();
 }
 
 //--------------------------------------------------------------

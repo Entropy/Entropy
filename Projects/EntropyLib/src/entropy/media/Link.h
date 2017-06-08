@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Asset.h"
 
 namespace entropy
 {
@@ -9,7 +9,7 @@ namespace entropy
 		class Link
 		{
 		public:
-			Link(size_t idxA, size_t idxB, bool direction, std::vector<std::shared_ptr<media::Base>> & medias);
+			Link(size_t idxA, size_t idxB, bool direction, std::vector<std::shared_ptr<media::Asset>> & medias);
 			~Link();
 
 			size_t getIdxA() const;
@@ -20,8 +20,8 @@ namespace entropy
 			const std::string & getLabel() const;
 
 		protected:
-			std::shared_ptr<media::Base> mediaA;
-			std::shared_ptr<media::Base> mediaB;
+			std::shared_ptr<media::Asset> mediaA;
+			std::shared_ptr<media::Asset> mediaB;
 			std::vector<ofEventListener> listeners;
 
 			size_t idxA;

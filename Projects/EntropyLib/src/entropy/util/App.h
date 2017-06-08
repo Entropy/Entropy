@@ -64,7 +64,8 @@ namespace entropy
 
 			void applyConfiguration();
 			void updatePreviews();
-			void updateOutline(render::Layout layout);
+			void updateWarpOutline(render::Layout layout);
+			void updateCanvasOutline(render::Layout layout);
 
 		protected:
 			std::map<render::Layout, std::shared_ptr<render::Canvas>> canvas;
@@ -78,7 +79,8 @@ namespace entropy
 			{
 				ofRectangle warpBounds;
 				ofRectangle canvasBounds;
-				ofVboMesh warpOutlines;
+				ofVboMesh warpOutline;
+				ofVboMesh canvasOutline;
 			};
 			std::map<render::Layout, ofRectangle> screenBounds;
 			std::map<render::Layout, PreviewData> previewData;

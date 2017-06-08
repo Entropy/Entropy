@@ -5,7 +5,6 @@
 #include "ofxWarp.h"
 
 #include "Layout.h"
-#include "PostEffects.h"
 
 namespace entropy
 {
@@ -21,13 +20,9 @@ namespace entropy
 
 			void beginDraw();
 			void endDraw();
-
-			void postProcess(PostParameters & parameters);
 			
 			void render(const ofRectangle & bounds);
 
-			const ofTexture & getDrawTexture() const;
-			const ofFbo & getPostFbo() const;
 			const ofTexture & getRenderTexture() const;
 
 			float getWidth() const;
@@ -122,11 +117,7 @@ namespace entropy
 			ofRectangle viewport;
 
 			ofFbo fboDraw;
-			ofFbo fboPost;
 			ofFbo::Settings fboSettings;
-
-			PostEffects postEffects;
-			bool postApplied;
 
 			bool exportFrames;
 			ofxTextureRecorder textureRecorder;

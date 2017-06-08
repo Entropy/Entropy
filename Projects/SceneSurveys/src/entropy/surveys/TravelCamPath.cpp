@@ -32,13 +32,13 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void TravelCamPath::editNearScreenPoint(const ofCamera & camera, const glm::vec2 & screenPoint)
+		void TravelCamPath::editNearScreenPoint(const ofCamera & camera, const ofRectangle & viewport, const glm::vec2 & screenPoint)
 		{
 			auto nearestDist = std::numeric_limits<float>::max();
 			auto nearestIdx = -1;
 			for (int i = 0; i < this->curvePoints.size(); ++i)
 			{
-				const auto pt = camera.worldToScreen(this->curvePoints[i]).xy();
+				const auto pt = camera.worldToScreen(this->curvePoints[i], viewport).xy();
 				auto dist = glm::distance2(pt, screenPoint);
 				if (dist < nearestDist) {
 					nearestDist = dist;
@@ -145,14 +145,46 @@ namespace entropy
 			}
 			if (this->reset || this->enabled)
 			{
-				const auto currPoint = polyline.getPointAtLength(this->travelDistance);
-				const auto nextDistance = this->travelDistance + this->speed;
-				const auto nextPoint = polyline.getPointAtLength(nextDistance);
+				glm::vec3 currPoint;
+				glm::vec3 nextPoint;
+				//if (this->speed > 0.0f)
+				{
+					currPoint = this->polyline.getPointAtLength(this->travelDistance);
+					const auto nextDistance = this->travelDistance + std::max(0.1f, this->speed.get());
+					nextPoint = this->polyline.getPointAtLength(nextDistance);
+
+					this->percent = this->travelDistance / this->totalDistance;
+				}
+				//else
+				//{
+				//	currPoint = this->polyline.getPointAtPercent(this->percent);
+				//	const auto nextPct = this->percent + 0.01f;
+				//	nextPoint = this->polyline.getPointAtPercent(nextPct);
+				//}
 				this->camera.setPosition(currPoint);
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
 				const auto upDir = glm::normalize(glm::cross(xAxis, glm::normalize(nextPoint - currPoint)));
-				//this->camera.lookAt(nextPoint, upDir);
+
+				if (this->lookAtLerp == 1.0f)
+				{
+					this->camera.lookAt(nextPoint, upDir);
+				}
+				else
+				{
+					const auto zAxis = glm::normalize(this->camera.getGlobalPosition() - nextPoint);
+					if (glm::length(zAxis) > 0.0f) 
+					{
+						const auto xAxis = glm::normalize(glm::cross(upDir, zAxis));
+						const auto yAxis = glm::cross(zAxis, xAxis);
+						glm::mat4 m;
+						m[0] = glm::vec4(xAxis, 0.f);
+						m[1] = glm::vec4(yAxis, 0.f);
+						m[2] = glm::vec4(zAxis, 0.f);
+						const auto targetOrientation = glm::mix(this->camera.getGlobalOrientation(), glm::toQuat(m), this->lookAtLerp.get());
+						this->camera.setGlobalOrientation(targetOrientation);
+					}
+				}
 
 				this->reset = false;
 			}

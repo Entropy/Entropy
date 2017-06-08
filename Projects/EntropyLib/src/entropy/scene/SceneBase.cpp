@@ -30,6 +30,17 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
+		std::string Base::getShortName() const
+		{
+			auto tokens = ofSplitString(this->getName(), "::", true, true);
+			if (tokens.empty())
+			{
+				return "Error";
+			}
+			return tokens.back();
+		}
+
+		//--------------------------------------------------------------
 		void Base::init_()
 		{
 			if (this->initialized)
@@ -59,7 +70,7 @@ namespace entropy
 			this->timeline->setSpacebarTogglePlay(false);
 			this->timeline->setLoopType(OF_LOOP_NONE);
 			this->timeline->setFrameRate(30.0f);
-			this->timeline->setDurationInSeconds(16 * 60);
+			this->timeline->setDurationInSeconds(30 * 60);
 			this->timeline->setAutosave(false);
 			this->timeline->setPageName(parameters.getName());
 
@@ -97,11 +108,6 @@ namespace entropy
 			this->boxes[render::Layout::Front].parameters.setName("Box Front");
 			this->populateMappings(this->boxes[render::Layout::Back].parameters);
 			this->populateMappings(this->boxes[render::Layout::Front].parameters);
-
-			this->postEffects[render::Layout::Back].setName("Post Effects Back");
-			this->postEffects[render::Layout::Front].setName("Post Effects Front");
-			this->populateMappings(this->postEffects[render::Layout::Back], render::PostEffectsTimelinePageName);
-			this->populateMappings(this->postEffects[render::Layout::Front], render::PostEffectsTimelinePageName);
 
 			// List presets.
 			this->populatePresets();
@@ -201,9 +207,14 @@ namespace entropy
 			this->savePreset(kPresetDefaultName);
 
 			// Clear media.
-			while (!this->medias.empty())
+			//while (!this->medias.empty())
+			//{
+			//	this->removeMedia();
+			//}
+
+			for (auto media : this->medias)
 			{
-				this->removeMedia();
+				media->exit_();
 			}
 
 #ifdef OFX_PARAMETER_TWISTER
@@ -212,6 +223,25 @@ namespace entropy
 #endif
 
 			this->ready = false;
+		}
+
+		//--------------------------------------------------------------
+		void Base::refresh_()
+		{
+			if (!this->ready)
+			{
+				ofLogWarning(__FUNCTION__) << "Scene is not set up!";
+				return;
+			}
+
+#ifdef OFX_PARAMETER_TWISTER
+			GetApp()->getTwister()->clear();
+#endif
+
+			for (auto media : this->medias)
+			{
+				media->refreshTwisterSync();
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -272,13 +302,18 @@ namespace entropy
 				this->drawFrontBase();
 			}
 
-			for (auto media : this->medias)
+			this->colorEffects.begin();
 			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
+				for (auto media : this->medias)
 				{
-					media->draw_();
+					if (media->renderLayout(layout) && media->getSurface() == media::Surface::Base)
+					{
+						this->colorEffects.setParams(media->parameters.color);
+						media->draw_();
+					}
 				}
 			}
+			this->colorEffects.end();
 		}
 
 		//--------------------------------------------------------------
@@ -319,13 +354,18 @@ namespace entropy
 				this->drawFrontOverlay();
 			}
 
-			for (auto media : this->medias)
+			this->colorEffects.begin();
 			{
-				if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
+				for (auto media : this->medias)
 				{
-					media->draw_();
+					if (media->renderLayout(layout) && media->getSurface() == media::Surface::Overlay)
+					{
+						this->colorEffects.setParams(media->parameters.color);
+						media->draw_();
+					}
 				}
 			}
+			this->colorEffects.end();
 		}
 
 		//--------------------------------------------------------------
@@ -433,7 +473,7 @@ namespace entropy
 					std::vector<std::string> mediaNamesStr{ this->medias.size() };
 					std::vector<const char*> mediaNamesChr{ this->medias.size() };
 					int i = 0;
-					std::transform(this->medias.begin(), this->medias.end(), mediaNamesStr.begin(), [i] (std::shared_ptr<media::Base> & m) mutable
+					std::transform(this->medias.begin(), this->medias.end(), mediaNamesStr.begin(), [i] (std::shared_ptr<media::Asset> & m) mutable
 					{
 						return m->getTypeName() + " " + ofToString(i++);
 					});
@@ -549,46 +589,6 @@ namespace entropy
 			}
 			ofxImGui::EndWindow(settings);
 
-			// Add gui window for Post Effects.
-			ofxImGui::SetNextWindow(settings);
-			if (ofxImGui::BeginWindow("Post Effects", settings))
-			{
-				for (auto & it : this->postEffects)
-				{
-					auto & postParameters = it.second;
-					if (ofxImGui::BeginTree(postParameters, settings))
-					{
-						ofxImGui::AddGroup(postParameters.bloom, settings);
-
-						if (ofxImGui::BeginTree(postParameters.color, settings))
-						{
-							ofxImGui::AddParameter(postParameters.color.exposure);
-							ofxImGui::AddParameter(postParameters.color.gamma);
-							static vector<string> labels =
-							{
-								"None",
-								"Gamma Only",
-								"Reinhard",
-								"Reinhard Lum",
-								"Filmic",
-								"ACES",
-								"Uncharted 2"
-							};
-							ofxImGui::AddRadio(postParameters.color.tonemapping, labels, 3);
-							ofxImGui::AddParameter(postParameters.color.brightness);
-							ofxImGui::AddParameter(postParameters.color.contrast);
-						
-							ofxImGui::EndTree(settings);
-						}
-
-						ofxImGui::AddGroup(postParameters.vignette, settings);
-
-						ofxImGui::EndTree(settings);
-					}
-				}
-			}
-			ofxImGui::EndWindow(settings);
-
 			// Let the child class handle its child parameters.
 			this->gui(settings);
 		}
@@ -610,13 +610,6 @@ namespace entropy
 			for (auto & it : this->boxes)
 			{
 				ofxPreset::Serializer::Serialize(jsonBoxes, it.second.parameters);
-			}
-
-			// Save PostEffects settings.
-			auto & jsonPostEffects = json["Post Effects"];
-			for (auto & it : this->postEffects)
-			{
-				ofxPreset::Serializer::Serialize(jsonPostEffects, it.second);
 			}
 
 			// Save Mappings.
@@ -675,16 +668,6 @@ namespace entropy
 				for (auto & it : this->boxes)
 				{
 					ofxPreset::Serializer::Deserialize(jsonBoxes, it.second.parameters);
-				}
-			}
-
-			// Restore PostEffects settings.
-			if (json.count("Post Effects"))
-			{
-				auto & jsonPostEffects = json["Post Effects"];
-				for (auto & it : this->postEffects)
-				{
-					ofxPreset::Serializer::Deserialize(jsonPostEffects, it.second);
 				}
 			}
 
@@ -768,7 +751,7 @@ namespace entropy
 			this->timeline->setCurrentTimeToInPoint();
 			this->timeline->setCurrentPage(0);
 			this->setCameraLocked(true);
-			//this->timeline->play();
+			this->timeline->play();
 		}
 
 		//--------------------------------------------------------------
@@ -1163,9 +1146,9 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		std::shared_ptr<media::Base> Base::addMedia(media::Type type, int page)
+		std::shared_ptr<media::Asset> Base::addMedia(media::Type type, int page)
 		{
-			std::shared_ptr<media::Base> media;
+			std::shared_ptr<media::Asset> media;
 			if (type == media::Type::Image)
 			{
 				media = std::make_shared<media::Image>();
@@ -1263,12 +1246,6 @@ namespace entropy
 		void Base::addCameraKeyframe(render::Layout layout)
 		{
 			this->cameras[layout]->addKeyframe();
-		}
-
-		//--------------------------------------------------------------
-		render::PostParameters & Base::getPostParameters(render::Layout layout)
-		{
-			return this->postEffects[layout];
 		}
 
 		//--------------------------------------------------------------

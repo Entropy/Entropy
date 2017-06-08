@@ -1,6 +1,8 @@
 #include "Playlist.h"
 
 #include "entropy/Helpers.h"
+#include "entropy/scene/Calibrate.h"
+#include "entropy/scene/Empty.h"
 
 namespace entropy
 {
@@ -9,99 +11,20 @@ namespace entropy
 		//--------------------------------------------------------------
 		Playlist::Playlist()
 			: currentTrack(-1)
+			, currentScene(nullptr)
 		{
-			this->loadSettings();
 		}
 
 		//--------------------------------------------------------------
 		Playlist::~Playlist()
 		{
-			// Clear scenes.
-			this->unsetCurrent();
-			this->scenes.clear();
+			this->stopTrack();
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::addScene(shared_ptr<Base> scene)
+		bool Playlist::isActive() const
 		{
-			if (this->scenes.find(scene->getName()) == this->scenes.end())
-			{
-				ofLogNotice(__FUNCTION__) << "Initializing scene " << scene->getName() << "...";
-				auto startTime = ofGetElapsedTimef();
-
-				scene->init_();
-				this->scenes.emplace(scene->getName(), scene);
-				
-				// Get the short name for the gui.
-				auto tokens = ofSplitString(scene->getName(), "::", true, true);
-				this->shortNames.emplace(tokens.back(), scene->getName());
-
-				auto duration = ofGetElapsedTimef() - startTime;
-				ofLogNotice(__FUNCTION__) << "Scene " << scene->getName() << " initialized in " << duration << " seconds.";
-				
-				return true;
-			}
-			
-			ofLogError(__FUNCTION__) << "Scene with name " << scene->getName() << " already exists!";
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		bool Playlist::removeScene(shared_ptr<Base> scene)
-		{
-			return this->removeScene(scene->getName());
-		}
-
-		//--------------------------------------------------------------
-		bool Playlist::removeScene(const string & name)
-		{
-			// scene->clear_() will be called by the destructor.
-			
-			if (this->scenes.erase(name))
-			{				
-				string foundKey;
-				for (auto & it : this->shortNames)
-				{
-					if (it.second == name)
-					{
-						foundKey = it.first;
-						break;
-					}
-				}
-				if (!foundKey.empty())
-				{
-					this->shortNames.erase(foundKey);
-				}
-
-				return true;
-			}
-
-			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		void Playlist::previewScene()
-		{
-			// Just start the first scene in the map.
-			if (this->setCurrentScene(this->scenes.begin()->first))
-			{
-				this->setCurrentPreset(kPresetDefaultName, false);
-			}
-		}
-
-		//--------------------------------------------------------------
-		shared_ptr<Base> Playlist::getScene(const string & name)
-		{
-			try
-			{
-				return this->scenes.at(name);
-			}
-			catch (const out_of_range &)
-			{
-				ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
-				return nullptr;
-			}
+			return (this->currentTrack < this->tracks.size());
 		}
 
 		//--------------------------------------------------------------
@@ -144,57 +67,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::setCurrentScene(const string & name)
-		{
-			if (this->currentScene && this->currentScene->getName() == name)
-			{
-				ofLogNotice(__FUNCTION__) << "Scene " << name << " already set.";
-				return true;
-			}
-
-			this->unsetCurrent();
-			
-			auto scene = this->getScene(name);
-			if (scene)
-			{
-				this->currentScene = scene;
-
-				this->presetCuedListener = this->currentScene->presetCuedEvent.newListener([this](string & preset)
-				{
-					this->nextPreset = preset;
-				});
-				this->presetSavedListener = this->currentScene->presetSavedEvent.newListener([this](string & preset)
-				{
-					this->cameraSettings[render::Layout::Back] = this->currentScene->getCamera(render::Layout::Back)->fetchSettings();
-					this->cameraSettings[render::Layout::Front] = this->currentScene->getCamera(render::Layout::Front)->fetchSettings();
-				});
-
-				for (auto & it : this->cameraControlAreas)
-				{
-					this->currentScene->setCameraControlArea(it.first, it.second);
-				}
-
-				return true;
-			}
-			ofLogError(__FUNCTION__) << "Scene with name " << name << " does not exist!";
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		void Playlist::unsetCurrent()
-		{
-			if (this->currentScene)
-			{
-				this->currentScene->exit_();
-			}
-			this->currentScene.reset();
-
-			this->presetCuedListener.unsubscribe();
-			this->presetSavedListener.unsubscribe();
-			this->nextPreset.clear();
-		}
-
-		//--------------------------------------------------------------
 		const string & Playlist::getCurrentPresetName() const
 		{
 			if (this->currentScene)
@@ -207,40 +79,79 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		bool Playlist::setCurrentPreset(const string & name, bool showtime)
+		bool Playlist::addTrack(const string & sceneName, const string & presetName)
 		{
-			if (this->currentScene)
+			std::shared_ptr<Base> scene;
+			if (sceneName == "Empty")
 			{
-				if (this->currentScene->loadPreset(name))
-				{
-					if (showtime)
-					{
-						this->currentScene->setShowtime();
-					}
-					return true;
-				}
+				scene = std::make_shared<Empty>();
 			}
-			return false;
-		}
+			else if (sceneName == "Calibrate")
+			{
+				scene = std::make_shared<Calibrate>();
+			}
+			else
+			{
+				ofLogError(__FUNCTION__) << "Scene " << sceneName << " not found!";
+				return false;
+			}
 
-		//--------------------------------------------------------------
-		void Playlist::addTrack(const string & sceneName, const string & presetName)
-		{
-			this->tracks.push_back(make_pair(sceneName, presetName));
+			ofLogNotice(__FUNCTION__) << "Adding track for Scene " << sceneName;
+
+			// Init the scene.
+			auto elapsedTime = ofGetElapsedTimef();
+			scene->init_();
+			ofLogNotice(__FUNCTION__) << "Scene " << sceneName << " loaded in " << (ofGetElapsedTimef() - elapsedTime) << " seconds";
+
+			//// Load the matching preset.
+			//elapsedTime = ofGetElapsedTimef(); 
+			//if (scene->loadPreset(presetName))
+			//{
+			//	ofLogNotice(__FUNCTION__) << "Preset " << presetName << " loaded in " << (ofGetElapsedTimef() - elapsedTime) << " seconds";
+			//}
+			//else
+			//{
+			//	ofLogError(__FUNCTION__) << "Preset " << presetName << " not found for scene " << sceneName << "!";
+			//	return false;
+			//}
+
+			this->tracks.push_back(std::make_pair(scene, presetName));
 		}
 		
 		//--------------------------------------------------------------
-		void Playlist::removeTrack()
+		bool Playlist::removeTrack()
 		{
 			if (!this->tracks.empty())
 			{
 				if (this->currentTrack == this->tracks.size() - 1)
 				{
 					// We're currently playing the track to remove, unplay it.
-					this->unsetCurrent();
+					this->stopTrack();
 				}
 				
 				this->tracks.pop_back();
+
+				return true;
+			}
+
+			return false;
+		}
+
+		//--------------------------------------------------------------
+		void Playlist::preloadTracks()
+		{
+			for (auto track : this->tracks)
+			{
+				// Load the preset per track.
+				auto elapsedTime = ofGetElapsedTimef();
+				if (track.first->loadPreset(track.second))
+				{
+					ofLogNotice(__FUNCTION__) << "Preset " << track.second << " loaded in " << (ofGetElapsedTimef() - elapsedTime) << " seconds";
+				}
+				else
+				{
+					ofLogError(__FUNCTION__) << "Preset " << track.second << " not found for scene " << track.first->getShortName() << "!";
+				}
 			}
 		}
 
@@ -253,32 +164,50 @@ namespace entropy
 				return false;
 			}
 
-			auto & item = this->tracks[index];
-			if (this->shortNames.find(item.first) != this->shortNames.end())
+			if (index == this->currentTrack)
 			{
-				auto & sceneName = this->shortNames[item.first];
-				if (this->setCurrentScene(sceneName))
-				{
-					auto found = this->setCurrentPreset(item.second, true);
-					if (!found)
-					{
-						ofLogWarning(__FUNCTION__) << "Preset " << item.second << " not found, reverting to default.";
-						item.second = kPresetDefaultName;
-						this->setCurrentPreset(item.second, true);
-					}
-					this->currentTrack = index;
-
-					this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
-					{
-						this->tracks[this->currentTrack].second = preset;
-					});
-
-					return found;
-				}
+				ofLogWarning(__FUNCTION__) << "Index " << index << " is already playing!";
+				return false;
 			}
 
-			ofLogError(__FUNCTION__) << "Scene " << item.first << " not loaded!";
-			return false;
+			this->currentTrack = index;
+			this->currentScene = this->tracks[this->currentTrack].first;
+
+			if (!this->currentScene->isReady())
+			{
+				// Load the scene before moving on.
+				this->currentScene->loadPreset(this->tracks[this->currentTrack].second);
+			}
+			else
+			{
+				this->currentScene->refresh_();
+			}
+
+			// Add preset listeners.
+			this->presetLoadedListener = this->currentScene->presetLoadedEvent.newListener([this](string & preset)
+			{
+				this->tracks[this->currentTrack].second = preset;
+			});
+			this->presetCuedListener = this->currentScene->presetCuedEvent.newListener([this](string & preset)
+			{
+				this->nextPreset = preset;
+			});
+			this->presetSavedListener = this->currentScene->presetSavedEvent.newListener([this](string & preset)
+			{
+				this->cameraSettings[render::Layout::Back] = this->currentScene->getCamera(render::Layout::Back)->fetchSettings();
+				this->cameraSettings[render::Layout::Front] = this->currentScene->getCamera(render::Layout::Front)->fetchSettings();
+			});
+
+			// Set the camera control areas for the scene.
+			for (auto & it : this->cameraControlAreas)
+			{
+				this->currentScene->setCameraControlArea(it.first, it.second);
+			}
+
+			// Start the show.
+			this->currentScene->setShowtime();
+
+			return true;
 		}
 
 		//--------------------------------------------------------------
@@ -290,9 +219,16 @@ namespace entropy
 				return false;
 			}
 
-			this->unsetCurrent();
+			this->currentScene->exit_();
+			
 			this->presetLoadedListener.unsubscribe();
+			this->presetCuedListener.unsubscribe();
+			this->presetSavedListener.unsubscribe();
+			this->nextPreset.clear();
+
 			this->currentTrack = -1;
+			this->currentScene.reset();
+			
 			return true;
 		}
 
@@ -305,16 +241,18 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::update(double dt)
 		{
-			if (this->currentScene)
+			if (this->currentTrack < this->tracks.size())
 			{
+				auto scene = this->tracks[this->currentTrack].first;
+				
 				if (!this->nextPreset.empty())
 				{
-					this->setCurrentPreset(this->nextPreset, false);
+					scene->loadPreset(this->nextPreset);
 					this->nextPreset.clear();
 					return true;
 				}
 				
-				this->currentScene->update_(dt);
+				scene->update_(dt);
 				return true;
 			}
 			return false;
@@ -356,102 +294,102 @@ namespace entropy
 		//--------------------------------------------------------------
 		bool Playlist::drawGui(ofxImGui::Settings & settings)
 		{
-			if (this->scenes.size() > 1)
+			ofxImGui::SetNextWindow(settings);
+			if (ofxImGui::BeginWindow("Playlist", settings))
 			{
-				ofxImGui::SetNextWindow(settings);
-				if (ofxImGui::BeginWindow("Playlist", settings))
+				if (ImGui::Button("Save"))
 				{
-					if (ImGui::Button("Save"))
-					{
-						this->saveSettings();
-					}
+					this->saveSettings();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Load"))
+				{
+					this->loadSettings();
+				}
+
+				if (ImGui::Button("Add Track..."))
+				{
+					ImGui::OpenPopup("Tracks");
 					ImGui::SameLine();
-					if (ImGui::Button("Load"))
-					{
-						this->loadSettings();
-					}
-
-					if (ImGui::Button("Add Track..."))
-					{
-						ImGui::OpenPopup("Tracks");
-						ImGui::SameLine();
-					}
-					if (ImGui::BeginPopup("Tracks"))
-					{
-						for (auto & it : this->shortNames)
-						{
-							if (ImGui::Selectable(it.first.c_str()))
-							{
-								this->addTrack(it.first, kPresetDefaultName);
-							}
-						}
-						ImGui::EndPopup();
-					}
-					if (!this->tracks.empty())
-					{
-						ImGui::SameLine();
-						if (ImGui::Button("Remove Track"))
-						{
-							this->removeTrack();
-						}
-					}
-
-					if (ofxImGui::BeginTree("Tracks", settings))
-					{
-						for (int i = 0; i < this->tracks.size(); ++i)
-						{
-							const auto savedCurrTrack = this->currentTrack;
-							if (i == savedCurrTrack)
-							{
-								ImGui::PushStyleColor(ImGuiCol_Text, ImColor(ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]));
-							}
-							ImGui::PushID(i);
-							ImGui::AlignFirstTextHeightToWidgets();
-							ImGui::Text("%d", i);
-							ImGui::SameLine(40);
-							ImGui::Text(this->tracks[i].first.c_str());
-							ImGui::SameLine(120);
-							ImGui::AlignFirstTextHeightToWidgets();
-							ImGui::Text(this->tracks[i].second.c_str());
-							ImGui::SameLine(200);
-							ImGui::PushItemWidth(-1);
-							if (i == savedCurrTrack)
-							{
-								ImGui::PopStyleColor();
-							}
-							if (i == savedCurrTrack)
-							{
-								if (ImGui::Button("Stop"))
-								{
-									this->stopTrack();
-								}
-							}
-							else
-							{
-								if (ImGui::Button("Play"))
-								{
-									this->playTrack(i);
-								}
-							}
-							ImGui::PopItemWidth();
-							ImGui::PopID();
-						}
-
-						ofxImGui::EndTree(settings);
-					}
 				}
-				ofxImGui::EndWindow(settings);
-			}
-			
-			if (this->currentScene)
-			{
-				if (this->scenes.size() > 1)
+				if (ImGui::BeginPopup("Tracks"))
 				{
-					// Move to the next column for the Scene specific gui windows.
-					//settings.windowPos = glm::vec2(settings.totalBounds.x + kImGuiMargin, 0.0f);
-					settings.windowPos = glm::vec2(400.0f + kImGuiMargin, 0.0f);
-					settings.windowSize = glm::vec2(0.0f);
+					static const std::vector<std::string> sceneNames{ "Calibrate", "Empty" };
+					for (auto & it : sceneNames)
+					{
+						if (ImGui::Selectable(it.c_str()))
+						{
+							this->addTrack(it, kPresetDefaultName);
+						}
+					}
+					ImGui::EndPopup();
 				}
+				if (!this->tracks.empty())
+				{
+					ImGui::SameLine();
+					if (ImGui::Button("Remove Track"))
+					{
+						this->removeTrack();
+					}
+				}
+
+				if (ofxImGui::BeginTree("Tracks", settings))
+				{
+					for (int i = 0; i < this->tracks.size(); ++i)
+					{
+						const auto savedCurrTrack = this->currentTrack;
+						if (i == savedCurrTrack)
+						{
+							ImGui::PushStyleColor(ImGuiCol_Text, ImColor(ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]));
+						}
+						ImGui::PushID(i);
+						ImGui::AlignFirstTextHeightToWidgets();
+						ImGui::Text("%d", i);
+						ImGui::SameLine(40);
+						ImGui::Text(this->tracks[i].first->getShortName().c_str());
+						ImGui::SameLine(120);
+						ImGui::AlignFirstTextHeightToWidgets();
+						ImGui::Text(this->tracks[i].second.c_str());
+						ImGui::SameLine(200);
+						ImGui::PushItemWidth(-1);
+						if (i == savedCurrTrack)
+						{
+							ImGui::PopStyleColor();
+						}
+						if (i == savedCurrTrack)
+						{
+							if (ImGui::Button("Stop"))
+							{
+								this->stopTrack();
+							}
+						}
+						else
+						{
+							if (ImGui::Button("Play"))
+							{
+								this->playTrack(i);
+							}
+						}
+						ImGui::PopItemWidth();
+						ImGui::PopID();
+					}
+
+					ofxImGui::EndTree(settings);
+				}
+
+				if (ImGui::Button("Preload Tracks"))
+				{
+					this->preloadTracks();
+				}
+			}
+			ofxImGui::EndWindow(settings);
+			
+			if (this->currentScene != nullptr)
+			{
+				// Move to the next column for the Scene specific gui windows.
+				//settings.windowPos = glm::vec2(settings.totalBounds.x + kImGuiMargin, 0.0f);
+				settings.windowPos = glm::vec2(400.0f + kImGuiMargin, 0.0f);
+				settings.windowSize = glm::vec2(0.0f);
 
 				this->currentScene->gui_(settings);
 			}
@@ -466,20 +404,6 @@ namespace entropy
 			{
 				this->currentScene->drawTimeline(settings);
 				return true;
-			}
-			return false;
-		}
-
-		//--------------------------------------------------------------
-		bool Playlist::postProcess(render::Layout layout, const ofTexture & srcTexture, const ofFbo & dstFbo) const
-		{
-			if (this->currentScene)
-			{
-				if (layout == render::Layout::Back)
-				{
-					return this->currentScene->postProcessBack(srcTexture, dstFbo);
-				}
-				return this->currentScene->postProcessFront(srcTexture, dstFbo);
 			}
 			return false;
 		}
@@ -533,9 +457,9 @@ namespace entropy
 		//--------------------------------------------------------------
 		void Playlist::canvasResized(render::Layout layout, ofResizeEventArgs & args)
 		{
-			for (auto & it : this->scenes)
+			for (auto & it : this->tracks)
 			{
-				it.second->resize_(layout, args);
+				it.first->resize_(layout, args);
 			}
 		}
 
@@ -597,11 +521,11 @@ namespace entropy
 		void Playlist::serialize(nlohmann::json & json)
 		{
 			// Serialize the tracks.
-			vector<nlohmann::json> jsonQueue;
+			std::vector<nlohmann::json> jsonQueue;
 			for (auto & pair : this->tracks)
 			{
 				nlohmann::json jsonPair;
-				jsonPair["scene"] = pair.first;
+				jsonPair["scene"] = pair.first->getName();
 				jsonPair["preset"] = pair.second;
 				jsonQueue.push_back(jsonPair);
 			}
@@ -615,9 +539,10 @@ namespace entropy
 			this->tracks.clear();
 			for (auto & jsonPair : json["tracks"])
 			{
-				string scene = jsonPair["scene"];
-				string preset = jsonPair["preset"];
-				this->tracks.push_back(make_pair(scene, preset));
+				std::string scene = jsonPair["scene"];
+				std::string preset = jsonPair["preset"];
+
+				this->addTrack(scene, preset);
 			}
 		}
 	}

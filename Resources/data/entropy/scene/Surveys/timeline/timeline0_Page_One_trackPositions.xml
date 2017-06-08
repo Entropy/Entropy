@@ -1,0 +1,110 @@
+<positions>
+    <element name="Camera">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Max_Radius">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Min_Radius">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/BOSS/Render_Models">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Camera/Near_Clip">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/DES/Min_Longitude">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Model/Clip_Distance">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Model/Resolution">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Parameters/Point_Size">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Points/Attenuation">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Points/Exponent_Base">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Points/Point_Size">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Render/Model_Distance">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Render/Point_Size">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Render/Scale">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Shared/Model/Clip_Size">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Shared/Target/Min_Lock_Distance">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Shared/Target/Travel_Speed">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>

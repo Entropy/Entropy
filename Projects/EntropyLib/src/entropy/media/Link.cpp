@@ -5,7 +5,7 @@ namespace entropy
 	namespace media
 	{
 		//--------------------------------------------------------------
-		Link::Link(size_t idxA, size_t idxB, bool direction, std::vector<std::shared_ptr<media::Base>> & medias)
+		Link::Link(size_t idxA, size_t idxB, bool direction, std::vector<std::shared_ptr<media::Asset>> & medias)
 			: idxA(idxA)
 			, idxB(idxB)
 			, direction(direction)

@@ -11,7 +11,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		Movie::Movie()
-			: Base(Type::Movie)
+			: Asset(Type::Movie)
 		{
 			this->videoPlayer.setPlayer(std::make_shared<ofGstVideoPlayer>());
 		}
@@ -26,6 +26,31 @@ namespace entropy
 			this->parameterListeners.push_back(this->parameters.playback.loop.newListener([this](bool & enabled)
 			{
 				this->videoPlayer.setLoopState(enabled ? OF_LOOP_NORMAL : OF_LOOP_NONE);
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.syncMode.newListener([this](int & mode)
+			{
+				const auto syncMode = this->getSyncMode();
+				if (syncMode == SyncMode::Timeline)
+				{
+					this->parameters.playback.freeSpeed = 1.0f;
+					this->videoPlayer.setSpeed(1.0f);
+				}
+				else if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+				{
+					this->videoPlayer.setSpeed(this->parameters.playback.freeSpeed);
+				}
+				else if (this->getLinkedMedia() != nullptr)
+				{
+					this->videoPlayer.setSpeed(this->getLinkedMedia()->parameters.playback.freeSpeed);
+				}
+			}));
+			this->parameterListeners.push_back(this->parameters.playback.freeSpeed.newListener([this](float & speed)
+			{
+				const auto syncMode = this->getSyncMode();
+				if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
+				{
+					this->videoPlayer.setSpeed(speed);
+				}
 			}));
 		}
 
@@ -143,26 +168,27 @@ namespace entropy
 			if (this->freePlayNeedsInit)
 			{
 				// Get start time and frames for free play.
-				this->freePlayStartElapsedMs = ofGetElapsedTimeMillis();
+				this->freePlayElapsedLastMs = ofGetElapsedTimeMillis();
 
 				const auto syncMode = this->getSyncMode();
 				if (syncMode == SyncMode::FreePlay)
 				{
 					const uint64_t durationMs = this->getDurationMs();
-					this->freePlayStartMediaMs = std::max(0.0f, this->switchMillis);
-					while (this->freePlayStartMediaMs > durationMs)
+					this->freePlayMediaStartMs = std::max(0.0f, this->switchMillis);
+					while (this->freePlayMediaStartMs > durationMs)
 					{
-						this->freePlayStartMediaMs -= durationMs;
+						this->freePlayMediaStartMs -= durationMs;
 					}
 
-					this->freePlayStartMediaFrame = (this->freePlayStartMediaMs / static_cast<float>(durationMs)) * this->videoPlayer.getTotalNumFrames();
+					this->freePlayMediaStartFrame = (this->freePlayMediaStartMs / static_cast<float>(durationMs)) * this->videoPlayer.getTotalNumFrames();
 				}
 				else if (syncMode == SyncMode::FadeControl)
 				{
-					this->freePlayStartMediaMs = 0;
-					this->freePlayStartMediaFrame = 0;
+					this->freePlayMediaStartMs = 0;
+					this->freePlayMediaStartFrame = 0;
 				}
 
+				this->freePlayMediaLastMs = this->freePlayMediaStartMs;
 				this->freePlayNeedsInit = false;
 
 				return true;
@@ -191,72 +217,6 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		uint64_t Movie::getPlaybackTimeMs()
-		{
-			const auto syncMode = this->getSyncMode();
-
-			if (syncMode == SyncMode::Timeline)
-			{
-				const uint64_t durationMs = this->getDurationMs();
-				if (durationMs == 0) return 0;
-
-				uint64_t positionMs = this->switchMillis;
-				while (positionMs > durationMs)
-				{
-					positionMs -= durationMs;
-				}
-				return positionMs;
-			}
-
-			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
-			{
-				if (this->initFreePlay())
-				{
-					return this->freePlayStartMediaMs;
-				}
-
-				return (ofGetElapsedTimeMillis() - this->freePlayStartElapsedMs + this->freePlayStartMediaMs);
-			}
-
-			//else SyncMode::LinkedMedia
-			if (this->linkedMedia != nullptr)
-			{
-				return this->linkedMedia->getPlaybackTimeMs();
-			}
-
-			return 0;
-		}
-
-		//--------------------------------------------------------------
-		uint64_t Movie::getPlaybackFrame()
-		{
-			const auto syncMode = this->getSyncMode();
-
-			if (syncMode == SyncMode::Timeline)
-			{
-				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
-			}
-
-			if (syncMode == SyncMode::FreePlay || syncMode == SyncMode::FadeControl)
-			{
-				if (this->initFreePlay())
-				{
-					return this->freePlayStartMediaFrame;
-				}
-
-				return (this->getPlaybackTimeMs() / static_cast<float>(this->getDurationMs())) * this->getDurationFrames();
-			}
-
-			//else SyncMode::LinkedMedia
-			if (this->linkedMedia != nullptr)
-			{
-				return this->linkedMedia->getPlaybackFrame();
-			}
-
-			return 0;
-		}
-
-		//--------------------------------------------------------------
 		uint64_t Movie::getDurationMs() const
 		{
 			if (this->isLoaded())
@@ -274,6 +234,12 @@ namespace entropy
 				return this->videoPlayer.getTotalNumFrames();
 			}
 			return 0;
+		}
+
+		//--------------------------------------------------------------
+		uint64_t Movie::getFrameRate() const
+		{
+			return this->videoPlayer.getTotalNumFrames() / this->videoPlayer.getDuration();
 		}
 	}
 }

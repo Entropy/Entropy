@@ -121,7 +121,7 @@ void ofApp::setup()
 				this->textureRecorder.setup(recorderSettings);
 
 				// Start scene.
-				//this->reset();
+				this->reset();
 				//this->cameraTrack.lockCameraToTrack = true;
 				this->timeline.play();
 			}

@@ -79,9 +79,6 @@
     <ClCompile Include="..\EntropyLib\src\entropy\media\Image.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntropyLib\src\entropy\media\MediaBase.cpp">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
-    </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Movie.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
@@ -311,6 +308,12 @@
       <Filter>local_addons\ofxWarp\src\ofxWarp</Filter>
     </ClCompile>
     <ClCompile Include="..\EntropyLib\src\entropy\media\Link.cpp">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entropy\post\ColorEffects.cpp">
+      <Filter>src\entropy\post</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntropyLib\src\entropy\media\Asset.cpp">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClCompile>
   </ItemGroup>
@@ -579,6 +582,12 @@
     <Filter Include="local_addons\ofxWarp\src\ofxWarp">
       <UniqueIdentifier>{F33AC200-99D2-D0B6-37F5-ACBF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\entropy">
+      <UniqueIdentifier>{58555f7f-9353-4778-aa1a-a3bdef1a5d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entropy\post">
+      <UniqueIdentifier>{8d047fe5-4fee-4f79-af5e-168b11f34d08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -664,9 +673,6 @@
     </ClInclude>
     <ClInclude Include="..\EntropyGeom\src\entropy\geom\Stripes.h">
       <Filter>local_addons\EntropyGeom\src\entropy\geom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntropyLib\src\entropy\media\Base.h">
-      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\HiPerfVideo.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
@@ -999,6 +1005,12 @@
       <Filter>local_addons\ofxWarp\src</Filter>
     </ClInclude>
     <ClInclude Include="..\EntropyLib\src\entropy\media\Link.h">
+      <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entropy\post\ColorEffects.h">
+      <Filter>src\entropy\post</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntropyLib\src\entropy\media\Asset.h">
       <Filter>local_addons\EntropyLib\src\entropy\media</Filter>
     </ClInclude>
   </ItemGroup>
