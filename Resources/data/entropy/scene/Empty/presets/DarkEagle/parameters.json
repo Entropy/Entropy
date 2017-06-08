@@ -170,7 +170,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -208,7 +208,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Master_PART_5_LIVE DOPPLER_Partie 1_V1.wav",
+                "File Path": "E:\\wav\\Master_PART_5_LIVE DOPPLER_Partie 1_V2.wav",
                 "Playback": {
                     "Fade Knob": "3",
                     "Fade LFO": "1",
@@ -380,7 +380,7 @@
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -548,7 +548,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
