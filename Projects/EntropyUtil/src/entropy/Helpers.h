@@ -197,4 +197,63 @@ namespace entropy
 	inline float fovDegToFocalLength(float fovDeg, float aspectRatio){
 		return 0.5 * 35. /tan(ofDegToRad(fovDeg) * aspectRatio / 2.);
 	}
+
+
+	inline ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size, const ofFloatColor & color){
+		ofMesh boxWireframeMesh;
+		boxWireframeMesh.setMode( OF_PRIMITIVE_LINES );
+
+		boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, -.5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, -.5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, -.5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, -.5f} * size + pos);
+
+		boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, .5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, .5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, .5f} * size + pos);
+		boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, .5f} * size + pos);
+
+		boxWireframeMesh.getColors().assign(8, color);
+
+		// front face
+		boxWireframeMesh.addIndex(0);
+		boxWireframeMesh.addIndex(1);
+
+		boxWireframeMesh.addIndex(1);
+		boxWireframeMesh.addIndex(2);
+
+		boxWireframeMesh.addIndex(2);
+		boxWireframeMesh.addIndex(3);
+
+		boxWireframeMesh.addIndex(3);
+		boxWireframeMesh.addIndex(0);
+
+		// back face
+		boxWireframeMesh.addIndex(4);
+		boxWireframeMesh.addIndex(5);
+
+		boxWireframeMesh.addIndex(5);
+		boxWireframeMesh.addIndex(6);
+
+		boxWireframeMesh.addIndex(6);
+		boxWireframeMesh.addIndex(7);
+
+		boxWireframeMesh.addIndex(7);
+		boxWireframeMesh.addIndex(4);
+
+
+		boxWireframeMesh.addIndex(0);
+		boxWireframeMesh.addIndex(4);
+
+		boxWireframeMesh.addIndex(1);
+		boxWireframeMesh.addIndex(5);
+
+		boxWireframeMesh.addIndex(2);
+		boxWireframeMesh.addIndex(6);
+
+		boxWireframeMesh.addIndex(3);
+		boxWireframeMesh.addIndex(7);
+
+		return boxWireframeMesh;
+	}
 }
