@@ -1,6 +1,8 @@
 {
     "Canvas Back": {
-        "Fill Window": "0"
+        "Additive Blend": "0",
+        "Fill Window": "0",
+        "Global Offset": "0, 0"
     },
     "areas": [
         "0, 0, 0, 1280, 1024",

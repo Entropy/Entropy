@@ -60,11 +60,16 @@ namespace entropy
 		void Canvas::beginDraw()
 		{
 			this->fboDraw.begin(ofFboBeginMode::Perspective | ofFboBeginMode::MatrixFlip);
+
+			ofPushMatrix();
+			ofTranslate(this->parameters.globalOffset);
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
+			ofPopMatrix();
+
 			this->fboDraw.end();
 		}
 
@@ -345,7 +350,14 @@ namespace entropy
 				{
 					this->loadSettings();
 				}
-				
+
+				if (ofxImGui::BeginTree("Transform", settings))
+				{
+					ofxImGui::AddParameter(this->parameters.globalOffset);
+
+					ofxImGui::EndTree(settings);
+				}
+
 				if (ofxImGui::BeginTree("Render", settings))
 				{
 					if (ImGui::Checkbox("Export", &this->exportFrames))

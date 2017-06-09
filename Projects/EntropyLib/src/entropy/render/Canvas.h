@@ -107,9 +107,13 @@ namespace entropy
 			struct : ofParameterGroup
 			{
 				ofParameter<bool> fillWindow{ "Fill Window", false };
+				ofParameter<glm::vec2> globalOffset{ "Global Offset", glm::vec2(0.0f), glm::vec2(-100.0f), glm::vec2(100.0f) };
 				ofParameter<bool> additiveBlend{ "Additive Blend", false };
 
-				PARAM_DECLARE("Canvas", fillWindow);
+				PARAM_DECLARE("Canvas", 
+					fillWindow,
+					globalOffset,
+					additiveBlend);
 			} parameters;
 
 			Layout layout;
