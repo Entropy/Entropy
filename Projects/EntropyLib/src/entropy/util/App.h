@@ -86,6 +86,8 @@ namespace entropy
 			std::map<render::Layout, PreviewData> previewData;
 			ofRectangle boundsControl;
 
+			uint64_t lastKeyPressMs;
+
 			ofxImGui::Gui imGui;
 			ofxImGui::Settings guiSettings;
 

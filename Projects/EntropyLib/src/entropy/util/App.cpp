@@ -11,6 +11,7 @@ namespace entropy
 	{
 		//--------------------------------------------------------------
 		App_::App_()
+			: lastKeyPressMs(0)
 		{
 			// Instantiate attributes.
 			this->canvas[render::Layout::Back] = make_shared<render::Canvas>(render::Layout::Back);
@@ -637,7 +638,20 @@ namespace entropy
 		
 		//--------------------------------------------------------------
 		void App_::onKeyPressed(ofKeyEventArgs & args)
+		{}
+
+		//--------------------------------------------------------------
+		void App_::onKeyReleased(ofKeyEventArgs & args)
 		{
+			static const uint64_t keyElapsedThreshold = 200;
+			if (ofGetElapsedTimeMillis() - this->lastKeyPressMs < keyElapsedThreshold)
+			{
+				// Skip key press as it's probably a mistake.
+				return;
+			}
+
+			this->lastKeyPressMs = ofGetElapsedTimeMillis();
+				
 			if (args.keycode == GLFW_KEY_F && (ofGetKeyPressed(OF_KEY_CONTROL) || ofGetKeyPressed(OF_KEY_COMMAND)))
 			{
 				ofToggleFullscreen();
@@ -659,12 +673,6 @@ namespace entropy
 			{
 				return;
 			}
-		}
-
-		//--------------------------------------------------------------
-		void App_::onKeyReleased(ofKeyEventArgs & args)
-		{
-
 		}
 
 		//--------------------------------------------------------------
