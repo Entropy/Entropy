@@ -525,7 +525,7 @@ namespace entropy
 			for (auto & pair : this->tracks)
 			{
 				nlohmann::json jsonPair;
-				jsonPair["scene"] = pair.first->getName();
+				jsonPair["scene"] = pair.first->getShortName();
 				jsonPair["preset"] = pair.second;
 				jsonQueue.push_back(jsonPair);
 			}
