@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.11203694343567,
+                "aspectRatio": 2.15730333328247,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "0.999999, 0, 0, -0.00162138",
+                "orientation": "0.999998, 0, 0, -0.00179401",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000589409",
+                "orientation": "1, 0, 0, 0.000416775",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -113,11 +113,6 @@
             "direction": true,
             "idxA": 6,
             "idxB": 0
-        },
-        {
-            "direction": true,
-            "idxA": 2,
-            "idxB": 11
         }
     ],
     "Mappings": {
@@ -187,12 +182,12 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Part 1_Blobs_TOTAL_ V4.wav",
+                "File Path": "E:\\wav\\Master_PART_1_BLOBS_V1.wav",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",
@@ -212,7 +207,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -254,7 +249,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.65",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -275,19 +270,19 @@
                 "Playback": {
                     "Fade Knob": "0",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
-                    "Free Speed": "2",
+                    "Free Speed": "1",
                     "LFO Scale": "10",
                     "Loop": "0",
                     "Remap LFO": "0",
-                    "Speed Knob": "1",
+                    "Speed Knob": "15",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "1",
-                    "Use Speed Twist": "1"
+                    "Use Speed Twist": "0"
                 }
             },
             "page": 2,
@@ -327,7 +322,7 @@
                     "Speed Knob": "16",
                     "Sync Mode": "3",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
@@ -443,18 +438,18 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
-                    "LFO Scale": "12",
+                    "LFO Scale": "10",
                     "Loop": "0",
-                    "Remap LFO": "0",
+                    "Remap LFO": "1",
                     "Speed Knob": "16",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "1",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "1",
+                    "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
             },
@@ -481,7 +476,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
+                "File Path": "E:\\hpv\\Inflation_Cooldown.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "0",
@@ -489,9 +484,9 @@
                     "Fade Twist": "1",
                     "Flip LFO": "1",
                     "Free Speed": "1",
-                    "LFO Scale": "12",
+                    "LFO Scale": "10",
                     "Loop": "0",
-                    "Remap LFO": "0",
+                    "Remap LFO": "1",
                     "Speed Knob": "16",
                     "Sync Mode": "1",
                     "Use Fade LFO": "1",
@@ -527,15 +522,15 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Track": "0",
+                    "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",
                     "Loop": "0",
                     "Remap LFO": "0",
                     "Speed Knob": "16",
-                    "Sync Mode": "1",
+                    "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
                     "Use Fade Twist": "0",
@@ -565,7 +560,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Part 1_Oscilliation_V2.wav",
+                "File Path": "E:\\wav\\Master_PART_1_OSCILLATION_V1.wav",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -607,7 +602,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\wav\\Intro Dida V2.wav",
+                "File Path": "E:\\wav\\Master_VOICE_DIDA_Intro_V1.wav",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -628,48 +623,6 @@
             },
             "page": 0,
             "type": 4
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "1",
-                    "Render Front": "0",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "Color": {
-                    "Brightness": "0",
-                    "Contrast": "1"
-                },
-                "File Path": "E:\\hpv\\Inflation_Reheating.hpv",
-                "Playback": {
-                    "Fade Knob": "2",
-                    "Fade LFO": "1",
-                    "Fade Track": "0",
-                    "Fade Twist": "1",
-                    "Flip LFO": "0",
-                    "Free Speed": "1",
-                    "LFO Scale": "10",
-                    "Loop": "0",
-                    "Remap LFO": "0",
-                    "Speed Knob": "16",
-                    "Sync Mode": "3",
-                    "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
-                    "Use Fade Twist": "1",
-                    "Use Speed Twist": "0"
-                }
-            },
-            "page": 2,
-            "type": 3
         }
     ]
 }

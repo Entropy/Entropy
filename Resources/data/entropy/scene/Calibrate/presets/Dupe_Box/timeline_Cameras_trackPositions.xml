@@ -2,31 +2,31 @@
     <element name="Camera Back">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>9600.000000000</width>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera Front">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>9600.000000000</width>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera_Back_Dolly Speed">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>9600.000000000</width>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera_Back_Pan Speed">
         <x>0.000000000</x>
-        <y>828.000000000</y>
+        <y>1012.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera_Back_Roll Speed">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>9600.000000000</width>
+        <width>3840.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera_Back_Tilt Speed">

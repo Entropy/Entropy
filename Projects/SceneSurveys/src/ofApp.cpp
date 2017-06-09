@@ -9,6 +9,7 @@ void ofApp::setup()
 {
 	ofDisableArbTex();
 	ofSetDataPathRoot(entropy::GetSceneDataPath("Surveys").string());
+	ofSetTimeModeFixedRate(ofGetFixedStepForFps(60));
 	ofBackground(ofColor::black);
 
 	// Load the data.
@@ -206,19 +207,16 @@ void ofApp::setup()
 				recorderSettings.folderPath = path.getPath();
 				this->textureRecorder.setup(recorderSettings);
 
-				ofSetTimeModeFixedRate(ofGetFixedStepForFps(60));
-
 				// Start scene.
 				this->reset();
+				this->travelCamPath.debugDraw = false;
 				this->cameraTrack.lockCameraToTrack = true;
 				this->timeline.play();
 			}
 			else
 			{
 				// Resize canvas.
-				this->windowResized(ofGetWidth(), ofGetHeight()); 
-
-				ofSetTimeModeSystem();
+				this->windowResized(ofGetWidth(), ofGetHeight());
 				
 				this->parameters.recording.recordSequence = false;
 			}

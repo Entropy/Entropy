@@ -41,7 +41,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.11203694343567,
-                "distance": 935.307006835938,
+                "distance": 935.307434082031,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0",
+                "orientation": "1, 0, 0, 0.000244141",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -76,7 +76,7 @@
             "Tumble Override": "0",
             "ofEasyCam": {
                 "aspectRatio": 3.24351859092712,
-                "distance": 935.307006835938,
+                "distance": 935.307434082031,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -86,7 +86,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0",
+                "orientation": "0.980004, 0, 0, 0.198977",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -147,7 +147,7 @@
     },
     "Media": [
         {
-            "HPV": {
+            "Movie": {
                 "Base": {
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
@@ -166,65 +166,27 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
+                "File Path": "E:\\mov\\credit.mov",
                 "Playback": {
                     "Fade Knob": "16",
-                    "Fade LFO": "0.820063",
+                    "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
+                    "LFO Scale": "10",
                     "Loop": "0",
+                    "Remap LFO": "0",
                     "Speed Knob": "16",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "1",
-                    "Use Fade Track": "0",
+                    "Sync Mode": "0",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
             },
             "page": 0,
-            "type": 3
-        },
-        {
-            "HPV": {
-                "Base": {
-                    "Anchor": "0.5, 0.5",
-                    "Background": "0, 0, 0, 0",
-                    "Horz Align": "1",
-                    "Render Back": "0",
-                    "Render Front": "1",
-                    "Size": "1",
-                    "Surface": "1",
-                    "Vert Align": "1"
-                },
-                "Border": {
-                    "Color": "1, 1, 1, 1",
-                    "Width": "0"
-                },
-                "Color": {
-                    "Brightness": "0",
-                    "Contrast": "1"
-                },
-                "File Path": "E:\\hpv\\Inflation_ParentParticles.hpv",
-                "Playback": {
-                    "Fade Knob": "16",
-                    "Fade LFO": "0",
-                    "Fade Track": "1",
-                    "Fade Twist": "1",
-                    "Flip LFO": "1",
-                    "Free Speed": "1",
-                    "Loop": "0",
-                    "Speed Knob": "16",
-                    "Sync Mode": "1",
-                    "Use Fade LFO": "1",
-                    "Use Fade Track": "0",
-                    "Use Fade Twist": "0",
-                    "Use Speed Twist": "0"
-                }
-            },
-            "page": 0,
-            "type": 3
+            "type": 2
         }
     ]
 }
