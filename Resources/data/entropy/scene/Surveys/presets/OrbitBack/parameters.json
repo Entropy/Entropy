@@ -5,7 +5,7 @@
             "Cut_Radius": "0",
             "Max_Latitude": "1",
             "Max_Longitude": "1",
-            "Max_Radius": "1",
+            "Max_Radius": "0",
             "Min_Latitude": "0",
             "Min_Longitude": "0",
             "Min_Radius": "0",
@@ -18,7 +18,7 @@
             "Cut_Radius": "0",
             "Max_Latitude": "1",
             "Max_Longitude": "1",
-            "Max_Radius": "1",
+            "Max_Radius": "0",
             "Min_Latitude": "0.0408163",
             "Min_Longitude": "0",
             "Min_Radius": "0",
@@ -93,6 +93,7 @@
                 "Far_Clip": "5000",
                 "Near_Clip": "0.001"
             },
+            "Camera_Mix": "0",
             "Orbit_Speed": "-0.01",
             "Recording": {
                 "Record_Sequence": "0",
@@ -100,13 +101,12 @@
                 "Render_Height": "1080",
                 "Render_Width": "4200"
             },
-            "World_Scale": "0.0133045"
+            "World_Scale": "100"
         },
         "Shared": {
             "Model": {
                 "Alpha_Scale": "1",
                 "Clip_Mass": "1",
-                "Clip_Size": "1000",
                 "Geo_Scale": "8",
                 "Max_Density_Size": "10",
                 "Min_Density_Mod": "10",
@@ -117,7 +117,7 @@
             "Points": {
                 "Attenuation": "600",
                 "Distance_Fade": "0.133694",
-                "Size": "0.125"
+                "Size": "1"
             },
             "Shells": {
                 "Alpha": "1",
@@ -136,7 +136,7 @@
             "Cull_Face": "0",
             "Depth_Test": "0",
             "Enabled": "0",
-            "Radius": "0.001",
+            "Radius": "5",
             "Resolution": "16"
         },
         "Travel_Cam_Path": {
@@ -151,9 +151,10 @@
             },
             "Travel": {
                 "Enable_Travel": "0",
-                "Look_Through": "1",
+                "Look_At_Lerp": "0.1",
+                "Percent": "0",
                 "Reset_Position": "0",
-                "Speed": "1"
+                "Speed": "0.5"
             }
         },
         "ViziR": {
@@ -172,9 +173,9 @@
     },
     "ofEasyCam": {
         "aspectRatio": 3.28125,
-        "distance": 1373.43981933594,
+        "distance": 0.0777632296085358,
         "drag": 0.899999976158142,
-        "farClip": 100000.0,
+        "farClip": 5000.0,
         "forceAspectRatio": true,
         "fov": 60.0,
         "inertiaEnabled": false,
@@ -182,9 +183,9 @@
         "mouseInputEnabled": true,
         "mouseMiddleButtonEnabled": true,
         "nearClip": 9.99999974737875e-05,
-        "orientation": "0.993913, 1.732e-06, 0.000730963, 0.110169",
+        "orientation": "0.993908, 0, 0, 0.110215",
         "ortho": false,
-        "position": "2.56491, 0.210609, 1373.44",
+        "position": "0, 0, 0.0777632",
         "relativeYAxis": false,
         "scale": "1, 1, 1",
         "target": "0, 0, 0",
@@ -194,12 +195,12 @@
     "travelCamPath": {
         "camera": {
             "aspectRatio": 3.28125,
-            "farClip": 100000.0,
+            "farClip": 5000.0,
             "forceAspectRatio": true,
             "fov": 60.0,
             "lensOffset": "0, 0",
             "nearClip": 9.99999974737875e-05,
-            "orientation": "0.237001, -0.463632, 0.829747, 0.200993",
+            "orientation": "0.160671, -0.492379, 0.789447, 0.329428",
             "ortho": false,
             "position": "35.3457, 105.838, -167.182",
             "scale": "1, 1, 1"
