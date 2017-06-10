@@ -84,12 +84,24 @@ void main()
 		{
 			float sample0 = textureLod(volume_tex, vec, 4).r;
 			if(sample0>levelThreshold){
+//				vec3 s = -delta_dir * 0.5;
+//				vec += s; sample0 = textureLod(volume_tex, vec, 4).r;
+//				if(sample0>levelThreshold) s *= 0.5; else s *= -0.5;
+//				vec += s; sample0 = textureLod(volume_tex, vec, 4).r;
 				for(int j=0; j<4; j++){
 					float sample1 = textureLod(volume_tex, vec, 2).r;
 					if(sample1>levelThreshold){
+//						vec3 s = -delta_dir * 0.5;
+//						vec += s; sample1 = textureLod(volume_tex, vec, 2).r;
+//						if(sample1>levelThreshold) s *= 0.5; else s *= -0.5;
+//						vec += s; sample1 = textureLod(volume_tex, vec, 2).r;
 						for(int k=0; k<2; k++){
 							float sample2 = textureLod(volume_tex, vec, 1).r;
 							if(sample2>levelThreshold){
+//								vec3 s = -delta_dir * 0.5;
+//								vec += s; sample2 = textureLod(volume_tex, vec, 2).r;
+//								if(sample2>levelThreshold) s *= 0.5; else s *= -0.5;
+//								vec += s; sample2 = textureLod(volume_tex, vec, 2).r;
 								for(int h=0; h<2; h++){
 									float alpha = texture(volume_tex, vec).r * aScale;
 									float oneMinusAlpha = 1. - clamp(col_acc.a, 0., 1.);

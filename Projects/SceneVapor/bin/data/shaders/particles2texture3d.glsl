@@ -61,7 +61,7 @@ void main()
 	vec2 particleposzw = texelFetch(particles, idx*3+1).rg;
 	vec4 particlepos4 = vec4(particleposxy, particleposzw);
 	vec2 size_density = texelFetch(particles, idx*3+2).rg;
-	float particle_size = size_density.x;
+	float particle_size = size_density.x * 2;
 	float particle_density = size_density.y;
 
 	vec3 particlepos = offset_scale(particlepos4.xyz, offset, scale);

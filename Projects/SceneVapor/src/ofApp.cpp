@@ -22,19 +22,9 @@ void ofApp::setup()
 	ofSetVerticalSync(false);
 
 	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
-	//m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor/RAMSES_HDF5_data/", 0, 0);
-	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_512",
-								 "/media/arturo/elements/entropy/vapor_download_tests", 333, 354);
 
-//	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/07-StarFormation/kuffmeier_random_files",
-//								 "/media/arturo/elements/entropy/vapor_old_data", 333, 401);
-
-//	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_512",
-//								 "/media/arturo/elements/entropy/vapor_new", 333, 355);
-
-
-//	m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor", 333, 421);
-	m_sequenceRamses.loadFrame(0, 0, 1);
+	m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor", 333, 421);
+	m_sequenceRamses.loadFrame(0);
 
 
 //	m_cameraTrack = new ofxTLCameraTrack();
@@ -513,6 +503,8 @@ void ofApp::setup()
 
 
 	frameInterpolationShader.load("shaders/frameinterpolation.vert.glsl", "shaders/frameinterpolation.frag.glsl");
+
+	frameInterpolation.load("shaders/frameinterpolation.vert.glsl", "shaders/frameinterpolation.frag.glsl");
 
 
 	listeners.push_back(m_bExportFrames.newListener([this](bool & record){
