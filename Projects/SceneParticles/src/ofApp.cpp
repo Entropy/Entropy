@@ -201,35 +201,47 @@ void ofApp::setup()
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if (path.bSuccess)
 			{
-				ofxTextureRecorder::VideoSettings recorderSettingsFront(fboPostFront.getTexture(), 60);
-				recorderSettingsFront.videoPath = ofFilePath::removeExt(path.getPath()) + "_front" + ofFilePath::getFileExt(path.getPath());
-				if(ofFilePath::getFileExt(path.getPath()) == ".mov"){
-					recorderSettingsFront.videoCodec = "prores";
-					recorderSettingsFront.extrasettings = "-profile:v 0";
-				}else{
-					recorderSettingsFront.videoCodec = "libx264";
-					recorderSettingsFront.extrasettings = "-preset ultrafast -crf 0";
-				}
-				textureRecorderFront.setup(recorderSettingsFront);
 
-				ofxTextureRecorder::VideoSettings recorderSettingsBack(fboPostBack.getTexture(), 60);
-				recorderSettingsBack.videoPath = ofFilePath::removeExt(path.getPath()) + "_back" + ofFilePath::getFileExt(path.getPath());
-				if(ofFilePath::getFileExt(path.getPath()) == ".mov"){
-					recorderSettingsBack.videoCodec = "prores";
-					recorderSettingsBack.extrasettings = "-profile:v 0";
-				}else{
-					recorderSettingsBack.videoCodec = "libx264";
-					recorderSettingsBack.extrasettings = "-preset ultrafast -crf 0";
+				if(parameters.frontBack.front){
+					ofxTextureRecorder::VideoSettings recorderSettingsFront(fboPostFront.getTexture(), 60);
+					recorderSettingsFront.videoPath = ofFilePath::removeExt(path.getPath()) + "_front." + ofFilePath::getFileExt(path.getPath());
+					if(ofFilePath::getFileExt(path.getPath()) == "mov"){
+						recorderSettingsFront.videoCodec = "prores";
+						recorderSettingsFront.extrasettings = "-profile:v 0";
+					}else{
+						recorderSettingsFront.videoCodec = "libx264";
+						recorderSettingsFront.extrasettings = "-preset ultrafast -crf 0";
+					}
+					textureRecorderFront.setup(recorderSettingsFront);
 				}
-				textureRecorderBack.setup(recorderSettingsBack);
+
+
+				if(parameters.frontBack.back){
+					ofxTextureRecorder::VideoSettings recorderSettingsBack(fboPostBack.getTexture(), 60);
+					recorderSettingsBack.videoPath = ofFilePath::removeExt(path.getPath()) + "_back." + ofFilePath::getFileExt(path.getPath());
+					if(ofFilePath::getFileExt(path.getPath()) == "mov"){
+						recorderSettingsBack.videoCodec = "prores";
+						recorderSettingsBack.extrasettings = "-profile:v 0";
+					}else{
+						recorderSettingsBack.videoCodec = "libx264";
+						recorderSettingsBack.extrasettings = "-preset ultrafast -crf 0";
+					}
+					textureRecorderBack.setup(recorderSettingsBack);
+				}
 			}
 			else {
 				this->parameters.recording.recordVideo = false;
 			}
 		}
 		else {
-			textureRecorderFront.stop();
-			textureRecorderBack.stop();
+
+			if(parameters.frontBack.front){
+				textureRecorderFront.stop();
+			}
+
+			if(parameters.frontBack.back){
+				textureRecorderBack.stop();
+			}
 		}
 #endif
 	}));
@@ -887,13 +899,20 @@ void ofApp::draw(){
 
 	if (this->parameters.recording.recordSequence || this->parameters.recording.recordVideo)
 	{
-		this->textureRecorderFront.save(this->fboPostFront.getTexture());
-		this->textureRecorderBack.save(this->fboPostBack.getTexture());
+		if(parameters.frontBack.front){
+			this->textureRecorderFront.save(this->fboPostFront.getTexture());
+		}
+		if(parameters.frontBack.back){
+			this->textureRecorderBack.save(this->fboPostBack.getTexture());
+		}
 
-		if (this->timeline.getCurrentFrame() == this->timeline.getOutFrame())
+		if (this->timeline.getCurrentFrame() >= this->timeline.getOutFrame()
+			|| this->timeline.getCurrentTime() > this->timeline.getOutTimeInSeconds()
+			|| this->timeline.getCurrentTime() > 4 * 60)
 		{
 			this->parameters.recording.recordSequence = false;
 			this->parameters.recording.recordVideo = false;
+			ofExit(0);
 		}
 	}
 
