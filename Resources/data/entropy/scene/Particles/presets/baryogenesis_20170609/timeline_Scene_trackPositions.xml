@@ -19,13 +19,13 @@
     </element>
     <element name="Particles/Scene/Rendering/Rotation_radius">
         <x>0.000000000</x>
-        <y>892.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Particles/Scene/Rendering/Rotation_speed">
         <x>0.000000000</x>
-        <y>956.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
