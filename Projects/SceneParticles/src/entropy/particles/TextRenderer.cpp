@@ -298,18 +298,18 @@ void TextRenderer::renderLines(nm::ParticleSystem & particles,
 							line.draw();
 						}else if(pDistance1 < nm::Octree<nm::Particle>::INTERACTION_DISTANCE()){*/
 							auto fusPct = p1.fusionRatio/environment.getFusionThresh();
-							line.getColors()[0] = ofFloatColor(pct1*ppct, accumValue)
-													.lerp(ofFloatColor(pct1*ppct, 0, 0, accumValue), fusPct);
-							line.getColors()[1] = ofFloatColor(pct1*ppct, accumValue)
-													.lerp(ofFloatColor(pct1*ppct, 0, 0, accumValue), fusPct);
-							line.getColors()[2] = ofFloatColor(pct2*ppct, accumValue)
-													.lerp(ofFloatColor(pct2*ppct, 0, 0, accumValue), fusPct);
-							line.getColors()[3] = ofFloatColor(pct2*ppct, accumValue)
-													.lerp(ofFloatColor(pct2*ppct, 0, 0, accumValue), fusPct);
-							line.getColors()[4] = ofFloatColor(pct3*ppct, accumValue)
-													.lerp(ofFloatColor(pct3*ppct, 0, 0, accumValue), fusPct);
-							line.getColors()[5] = ofFloatColor(pct3*ppct, accumValue)
-													.lerp(ofFloatColor(pct3*ppct, 0, 0, accumValue), fusPct);
+							line.getColors()[0] = ofFloatColor(pct1*ppct, 0)
+													.lerp(ofFloatColor(pct1*ppct, accumValue), fusPct);
+							line.getColors()[1] = ofFloatColor(pct1*ppct, 0)
+													.lerp(ofFloatColor(pct1*ppct, accumValue), fusPct);
+							line.getColors()[2] = ofFloatColor(pct2*ppct, 0)
+													.lerp(ofFloatColor(pct2*ppct, accumValue), fusPct);
+							line.getColors()[3] = ofFloatColor(pct2*ppct, 0)
+													.lerp(ofFloatColor(pct2*ppct, accumValue), fusPct);
+							line.getColors()[4] = ofFloatColor(pct3*ppct, 0)
+													.lerp(ofFloatColor(pct3*ppct, accumValue), fusPct);
+							line.getColors()[5] = ofFloatColor(pct3*ppct, 0)
+													.lerp(ofFloatColor(pct3*ppct, accumValue), fusPct);
 							line.getVertices()[2] = p2->pos;
 							line.getVertices()[3] = midPoint;
 							line.getVertices()[4] = p3->pos;
@@ -490,28 +490,6 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 						particlePaths[fontSize][text].draw();
 					}
 				break;
-					switch(p.getType()){
-						case nm::Particle::DOWN_QUARK:
-						case nm::Particle::UP_QUARK:{
-							text = "q";
-							size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
-							particlePaths[fontSize][text].draw();
-						}
-						break;
-						case nm::Particle::ELECTRON:
-						case nm::Particle::ANTI_UP_QUARK:
-						case nm::Particle::ANTI_DOWN_QUARK:
-						case nm::Particle::POSITRON:
-						case nm::Particle::PROTON:
-						case nm::Particle::NEUTRON:
-							// wont render here
-						break;
-					}
-					if(text!=""){
-						size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
-						particlePaths[fontSize][text].draw();
-					}
-				break;
 				case nm::Environment::NUCLEOSYNTHESIS:
 //					if(pctDistance > fulltextDistance && p.age > 1){
 //						switch(p.getType()){
@@ -605,7 +583,7 @@ void TextRenderer::draw(nm::ParticleSystem & particles,
 				billboardShaderText.setUniform1f("accumValue", accumValue);
 				billboardShaderText.setUniform4f("billboard_position", glm::vec4(p.pos * scale, 1.0));
 
-				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance));
+				size_t fontSize = size_t(round((particleTexts.size() - 1) * pctDistance)) / 2;
 				billboardShader.setUniformTexture("tex0", fonts[fontSize].getFontTexture(), 0);
 				particleTexts[fontSize][text].draw();
 			}
