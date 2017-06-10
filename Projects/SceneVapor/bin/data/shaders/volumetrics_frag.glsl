@@ -107,6 +107,14 @@ void main()
 									float oneMinusAlpha = 1. - clamp(col_acc.a, 0., 1.);
 									col_acc.rgb += oneMinusAlpha * vec3(alpha) * alpha;
 									col_acc.a += alpha * oneMinusAlpha;
+
+//									float alpha = texture(volume_tex, vec).r;
+//									float oneMinusAlpha = 1. - col_acc.a;
+//									alpha *= aScale;
+//									col_acc.rgb = mix(col_acc.rgb, vec3(alpha * alpha), oneMinusAlpha);
+//									col_acc.a += alpha * oneMinusAlpha;
+//									col_acc.rgb /= col_acc.a;
+
 									vec += delta_dir;
 								}
 							}else{
