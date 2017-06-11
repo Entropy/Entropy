@@ -29,7 +29,7 @@ class ofApp : public ofBaseApp{
 		ofParameter<float> frequency2{"frequency2", 8, 0, 1000};
 		ofParameter<float> frequency3{"frequency3", 16, 0, 1000};
 		ofParameter<float> colorramp_low{"color ramp low", 0.35, 0, 1};
-		ofParameter<float> colorramp_high{"color ramp high", 1, 0, 1};
+		ofParameter<float> colorramp_high{"color ramp high", 1, 0, 2};
 		ofParameterGroup parameters{
 			"params",
 			textureSeparation,
