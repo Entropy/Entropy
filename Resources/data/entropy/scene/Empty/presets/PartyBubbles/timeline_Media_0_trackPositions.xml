@@ -2,7 +2,7 @@
     <element name="Fade_0_HPV">
         <x>0.000000000</x>
         <y>134.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_0_Image">
@@ -32,7 +32,7 @@
     <element name="Fade_10_Sound">
         <x>0.000000000</x>
         <y>262.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_11_HPV">
@@ -92,7 +92,7 @@
     <element name="Fade_1_HPV">
         <x>0.000000000</x>
         <y>262.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_1_Movie">
@@ -110,7 +110,7 @@
     <element name="Fade_20_Sound">
         <x>0.000000000</x>
         <y>518.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_25_Sound">
@@ -140,7 +140,7 @@
     <element name="Fade_2_Sound">
         <x>0.000000000</x>
         <y>390.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_32_Sound">
@@ -164,13 +164,13 @@
     <element name="Fade_3_Sound">
         <x>0.000000000</x>
         <y>454.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_4_HPV">
         <x>0.000000000</x>
         <y>518.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_4_Movie">
@@ -206,13 +206,13 @@
     <element name="Fade_7_HPV">
         <x>0.000000000</x>
         <y>646.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_8_HPV">
         <x>0.000000000</x>
         <y>774.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_9_HPV">
@@ -224,7 +224,7 @@
     <element name="Fade_9_Image">
         <x>0.000000000</x>
         <y>902.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="LFO_0_HPV">
@@ -242,7 +242,7 @@
     <element name="Media_0_HPV">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_0_Image">
@@ -272,7 +272,7 @@
     <element name="Media_10_Sound">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_11_HPV">
@@ -332,7 +332,7 @@
     <element name="Media_1_HPV">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_1_Movie">
@@ -380,7 +380,7 @@
     <element name="Media_2_Sound">
         <x>0.000000000</x>
         <y>326.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_32_Sound">
@@ -404,13 +404,13 @@
     <element name="Media_3_Sound">
         <x>0.000000000</x>
         <y>390.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_4_HPV">
         <x>0.000000000</x>
         <y>454.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_4_Movie">
@@ -446,13 +446,13 @@
     <element name="Media_7_HPV">
         <x>0.000000000</x>
         <y>582.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_8_HPV">
         <x>0.000000000</x>
         <y>710.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_9_HPV">
@@ -464,7 +464,7 @@
     <element name="Media_9_Image">
         <x>0.000000000</x>
         <y>838.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

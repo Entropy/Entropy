@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 2.15730333328247,
+                "aspectRatio": 3.267578125,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.24351859092712,
+                "aspectRatio": 3.41944456100464,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -98,7 +98,18 @@
         }
     },
     "Empty": null,
-    "Links": null,
+    "Links": [
+        {
+            "direction": true,
+            "idxA": 5,
+            "idxB": 13
+        },
+        {
+            "direction": true,
+            "idxA": 7,
+            "idxB": 15
+        }
+    ],
     "Mappings": {
         "Box_Back::Alpha": "0",
         "Box_Back::Auto Draw": "0",
@@ -170,7 +181,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -213,7 +224,7 @@
                     "Fade Knob": "3",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",
@@ -264,7 +275,7 @@
                     "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "1",
                     "Use Speed Twist": "0"
                 }
@@ -359,7 +370,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.25, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
@@ -376,11 +387,11 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Front_Timeline_008.hpv",
+                "File Path": "E:\\hpv\\Measure_008_Left_r9.hpv",
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -391,7 +402,7 @@
                     "Sync Mode": "2",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0",
+                    "Use Fade Twist": "1",
                     "Use Speed Twist": "0"
                 }
             },
@@ -443,7 +454,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.25, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
@@ -460,12 +471,12 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Front_Timeline_009.hpv",
+                "File Path": "E:\\hpv\\Measure_009_Left_r9.hpv",
                 "Playback": {
-                    "Fade Knob": "12",
+                    "Fade Knob": "13",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "0",
+                    "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",
@@ -548,7 +559,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -569,12 +580,12 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.575, 0.55",
+                    "Anchor": "0.5, 0.55",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
+                    "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "0.8",
+                    "Size": "2",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -628,9 +639,9 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\bariogenesys-front screen.hpv",
+                "File Path": "E:\\hpv\\EAGLE_DNA_r2.hpv",
                 "Playback": {
-                    "Fade Knob": "5",
+                    "Fade Knob": "4",
                     "Fade LFO": "1",
                     "Fade Track": "1",
                     "Fade Twist": "0",
@@ -691,6 +702,132 @@
             },
             "page": 0,
             "type": 1
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.75, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Measure_008_Right_r9.hpv",
+                "Playback": {
+                    "Fade Knob": "8",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 0,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\EAGLE_Galaxy_r6.hpv",
+                "Playback": {
+                    "Fade Knob": "5",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "0",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "2",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "1",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 1,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.75, 0.5",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Measure_009_Right_r9.hpv",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "3",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "0",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 1,
+            "type": 3
         }
     ]
 }

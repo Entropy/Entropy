@@ -11,17 +11,27 @@
     </key>
     <key>
         <flag>play show</flag>
-        <time>00:01:18:211</time>
-        <value>0.274999976</value>
+        <time>00:01:17:906</time>
+        <value>0.250000000</value>
     </key>
     <key>
         <flag>play slow</flag>
-        <time>00:05:00:131</time>
+        <time>00:05:07:584</time>
         <value>0.399999976</value>
     </key>
     <key>
+        <flag>stop</flag>
+        <time>00:06:00:720</time>
+        <value>0.649999976</value>
+    </key>
+    <key>
+        <flag>stop reheating</flag>
+        <time>00:07:15:747</time>
+        <value>0.699999988</value>
+    </key>
+    <key>
         <flag>play oscillation</flag>
-        <time>00:09:30:191</time>
+        <time>00:09:27:090</time>
         <value>0.875000000</value>
     </key>
     <key>
