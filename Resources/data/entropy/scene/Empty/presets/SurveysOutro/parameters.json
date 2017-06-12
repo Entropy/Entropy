@@ -214,7 +214,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Surveys_TravelBack_170611.hpv",
+                "File Path": "E:\\hpv\\Surveys_TravelBack_170612.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -344,7 +344,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
