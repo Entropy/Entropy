@@ -1,133 +1,121 @@
 <positions>
-    <element name="Fade_10_HPV">
+    <element name="Camera">
         <x>0.000000000</x>
-        <y>628.000000000</y>
+        <y>572.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_11_HPV">
+    <element name="Cues">
         <x>0.000000000</x>
-        <y>756.000000000</y>
+        <y>508.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_12_Sound">
+    <element name="Surveys/BOSS/Max_Radius">
         <x>0.000000000</x>
-        <y>884.000000000</y>
+        <y>636.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_13_HPV">
+    <element name="Surveys/BOSS/Min_Radius">
         <x>0.000000000</x>
-        <y>134.000000000</y>
-        <width>9360.000000000</width>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_14_HPV">
+    <element name="Surveys/DES/Max_Longitude">
         <x>0.000000000</x>
-        <y>262.000000000</y>
-        <width>9360.000000000</width>
+        <y>572.000000000</y>
+        <width>1916.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_17_HPV">
+    <element name="Surveys/DES/Max_Radius">
         <x>0.000000000</x>
-        <y>1012.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_28_Movie">
+    <element name="Surveys/DES/Min_Longitude">
         <x>0.000000000</x>
-        <y>1140.000000000</y>
+        <y>700.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Post_Effects/Color/Exposure">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Scene/Camera/Far_Clip">
+        <x>0.000000000</x>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_32_Movie">
+    <element name="Surveys/Scene/Camera_Mix">
         <x>0.000000000</x>
-        <y>1030.000000000</y>
-        <width>9600.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Fade_34_Movie">
-        <x>0.000000000</x>
-        <y>1158.000000000</y>
-        <width>9600.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Fade_7_HPV">
-        <x>0.000000000</x>
-        <y>372.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Fade_8_HPV">
+    <element name="Surveys/Scene/World_Scale">
         <x>0.000000000</x>
-        <y>500.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_10_HPV">
+    <element name="Surveys/Shared/Points/Size">
         <x>0.000000000</x>
-        <y>564.000000000</y>
+        <y>700.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_11_HPV">
+    <element name="Surveys/Shared/Shells/Density">
         <x>0.000000000</x>
-        <y>692.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_12_Sound">
+    <element name="Surveys/Sphere/Alpha">
         <x>0.000000000</x>
-        <y>820.000000000</y>
+        <y>1020.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Sphere/Radius">
+        <x>0.000000000</x>
+        <y>764.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_13_HPV">
+    <element name="Surveys/Travel_Cam_Path/Travel/Enable_Travel">
         <x>0.000000000</x>
-        <y>70.000000000</y>
-        <width>9360.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Media_14_HPV">
-        <x>0.000000000</x>
-        <y>198.000000000</y>
-        <width>9360.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Media_17_HPV">
-        <x>0.000000000</x>
-        <y>948.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_28_Movie">
+    <element name="Surveys/Travel_Cam_Path/Travel/Look_Through">
         <x>0.000000000</x>
-        <y>1076.000000000</y>
+        <y>956.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Percent">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
+        <width>1916.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="Surveys/Travel_Cam_Path/Travel/Speed">
+        <x>0.000000000</x>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
-    <element name="Media_32_Movie">
+    <element name="Surveys/ViziR/Max_Radius">
         <x>0.000000000</x>
-        <y>966.000000000</y>
-        <width>9600.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Media_34_Movie">
-        <x>0.000000000</x>
-        <y>1094.000000000</y>
-        <width>9600.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Media_7_HPV">
-        <x>0.000000000</x>
-        <y>308.000000000</y>
-        <width>1920.000000000</width>
-        <height>40.000000000</height>
-    </element>
-    <element name="Media_8_HPV">
-        <x>0.000000000</x>
-        <y>436.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

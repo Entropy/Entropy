@@ -106,6 +106,9 @@ void ofApp::setup()
 		this->travelCamPath.copyCamera(this->easyCam, false);
 	}));
 
+	// Setup the travel cam path.
+	this->travelCamPath.setup();
+
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 
@@ -119,7 +122,8 @@ void ofApp::setup()
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
-	this->gui.add(this->travelCamPath.parameters);
+	//this->gui.add(this->travelCamPath.parameters);
+	this->travelCamPath.initGui(this->gui);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();
@@ -316,7 +320,7 @@ void ofApp::update()
 	this->dataSetBoss.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
 	this->dataSetDes.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
 
-	this->travelCamPath.update(this->easyCam);
+	this->travelCamPath.update(this->easyCam, this->timeline.getIsPlaying());
 	
 	// Auto-reload shaders.
 	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
@@ -380,7 +384,7 @@ void ofApp::draw()
 				ofSetColor(ofColor::white);
 
 				this->spriteShader.begin();
-				this->spriteShader.setUniform2f("uClipRange", this->getActiveCamera().getFarClip() * (1.0f - this->sharedParams.point.distanceFade), this->getActiveCamera().getFarClip());
+				this->spriteShader.setUniform2f("uFadeRange", this->sharedParams.point.fadeNear, this->sharedParams.point.fadeFar);
 				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
 				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
 				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);

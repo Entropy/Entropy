@@ -6,7 +6,9 @@
 #include "ofJson.h"
 #include "ofParameter.h"
 #include "ofPolyline.h"
+#include "ofTexture.h"
 #include "ofVectorMath.h"
+#include "ofxGui.h"
 
 namespace entropy
 {
@@ -27,12 +29,15 @@ namespace entropy
 		public:
 			TravelCamPath();
 
+			void setup();
+			void initGui(ofxPanel & gui);
+
 			void addPointToPath(const glm::vec3 & point);
 			void editNearScreenPoint(const ofCamera & camera, const ofRectangle & viewport, const glm::vec2 & screenPoint);
 			void nudgeEditPoint(Nudge nudge);
 			void buildPath();
 
-			void update(const ofCamera & camera);
+			void update(const ofCamera & camera, bool play);
 			void draw() const;
 
 			void copyCamera(const ofCamera & camera, bool copyTransform);
@@ -72,20 +77,39 @@ namespace entropy
 				debugDraw 
 			};
 
+			ofParameter<bool> renderClouds{ "Render Clouds", true };
+			ofParameter<float> planeSize{ "Plane Size", 512.0f, 128.0f, 8192.0f };
+			ofParameter<float> pathOffset{ "Path Offset", 10.0f, 1.0f, 200.0f };
+			ofParameter<int> numPlanes{ "Num Planes", 10, 1, 20 };
+			ofParameter<glm::vec4> noiseFrequency{ "Noise Frequency", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
+			ofParameter<float> colorRampLow{ "Color Ramp Low", 0.35, 0, 1 };
+			ofParameter<float> colorRampHigh{ "Color Ramp High", 1, 0, 2 };
+			ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
+			ofParameter<float> alphaScalar{ "Alpha Scalar", 1.0f, 0.0f, 1.0f };
+			ofParameterGroup clouds{ "Clouds",
+				renderClouds,
+				planeSize,
+				pathOffset,
+				numPlanes,
+				noiseFrequency,
+				colorRampLow, colorRampHigh,
+				tintColor, alphaScalar
+			};
+
 			ofParameterGroup parameters{ "Travel Cam Path",
 				travel,
-				edit
+				edit,
+				clouds
 			};
 
 		protected:
 			void addCurvePointToPolyline(const glm::vec3 & point);
+			void generateCloudTextures();
 
 			ofCamera camera;
 
 			float travelDistance;
 			float totalDistance;
-
-			vector<ofEventListener> eventListeners;
 
 			glm::vec3 startPosition;
 			glm::quat startOrientation;
@@ -93,6 +117,17 @@ namespace entropy
 			size_t editPointIdx;
 
 			ofPolyline polyline;
+
+			struct CloudData
+			{
+				ofTexture texture;
+				glm::vec3 position;
+				float pathDistance;
+				glm::mat4 transform;
+				float alpha;
+			};
+			std::vector<CloudData> cloudData;
+			float currCloudDistance;
 		};
 	}
 }

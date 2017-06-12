@@ -618,7 +618,11 @@ namespace entropy
 			}
 			else // SyncMode::LinkedMedia
 			{
-				if (this->linkedMedia == nullptr) return false;
+				if (this->linkedMedia == nullptr)
+				{
+					ofLogError(__FUNCTION__) << "No linked Media set!";
+					return false;
+				}
 
 				return this->linkedMedia->shouldPlay();
 			}
@@ -961,10 +965,10 @@ namespace entropy
 				canvasSize = glm::vec2(GetCanvasWidth(render::Layout::Front), GetCanvasHeight(render::Layout::Front));
 			}
 			const auto viewportAnchor = canvasSize * this->parameters.render.anchor.get();
-			const auto viewportHeight = canvasSize.y * this->parameters.render.size;
 			if (this->isLoaded())
 			{
 				const auto contentRatio = this->getContentWidth() / this->getContentHeight();
+				const auto viewportHeight = canvasSize.y * this->parameters.render.size * (this->getContentHeight() / canvasSize.y);
 				const auto viewportWidth = viewportHeight * contentRatio;
 				this->viewport.setFromCenter(viewportAnchor, viewportWidth, viewportHeight);
 
@@ -987,7 +991,7 @@ namespace entropy
 			}
 			else
 			{
-				this->viewport.setFromCenter(viewportAnchor, viewportHeight, viewportHeight);
+				this->viewport.setFromCenter(viewportAnchor, canvasSize.y * this->parameters.render.size, canvasSize.y * this->parameters.render.size);
 			}
 
 			// Adjust anchor alignment.

@@ -183,9 +183,6 @@ namespace entropy
 			
 			float mappedMinMass = ofMap(sharedParams.model.clipMass, 0.0f, 1.0f, this->minMass, this->maxMass);
 
-			float clipFadeMin = camera.getFarClip() * (1.0f - sharedParams.point.distanceFade);
-			float clipFadeMax = camera.getFarClip();
-
 			float trackMinDist = std::numeric_limits<float>::max();
 
 			for (int i = 0; i < this->coordinates.size(); ++i)
@@ -196,7 +193,7 @@ namespace entropy
 				//if (i < 10) cout << "update() comparing mass " << this->masses[i] << " < " << mappedMinMass << endl;
 				if (this->masses[i] < mappedMinMass)
 				{
-					if (i == this->trackIdx) cout << "MASS " << this->masses[i] << " OOB " << mappedMinMass << endl;
+					//if (i == this->trackIdx) cout << "MASS " << this->masses[i] << " OOB " << mappedMinMass << endl;
 					continue;
 				}
 
@@ -205,7 +202,7 @@ namespace entropy
 					this->mappedLongitudeRange.x > coords.x || coords.x > this->mappedLongitudeRange.y ||
 					this->mappedLatitudeRange.x > coords.y || coords.y > this->mappedLatitudeRange.y)
 				{
-					if (i == this->trackIdx) cout << "COORDS " << coords << " OOB" << endl;
+					//if (i == this->trackIdx) cout << "COORDS " << coords << " OOB" << endl;
 					continue;
 				}
 
@@ -223,7 +220,14 @@ namespace entropy
 					-1 > clipPos.y || clipPos.y > 1 ||
 					0 > clipPos.z || clipPos.z > 1)
 				{
-					if (i == this->trackIdx) cout << "CLIPPOS " << clipPos << " OOB" << endl;
+					//if (i == this->trackIdx) cout << "CLIPPOS " << clipPos << " OOB" << endl;
+					continue;
+				}
+
+				// Test that the point is nearer than the fade distance.
+				const float eyeDist = glm::length(eyePos.xyz());
+				if (eyeDist > sharedParams.point.fadeFar)
+				{
 					continue;
 				}
 				
@@ -239,23 +243,22 @@ namespace entropy
 
 				auto transform = glm::translate(worldTransform, position.xyz());
 				transform = glm::scale(transform, scale);
-				transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 23, i % 43, i % 11)));
+				transform = glm::rotate(transform, i * 0.30302f, glm::normalize(glm::vec3(i % 11, i % 47, i % 23)));
 				instanceData.transform = transform;
 
 				// Calculate the size on screen (approximatively).
-				const float eyeDist = glm::length(eyePos.xyz());
 				const float attenuation = sharedParams.point.attenuation / eyeDist;
-				const float screenSize = modelSize * attenuation * 0.33f; // this is crap, needs fixing.
+				const float screenSize = modelSize * attenuation * 0.33f; // this is nonsense, needs fixing.
 
-				// Add the alpha value based on radius.
+				// Add the alpha value based on radius and distance from camera.
 				if (this->mappedRadiusRange.y <= this->mappedRadiusRange.z)
 				{
 					float alpha = ofMap(position.z, this->mappedRadiusRange.y, this->mappedRadiusRange.z, 1.0f, 0.0f, true);
 				
-					if (eyeDist > clipFadeMin)
+					if (eyeDist > sharedParams.point.fadeNear)
 					{
 						// Map distance from 0.0 to 1.0.
-						alpha *= ofMap(eyeDist, clipFadeMin, clipFadeMax, 1.0f, 0.0f, true);
+						alpha *= ofMap(eyeDist, sharedParams.point.fadeNear, sharedParams.point.fadeFar, 1.0f, 0.0f, true);
 					}
 
 					instanceData.alpha = alpha * sharedParams.model.alphaScale;

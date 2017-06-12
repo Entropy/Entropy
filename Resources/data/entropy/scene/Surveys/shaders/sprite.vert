@@ -6,7 +6,7 @@ uniform mat4 modelViewMatrix;
 uniform float uMaxMass;
 uniform mat4 uTransform;
 
-uniform vec2 uClipRange;
+uniform vec2 uFadeRange;
 
 uniform float uPointSize;
 uniform float uAttenuation;
@@ -72,10 +72,14 @@ void main()
 	}
 
 	// Fade as we near the far clipping plane.
-	if (eyeDist > uClipRange.x)
+	if (eyeDist > uFadeRange.y)
+	{
+		gl_Position.w = 0;
+	}
+	else if (eyeDist > uFadeRange.x)
 	{
 		// Map distance from 0.0 to 1.0.
-		vAlpha *= (1.0 - (eyeDist - uClipRange.x) / (uClipRange.y - uClipRange.x));
+		vAlpha *= (1.0 - (eyeDist - uFadeRange.x) / (uFadeRange.y - uFadeRange.x));
 	}
 
 	vAlpha = clamp(vAlpha, 0.0, 1.0);

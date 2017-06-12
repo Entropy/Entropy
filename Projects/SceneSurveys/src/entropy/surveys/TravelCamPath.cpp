@@ -3,6 +3,8 @@
 #include "of3dGraphics.h"
 #include "ofxSerialize.h"
 
+#include "entropy/Helpers.h"
+
 namespace entropy
 {
 	namespace surveys
@@ -11,17 +13,63 @@ namespace entropy
 		TravelCamPath::TravelCamPath()
 			: travelDistance(0.0f)
 			, totalDistance(0.0f)
+			, currCloudDistance(0.0f)
 			, editPointIdx(-1)
+		{}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::setup()
 		{
+			// Initialize parameters.
 			ofSetMutuallyExclusive(addPoints, editPoints);
-			this->eventListeners.push_back(this->curveResolution.newListener([this](float &)
+			this->curveResolution.ownListener([this](float &)
 			{
 				this->buildPath();
-			}));
-			this->eventListeners.push_back(this->editPoints.newListener([this](bool &)
+			});
+			this->editPoints.ownListener([this](bool &)
 			{
 				this->editPointIdx = -1;
-			}));
+			});
+
+			this->pathOffset.ownListener([this](float &)
+			{
+				this->currCloudDistance = 0.0f;
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					this->currCloudDistance += this->pathOffset;
+					this->cloudData[i].pathDistance = this->currCloudDistance;
+				}
+			});
+
+			this->numPlanes.ownListener([this](int &)
+			{
+				this->generateCloudTextures();
+			});
+			this->noiseFrequency.ownListener([this](glm::vec4 &)
+			{
+				this->generateCloudTextures();
+			});
+			this->colorRampLow.ownListener([this](float &)
+			{
+				this->generateCloudTextures();
+			});
+			this->colorRampHigh.ownListener([this](float &)
+			{
+				this->generateCloudTextures();
+			});
+
+			// Populate clouds.
+			this->generateCloudTextures();
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::initGui(ofxPanel & gui)
+		{
+			gui.add(this->parameters);
+			gui.getIntSlider("Num Planes").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Noise Frequency").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Color Ramp Low").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Color Ramp High").setUpdateOnReleaseOnly(true);
 		}
 
 		//--------------------------------------------------------------
@@ -119,7 +167,39 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void TravelCamPath::update(const ofCamera & camera)
+		void TravelCamPath::generateCloudTextures()
+		{
+			this->currCloudDistance = 0.0f;
+			this->cloudData.resize(this->numPlanes);
+			for (size_t i = 0; i < this->numPlanes; ++i) 
+			{
+				ofFloatPixels pixels;
+				auto size = 1024.0f;
+				pixels.allocate(size, size, OF_PIXELS_GRAY_ALPHA);
+				pixels.set(0.0f);
+				for (auto l : pixels.getLines()) 
+				{
+					auto j = 0;
+					for (auto p : l.getPixels()) 
+					{
+						auto f = ofNoise(j / size * this->noiseFrequency.get().x + i * size, l.getLineNum() / size * this->noiseFrequency.get().x + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().y + i * size, l.getLineNum() / size * this->noiseFrequency.get().y + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().z + i * size, l.getLineNum() / size * this->noiseFrequency.get().z + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().w + i * size, l.getLineNum() / size * this->noiseFrequency.get().w + i * size) / 4.0f;
+						f = ofMap(f, colorRampLow, colorRampHigh, 0, 1, true);
+						p[0] = f;
+						p[1] = f;
+						j += 1;
+					}
+				}
+				this->cloudData[i].texture.allocate(pixels);
+				this->currCloudDistance += this->pathOffset;
+				this->cloudData[i].pathDistance = this->currCloudDistance;
+			}
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::update(const ofCamera & camera, bool play)
 		{	
 			if (this->startPath)
 			{
@@ -138,8 +218,14 @@ namespace entropy
 			if (this->reset)
 			{
 				this->travelDistance = 0.0f;
+				this->currCloudDistance = 0.0f;
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					this->currCloudDistance += this->pathOffset;
+					this->cloudData[i].pathDistance = this->currCloudDistance;
+				}
 			}
-			else if (this->enabled)
+			else if (this->enabled && play)
 			{
 				this->travelDistance += this->speed;
 			}
@@ -147,7 +233,7 @@ namespace entropy
 			{
 				glm::vec3 currPoint;
 				glm::vec3 nextPoint;
-				//if (this->speed > 0.0f)
+				if (play)
 				{
 					currPoint = this->polyline.getPointAtLength(this->travelDistance);
 					const auto nextDistance = this->travelDistance + std::max(0.1f, this->speed.get());
@@ -155,12 +241,12 @@ namespace entropy
 
 					this->percent = this->travelDistance / this->totalDistance;
 				}
-				//else
-				//{
-				//	currPoint = this->polyline.getPointAtPercent(this->percent);
-				//	const auto nextPct = this->percent + 0.01f;
-				//	nextPoint = this->polyline.getPointAtPercent(nextPct);
-				//}
+				else
+				{
+					currPoint = this->polyline.getPointAtPercent(this->percent);
+					const auto nextPct = this->percent + 0.01f;
+					nextPoint = this->polyline.getPointAtPercent(nextPct);
+				}
 				this->camera.setPosition(currPoint);
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
@@ -187,6 +273,62 @@ namespace entropy
 				}
 
 				this->reset = false;
+			}
+
+			if (this->renderClouds)
+			{
+				// Move clouds in front of the camera along the path.
+				while (true)
+				{
+					auto cloud = this->cloudData.front();
+					if (cloud.pathDistance == 0.0f || cloud.pathDistance < this->travelDistance)
+					{
+						this->currCloudDistance += this->pathOffset;
+						if (this->currCloudDistance > this->totalDistance)
+						{
+							// Path is done, nowhere to go.
+							break;
+						}
+						cloud.pathDistance = this->currCloudDistance;
+						
+						this->cloudData.erase(this->cloudData.begin());
+						this->cloudData.push_back(cloud);
+						cout << "Pushing cloud plane to distance " << this->currCloudDistance << endl;
+					}
+					else
+					{
+						// Planes are in order so we're good to go.
+						break;
+					}
+				}
+
+				const auto camPos = this->camera.getGlobalPosition();
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					// Update the position.
+					this->cloudData[i].position = this->polyline.getPointAtLength(this->cloudData[i].pathDistance);
+					
+					if (this->cloudData[i].pathDistance > this->travelDistance)
+					{
+						// Billboard to camera.
+						ofNode lookAtNode;
+						lookAtNode.setPosition(this->cloudData[i].position);
+						lookAtNode.lookAt(camPos);
+						this->cloudData[i].transform = lookAtNode.getGlobalTransformMatrix();
+					}
+
+					// Set the alpha value.
+					if (i == 0)
+					{
+						float alpha = glm::distance2(camPos, this->cloudData[i].position) / (this->pathOffset * this->pathOffset);
+						this->cloudData[i].alpha = ofMap(alpha, 0, 1, 0.1f, 0.8f);
+					}
+					else
+					{
+						float dist = glm::distance2(camPos, this->cloudData[i].position);
+						this->cloudData[i].alpha = ofMap(dist, 0, pow(this->pathOffset * this->cloudData.size(), 2), 0.8, 0, true);
+					}
+				}
 			}
 		}
 
@@ -220,7 +362,25 @@ namespace entropy
 
 				ofSetColor(ofColor::blue);
 				this->camera.draw();
+				
+				ofSetColor(ofColor::white);
 				ofFill();
+			}
+
+			if (this->renderClouds)
+			{
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					ofPushMatrix();
+					{
+						ofMultMatrix(this->cloudData[i].transform);
+						
+						ofSetColor(this->tintColor.get(), 255.0f * this->cloudData[i].alpha * this->alphaScalar);
+						
+						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
+					}
+					ofPopMatrix();
+				}
 			}
 		}
 
