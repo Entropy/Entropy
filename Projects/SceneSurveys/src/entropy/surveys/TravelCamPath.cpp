@@ -36,7 +36,8 @@ namespace entropy
 				this->currCloudDistance = 0.0f;
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
-					this->cloudData[i].pathDistance = 0.0f;
+					this->currCloudDistance += this->pathOffset;
+					this->cloudData[i].pathDistance = this->currCloudDistance;
 				}
 			});
 
@@ -168,6 +169,7 @@ namespace entropy
 		//--------------------------------------------------------------
 		void TravelCamPath::generateCloudTextures()
 		{
+			this->currCloudDistance = 0.0f;
 			this->cloudData.resize(this->numPlanes);
 			for (size_t i = 0; i < this->numPlanes; ++i) 
 			{
@@ -191,10 +193,9 @@ namespace entropy
 					}
 				}
 				this->cloudData[i].texture.allocate(pixels);
-				this->cloudData[i].pathDistance = 0.0f;
+				this->currCloudDistance += this->pathOffset;
+				this->cloudData[i].pathDistance = this->currCloudDistance;
 			}
-
-			this->currCloudDistance = 0.0f;
 		}
 
 		//--------------------------------------------------------------
@@ -220,7 +221,8 @@ namespace entropy
 				this->currCloudDistance = 0.0f;
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
-					this->cloudData[i].pathDistance = 0.0f;
+					this->currCloudDistance += this->pathOffset;
+					this->cloudData[i].pathDistance = this->currCloudDistance;
 				}
 			}
 			else if (this->enabled)
@@ -275,25 +277,56 @@ namespace entropy
 
 			if (this->renderClouds)
 			{
+				// Move clouds in front of the camera along the path.
+				while (true)
+				{
+					auto cloud = this->cloudData.front();
+					if (cloud.pathDistance == 0.0f || cloud.pathDistance < this->travelDistance)
+					{
+						this->currCloudDistance += this->pathOffset;
+						if (this->currCloudDistance > this->totalDistance)
+						{
+							// Path is done, nowhere to go.
+							break;
+						}
+						cloud.pathDistance = this->currCloudDistance;
+						
+						this->cloudData.erase(this->cloudData.begin());
+						this->cloudData.push_back(cloud);
+						cout << "Pushing cloud plane to distance " << this->currCloudDistance << endl;
+					}
+					else
+					{
+						// Planes are in order so we're good to go.
+						break;
+					}
+				}
+
 				const auto camPos = this->camera.getGlobalPosition();
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
-					if (this->cloudData[i].pathDistance == 0.0f || (this->cloudData[i].pathDistance - this->travelDistance) < -this->pathOffset)
+					// Update the position.
+					this->cloudData[i].position = this->polyline.getPointAtLength(this->cloudData[i].pathDistance);
+					
+					if (this->cloudData[i].pathDistance > this->travelDistance)
 					{
-						// Move the cloud up the path.
-						this->currCloudDistance += this->pathOffset;
-						cout << "MOVE UP cloud " << i << " from " << this->cloudData[i].pathDistance << " to " << this->currCloudDistance << ", travelDistance = " << this->travelDistance << endl;
-						this->cloudData[i].pathDistance = this->currCloudDistance;
-					}
-					else if (this->cloudData[i].pathDistance > this->travelDistance)
-					{
-						// Adjust the transform.
-						this->cloudData[i].position = this->polyline.getPointAtLength(this->cloudData[i].pathDistance);
-
+						// Billboard to camera.
 						ofNode lookAtNode;
 						lookAtNode.setPosition(this->cloudData[i].position);
 						lookAtNode.lookAt(camPos);
 						this->cloudData[i].transform = lookAtNode.getGlobalTransformMatrix();
+					}
+
+					// Set the alpha value.
+					if (i == 0)
+					{
+						float alpha = glm::distance2(camPos, this->cloudData[i].position) / (this->pathOffset * this->pathOffset);
+						this->cloudData[i].alpha = ofMap(alpha, 0, 1, 0.1f, 0.8f);
+					}
+					else
+					{
+						float dist = glm::distance2(camPos, this->cloudData[i].position);
+						this->cloudData[i].alpha = ofMap(dist, 0, pow(this->pathOffset * this->cloudData.size(), 2), 0.8, 0, true);
 					}
 				}
 			}
@@ -342,21 +375,7 @@ namespace entropy
 					{
 						ofMultMatrix(this->cloudData[i].transform);
 						
-						float deltaDistance = (this->cloudData[i].pathDistance - this->travelDistance);
-						float alpha;
-						if (deltaDistance < this->nearDistance)
-						{
-							alpha = ofMap(deltaDistance, 0, this->nearDistance, 0.0f, this->alphaPeak, true);
-						}
-						else if (deltaDistance < this->farDistance)
-						{
-							alpha = this->alphaPeak;
-						}
-						else
-						{
-							alpha = ofMap(deltaDistance, this->farDistance, this->maxDistance, this->alphaPeak, 0.0f, true);
-						}
-						ofSetColor(ofFloatColor(alpha));
+						ofSetColor(ofFloatColor(this->cloudData[i].alpha * this->alphaScalar));
 						
 						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
 					}

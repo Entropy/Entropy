@@ -84,10 +84,7 @@ namespace entropy
 			ofParameter<glm::vec4> noiseFrequency{ "Noise Frequency", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
 			ofParameter<float> colorRampLow{ "Color Ramp Low", 0.35, 0, 1 };
 			ofParameter<float> colorRampHigh{ "Color Ramp High", 1, 0, 2 };
-			ofParameter<float> alphaPeak{ "Alpha Peak", 0.5f, 0.0f, 1.0f };
-			ofParameter<float> nearDistance{ "Near Distance", 0.0f, 0.0f, 1000.0f };
-			ofParameter<float> farDistance{ "Far Distance", 80.0f, 1.0f, 1000.0f };
-			ofParameter<float> maxDistance{ "Max Distance", 100.0f, 1.0f, 1000.0f };
+			ofParameter<float> alphaScalar{ "Alpha Scalar", 1.0f, 0.0f, 1.0f };
 			ofParameterGroup clouds{ "Clouds",
 				renderClouds,
 				planeSize,
@@ -95,8 +92,7 @@ namespace entropy
 				numPlanes,
 				noiseFrequency,
 				colorRampLow, colorRampHigh,
-				alphaPeak,
-				nearDistance, farDistance, maxDistance
+				alphaScalar
 			};
 
 			ofParameterGroup parameters{ "Travel Cam Path",
@@ -127,6 +123,7 @@ namespace entropy
 				glm::vec3 position;
 				float pathDistance;
 				glm::mat4 transform;
+				float alpha;
 			};
 			std::vector<CloudData> cloudData;
 			float currCloudDistance;
