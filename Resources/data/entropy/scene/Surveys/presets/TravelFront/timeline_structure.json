@@ -15,7 +15,7 @@
                 {
                     "max": 1.0,
                     "min": 0.0,
-                    "name": "Surveys/Scene/Camera_Mix",
+                    "name": "Surveys/BOSS/Max_Radius",
                     "scale": 0,
                     "type": "Curves"
                 },
@@ -27,8 +27,11 @@
                     "type": "Curves"
                 },
                 {
-                    "name": "Surveys/Travel_Cam_Path/Travel/Enable_Travel",
-                    "type": "Switches"
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Surveys/Travel_Cam_Path/Clouds/Alpha_Scalar",
+                    "scale": 0,
+                    "type": "Curves"
                 },
                 {
                     "max": 0.5,

@@ -13,6 +13,8 @@
             "Render_Points": "0",
             "Render_Shells": "0"
         },
+        "Color_Ramp_High": "6.42864e-39",
+        "Color_Ramp_Low": "2.36938e-38",
         "DES": {
             "Color": "0.756314, 0.809732, 1, 1",
             "Cut_Radius": "0",
@@ -22,10 +24,12 @@
             "Min_Latitude": "0",
             "Min_Longitude": "0.0530612",
             "Min_Radius": "1",
-            "Render_Models": "0",
+            "Render_Models": "1",
             "Render_Points": "1",
             "Render_Shells": "0"
         },
+        "Noise_Frequency": "6.42864e-39",
+        "Num_Planes": "4587630",
         "Post_Effects": {
             "Bloom": {
                 "Boost": "1",
@@ -105,8 +109,8 @@
         },
         "Shared": {
             "Model": {
-                "Alpha_Scale": "0.171597",
-                "Clip_Mass": "0.12",
+                "Alpha_Scale": "0.175",
+                "Clip_Mass": "0.09",
                 "Geo_Scale": "1",
                 "Max_Density_Size": "1000",
                 "Min_Density_Mod": "12",
@@ -116,8 +120,9 @@
             },
             "Points": {
                 "Attenuation": "600",
-                "Distance_Fade": "0.1",
-                "Size": "0.0744021"
+                "Fade_Far": "20",
+                "Fade_Near": "0",
+                "Size": "0.0604407"
             },
             "Shells": {
                 "Alpha": "1",
@@ -140,21 +145,38 @@
             "Resolution": "16"
         },
         "Travel_Cam_Path": {
+            "Clouds": {
+                "Alpha_Scalar": "1",
+                "Color_Ramp_High": "1.75",
+                "Color_Ramp_Low": "0.6",
+                "Noise_Frequency": "2, 4, 8, 16",
+                "Num_Planes": "10",
+                "Path_Offset": "10",
+                "Plane_Size": "200",
+                "Render_Clouds": "0",
+                "Tint_Color": "0.826914, 0.933078, 1, 1",
+                "group": {
+                    "w": "16",
+                    "x": "2",
+                    "y": "4",
+                    "z": "8"
+                }
+            },
             "Edit": {
                 "Add_Points": "0",
                 "Clear_Path": "0",
                 "Curve_Resolution": "10",
                 "Debug_Draw": "0",
-                "Edit_Points": "0",
-                "Nudge_Amount": "1",
+                "Edit_Points": "1",
+                "Nudge_Amount": "0.01",
                 "Start_Path": "0"
             },
             "Travel": {
                 "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "0.137181",
+                "Percent": "0.299382",
                 "Reset_Position": "0",
-                "Speed": "0.11"
+                "Speed": "0.105"
             }
         },
         "ViziR": {
@@ -173,7 +195,7 @@
     },
     "ofEasyCam": {
         "aspectRatio": 3.28125,
-        "distance": 1091.18933105469,
+        "distance": 1127.16076660156,
         "drag": 0.899999976158142,
         "farClip": 20.0,
         "forceAspectRatio": true,
@@ -185,7 +207,7 @@
         "nearClip": 0.00100000004749745,
         "orientation": "-0.0270538, 0.330793, 0.888493, 0.316899",
         "ortho": false,
-        "position": "229.294, 655.623, -841.592",
+        "position": "235.116, 676.558, -870.334",
         "relativeYAxis": false,
         "scale": "1, 1, 1",
         "target": "0, 0, 0",
@@ -200,14 +222,14 @@
             "fov": 30.0,
             "lensOffset": "0, 0",
             "nearClip": 0.00100000004749745,
-            "orientation": "-0.0339986, 0.328971, 0.890754, 0.311736",
+            "orientation": "-0.0357079, 0.329448, 0.892107, 0.307138",
             "ortho": false,
-            "position": "215.603, 598.766, -761.807",
+            "position": "225.757, 638.796, -817.185",
             "scale": "1, 1, 1"
         },
         "curvePoints": [
-            "195.091, 531.881, -673.972",
-            "130.476, 411.384, -553.531",
+            "194.881, 531.971, -672.941",
+            "129.946, 412.385, -553.651",
             "77.2388, 225.514, -278.604"
         ]
     }
