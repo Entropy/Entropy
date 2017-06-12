@@ -12,13 +12,33 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            'src/entropy/surveys/DataSet.cpp',
+            'src/entropy/surveys/DataSet.h',
+            'src/entropy/surveys/GaussianMapTexture.cpp',
+            'src/entropy/surveys/GaussianMapTexture.h',
+            'src/entropy/surveys/TravelCamPath.cpp',
+            'src/entropy/surveys/TravelCamPath.h',
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
         ]
 
         of.addons: [
-
+            'ofxGui',
+            'ofxXmlSettings',
+            '../../addons/ofxEasing',
+            '../../addons/ofxHDF5',
+            '../../addons/ofxObjLoader',
+            '../../addons/ofxRange',
+            '../../addons/ofxSet',
+            '../../addons/ofxTextInputField',
+            '../../addons/ofxTextureRecorder',
+            '../../addons/ofxTimecode',
+            '../../addons/ofxTimeline',
+            '../../addons/ofxSerialize',
+            '../EntropyGeom',
+            '../EntropyRender',
+            '../EntropyUtil',
         ]
 
         // additional flags for the project. the of module sets some
