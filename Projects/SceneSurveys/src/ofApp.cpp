@@ -320,7 +320,7 @@ void ofApp::update()
 	this->dataSetBoss.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
 	this->dataSetDes.update(worldTransform, this->getActiveCamera(), this->camViewport, this->sharedParams, this->travelCamPath.addPoints);
 
-	this->travelCamPath.update(this->easyCam);
+	this->travelCamPath.update(this->easyCam, this->timeline.getIsPlaying());
 	
 	// Auto-reload shaders.
 	auto vertTime = std::filesystem::last_write_time(ofToDataPath("shaders/galaxy.vert"));
@@ -384,7 +384,7 @@ void ofApp::draw()
 				ofSetColor(ofColor::white);
 
 				this->spriteShader.begin();
-				this->spriteShader.setUniform2f("uClipRange", this->getActiveCamera().getFarClip() * (1.0f - this->sharedParams.point.distanceFade), this->getActiveCamera().getFarClip());
+				this->spriteShader.setUniform2f("uFadeRange", this->sharedParams.point.fadeNear, this->sharedParams.point.fadeFar);
 				this->spriteShader.setUniform1f("uPointSize", this->sharedParams.point.size);
 				this->spriteShader.setUniform1f("uAttenuation", this->sharedParams.point.attenuation);
 				this->spriteShader.setUniformMatrix4f("uTransform", worldTransform);

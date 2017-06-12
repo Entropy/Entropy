@@ -199,7 +199,7 @@ namespace entropy
 		}
 
 		//--------------------------------------------------------------
-		void TravelCamPath::update(const ofCamera & camera)
+		void TravelCamPath::update(const ofCamera & camera, bool play)
 		{	
 			if (this->startPath)
 			{
@@ -225,7 +225,7 @@ namespace entropy
 					this->cloudData[i].pathDistance = this->currCloudDistance;
 				}
 			}
-			else if (this->enabled)
+			else if (this->enabled && play)
 			{
 				this->travelDistance += this->speed;
 			}
@@ -233,7 +233,7 @@ namespace entropy
 			{
 				glm::vec3 currPoint;
 				glm::vec3 nextPoint;
-				//if (this->speed > 0.0f)
+				if (play)
 				{
 					currPoint = this->polyline.getPointAtLength(this->travelDistance);
 					const auto nextDistance = this->travelDistance + std::max(0.1f, this->speed.get());
@@ -241,12 +241,12 @@ namespace entropy
 
 					this->percent = this->travelDistance / this->totalDistance;
 				}
-				//else
-				//{
-				//	currPoint = this->polyline.getPointAtPercent(this->percent);
-				//	const auto nextPct = this->percent + 0.01f;
-				//	nextPoint = this->polyline.getPointAtPercent(nextPct);
-				//}
+				else
+				{
+					currPoint = this->polyline.getPointAtPercent(this->percent);
+					const auto nextPct = this->percent + 0.01f;
+					nextPoint = this->polyline.getPointAtPercent(nextPct);
+				}
 				this->camera.setPosition(currPoint);
 
 				const auto xAxis = glm::normalize(this->camera.getXAxis());
@@ -375,7 +375,7 @@ namespace entropy
 					{
 						ofMultMatrix(this->cloudData[i].transform);
 						
-						ofSetColor(ofFloatColor(this->cloudData[i].alpha * this->alphaScalar));
+						ofSetColor(this->tintColor.get(), 255.0f * this->cloudData[i].alpha * this->alphaScalar);
 						
 						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
 					}

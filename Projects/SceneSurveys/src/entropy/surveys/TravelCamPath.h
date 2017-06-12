@@ -37,7 +37,7 @@ namespace entropy
 			void nudgeEditPoint(Nudge nudge);
 			void buildPath();
 
-			void update(const ofCamera & camera);
+			void update(const ofCamera & camera, bool play);
 			void draw() const;
 
 			void copyCamera(const ofCamera & camera, bool copyTransform);
@@ -84,6 +84,7 @@ namespace entropy
 			ofParameter<glm::vec4> noiseFrequency{ "Noise Frequency", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
 			ofParameter<float> colorRampLow{ "Color Ramp Low", 0.35, 0, 1 };
 			ofParameter<float> colorRampHigh{ "Color Ramp High", 1, 0, 2 };
+			ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
 			ofParameter<float> alphaScalar{ "Alpha Scalar", 1.0f, 0.0f, 1.0f };
 			ofParameterGroup clouds{ "Clouds",
 				renderClouds,
@@ -92,7 +93,7 @@ namespace entropy
 				numPlanes,
 				noiseFrequency,
 				colorRampLow, colorRampHigh,
-				alphaScalar
+				tintColor, alphaScalar
 			};
 
 			ofParameterGroup parameters{ "Travel Cam Path",
