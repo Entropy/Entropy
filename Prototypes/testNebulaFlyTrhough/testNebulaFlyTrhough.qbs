@@ -12,9 +12,11 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
-            'src/main.cpp',
-            'src/ofApp.cpp',
-            'src/ofApp.h',
+            "bin/data/nebula.frag",
+            "bin/data/nebula.vert",
+            "src/main.cpp",
+            "src/ofApp.cpp",
+            "src/ofApp.h",
         ]
 
         of.addons: [
