@@ -122,7 +122,8 @@ void ofApp::setup()
 	this->gui.add(this->dataSetBoss.parameters);
 	this->gui.add(this->dataSetDes.parameters);
 	this->gui.add(this->dataSetVizir.parameters);
-	this->gui.add(this->travelCamPath.parameters);
+	//this->gui.add(this->travelCamPath.parameters);
+	this->travelCamPath.initGui(this->gui);
 	this->gui.add(this->renderer.parameters);
 	this->gui.add(this->postParams);
 	this->gui.minimizeAll();

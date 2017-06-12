@@ -8,6 +8,7 @@
 #include "ofPolyline.h"
 #include "ofTexture.h"
 #include "ofVectorMath.h"
+#include "ofxGui.h"
 
 namespace entropy
 {
@@ -29,6 +30,7 @@ namespace entropy
 			TravelCamPath();
 
 			void setup();
+			void initGui(ofxPanel & gui);
 
 			void addPointToPath(const glm::vec3 & point);
 			void editNearScreenPoint(const ofCamera & camera, const ofRectangle & viewport, const glm::vec2 & screenPoint);
@@ -78,6 +80,10 @@ namespace entropy
 			ofParameter<bool> renderClouds{ "Render Clouds", true };
 			ofParameter<float> planeSize{ "Plane Size", 512.0f, 128.0f, 8192.0f };
 			ofParameter<float> pathOffset{ "Path Offset", 10.0f, 1.0f, 200.0f };
+			ofParameter<int> numPlanes{ "Num Planes", 10, 1, 20 };
+			ofParameter<glm::vec4> noiseFrequency{ "Noise Frequency", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
+			ofParameter<float> colorRampLow{ "Color Ramp Low", 0.35, 0, 1 };
+			ofParameter<float> colorRampHigh{ "Color Ramp High", 1, 0, 2 };
 			ofParameter<float> alphaPeak{ "Alpha Peak", 0.5f, 0.0f, 1.0f };
 			ofParameter<float> nearDistance{ "Near Distance", 0.0f, 0.0f, 1000.0f };
 			ofParameter<float> farDistance{ "Far Distance", 80.0f, 1.0f, 1000.0f };
@@ -86,6 +92,9 @@ namespace entropy
 				renderClouds,
 				planeSize,
 				pathOffset,
+				numPlanes,
+				noiseFrequency,
+				colorRampLow, colorRampHigh,
 				alphaPeak,
 				nearDistance, farDistance, maxDistance
 			};
@@ -98,13 +107,12 @@ namespace entropy
 
 		protected:
 			void addCurvePointToPolyline(const glm::vec3 & point);
+			void generateCloudTextures();
 
 			ofCamera camera;
 
 			float travelDistance;
 			float totalDistance;
-
-			vector<ofEventListener> eventListeners;
 
 			glm::vec3 startPosition;
 			glm::quat startOrientation;

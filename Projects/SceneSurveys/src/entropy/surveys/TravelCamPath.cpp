@@ -20,32 +20,55 @@ namespace entropy
 		//--------------------------------------------------------------
 		void TravelCamPath::setup()
 		{
+			// Initialize parameters.
 			ofSetMutuallyExclusive(addPoints, editPoints);
-			this->eventListeners.push_back(this->curveResolution.newListener([this](float &)
+			this->curveResolution.ownListener([this](float &)
 			{
 				this->buildPath();
-			}));
-			this->eventListeners.push_back(this->editPoints.newListener([this](bool &)
+			});
+			this->editPoints.ownListener([this](bool &)
 			{
 				this->editPointIdx = -1;
-			}));
+			});
 
-			this->eventListeners.push_back(this->pathOffset.newListener([this](float &)
+			this->pathOffset.ownListener([this](float &)
 			{
 				this->currCloudDistance = 0.0f;
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
 					this->cloudData[i].pathDistance = 0.0f;
 				}
-			}));
+			});
+
+			this->numPlanes.ownListener([this](int &)
+			{
+				this->generateCloudTextures();
+			});
+			this->noiseFrequency.ownListener([this](glm::vec4 &)
+			{
+				this->generateCloudTextures();
+			});
+			this->colorRampLow.ownListener([this](float &)
+			{
+				this->generateCloudTextures();
+			});
+			this->colorRampHigh.ownListener([this](float &)
+			{
+				this->generateCloudTextures();
+			});
 
 			// Populate clouds.
-			this->cloudData.resize(5);
-			for (int i = 0; i < this->cloudData.size(); ++i)
-			{
-				entropy::LoadTextureImage("textures/darkclouds-" + ofToString(i % 5) + ".png", this->cloudData[i].texture);
-				this->cloudData[i].pathDistance = 0.0f;
-			}
+			this->generateCloudTextures();
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::initGui(ofxPanel & gui)
+		{
+			gui.add(this->parameters);
+			gui.getIntSlider("Num Planes").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Noise Frequency").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Color Ramp Low").setUpdateOnReleaseOnly(true);
+			gui.getFloatSlider("Color Ramp High").setUpdateOnReleaseOnly(true);
 		}
 
 		//--------------------------------------------------------------
@@ -140,6 +163,38 @@ namespace entropy
 			float segmentLength = tempPolyline.getPerimeter() - this->polyline.getPerimeter();
 			int resolution = segmentLength * this->curveResolution;
 			this->polyline.curveTo(point, resolution);
+		}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::generateCloudTextures()
+		{
+			this->cloudData.resize(this->numPlanes);
+			for (size_t i = 0; i < this->numPlanes; ++i) 
+			{
+				ofFloatPixels pixels;
+				auto size = 1024.0f;
+				pixels.allocate(size, size, OF_PIXELS_GRAY_ALPHA);
+				pixels.set(0.0f);
+				for (auto l : pixels.getLines()) 
+				{
+					auto j = 0;
+					for (auto p : l.getPixels()) 
+					{
+						auto f = ofNoise(j / size * this->noiseFrequency.get().x + i * size, l.getLineNum() / size * this->noiseFrequency.get().x + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().y + i * size, l.getLineNum() / size * this->noiseFrequency.get().y + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().z + i * size, l.getLineNum() / size * this->noiseFrequency.get().z + i * size) / 4.0f +
+								 ofNoise(j / size * this->noiseFrequency.get().w + i * size, l.getLineNum() / size * this->noiseFrequency.get().w + i * size) / 4.0f;
+						f = ofMap(f, colorRampLow, colorRampHigh, 0, 1, true);
+						p[0] = f;
+						p[1] = f;
+						j += 1;
+					}
+				}
+				this->cloudData[i].texture.allocate(pixels);
+				this->cloudData[i].pathDistance = 0.0f;
+			}
+
+			this->currCloudDistance = 0.0f;
 		}
 
 		//--------------------------------------------------------------
