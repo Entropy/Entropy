@@ -3,6 +3,8 @@
 #include "of3dGraphics.h"
 #include "ofxSerialize.h"
 
+#include "entropy/Helpers.h"
+
 namespace entropy
 {
 	namespace surveys
@@ -11,7 +13,12 @@ namespace entropy
 		TravelCamPath::TravelCamPath()
 			: travelDistance(0.0f)
 			, totalDistance(0.0f)
+			, currCloudDistance(0.0f)
 			, editPointIdx(-1)
+		{}
+
+		//--------------------------------------------------------------
+		void TravelCamPath::setup()
 		{
 			ofSetMutuallyExclusive(addPoints, editPoints);
 			this->eventListeners.push_back(this->curveResolution.newListener([this](float &)
@@ -22,6 +29,23 @@ namespace entropy
 			{
 				this->editPointIdx = -1;
 			}));
+
+			this->eventListeners.push_back(this->pathOffset.newListener([this](float &)
+			{
+				this->currCloudDistance = 0.0f;
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					this->cloudData[i].pathDistance = 0.0f;
+				}
+			}));
+
+			// Populate clouds.
+			this->cloudData.resize(5);
+			for (int i = 0; i < this->cloudData.size(); ++i)
+			{
+				entropy::LoadTextureImage("textures/darkclouds-" + ofToString(i % 5) + ".png", this->cloudData[i].texture);
+				this->cloudData[i].pathDistance = 0.0f;
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -138,6 +162,11 @@ namespace entropy
 			if (this->reset)
 			{
 				this->travelDistance = 0.0f;
+				this->currCloudDistance = 0.0f;
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					this->cloudData[i].pathDistance = 0.0f;
+				}
 			}
 			else if (this->enabled)
 			{
@@ -188,6 +217,31 @@ namespace entropy
 
 				this->reset = false;
 			}
+
+			if (this->renderClouds)
+			{
+				const auto camPos = this->camera.getGlobalPosition();
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					if (this->cloudData[i].pathDistance == 0.0f || (this->cloudData[i].pathDistance - this->travelDistance) < -this->pathOffset)
+					{
+						// Move the cloud up the path.
+						this->currCloudDistance += this->pathOffset;
+						cout << "MOVE UP cloud " << i << " from " << this->cloudData[i].pathDistance << " to " << this->currCloudDistance << ", travelDistance = " << this->travelDistance << endl;
+						this->cloudData[i].pathDistance = this->currCloudDistance;
+					}
+					else if (this->cloudData[i].pathDistance > this->travelDistance)
+					{
+						// Adjust the transform.
+						this->cloudData[i].position = this->polyline.getPointAtLength(this->cloudData[i].pathDistance);
+
+						ofNode lookAtNode;
+						lookAtNode.setPosition(this->cloudData[i].position);
+						lookAtNode.lookAt(camPos);
+						this->cloudData[i].transform = lookAtNode.getGlobalTransformMatrix();
+					}
+				}
+			}
 		}
 
 		//--------------------------------------------------------------
@@ -220,7 +274,39 @@ namespace entropy
 
 				ofSetColor(ofColor::blue);
 				this->camera.draw();
+				
+				ofSetColor(ofColor::white);
 				ofFill();
+			}
+
+			if (this->renderClouds)
+			{
+				for (int i = 0; i < this->cloudData.size(); ++i)
+				{
+					ofPushMatrix();
+					{
+						ofMultMatrix(this->cloudData[i].transform);
+						
+						float deltaDistance = (this->cloudData[i].pathDistance - this->travelDistance);
+						float alpha;
+						if (deltaDistance < this->nearDistance)
+						{
+							alpha = ofMap(deltaDistance, 0, this->nearDistance, 0.0f, this->alphaPeak, true);
+						}
+						else if (deltaDistance < this->farDistance)
+						{
+							alpha = this->alphaPeak;
+						}
+						else
+						{
+							alpha = ofMap(deltaDistance, this->farDistance, this->maxDistance, this->alphaPeak, 0.0f, true);
+						}
+						ofSetColor(ofFloatColor(alpha));
+						
+						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
+					}
+					ofPopMatrix();
+				}
 			}
 		}
 

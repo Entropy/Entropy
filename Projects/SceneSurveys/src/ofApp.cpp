@@ -106,6 +106,9 @@ void ofApp::setup()
 		this->travelCamPath.copyCamera(this->easyCam, false);
 	}));
 
+	// Setup the travel cam path.
+	this->travelCamPath.setup();
+
 	// Setup renderer and post effects using resize callback.
 	this->windowResized(ofGetWidth(), ofGetHeight());
 

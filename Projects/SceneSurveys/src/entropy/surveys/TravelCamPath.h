@@ -6,6 +6,7 @@
 #include "ofJson.h"
 #include "ofParameter.h"
 #include "ofPolyline.h"
+#include "ofTexture.h"
 #include "ofVectorMath.h"
 
 namespace entropy
@@ -26,6 +27,8 @@ namespace entropy
 		{
 		public:
 			TravelCamPath();
+
+			void setup();
 
 			void addPointToPath(const glm::vec3 & point);
 			void editNearScreenPoint(const ofCamera & camera, const ofRectangle & viewport, const glm::vec2 & screenPoint);
@@ -72,9 +75,25 @@ namespace entropy
 				debugDraw 
 			};
 
+			ofParameter<bool> renderClouds{ "Render Clouds", true };
+			ofParameter<float> planeSize{ "Plane Size", 512.0f, 128.0f, 8192.0f };
+			ofParameter<float> pathOffset{ "Path Offset", 10.0f, 1.0f, 200.0f };
+			ofParameter<float> alphaPeak{ "Alpha Peak", 0.5f, 0.0f, 1.0f };
+			ofParameter<float> nearDistance{ "Near Distance", 0.0f, 0.0f, 1000.0f };
+			ofParameter<float> farDistance{ "Far Distance", 80.0f, 1.0f, 1000.0f };
+			ofParameter<float> maxDistance{ "Max Distance", 100.0f, 1.0f, 1000.0f };
+			ofParameterGroup clouds{ "Clouds",
+				renderClouds,
+				planeSize,
+				pathOffset,
+				alphaPeak,
+				nearDistance, farDistance, maxDistance
+			};
+
 			ofParameterGroup parameters{ "Travel Cam Path",
 				travel,
-				edit
+				edit,
+				clouds
 			};
 
 		protected:
@@ -93,6 +112,16 @@ namespace entropy
 			size_t editPointIdx;
 
 			ofPolyline polyline;
+
+			struct CloudData
+			{
+				ofTexture texture;
+				glm::vec3 position;
+				float pathDistance;
+				glm::mat4 transform;
+			};
+			std::vector<CloudData> cloudData;
+			float currCloudDistance;
 		};
 	}
 }
