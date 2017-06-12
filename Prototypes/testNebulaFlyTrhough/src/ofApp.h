@@ -43,4 +43,5 @@ class ofApp : public ofBaseApp{
 
 		ofxPanel gui{parameters};
 		ofCamera camera;
+		ofShader nebulaShader;
 };

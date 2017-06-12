@@ -39,6 +39,7 @@ double turbulence(ofFloatPixels & noise, double x, double y, double size)
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	ofDisableArbTex();
 	ofSetBackgroundColor(0);
 
 	auto setFreq = [this](float & freq){
@@ -57,7 +58,7 @@ void ofApp::setup(){
 					        ofNoise(j / s * frequency2 + i * s, l.getLineNum() / s * frequency2 + i * s)/4. +
 					        ofNoise(j / s * frequency3 + i * s, l.getLineNum() / s * frequency3 + i * s)/4.
 					        ;
-					f = ofMap(f, colorramp_low, colorramp_high, 0, 1, true);
+					//f = ofMap(f, colorramp_low, colorramp_high, 0, 1, true);
 					p[0] = f;
 					p[1] = f;
 					j+=1;
@@ -72,16 +73,17 @@ void ofApp::setup(){
 	frequency1.ownListener(setFreq);
 	frequency2.ownListener(setFreq);
 	frequency3.ownListener(setFreq);
-	colorramp_high.ownListener(setFreq);
-	colorramp_low.ownListener(setFreq);
+//	colorramp_high.ownListener(setFreq);
+//	colorramp_low.ownListener(setFreq);
 
 	gui.getFloatSlider("frequency0").setUpdateOnReleaseOnly(true);
 	gui.getFloatSlider("frequency1").setUpdateOnReleaseOnly(true);
 	gui.getFloatSlider("frequency2").setUpdateOnReleaseOnly(true);
 	gui.getFloatSlider("frequency3").setUpdateOnReleaseOnly(true);
-	gui.getFloatSlider("color ramp low").setUpdateOnReleaseOnly(true);
-	gui.getFloatSlider("color ramp high").setUpdateOnReleaseOnly(true);
+//	gui.getFloatSlider("color ramp low").setUpdateOnReleaseOnly(true);
+//	gui.getFloatSlider("color ramp high").setUpdateOnReleaseOnly(true);
 
+	nebulaShader.load("nebula.vert", "nebula.frag");
 
 	float f;
 	setFreq(f);
@@ -97,6 +99,9 @@ void ofApp::draw(){
 
 	//textures[0].draw(0,0);
 	//ofEnableBlendMode(OF_BLENDMODE_ADD);
+	nebulaShader.begin();
+	nebulaShader.setUniform1f("colorramp_low", colorramp_low);
+	nebulaShader.setUniform1f("colorramp_high", colorramp_high);
 	camera.begin();
 	auto i = 0;
 	for(auto & t: textures){
@@ -112,10 +117,12 @@ void ofApp::draw(){
 			alpha = ofMap(alpha, 0, 1, 0.1, 0.8);
 			ofSetColor(255,alpha*255.);
 		}
+		nebulaShader.setUniformTexture("texture0", t, 0);
 		t.draw(-t.getWidth()/2, -t.getWidth()/2, z);
 		i++;
 	}
 	camera.end();
+	nebulaShader.end();
 
 	gui.draw();
 }
