@@ -428,8 +428,6 @@ void ofApp::draw()
 				this->modelShader.end();
 			}
 
-			this->travelCamPath.draw();
-
 			ofPushMatrix();
 			ofMultMatrix(worldTransform);
 			{
@@ -446,6 +444,10 @@ void ofApp::draw()
 				this->sphereShader.end();
 			}
 			ofPopMatrix();
+
+			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+			ofEnableDepthTest();
+			this->travelCamPath.draw();
 		}
 		this->getActiveCamera().end();
 	}
