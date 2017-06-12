@@ -25,9 +25,9 @@
     </element>
     <element name="Fade_10_HPV">
         <x>0.000000000</x>
-        <y>1826.000000000</y>
-        <width>1680.000000000</width>
-        <height>0.000000000</height>
+        <y>1075.000000000</y>
+        <width>1920.000000000</width>
+        <height>41.000000000</height>
     </element>
     <element name="Fade_10_Sound">
         <x>0.000000000</x>
@@ -289,7 +289,7 @@
     </element>
     <element name="Media_10_HPV">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
+        <y>1075.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000416775",
+                "orientation": "1, 0, 0, 0.000589409",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -303,11 +303,11 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\mov\\EAGLE_Intro_160923.mov",
+                "File Path": "E:\\mov\\EAGLE_Intro.mov",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -317,7 +317,7 @@
                     "Speed Knob": "16",
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
-                    "Use Fade Track": "1",
+                    "Use Fade Track": "0",
                     "Use Fade Twist": "0",
                     "Use Speed Twist": "0"
                 }
@@ -476,7 +476,7 @@
                     "Fade Knob": "13",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",
@@ -580,7 +580,7 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.55",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
@@ -664,12 +664,12 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.575, 0.55",
+                    "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
+                    "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "0.8",
+                    "Size": "2",
                     "Surface": "0",
                     "Vert Align": "1"
                 },
@@ -812,7 +812,7 @@
                     "Fade Knob": "16",
                     "Fade LFO": "1",
                     "Fade Track": "1",
-                    "Fade Twist": "1",
+                    "Fade Twist": "0",
                     "Flip LFO": "0",
                     "Free Speed": "1",
                     "LFO Scale": "10",

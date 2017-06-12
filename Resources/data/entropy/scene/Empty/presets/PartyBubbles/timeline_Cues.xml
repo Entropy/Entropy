@@ -15,9 +15,19 @@
         <value>0.699999988</value>
     </key>
     <key>
-        <flag>play nucleo</flag>
+        <flag>play nucleo1</flag>
         <time>00:04:00:813</time>
         <value>0.500000000</value>
+    </key>
+    <key>
+        <flag>stop</flag>
+        <time>00:04:25:232</time>
+        <value>0.699999988</value>
+    </key>
+    <key>
+        <flag>play nucleo2</flag>
+        <time>00:05:00:006</time>
+        <value>0.600000024</value>
     </key>
     <key>
         <flag>play zoom</flag>
