@@ -69,6 +69,7 @@ namespace entropy
 			this->avgMass /= this->masses.size();
 			cout << "Radius range is " << this->minRadius << " to " << this->maxRadius << endl;
 			cout << "Mass range is " << this->minMass << " to " << this->maxMass << " with avg = " << this->avgMass << endl;
+			cout << "SFR range is " << this->minSfr << " to " << this->maxSfr << endl;
 
 			// Upload everything to the vbo.
 			this->vbo.setVertexData(this->coordinates.data(), this->coordinates.size(), GL_STATIC_DRAW);
@@ -97,6 +98,9 @@ namespace entropy
 			this->minMass = std::numeric_limits<float>::max();
 			this->maxMass = std::numeric_limits<float>::min();
 			this->avgMass = 0.0f;
+
+			this->minSfr = std::numeric_limits<float>::max();
+			this->maxSfr = std::numeric_limits<float>::min();
 
 			this->vbo.clear();
 		}
@@ -152,6 +156,9 @@ namespace entropy
 					if (particleType == "PartType6")
 					{
 						this->starFormationRates.push_back(sfrData[i]);
+
+						this->minSfr = std::min(this->minSfr, sfrData[i]);
+						this->maxSfr = std::max(this->maxSfr, sfrData[i]);
 					}
 					else
 					{

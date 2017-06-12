@@ -128,6 +128,7 @@ namespace entropy
 			};
 			std::vector<CloudData> cloudData;
 			float currCloudDistance;
+			ofShader cloudShader;
 		};
 	}
 }

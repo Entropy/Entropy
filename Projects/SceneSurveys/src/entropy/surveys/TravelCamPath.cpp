@@ -58,6 +58,8 @@ namespace entropy
 				this->generateCloudTextures();
 			});
 
+			this->cloudShader.load("shaders/nebula.vert", "shaders/nebula.frag");
+
 			// Populate clouds.
 			this->generateCloudTextures();
 		}
@@ -369,6 +371,9 @@ namespace entropy
 
 			if (this->renderClouds)
 			{
+				//this->cloudShader.begin();
+				//this->cloudShader.setUniform1f("colorramp_low", this->colorRampLow);
+				//this->cloudShader.setUniform1f("colorramp_high", this->colorRampHigh);
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
 					ofPushMatrix();
@@ -377,10 +382,12 @@ namespace entropy
 						
 						ofSetColor(this->tintColor.get(), 255.0f * this->cloudData[i].alpha * this->alphaScalar);
 						
+						//this->cloudShader.setUniformTexture("texture0", this->cloudData[i].texture, 0);
 						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
 					}
 					ofPopMatrix();
 				}
+				//this->cloudShader.end();
 			}
 		}
 
