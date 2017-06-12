@@ -143,6 +143,9 @@ namespace entropy
 			float maxMass;
 			float avgMass;
 
+			float minSfr;
+			float maxSfr;
+
 			glm::vec3 mappedRadiusRange;
 			glm::vec2 mappedLatitudeRange;
 			glm::vec2 mappedLongitudeRange;
