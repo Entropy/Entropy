@@ -39,6 +39,7 @@ void TransitionParticles::update(const ofBufferObject & blobs, const ofxTexture3
 	computeShader.setUniform1f("bufferSize", totalVertices);
 	computeShader.setUniform1f("noiseSize", noiseField.texData.width);
 	computeShader.setUniform1f("frameNum", ofGetFrameNum());
+	computeShader.setUniform1f("posAlpha", posAlpha);
 	computeShader.setUniformTexture("noiseField", GL_TEXTURE_3D, noiseField.texData.textureID, 0);
 	computeShader.dispatchCompute(numParticles / 1024 + 1, 1, 1);
 	computeShader.end();

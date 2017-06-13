@@ -25,6 +25,7 @@ public:
 	ofParameter<float> repulsion{"repulsion", 0.01, 0.0001f, 1.f};
 	ofParameter<float> attraction{"noise field attraction", 10.f, 0.f, 10.f};
 	ofParameter<float> speed{"speed", 1.f/100.f, 1.f/1000.f, 1.f/10.f};
+	ofParameter<float> posAlpha{"position alpha", 0., 0., 1};
 	ofParameter<ofFloatColor> color{"color", ofFloatColor::white};
 	ofParameterGroup parameters{
 		"transition particles",
@@ -34,6 +35,7 @@ public:
 		repulsion,
 		attraction,
 		speed,
+		posAlpha,
 	};
 
 private:
