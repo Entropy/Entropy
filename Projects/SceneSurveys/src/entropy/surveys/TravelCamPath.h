@@ -49,7 +49,7 @@ namespace entropy
 
 			ofParameter<bool> enabled{ "Enable Travel", false };
 			ofParameter<bool> reset{ "Reset Position", false };
-			ofParameter<float> speed{ "Speed", 0.2f, 0.0f, 0.5f };
+			ofParameter<float> speed{ "Speed", 0.2f, 0.0f, 20.f };
 			ofParameter<float> percent{ "Percent", 0.0f, 0.0f, 1.0f };
 			ofParameter<float> lookAtLerp{ "Look At Lerp", 0.75f, 0.0f, 1.0f };
 			ofParameterGroup travel{ "Travel",
@@ -82,6 +82,7 @@ namespace entropy
 			ofParameter<float> pathOffset{ "Path Offset", 10.0f, 1.0f, 200.0f };
 			ofParameter<int> numPlanes{ "Num Planes", 10, 1, 20 };
 			ofParameter<glm::vec4> noiseFrequency{ "Noise Frequency", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
+			ofParameter<glm::vec4> noiseFrequency2{ "Noise Frequency 2", glm::vec4(2.0f, 4.0f, 8.0f, 16.0f), glm::vec4(0.0f), glm::vec4(1000.0f) };
 			ofParameter<float> colorRampLow{ "Color Ramp Low", 0.35, 0, 1 };
 			ofParameter<float> colorRampHigh{ "Color Ramp High", 1, 0, 2 };
 			ofParameter<ofFloatColor> tintColor{ "Tint Color", ofFloatColor::white };
@@ -92,6 +93,7 @@ namespace entropy
 				pathOffset,
 				numPlanes,
 				noiseFrequency,
+						noiseFrequency2,
 				colorRampLow, colorRampHigh,
 				tintColor, alphaScalar
 			};

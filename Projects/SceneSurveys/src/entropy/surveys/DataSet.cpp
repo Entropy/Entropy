@@ -363,7 +363,12 @@ namespace entropy
 			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
 			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
 			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
-			ofSetColor(this->parameters.color.get());
+			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
+			shader.setUniform1f("uBrightness", this->parameters.brightness);
+			shader.setUniform4f("color1", this->parameters.color);
+			shader.setUniform4f("color2", this->parameters.color2);
+			shader.setUniform4f("color3", this->parameters.color3);
+			shader.setUniform4f("color4", this->parameters.color4);
 
 			//for (int i = 0; i < 10; ++i)
 				//cout << "drawPoints() comparing mass " << this->masses[i] << " < " << mappedClipMass << endl;
@@ -384,7 +389,8 @@ namespace entropy
 			shader.setUniform1f("uMaxLatitude", this->mappedLatitudeRange.y);
 			shader.setUniform1f("uMinLongitude", this->mappedLongitudeRange.x);
 			shader.setUniform1f("uMaxLongitude", this->mappedLongitudeRange.y);
-			ofSetColor(this->parameters.color.get());
+			shader.setUniform1f("uBrightness", this->parameters.brightness);
+			shader.setUniform4f("globalColor", this->parameters.color);
 
 			this->vbo.draw(GL_POINTS, 0, this->coordinates.size());
 		}
@@ -396,6 +402,11 @@ namespace entropy
 
 			if (this->modelCount == 0) return;
 
+			shader.setUniform1f("uBrightness", this->parameters.brightnessModels);
+			shader.setUniform4f("color1", this->parameters.color);
+			shader.setUniform4f("color2", this->parameters.color2);
+			shader.setUniform4f("color3", this->parameters.color3);
+			shader.setUniform4f("color4", this->parameters.color4);
 			bufferObj.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 			ofSetColor(this->parameters.color.get());
 

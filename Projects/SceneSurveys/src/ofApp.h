@@ -54,7 +54,7 @@ protected:
 		struct : ofParameterGroup
 		{
 			ofParameter<float> nearClip{ "Near Clip", 0.001f, 0.001f, 5000.0f };
-			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 5000.0f };
+			ofParameter<float> farClip{ "Far Clip", 1000.0f, 0.01f, 20000.0f };
 			ofParameter<float> fov{ "FOV", 60, 1, 120 };
 			
 			PARAM_DECLARE("Camera",
@@ -108,20 +108,27 @@ protected:
 	ofTexture sphereTexture;
 	ofShader sphereShader;
 	ofShader::Settings sphereSettings;
+#ifdef OF_USING_STD_FS
+	std::filesystem::file_time_type sphereTime;
+	std::filesystem::file_time_type spriteTime;
+	std::filesystem::file_time_type shellTime;
+	std::filesystem::file_time_type modelTime;
+#else
 	std::time_t sphereTime;
+	std::time_t spriteTime;
+	std::time_t shellTime;
+	std::time_t modelTime;
+#endif
 
 	ofShader spriteShader;
-	std::time_t spriteTime;
 	ofTexture spriteTexture;
 
 	ofShader shellShader;
 	ofShader::Settings shellSettings;
-	std::time_t shellTime;
 	ofTexture shellTexture;
 
 	ofShader modelShader;
 	ofShader::Settings modelSettings;
-	std::time_t modelTime;
 	ofBufferObject dataBuffer;
 	ofVboMesh masterMesh;
 	ofVboMesh scaledMesh;
