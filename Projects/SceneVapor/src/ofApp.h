@@ -7,6 +7,7 @@
 #include "SequenceRamses.h"
 #include "ofxTextureRecorder.h"
 #include "WireframeFillRenderer.h"
+#include "PostEffects.h"
 #include "EagleOctree.h"
 
 class ofApp 
@@ -77,6 +78,7 @@ public:
 	ofParameter<bool> m_bShowTimeline{"show timeline", true};
 	ofParameter<string> m_exportPath{ofToDataPath("",true)};
 	ofParameter<bool> autoMode{"auto mode", false};
+	ofParameter<bool> frameInterpolation{"frame interpolation", false};
 	ofParameter<int> animationFps{"animation fps", 6, 0, 60};
 	ofParameter<float> eagleVideoFps{"eagle fps", 12, 0, 30};
 	ofParameter<float> eagleVideoAlpha{"eagle video alpha", 0, 0, 1};
@@ -120,6 +122,7 @@ public:
 		m_eagleTrackRotation,
 		eagleVideoFps,
 		eagleVideoAlpha,
+		animationFps,
 		//m_vboTex,
 		m_bSyncPlayback,
 		m_bExportFrames,
@@ -127,6 +130,7 @@ public:
 		m_bShowTimeline,
 		m_exportPath,
 		autoMode,
+				frameInterpolation,
 	};
 
 
@@ -191,4 +195,7 @@ public:
 
 
 	ofImage eagleImg1, eagleImg2;
+
+	entropy::render::PostEffects posteffects;
+	entropy::render::PostParameters postParameters, linesPostParameters;
 };

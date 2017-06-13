@@ -14,6 +14,9 @@ uniform float quality;
 uniform float threshold;
 uniform float density;
 
+const float asinhzero = 0.5;
+const float asinhb = 1;
+
 const float levelThreshold = 0.00001;
 
 struct Ray {
@@ -104,7 +107,7 @@ void main()
 //								vec += s; sample2 = textureLod(volume_tex, vec, 2).r;
 								for(int h=0; h<2; h++){
 									float alpha = texture(volume_tex, vec).r * aScale;
-									float oneMinusAlpha = 1. - clamp(col_acc.a, 0., 1.);
+									float oneMinusAlpha = 1. - col_acc.a;
 									col_acc.rgb += oneMinusAlpha * vec3(alpha) * alpha;
 									col_acc.a += alpha * oneMinusAlpha;
 
@@ -129,9 +132,9 @@ void main()
 			}else{
 				vec += delta_dir*16.;
 			}
-			if(col_acc.a >= 1.0) {
-				break; // terminate if opacity > 1
-			}
+//			if(col_acc.a >= 1.0) {
+//				break; // terminate if opacity > 1
+//			}
 		}
 
 		/*for(int i = 0; i < steps; i++)
@@ -147,5 +150,14 @@ void main()
 		}*/
     }
     // export the rendered color
-    vFragColor = col_acc;
+	float rangemin = minv.r;
+	vFragColor = asinh((col_acc - vec4(asinhzero)) / asinhb) - vec4(asinh((rangemin - asinhzero) / asinhb));
+
+	/*float m = 0;
+	float Q = 1.;
+	float a = 1.12;
+
+	vFragColor = asinh(a * Q * (col_acc - m)) / Q;*/
+
+	//vFragColor = col_acc;
 }

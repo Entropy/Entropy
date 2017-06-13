@@ -491,9 +491,6 @@ void ofApp::setup()
 	fboLines.begin();
 	ofClear(0,0);
 	fboLines.end();
-	fboPostLines.begin();
-	ofClear(0,0);
-	fboPostLines.end();
 
 	renderer.setup(1);
 	renderer.resize(fboSettings.width, fboSettings.height);
@@ -503,8 +500,6 @@ void ofApp::setup()
 
 
 	frameInterpolationShader.load("shaders/frameinterpolation.vert.glsl", "shaders/frameinterpolation.frag.glsl");
-
-	frameInterpolation.load("shaders/frameinterpolation.vert.glsl", "shaders/frameinterpolation.frag.glsl");
 
 
 	listeners.push_back(m_bExportFrames.newListener([this](bool & record){
