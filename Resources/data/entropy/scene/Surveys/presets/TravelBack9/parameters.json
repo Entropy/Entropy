@@ -3,6 +3,9 @@
         "BOSS": {
             "Brightness_Points": "1",
             "Color": "1, 1, 1, 1",
+            "Color_2": "1, 1, 1, 1",
+            "Color_3": "1, 1, 1, 1",
+            "Color_4": "1, 1, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "1",
             "Max_Longitude": "1",
@@ -17,8 +20,11 @@
         "Color_Ramp_High": "6.42864e-39",
         "Color_Ramp_Low": "2.36938e-38",
         "DES": {
-            "Brightness_Points": "6.40816",
+            "Brightness_Points": "1.4",
             "Color": "0.756314, 0.809732, 1, 1",
+            "Color_2": "0.612422, 0.627713, 0.694444, 1",
+            "Color_3": "0.897561, 1, 0.978609, 1",
+            "Color_4": "0.746141, 0.901847, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "0.412245",
             "Max_Longitude": "0.269388",
@@ -26,7 +32,7 @@
             "Min_Latitude": "0",
             "Min_Longitude": "0.0530612",
             "Min_Radius": "1",
-            "Render_Models": "1",
+            "Render_Models": "0",
             "Render_Points": "1",
             "Render_Shells": "0"
         },
@@ -37,7 +43,7 @@
                 "Boost": "1",
                 "Brightness_Threshold": "1",
                 "Debug_Blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num_Passes": "1",
                 "Sigma": "1.96501"
             },
@@ -59,11 +65,11 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0.8",
+                "Enabled": "1",
+                "Inner": "0.0970995",
                 "Only_Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
+                "Outer": "3",
+                "Power": "1.3",
                 "Ratio": "1",
                 "Rotation": "0"
             }
@@ -124,7 +130,7 @@
                 "Attenuation": "600",
                 "Fade_Far": "100",
                 "Fade_Near": "0",
-                "Size": "0.0874416"
+                "Size": "0.0956881"
             },
             "Shells": {
                 "Alpha": "1",
@@ -149,19 +155,19 @@
         "Travel_Cam_Path": {
             "Clouds": {
                 "Alpha_Scalar": "1",
-                "Color_Ramp_High": "1.75",
-                "Color_Ramp_Low": "0.6",
-                "Noise_Frequency": "2, 4, 8, 16",
-                "Num_Planes": "10",
-                "Path_Offset": "10",
-                "Plane_Size": "200",
+                "Color_Ramp_High": "1.8",
+                "Color_Ramp_Low": "0.29",
+                "Noise_Frequency": "4, 16, 64, 128",
+                "Num_Planes": "12",
+                "Path_Offset": "5",
+                "Plane_Size": "256",
                 "Render_Clouds": "1",
                 "Tint_Color": "0.826914, 0.933078, 1, 1",
                 "group": {
-                    "w": "16",
-                    "x": "2",
-                    "y": "4",
-                    "z": "8"
+                    "w": "128",
+                    "x": "4",
+                    "y": "16",
+                    "z": "64"
                 }
             },
             "Edit": {
@@ -176,14 +182,17 @@
             "Travel": {
                 "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "0.124292",
+                "Percent": "0.0824763",
                 "Reset_Position": "0",
-                "Speed": "0.105"
+                "Speed": "0.104987"
             }
         },
         "ViziR": {
             "Brightness_Points": "1",
             "Color": "1, 1, 1, 1",
+            "Color_2": "1, 1, 1, 1",
+            "Color_3": "1, 1, 1, 1",
+            "Color_4": "1, 1, 1, 1",
             "Cut_Radius": "0.045",
             "Max_Latitude": "1",
             "Max_Longitude": "1",

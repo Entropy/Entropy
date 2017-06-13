@@ -17,7 +17,7 @@
         "Color_Ramp_High": "6.42864e-39",
         "Color_Ramp_Low": "2.36938e-38",
         "DES": {
-            "Brightness_Points": "6.40816",
+            "Brightness_Points": "1.83673",
             "Color": "0.756314, 0.809732, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "0.412245",
@@ -37,7 +37,7 @@
                 "Boost": "1",
                 "Brightness_Threshold": "1",
                 "Debug_Blur": "0",
-                "Enabled": "1",
+                "Enabled": "0",
                 "Num_Passes": "1",
                 "Sigma": "1.96501"
             },
@@ -59,11 +59,11 @@
             },
             "Vignette": {
                 "Debug": "0",
-                "Enabled": "0",
-                "Inner": "0.8",
+                "Enabled": "1",
+                "Inner": "0.0970995",
                 "Only_Alpha": "1",
-                "Outer": "1.1",
-                "Power": "1.1",
+                "Outer": "3",
+                "Power": "1.3",
                 "Ratio": "1",
                 "Rotation": "0"
             }
@@ -124,7 +124,7 @@
                 "Attenuation": "600",
                 "Fade_Far": "100",
                 "Fade_Near": "0",
-                "Size": "0.0874416"
+                "Size": "0.05"
             },
             "Shells": {
                 "Alpha": "1",
@@ -176,9 +176,9 @@
             "Travel": {
                 "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "0.124292",
+                "Percent": "0.73249",
                 "Reset_Position": "0",
-                "Speed": "0.105"
+                "Speed": "0.2"
             }
         },
         "ViziR": {
