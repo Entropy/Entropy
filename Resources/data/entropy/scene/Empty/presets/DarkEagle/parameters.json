@@ -51,7 +51,7 @@
                 "mouseInputEnabled": false,
                 "mouseMiddleButtonEnabled": true,
                 "nearClip": 9.3530740737915,
-                "orientation": "1, 0, 0, 0.000589409",
+                "orientation": "1, 0, 0, 0",
                 "ortho": false,
                 "position": "0, 0, 935.307",
                 "relativeYAxis": false,
@@ -177,7 +177,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Vapor_Anim_170606.hpv",
+                "File Path": "E:\\hpv\\Vapor_NoAnim_170612.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
@@ -585,7 +585,7 @@
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "2",
+                    "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -669,7 +669,7 @@
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "2",
+                    "Size": "1",
                     "Surface": "0",
                     "Vert Align": "1"
                 },
@@ -765,7 +765,7 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\EAGLE_Galaxy_r6.hpv",
+                "File Path": "E:\\hpv\\EAGLE_Galaxy_Title.hpv",
                 "Playback": {
                     "Fade Knob": "5",
                     "Fade LFO": "1",

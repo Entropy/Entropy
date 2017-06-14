@@ -2,13 +2,13 @@
     <element name="Camera Back">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera Front">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>3840.000000000</width>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Camera_Back_Dolly Speed">

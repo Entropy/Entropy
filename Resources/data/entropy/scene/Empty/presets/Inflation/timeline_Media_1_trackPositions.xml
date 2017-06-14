@@ -19,8 +19,8 @@
     </element>
     <element name="Fade_12_HPV">
         <x>0.000000000</x>
-        <y>948.000000000</y>
-        <width>1920.000000000</width>
+        <y>326.000000000</y>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_14_HPV">
@@ -43,7 +43,7 @@
     </element>
     <element name="Fade_1_HPV">
         <x>0.000000000</x>
-        <y>1076.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -73,8 +73,8 @@
     </element>
     <element name="Fade_4_HPV">
         <x>0.000000000</x>
-        <y>884.000000000</y>
-        <width>1920.000000000</width>
+        <y>262.000000000</y>
+        <width>9600.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Fade_4_Movie">
@@ -145,7 +145,7 @@
     </element>
     <element name="Media_12_HPV">
         <x>0.000000000</x>
-        <y>1076.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -169,7 +169,7 @@
     </element>
     <element name="Media_1_HPV">
         <x>0.000000000</x>
-        <y>692.000000000</y>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -199,7 +199,7 @@
     </element>
     <element name="Media_4_HPV">
         <x>0.000000000</x>
-        <y>1076.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
