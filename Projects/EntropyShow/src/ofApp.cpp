@@ -12,8 +12,8 @@ void ofApp::setup()
 	ofDisableArbTex();
 
 	// Set time mode to follow DSP clock.
-	ofFmodSetSamplerate(96000);
-	ofSetTimeModeExternalFiltered(ofFmodGetDSPTime, ofTime(), 0.99f);
+	//ofFmodSetSamplerate(96000);
+	//ofSetTimeModeExternalFiltered(ofFmodGetDSPTime, ofTime(), 0.99f);
 
 	// Start the HPV engine.
 	HPV::InitHPVEngine();
