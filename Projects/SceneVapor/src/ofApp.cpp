@@ -218,7 +218,7 @@ void ofApp::setup()
 		}
 	}));
 
-
+#ifdef OFX_VIDEORECORDER
 	listeners.push_back(m_bRecordVideo.newListener([this](bool & record){
 		if(record){
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
@@ -238,6 +238,7 @@ void ofApp::setup()
 			recorder.stop();
 		}
 	}));
+#endif
 }
 
 //--------------------------------------------------------------

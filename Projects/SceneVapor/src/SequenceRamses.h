@@ -94,9 +94,15 @@ namespace ent
 
 		bool m_bReady;
 
+#ifdef OF_USING_STD_FS
 		std::filesystem::file_time_type m_lastVertTime;
 		std::filesystem::file_time_type m_lastFragTime;
 		std::filesystem::file_time_type m_lastIncludesTime;
+#else
+		std::time_t m_lastVertTime;
+		std::time_t m_lastFragTime;
+		std::time_t m_lastIncludesTime;
+#endif
 
 		ofxVolumetrics3D volumetrics;
 

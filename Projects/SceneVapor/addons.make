@@ -6,7 +6,8 @@
 ../../addons/ofxTimecode
 ../../addons/ofxEasing
 ../../addons/ofxVolumetrics
-../../addons/ofxLibfbi
 ../../addons/ofxTextureRecorder
+../../Projects/EntropyUtil
+../../Projects/EntropyRender
 ofxXmlSettings
 ofxGui
