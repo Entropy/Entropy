@@ -176,7 +176,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -221,7 +221,7 @@
                     "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
-                    "Free Speed": "0.975",
+                    "Free Speed": "0.95",
                     "LFO Scale": "10",
                     "Loop": "0",
                     "Remap LFO": "0",
@@ -344,7 +344,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -470,7 +470,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -596,10 +596,10 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
-                    "Free Speed": "0.975",
+                    "Free Speed": "0.95",
                     "LFO Scale": "10",
                     "Loop": "0",
                     "Remap LFO": "0",
