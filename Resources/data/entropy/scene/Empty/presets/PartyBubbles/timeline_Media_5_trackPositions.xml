@@ -1,7 +1,7 @@
 <positions>
     <element name="Fade_13_HPV">
         <x>0.000000000</x>
-        <y>884.000000000</y>
+        <y>764.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -13,7 +13,7 @@
     </element>
     <element name="Fade_23_Image">
         <x>0.000000000</x>
-        <y>1076.000000000</y>
+        <y>956.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -31,25 +31,25 @@
     </element>
     <element name="Media_13_HPV">
         <x>0.000000000</x>
-        <y>820.000000000</y>
+        <y>700.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_14_HPV">
         <x>0.000000000</x>
-        <y>948.000000000</y>
+        <y>828.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_23_Image">
         <x>0.000000000</x>
-        <y>1012.000000000</y>
+        <y>892.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Media_32_Image">
         <x>0.000000000</x>
-        <y>1140.000000000</y>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>

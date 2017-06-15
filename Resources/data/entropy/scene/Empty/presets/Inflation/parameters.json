@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.267578125,
+                "aspectRatio": 3.5595703125,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.41944456100464,
+                "aspectRatio": 3.1611111164093,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -201,7 +201,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -348,12 +348,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.25, 0.5",
+                    "Anchor": "0.275, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "0",
                     "Vert Align": "1"
                 },
@@ -390,12 +390,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.25, 0.5",
+                    "Anchor": "0.275, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -453,7 +453,7 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -537,7 +537,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "0.992126",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -684,12 +684,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.75, 0.5",
+                    "Anchor": "0.775, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -726,12 +726,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.75, 0.5",
+                    "Anchor": "0.775, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },

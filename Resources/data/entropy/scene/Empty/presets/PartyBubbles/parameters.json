@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.267578125,
+                "aspectRatio": 3.5595703125,
                 "distance": 867.994995117188,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.41944456100464,
+                "aspectRatio": 3.1611111164093,
                 "distance": 867.994995117188,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -459,12 +459,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.55",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
                     "Render Front": "0",
-                    "Size": "1",
+                    "Size": "1.253",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -501,7 +501,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.58",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
@@ -543,12 +543,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.25, 0.5",
+                    "Anchor": "0.275, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -585,7 +585,7 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.55",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -627,12 +627,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.489, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -732,7 +732,7 @@
                 "Playback": {
                     "Fade Knob": "4",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -900,7 +900,7 @@
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.661515",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -1047,12 +1047,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.75, 0.5",
+                    "Anchor": "0.775, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -1145,14 +1145,14 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.186",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\img\\Planck-CMB-SMICA.png",
                 "Playback": {
                     "Fade Knob": "15",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.0162143",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -1236,7 +1236,7 @@
                 "Playback": {
                     "Fade Knob": "12",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.635492",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -1278,7 +1278,7 @@
                 "Playback": {
                     "Fade Knob": "12",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "0.364508",
                     "Fade Twist": "0.968504",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -1341,7 +1341,7 @@
         {
             "Movie": {
                 "Base": {
-                    "Anchor": "0.72, 0.505",
+                    "Anchor": "0.72, 0.558",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
@@ -1383,12 +1383,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.545, 0.591",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -1425,12 +1425,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.545, 0.591",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -1467,12 +1467,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.534",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -1509,12 +1509,12 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.602",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },

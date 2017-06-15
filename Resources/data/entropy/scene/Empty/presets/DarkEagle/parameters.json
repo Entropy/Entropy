@@ -8,7 +8,7 @@
             "Cull Face": "1",
             "Depth Test": "0",
             "Edge Ratio": "0.01",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1",
             "Subdivisions": "1"
         },
@@ -20,7 +20,7 @@
             "Cull Face": "1",
             "Depth Test": "0",
             "Edge Ratio": "0.01",
-            "Enabled": "1",
+            "Enabled": "0",
             "Size": "1",
             "Subdivisions": "1"
         }
@@ -40,8 +40,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.267578125,
-                "distance": 935.307006835938,
+                "aspectRatio": 3.5595703125,
+                "distance": 21.4596004486084,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -53,7 +53,7 @@
                 "nearClip": 9.3530740737915,
                 "orientation": "1, 0, 0, 0",
                 "ortho": false,
-                "position": "0, 0, 935.307",
+                "position": "0, 0, 21.4596",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -75,8 +75,8 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.41944456100464,
-                "distance": 935.307006835938,
+                "aspectRatio": 3.1611111164093,
+                "distance": 21.4596004486084,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
                 "forceAspectRatio": true,
@@ -88,7 +88,7 @@
                 "nearClip": 9.3530740737915,
                 "orientation": "0.999962, 0, 0, 0.00866185",
                 "ortho": false,
-                "position": "0, 0, 935.307",
+                "position": "0, 0, 21.4596",
                 "relativeYAxis": false,
                 "scale": "1, 1, 1",
                 "target": "0, 0, 0",
@@ -164,7 +164,7 @@
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "1",
-                    "Render Front": "1",
+                    "Render Front": "0",
                     "Size": "1",
                     "Surface": "1",
                     "Vert Align": "1"
@@ -181,7 +181,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -289,7 +289,7 @@
                     "Anchor": "0.5, 0.5",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
-                    "Render Back": "1",
+                    "Render Back": "0",
                     "Render Front": "0",
                     "Size": "1",
                     "Surface": "1",
@@ -370,12 +370,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.25, 0.5",
+                    "Anchor": "0.275, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -391,7 +391,7 @@
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -454,12 +454,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.25, 0.5",
+                    "Anchor": "0.275, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -559,7 +559,7 @@
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -580,12 +580,12 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.602",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -622,12 +622,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.114, 0.523",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.7",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -664,12 +664,12 @@
         {
             "Image": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.602",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "0",
                     "Vert Align": "1"
                 },
@@ -706,12 +706,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.75, 0.5",
+                    "Anchor": "0.775, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -727,7 +727,7 @@
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -748,12 +748,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.5, 0.5",
+                    "Anchor": "0.5, 0.511",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -790,12 +790,12 @@
         {
             "HPV": {
                 "Base": {
-                    "Anchor": "0.75, 0.5",
+                    "Anchor": "0.775, 0.545",
                     "Background": "0, 0, 0, 0",
                     "Horz Align": "1",
                     "Render Back": "0",
                     "Render Front": "1",
-                    "Size": "1",
+                    "Size": "0.8",
                     "Surface": "1",
                     "Vert Align": "1"
                 },
@@ -827,6 +827,48 @@
                 }
             },
             "page": 1,
+            "type": 3
+        },
+        {
+            "HPV": {
+                "Base": {
+                    "Anchor": "0.5, 0.59",
+                    "Background": "0, 0, 0, 0",
+                    "Horz Align": "1",
+                    "Render Back": "0",
+                    "Render Front": "1",
+                    "Size": "1.469",
+                    "Surface": "1",
+                    "Vert Align": "1"
+                },
+                "Border": {
+                    "Color": "1, 1, 1, 1",
+                    "Width": "0"
+                },
+                "Color": {
+                    "Brightness": "0",
+                    "Contrast": "1"
+                },
+                "File Path": "E:\\hpv\\Vapor_NoAnim_170612.hpv",
+                "Playback": {
+                    "Fade Knob": "16",
+                    "Fade LFO": "1",
+                    "Fade Track": "1",
+                    "Fade Twist": "1",
+                    "Flip LFO": "0",
+                    "Free Speed": "1",
+                    "LFO Scale": "10",
+                    "Loop": "0",
+                    "Remap LFO": "0",
+                    "Speed Knob": "16",
+                    "Sync Mode": "1",
+                    "Use Fade LFO": "0",
+                    "Use Fade Track": "1",
+                    "Use Fade Twist": "0",
+                    "Use Speed Twist": "0"
+                }
+            },
+            "page": 0,
             "type": 3
         }
     ]
