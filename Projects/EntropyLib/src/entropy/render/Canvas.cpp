@@ -61,14 +61,14 @@ namespace entropy
 		{
 			this->fboDraw.begin(ofFboBeginMode::Perspective | ofFboBeginMode::MatrixFlip);
 
-			ofPushMatrix();
-			ofTranslate(this->parameters.globalOffset);
+			//ofPushMatrix();
+			//ofTranslate(this->parameters.globalOffset);
 		}
 
 		//--------------------------------------------------------------
 		void Canvas::endDraw()
 		{
-			ofPopMatrix();
+			//ofPopMatrix();
 
 			this->fboDraw.end();
 		}
