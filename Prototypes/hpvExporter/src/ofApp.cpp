@@ -40,6 +40,9 @@ void ofApp::update(){
 				player.setPaused(true);
 
 				fbo.allocate(player.getWidth(), player.getHeight(), GL_RGB);
+				fbo.begin();
+				ofClear(0);
+				fbo.end();
 
 
 				recorder.reset(new ofxTextureRecorder());
@@ -78,7 +81,7 @@ void ofApp::draw(){
 
 		// preview
 		auto ratio = player.getWidth() / player.getHeight();
-		fbo.draw(0,0,ofGetWidth()/4, ofGetWidth() / 4 / ratio);
+		fbo.draw(0,0,ofGetWidth() / 2, ofGetWidth() / 2 / ratio);
 
 		// files queue
 		auto i = 0;
