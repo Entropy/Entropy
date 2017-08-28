@@ -1,0 +1,10 @@
+[package]
+name = "galaxy_exporter"
+version = "0.1.0"
+authors = ["arturo castro <arturo@openframeworks.cc>"]
+
+[dependencies]
+blender = {path = "/home/arturo/Code/blender-rs"}
+byteorder = "*"
+na = {path = "/home/arturo/Code/na"}
+blender_mesh = {path = "/home/arturo/Code/game_tests/src/blender_mesh"}
