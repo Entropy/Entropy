@@ -31,7 +31,7 @@ class VaporOctree
 			DensitySmallerFirst
 		};
 
-		ofMesh getMesh(float minDensity, float maxDensity, MeshSort meshsort) const;
+		ofMesh getMesh(float minDensity, float maxDensity, MeshSort meshsort, int minLevel) const;
 
 	private:
 		void compute(size_t resolution, float minDensity, float maxDensity, size_t level);
@@ -46,6 +46,7 @@ class VaporOctree
 		size_t resolution;
 		size_t x,y,z;
 		size_t level = 0;
+		bool firstFrame = true;
 };
 
 #endif // OCTREE_H

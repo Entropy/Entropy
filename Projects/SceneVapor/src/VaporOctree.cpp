@@ -6,67 +6,11 @@
 #include "ofCamera.h"
 #include "ofUtils.h"
 #include "ofxEasing.h"
+#include "Helpers.h"
 #include <future>
 #include <numeric>
 
 namespace {
-ofMesh boxWireframe(glm::vec3 pos, glm::vec3 size, const ofFloatColor & color){
-	ofMesh boxWireframeMesh;
-	boxWireframeMesh.setMode( OF_PRIMITIVE_LINES );
-
-	boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, -.5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, -.5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, -.5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, -.5f} * size + pos);
-
-	boxWireframeMesh.addVertex(glm::vec3{-.5f, -.5f, .5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{.5f, -.5f, .5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{.5f, .5f, .5f} * size + pos);
-	boxWireframeMesh.addVertex(glm::vec3{-.5f, .5f, .5f} * size + pos);
-
-	boxWireframeMesh.getColors().assign(8, color);
-
-	// front face
-	boxWireframeMesh.addIndex(0);
-	boxWireframeMesh.addIndex(1);
-
-	boxWireframeMesh.addIndex(1);
-	boxWireframeMesh.addIndex(2);
-
-	boxWireframeMesh.addIndex(2);
-	boxWireframeMesh.addIndex(3);
-
-	boxWireframeMesh.addIndex(3);
-	boxWireframeMesh.addIndex(0);
-
-	// back face
-	boxWireframeMesh.addIndex(4);
-	boxWireframeMesh.addIndex(5);
-
-	boxWireframeMesh.addIndex(5);
-	boxWireframeMesh.addIndex(6);
-
-	boxWireframeMesh.addIndex(6);
-	boxWireframeMesh.addIndex(7);
-
-	boxWireframeMesh.addIndex(7);
-	boxWireframeMesh.addIndex(4);
-
-
-	boxWireframeMesh.addIndex(0);
-	boxWireframeMesh.addIndex(4);
-
-	boxWireframeMesh.addIndex(1);
-	boxWireframeMesh.addIndex(5);
-
-	boxWireframeMesh.addIndex(2);
-	boxWireframeMesh.addIndex(6);
-
-	boxWireframeMesh.addIndex(3);
-	boxWireframeMesh.addIndex(7);
-
-	return boxWireframeMesh;
-}
 void billboard(const ofTrueTypeFont & f, std::string text, glm::mat4 projection, glm::mat4 modelview, glm::vec3 pos){
 	auto rViewport = ofGetCurrentViewport();
 
@@ -148,7 +92,10 @@ void VaporOctree::setup(const std::vector <Particle> & particles){
 		auto density = box.density + p.density;
 		return {{min_x, min_y, min_z}, {max_x, max_y, max_z}, density};
 	});
-	this->bb = BoundingBox::fromMinMax(bb.min,  bb.max);
+	if(firstFrame){
+		this->bb = BoundingBox::fromMinMax(bb.min,  bb.max);
+		firstFrame = false;
+	}
 	this->density = bb.density;
 }
 
@@ -286,8 +233,8 @@ void VaporOctree::getChildrenRecursively(std::vector<const VaporOctree*> & child
 	}
 }
 
-ofMesh VaporOctree::getMesh(float minDensity, float maxDensity, MeshSort meshsort) const{
-	if(this->isLeaf()){
+ofMesh VaporOctree::getMesh(float minDensity, float maxDensity, MeshSort meshsort, int minLevel) const{
+	if(this->isLeaf() && level>=minLevel){
 		ofFloatColor color;
 		if(this->particlesIndex.empty()){
 			color.set(1, 0.5);
@@ -295,7 +242,7 @@ ofMesh VaporOctree::getMesh(float minDensity, float maxDensity, MeshSort meshsor
 			auto alpha = ofxeasing::map(density, minDensity, maxDensity, 0.5, 1, ofxeasing::sine::easeIn);
 			color.set(1., alpha);
 		}
-		return boxWireframe(bb.center, bb.size, color);
+		return entropy::boxWireframe(bb.center, bb.size, color);
 	}else{
 		ofMesh mesh;
 		mesh.setMode( OF_PRIMITIVE_LINES );
@@ -325,7 +272,7 @@ ofMesh VaporOctree::getMesh(float minDensity, float maxDensity, MeshSort meshsor
 		}
 
 		for(const auto * child: sortedChildren){
-			mesh.append(child->getMesh(minDensity, maxDensity, meshsort));
+			mesh.append(child->getMesh(minDensity, maxDensity, meshsort, minLevel));
 		}
 		return mesh;
 	}
@@ -345,7 +292,7 @@ void VaporOctree::drawLeafs(float minDensity, float maxDensity) const {
 //			child.drawLeafs(minDensity, maxDensity);
 //		}
 //	}
-	getMesh(minDensity, maxDensity, VaporOctree::DensityLargerFirst).draw();
+	getMesh(minDensity, maxDensity, VaporOctree::DensityLargerFirst, 0).draw();
 }
 
 void VaporOctree::drawDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity) const{

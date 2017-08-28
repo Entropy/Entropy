@@ -27,7 +27,7 @@ namespace ent
 		struct Settings{
 			std::string folder;
 			std::string urlFolder;
-			int frameIndex;
+			int frameIndex = -1;
 			float minDensity;
 			float maxDensity;
 			size_t worldsize;
@@ -51,7 +51,7 @@ namespace ent
 		void draw();
 		void drawOctree(float minDensity, float maxDensity);
 		void drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, const glm::mat4 & model, float minDensity, float maxDensity);
-		ofMesh getOctreeMesh(float minDensity, float maxDensity) const;
+		ofMesh getOctreeMesh(float minDensity, float maxDensity, int minLevel) const;
 
 		ofxRange3f& getCoordRange();
 		ofxRange1f& getSizeRange();

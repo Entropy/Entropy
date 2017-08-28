@@ -25,15 +25,15 @@ namespace ent
 		void drawOctree(float scale);
 		void drawOctreeDensities(const ofTrueTypeFont & ttf, const ofCamera & camera, float scale);
 		void drawTexture(float scale);
-		ofMesh getOctreeMesh(float scale) const;
+		ofMesh getOctreeMesh(float scale, int minLevel) const;
 
 		void preloadAllFrames();
-		void loadFrame(int index);
+		void loadFrame(float index, int from, int to);
 
 		void setFrameRate(float frameRate);
 		float getFrameRate() const;
 
-		void setFrame(int index);
+		void setFrame(float index);
 		void setFrameForTime(float time);
 		void setFrameAtPercent(float percent);
 		
@@ -67,7 +67,7 @@ namespace ent
 		std::string m_urlFolder;
 		int m_startIndex;
 		int m_endIndex;
-		int m_currentIndex;
+		float m_currentIndex = -1;
 		
 		ofxRange3f m_coordRange;
 		ofxRange1f m_sizeRange;
@@ -76,7 +76,7 @@ namespace ent
 		ofParameter<float> m_densityMin{"density min", 0.f, 0.f, 1.f, ofParameterScale::Logarithmic};
 		ofParameter<float> m_densityMax{"density max", 0.2f, 0.f, 1.f, ofParameterScale::Logarithmic};
 		ofParameter<float> m_volumeQuality{"volume quality", 1.f, 0, 10, ofParameterScale::Logarithmic};
-		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 50, ofParameterScale::Logarithmic};
+		ofParameter<float> m_volumeDensity{"volume density", 20.f, 0, 500, ofParameterScale::Logarithmic};
 		float prevMinDensity, prevMaxDensity;
 
 		// Playback
@@ -108,7 +108,9 @@ namespace ent
 
 		std::vector<float> m_clearData;
 
-		SnapshotRamses::Settings frameSettings;
+		SnapshotRamses::Settings frameSettings, nextFrameSettings;
+		ofxTexture3d composite;
+		ofShader mix3d;
 
 		std::vector<ofEventListener> listeners;
 

@@ -51,6 +51,10 @@
                     "type": "Curves"
                 },
                 {
+                    "name": "vapor/application/show_octree",
+                    "type": "Switches"
+                },
+                {
                     "name": "vapor/application/show_octree_animation",
                     "type": "Switches"
                 }

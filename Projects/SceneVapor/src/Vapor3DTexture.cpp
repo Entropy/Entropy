@@ -198,7 +198,7 @@ void Vapor3DTexture::setup(const std::vector<Particle> & particles, size_t size,
 			float octree_coords_y = ent::offset_scale(particle.pos.y, offset.y, scale);
 			float octree_coords_z = ent::offset_scale(particle.pos.z, offset.z, scale);
 			glm::vec3 particlepos = {octree_coords_x, octree_coords_y, octree_coords_z};
-			float psize = particle.size * scale;
+			float psize = particle.size * scale * 2;
 
 			if(int(psize)>1){
 				Box particleBox = { particlepos - glm::vec3{psize*0.5,psize*0.5,psize*0.5}, particlepos + glm::vec3{psize*0.5,psize*0.5,psize*0.5}};
