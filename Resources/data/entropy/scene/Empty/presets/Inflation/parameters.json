@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.5595703125,
+                "aspectRatio": 3.5634765625,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.1611111164093,
+                "aspectRatio": 3.1657407283783,
                 "distance": 935.307006835938,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -446,7 +446,7 @@
                     "Width": "0"
                 },
                 "Color": {
-                    "Brightness": "0",
+                    "Brightness": "-0.299",
                     "Contrast": "1"
                 },
                 "File Path": "E:\\hpv\\Inflation_ParentsBack_170611.hpv",
