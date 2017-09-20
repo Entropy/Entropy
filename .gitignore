@@ -132,3 +132,4 @@ imgui.ini
 Resources/data/entropy/scene/*/*.xml
 Resources/data/entropy/scene/*/render*
 *.bphys
+.vs
