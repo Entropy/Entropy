@@ -3,7 +3,7 @@
 #include "ofParameter.h"
 #include "ofShader.h"
 
-#include "entropy/Helpers.h"
+#include "Helpers.h"
 
 namespace entropy
 {
@@ -104,6 +104,11 @@ namespace entropy
 				ofParameter<float> minLongitude{ "Min Longitude", 0.0f, 0.0f, 1.0f };
 				ofParameter<float> maxLongitude{ "Max Longitude", 0.5f, 0.0f, 1.0f };
 				ofParameter<ofFloatColor> color{ "Color", ofFloatColor::white };
+				ofParameter<ofFloatColor> color2{ "Color 2", ofFloatColor::white };
+				ofParameter<ofFloatColor> color3{ "Color 3", ofFloatColor::white };
+				ofParameter<ofFloatColor> color4{ "Color 4", ofFloatColor::white };
+				ofParameter<float> brightness{ "Brightness Points", 1.0f, 0.0f, 10.0f };
+				ofParameter<float> brightnessModels{ "Brightness Models", 1.0f, 0.0f, 10.0f };
 
 				PARAM_DECLARE("DataSet", 
 					renderPoints, renderShells, renderModels,
@@ -111,7 +116,8 @@ namespace entropy
 					minRadius, maxRadius, 
 					minLatitude, maxLatitude,
 					minLongitude, maxLongitude, 
-					color);
+					color, color2, color3, color4,
+					brightness);
 			} parameters;
 
 		protected:

@@ -14,6 +14,9 @@ uniform float quality;
 uniform float threshold;
 uniform float density;
 
+const float asinhzero = 0.5;
+const float asinhb = 1;
+
 const float levelThreshold = 0.00001;
 
 struct Ray {
@@ -84,17 +87,37 @@ void main()
 		{
 			float sample0 = textureLod(volume_tex, vec, 4).r;
 			if(sample0>levelThreshold){
+//				vec3 s = -delta_dir * 0.5;
+//				vec += s; sample0 = textureLod(volume_tex, vec, 4).r;
+//				if(sample0>levelThreshold) s *= 0.5; else s *= -0.5;
+//				vec += s; sample0 = textureLod(volume_tex, vec, 4).r;
 				for(int j=0; j<4; j++){
 					float sample1 = textureLod(volume_tex, vec, 2).r;
 					if(sample1>levelThreshold){
+//						vec3 s = -delta_dir * 0.5;
+//						vec += s; sample1 = textureLod(volume_tex, vec, 2).r;
+//						if(sample1>levelThreshold) s *= 0.5; else s *= -0.5;
+//						vec += s; sample1 = textureLod(volume_tex, vec, 2).r;
 						for(int k=0; k<2; k++){
 							float sample2 = textureLod(volume_tex, vec, 1).r;
 							if(sample2>levelThreshold){
+//								vec3 s = -delta_dir * 0.5;
+//								vec += s; sample2 = textureLod(volume_tex, vec, 2).r;
+//								if(sample2>levelThreshold) s *= 0.5; else s *= -0.5;
+//								vec += s; sample2 = textureLod(volume_tex, vec, 2).r;
 								for(int h=0; h<2; h++){
 									float alpha = texture(volume_tex, vec).r * aScale;
-									float oneMinusAlpha = 1. - clamp(col_acc.a, 0., 1.);
+									float oneMinusAlpha = 1. - col_acc.a;
 									col_acc.rgb += oneMinusAlpha * vec3(alpha) * alpha;
 									col_acc.a += alpha * oneMinusAlpha;
+
+//									float alpha = texture(volume_tex, vec).r;
+//									float oneMinusAlpha = 1. - col_acc.a;
+//									alpha *= aScale;
+//									col_acc.rgb = mix(col_acc.rgb, vec3(alpha * alpha), oneMinusAlpha);
+//									col_acc.a += alpha * oneMinusAlpha;
+//									col_acc.rgb /= col_acc.a;
+
 									vec += delta_dir;
 								}
 							}else{
@@ -109,9 +132,9 @@ void main()
 			}else{
 				vec += delta_dir*16.;
 			}
-			if(col_acc.a >= 1.0) {
-				break; // terminate if opacity > 1
-			}
+//			if(col_acc.a >= 1.0) {
+//				break; // terminate if opacity > 1
+//			}
 		}
 
 		/*for(int i = 0; i < steps; i++)
@@ -127,5 +150,14 @@ void main()
 		}*/
     }
     // export the rendered color
-    vFragColor = col_acc;
+	float rangemin = minv.r;
+	vFragColor = asinh((col_acc - vec4(asinhzero)) / asinhb) - vec4(asinh((rangemin - asinhzero) / asinhb));
+
+	/*float m = 0;
+	float Q = 1.;
+	float a = 1.12;
+
+	vFragColor = asinh(a * Q * (col_acc - m)) / Q;*/
+
+	//vFragColor = col_acc;
 }

@@ -1,0 +1,133 @@
+{
+    "name": "timeline0",
+    "pages": [
+        {
+            "name": "Page One",
+            "tracks": [
+                {
+                    "max": 500.0,
+                    "min": 0.0,
+                    "name": "vapor/Sequence_Ramses/volume_density",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "name": "vapor/application/auto_mode",
+                    "type": "Switches"
+                },
+                {
+                    "max": 100.0,
+                    "min": 9.99999974737875e-06,
+                    "name": "vapor/application/camera_auto_magnification",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 100.0,
+                    "min": 0.00100000004749745,
+                    "name": "vapor/application/camera_fov",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "vapor/application/center_to_eagle_factor",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "vapor/application/eagle_mincube_alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "vapor/application/eagle_octree_alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "vapor/application/octree_alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 0.990000009536743,
+                    "min": 0.899999976158142,
+                    "name": "vapor/application/octree_alpha_filter",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 15000.0,
+                    "min": 1.0,
+                    "name": "vapor/application/octree_anim_duration",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "name": "vapor/application/playback_eagle",
+                    "type": "Switches"
+                },
+                {
+                    "name": "vapor/application/show_eagle_octree",
+                    "type": "Switches"
+                },
+                {
+                    "name": "vapor/application/show_octree",
+                    "type": "Switches"
+                },
+                {
+                    "name": "vapor/application/show_octree_animation",
+                    "type": "Switches"
+                }
+            ]
+        },
+        {
+            "name": "vapor/application/group",
+            "tracks": [
+                {
+                    "max": 30.0,
+                    "min": 0.0,
+                    "name": "vapor/application/eagle_fps",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "vapor/application/eagle_video_alpha",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 20000.0,
+                    "min": -20000.0,
+                    "name": "vapor/application/group/x",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1000.0,
+                    "min": -1000.0,
+                    "name": "vapor/application/group/y",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1000.0,
+                    "min": -1000.0,
+                    "name": "vapor/application/group/z",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

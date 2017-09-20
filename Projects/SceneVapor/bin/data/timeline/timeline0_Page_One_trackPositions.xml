@@ -13,8 +13,8 @@
     </element>
     <element name="vapor/Sequence_Ramses/volume_density">
         <x>0.000000000</x>
-        <y>572.000000000</y>
-        <width>1920.000000000</width>
+        <y>380.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/Sequence_Ramses/volume_density_0">
@@ -25,38 +25,56 @@
     </element>
     <element name="vapor/application/auto_mode">
         <x>0.000000000</x>
-        <y>636.000000000</y>
-        <width>1920.000000000</width>
+        <y>444.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_auto_magnification">
         <x>0.000000000</x>
-        <y>700.000000000</y>
-        <width>1920.000000000</width>
+        <y>508.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/camera_fov">
         <x>0.000000000</x>
-        <y>764.000000000</y>
+        <y>572.000000000</y>
+        <width>2096.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/camera_orbit_latitude">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
         <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/camera_orbit_longitude">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="vapor/application/center_to_eagle_factor">
+        <x>0.000000000</x>
+        <y>956.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_alpha">
         <x>0.000000000</x>
-        <y>828.000000000</y>
-        <width>1920.000000000</width>
+        <y>636.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_alpha_filter">
         <x>0.000000000</x>
-        <y>892.000000000</y>
-        <width>1920.000000000</width>
+        <y>700.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_anim_duration">
         <x>0.000000000</x>
-        <y>956.000000000</y>
-        <width>1920.000000000</width>
+        <y>764.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/octree_anim_duration_0">
@@ -71,16 +89,22 @@
         <width>1920.000000000</width>
         <height>40.000000000</height>
     </element>
+    <element name="vapor/application/show_eagle_octree">
+        <x>0.000000000</x>
+        <y>1020.000000000</y>
+        <width>2096.000000000</width>
+        <height>40.000000000</height>
+    </element>
     <element name="vapor/application/show_octree">
         <x>0.000000000</x>
-        <y>956.000000000</y>
-        <width>1920.000000000</width>
+        <y>828.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree_animation">
         <x>0.000000000</x>
-        <y>1020.000000000</y>
-        <width>1920.000000000</width>
+        <y>892.000000000</y>
+        <width>2096.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="vapor/application/show_octree_animation_0">

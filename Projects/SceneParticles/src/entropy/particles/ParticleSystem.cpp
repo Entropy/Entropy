@@ -204,6 +204,9 @@ namespace nm
 				if(!particles[i].alive) continue;
 
 				octree.sumForces(particles[i]);// , forceMultiplier);
+				if(particles[i].getType() == Particle::ELECTRON){
+					particles[i].force *= 0.2;
+				}
 
 				// add velocity (TODO: improved Euler integration)
 				particles[i].setVelocity(particles[i].getVelocity() + particles[i].getForce() * dt / particles[i].getMass());

@@ -1,6 +1,7 @@
 {
     "Surveys": {
         "BOSS": {
+            "Brightness_Points": "1",
             "Color": "1, 1, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "1",
@@ -16,6 +17,7 @@
         "Color_Ramp_High": "6.42864e-39",
         "Color_Ramp_Low": "2.36938e-38",
         "DES": {
+            "Brightness_Points": "6.40816",
             "Color": "0.756314, 0.809732, 1, 1",
             "Cut_Radius": "0",
             "Max_Latitude": "0.412245",
@@ -35,17 +37,17 @@
                 "Boost": "1",
                 "Brightness_Threshold": "1",
                 "Debug_Blur": "0",
-                "Enabled": "0",
+                "Enabled": "1",
                 "Num_Passes": "1",
-                "Sigma": "0.9"
+                "Sigma": "1.96501"
             },
             "Color": {
-                "Brightness": "0",
-                "Contrast": "1",
+                "Brightness": "0.00874639",
+                "Contrast": "1.22928",
                 "Enabled": "1",
-                "Exposure": "4",
+                "Exposure": "1",
                 "Gamma": "2.2",
-                "Tonemapping": "6"
+                "Tonemapping": "5"
             },
             "Tonemapping": {
                 "linear_angle": "0.1",
@@ -122,7 +124,7 @@
                 "Attenuation": "600",
                 "Fade_Far": "100",
                 "Fade_Near": "0",
-                "Size": "0.1"
+                "Size": "0.0874416"
             },
             "Shells": {
                 "Alpha": "1",
@@ -174,12 +176,13 @@
             "Travel": {
                 "Enable_Travel": "1",
                 "Look_At_Lerp": "0.1",
-                "Percent": "0.0442025",
+                "Percent": "0.124292",
                 "Reset_Position": "0",
-                "Speed": "0.0433726"
+                "Speed": "0.105"
             }
         },
         "ViziR": {
+            "Brightness_Points": "1",
             "Color": "1, 1, 1, 1",
             "Cut_Radius": "0.045",
             "Max_Latitude": "1",
@@ -195,7 +198,7 @@
     },
     "ofEasyCam": {
         "aspectRatio": 3.28125,
-        "distance": 1127.16101074219,
+        "distance": 1127.16076660156,
         "drag": 0.899999976158142,
         "farClip": 2000.0,
         "forceAspectRatio": true,

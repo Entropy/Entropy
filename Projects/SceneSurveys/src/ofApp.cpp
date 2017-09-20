@@ -135,6 +135,8 @@ void ofApp::setup()
 			if (!name.empty())
 			{
 				return this->savePreset(name);
+			}else{
+				return true;
 			}
 		}
 		else
@@ -150,6 +152,8 @@ void ofApp::setup()
 			if (result.bSuccess)
 			{
 				return this->loadPreset(result.fileName);
+			}else{
+				return true;
 			}
 		}
 		else
@@ -235,7 +239,7 @@ void ofApp::setup()
 			auto path = ofSystemSaveDialog("video.mp4", "Record to video:");
 			if (path.bSuccess)
 			{
-				ofxTextureRecorder::VideoSettings recorderSettings(fbo.getTexture(), 60);
+				ofxTextureRecorder::VideoSettings recorderSettings(fboScene.getTexture(), 60);
 				recorderSettings.videoPath = path.getPath();
 				//				recorderSettings.videoCodec = "libx264";
 				//				recorderSettings.extrasettings = "-preset ultrafast -crf 0";
@@ -446,7 +450,7 @@ void ofApp::draw()
 			ofPopMatrix();
 
 			ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-			ofEnableDepthTest();
+			//ofEnableDepthTest();
 			this->travelCamPath.draw();
 		}
 		this->getActiveCamera().end();

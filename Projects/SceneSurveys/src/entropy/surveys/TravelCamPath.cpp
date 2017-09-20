@@ -49,14 +49,14 @@ namespace entropy
 			{
 				this->generateCloudTextures();
 			});
-			this->colorRampLow.ownListener([this](float &)
-			{
-				this->generateCloudTextures();
-			});
-			this->colorRampHigh.ownListener([this](float &)
-			{
-				this->generateCloudTextures();
-			});
+//			this->colorRampLow.ownListener([this](float &)
+//			{
+//				this->generateCloudTextures();
+//			});
+//			this->colorRampHigh.ownListener([this](float &)
+//			{
+//				this->generateCloudTextures();
+//			});
 
 			this->cloudShader.load("shaders/nebula.vert", "shaders/nebula.frag");
 
@@ -168,6 +168,33 @@ namespace entropy
 			this->polyline.curveTo(point, resolution);
 		}
 
+		void generateCloudTexture(ofTexture & tex, float z, const glm::vec4 & noiseFrequency, const glm::vec4 & noiseFrequency2){
+			static ofFloatPixels pixels;
+			auto size = 1024.0f;
+			pixels.allocate(size, size, OF_PIXELS_GRAY_ALPHA);
+			pixels.set(0.0f);
+			for (auto l : pixels.getLines())
+			{
+				auto j = 0;
+				for (auto p : l.getPixels())
+				{
+					auto f = ofNoise(j / size * noiseFrequency.x, l.getLineNum() / size * noiseFrequency.x, z * noiseFrequency.x) / 8.0f +
+							 ofNoise(j / size * noiseFrequency.y, l.getLineNum() / size * noiseFrequency.y, z * noiseFrequency.y) / 8.0f +
+							 ofNoise(j / size * noiseFrequency.z, l.getLineNum() / size * noiseFrequency.z, z * noiseFrequency.z) / 8.0f +
+							 ofNoise(j / size * noiseFrequency.w, l.getLineNum() / size * noiseFrequency.w, z * noiseFrequency.w) / 8.0f +
+							 ofNoise(j / size * noiseFrequency2.x, l.getLineNum() / size * noiseFrequency2.x, z * noiseFrequency2.x) / 8.0f +
+							 ofNoise(j / size * noiseFrequency2.y, l.getLineNum() / size * noiseFrequency2.y, z * noiseFrequency2.y) / 8.0f +
+							 ofNoise(j / size * noiseFrequency2.z, l.getLineNum() / size * noiseFrequency2.z, z * noiseFrequency2.z) / 8.0f +
+							 ofNoise(j / size * noiseFrequency2.w, l.getLineNum() / size * noiseFrequency2.w, z * noiseFrequency2.w) / 8.0f;
+					//f = ofMap(f, colorRampLow, colorRampHigh, 0, 1, true);
+					p[0] = f;
+					p[1] = f;
+					j += 1;
+				}
+			}
+			tex.allocate(pixels);
+		}
+
 		//--------------------------------------------------------------
 		void TravelCamPath::generateCloudTextures()
 		{
@@ -175,27 +202,8 @@ namespace entropy
 			this->cloudData.resize(this->numPlanes);
 			for (size_t i = 0; i < this->numPlanes; ++i) 
 			{
-				ofFloatPixels pixels;
-				auto size = 1024.0f;
-				pixels.allocate(size, size, OF_PIXELS_GRAY_ALPHA);
-				pixels.set(0.0f);
-				for (auto l : pixels.getLines()) 
-				{
-					auto j = 0;
-					for (auto p : l.getPixels()) 
-					{
-						auto f = ofNoise(j / size * this->noiseFrequency.get().x + i * size, l.getLineNum() / size * this->noiseFrequency.get().x + i * size) / 4.0f +
-								 ofNoise(j / size * this->noiseFrequency.get().y + i * size, l.getLineNum() / size * this->noiseFrequency.get().y + i * size) / 4.0f +
-								 ofNoise(j / size * this->noiseFrequency.get().z + i * size, l.getLineNum() / size * this->noiseFrequency.get().z + i * size) / 4.0f +
-								 ofNoise(j / size * this->noiseFrequency.get().w + i * size, l.getLineNum() / size * this->noiseFrequency.get().w + i * size) / 4.0f;
-						f = ofMap(f, colorRampLow, colorRampHigh, 0, 1, true);
-						p[0] = f;
-						p[1] = f;
-						j += 1;
-					}
-				}
-				this->cloudData[i].texture.allocate(pixels);
 				this->currCloudDistance += this->pathOffset;
+				generateCloudTexture(this->cloudData[i].texture, this->currCloudDistance/(this->pathOffset * this->numPlanes), this->noiseFrequency, this->noiseFrequency2);
 				this->cloudData[i].pathDistance = this->currCloudDistance;
 			}
 		}
@@ -295,6 +303,8 @@ namespace entropy
 						
 						this->cloudData.erase(this->cloudData.begin());
 						this->cloudData.push_back(cloud);
+
+						generateCloudTexture(cloud.texture, this->currCloudDistance/(this->pathOffset * this->numPlanes), this->noiseFrequency, this->noiseFrequency2);
 						cout << "Pushing cloud plane to distance " << this->currCloudDistance << endl;
 					}
 					else
@@ -320,15 +330,15 @@ namespace entropy
 					}
 
 					// Set the alpha value.
-					if (i == 0)
+					if (i < 2)
 					{
-						float alpha = glm::distance2(camPos, this->cloudData[i].position) / (this->pathOffset * this->pathOffset);
+						float alpha = glm::distance2(camPos, this->cloudData[i].position) / (this->pathOffset * 2. * this->pathOffset * 2.);
 						this->cloudData[i].alpha = ofMap(alpha, 0, 1, 0.1f, 0.8f);
 					}
 					else
 					{
 						float dist = glm::distance2(camPos, this->cloudData[i].position);
-						this->cloudData[i].alpha = ofMap(dist, 0, pow(this->pathOffset * this->cloudData.size(), 2), 0.8, 0, true);
+						this->cloudData[i].alpha = ofMap(dist, pow(this->pathOffset * (this->cloudData.size() - 4), 2), pow(this->pathOffset * this->cloudData.size(), 2), 0.8, 0, true);
 					}
 				}
 			}
@@ -371,9 +381,9 @@ namespace entropy
 
 			if (this->renderClouds)
 			{
-				//this->cloudShader.begin();
-				//this->cloudShader.setUniform1f("colorramp_low", this->colorRampLow);
-				//this->cloudShader.setUniform1f("colorramp_high", this->colorRampHigh);
+				this->cloudShader.begin();
+				this->cloudShader.setUniform1f("colorramp_low", this->colorRampLow);
+				this->cloudShader.setUniform1f("colorramp_high", this->colorRampHigh);
 				for (int i = 0; i < this->cloudData.size(); ++i)
 				{
 					ofPushMatrix();
@@ -382,12 +392,12 @@ namespace entropy
 						
 						ofSetColor(this->tintColor.get(), 255.0f * this->cloudData[i].alpha * this->alphaScalar);
 						
-						//this->cloudShader.setUniformTexture("texture0", this->cloudData[i].texture, 0);
+						this->cloudShader.setUniformTexture("texture0", this->cloudData[i].texture, 0);
 						this->cloudData[i].texture.draw(this->planeSize * -0.5f, this->planeSize * -0.5f, this->planeSize, this->planeSize);
 					}
 					ofPopMatrix();
 				}
-				//this->cloudShader.end();
+				this->cloudShader.end();
 			}
 		}
 
@@ -442,6 +452,9 @@ namespace entropy
 				const auto & jsonGroup = json["travelCamPath"];
 				ofDeserialize(jsonGroup, this->camera, "camera");
 				ofDeserialize(jsonGroup, this->curvePoints, "curvePoints");
+//				for(auto & p: this->curvePoints){
+//					p *= 10;
+//				}
 
 				this->startPosition = this->camera.getGlobalPosition();
 				this->startOrientation = this->camera.getGlobalOrientation();

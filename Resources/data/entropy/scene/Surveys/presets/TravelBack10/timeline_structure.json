@@ -1,0 +1,46 @@
+{
+    "name": "timeline",
+    "pages": [
+        {
+            "name": "Scene",
+            "tracks": [
+                {
+                    "name": "Camera",
+                    "type": "CameraTrack"
+                },
+                {
+                    "name": "Cues",
+                    "type": "Flags"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Surveys/BOSS/Max_Radius",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 32.0,
+                    "min": 0.00999999977648258,
+                    "name": "Surveys/Shared/Points/Size",
+                    "scale": 1,
+                    "type": "Curves"
+                },
+                {
+                    "max": 1.0,
+                    "min": 0.0,
+                    "name": "Surveys/Travel_Cam_Path/Clouds/Alpha_Scalar",
+                    "scale": 0,
+                    "type": "Curves"
+                },
+                {
+                    "max": 20.0,
+                    "min": 0.0,
+                    "name": "Surveys/Travel_Cam_Path/Travel/Speed",
+                    "scale": 0,
+                    "type": "Curves"
+                }
+            ]
+        }
+    ]
+}

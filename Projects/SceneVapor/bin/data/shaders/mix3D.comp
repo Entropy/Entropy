@@ -1,0 +1,16 @@
+#version 450
+
+restrict uniform layout(r16f, binding=0, location=0) image3D uVolume;
+restrict uniform layout(r16f, binding=1, location=1) image3D uPrevBuffer;
+restrict uniform layout(r16f, binding=2, location=2) image3D uCurrBuffer;
+
+uniform float uPct;
+
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
+
+void main()
+{
+	ivec3 texelPos = ivec3(gl_GlobalInvocationID.xyz);
+	vec4 color = mix(imageLoad(uPrevBuffer, texelPos), imageLoad(uCurrBuffer, texelPos), uPct);
+	imageStore(uVolume, texelPos, color);
+}

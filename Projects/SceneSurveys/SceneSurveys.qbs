@@ -12,6 +12,16 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
+            "../../Resources/data/entropy/scene/Surveys/shaders/galaxy.frag",
+            "../../Resources/data/entropy/scene/Surveys/shaders/galaxy.vert",
+            "../../Resources/data/entropy/scene/Surveys/shaders/instanced.frag",
+            "../../Resources/data/entropy/scene/Surveys/shaders/instanced.vert",
+            "../../Resources/data/entropy/scene/Surveys/shaders/nebula.frag",
+            "../../Resources/data/entropy/scene/Surveys/shaders/nebula.vert",
+            "../../Resources/data/entropy/scene/Surveys/shaders/shell.frag",
+            "../../Resources/data/entropy/scene/Surveys/shaders/shell.vert",
+            "../../Resources/data/entropy/scene/Surveys/shaders/sprite.frag",
+            "../../Resources/data/entropy/scene/Surveys/shaders/sprite.vert",
             'src/entropy/surveys/DataSet.cpp',
             'src/entropy/surveys/DataSet.h',
             'src/entropy/surveys/GaussianMapTexture.cpp',
@@ -33,6 +43,7 @@ Project{
             '../../addons/ofxSet',
             '../../addons/ofxTextInputField',
             '../../addons/ofxTextureRecorder',
+            '../../addons/ofxVideoRecorder',
             '../../addons/ofxTimecode',
             '../../addons/ofxTimeline',
             '../../addons/ofxSerialize',

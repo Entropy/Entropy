@@ -155,6 +155,7 @@ uniform float noiseSize;
 uniform float bufferSize;
 uniform float attractionForce;
 uniform float frameNum;
+uniform float posAlpha;
 
 layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 void main(void)
@@ -196,9 +197,12 @@ void main(void)
 			acc += repulsion(vertices[idx].pos.xyz, vertices[i].pos.xyz) * repulsionForce;
 		}
 	}
+	if(abs(pos.x) < 0.0001 && abs(pos.y)<0.0001 && abs(pos.z)<0.0001){
+		acc += vec3(snoise(vec4(0.01*float(idx),0.02*float(idx),0.03*float(idx),now)));
+	}
 
 	vertices[idx].vel.xyz =  vertices[idx].vel.xyz * 0.9 + acc * 0.1 * dt;
-	vertices[idx].pos.xyz += vertices[idx].vel.xyz;
+	vertices[idx].pos.xyz = vertices[idx].pos.xyz * posAlpha + (vertices[idx].pos.xyz + vertices[idx].vel.xyz) * (1. - posAlpha);
 	//vertices[idx].vel.xyz *= 0.9;
 
 	if(pos.x>-0.001 && pos.x<0.001 && pos.y>-0.001 && pos.y<0.001 && pos.z>-0.001 && pos.z<0.001){

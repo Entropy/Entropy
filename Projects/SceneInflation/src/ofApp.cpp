@@ -3,6 +3,7 @@
 #include "Helpers.h"
 
 using namespace glm;
+constexpr float sizefactor = 1;
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -49,8 +50,8 @@ void ofApp::setup()
 	needsParticlesUpdate = true;
 
 	ofFbo::Settings settings;
-	settings.width = entropy::GetSceneWidth();
-	settings.height = entropy::GetSceneHeight();
+	settings.width = entropy::GetSceneWidth() * sizefactor;
+	settings.height = entropy::GetSceneHeight() * sizefactor;
 	settings.internalformat = GL_RGBA32F;
 	settings.numSamples = 4;
 
@@ -138,6 +139,9 @@ void ofApp::setup()
 
 				recorderReheating.stop();
 			}
+			if(parameters.onlyReheating){
+				recorderReheating.stop();
+			}
 		}
 	}));
 
@@ -168,6 +172,14 @@ void ofApp::setup()
 					recorderSettings.videoPath = path;
 					recorderReheating.setup(recorderSettings);
 				}
+
+				if(parameters.onlyReheating){
+					auto path = ofFilePath::join(
+								ofFilePath::getEnclosingDirectory(videoRecorderPath),
+								ofFilePath::getBaseName(videoRecorderPath) + "_front.mov");
+					recorderSettings.videoPath = path;
+					recorderReheating.setup(recorderSettings);
+				}
 			}else{
 				this->parameters.render.recordVideo = false;
 			}
@@ -175,6 +187,9 @@ void ofApp::setup()
 			recorder.stop();
 			if(parameters.enableCooldown){
 				recorderCooldown.stop();
+				recorderReheating.stop();
+			}
+			if(parameters.onlyReheating){
 				recorderReheating.stop();
 			}
 		}
@@ -201,7 +216,9 @@ void ofApp::setup()
 				recorderReheating.setup(recorderSettings);
 			}else{
 				recorderCooldown.stop();
-				recorderReheating.stop();
+				if(!parameters.onlyReheating){
+					recorderReheating.stop();
+				}
 			}
 		}
 		if(parameters.render.record){
@@ -218,7 +235,9 @@ void ofApp::setup()
 				recorderReheating.setup(recorderSettings);
 			}else{
 				recorderCooldown.stop();
-				recorderReheating.stop();
+				if(!parameters.onlyReheating){
+					recorderReheating.stop();
+				}
 			}
 		}
 	}));
@@ -872,6 +891,7 @@ void ofApp::draw(){
 
 				auto first = true;
 				float alphaFactor = renderer.parameters.alphaFactor;
+				float reheatingAlphaFactor = reheatingParameters.alphaFactor;
 				bool wire = renderer.parameters.wireframe;
 				float fillAlpha = renderer.parameters.fillAlpha;
 				for(auto & cluster: clusters){
@@ -882,9 +902,21 @@ void ofApp::draw(){
 						if(!first){
 							node.setOrientation(cluster.rotation);
 						}
-						renderer.parameters.alphaFactor = cluster.alpha;
-						const auto & model = node.getLocalTransformMatrix();
-						renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+						if(parameters.onlyReheating){
+							entropy::render::WireframeFillRenderer::DrawSettings drawSettings;
+							drawSettings.camera = &camera;
+							drawSettings.mode = GL_TRIANGLES;
+							drawSettings.model = node.getLocalTransformMatrix();
+							drawSettings.numVertices = gpuMarchingCubes.getNumVertices();
+							drawSettings.offset = 0;
+							drawSettings.parameters = reheatingParameters;
+							reheatingParameters.alphaFactor = cluster.alpha;
+							renderer.draw(gpuMarchingCubes.getGeometry(), drawSettings);
+						}else{
+							renderer.parameters.alphaFactor = cluster.alpha;
+							const auto & model = node.getLocalTransformMatrix();
+							renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+						}
 
 					}
 					first = false;
@@ -892,6 +924,7 @@ void ofApp::draw(){
 				renderer.parameters.alphaFactor = alphaFactor;
 				renderer.parameters.wireframe = wire;
 				renderer.parameters.fillAlpha = fillAlpha;
+				reheatingParameters.alphaFactor = reheatingAlphaFactor;
 			}break;
 			case ParticlesTransition:{
 				//renderer.clip = false;
@@ -904,13 +937,21 @@ void ofApp::draw(){
 					ofDisableAlphaBlending();
 					glEnable(GL_BLEND);
 					glBlendFunc(GL_ONE, GL_ONE);
-					renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
+					entropy::render::WireframeFillRenderer::DrawSettings drawSettings;
+					drawSettings.camera = &camera;
+					drawSettings.mode = GL_TRIANGLES;
+					drawSettings.model = node.getLocalTransformMatrix();
+					drawSettings.numVertices = gpuMarchingCubes.getNumVertices();
+					drawSettings.offset = 0;
+					drawSettings.parameters = reheatingParameters;
+					renderer.draw(gpuMarchingCubes.getGeometry(), drawSettings);
+					//renderer.draw(gpuMarchingCubes.getGeometry(), 0, gpuMarchingCubes.getNumVertices(), GL_TRIANGLES, camera, model);
 				}
 				ofDisableAlphaBlending();
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_ONE, GL_ONE);
 				//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-				auto alphaBlobs = renderer.parameters.alphaFactor;
+				float alphaBlobs = renderer.parameters.alphaFactor;
 				renderer.parameters.alphaFactor = 1;
 				renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), GL_TRIANGLES, camera, model);
 				renderer.parameters.alphaFactor = alphaBlobs;
@@ -996,6 +1037,62 @@ void ofApp::draw(){
 
 		if(parameters.render.record || parameters.render.recordVideo){
 			recorder.save(postFbo.getTexture());
+		}
+	}
+
+
+	if((dt>0 || forceRedraw) && parameters.onlyReheating){
+		fboReheating.begin();
+
+		ofClear(0,255);
+		camera.begin();
+		int state = parameters.state;
+		switch (state) {
+			case PreBigBang:
+			case BigBang:
+			case Expansion:
+			case ExpansionTransition:
+			break;
+			case ParticlesTransition:{
+				//renderer.clip = false;
+				auto & cluster = clusters[0];
+				ofNode node;
+				node.setScale(cluster.scale);
+				node.setPosition(cluster.origin);
+				const auto & model = node.getLocalTransformMatrix();
+				ofDisableAlphaBlending();
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE, GL_ONE);
+				//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+				entropy::render::WireframeFillRenderer::Parameters parameters;
+				parameters = renderer.parameters;
+//				float alphaBlobs = renderer.parameters.alphaFactor;
+//				bool enableDOF = renderer.parameters.enableDOF;
+				parameters.enableDOF = false;
+				parameters.alphaFactor = 1;
+
+				entropy::render::WireframeFillRenderer::DrawSettings drawSettings;
+				drawSettings.camera = &camera;
+				drawSettings.mode = GL_TRIANGLES;
+				drawSettings.model = node.getLocalTransformMatrix();
+				drawSettings.numVertices = transitionParticles.getNumVertices();
+				drawSettings.offset = 0;
+				drawSettings.parameters = parameters;
+				renderer.draw(transitionParticles.getVbo(), drawSettings);
+				//renderer.draw(transitionParticles.getVbo(), 0, transitionParticles.getNumVertices(), GL_TRIANGLES, camera, model);
+//				renderer.parameters.alphaFactor = alphaBlobs;
+//				renderer.parameters.enableDOF = enableDOF;
+			}
+			break;
+		}
+
+		camera.end();
+		fboReheating.end();
+
+		postEffects.process(fboReheating.getTexture(), postFboReheating, postParameters);
+
+		if(parameters.render.record || parameters.render.recordVideo){
+			recorderReheating.save(postFboReheating.getTexture());
 		}
 	}
 
