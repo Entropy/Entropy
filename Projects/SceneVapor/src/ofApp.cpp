@@ -17,10 +17,8 @@ void ofApp::setup()
 
 	//m_sequenceRamses.setup("RAMSES_time_sequence/", 338, 346);
 	//m_sequenceRamses.setup("RAMSES_HDF5_data/", 0, 0);
-//	m_sequenceRamses.setupRemote("sftp://entropy:$entr0py$@login7.sciama.icg.port.ac.uk:downloads/lvl22_hdf5_1024",
-//								 "/media/arturo/elements/entropy/vapor_download_tests", 333, 333);
 
-	m_sequenceRamses.setup("/media/arturo/elements/entropy/vapor", 333, 421);
+	m_sequenceRamses.setup(".", 333, 333);
 	m_sequenceRamses.loadFrame(0);
 
 

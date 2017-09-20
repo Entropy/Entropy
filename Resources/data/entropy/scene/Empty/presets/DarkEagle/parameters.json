@@ -40,7 +40,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.5595703125,
+                "aspectRatio": 3.5634765625,
                 "distance": 21.4596004486084,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -75,7 +75,7 @@
             "Tilt Speed": "0",
             "Tumble Override": "0",
             "ofEasyCam": {
-                "aspectRatio": 3.1611111164093,
+                "aspectRatio": 3.1657407283783,
                 "distance": 21.4596004486084,
                 "drag": 0.899999976158142,
                 "farClip": 9353.07421875,
@@ -177,11 +177,11 @@
                     "Brightness": "0",
                     "Contrast": "1"
                 },
-                "File Path": "E:\\hpv\\Vapor_NoAnim_170612.hpv",
+                "File Path": "E:\\hpv\\vapor.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -391,7 +391,7 @@
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -557,9 +557,9 @@
                 },
                 "File Path": "E:\\mov\\EAGLE_OK_postprod_h264.mov",
                 "Playback": {
-                    "Fade Knob": "16",
+                    "Fade Knob": "9",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -570,7 +570,7 @@
                     "Sync Mode": "0",
                     "Use Fade LFO": "0",
                     "Use Fade Track": "1",
-                    "Use Fade Twist": "0",
+                    "Use Fade Twist": "1",
                     "Use Speed Twist": "0"
                 }
             },
@@ -727,7 +727,7 @@
                 "Playback": {
                     "Fade Knob": "8",
                     "Fade LFO": "1",
-                    "Fade Track": "0",
+                    "Fade Track": "1",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
@@ -847,13 +847,13 @@
                 },
                 "Color": {
                     "Brightness": "0",
-                    "Contrast": "1"
+                    "Contrast": "1.5"
                 },
-                "File Path": "E:\\hpv\\Vapor_NoAnim_170612.hpv",
+                "File Path": "E:\\hpv\\vapor.hpv",
                 "Playback": {
                     "Fade Knob": "16",
                     "Fade LFO": "1",
-                    "Fade Track": "1",
+                    "Fade Track": "0",
                     "Fade Twist": "1",
                     "Flip LFO": "0",
                     "Free Speed": "1",
